@@ -18,7 +18,7 @@ import {
 import LineItem from "./line-item"
 import Order from "./order"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",

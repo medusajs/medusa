@@ -34,7 +34,7 @@ const InventoryItemSkuIndex = createPsqlIndexStatementHelper({
   unique: true,
 })
 
-type InventoryItemOptionalProps = DAL.SoftDeletableEntityDateColumns
+type InventoryItemOptionalProps = DAL.SoftDeletableModelDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
