@@ -42,7 +42,7 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * one
    */
   async #getConnection() {
-    return MikroORM.init({
+    return await MikroORM.init({
       ...this.#config,
       migrations: {
         ...this.#config.migrations,
@@ -87,7 +87,8 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     )
 
     try {
-      return await migrator.up(options)
+      const res = await migrator.up(options)
+      return res
     } finally {
       migrator["umzug"].clearListeners()
       await connection.close()

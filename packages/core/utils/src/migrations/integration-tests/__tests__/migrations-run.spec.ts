@@ -7,6 +7,12 @@ import { Migrations, MigrationsEvents } from "../../index"
 import { FileSystem } from "../../../common"
 import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 import { MikroORM } from "@mikro-orm/postgresql"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
+
+let index = 0
+const fileName = (timestamp: string, name?: string) => {
+  return `Migration${new Date().getTime()}${name ? `_${name}` : ""}-${++index}`
+}
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
@@ -49,6 +55,7 @@ describe("Run migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
+        fileName,
       },
       ...pgGodCredentials,
     })
@@ -88,6 +95,7 @@ describe("Run migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
+        fileName,
       },
       ...pgGodCredentials,
     })
@@ -120,7 +128,14 @@ describe("Run migrations", () => {
     })
   })
 
-  test.only("throw error when migration fails", async () => {
+  test("throw error when migration fails during run", async () => {
+    class CustomTSMigrationGenerator extends TSMigrationGenerator {
+      createStatement(sql: string, padLeft: number): string {
+        let output = super.createStatement(sql, padLeft)
+        return output.replace('"user"', '"foo";')
+      }
+    }
+
     const User = model.define("User", {
       id: model.id().primaryKey(),
       email: model.text().unique(),
@@ -132,25 +147,20 @@ describe("Run migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
+        generator: CustomTSMigrationGenerator,
+        fileName,
       },
       ...pgGodCredentials,
     })
 
     const migrations = new Migrations(config)
-    const generatedFile = await migrations.generate()
+    await migrations.generate()
 
-    /**
-     * Corrupting file intentionally so that it will raise an error
-     */
-    await fs.create(
-      generatedFile.fileName,
-      generatedFile.code.replace("create table if not exists", "create foo")
-    )
-
-    expect(migrations.run()).rejects.toThrow("Migration")
+    expect(migrations.run()).rejects.toThrow(/.*Migration.*/)
 
     const orm = await MikroORM.init(config)
     const usersTableExists = await orm.em.getKnex().schema.hasTable("user")
+
     await orm.close()
 
     expect(usersTableExists).toEqual(false)
