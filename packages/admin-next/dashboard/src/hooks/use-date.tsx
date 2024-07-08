@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next"
 
 import { languages } from "../i18n/languages"
 
+// TODO: We rely on the current language to determine the date locale. This is not ideal, as we use en-US for the english translation.
+// We either need to also have an en-GB translation or we need to separate the date locale from the translation language.
 export const useDate = () => {
   const { i18n } = useTranslation()
 

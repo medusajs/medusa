@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CreateOrdersStepInput = CreateOrderDTO[]
 

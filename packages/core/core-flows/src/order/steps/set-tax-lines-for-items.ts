@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateLineItemTaxLineDTO,
   CreateShippingMethodTaxLineDTO,
@@ -7,7 +6,7 @@ import {
   OrderDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
+import { ModuleRegistrationName, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

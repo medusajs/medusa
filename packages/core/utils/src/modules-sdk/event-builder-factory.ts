@@ -1,6 +1,9 @@
 import { Context, EventBusTypes } from "@medusajs/types"
 
+// TODO should that move closer to the event bus? and maybe be rename to moduleEventBuilderFactory
+
 /**
+ *
  * Factory function to create event builders for different entities
  *
  * @example
@@ -48,7 +51,8 @@ export function eventBuilderFactory({
 
     // The event enums contains event formatted like so [object]_[action] e.g. PRODUCT_CREATED
     // We expect the keys of events to be fully uppercased
-    const eventName = eventsEnum[`${object.toUpperCase()}_${action.toUpperCase()}`]
+    const eventName =
+      eventsEnum[`${object.toUpperCase()}_${action.toUpperCase()}`]
 
     data.forEach((dataItem) => {
       messages.push({

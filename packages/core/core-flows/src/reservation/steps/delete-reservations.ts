@@ -1,7 +1,7 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const deleteReservationsStepId = "delete-reservations"
 export const deleteReservationsStep = createStep(

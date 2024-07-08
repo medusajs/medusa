@@ -6,6 +6,12 @@ export const metadata = {
 
 In this chapter, you’ll learn how to define relationships between data models in your module.
 
+<Note type="soon" title="Important">
+
+Data model relationships are in active development and may change.
+
+</Note>
+
 ## What is a Relationship Property?
 
 A relationship property is defined using relation methods, such as `hasOne` or `belongsTo`. It represents a relationship between two data models in a module. 
@@ -31,12 +37,12 @@ export const oneToOneHighlights = [
 import { model } from "@medusajs/utils"
 
 const User = model.define("user", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   email: model.hasOne(() => Email),
 })
 
 const Email = model.define("email", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   user: model.belongsTo(() => User, {
     mappedBy: "email",
   }),
@@ -70,12 +76,12 @@ export const oneToManyHighlights = [
 import { model } from "@medusajs/utils"
 
 const Store = model.define("store", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   products: model.hasMany(() => Product),
 })
 
 const Product = model.define("product", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   store: model.belongsTo(() => Store, {
     mappedBy: "products",
   }),
@@ -101,12 +107,12 @@ export const manyToManyHighlights = [
 import { model } from "@medusajs/utils"
 
 const Order = model.define("order", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   products: model.manyToMany(() => Product),
 })
 
 const Product = model.define("product", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   order: model.manyToMany(() => Order),
 })
 ```
@@ -132,14 +138,14 @@ export const relationNameHighlights = [
 import { model } from "@medusajs/utils"
 
 const User = model.define("user", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   email: model.hasOne(() => Email, {
     mappedBy: "owner",
   }),
 })
 
 const Email = model.define("email", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   owner: model.belongsTo(() => User, {
     mappedBy: "email",
   }),
@@ -170,7 +176,7 @@ export const highlights = [
 import { model } from "@medusajs/utils"
 
 const Store = model.define("store", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   products: model.hasMany(() => Product),
 })
 .cascades({
@@ -178,7 +184,7 @@ const Store = model.define("store", {
 })
 
 const Product = model.define("product", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   store: model.belongsTo(() => Store, {
     mappedBy: "products",
   }),

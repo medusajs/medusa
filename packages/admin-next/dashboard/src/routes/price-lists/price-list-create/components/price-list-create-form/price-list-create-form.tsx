@@ -46,7 +46,6 @@ type PriceListCreateFormProps = {
   currencies: HttpTypes.AdminStoreCurrency[]
 }
 
-// TODO: Fix DatePickers once new version is merged.
 export const PriceListCreateForm = ({
   regions,
   currencies,

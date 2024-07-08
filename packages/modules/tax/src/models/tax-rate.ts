@@ -22,7 +22,7 @@ import {
 import TaxRateRule from "./tax-rate-rule"
 import TaxRegion from "./tax-region"
 
-type OptionalTaxRateProps = DAL.SoftDeletableEntityDateColumns
+type OptionalTaxRateProps = DAL.SoftDeletableModelDateColumns
 
 const TABLE_NAME = "tax_rate"
 

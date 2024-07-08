@@ -1,6 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { CampaignBudgetType, PromotionType } from "@medusajs/utils"
+import {
+  CampaignBudgetType,
+  ModuleRegistrationName,
+  PromotionType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 

@@ -7,7 +7,7 @@
   "bin": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node --esm src/index.ts",
+    "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
@@ -17,7 +17,6 @@
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
-    "glob": "^7.1.6",
     "inquirer": "^9.2.2",
     "medusa-telemetry": "^0.0.17",
     "nanoid": "^4.0.2",

@@ -93,16 +93,11 @@ export const ProductCreateForm = ({
 
   const handleSubmit = form.handleSubmit(
     async (values, e) => {
-      if (!(e?.nativeEvent instanceof SubmitEvent)) {
-        return
+      let isDraftSubmission = false
+      if (e?.nativeEvent instanceof SubmitEvent) {
+        const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
+        isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
       }
-      const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
-
-      if (!(submitter instanceof HTMLButtonElement)) {
-        return
-      }
-
-      const isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
 
       const media = values.media || []
       const payload = { ...values, media: undefined }
@@ -219,7 +214,24 @@ export const ProductCreateForm = ({
   return (
     <RouteFocusModal>
       <RouteFocusModal.Form form={form}>
-        <form onSubmit={handleSubmit} className="flex h-full flex-col">
+        <form
+          onKeyDown={(e) => {
+            // We want to continue to the next tab on enter instead of saving as draft immediately
+            if (e.key === "Enter") {
+              if (tab !== Tab.VARIANTS) {
+                e.preventDefault()
+                e.stopPropagation()
+                onNext(tab)
+              } else {
+                e.preventDefault()
+                e.stopPropagation()
+                handleSubmit(e)
+              }
+            }
+          }}
+          onSubmit={handleSubmit}
+          className="flex h-full flex-col"
+        >
           <ProgressTabs
             value={tab}
             onValueChange={async (tab) => {

@@ -14,6 +14,14 @@ body:
 
         - Contribution Guidelines: https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md
         - Documentation: https://docs.medusajs.com/
+  - type: dropdown
+    attributes:
+      label: "What Medusa version and documentation are you using?"
+      options:
+        - v1
+        - v2
+      validations:
+        required: true
   - type: checkboxes
     attributes:
       label: Preliminary Checks

@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteInvitesStepId = "delete-invites-step"

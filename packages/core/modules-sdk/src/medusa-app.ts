@@ -21,13 +21,14 @@ import {
   createMedusaContainer,
   isObject,
   isString,
+  ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import type { Knex } from "knex"
-import { MODULE_PACKAGE_NAMES, ModuleRegistrationName } from "./definitions"
+import { MODULE_PACKAGE_NAMES } from "./definitions"
 import { MedusaModule, RegisterModuleJoinerConfig } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
@@ -436,16 +437,22 @@ async function MedusaApp_({
 
     if (revert) {
       revertLinkModuleMigration &&
-        (await revertLinkModuleMigration({
-          options: linkModuleOpt,
-          injectedDependencies,
-        }))
+        (await revertLinkModuleMigration(
+          {
+            options: linkModuleOpt,
+            injectedDependencies,
+          },
+          linkModules
+        ))
     } else {
       linkModuleMigration &&
-        (await linkModuleMigration({
-          options: linkModuleOpt,
-          injectedDependencies,
-        }))
+        (await linkModuleMigration(
+          {
+            options: linkModuleOpt,
+            injectedDependencies,
+          },
+          linkModules
+        ))
     }
   }
 

@@ -173,7 +173,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
         <Form.Field
           control={form.control}
           name="starts_at"
-          render={({ field: { value, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -186,11 +186,10 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                     </Form.Hint>
                   </div>
                   <Form.Control>
-                    {/* TODO: Add timepicker see CORE-2382 */}
                     <DatePicker
-                      mode="single"
+                      granularity="minute"
+                      shouldCloseOnSelect={false}
                       {...field}
-                      value={value ?? undefined}
                     />
                   </Form.Control>
                 </div>
@@ -203,7 +202,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
         <Form.Field
           control={form.control}
           name="ends_at"
-          render={({ field: { value, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -215,9 +214,9 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                   </div>
                   <Form.Control>
                     <DatePicker
-                      mode="single"
+                      granularity="minute"
+                      shouldCloseOnSelect={false}
                       {...field}
-                      value={value ?? undefined}
                     />
                   </Form.Control>
                 </div>
@@ -263,7 +262,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                         <StackedFocusModal.Trigger asChild>
                           <button
                             type="button"
-                            className="bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-muted flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5"
+                            className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
                           >
                             <MagnifyingGlass />
                             {t(

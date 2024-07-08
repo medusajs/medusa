@@ -82,7 +82,7 @@ export const ReservationGeneralSection = ({
       />
       <SectionRow
         title={t("inventory.reservation.reservedAtLocation")}
-        value={reservation.quantity}
+        value={locationLevel?.reserved_quantity}
       />
     </Container>
   )

@@ -11,9 +11,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  Module,
+  Modules,
   TransactionHandlerType,
   TransactionStepState,
-  createMedusaContainer,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { knex } from "knex"
@@ -21,6 +23,7 @@ import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
+import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
 
 jest.setTimeout(100000)
 
@@ -76,6 +79,29 @@ describe("Workflow Orchestrator module", function () {
     await runMigrations()
 
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+  })
+
+  it(`should export the appropriate linkable configuration`, () => {
+    const linkable = Module(Modules.WORKFLOW_ENGINE, {
+      service: WorkflowsModuleService,
+    }).linkable
+
+    expect(Object.keys(linkable)).toEqual(["workflowExecution"])
+
+    Object.keys(linkable).forEach((key) => {
+      delete linkable[key].toJSON
+    })
+
+    expect(linkable).toEqual({
+      workflowExecution: {
+        id: {
+          linkable: "workflow_execution_id",
+          primaryKey: "id",
+          serviceName: "workflows",
+          field: "workflowExecution",
+        },
+      },
+    })
   })
 
   describe("Testing basic workflow", function () {

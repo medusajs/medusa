@@ -17,8 +17,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       title: "The Basics",
       children: [
         {
-          path: "/basics/important-directories-files",
-          title: "Important Directories and Files",
+          path: "/basics/project-directories-files",
+          title: "Project Directories and Files",
         },
         {
           path: "/basics/medusa-container",
@@ -86,12 +86,12 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Middlewares",
             },
             {
-              path: "/advanced-development/api-routes/cors",
-              title: "Handling CORS",
-            },
-            {
               path: "/advanced-development/api-routes/protected-routes",
               title: "Protected Routes",
+            },
+            {
+              path: "/advanced-development/api-routes/cors",
+              title: "Handling CORS",
             },
           ],
         },
@@ -111,16 +111,16 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module Isolation",
             },
             {
-              path: "/advanced-development/modules/remote-query",
-              title: "Remote Query",
-            },
-            {
-              path: "/advanced-development/modules/link-modules",
-              title: "Link Modules",
+              path: "/advanced-development/modules/module-links",
+              title: "Module Links",
             },
             {
               path: "/advanced-development/modules/remote-link",
               title: "Remote Link",
+            },
+            {
+              path: "/advanced-development/modules/remote-query",
+              title: "Remote Query",
             },
             {
               path: "/advanced-development/modules/options",
@@ -129,6 +129,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          path: "/advanced-development/data-models",
           title: "Data Models",
           children: [
             {
@@ -136,37 +137,28 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Property Types",
             },
             {
-              path: "/advanced-development/data-models/configure-properties",
-              title: "Configure Properties",
-            },
-            {
               path: "/advanced-development/data-models/primary-key",
               title: "Primary Key",
+            },
+            {
+              path: "/advanced-development/data-models/default-properties",
+              title: "Default Properties",
+            },
+            {
+              path: "/advanced-development/data-models/configure-properties",
+              title: "Configure Properties",
             },
             {
               path: "/advanced-development/data-models/relationships",
               title: "Relationships",
             },
             {
-              path: "/advanced-development/data-models/indexes",
-              title: "Data Model Index",
-            },
-            {
-              path: "/advanced-development/data-models/soft-deletable",
-              title: "Soft-Deletable Models",
+              path: "/advanced-development/data-models/index",
+              title: "Index",
             },
             {
               path: "/advanced-development/data-models/searchable-property",
               title: "Searchable Property",
-            },
-          ],
-        },
-        {
-          title: "Loaders",
-          children: [
-            {
-              path: "/advanced-development/loaders/outside-modules",
-              title: "Create Outside Module",
             },
           ],
         },
@@ -176,6 +168,15 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/events-and-subscribers/data-payload",
               title: "Events Data Payload",
+            },
+          ],
+        },
+        {
+          title: "Scheduled Jobs",
+          children: [
+            {
+              path: "/advanced-development/scheduled-jobs/execution-number",
+              title: "Execution Number",
             },
           ],
         },
@@ -251,7 +252,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       ],
     },
     {
-      path: "/architectural-concepts/architectural-modules",
+      path: "/architectural-modules",
       title: "Architectural Modules",
     },
     {
@@ -265,10 +266,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
         {
           path: "/debugging-and-testing/tools",
           title: "Tools",
-        },
-        {
-          path: "/debugging-and-testing/feature-flags",
-          title: "Feature Flags",
         },
       ],
     },

@@ -27,7 +27,7 @@ export const DateRangeDisplay = ({
           <Text weight="plus" size="small">
             {t("fields.startDate")}
           </Text>
-          <Text size="small">
+          <Text size="small" className="tabular-nums">
             {startDate
               ? getFullDate({
                   date: startDate,
@@ -44,7 +44,7 @@ export const DateRangeDisplay = ({
           <Text size="small" weight="plus">
             {t("fields.endDate")}
           </Text>
-          <Text size="small">
+          <Text size="small" className="tabular-nums">
             {endDate
               ? getFullDate({
                   date: endDate,

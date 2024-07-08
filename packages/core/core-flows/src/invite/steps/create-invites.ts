@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CreateInviteDTO, IUserModuleService, InviteDTO } from "@medusajs/types"
+import { CreateInviteDTO, IUserModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createInviteStepId = "create-invite-step"

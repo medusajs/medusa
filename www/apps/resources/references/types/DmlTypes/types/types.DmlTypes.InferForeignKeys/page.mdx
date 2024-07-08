@@ -2,10 +2,11 @@ import { TypeList } from "docs-ui"
 
 # InferForeignKeys
 
- **InferForeignKeys**: T extends [IDmlEntity](../../interfaces/types.DmlTypes.IDmlEntity/page.mdx)&#60;infer Schema&#62; ? &#123; [K in keyof Schema as Schema[K] extends Object ? Type extends RelationshipTypes ? \`$&#123;K & string&#125;\_id\` : K : K]: Schema[K] extends Object ? Type extends RelationshipTypes ? string : Schema[K] : Schema[K] &#125; : `never`
+ **InferForeignKeys**: &#123; [K in keyof Schema as Schema[K] extends Object ? Type extends RelationshipTypes ? \`$&#123;K & string&#125;\_id\` : never : never]: Schema[K] extends Object ? Type extends RelationshipTypes ? string : never : never &#125;
 
-From a IDmlEntity, infer the foreign keys name and type for belongsTo relation meaning hasOne and ManyToOne
+From a IDmlEntity, infer the foreign keys name and type for
+"belongsTo" relation meaning "hasOne" and "ManyToOne"
 
 ## Type Parameters
 
-<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="InferForeignKeys"/>
+<TypeList types={[{"name":"Schema","type":"[DMLSchema](../types.DmlTypes.DMLSchema/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[RelationshipTypes](../types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="InferForeignKeys"/>

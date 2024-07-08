@@ -6,12 +6,6 @@ export const metadata = {
 
 In this chapter, you’ll learn about scheduled jobs and how to use them.
 
-<Note type="soon">
-
-Scheduled jobs are coming soon.
-
-</Note>
-
 ## What is a Scheduled Job?
 
 A scheduled job is a function executed at a specified interval of time in the background of your Medusa application. It’s like a cron job that runs during the application's runtime.
@@ -22,57 +16,37 @@ For example, you can synchronize your inventory with an Enterprise Resource Plan
 
 ## How to Create a Scheduled Job?
 
-<Note type="check">
-
-- [Redis](https://redis.io/) is installed and Redis server is running.
-
-</Note>
-
 A scheduled job is created in a TypeScript or JavaScript file under the `src/jobs` directory.
 
 For example, create the file `src/jobs/hello-world.ts` with the following content:
 
 ```ts title="src/jobs/hello-world.ts"
-import { ScheduledJobConfig } from "@medusajs/medusa"
-
 // the scheduled-job function
 export default function () {
   console.log("Time to say hello world!")
 }
 
 // the job's configurations
-export const config: ScheduledJobConfig = {
-  name: "hello-world",
+export const config = {
+  name: "every-minute-message",
   // execute every minute
   schedule: "* * * * *",
 }
+
 ```
 
 A scheduled job file must export:
 
-- The function to be executed whenever it’s time to run the scheduled job.
+- A function to be executed whenever it’s time to run the scheduled job.
 - A configuration object defining the job. It has two properties:
     - `name`: a unique name for the job.
-    - `schedule`: a [cron expression](https://crontab.guru/).
+    - `schedule`: a [cron expression](https://crontab.guru/) specifying when to run the job.
 
 This scheduled job executes every minute and logs into the terminal `Time to say hello world!`.
 
 ### Test Scheduled Jobs
 
-To test out your scheduled job:
-
-1. Uncomment the following line in the `medusa-config.js` file:
-
-```js title="medusa-config.js"
-module.exports = defineConfig({
-  projectConfig: {
-    redisUrl: REDIS_URL,
-    // ...
-  },
-})
-```
-
-2. Start the Medusa application:
+To test out your scheduled job, start the Medusa application:
 
 ```bash npm2yarn
 npm run dev
@@ -81,11 +55,8 @@ npm run dev
 After a minute, the following message will be logged to the terminal:
 
 ```bash
-info:    Processing scheduled job: hello-world
 Time to say hello world!
 ```
-
-The first line indicates that the application is executing the scheduled job. The second line is the text logged by the scheduled job.
 
 ---
 
@@ -110,38 +81,37 @@ The first line indicates that the application is executing the scheduled job. Th
 
 ## Resolve Resources
 
-The scheduled job function receives an object parameter that has a `container` property. Its value is the Medusa container, which you can use to resolve resources in your Medusa application, such as services.
+The scheduled job function receives a `container` parameter, which is the Medusa container. Use it to resolve resources in your Medusa application, such as services.
 
 For example:
 
 export const highlights = [
-  ["12", "resolve", "Resolve the Product Module's main service."],
-  ["12", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["11", "resolve", "Resolve the Product Module's main service."],
+  ["11", "ModuleRegistrationName.PRODUCT", "The module's registration name imported from `@medusajs/modules-sdk`."]
 ]
 
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
 import {
-  ScheduledJobArgs,
-  ScheduledJobConfig,
-} from "@medusajs/medusa"
-import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  IProductModuleService,
+  MedusaContainer,
+} from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-export default async function ({
-  container,
-}: ScheduledJobArgs) {
-  const productModuleService: IProductModuleService =
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const productModuleService: IProductModuleService = 
     container.resolve(ModuleRegistrationName.PRODUCT)
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService.listAndCountProducts()
 
   console.log(
     `Time to check products! You have ${count} product(s)`
   )
 }
 
-export const config: ScheduledJobConfig = {
-  name: "hello-world",
+export const config = {
+  name: "every-minute-message",
   // execute every minute
   schedule: "* * * * *",
 }

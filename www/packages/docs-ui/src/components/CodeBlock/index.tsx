@@ -78,6 +78,7 @@ export const CodeBlock = ({
   const [showTesting, setShowTesting] = useState(false)
   const codeContainerRef = useRef<HTMLDivElement>(null)
   const codeRef = useRef<HTMLElement>(null)
+  const apiRunnerRef = useRef<HTMLDivElement>(null)
   const [scrollable, setScrollable] = useState(false)
   const hasInnerCodeBlock = useMemo(
     () => hasTabs || title.length > 0,
@@ -399,6 +400,7 @@ export const CodeBlock = ({
             enter: "animate-fadeIn animate-fastest",
             exit: "animate-fadeOut animate-fastest",
           }}
+          nodeRef={apiRunnerRef}
         >
           <ApiRunner
             apiMethod={rest.testApiMethod!}
@@ -406,6 +408,7 @@ export const CodeBlock = ({
             pathData={rest.testPathParams}
             bodyData={rest.testBodyParams}
             queryData={rest.testQueryParams}
+            ref={apiRunnerRef}
           />
         </CSSTransition>
       )}

@@ -1,12 +1,7 @@
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import * as entities from "./src/models"
+import { defineMikroOrmCliConfig, Modules } from "@medusajs/utils"
 
-module.exports = {
+export default defineMikroOrmCliConfig(Modules.PRODUCT, {
   entities: Object.values(entities),
-  schema: "public",
-  clientUrl: "postgres://postgres@localhost/medusa-products",
-  type: "postgresql",
-  migrations: {
-    generator: TSMigrationGenerator,
-  },
-}
+  databaseName: "medusa-products",
+})

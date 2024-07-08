@@ -64,7 +64,7 @@ Make sure to create the PostgreSQL database before using it. You can check how t
 ```js title="medusa-config.js"
 module.exports = defineConfig({
   projectConfig: {
-    databaseName: process.env.DATABASE_NAME || 
+    databaseName: process.env.DATABASE_NAME ||
       "medusa-store",
     // ...
   },
@@ -147,31 +147,6 @@ module.exports = defineConfig({
 })
 ```
 
-### databaseExtra
-
-An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
-`ssl` which enables support for TLS/SSL connections.
-
-This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
-During development, it’s recommended not to pass this option.
-
-#### Example
-
-```js title="medusa-config.js"
-module.exports = defineConfig({
-  projectConfig: {
-    databaseExtra: process.env.NODE_ENV !== "development" ?
-      { ssl: { rejectUnauthorized: false } } : {}
-    // ...
-  },
-  // ...
-})
-```
-
-#### Properties
-
-<TypeList types={[{"name":"ssl","type":"`object`","description":"Configure support for TLS/SSL connection","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"rejectUnauthorized","type":"`false`","description":"Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="databaseExtra"/>
-
 ### databaseDriverOptions
 
 An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
@@ -220,7 +195,7 @@ For a local Redis installation, the connection URL should be `redis://localhost:
 ```js title="medusa-config.js"
 module.exports = defineConfig({
   projectConfig: {
-    redisUrl: process.env.REDIS_URL || 
+    redisUrl: process.env.REDIS_URL ||
       "redis://localhost:6379",
     // ...
   },
@@ -257,7 +232,7 @@ for the list of available options.
 module.exports = defineConfig({
   projectConfig: {
     redisOptions: {
-      connectionName: process.env.REDIS_CONNECTION_NAME || 
+      connectionName: process.env.REDIS_CONNECTION_NAME ||
         "medusa",
     }
     // ...
@@ -362,7 +337,7 @@ Admin dashboard configurations.
 ```js title="medusa-config.js"
 module.exports = defineConfig({
   admin: {
-    backendUrl: process.env.MEDUSA_BACKEND_URL || 
+    backendUrl: process.env.MEDUSA_BACKEND_URL ||
       "http://localhost:9000"
   },
   // ...

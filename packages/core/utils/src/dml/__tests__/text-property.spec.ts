@@ -10,11 +10,28 @@ describe("Text property", () => {
       fieldName: "username",
       dataType: {
         name: "text",
-        options: { primaryKey: false, searchable: false },
+        options: { searchable: false },
       },
       nullable: false,
       indexes: [],
       relationships: [],
+    })
+  })
+
+  test("mark text property as primary key", () => {
+    const property = new TextProperty().primaryKey()
+
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
+    expect(property.parse("username")).toEqual({
+      fieldName: "username",
+      dataType: {
+        name: "text",
+        options: { searchable: false },
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+      primaryKey: true,
     })
   })
 })

@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

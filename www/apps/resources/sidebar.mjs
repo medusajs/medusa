@@ -65,10 +65,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/api-key/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/api-key/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -156,10 +156,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/auth/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/auth/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -224,10 +224,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/cart/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/cart/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -280,10 +280,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/currency/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/currency/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -340,10 +340,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/customer/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/customer/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -417,10 +417,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/fulfillment/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/fulfillment/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -482,10 +482,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/inventory/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/inventory/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -566,10 +566,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/order/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/order/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -665,10 +665,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/payment/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/payment/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -733,10 +733,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/pricing/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/pricing/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -789,10 +789,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/product/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/product/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -861,10 +861,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/promotion/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/promotion/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -917,10 +917,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/region/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/region/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -979,10 +979,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/sales-channel/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/sales-channel/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1042,10 +1042,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/stock-location/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/stock-location/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1098,10 +1098,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/store/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/store/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1170,10 +1170,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/tax/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/tax/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1230,10 +1230,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/user/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/user/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -2112,10 +2112,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         path: "/medusa-container-resources",
         title: "Medusa Container Resources",
       },
-      {
-        path: "/events-reference",
-        title: "Events",
-      },
+      // {
+      //   path: "/events-reference",
+      //   title: "Events",
+      // },
       {
         path: "/admin-widget-injection-zones",
         title: "Admin Widget Injection Zones",

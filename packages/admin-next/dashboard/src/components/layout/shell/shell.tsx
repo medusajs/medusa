@@ -319,11 +319,7 @@ const LoggedInUser = () => {
           <Profile />
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
-            <Link
-              // TODO change link once docs are public
-              to="https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app/"
-              target="_blank"
-            >
+            <Link to="https://docs.medusajs.com/v2" target="_blank">
               <BookOpen className="text-ui-fg-subtle mr-2" />
               Documentation
             </Link>

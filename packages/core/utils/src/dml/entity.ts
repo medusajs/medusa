@@ -4,6 +4,8 @@ import {
   EntityIndex,
   ExtractEntityRelations,
   IDmlEntity,
+  IDmlEntityConfig,
+  InferDmlEntityNameFromConfig,
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
@@ -11,18 +13,22 @@ import { isObject, isString, toCamelCase } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
-type Config = string | { name?: string; tableName: string }
-
-function extractNameAndTableName(nameOrConfig: Config) {
+function extractNameAndTableName<const Config extends IDmlEntityConfig>(
+  nameOrConfig: Config
+) {
   const result = {
     name: "",
     tableName: "",
+  } as {
+    name: InferDmlEntityNameFromConfig<Config>
+    tableName: string
   }
 
   if (isString(nameOrConfig)) {
     const [schema, ...rest] = nameOrConfig.split(".")
     const name = rest.length ? rest.join(".") : schema
-    result.name = toCamelCase(name)
+    result.name = toCamelCase(name) as InferDmlEntityNameFromConfig<Config>
+
     result.tableName = nameOrConfig
   }
 
@@ -37,7 +43,7 @@ function extractNameAndTableName(nameOrConfig: Config) {
     const [schema, ...rest] = potentialName.split(".")
     const name = rest.length ? rest.join(".") : schema
 
-    result.name = toCamelCase(name)
+    result.name = toCamelCase(name) as InferDmlEntityNameFromConfig<Config>
     result.tableName = nameOrConfig.tableName
   }
 
@@ -48,17 +54,23 @@ function extractNameAndTableName(nameOrConfig: Config) {
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
  */
-export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
+export class DmlEntity<
+  Schema extends DMLSchema,
+  const TConfig extends IDmlEntityConfig
+> implements IDmlEntity<Schema, TConfig>
+{
   [IsDmlEntity]: true = true
 
-  name: string
+  name: InferDmlEntityNameFromConfig<TConfig>
+  schema: Schema
 
   readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
   #indexes: EntityIndex<Schema>[] = []
 
-  constructor(nameOrConfig: Config, public schema: Schema) {
+  constructor(nameOrConfig: TConfig, schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
+    this.schema = schema
     this.name = name
     this.#tableName = tableName
   }
@@ -70,7 +82,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *
    * @param entity
    */
-  static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
+  static isDmlEntity(entity: unknown): entity is DmlEntity<any, any> {
     return !!entity?.[IsDmlEntity]
   }
 
@@ -78,7 +90,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * Parse entity to get its underlying information
    */
   parse(): {
-    name: string
+    name: InferDmlEntityNameFromConfig<TConfig>
     tableName: string
     schema: DMLSchema
     cascades: EntityCascades<string[]>
@@ -96,16 +108,16 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   /**
    * This method configures which related data models an operation, such as deletion,
    * should be cascaded to.
-   * 
+   *
    * For example, if a store is deleted, its product should also be deleted.
-   * 
+   *
    * @param options - The cascades configurations. They object's keys are the names of
-   * the actions, such as `deleted`, and the value is an array of relations that the 
+   * the actions, such as `deleted`, and the value is an array of relations that the
    * action should be cascaded to.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const Store = model.define("store", {
    *   id: model.id(),
    *   products: model.hasMany(() => Product),
@@ -113,7 +125,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * .cascades({
    *   delete: ["products"],
    * })
-   * 
+   *
    * @customNamespace Model Methods
    */
   cascades(
@@ -142,15 +154,15 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   /**
    * This method defines indices on the data model. An index can be on multiple columns
    * and have conditions.
-   * 
+   *
    * @param indexes - The index's configuration.
-   * 
+   *
    * @example
    * An example of a simple index:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -160,15 +172,15 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *     on: ["name", "age"],
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * To add a condition on the index, use the `where` option:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -181,15 +193,15 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *     }
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * The condition can also be a negation. For example:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -204,12 +216,12 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *     }
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * In this example, the index is created when the value of `age` doesn't equal `30`.
-   * 
+   *
    * @customNamespace Model Methods
    */
   indexes(indexes: EntityIndex<Schema, string | QueryCondition<Schema>>[]) {

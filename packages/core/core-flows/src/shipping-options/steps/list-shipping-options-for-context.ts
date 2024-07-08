@@ -1,10 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FindConfig,
   IFulfillmentModuleService,
   ShippingOptionDTO,
 } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   context: Record<string, unknown>

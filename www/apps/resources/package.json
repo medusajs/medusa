@@ -45,5 +45,8 @@
     "tsconfig": "*",
     "types": "*",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

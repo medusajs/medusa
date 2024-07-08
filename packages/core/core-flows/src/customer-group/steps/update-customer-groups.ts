@@ -1,10 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CustomerGroupUpdatableFields,
   FilterableCustomerGroupProps,
   ICustomerModuleService,
 } from "@medusajs/types"
 import {
+  ModuleRegistrationName,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"

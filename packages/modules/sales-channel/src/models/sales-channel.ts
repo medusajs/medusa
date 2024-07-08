@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type SalesChannelOptionalProps = "is_disabled" | DAL.EntityDateColumns
+type SalesChannelOptionalProps = "is_disabled" | DAL.ModelDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

@@ -1,0 +1,12 @@
+import { TypeList } from "docs-ui"
+
+# InferSchemaFields
+
+ **InferSchemaFields**: [Prettify](../../../CommonTypes/types/types.CommonTypes.Prettify/page.mdx)&#60;&#123; [K in keyof Schema]: Schema[K] extends RelationshipType&#60;any&#62; ? Schema[K]["type"] extends "belongsTo" ? InferBelongsToFields&#60;Schema[K]["$dataType"]&#62; : Schema[K]["type"] extends "hasOne" ? InferHasOneFields&#60;Schema[K]["$dataType"]&#62; : Schema[K]["type"] extends "hasMany" ? InferHasManyFields&#60;Schema[K]["$dataType"]&#62; : Schema[K]["type"] extends "manyToMany" ? InferManyToManyFields&#60;Schema[K]["$dataType"]&#62; : never : Schema[K]["$dataType"] &#125;&#62;
+
+Inferring the types of the schema fields from the DML
+entity
+
+## Type Parameters
+
+<TypeList types={[{"name":"Schema","type":"[DMLSchema](../types.DmlTypes.DMLSchema/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[RelationshipTypes](../types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="InferSchemaFields"/>

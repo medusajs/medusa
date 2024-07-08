@@ -11,6 +11,13 @@ import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
 /**
+ * Prettify complex types to a flat object structure
+ */
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+/**
  * Utility type used to remove some optional attributes (coming from K) from a type T
  */
 export type WithRequiredProperty<T, K extends keyof T> = T & {

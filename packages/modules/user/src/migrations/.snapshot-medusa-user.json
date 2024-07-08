@@ -126,7 +126,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_invite_token\" ON \"invite\" (deleted_at) WHERE deleted_at IS NOT NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_invite_deleted_at\" ON \"invite\" (deleted_at) WHERE deleted_at IS NOT NULL"
         },
         {
           "keyName": "invite_pkey",
@@ -241,7 +241,7 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_user_email\" ON \"user\" (email) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_user_email\" ON \"user\" (email) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_user_deleted_at",

@@ -75,7 +75,7 @@ const Item = ({
   return (
     <div
       key={item.id}
-      className="text-ui-fg-subtle grid grid-cols-2 items-start gap-x-4 px-6 py-4"
+      className="text-ui-fg-subtle grid grid-cols-2 items-center gap-x-4 px-6 py-4"
     >
       <div className="flex items-start gap-x-4">
         <Thumbnail src={item.thumbnail} />
@@ -107,7 +107,7 @@ const Item = ({
         </div>
         <div className="flex items-center gap-x-2">
           <div className="w-fit min-w-[27px]">
-            <Text>
+            <Text size="small">
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
@@ -123,7 +123,7 @@ const Item = ({
           </div>
         </div>
         <div className="flex items-center justify-end">
-          <Text size="small">
+          <Text size="small" className="pt-[1px]">
             {getLocaleAmount(item.subtotal || 0, currencyCode)}
           </Text>
         </div>
@@ -193,13 +193,8 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
-        label={t("fields.subtotal")}
-        secondaryValue={t("general.items", { count: order.items.length })}
-        value={getLocaleAmount(order.subtotal, order.currency_code)}
-      />
-      <Cost
         label={t("fields.discount")}
-        // TODO: ORDER<>DISCOUNTS link
+        // TODO: DISCOUNTS -> moved to line items now
         // secondaryValue={
         //   order.discounts.length > 0
         //     ? order.discounts.map((d) => d.code).join(", ")
@@ -213,21 +208,8 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
       />
       <Cost
         label={t("fields.shipping")}
-        // TODO: ORDER<>SHIPPING link
-        // secondaryValue={order.shipping_methods
-        //   .map((sm) => sm.shipping_option.name)
-        //   .join(", ")}
+        secondaryValue={order.shipping_methods.map((sm) => sm.name).join(", ")}
         value={getLocaleAmount(order.shipping_total, order.currency_code)}
-      />
-      <Cost
-        label={t("fields.tax")}
-        // TODO: TAX_RATE is missing on order
-        secondaryValue={`${order.tax_rate || 0}%`}
-        value={
-          order.tax_total
-            ? getLocaleAmount(order.tax_total, order.currency_code)
-            : "-"
-        }
       />
     </div>
   )
@@ -237,13 +219,23 @@ const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="text-ui-fg-base flex items-center justify-between px-6 py-4">
-      <Text size="small" leading="compact" weight="plus">
-        {t("fields.total")}
-      </Text>
-      <Text size="small" leading="compact" weight="plus">
-        {getStylizedAmount(order.total, order.currency_code)}
-      </Text>
+    <div className=" flex flex-col gap-y-2 px-6 py-4">
+      <div className="text-ui-fg-base flex items-center justify-between">
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {t("fields.total")}
+        </Text>
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {getStylizedAmount(order.total, order.currency_code)}
+        </Text>
+      </div>
+      <div className="text-ui-fg-base flex items-center justify-between">
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {t("fields.paidTotal")}
+        </Text>
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {/*TODO*/}-
+        </Text>
+      </div>
     </div>
   )
 }

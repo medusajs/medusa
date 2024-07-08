@@ -1,11 +1,5 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
-import {
-  DAL,
-  InferEntityType,
-  LoaderOptions,
-  ModuleProvider,
-  ModulesSdkTypes,
-} from "@medusajs/types"
+import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
@@ -20,21 +14,19 @@ import {
 import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    container.register({
-      [NotificationProviderRegistrationPrefix + name]: asFunction(
-        (cradle) => new klass(cradle, config),
-        {
-          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-        }
-      ),
-    })
-
-    container.registerAdd(
-      NotificationIdentifiersRegistrationName,
-      asValue(name)
-    )
+  container.register({
+    [NotificationProviderRegistrationPrefix + pluginOptions.id]: asFunction(
+      (cradle) => new klass(cradle, pluginOptions.options ?? {}),
+      {
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+      }
+    ),
   })
+
+  container.registerAdd(
+    NotificationIdentifiersRegistrationName,
+    asValue(pluginOptions.id)
+  )
 }
 
 export default async ({
@@ -74,20 +66,17 @@ async function syncDatabaseProviders({
 
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console
   const normalizedProviders = providers.map((provider) => {
-    const [name, config] = Object.entries(
-      provider.options?.config as any
-    )?.[0] as any
-    if (!name) {
+    if (!provider.id) {
       throw new Error(
         "An entry in the provider config is required to initialize notification providers"
       )
     }
 
-    const id = name
+    const config = provider.options as { channels: string[] }
     return {
-      id,
-      handle: name,
-      name: config?.name ?? name,
+      id: provider.id,
+      handle: provider.id,
+      name: provider.id,
       is_enabled: true,
       channels: config?.channels ?? [],
     }
@@ -114,7 +103,7 @@ async function syncDatabaseProviders({
       promises.push(
         providerService.update(
           providersToDisable.map((p) => ({
-            entity: p,
+            id: p.id,
             update: { is_enabled: false },
           }))
         )

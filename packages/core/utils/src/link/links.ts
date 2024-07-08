@@ -86,6 +86,18 @@ export const LINKS = {
     Modules.PAYMENT,
     "payment_collection_id"
   ),
+  OrderClaimPaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "claim_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
+  OrderExchangePaymentCollection: composeLinkName(
+    Modules.ORDER,
+    "exchange_id",
+    Modules.PAYMENT,
+    "payment_collection_id"
+  ),
   OrderFulfillment: composeLinkName(
     Modules.ORDER,
     "order_id",

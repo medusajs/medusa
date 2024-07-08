@@ -319,8 +319,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
@@ -353,8 +355,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
@@ -387,8 +391,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
@@ -432,8 +438,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
@@ -466,8 +474,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
@@ -500,8 +510,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 250,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 250,
               currency_code: "PLN",
               calculated_price: {
@@ -539,8 +551,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
@@ -579,8 +593,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 100,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 100,
               currency_code: "EUR",
               calculated_price: {
@@ -619,8 +635,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
@@ -659,8 +677,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 1000,
               currency_code: "PLN",
               calculated_price: {
@@ -708,8 +728,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
               is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
               original_amount: 300,
               currency_code: "PLN",
               calculated_price: {
@@ -750,8 +772,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -799,8 +823,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
-                calculated_amount: 116,
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -840,8 +866,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -878,8 +906,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 1000,
                 currency_code: "PLN",
                 calculated_price: {
@@ -919,8 +949,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: true,
+                is_original_price_tax_inclusive: false,
                 original_amount: 232,
                 currency_code: "PLN",
                 calculated_price: {
@@ -959,8 +991,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 300,
                 currency_code: "PLN",
                 calculated_price: {
@@ -999,8 +1033,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 300,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1052,8 +1088,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1106,8 +1144,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1159,8 +1199,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1181,7 +1223,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           })
 
-          it("should return price list prices for price list with customer groupst", async () => {
+          it("should return price list prices for price list with customer groups", async () => {
             const [{ id }] = await createPriceLists(
               service,
               {},
@@ -1214,8 +1256,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-EUR",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 200,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: null,
                 currency_code: "EUR",
                 calculated_price: {
@@ -1265,8 +1309,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 111,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1316,8 +1362,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 400,
                 currency_code: "PLN",
                 calculated_price: {
@@ -1335,6 +1383,106 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                   max_quantity: 5,
                 },
               },
+            ])
+          })
+        })
+
+        describe("Tax inclusivity", () => {
+          it("should return the currency tax inclusivity for the selected price when it is not region-based", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 1000,
+                is_original_price_tax_inclusive: true,
+                original_amount: 1000,
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
+          it("should return the region tax inclusivity for the selected price when it is region-based", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN", region_id: "PL" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 300,
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
+          it("should return the appropriate tax inclusive setting for each calculated and original price", async () => {
+            await createPriceLists(service, {}, {})
+            await (service as any).createPricePreferences([
+              {
+                attribute: "currency_code",
+                value: "PLN",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "PLN",
+                  region_id: "PL",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: false,
+                calculated_amount: 232,
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                currency_code: "PLN",
+              }),
             ])
           })
         })

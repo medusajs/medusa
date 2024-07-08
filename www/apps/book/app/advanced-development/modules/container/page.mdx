@@ -42,12 +42,11 @@ export default class HelloModuleService {
 
   // ...
 }
-
 ```
 
 ### Loader
 
-A loader function in a module accepts as a parameter an object having the property `container`. Its value is the module's container used to resolve resources.
+A loader function accepts as a parameter an object having the property `container`. Its value is the module's container used to resolve resources.
 
 For example:
 
@@ -64,5 +63,4 @@ export default function helloWorldLoader({
 
   logger.info("[helloWorldLoader]: Hello, World!")
 }
-
 ```

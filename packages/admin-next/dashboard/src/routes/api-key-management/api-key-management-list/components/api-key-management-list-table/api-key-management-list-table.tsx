@@ -1,4 +1,4 @@
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -52,11 +52,18 @@ export const ApiKeyManagementListTable = ({
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">
-          {keyType === "publishable"
-            ? t(`apiKeyManagement.domain.publishable`)
-            : t("apiKeyManagement.domain.secret")}
-        </Heading>
+        <div>
+          <Heading level="h2">
+            {keyType === "publishable"
+              ? t(`apiKeyManagement.domain.publishable`)
+              : t("apiKeyManagement.domain.secret")}
+          </Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {keyType === "publishable"
+              ? t(`apiKeyManagement.subtitle.publishable`)
+              : t("apiKeyManagement.subtitle.secret")}
+          </Text>
+        </div>
         <Link to="create">
           <Button variant="secondary" size="small">
             {t("actions.create")}

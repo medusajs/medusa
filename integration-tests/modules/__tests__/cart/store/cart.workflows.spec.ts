@@ -13,7 +13,6 @@ import {
   updateLineItemsStepId,
   updatePaymentCollectionStepId,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -28,6 +27,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
@@ -1500,6 +1500,21 @@ medusaIntegrationTestRunner({
             },
           })
 
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+          })
+
+          // should remove the previous shipping method
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+          })
+
           cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["shipping_methods"],
           })
@@ -1508,12 +1523,12 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
-              shipping_methods: expect.arrayContaining([
+              shipping_methods: [
                 expect.objectContaining({
                   amount: 3000,
                   name: "Test shipping option",
                 }),
-              ]),
+              ],
             })
           )
         })

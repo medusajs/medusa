@@ -1,6 +1,6 @@
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 

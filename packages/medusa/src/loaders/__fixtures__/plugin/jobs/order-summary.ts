@@ -5,7 +5,7 @@ export default async function handler(container: MedusaContainer) {
 }
 
 export const config = {
-  name: "summarize-orders-job",
+  name: "summarize-orders",
   schedule: "* * * * * *",
   numberOfExecutions: 2,
 }

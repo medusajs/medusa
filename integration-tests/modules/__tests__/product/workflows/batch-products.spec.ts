@@ -4,8 +4,8 @@ import {
   batchProductVariantsWorkflow,
   batchProductVariantsWorkflowId,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)

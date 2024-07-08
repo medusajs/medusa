@@ -918,8 +918,10 @@ medusaIntegrationTestRunner({
                 calculated_price: {
                   id: expect.any(String),
                   is_calculated_price_price_list: false,
+                  is_calculated_price_tax_inclusive: false,
                   calculated_amount: 3000,
                   is_original_price_price_list: false,
+                  is_original_price_tax_inclusive: false,
                   original_amount: 3000,
                   currency_code: "usd",
                   calculated_price: {
@@ -1228,8 +1230,10 @@ medusaIntegrationTestRunner({
               calculated_price: {
                 id: expect.any(String),
                 is_calculated_price_price_list: false,
+                is_calculated_price_tax_inclusive: false,
                 calculated_amount: 3000,
                 is_original_price_price_list: false,
+                is_original_price_tax_inclusive: false,
                 original_amount: 3000,
                 currency_code: "usd",
                 calculated_price: {
