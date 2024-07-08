@@ -142,6 +142,7 @@ async function processAdditionalItems(
         reference_id: item.id,
         exchange_id: exchangeReference.id,
         quantity: addedItem.quantity,
+        unit_price: item.unit_price,
         metadata: addedItem.metadata,
       },
     })
