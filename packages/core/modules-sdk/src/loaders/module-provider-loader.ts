@@ -43,7 +43,7 @@ export async function loadModuleProvider(
     loadedProvider = provider.resolve
 
     if (isString(provider.resolve)) {
-      const normalizedPath = normalizeImportPathWithSource(moduleName as string)
+      const normalizedPath = normalizeImportPathWithSource(provider.resolve)
       loadedProvider = await import(normalizedPath)
     }
   } catch (error) {
