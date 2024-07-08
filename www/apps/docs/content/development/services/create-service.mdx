@@ -642,8 +642,8 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) documen
           const authorRepo = manager.withRepository(
             this.authorRepository_
           )
-          const post = authorRepo.create(data)
-          const result = await authorRepo.save(post)
+          const author = authorRepo.create(data)
+          const result = await authorRepo.save(author)
 
           return result
         })
@@ -657,11 +657,11 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) documen
           const authorRepo = manager.withRepository(
             this.authorRepository_
           )
-          const post = await this.retrieve(id)
+          const author = await this.retrieve(id)
           
-          Object.assign(post, data)
+          Object.assign(author, data)
 
-          return await authorRepo.save(post)
+          return await authorRepo.save(author)
         })
       }
 
@@ -670,9 +670,9 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) documen
           const authorRepo = manager.withRepository(
             this.authorRepository_
           )
-          const post = await this.retrieve(id)
+          const author = await this.retrieve(id)
           
-          await authorRepo.remove([post])
+          await authorRepo.remove([author])
         })
       }
     }
