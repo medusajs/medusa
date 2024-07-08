@@ -1,19 +1,22 @@
 import { ConfigModule } from "@medusajs/types"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
-import { Express } from "express"
+import express, { Express } from "express"
 import session from "express-session"
 import Redis from "ioredis"
 import morgan from "morgan"
+import path from "path"
 
 type Options = {
   app: Express
   configModule: ConfigModule
+  rootDirectory: string
 }
 
 export default async ({
   app,
   configModule,
+  rootDirectory,
 }: Options): Promise<{
   app: Express
   shutdown: () => Promise<void>
@@ -66,6 +69,9 @@ export default async ({
   )
   app.use(cookieParser())
   app.use(session(sessionOpts))
+
+  // Currently we don't allow configuration of static files, but this can be revisited as needed.
+  app.use("/static", express.static(path.join(rootDirectory, "static")))
 
   app.get("/health", (req, res) => {
     res.status(200).send("OK")

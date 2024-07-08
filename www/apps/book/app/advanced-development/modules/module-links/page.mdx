@@ -95,16 +95,16 @@ import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   {
-    model: HelloModule.linkable.myCustom,
+    linkable: HelloModule.linkable.myCustom,
     isList: true
   },
   ProductModule.linkable.product
 )
 ```
 
-In this case, you pass an object of configuration as a parameter rather than the linked model. The object accepts the following properties:
+In this case, you pass an object of configuration as a parameter instead. The object accepts the following properties:
 
-- `model`: The data model to link.
+- `linkable`: The data model's link configuration.
 - `isList`: Whether multiple records can be linked to one record of the other data model.
 
 In this example, a record of `product` can be linked to more than one record of `myCustom`.
