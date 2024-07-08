@@ -25,7 +25,7 @@ import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
 
-type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
+type OptionalPaymentCollectionProps = "status" | DAL.ModelDateColumns
 
 @Entity({ tableName: "payment_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

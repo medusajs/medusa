@@ -20,7 +20,7 @@ import Exchange from "./exchange"
 import Order from "./order"
 import Return from "./return"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const ReferenceIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_transaction",

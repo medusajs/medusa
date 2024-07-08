@@ -16,7 +16,7 @@ import {
 import Exchange from "./exchange"
 import LineItem from "./line-item"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const ExchangeIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_exchange_item",
