@@ -900,11 +900,15 @@
       }
     },
     "sidebar": {
-      "shippingConfiguration": "Shipping configuration",
-      "shippingProfiles": "Shipping profiles",
-      "shippingProfilesDesc": "Shipping rules for different types of products",
-      "shippingOptionTypes": "Shipping Option Types",
-      "shippingOptionTypesDesc": "Group options based on characteristic"
+      "header": "Shipping Configuration",
+      "shippingProfiles": {
+        "label": "Shipping Profiles",
+        "description": "Group products by shipping requirements"
+      },
+      "shippingOptionTypes": {
+        "label": "Shipping Option Types",
+        "description": "Group options based on characteristic"
+      }
     },
     "salesChannels": {
       "header": "Sales Channels",
