@@ -30,7 +30,7 @@ import ShippingOptionRule from "./shipping-option-rule"
 import ShippingOptionType from "./shipping-option-type"
 import ShippingProfile from "./shipping-profile"
 
-type ShippingOptionOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingOptionOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_option",

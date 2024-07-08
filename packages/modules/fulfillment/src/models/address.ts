@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
+type OptionalAddressProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_address",

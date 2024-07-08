@@ -26,7 +26,7 @@ type OptionalFields =
   | "description"
   | "starts_at"
   | "ends_at"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const tableName = "promotion_campaign"
 const CampaignUniqueCampaignIdentifier = createPsqlIndexStatementHelper({
