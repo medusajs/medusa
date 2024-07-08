@@ -720,7 +720,9 @@
       "locationDescription": "Choose which location you want to allocate items from.",
       "itemsToAllocate": "Items to allocate",
       "itemsToAllocateDesc": "Select the number of items you wish to allocate",
-      "search": "Search items"
+      "search": "Search items",
+      "consistsOf": "Consists of {{num}}x inventory items",
+      "requires": "Requires {{num}} per variant"
     },
     "shipment": {
       "title": "Mark fulfillment shipped",
