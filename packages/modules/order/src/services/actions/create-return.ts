@@ -138,15 +138,15 @@ export async function createReturn(
     { relations: ["items"] },
     sharedContext
   )
-
+  console.log("order -- ", order)
   const em = sharedContext!.transactionManager as any
   const returnRef = createReturnReference(em, data, order)
   const actions: CreateOrderChangeActionDTO[] = []
-
-  returnRef.items = createReturnItems(em, data, returnRef, actions)
-
+  console.log("returnRef -- ", returnRef)
+  returnRef.items = await createReturnItems(em, data, returnRef, actions)
+  console.log("1 -- ", returnRef)
   await processShippingMethod(this, data, returnRef, actions, sharedContext)
-
+  console.log("2 -- ", returnRef)
   const change = await createOrderChange(
     this,
     data,
@@ -154,7 +154,7 @@ export async function createReturn(
     actions,
     sharedContext
   )
-
+  console.log("change -- ", change)
   await promiseAll([
     this.createReturns([returnRef], sharedContext),
     this.confirmOrderChange(change[0].id, sharedContext),
