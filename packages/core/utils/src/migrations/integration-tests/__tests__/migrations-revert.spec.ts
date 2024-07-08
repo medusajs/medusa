@@ -137,7 +137,7 @@ describe("Revert migrations", () => {
     class CustomTSMigrationGenerator extends TSMigrationGenerator {
       createStatement(sql: string, padLeft: number): string {
         let output = super.createStatement(sql, padLeft)
-        return output.replace("drop table if exists", "drop foo")
+        return output.replace("drop table", "drop foo")
       }
     }
 
