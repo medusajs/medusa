@@ -8,17 +8,19 @@ interface BaseToastProps {
   position?: ToasterPosition
   duration?: number
   dismissable?: boolean
+  icon?: React.ReactNode
 }
 
 interface ToastProps extends BaseToastProps {
-  description?: string
+  description?: React.ReactNode
   action?: ToastAction
 }
 
-function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
+function create(variant: ToastVariant, title: React.ReactNode, props: ToastProps = {}) {
   const external: ExternalToast = {
     position: props.position,
     duration: props.duration,
+    dismissible: props.dismissable,
   }
 
   if (props.id) {
@@ -34,6 +36,7 @@ function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
         dismissable={props.dismissable}
         variant={variant}
         action={props.action}
+        icon={props.icon}
       />
     )
   }, external)
@@ -52,6 +55,12 @@ function message(
   return create("message", title, props)
 }
 
+function custom() {
+  return create("message", "Custom",)
+}
+
+interface VariantToastProps extends Omit<ToastProps, "icon"> {}
+
 function info(
   /**
    * The title of the toast.
@@ -59,7 +68,7 @@ function info(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("info", title, props)
 }
@@ -71,7 +80,7 @@ function error(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("error", title, props)
 }
@@ -83,7 +92,7 @@ function success(
   /**
    * The props of the toast.
    */
-  props: ToastProps = { dismissable: true }
+  props: VariantToastProps = { }
 ) {
   return create("success", title, props)
 }
@@ -95,7 +104,7 @@ function warning(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("warning", title, props)
 }
@@ -107,7 +116,7 @@ function loading(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: VariantToastProps = {}
 ) {
   return create("loading", title, { ...props, dismissable: false })
 }
@@ -119,7 +128,7 @@ type PromiseStateProps =
       description?: string
     }
 
-interface PromiseToastProps extends BaseToastProps {
+interface PromiseToastProps extends Omit<BaseToastProps, "icon"> {
   loading: PromiseStateProps
   success: PromiseStateProps
   error: PromiseStateProps

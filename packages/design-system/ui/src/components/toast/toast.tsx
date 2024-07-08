@@ -16,9 +16,10 @@ import { IconButton } from "../icon-button"
 interface ToastComponentProps {
   id: string | number
   variant?: ToastVariant
-  title: string
-  description?: string
+  title: React.ReactNode
+  description?: React.ReactNode
   action?: ToastAction
+  icon?: React.ReactNode
   dismissable?: boolean
 }
 
@@ -47,6 +48,13 @@ export const Toast = ({
    */
   title,
   /**
+   * @ignore
+   *
+   * @privateRemarks
+   * The `toast` utility functions accept this as a parameter.
+   */
+  icon: _icon,
+  /**
    * The toast's text.
    */
   description,
@@ -55,40 +63,44 @@ export const Toast = ({
    */
   action,
   /**
-   * Whether to show the dismiss button.
-   * 
-   * @default true
+   * @ignore
+   *
+   * @privateRemarks
+   * The `toast` utility functions accept this as a parameter.
    */
   dismissable = true,
 }: ToastComponentProps) => {
-  let icon = undefined
+  let icon = _icon
 
-  switch (variant) {
-    case "success":
-      icon = <CheckCircleSolid className="text-ui-tag-green-icon" />
-      break
-    case "warning":
-      icon = <ExclamationCircleSolid className="text-ui-tag-orange-icon" />
-      break
-    case "error":
-      icon = <XCircleSolid className="text-ui-tag-red-icon" />
-      break
-    case "loading":
-      icon = <Spinner className="text-ui-tag-blue-icon animate-spin" />
-      break
-    case "info":
-      icon = <InformationCircleSolid className="text-ui-fg-base" />
-      break
-    default:
-      break
+  if (!_icon) {
+    switch (variant) {
+      case "success":
+        icon = <CheckCircleSolid className="text-ui-tag-green-icon" />
+        break
+      case "warning":
+        icon = <ExclamationCircleSolid className="text-ui-tag-orange-icon" />
+        break
+      case "error":
+        icon = <XCircleSolid className="text-ui-tag-red-icon" />
+        break
+      case "loading":
+        icon = <Spinner className="text-ui-tag-blue-icon animate-spin" />
+        break
+      case "info":
+        icon = <InformationCircleSolid className="text-ui-fg-base" />
+        break
+      default:
+        break
+    }
   }
 
   return (
-    <div className="shadow-elevation-flyout bg-ui-bg-base flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3 bg-red-500">
+    <div className="shadow-elevation-flyout bg-ui-bg-component flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3">
       <div
-        className={clx("grid flex-1 items-start gap-2", {
+        className={clx("grid flex-1 items-center gap-x-2", {
           "grid-cols-[20px_1fr]": !!icon,
           "grid-cols-1": !icon,
+          "items-start": !!description,
         })}
       >
         {!!icon && (
@@ -126,18 +138,16 @@ export const Toast = ({
           )}
         </div>
       </div>
-      {!!dismissable && 
-        <div>
-          <IconButton
-            size="2xsmall"
-            variant="transparent"
-            type="button"
-            onClick={() => toast.dismiss(id)}
-          >
-            <XMark />
-          </IconButton>
-        </div>
-      }
+      {!!dismissable && (
+        <IconButton
+          size="2xsmall"
+          variant="transparent"
+          type="button"
+          onClick={() => toast.dismiss(id)}
+        >
+          <XMark />
+        </IconButton>
+      )}
     </div>
   )
 }
