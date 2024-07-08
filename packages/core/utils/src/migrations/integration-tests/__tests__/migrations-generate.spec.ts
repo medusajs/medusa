@@ -13,9 +13,9 @@ const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? " "
 process.env.DB_PASSWORD = DB_PASSWORD
 
-const dbName = "my-test-service"
-const moduleName = "myTestService"
-const fs = new FileSystem(join(__dirname, "./migrations"))
+const dbName = "my-test-service-generate"
+const moduleName = "myTestServiceGenerate"
+const fs = new FileSystem(join(__dirname, "./migrations/generate"))
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -46,7 +46,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User],
-      databaseName: dbName,
+      dbName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -82,7 +82,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User, Car],
-      databaseName: dbName,
+      dbName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -105,7 +105,7 @@ describe("Generate migrations", () => {
     function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
         entities,
-        databaseName: dbName,
+        dbName: dbName,
         migrations: {
           path: fs.basePath,
         },
