@@ -221,6 +221,14 @@ const Fulfillment = ({
     }
   }
 
+  /**
+   * TEMP HACK to filter out Fulfillments that were created in a workflow as a part of RMA flow (ex. during Return creation)
+   * Fulfillment that were created via Admin will always have at least one label.
+   */
+  if (!fulfillment.labels.length) {
+    return null
+  }
+
   if (isError) {
     throw error
   }
