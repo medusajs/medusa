@@ -23,7 +23,7 @@ import Claim from "./claim"
 import ClaimItemImage from "./claim-item-image"
 import LineItem from "./line-item"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const ClaimIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim_item",

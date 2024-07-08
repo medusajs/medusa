@@ -27,7 +27,7 @@ import Transaction from "./transaction"
 type OptionalOrderProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.EntityDateColumns
+  | DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",

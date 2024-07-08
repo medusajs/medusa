@@ -34,7 +34,7 @@ const ParentIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-type OptionalOrderProps = "parent_return_reason" | DAL.EntityDateColumns
+type OptionalOrderProps = "parent_return_reason" | DAL.ModelDateColumns
 
 @Entity({ tableName: "return_reason" })
 export default class ReturnReason {

@@ -33,7 +33,6 @@ const slugify = slugifyType.default
 export type CreateOptions = {
   repoUrl?: string
   seed?: boolean
-  boilerplate?: boolean
   skipDb?: boolean
   dbUrl?: string
   browser?: boolean
@@ -46,7 +45,6 @@ export type CreateOptions = {
 export default async ({
   repoUrl = "",
   seed,
-  boilerplate,
   skipDb,
   dbUrl,
   browser,
@@ -108,7 +106,6 @@ export default async ({
   track("CMA_OPTIONS", {
     repoUrl,
     seed,
-    boilerplate,
     skipDb,
     browser,
     migrations,
@@ -176,7 +173,6 @@ export default async ({
       directory: projectPath,
       dbConnectionString,
       seed,
-      boilerplate,
       spinner,
       processManager,
       abortController,

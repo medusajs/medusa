@@ -27,7 +27,7 @@ import Exchange from "./exchange"
 import Order from "./order"
 import OrderShippingMethod from "./order-shipping-method"
 
-type OptionalReturnProps = DAL.EntityDateColumns
+type OptionalReturnProps = DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "return",

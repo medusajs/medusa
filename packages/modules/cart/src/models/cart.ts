@@ -25,7 +25,7 @@ import ShippingMethod from "./shipping-method"
 type OptionalCartProps =
   | "shipping_address"
   | "billing_address"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const RegionIdIndex = createPsqlIndexStatementHelper({
   name: "IDX_cart_region_id",

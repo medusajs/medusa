@@ -29,7 +29,7 @@ type OptionalFields =
   | "description"
   | "limit"
   | "used"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 @Entity({ tableName: "promotion_campaign_budget" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

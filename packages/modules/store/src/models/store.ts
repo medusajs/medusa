@@ -21,7 +21,7 @@ import {
 } from "@mikro-orm/core"
 import StoreCurrency from "./currency"
 
-type StoreOptionalProps = DAL.SoftDeletableEntityDateColumns
+type StoreOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const StoreDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "store",
