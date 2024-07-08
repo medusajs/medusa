@@ -9,13 +9,6 @@ jest.setTimeout(50000)
 medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
     describe("defineLink", () => {
-      let appContainer
-
-      beforeAll(async () => {
-        appContainer = getContainer()
-        remoteQuery = appContainer.resolve("remoteQuery")
-      })
-
       it("should generate a proper link definition", async () => {
         const currencyLinks = CurrencyModule.linkable
         const regionLinks = RegionModule.linkable
