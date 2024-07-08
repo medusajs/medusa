@@ -13,7 +13,6 @@ import {
 import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
 import { CurrencyInfo } from "../../../../../lib/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
-import { useUpsertPricePreference } from "../../../../../hooks/api/price-preferences.tsx"
 
 type EditRegionFormProps = {
   region: HttpTypes.AdminRegion
@@ -55,10 +54,6 @@ export const EditRegionForm = ({
 
   const { mutateAsync: updateRegion, isPending: isPendingRegion } =
     useUpdateRegion(region.id)
-  const {
-    mutateAsync: upsertPricePreferences,
-    isPending: isPendingPreference,
-  } = useUpsertPricePreference(pricePreferenceForRegion?.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await updateRegion(
@@ -66,21 +61,6 @@ export const EditRegionForm = ({
         name: values.name,
         currency_code: values.currency_code.toLowerCase(),
         payment_providers: values.payment_providers,
-      },
-      {
-        onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
-        },
-      }
-    )
-
-    await upsertPricePreferences(
-      {
-        attribute: "region_id",
-        value: region.id,
         is_tax_inclusive: values.is_tax_inclusive,
       },
       {
@@ -90,14 +70,15 @@ export const EditRegionForm = ({
             dismissLabel: t("actions.close"),
           })
         },
+        onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("regions.toast.edit"),
+            dismissLabel: t("actions.close"),
+          })
+          handleSuccess()
+        },
       }
     )
-
-    toast.success(t("general.success"), {
-      description: t("regions.toast.edit"),
-      dismissLabel: t("actions.close"),
-    })
-    handleSuccess()
   })
 
   return (
@@ -241,11 +222,7 @@ export const EditRegionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button
-              size="small"
-              type="submit"
-              isLoading={isPendingRegion || isPendingPreference}
-            >
+            <Button size="small" type="submit" isLoading={isPendingRegion}>
               {t("actions.save")}
             </Button>
           </div>

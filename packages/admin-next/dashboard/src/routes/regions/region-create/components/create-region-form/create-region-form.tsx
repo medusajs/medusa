@@ -35,7 +35,6 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useUpsertPricePreference } from "../../../../../hooks/api/price-preferences"
 
 type CreateRegionFormProps = {
   currencies: CurrencyInfo[]
@@ -84,34 +83,15 @@ export const CreateRegionForm = ({
 
   const { mutateAsync: createRegion, isPending: isPendingRegion } =
     useCreateRegion()
-  const {
-    mutateAsync: upsertPricePreferences,
-    isPending: isPendingPreference,
-  } = useUpsertPricePreference()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    const regionRes = await createRegion(
+    await createRegion(
       {
         name: values.name,
         countries: values.countries.map((c) => c.code),
         currency_code: values.currency_code,
         payment_providers: values.payment_providers,
         automatic_taxes: values.automatic_taxes,
-      },
-      {
-        onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
-        },
-      }
-    )
-
-    await upsertPricePreferences(
-      {
-        attribute: "region_id",
-        value: regionRes.region.id,
         is_tax_inclusive: values.is_tax_inclusive,
       },
       {
@@ -121,15 +101,16 @@ export const CreateRegionForm = ({
             dismissLabel: t("actions.close"),
           })
         },
+        onSuccess: ({ region }) => {
+          toast.success(t("general.success"), {
+            description: t("regions.toast.create"),
+            dismissLabel: t("actions.close"),
+          })
+
+          handleSuccess(`../${region.id}`)
+        },
       }
     )
-
-    toast.success(t("general.success"), {
-      description: t("regions.toast.create"),
-      dismissLabel: t("actions.close"),
-    })
-
-    handleSuccess(`../${regionRes.region.id}`)
   })
 
   const { searchParams, raw } = useCountryTableQuery({
@@ -230,11 +211,7 @@ export const CreateRegionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button
-              size="small"
-              type="submit"
-              isLoading={isPendingRegion || isPendingPreference}
-            >
+            <Button size="small" type="submit" isLoading={isPendingRegion}>
               {t("actions.save")}
             </Button>
           </div>
