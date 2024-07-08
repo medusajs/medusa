@@ -2,6 +2,7 @@ import { join } from "path"
 import { MikroORM } from "@mikro-orm/postgresql"
 import { MetadataStorage } from "@mikro-orm/core"
 import { createDatabase, dropDatabase } from "pg-god"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
 import { model } from "../../../dml"
 import { FileSystem } from "../../../common"
@@ -15,6 +16,10 @@ const DB_PASSWORD = process.env.DB_PASSWORD ?? " "
 const dbName = "my-test-service-revert"
 const moduleName = "myTestServiceRevert"
 const fs = new FileSystem(join(__dirname, "./migrations/revert"))
+
+const migrationFileNameGenerator = (_: string, name?: string) => {
+  return `Migration${new Date().getTime()}${name ? `_${name}` : ""}`
+}
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -48,6 +53,7 @@ describe("Revert migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
+        fileName: migrationFileNameGenerator,
       },
       ...pgGodCredentials,
     })
@@ -71,92 +77,97 @@ describe("Revert migrations", () => {
     expect(usersTableExists).toEqual(false)
   })
 
-  // test("emit events during revert", async () => {
-  //   let events: {
-  //     event: keyof MigrationsEvents
-  //     payload: MigrationsEvents[keyof MigrationsEvents][number]
-  //   }[] = []
+  test("emit events during revert", async () => {
+    let events: {
+      event: keyof MigrationsEvents
+      payload: MigrationsEvents[keyof MigrationsEvents][number]
+    }[] = []
 
-  //   const User = model.define("User", {
-  //     id: model.id().primaryKey(),
-  //     email: model.text().unique(),
-  //     fullName: model.text().nullable(),
-  //   })
+    const User = model.define("User", {
+      id: model.id().primaryKey(),
+      email: model.text().unique(),
+      fullName: model.text().nullable(),
+    })
 
-  //   const config = defineMikroOrmCliConfig(moduleName, {
-  //     entities: [User],
-  //     dbName: dbName,
-  //     migrations: {
-  //       path: fs.basePath,
-  //     },
-  //     ...pgGodCredentials,
-  //   })
+    const config = defineMikroOrmCliConfig(moduleName, {
+      entities: [User],
+      dbName: dbName,
+      migrations: {
+        path: fs.basePath,
+        fileName: migrationFileNameGenerator,
+      },
+      ...pgGodCredentials,
+    })
 
-  //   const migrations = new Migrations(config)
+    const migrations = new Migrations(config)
 
-  //   migrations.on("reverting", (event) => {
-  //     events.push({ event: "reverting", payload: event })
-  //   })
-  //   migrations.on("reverted", (event) => {
-  //     events.push({ event: "reverted", payload: event })
-  //   })
+    migrations.on("reverting", (event) => {
+      events.push({ event: "reverting", payload: event })
+    })
+    migrations.on("reverted", (event) => {
+      events.push({ event: "reverted", payload: event })
+    })
 
-  //   await migrations.generate()
-  //   await migrations.run()
-  //   await migrations.revert()
+    await migrations.generate()
+    await migrations.run()
+    await migrations.revert()
 
-  //   expect(events).toHaveLength(2)
+    expect(events).toHaveLength(2)
 
-  //   expect(events[0].event).toEqual("reverting")
-  //   expect(events[0].payload).toEqual({
-  //     name: expect.stringMatching(/Migration\d+/),
-  //     path: expect.stringContaining(__dirname),
-  //     context: {},
-  //   })
+    expect(events[0].event).toEqual("reverting")
+    expect(events[0].payload).toEqual({
+      name: expect.stringMatching(/Migration\d+/),
+      path: expect.stringContaining(__dirname),
+      context: {},
+    })
 
-  //   expect(events[1].event).toEqual("reverted")
-  //   expect(events[1].payload).toEqual({
-  //     name: expect.stringMatching(/Migration\d+/),
-  //     path: expect.stringContaining(__dirname),
-  //     context: {},
-  //   })
-  // })
+    expect(events[1].event).toEqual("reverted")
+    expect(events[1].payload).toEqual({
+      name: expect.stringMatching(/Migration\d+/),
+      path: expect.stringContaining(__dirname),
+      context: {},
+    })
+  })
 
-  // test("throw error when migration fails during revert", async () => {
-  //   const User = model.define("User", {
-  //     id: model.id().primaryKey(),
-  //     email: model.text().unique(),
-  //     fullName: model.text().nullable(),
-  //   })
+  test("throw error when migration fails during revert", async () => {
+    /**
+     * Custom strategy to output invalid SQL statement inside the
+     * migration file
+     */
+    class CustomTSMigrationGenerator extends TSMigrationGenerator {
+      createStatement(sql: string, padLeft: number): string {
+        let output = super.createStatement(sql, padLeft)
+        return output.replace("drop table if exists", "drop foo")
+      }
+    }
 
-  //   const config = defineMikroOrmCliConfig(moduleName, {
-  //     entities: [User],
-  //     dbName: dbName,
-  //     migrations: {
-  //       path: fs.basePath,
-  //     },
-  //     ...pgGodCredentials,
-  //   })
+    const User = model.define("User", {
+      id: model.id().primaryKey(),
+      email: model.text().unique(),
+      fullName: model.text().nullable(),
+    })
 
-  //   const migrations = new Migrations(config)
-  //   const generatedFile = await migrations.generate()
+    const config = defineMikroOrmCliConfig(moduleName, {
+      entities: [User],
+      dbName: dbName,
+      migrations: {
+        path: fs.basePath,
+        generator: CustomTSMigrationGenerator,
+        fileName: migrationFileNameGenerator,
+      },
+      ...pgGodCredentials,
+    })
 
-  //   /**
-  //    * Corrupting file intentionally so that it will raise an error
-  //    * during revert
-  //    */
-  //   await fs.create(
-  //     generatedFile.fileName,
-  //     generatedFile.code.replace("drop table if exists", "drop foo")
-  //   )
+    const migrations = new Migrations(config)
+    await migrations.generate()
 
-  //   await migrations.run()
-  //   expect(migrations.revert()).rejects.toThrow("Migration")
+    await migrations.run()
+    expect(migrations.revert()).rejects.toThrow(/.*Migration.*/)
 
-  //   const orm = await MikroORM.init(config)
-  //   const usersTableExists = await orm.em.getKnex().schema.hasTable("user")
-  //   await orm.close()
+    const orm = await MikroORM.init(config)
+    const usersTableExists = await orm.em.getKnex().schema.hasTable("user")
+    await orm.close()
 
-  //   expect(usersTableExists).toEqual(true)
-  // })
+    expect(usersTableExists).toEqual(true)
+  })
 })

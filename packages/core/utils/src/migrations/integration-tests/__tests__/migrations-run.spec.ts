@@ -1,17 +1,16 @@
 import { join } from "path"
+import { MikroORM } from "@mikro-orm/postgresql"
 import { MetadataStorage } from "@mikro-orm/core"
 import { createDatabase, dropDatabase } from "pg-god"
-
-import { model } from "../../../dml"
-import { Migrations, MigrationsEvents } from "../../index"
-import { FileSystem } from "../../../common"
-import { defineMikroOrmCliConfig } from "../../../modules-sdk"
-import { MikroORM } from "@mikro-orm/postgresql"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
-let index = 0
-const fileName = (timestamp: string, name?: string) => {
-  return `Migration${new Date().getTime()}${name ? `_${name}` : ""}-${++index}`
+import { model } from "../../../dml"
+import { FileSystem } from "../../../common"
+import { Migrations, MigrationsEvents } from "../../index"
+import { defineMikroOrmCliConfig } from "../../../modules-sdk"
+
+const migrationFileNameGenerator = (_: string, name?: string) => {
+  return `Migration${new Date().getTime()}${name ? `_${name}` : ""}`
 }
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
@@ -55,7 +54,7 @@ describe("Run migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
-        fileName,
+        fileName: migrationFileNameGenerator,
       },
       ...pgGodCredentials,
     })
@@ -95,7 +94,7 @@ describe("Run migrations", () => {
       dbName: dbName,
       migrations: {
         path: fs.basePath,
-        fileName,
+        fileName: migrationFileNameGenerator,
       },
       ...pgGodCredentials,
     })
@@ -129,6 +128,10 @@ describe("Run migrations", () => {
   })
 
   test("throw error when migration fails during run", async () => {
+    /**
+     * Custom strategy to output invalid SQL statement inside the
+     * migration file
+     */
     class CustomTSMigrationGenerator extends TSMigrationGenerator {
       createStatement(sql: string, padLeft: number): string {
         let output = super.createStatement(sql, padLeft)
@@ -148,7 +151,7 @@ describe("Run migrations", () => {
       migrations: {
         path: fs.basePath,
         generator: CustomTSMigrationGenerator,
-        fileName,
+        fileName: migrationFileNameGenerator,
       },
       ...pgGodCredentials,
     })
