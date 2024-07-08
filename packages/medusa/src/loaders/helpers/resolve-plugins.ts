@@ -112,6 +112,7 @@ export function getResolvedPlugins(
     ]
       ? "src"
       : "dist"
+
     const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
     return [
       {

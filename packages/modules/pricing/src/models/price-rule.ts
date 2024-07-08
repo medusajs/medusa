@@ -17,7 +17,7 @@ import {
 } from "@mikro-orm/core"
 import Price from "./price"
 
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+type OptionalFields = DAL.SoftDeletableModelDateColumns
 
 const tableName = "price_rule"
 const PriceRuleDeletedAtIndex = createPsqlIndexStatementHelper({

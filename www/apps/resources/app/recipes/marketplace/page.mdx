@@ -86,7 +86,7 @@ Module Relationships is coming soon.
   ```ts title="src/modules/marketplace/models/store-product.ts"
   import { model } from "@medusajs/utils"
 
-  const StoreProduct = model.define("store_user", {
+  const StoreProduct = model.define("store_product", {
     id: model.id().primaryKey(),
     store_id: model.text(),
     product_id: model.text(),
@@ -104,7 +104,7 @@ Module Relationships is coming soon.
   ```ts title="src/modules/marketplace/models/store-order.ts"
   import { model } from "@medusajs/utils"
 
-  const StoreOrder = model.define("store_user", {
+  const StoreOrder = model.define("store_order", {
     id: model.id().primaryKey(),
     store_id: model.text(),
     order_id: model.text(),

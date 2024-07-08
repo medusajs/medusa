@@ -23,13 +23,13 @@ import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
 import {
   BaseMethods,
-  EntitiesConfigTemplate,
   ExtractKeysFromConfig,
   MedusaServiceReturnType,
   ModelConfigurationsToConfigTemplate,
-  TEntityEntries,
+  ModelEntries,
+  ModelsConfigTemplate,
 } from "./types/medusa-service"
-import { buildEntitiesNameToLinkableKeysMap } from "./joiner-config-builder"
+import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -47,7 +47,7 @@ const methods: BaseMethods[] = [...readMethods, ...writeMethods]
  */
 function buildMethodNamesFromModel(
   modelName: string,
-  model: TEntityEntries[keyof TEntityEntries]
+  model: ModelEntries[keyof ModelEntries]
 ): Record<string, string> {
   return methods.reduce((acc, method) => {
     let normalizedModelName: string = ""
@@ -79,11 +79,11 @@ export const MedusaServiceModelObjectsSymbol = Symbol.for(
 export const MedusaServiceSymbol = Symbol.for("MedusaServiceSymbol")
 
 /**
- * Accessible from the MedusaService, holds the entity name to linkable keys map
+ * Accessible from the MedusaService, holds the model name to linkable keys map
  * to be used for softDelete and restore methods
  */
-export const MedusaServiceEntityNameToLinkableKeysMapSymbol = Symbol.for(
-  "MedusaServiceEntityNameToLinkableKeysMapSymbol"
+export const MedusaServiceModelNameToLinkableKeysMapSymbol = Symbol.for(
+  "MedusaServiceModelNameToLinkableKeysMapSymbol"
 )
 
 /**
@@ -103,7 +103,7 @@ export function isMedusaService(
  *
  * // Here the DTO's and names will be inferred from the arguments
  *
- * const entities = {
+ * const models = {
  *   Currency,
  *   Price,
  *   PriceList,
@@ -114,21 +114,21 @@ export function isMedusaService(
  *   RuleType,
  * }
  *
- * class MyService extends ModulesSdkUtils.MedusaService(entities) {}
+ * class MyService extends ModulesSdkUtils.MedusaService(models) {}
  *
- * @param entities
+ * @param models
  */
 export function MedusaService<
-  const EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
-  const TEntities extends TEntityEntries<
-    ExtractKeysFromConfig<EntitiesConfig>
-  > = TEntityEntries<ExtractKeysFromConfig<EntitiesConfig>>
+  const ModelsConfig extends ModelsConfigTemplate = { __empty: any },
+  const TModels extends ModelEntries<
+    ExtractKeysFromConfig<ModelsConfig>
+  > = ModelEntries<ExtractKeysFromConfig<ModelsConfig>>
 >(
-  entities: TEntities
+  models: TModels
 ): MedusaServiceReturnType<
-  EntitiesConfig extends { __empty: any }
-    ? ModelConfigurationsToConfigTemplate<TEntities>
-    : EntitiesConfig
+  ModelsConfig extends { __empty: any }
+    ? ModelConfigurationsToConfigTemplate<TModels>
+    : ModelsConfig
 > {
   const buildAndAssignMethodImpl = function (
     klassPrototype: any,
@@ -168,11 +168,11 @@ export function MedusaService<
           config?: FindConfig<any>,
           sharedContext: Context = {}
         ): Promise<T> {
-          const entities = await this.__container__[
+          const models = await this.__container__[
             serviceRegistrationName
           ].retrieve(id, config, sharedContext)
 
-          return await this.baseRepository_.serialize<T>(entities)
+          return await this.baseRepository_.serialize<T>(models)
         }
 
         applyMethod(methodImplementation, 2)
@@ -186,8 +186,8 @@ export function MedusaService<
         ): Promise<T | T[]> {
           const serviceData = Array.isArray(data) ? data : [data]
           const service = this.__container__[serviceRegistrationName]
-          const entities = await service.create(serviceData, sharedContext)
-          const response = Array.isArray(data) ? entities : entities[0]
+          const models = await service.create(serviceData, sharedContext)
+          const response = Array.isArray(data) ? models : models[0]
 
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
@@ -203,8 +203,8 @@ export function MedusaService<
         ): Promise<T | T[]> {
           const serviceData = Array.isArray(data) ? data : [data]
           const service = this.__container__[serviceRegistrationName]
-          const entities = await service.update(serviceData, sharedContext)
-          const response = Array.isArray(data) ? entities : entities[0]
+          const models = await service.update(serviceData, sharedContext)
+          const response = Array.isArray(data) ? models : models[0]
 
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
@@ -220,9 +220,9 @@ export function MedusaService<
           sharedContext: Context = {}
         ): Promise<T[]> {
           const service = this.__container__[serviceRegistrationName]
-          const entities = await service.list(filters, config, sharedContext)
+          const models = await service.list(filters, config, sharedContext)
 
-          return await this.baseRepository_.serialize<T[]>(entities)
+          return await this.baseRepository_.serialize<T[]>(models)
         }
 
         applyMethod(methodImplementation, 2)
@@ -235,11 +235,11 @@ export function MedusaService<
           config: FindConfig<any> = {},
           sharedContext: Context = {}
         ): Promise<T[]> {
-          const [entities, count] = await this.__container__[
+          const [models, count] = await this.__container__[
             serviceRegistrationName
           ].listAndCount(filters, config, sharedContext)
 
-          return [await this.baseRepository_.serialize<T[]>(entities), count]
+          return [await this.baseRepository_.serialize<T[]>(models), count]
         }
 
         applyMethod(methodImplementation, 2)
@@ -283,16 +283,16 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [entities, cascadedEntitiesMap] = await this.__container__[
+          const [models, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].softDelete(primaryKeyValues_, sharedContext)
 
-          const softDeletedEntities = await this.baseRepository_.serialize<T[]>(
-            entities
+          const softDeletedModels = await this.baseRepository_.serialize<T[]>(
+            models
           )
 
           await this.eventBusModuleService_?.emit(
-            softDeletedEntities.map(({ id }) => ({
+            softDeletedModels.map(({ id }) => ({
               eventName: `${kebabCase(modelName)}.deleted`,
               metadata: { source: "", action: "", object: "" },
               data: { id },
@@ -301,15 +301,15 @@ export function MedusaService<
 
           // Map internal table/column names to their respective external linkable keys
           // eg: product.id = product_id, variant.id = variant_id
-          const mappedCascadedEntitiesMap = mapObjectTo(
-            cascadedEntitiesMap,
-            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
+          const mappedCascadedModelsMap = mapObjectTo(
+            cascadedModelsMap,
+            this[MedusaServiceModelNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
           )
 
-          return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+          return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
 
         applyMethod(methodImplementation, 2)
@@ -326,22 +326,22 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [_, cascadedEntitiesMap] = await this.__container__[
+          const [_, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].restore(primaryKeyValues_, sharedContext)
 
-          let mappedCascadedEntitiesMap
+          let mappedCascadedModelsMap
           // Map internal table/column names to their respective external linkable keys
           // eg: product.id = product_id, variant.id = variant_id
-          mappedCascadedEntitiesMap = mapObjectTo(
-            cascadedEntitiesMap,
-            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
+          mappedCascadedModelsMap = mapObjectTo(
+            cascadedModelsMap,
+            this[MedusaServiceModelNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
           )
 
-          return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+          return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
 
         applyMethod(methodImplementation, 2)
@@ -354,13 +354,13 @@ export function MedusaService<
     [MedusaServiceSymbol] = true
 
     static [MedusaServiceModelObjectsSymbol] =
-      entities as unknown as MedusaServiceReturnType<
-        EntitiesConfig extends { __empty: any }
-          ? ModelConfigurationsToConfigTemplate<TEntities>
-          : EntitiesConfig
+      models as unknown as MedusaServiceReturnType<
+        ModelsConfig extends { __empty: any }
+          ? ModelConfigurationsToConfigTemplate<TModels>
+          : ModelsConfig
       >["$modelObjects"];
 
-    [MedusaServiceEntityNameToLinkableKeysMapSymbol]: MapToConfig
+    [MedusaServiceModelNameToLinkableKeysMapSymbol]: MapToConfig
 
     readonly __container__: Record<any, any>
     readonly baseRepository_: RepositoryService
@@ -380,8 +380,8 @@ export function MedusaService<
         ? this.__container__.eventBusModuleService
         : undefined
 
-      this[MedusaServiceEntityNameToLinkableKeysMapSymbol] =
-        buildEntitiesNameToLinkableKeysMap(
+      this[MedusaServiceModelNameToLinkableKeysMapSymbol] =
+        buildModelsNameToLinkableKeysMap(
           this.__joinerConfig?.()?.linkableKeys ?? {}
         )
     }
@@ -404,18 +404,18 @@ export function MedusaService<
    * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
    */
 
-  const entitiesMethods: [
+  const modelsMethods: [
     string,
-    TEntities[keyof TEntities],
+    TModels[keyof TModels],
     Record<string, string>
-  ][] = Object.entries(entities as {}).map(([name, config]) => [
+  ][] = Object.entries(models as {}).map(([name, config]) => [
     name,
-    config as TEntities[keyof TEntities],
-    buildMethodNamesFromModel(name, config as TEntities[keyof TEntities]),
+    config as TModels[keyof TModels],
+    buildMethodNamesFromModel(name, config as TModels[keyof TModels]),
   ])
 
-  for (let [modelName, model, modelsMethods] of entitiesMethods) {
-    Object.entries(modelsMethods).forEach(([method, methodName]) => {
+  for (let [modelName, model, modelMethods] of modelsMethods) {
+    Object.entries(modelMethods).forEach(([method, methodName]) => {
       buildAndAssignMethodImpl(
         AbstractModuleService_.prototype,
         method,

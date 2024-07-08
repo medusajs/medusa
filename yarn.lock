@@ -15408,7 +15408,6 @@ __metadata:
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^8.8.0
     eslint-plugin-prettier: ^4.2.1
-    glob: ^7.1.6
     inquirer: ^9.2.2
     medusa-telemetry: ^0.0.17
     nanoid: ^4.0.2

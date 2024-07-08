@@ -89,7 +89,13 @@ export default async function ({ port, directory }) {
       this.watcher = chokidar.watch(["."], {
         ignoreInitial: true,
         cwd: process.cwd(),
-        ignored: [/(^|[\\/\\])\../, "node_modules", "dist", "src/admin/**/*"],
+        ignored: [
+          /(^|[\\/\\])\../,
+          "node_modules",
+          "dist",
+          "static",
+          "src/admin/**/*",
+        ],
       })
 
       this.watcher.on("add", (file) => {
