@@ -8,7 +8,8 @@ export function OrderAllocateItems() {
   const { id } = useParams()
 
   const { order, isLoading, isError, error } = useOrder(id!, {
-    fields: "currency_code,*items,*items.variant,*shipping_address",
+    fields:
+      "currency_code,*items,*items.variant,+items.variant.product.title,*items.variant.inventory,*items.variant.inventory.location_levels,*shipping_address",
   })
 
   if (isError) {

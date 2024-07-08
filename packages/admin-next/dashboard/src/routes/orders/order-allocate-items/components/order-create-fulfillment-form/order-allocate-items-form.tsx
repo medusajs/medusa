@@ -7,14 +7,14 @@ import { AdminOrder } from "@medusajs/types"
 import { Button, Heading, Input, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
-import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
+import { Form } from "../../../../../components/common/form"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
+import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { AllocateItemsSchema } from "./constants"
 
 type OrderCreateFulfillmentFormProps = {
@@ -27,8 +27,7 @@ export function OrderAllocateItemsForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
-    useCreateOrderFulfillment(order.id)
+  const { mutateAsync: allocateItems, isPending: isMutating } = {} // useCreateOrderFulfillment(order.id)
 
   const [itemsToAllocate, setItemsToAllocate] = useState(() =>
     order.items.filter(
@@ -37,11 +36,13 @@ export function OrderAllocateItemsForm({
     )
   )
 
+  // TODO - empty state UI
   const noItemsToAllocate = !itemsToAllocate.length
 
   const form = useForm<zod.infer<typeof AllocateItemsSchema>>({
     defaultValues: {
       location_id: "",
+      quantity: {},
     },
     resolver: zodResolver(AllocateItemsSchema),
   })
@@ -50,7 +51,7 @@ export function OrderAllocateItemsForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await createOrderFulfillment({
+      await allocateItems({
         location_id: data.location_id,
       })
 
@@ -145,18 +146,16 @@ export function OrderAllocateItemsForm({
                       </div>
                     </div>
 
-                    {/*<div className="flex flex-col gap-y-1">*/}
-                    {/*  {fulfillableItems.map((item) => (*/}
-                    {/*    <OrderAllocateItemsItem*/}
-                    {/*      key={item.id}*/}
-                    {/*      form={form}*/}
-                    {/*      item={item}*/}
-                    {/*      onItemRemove={onItemRemove}*/}
-                    {/*      locationId={selectedLocationId}*/}
-                    {/*      currencyCode={order.currency_code}*/}
-                    {/*    />*/}
-                    {/*  ))}*/}
-                    {/*</div>*/}
+                    <div className="flex flex-col gap-y-1">
+                      {itemsToAllocate.map((item) => (
+                        <OrderAllocateItemsItem
+                          key={item.id}
+                          form={form}
+                          item={item}
+                          locationId={selectedLocationId}
+                        />
+                      ))}
+                    </div>
                   </Form.Item>
                 </div>
               </div>

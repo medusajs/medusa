@@ -1896,7 +1896,9 @@
   },
   "labels": {
     "productVariant": "Product Variant",
-    "prices": "Prices"
+    "prices": "Prices",
+    "available": "Available",
+    "inStock": "In stock"
   },
   "fields": {
     "amount": "Amount",
@@ -1912,6 +1914,7 @@
     "inventoryItems": "Inventory items",
     "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
+    "qty": "Qty",
     "description": "Description",
     "email": "Email",
     "password": "Password",
