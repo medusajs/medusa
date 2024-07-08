@@ -1,6 +1,11 @@
 import { MedusaContainer, ModuleProvider } from "@medusajs/types"
-import { isString, lowerCaseFirst, promiseAll } from "@medusajs/utils"
-import { Lifetime, asFunction } from "awilix"
+import {
+  isString,
+  lowerCaseFirst,
+  normalizeImportPathWithSource,
+  promiseAll,
+} from "@medusajs/utils"
+import { asFunction, Lifetime } from "awilix"
 
 export async function moduleProviderLoader({
   container,
@@ -38,7 +43,8 @@ export async function loadModuleProvider(
     loadedProvider = provider.resolve
 
     if (isString(provider.resolve)) {
-      loadedProvider = await import(provider.resolve)
+      const normalizedPath = normalizeImportPathWithSource(moduleName as string)
+      loadedProvider = await import(normalizedPath)
     }
   } catch (error) {
     throw new Error(
