@@ -29,12 +29,12 @@ export const useShippingOptionPriceColumns = ({
         return columnHelper.column({
           id: `currency_prices.${currency}`,
           name: t("fields.priceTemplate", {
-            regionOrCountry: currency.toUpperCase(),
+            regionOrCurrency: currency.toUpperCase(),
           }),
           header: () => (
             <div className="flex w-full items-center justify-between gap-3">
               {t("fields.priceTemplate", {
-                regionOrCountry: currency.toUpperCase(),
+                regionOrCurrency: currency.toUpperCase(),
               })}
               <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
             </div>
@@ -58,12 +58,12 @@ export const useShippingOptionPriceColumns = ({
         return columnHelper.column({
           id: `region_prices.${region.id}`,
           name: t("fields.priceTemplate", {
-            regionOrCountry: region.name,
+            regionOrCurrency: region.name,
           }),
           header: () => (
             <div className="flex w-full items-center justify-between gap-3">
               {t("fields.priceTemplate", {
-                regionOrCountry: region.name,
+                regionOrCurrency: region.name,
               })}
               <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
             </div>

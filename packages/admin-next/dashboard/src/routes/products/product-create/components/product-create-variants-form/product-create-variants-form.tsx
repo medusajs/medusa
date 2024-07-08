@@ -184,7 +184,7 @@ const useColumns = ({
           header: () => (
             <div className="flex w-full items-center justify-between gap-3">
               {t("fields.priceTemplate", {
-                regionOrCountry: currency,
+                regionOrCurrency: currency,
               })}
               <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
             </div>
@@ -212,7 +212,7 @@ const useColumns = ({
           header: () => (
             <div className="flex w-full items-center justify-between gap-3">
               {t("fields.priceTemplate", {
-                regionOrCountry: region.name,
+                regionOrCurrency: region.name,
               })}
               <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
             </div>
