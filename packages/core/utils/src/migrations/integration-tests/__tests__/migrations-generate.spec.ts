@@ -11,7 +11,6 @@ import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? " "
-process.env.DB_PASSWORD = DB_PASSWORD
 
 const dbName = "my-test-service-generate"
 const moduleName = "myTestServiceGenerate"
