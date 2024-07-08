@@ -3,16 +3,14 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { DataGrid } from "../../../components/grid/data-grid"
-import { CurrencyCell } from "../../../components/grid/grid-cells/common/currency-cell"
 import { ReadonlyCell } from "../../../components/grid/grid-cells/common/readonly-cell"
-import { DataGridMeta } from "../../../components/grid/types"
 import { useCurrencies } from "../../../hooks/api/currencies"
 import { useStore } from "../../../hooks/api/store"
 import { ProductCreateSchema } from "../product-create/constants"
 import { useRegions } from "../../../hooks/api/regions.tsx"
-import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge.tsx"
 import { usePricePreferences } from "../../../hooks/api/price-preferences.tsx"
+import { getPriceColumns } from "../../../components/data-grid/data-grid-columns/price-columns.tsx"
+import { DataGridRoot } from "../../../components/data-grid/data-grid-root/data-grid-root.tsx"
 
 type VariantPricingFormProps = {
   form: UseFormReturn<ProductCreateSchema>
@@ -47,7 +45,7 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGrid
+      <DataGridRoot
         columns={columns}
         data={variants}
         isLoading={isStoreLoading || isCurrenciesLoading}
@@ -86,65 +84,17 @@ export const useVariantPriceGridColumns = ({
           )
         },
       }),
-      ...currencies.map((currency) => {
-        const preference = pricePreferences.find(
-          (p) => p.attribute === "currency_code" && p.value === currency.code
-        )
-
-        return columnHelper.display({
-          id: currency.code,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: currency.code.toUpperCase(),
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-          cell: ({ row, table }) => {
-            return (
-              <CurrencyCell
-                currency={currency}
-                meta={table.options.meta as DataGridMeta}
-                field={`variants.${row.index}.prices.${currency.code}`}
-              />
-            )
-          },
-        })
-      }),
-      ...regions.map((region) => {
-        const preference = pricePreferences.find(
-          (p) => p.attribute === "region_id" && p.value === region.id
-        )
-
-        return columnHelper.display({
-          id: region.id,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: region.name,
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-          cell: ({ row, table }) => {
-            const currency = currencies.find(
-              (c) => c.code === region.currency_code
-            )
-
-            if (!currency) {
-              return null
-            }
-
-            return (
-              <CurrencyCell
-                currency={currency}
-                meta={table.options.meta as DataGridMeta}
-                field={`variants.${row.index}.prices.${region.id}`}
-              />
-            )
-          },
-        })
+      ...getPriceColumns({
+        currencies: currencies.map((c) => c.code),
+        regions,
+        pricePreferences,
+        getFieldName: (context, value) => {
+          if (context.column.id.startsWith("currency_prices")) {
+            return `variants.${context.row.index}.prices.${value}`
+          }
+          return `variants.${context.row.index}.prices.${value}`
+        },
+        t,
       }),
     ]
   }, [t, currencies, regions, pricePreferences])

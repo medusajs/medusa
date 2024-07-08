@@ -8,11 +8,10 @@ import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root
 import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
-import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
 import { useRegions } from "../../../../../hooks/api/regions"
-import { IncludesTaxTooltip } from "../../../../../components/common/tax-badge/tax-badge"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
+import { getPriceColumns } from "../../../../../components/data-grid/data-grid-columns/price-columns"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -173,61 +172,17 @@ const useColumns = ({
         type: "boolean",
       }),
 
-      ...currencies.map((currency) => {
-        const preference = pricePreferences.find(
-          (p) => p.attribute === "currency_code" && p.value === currency
-        )
-
-        return columnHelper.column({
-          id: `price_${currency}`,
-          name: `Price ${currency.toUpperCase()}`,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: currency,
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-          cell: (context) => {
-            return (
-              <DataGridCurrencyCell
-                code={currency}
-                context={context}
-                field={`variants.${context.row.index}.prices.${currency}`}
-              />
-            )
-          },
-        })
-      }),
-
-      ...regions.map((region) => {
-        const preference = pricePreferences.find(
-          (p) => p.attribute === "region_id" && p.value === region.id
-        )
-
-        return columnHelper.column({
-          id: `price_${region.id}`,
-          name: `Price ${region.name}`,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: region.name,
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-
-          cell: (context) => {
-            return (
-              <DataGridCurrencyCell
-                code={region.currency_code}
-                context={context}
-                field={`variants.${context.row.index}.prices.${region.id}`}
-              />
-            )
-          },
-        })
+      ...getPriceColumns({
+        currencies,
+        regions,
+        pricePreferences,
+        getFieldName: (context, value) => {
+          if (context.column.id.startsWith("currency_prices")) {
+            return `variants.${context.row.index}.prices.${value}`
+          }
+          return `variants.${context.row.index}.prices.${value}`
+        },
+        t,
       }),
     ],
     [currencies, regions, options, pricePreferences, t]

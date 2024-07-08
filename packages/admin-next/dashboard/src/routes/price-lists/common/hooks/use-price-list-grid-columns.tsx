@@ -4,11 +4,10 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Thumbnail } from "../../../../components/common/thumbnail"
-import { DataGridCurrencyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridReadOnlyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { createDataGridHelper } from "../../../../components/data-grid/utils"
 import { isProductRow } from "../utils"
-import { IncludesTaxTooltip } from "../../../../components/common/tax-badge/tax-badge"
+import { getPriceColumns } from "../../../../components/data-grid/data-grid-columns/price-columns"
 
 const columnHelper = createDataGridHelper<
   HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
@@ -56,74 +55,22 @@ export const usePriceListGridColumns = ({
         },
         disableHiding: true,
       }),
-      ...currencies.map((currency) => {
-        const preference = pricePreferences.find(
-          (p) =>
-            p.attribute === "currency_code" &&
-            p.value === currency.currency_code
-        )
-
-        return columnHelper.column({
-          id: `currency-price-${currency.currency_code}`,
-          name: `Price ${currency.currency_code.toUpperCase()}`,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: currency.currency_code.toUpperCase(),
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-
-          cell: (context) => {
-            const entity = context.row.original
-
-            if (isProductRow(entity)) {
-              return <DataGridReadOnlyCell />
-            }
-
-            return (
-              <DataGridCurrencyCell
-                context={context}
-                code={currency.currency_code}
-                field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${currency.currency_code}.amount`}
-              />
-            )
-          },
-        })
-      }),
-      ...regions.map((region) => {
-        const preference = pricePreferences.find(
-          (p) => p.attribute === "region_id" && p.value === region.id
-        )
-
-        return columnHelper.column({
-          id: `region-price-${region.id}`,
-          name: `Price ${region.name}`,
-          header: () => (
-            <div className="flex w-full items-center justify-between gap-3">
-              {t("fields.priceTemplate", {
-                regionOrCurrency: region.name,
-              })}
-              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
-            </div>
-          ),
-          cell: (context) => {
-            const entity = context.row.original
-
-            if (isProductRow(entity)) {
-              return <DataGridReadOnlyCell />
-            }
-
-            return (
-              <DataGridCurrencyCell
-                context={context}
-                code={region.currency_code}
-                field={`products.${entity.product_id}.variants.${entity.id}.region_prices.${region.id}.amount`}
-              />
-            )
-          },
-        })
+      ...getPriceColumns({
+        currencies: currencies.map((c) => c.currency_code),
+        regions,
+        pricePreferences,
+        isReadyOnly: (context) => {
+          const entity = context.row.original
+          return isProductRow(entity)
+        },
+        getFieldName: (context, value) => {
+          const entity = context.row.original as any
+          if (context.column.id.startsWith("currency_prices")) {
+            return `products.${entity.product_id}.variants.${entity.id}.currency_prices.${value}.amount`
+          }
+          return `products.${entity.product_id}.variants.${entity.id}.region_prices.${value}.amount`
+        },
+        t,
       }),
     ]
   }, [t, currencies, regions, pricePreferences])

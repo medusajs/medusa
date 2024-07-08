@@ -49,7 +49,8 @@
     "noRecordsMessage": "There are no records to show",
     "unsavedChangesTitle": "Are you sure you want to leave this form?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
-    "includesTaxTooltip": "Enter the total amount including tax. The net amount excluding tax will be automatically calculated and saved."
+    "includesTaxTooltip": "Prices in this column are tax inclusive.",
+    "excludesTaxTooltip": "Prices in this column are tax exclusive."
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
