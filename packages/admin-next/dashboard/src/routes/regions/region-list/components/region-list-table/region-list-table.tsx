@@ -1,6 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
-import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Heading,
+  toast,
+  usePrompt,
+  Text,
+} from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -56,7 +63,12 @@ export const RegionListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("regions.domain")}</Heading>
+        <div>
+          <Heading>{t("regions.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("regions.subtitle")}
+          </Text>
+        </div>
         <Link to="/settings/regions/create">
           <Button size="small" variant="secondary">
             {t("actions.create")}
@@ -76,6 +88,9 @@ export const RegionListTable = () => {
         pagination
         search
         queryObject={raw}
+        noRecords={{
+          message: t("regions.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

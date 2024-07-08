@@ -11,10 +11,7 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../components/modals"
+import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useAddOrRemoveCampaignPromotions } from "../../../../hooks/api/campaigns"
 import { usePromotions } from "../../../../hooks/api/promotions"
@@ -151,6 +148,9 @@ export const AddCampaignPromotionsForm = ({
             layout="fill"
             pagination
             search
+            noRecords={{
+              message: t("campaigns.promotions.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

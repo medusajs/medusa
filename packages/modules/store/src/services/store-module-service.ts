@@ -3,7 +3,6 @@ import {
   DAL,
   InternalModuleDeclaration,
   IStoreModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   StoreTypes,
 } from "@medusajs/types"
@@ -20,7 +19,6 @@ import {
 } from "@medusajs/utils"
 
 import { Store, StoreCurrency } from "@models"
-import { joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
 type InjectedDependencies = {
@@ -46,10 +44,6 @@ export default class StoreModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.storeService_ = storeService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

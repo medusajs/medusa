@@ -53,7 +53,7 @@ export function Module<
     } else {
       linkable = buildLinkConfigFromLinkableKeys(
         serviceName,
-        defaultJoinerConfig.linkableKeys
+        service.prototype.__joinerConfig().linkableKeys
       ) as Linkable
     }
   }

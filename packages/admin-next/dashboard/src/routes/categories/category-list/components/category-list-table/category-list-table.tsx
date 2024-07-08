@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -57,6 +57,9 @@ export const CategoryListTable = () => {
     pageSize: PAGE_SIZE,
   })
 
+  const showRankingAction =
+    !!product_categories && product_categories.length > 0
+
   if (isError) {
     throw error
   }
@@ -64,11 +67,18 @@ export const CategoryListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("categories.domain")}</Heading>
+        <div>
+          <Heading>{t("categories.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("categories.subtitle")}
+          </Text>
+        </div>
         <div className="flex items-center gap-x-2">
-          <Button size="small" variant="secondary" asChild>
-            <Link to="organize">{t("categories.organize.action")}</Link>
-          </Button>
+          {showRankingAction && (
+            <Button size="small" variant="secondary" asChild>
+              <Link to="organize">{t("categories.organize.action")}</Link>
+            </Button>
+          )}
           <Button size="small" variant="secondary" asChild>
             <Link to="create">{t("actions.create")}</Link>
           </Button>

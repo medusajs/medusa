@@ -1,1 +1,1 @@
-export * from "./utils"
+export { default as loadUtils } from "./utils"

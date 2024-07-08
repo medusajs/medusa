@@ -3,7 +3,6 @@ import {
   DAL,
   IEventBusModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   UserTypes,
 } from "@medusajs/types"
@@ -19,7 +18,6 @@ import {
   UserEvents,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import { joinerConfig } from "../joiner-config"
 import crypto from "node:crypto"
 
 import { Invite, User } from "@models"
@@ -44,10 +42,6 @@ export default class UserModuleService
   }>({ User, Invite })
   implements UserTypes.IUserModuleService
 {
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
-  }
-
   protected baseRepository_: DAL.RepositoryService
 
   protected readonly userService_: ModulesSdkTypes.IMedusaInternalService<User>
