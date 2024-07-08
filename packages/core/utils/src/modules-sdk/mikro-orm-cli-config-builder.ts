@@ -62,10 +62,11 @@ export function defineMikroOrmCliConfig(
   }
 
   return {
-    clientUrl: `postgres://postgres@localhost/${databaseName}`,
+    clientUrl: `postgres://postgres@localhost`,
     type: "postgresql",
     ...options,
     entities,
+    dbName: databaseName,
     migrations: {
       generator: TSMigrationGenerator,
       ...options.migrations,
