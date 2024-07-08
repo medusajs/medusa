@@ -7,13 +7,11 @@ import {
   FindConfig,
   ICurrencyModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
 
 import { MedusaService } from "@medusajs/utils"
 import { Currency } from "@models"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -39,10 +37,6 @@ export default class CurrencyModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.currencyService_ = currencyService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

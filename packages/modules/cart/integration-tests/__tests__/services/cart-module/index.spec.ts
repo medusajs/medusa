@@ -1,7 +1,8 @@
 import { ICartModuleService } from "@medusajs/types"
-import { BigNumber, Modules } from "@medusajs/utils"
+import { BigNumber, Module, Modules } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { CartModuleService } from "@services"
 
 jest.setTimeout(50000)
 
@@ -9,6 +10,112 @@ moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
   testSuite: ({ service }) => {
     describe("Cart Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.CART, {
+          service: CartModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "address",
+          "adjustmentLine",
+          "cart",
+          "lineItemAdjustment",
+          "lineItemTaxLine",
+          "lineItem",
+          "shippingMethodAdjustment",
+          "shippingMethodTaxLine",
+          "shippingMethod",
+          "taxLine",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          address: {
+            id: {
+              linkable: "address_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "address",
+            },
+          },
+          adjustmentLine: {
+            id: {
+              linkable: "adjustment_line_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "adjustmentLine",
+            },
+          },
+          cart: {
+            id: {
+              linkable: "cart_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "cart",
+            },
+          },
+          lineItemAdjustment: {
+            id: {
+              linkable: "line_item_adjustment_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "lineItemAdjustment",
+            },
+          },
+          lineItemTaxLine: {
+            id: {
+              linkable: "line_item_tax_line_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "lineItemTaxLine",
+            },
+          },
+          lineItem: {
+            id: {
+              linkable: "line_item_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "lineItem",
+            },
+          },
+          shippingMethodAdjustment: {
+            id: {
+              linkable: "shipping_method_adjustment_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "shippingMethodAdjustment",
+            },
+          },
+          shippingMethodTaxLine: {
+            id: {
+              linkable: "shipping_method_tax_line_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "shippingMethodTaxLine",
+            },
+          },
+          shippingMethod: {
+            id: {
+              linkable: "shipping_method_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "shippingMethod",
+            },
+          },
+          taxLine: {
+            id: {
+              linkable: "tax_line_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "taxLine",
+            },
+          },
+        })
+      })
+
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service

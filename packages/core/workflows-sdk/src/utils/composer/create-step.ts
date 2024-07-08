@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
+import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -346,7 +346,7 @@ function wrapConditionalStep(
   const originalInvoke = handle.invoke
   handle.invoke = async (stepArguments: WorkflowStepHandlerArguments) => {
     const args = await resolveValue(input, stepArguments)
-    const canContinue = await condition(args)
+    const canContinue = await condition(args, stepArguments)
 
     if (stepArguments.step.definition?.async) {
       stepArguments.step.definition.backgroundExecution = true

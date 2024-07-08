@@ -1,7 +1,8 @@
 import { IAuthModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { resolve } from "path"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { AuthModuleService } from "@services"
 
 let moduleOptions = {
   providers: [
@@ -33,6 +34,25 @@ moduleIntegrationTestRunner({
               },
             },
           ],
+        })
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.AUTH, {
+          service: AuthModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["authIdentity"])
+
+        linkable.authIdentity.toJSON = undefined
+
+        expect(linkable.authIdentity).toEqual({
+          id: {
+            linkable: "auth_identity_id",
+            primaryKey: "id",
+            serviceName: "auth",
+            field: "authIdentity",
+          },
         })
       })
 

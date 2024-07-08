@@ -1,7 +1,8 @@
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { TaxModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -9,6 +10,58 @@ moduleIntegrationTestRunner<ITaxModuleService>({
   moduleName: Modules.TAX,
   testSuite: ({ service }) => {
     describe("TaxModuleService", function () {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.TAX, {
+          service: TaxModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "taxProvider",
+          "taxRateRule",
+          "taxRate",
+          "taxRegion",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          taxProvider: {
+            id: {
+              linkable: "tax_provider_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxProvider",
+            },
+          },
+          taxRateRule: {
+            id: {
+              linkable: "tax_rate_rule_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRateRule",
+            },
+          },
+          taxRate: {
+            id: {
+              linkable: "tax_rate_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRate",
+            },
+          },
+          taxRegion: {
+            id: {
+              linkable: "tax_region_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRegion",
+            },
+          },
+        })
+      })
+
       it("should create tax rates and update them", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",
