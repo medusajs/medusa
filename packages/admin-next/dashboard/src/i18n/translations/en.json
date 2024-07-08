@@ -714,6 +714,14 @@
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"
     },
+    "allocateItems": {
+      "action": "Allocate items",
+      "title": "Allocate order items",
+      "locationDescription": "Choose which location you want to allocate items from.",
+      "itemsToAllocate": "Items to allocate",
+      "itemsToAllocateDesc": "Select the number of items you wish to allocate",
+      "search": "Search items"
+    },
     "shipment": {
       "title": "Mark fulfillment shipped",
       "trackingNumber": "Tracking number",

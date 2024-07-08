@@ -3,7 +3,14 @@ import {
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Text,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -12,18 +19,37 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { useNavigate } from "react-router-dom"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const hasUnfulfilledItems = order.items!.some(
+    (i) => i.detail.fulfilled_quantity < i.quantity
+  )
+
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} />
       <ItemBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
+
+      {hasUnfulfilledItems && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
+          <Button
+            onClick={() => navigate(`./allocate-items`)}
+            variant="secondary"
+          >
+            {t("orders.allocateItems.action")}
+          </Button>
+        </div>
+      )}
     </Container>
   )
 }
