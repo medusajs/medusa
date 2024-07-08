@@ -5,7 +5,6 @@ import execute from "./execute.js"
 import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import ProcessManager from "./process-manager.js"
-import { clearProject } from "./clear-project.js"
 import type { Client } from "pg"
 
 const ADMIN_EMAIL = "admin@medusa-test.com"
@@ -18,7 +17,6 @@ type PrepareOptions = {
   directory: string
   dbConnectionString: string
   seed?: boolean
-  boilerplate?: boolean
   spinner: Ora
   processManager: ProcessManager
   abortController?: AbortController
@@ -34,7 +32,6 @@ export default async ({
   directory,
   dbConnectionString,
   seed,
-  boilerplate,
   spinner,
   processManager,
   abortController,
@@ -110,19 +107,6 @@ export default async ({
     ...factBoxOptions,
     message: "Installed Dependencies",
   })
-
-  if (!boilerplate) {
-    factBoxOptions.interval = displayFactBox({
-      ...factBoxOptions,
-      title: "Preparing Project Directory...",
-    })
-    // delete files and directories related to onboarding
-    clearProject(directory)
-    displayFactBox({
-      ...factBoxOptions,
-      message: "Prepared Project Directory",
-    })
-  }
 
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,

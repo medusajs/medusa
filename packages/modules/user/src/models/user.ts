@@ -39,7 +39,7 @@ type OptionalFields =
   | "last_name"
   | "metadata"
   | "avatar_url"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

@@ -2,7 +2,7 @@ import { DAL } from "@medusajs/types"
 import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/utils"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalAdjustmentLineProps = DAL.SoftDeletableEntityDateColumns
+type OptionalAdjustmentLineProps = DAL.SoftDeletableModelDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition

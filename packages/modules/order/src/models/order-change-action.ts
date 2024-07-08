@@ -21,7 +21,7 @@ import Order from "./order"
 import OrderChange from "./order-change"
 import Return from "./return"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const OrderChangeIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
