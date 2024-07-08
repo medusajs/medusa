@@ -10,20 +10,10 @@ import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
  * Events emitted by the migrations class
  */
 export type MigrationsEvents = {
-  migrating: [
-    {
-      name: string
-      path?: string
-      context: object
-    }
-  ]
-  migrated: [
-    {
-      name: string
-      path?: string
-      context: object
-    }
-  ]
+  migrating: [UmzugMigration]
+  migrated: [UmzugMigration]
+  reverting: [UmzugMigration]
+  reverted: [UmzugMigration]
 }
 
 /**
@@ -61,7 +51,7 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     try {
       return await migrator.createMigration()
     } finally {
-      await connection.close()
+      await connection.close(true)
     }
   }
 
@@ -74,24 +64,43 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     const connection = await this.#getConnection()
     const migrator = connection.getMigrator()
 
-    migrator["umzug"].on(
-      "migrating",
-      (event: MigrationsEvents["migrating"][number]) =>
-        this.emit("migrating", event)
+    migrator["umzug"].on("migrating", (event: UmzugMigration) =>
+      this.emit("migrating", event)
     )
-    migrator["umzug"].on(
-      "migrated",
-      (event: MigrationsEvents["migrated"][number]) => {
-        this.emit("migrated", event)
-      }
-    )
+    migrator["umzug"].on("migrated", (event: UmzugMigration) => {
+      this.emit("migrated", event)
+    })
 
     try {
       const res = await migrator.up(options)
       return res
     } finally {
       migrator["umzug"].clearListeners()
-      await connection.close()
+      await connection.close(true)
+    }
+  }
+
+  /**
+   * Run migrations for the provided entities
+   */
+  async revert(
+    options?: string | string[] | MigrateOptions
+  ): Promise<UmzugMigration[]> {
+    const connection = await this.#getConnection()
+    const migrator = connection.getMigrator()
+
+    migrator["umzug"].on("reverting", (event: UmzugMigration) =>
+      this.emit("reverting", event)
+    )
+    migrator["umzug"].on("reverted", (event: UmzugMigration) => {
+      this.emit("reverted", event)
+    })
+
+    try {
+      return await migrator.down(options)
+    } finally {
+      migrator["umzug"].clearListeners()
+      await connection.close(true)
     }
   }
 }
