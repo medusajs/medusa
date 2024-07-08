@@ -6,10 +6,7 @@ import * as zod from "zod"
 
 import { UserDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateUser } from "../../../../../hooks/api/users"
 import { languages } from "../../../../../i18n/languages"
 
@@ -58,17 +55,10 @@ export const EditProfileForm = ({ user, usageInsights }: EditProfileProps) => {
 
       await changeLanguage(values.language)
 
+      toast.success(t("profile.toast.edit"))
       handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("profile.toast.edit"),
-        dismissLabel: t("actions.close"),
-      })
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     }
   })
 

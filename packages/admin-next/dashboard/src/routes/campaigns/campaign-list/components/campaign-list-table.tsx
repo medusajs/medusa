@@ -95,18 +95,14 @@ const CampaignActions = ({ campaign }: { campaign: CampaignResponse }) => {
       return
     }
 
-    try {
-      await mutateAsync()
-      toast.success(t("general.success"), {
-        description: t("campaigns.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("campaigns.toast.delete"))
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

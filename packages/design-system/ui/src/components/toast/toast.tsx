@@ -1,8 +1,16 @@
-import { CheckCircleSolid, ExclamationCircleSolid, InformationCircleSolid, Spinner, XCircleSolid } from "@medusajs/icons"
+import {
+  CheckCircleSolid,
+  ExclamationCircleSolid,
+  InformationCircleSolid,
+  Spinner,
+  XCircleSolid,
+  XMark,
+} from "@medusajs/icons"
 import * as React from "react"
 
 import type { ToastAction, ToastVariant } from "@/types"
 import { clx } from "@/utils/clx"
+import { IconButton } from "../icon-button"
 
 interface ToastComponentProps {
   id: string | number
@@ -10,8 +18,7 @@ interface ToastComponentProps {
   title: string
   description?: string
   action?: ToastAction
-  onDismiss?: (id?: string | number) => void
-  dismissLabel?: string
+  onDismiss?: () => void
 }
 
 /**
@@ -24,7 +31,7 @@ export const Toast = ({
   id,
   /**
    * @ignore
-   * 
+   *
    * @privateRemarks
    * As the Toast component is created using
    * the `toast` utility functions, the variant is inferred
@@ -33,7 +40,7 @@ export const Toast = ({
   variant = "info",
   /**
    * @ignore
-   * 
+   *
    * @privateRemarks
    * The `toast` utility functions accept this as a parameter.
    */
@@ -48,18 +55,13 @@ export const Toast = ({
   action,
   /**
    * @ignore
-   * 
+   *
    * @privateRemarks
    * The `toast` utility functions don't allow
    * passing this prop.
    */
   onDismiss,
-  /**
-   * The label of the dismiss button, if available.
-   */
-  dismissLabel = "Close",
 }: ToastComponentProps) => {
-  const hasActionables = !!action || onDismiss
   let icon = undefined
 
   switch (variant) {
@@ -83,11 +85,9 @@ export const Toast = ({
   }
 
   return (
-    <div className="shadow-elevation-flyout bg-ui-bg-base flex w-fit min-w-[360px] max-w-[440px] overflow-hidden rounded-lg">
+    <div className="shadow-elevation-flyout bg-ui-bg-base flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3">
       <div
-        className={clx("grid flex-1 items-start gap-3 py-3 pl-3", {
-          "border-r pr-3": hasActionables,
-          "pr-6": !hasActionables,
+        className={clx("grid flex-1 items-start gap-2", {
           "grid-cols-[20px_1fr]": !!icon,
           "grid-cols-1": !icon,
         })}
@@ -97,29 +97,26 @@ export const Toast = ({
             {icon}
           </span>
         )}
-        <div className="flex flex-col">
-          <span className="txt-compact-small-plus text-ui-fg-base">
-            {title}
-          </span>
-          <span className="txt-small text-ui-fg-subtle text-pretty">
-            {description}
-          </span>
-        </div>
-      </div>
-      {hasActionables && (
-        <div
-          className={clx("grid grid-cols-1", {
-            "grid-rows-2": !!action && onDismiss,
-            "grid-rows-1": !action || !onDismiss,
-          })}
-        >
+        <div className="flex flex-col gap-y-3">
+          <div className="flex flex-col">
+            <span className="txt-compact-small-plus text-ui-fg-base">
+              {title}
+            </span>
+            {description && (
+              <span className="txt-small text-ui-fg-subtle text-pretty">
+                {description}
+              </span>
+            )}
+          </div>
           {!!action && (
             <button
               type="button"
               className={clx(
-                "txt-compact-small-plus text-ui-fg-base bg-ui-bg-base hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed flex items-center justify-center px-4 transition-colors",
+                "txt-compact-small-plus text-ui-fg-base bg-ui-bg-base flex w-fit items-center rounded-[4px] transition-colors",
+                "focus-visible:shadow-borders-focus",
+                "hover:text-ui-fg-subtle",
+                "disabled:text-ui-fg-disabled",
                 {
-                  "border-ui-border-base border-b": onDismiss,
                   "text-ui-fg-error": action.variant === "destructive",
                 }
               )}
@@ -128,17 +125,18 @@ export const Toast = ({
               {action.label}
             </button>
           )}
-          {onDismiss && (
-            <button
-              type="button"
-              onClick={() => onDismiss(id)}
-              className={clx(
-                "txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-base hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed flex items-center justify-center px-4 transition-colors"
-              )}
-            >
-              {dismissLabel}
-            </button>
-          )}
+        </div>
+      </div>
+      {!!onDismiss && (
+        <div>
+          <IconButton
+            size="2xsmall"
+            variant="transparent"
+            type="button"
+            onClick={onDismiss}
+          >
+            <XMark />
+          </IconButton>
         </div>
       )}
     </div>

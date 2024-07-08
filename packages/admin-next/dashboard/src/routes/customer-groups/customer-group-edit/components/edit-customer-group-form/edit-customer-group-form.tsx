@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as z from "zod"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 type EditCustomerGroupFormProps = {
@@ -37,14 +34,16 @@ export const EditCustomerGroupForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ customer_group }) => {
-        toast.success(t("general.success"), {
-          description: t("customerGroups.edit.successToast", {
+        toast.success(
+          t("customerGroups.edit.successToast", {
             name: customer_group.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         handleSuccess()
+      },
+      onError: (error) => {
+        toast.error(error.message)
       },
     })
   })

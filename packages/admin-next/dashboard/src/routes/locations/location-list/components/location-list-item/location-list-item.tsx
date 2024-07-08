@@ -105,18 +105,14 @@ function LocationListItem(props: LocationProps) {
 
     await deleteLocation(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("shippingProfile.delete.successToast", {
+        toast.success(
+          t("shippingProfile.delete.successToast", {
             name: location.name,
-          }),
-          dismissLabel: t("general.close"),
-        })
+          })
+        )
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
     })
   }

@@ -1,13 +1,11 @@
 import { Toast } from "@/components/toast"
 import { ToastAction, ToastVariant, ToasterPosition } from "@/types"
 import * as React from "react"
-import { toast as toastFn } from "sonner"
+import { ExternalToast, toast as toastFn } from "sonner"
 
 interface BaseToastProps {
   id?: string | number
   position?: ToasterPosition
-  dismissable?: boolean
-  dismissLabel?: string
   duration?: number
 }
 
@@ -17,28 +15,29 @@ interface ToastProps extends BaseToastProps {
 }
 
 function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
-  return toastFn.custom(
-    (t) => {
-      return (
-        <Toast
-          id={props.id || t}
-          title={title}
-          description={props.description}
-          onDismiss={
-            props.dismissable ? () => toastFn.dismiss(props.id || t) : undefined
-          }
-          dismissLabel={props.dismissLabel}
-          variant={variant}
-          action={props.action}
-        />
-      )
-    },
-    {
-      id: props.id,
-      position: props.position,
-      dismissible: props.dismissable,
-    }
-  )
+  const external: ExternalToast = {
+    position: props.position,
+    duration: props.duration,
+  }
+
+  if (props.id) {
+    external.id = props.id
+  }
+
+  return toastFn.custom((t) => {
+    const dismissFn = () => toastFn.dismiss(t)
+
+    return (
+      <Toast
+        id={t}
+        title={title}
+        description={props.description}
+        onDismiss={dismissFn}
+        variant={variant}
+        action={props.action}
+      />
+    )
+  }, external)
 }
 
 function message(
@@ -104,17 +103,16 @@ function warning(
 
 type LoadingToastProps = Omit<ToastProps, "dismissable" | "dismissLabel">
 
-function loading
-/**
- * The title of the toast.
- */(
-  title: string,
+function loading(
+  /**
+   * The title of the toast.
+   */ title: string,
   /**
    * The props of the toast.
    */
   props: ToastProps = {}
 ) {
-  return create("loading", title, { ...props, dismissable: false })
+  return create("loading", title, { ...props })
 }
 
 type PromiseStateProps =

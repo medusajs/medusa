@@ -106,7 +106,7 @@
     "react-aria": "^3.33.1",
     "react-currency-input-field": "^3.6.11",
     "react-stately": "^3.31.1",
-    "sonner": "^1.4.41",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1",
     "upgrade": "^1.1.0",
     "yarn": "^1.22.22"

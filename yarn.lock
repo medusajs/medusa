@@ -5273,7 +5273,7 @@ __metadata:
     react-stately: ^3.31.1
     resize-observer-polyfill: ^1.5.1
     rimraf: ^5.0.1
-    sonner: ^1.4.41
+    sonner: ^1.5.0
     storybook: ^7.0.23
     tailwind-merge: ^2.2.1
     tailwindcss: ^3.4.3
@@ -28005,13 +28005,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sonner@npm:^1.4.41":
-  version: 1.4.41
-  resolution: "sonner@npm:1.4.41"
+"sonner@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "sonner@npm:1.5.0"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 31467ecab0fcbd5161fb76d158c698841b524686f7f598eecbc2a58d76bc496b5d5242df4350e274575aa3df59428d3aacd534415c968b19fc309c192c443330
+  checksum: 9561b5861bede7f874cc442e447a68c8bfa6e4eadad603bc04e38db35a8b8108741f595a12c9856742062bae230ffedf73122015940491f482c5aa9e68ee85e0
   languageName: node
   linkType: hard
 

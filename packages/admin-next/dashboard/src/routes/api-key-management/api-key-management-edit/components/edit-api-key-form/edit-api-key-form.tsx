@@ -6,10 +6,7 @@ import * as zod from "zod"
 
 import { ApiKeyDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateApiKey } from "../../../../../hooks/api/api-keys"
 
 type EditApiKeyFormProps = {
@@ -36,19 +33,15 @@ export const EditApiKeyForm = ({ apiKey }: EditApiKeyFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ api_key }) => {
-        toast.success(t("general.success"), {
-          description: t("apiKeyManagement.edit.successToast", {
+        toast.success(
+          t("apiKeyManagement.edit.successToast", {
             title: api_key.title,
-          }),
-          dismissLabel: t("general.close"),
-        })
+          })
+        )
         handleSuccess()
       },
       onError: (err) => {
-        toast.error(t("general.error"), {
-          description: err.message,
-          dismissLabel: t("general.close"),
-        })
+        toast.error(err.message)
       },
     })
   })

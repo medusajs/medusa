@@ -53,17 +53,11 @@ export const EditRegionForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("regions.toast.edit"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("regions.toast.edit"))
           handleSuccess()
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

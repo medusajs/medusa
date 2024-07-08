@@ -6,10 +6,7 @@ import * as zod from "zod"
 
 import { SalesChannelDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateSalesChannel } from "../../../../../hooks/api/sales-channels"
 
 type EditSalesChannelFormProps = {
@@ -48,17 +45,11 @@ export const EditSalesChannelForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("salesChannels.toast.update"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("salesChannels.toast.update"))
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

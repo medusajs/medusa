@@ -76,19 +76,15 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
       return
     }
 
-    try {
-      await mutateAsync(undefined)
-      toast.success(t("general.success"), {
-        description: t("regions.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
-    navigate("/settings/regions", { replace: true })
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("regions.toast.delete"))
+        navigate("/settings/regions", { replace: true })
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (
