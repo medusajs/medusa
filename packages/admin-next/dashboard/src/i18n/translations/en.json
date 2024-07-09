@@ -1031,7 +1031,7 @@
       "successToast": "Shipping profile {{name}} was successfully deleted."
     },
     "tooltip": {
-      "type": "Enter shipping profile type, for example: Express, Freight, etc."
+      "type": "Enter shipping profile type, for example: Heavy, Oversized, Freight-only, etc."
     }
   },
   "discounts": {
