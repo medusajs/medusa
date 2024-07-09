@@ -1,10 +1,11 @@
 interface AdminUpdateStoreSupportedCurrency {
+  currency_code: string
   is_default?: boolean
-  code: string
+  is_tax_inclusive?: boolean
 }
 
 export interface AdminUpdateStore {
-  name?: string | null
+  name?: string
   supported_currencies?: AdminUpdateStoreSupportedCurrency[]
   default_sales_channel_id?: string | null
   default_region_id?: string | null
