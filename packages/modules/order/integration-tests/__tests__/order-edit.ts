@@ -547,7 +547,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         ])
       })
 
-      it("should create order changes, cancel and reject them.", async function () {
+      it("should create order change, cancel and reject them.", async function () {
         const createdOrder = await service.createOrders(input)
 
         const orderChange = await service.createOrderChange({
@@ -556,6 +556,14 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           internal_note: "changing the order to version 2",
           created_by: "user_123",
         })
+        await service.cancelOrderChange({
+          id: orderChange.id,
+          canceled_by: "cx_agent_123",
+        })
+
+        await expect(service.cancelOrderChange(orderChange.id)).rejects.toThrow(
+          "Order Change cannot be modified"
+        )
 
         const orderChange2 = await service.createOrderChange({
           order_id: createdOrder.id,
@@ -577,15 +585,6 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             },
           ],
         } as CreateOrderChangeDTO)
-
-        await service.cancelOrderChange({
-          id: orderChange.id,
-          canceled_by: "cx_agent_123",
-        })
-
-        await expect(service.cancelOrderChange(orderChange.id)).rejects.toThrow(
-          "Order Change cannot be modified"
-        )
 
         await service.declineOrderChange({
           id: orderChange2.id,

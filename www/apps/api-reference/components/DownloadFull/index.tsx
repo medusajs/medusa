@@ -14,7 +14,7 @@ const DownloadFull = () => {
         download
         target="_blank"
       >
-        Download openapi.yaml
+        Download OpenApi Specs Collection
       </Link>
     </Button>
   )
