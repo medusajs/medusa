@@ -513,7 +513,7 @@ interface TaxLineDTO {
   /**
    * The rate of the tax line.
    */
-  rate: number | null
+  rate: number
 
   /**
    * The code of the tax line.
