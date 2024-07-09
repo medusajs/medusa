@@ -105,6 +105,7 @@ export const productVariantsFields = [
   "product.collection",
   "product.handle",
   "calculated_price.calculated_amount",
+  "calculated_price.is_calculated_price_tax_inclusive",
   "inventory_items.inventory_item_id",
   "inventory_items.required_quantity",
   "inventory_items.inventory.location_levels.stock_locations.id",
