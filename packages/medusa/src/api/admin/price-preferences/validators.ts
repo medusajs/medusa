@@ -4,7 +4,7 @@ import { createFindParams, createSelectParams } from "../../utils/validators"
 export const AdminGetPricePreferenceParams = createSelectParams()
 export const AdminGetPricePreferencesParams = createFindParams({
   offset: 0,
-  limit: 50,
+  limit: 300,
 }).merge(
   z.object({
     q: z.string().optional(),

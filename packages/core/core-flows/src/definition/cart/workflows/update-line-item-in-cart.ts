@@ -71,6 +71,8 @@ export const updateLineItemInCartWorkflow = createWorkflow(
         data: {
           ...data.input.update,
           unit_price: variant.calculated_price.calculated_amount,
+          is_tax_inclusive:
+            !!variant.calculated_price.is_calculated_price_tax_inclusive,
         },
         selector: {
           id: item.id,

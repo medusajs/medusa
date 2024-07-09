@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 
 export const getProductFixture = (
-  overrides: Partial<HttpTypes.AdminProduct>
+  overrides: Partial<HttpTypes.AdminCreateProduct>
 ) => ({
   title: "Test fixture",
   description: "test-product-description",

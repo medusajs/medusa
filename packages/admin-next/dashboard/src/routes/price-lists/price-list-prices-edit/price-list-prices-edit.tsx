@@ -25,7 +25,8 @@ export const PriceListPricesEdit = () => {
     fields: "title,thumbnail,*variants",
   })
 
-  const { isReady, regions, currencies } = usePriceListCurrencyData()
+  const { isReady, regions, currencies, pricePreferences } =
+    usePriceListCurrencyData()
 
   const ready =
     !isLoading && !!price_list && !isProductsLoading && !!products && isReady
@@ -46,6 +47,7 @@ export const PriceListPricesEdit = () => {
           products={products}
           regions={regions}
           currencies={currencies}
+          pricePreferences={pricePreferences}
         />
       )}
     </RouteFocusModal>

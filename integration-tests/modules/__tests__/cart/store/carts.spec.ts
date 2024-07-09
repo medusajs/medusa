@@ -1280,6 +1280,16 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          await api.post(
+            "/admin/price-preferences",
+            {
+              attribute: "currency_code",
+              value: "usd",
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+
           const cart = await cartModule.createCarts({
             currency_code: "usd",
             customer_id: customer.id,
@@ -1376,6 +1386,7 @@ medusaIntegrationTestRunner({
               items: expect.arrayContaining([
                 expect.objectContaining({
                   unit_price: 3000,
+                  is_tax_inclusive: true,
                   quantity: 1,
                   title: "Test variant",
                   tax_lines: [
@@ -1395,6 +1406,7 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   unit_price: 2000,
+                  is_tax_inclusive: false,
                   quantity: 1,
                   title: "Test item",
                   tax_lines: [],
@@ -1422,6 +1434,7 @@ medusaIntegrationTestRunner({
               items: expect.arrayContaining([
                 expect.objectContaining({
                   unit_price: 2000,
+                  is_tax_inclusive: true,
                   quantity: 1,
                   title: "Test variant default tax",
                   tax_lines: [
@@ -1734,6 +1747,16 @@ medusaIntegrationTestRunner({
             ],
           })
 
+          await api.post(
+            "/admin/price-preferences",
+            {
+              attribute: "currency_code",
+              value: "usd",
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+
           const priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
@@ -1783,6 +1806,7 @@ medusaIntegrationTestRunner({
                 {
                   shipping_option_id: shippingOption.id,
                   amount: 3000,
+                  is_tax_inclusive: true,
                   id: expect.any(String),
                   tax_lines: [],
                   adjustments: [],

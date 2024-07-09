@@ -3,12 +3,17 @@ import { usePriceListCurrencyData } from "../common/hooks/use-price-list-currenc
 import { PriceListCreateForm } from "./components/price-list-create-form"
 
 export const PriceListCreate = () => {
-  const { isReady, regions, currencies } = usePriceListCurrencyData()
+  const { isReady, regions, currencies, pricePreferences } =
+    usePriceListCurrencyData()
 
   return (
     <RouteFocusModal>
       {isReady && (
-        <PriceListCreateForm regions={regions} currencies={currencies} />
+        <PriceListCreateForm
+          regions={regions}
+          currencies={currencies}
+          pricePreferences={pricePreferences}
+        />
       )}
     </RouteFocusModal>
   )
