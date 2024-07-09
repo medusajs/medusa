@@ -1130,32 +1130,38 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method deletes order change by its ID.
    *
-   * @param {string[]} orderIds - The list of {summary}
+   * @param {string[]} orderChangeId - The list of {summary}
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
    * @example
    * ```typescript
-   * await orderModuleService.deleteOrderChanges(["12345abc", "67890def"]);
+   * await orderModuleService.deleteOrderChanges(["orderChangeId1", "orderChangeId2"]);
    * ```
    *
    */
-  deleteOrderChanges(orderIds: string[], sharedContext?: Context): Promise<void>
+  deleteOrderChanges(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method deletes order change by its ID.
    *
-   * @param {string} orderId - The order's ID.
+   * @param {string} orderChangeId - The order's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
    * @example
    * ```typescript
-   * await orderModuleService.deleteOrderChanges("orderId");
+   * await orderModuleService.deleteOrderChanges("orderChangeId");
    * ```
    *
    */
-  deleteOrderChanges(orderId: string, sharedContext?: Context): Promise<void>
+  deleteOrderChanges(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
