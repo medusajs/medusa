@@ -20,12 +20,13 @@ export const AdminGetStoresParams = createFindParams({
 
 export type AdminUpdateStoreType = z.infer<typeof AdminUpdateStore>
 export const AdminUpdateStore = z.object({
-  name: z.string().nullish(),
+  name: z.string().optional(),
   supported_currencies: z
     .array(
       z.object({
         currency_code: z.string(),
         is_default: z.boolean().optional(),
+        is_tax_inclusive: z.boolean().optional(),
       })
     )
     .optional(),
