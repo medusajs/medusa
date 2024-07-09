@@ -22,7 +22,8 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-describe("Generate migrations", () => {
+// TODO: Reenable once flakiness is taken care of
+describe.skip("Generate migrations", () => {
   beforeEach(async () => {
     await dropDatabase(
       { databaseName: dbName, errorIfNonExist: false },

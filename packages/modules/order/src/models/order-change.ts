@@ -211,7 +211,7 @@ export default class OrderChange {
     columnType: "timestamptz",
     nullable: true,
   })
-  canceled_at?: Date
+  canceled_at?: Date | null = null
 
   @Property({
     onCreate: () => new Date(),
