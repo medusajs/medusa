@@ -44,11 +44,13 @@ const initialTabState: TabState = {
 type PriceListCreateFormProps = {
   regions: HttpTypes.AdminRegion[]
   currencies: HttpTypes.AdminStoreCurrency[]
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
 export const PriceListCreateForm = ({
   regions,
   currencies,
+  pricePreferences,
 }: PriceListCreateFormProps) => {
   const [tab, setTab] = useState<Tab>(Tab.DETAIL)
   const [tabState, setTabState] = useState<TabState>(initialTabState)
@@ -117,10 +119,13 @@ export const PriceListCreateForm = ({
   ) => {
     form.clearErrors(fields)
 
-    const values = fields.reduce((acc, key) => {
-      acc[key] = form.getValues(key)
-      return acc
-    }, {} as Record<string, unknown>)
+    const values = fields.reduce(
+      (acc, key) => {
+        acc[key] = form.getValues(key)
+        return acc
+      },
+      {} as Record<string, unknown>
+    )
 
     const validationResult = schema.safeParse(values)
 
@@ -295,6 +300,7 @@ export const PriceListCreateForm = ({
                 form={form}
                 regions={regions}
                 currencies={currencies}
+                pricePreferences={pricePreferences}
               />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
