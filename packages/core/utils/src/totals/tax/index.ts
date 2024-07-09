@@ -31,3 +31,24 @@ export function calculateTaxTotal({
 
   return taxTotal
 }
+
+export function calculateAmountsWithTax({
+  taxLines,
+  amount,
+  includesTax,
+}: {
+  taxLines: Pick<TaxLineDTO, "rate">[]
+  amount: number
+  includesTax?: boolean
+}) {
+  const tax = calculateTaxTotal({
+    taxLines,
+    includesTax,
+    taxableAmount: amount,
+  })
+
+  return {
+    priceWithTax: includesTax ? amount : MathBN.add(tax, amount).toNumber(),
+    priceWithoutTax: includesTax ? MathBN.sub(amount, tax).toNumber() : amount,
+  }
+}

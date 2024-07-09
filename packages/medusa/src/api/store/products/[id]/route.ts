@@ -1,11 +1,15 @@
 import { MedusaError, isPresent } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaResponse } from "../../../../types/routing"
 import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
-import { refetchProduct } from "../helpers"
-import { StoreGetProductsParamsType } from "../validators"
+import {
+  RequestWithContext,
+  refetchProduct,
+  wrapProductsWithTaxPrices,
+} from "../helpers"
+import { StoreGetProductParamsType } from "../validators"
 
 export const GET = async (
-  req: MedusaRequest<StoreGetProductsParamsType>,
+  req: RequestWithContext<StoreGetProductParamsType>,
   res: MedusaResponse
 ) => {
   const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>
@@ -46,5 +50,6 @@ export const GET = async (
     await wrapVariantsWithInventoryQuantity(req, product.variants || [])
   }
 
+  await wrapProductsWithTaxPrices(req, [product])
   res.json({ product })
 }

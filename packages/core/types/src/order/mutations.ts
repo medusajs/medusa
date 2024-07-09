@@ -212,6 +212,7 @@ export interface CreateOrderShippingMethodDTO {
   exchange_id?: string
   version?: number
   amount: BigNumberInput
+  is_tax_inclusive?: boolean
   shipping_option_id?: string
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
