@@ -196,7 +196,9 @@ export default class StoreModuleService
     )
   }
 
-  private static validateCreateRequest(stores: StoreTypes.CreateStoreDTO[]) {
+  private static validateCreateRequest(
+    stores: StoreTypes.CreateStoreDTO[] | StoreTypes.UpdateStoreDTO[]
+  ) {
     for (const store of stores) {
       if (store.supported_currencies?.length) {
         const duplicates = getDuplicates(

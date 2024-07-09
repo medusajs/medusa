@@ -2,9 +2,7 @@ import { CreateStoreDTO, IStoreModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateStoresStepInput = {
-  stores: CreateStoreDTO[]
-}
+type CreateStoresStepInput = CreateStoreDTO[]
 
 export const createStoresStepId = "create-stores"
 export const createStoresStep = createStep(
@@ -14,7 +12,7 @@ export const createStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    const created = await service.createStores(data.stores)
+    const created = await service.createStores(data)
     return new StepResponse(
       created,
       created.map((store) => store.id)
