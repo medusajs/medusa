@@ -3,75 +3,44 @@ export const theme = {
     "colors": {
       "ui": {
         "tag": {
-          "green": {
-            "bg": {
-              "DEFAULT": "var(--tag-green-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-green-bg-hover)"
-              }
+          "neutral": {
+            "border": {
+              "DEFAULT": "var(--tag-neutral-border)"
             },
             "icon": {
-              "DEFAULT": "var(--tag-green-icon)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-green-border)"
+              "DEFAULT": "var(--tag-neutral-icon)"
             },
             "text": {
-              "DEFAULT": "var(--tag-green-text)"
+              "DEFAULT": "var(--tag-neutral-text)"
+            },
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-neutral-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-neutral-bg)"
             }
           },
           "red": {
+            "text": {
+              "DEFAULT": "var(--tag-red-text)"
+            },
             "bg": {
               "DEFAULT": "var(--tag-red-bg)",
               "hover": {
                 "DEFAULT": "var(--tag-red-bg-hover)"
               }
             },
-            "icon": {
-              "DEFAULT": "var(--tag-red-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-red-text)"
-            },
             "border": {
               "DEFAULT": "var(--tag-red-border)"
-            }
-          },
-          "orange": {
-            "bg": {
-              "DEFAULT": "var(--tag-orange-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-orange-bg-hover)"
-              }
             },
             "icon": {
-              "DEFAULT": "var(--tag-orange-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-orange-text)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-orange-border)"
-            }
-          },
-          "purple": {
-            "bg": {
-              "hover": {
-                "DEFAULT": "var(--tag-purple-bg-hover)"
-              },
-              "DEFAULT": "var(--tag-purple-bg)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-purple-text)"
-            },
-            "icon": {
-              "DEFAULT": "var(--tag-purple-icon)"
-            },
-            "border": {
-              "DEFAULT": "var(--tag-purple-border)"
+              "DEFAULT": "var(--tag-red-icon)"
             }
           },
           "blue": {
+            "text": {
+              "DEFAULT": "var(--tag-blue-text)"
+            },
             "border": {
               "DEFAULT": "var(--tag-blue-border)"
             },
@@ -83,92 +52,92 @@ export const theme = {
             },
             "icon": {
               "DEFAULT": "var(--tag-blue-icon)"
-            },
-            "text": {
-              "DEFAULT": "var(--tag-blue-text)"
             }
           },
-          "neutral": {
-            "border": {
-              "DEFAULT": "var(--tag-neutral-border)"
-            },
+          "orange": {
             "text": {
-              "DEFAULT": "var(--tag-neutral-text)"
+              "DEFAULT": "var(--tag-orange-text)"
             },
-            "bg": {
-              "DEFAULT": "var(--tag-neutral-bg)",
-              "hover": {
-                "DEFAULT": "var(--tag-neutral-bg-hover)"
-              }
+            "border": {
+              "DEFAULT": "var(--tag-orange-border)"
             },
             "icon": {
-              "DEFAULT": "var(--tag-neutral-icon)"
-            }
-          }
-        },
-        "border": {
-          "interactive": {
-            "DEFAULT": "var(--border-interactive)"
-          },
-          "error": {
-            "DEFAULT": "var(--border-error)"
-          },
-          "danger": {
-            "DEFAULT": "var(--border-danger)"
-          },
-          "strong": {
-            "DEFAULT": "var(--border-strong)"
-          },
-          "base": {
-            "DEFAULT": "var(--border-base)"
-          },
-          "transparent": {
-            "DEFAULT": "var(--border-transparent)"
-          },
-          "menu": {
-            "bot": {
-              "DEFAULT": "var(--border-menu-bot)"
+              "DEFAULT": "var(--tag-orange-icon)"
             },
-            "top": {
-              "DEFAULT": "var(--border-menu-top)"
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-orange-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-orange-bg)"
+            }
+          },
+          "green": {
+            "icon": {
+              "DEFAULT": "var(--tag-green-icon)"
+            },
+            "border": {
+              "DEFAULT": "var(--tag-green-border)"
+            },
+            "text": {
+              "DEFAULT": "var(--tag-green-text)"
+            },
+            "bg": {
+              "hover": {
+                "DEFAULT": "var(--tag-green-bg-hover)"
+              },
+              "DEFAULT": "var(--tag-green-bg)"
+            }
+          },
+          "purple": {
+            "bg": {
+              "DEFAULT": "var(--tag-purple-bg)",
+              "hover": {
+                "DEFAULT": "var(--tag-purple-bg-hover)"
+              }
+            },
+            "text": {
+              "DEFAULT": "var(--tag-purple-text)"
+            },
+            "icon": {
+              "DEFAULT": "var(--tag-purple-icon)"
+            },
+            "border": {
+              "DEFAULT": "var(--tag-purple-border)"
             }
           }
         },
         "bg": {
-          "highlight": {
-            "DEFAULT": "var(--bg-highlight)",
-            "hover": {
-              "DEFAULT": "var(--bg-highlight-hover)"
+          "switch": {
+            "off": {
+              "hover": {
+                "DEFAULT": "var(--bg-switch-off-hover)"
+              },
+              "DEFAULT": "var(--bg-switch-off)"
             }
           },
-          "interactive": {
-            "DEFAULT": "var(--bg-interactive)"
+          "subtle": {
+            "hover": {
+              "DEFAULT": "var(--bg-subtle-hover)"
+            },
+            "DEFAULT": "var(--bg-subtle)",
+            "pressed": {
+              "DEFAULT": "var(--bg-subtle-pressed)"
+            }
           },
           "overlay": {
             "DEFAULT": "var(--bg-overlay)"
           },
-          "switch": {
-            "off": {
-              "DEFAULT": "var(--bg-switch-off)",
-              "hover": {
-                "DEFAULT": "var(--bg-switch-off-hover)"
-              }
-            }
-          },
           "field": {
+            "component": {
+              "hover": {
+                "DEFAULT": "var(--bg-field-component-hover)"
+              },
+              "DEFAULT": "var(--bg-field-component)"
+            },
             "DEFAULT": "var(--bg-field)",
             "hover": {
               "DEFAULT": "var(--bg-field-hover)"
-            },
-            "component": {
-              "DEFAULT": "var(--bg-field-component)",
-              "hover": {
-                "DEFAULT": "var(--bg-field-component-hover)"
-              }
             }
-          },
-          "disabled": {
-            "DEFAULT": "var(--bg-disabled)"
           },
           "base": {
             "pressed": {
@@ -179,6 +148,12 @@ export const theme = {
             },
             "DEFAULT": "var(--bg-base)"
           },
+          "highlight": {
+            "DEFAULT": "var(--bg-highlight)",
+            "hover": {
+              "DEFAULT": "var(--bg-highlight-hover)"
+            }
+          },
           "component": {
             "pressed": {
               "DEFAULT": "var(--bg-component-pressed)"
@@ -188,86 +163,61 @@ export const theme = {
               "DEFAULT": "var(--bg-component-hover)"
             }
           },
-          "subtle": {
-            "DEFAULT": "var(--bg-subtle)",
-            "pressed": {
-              "DEFAULT": "var(--bg-subtle-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--bg-subtle-hover)"
-            }
-          }
-        },
-        "fg": {
-          "on": {
-            "inverted": {
-              "DEFAULT": "var(--fg-on-inverted)"
-            },
-            "color": {
-              "DEFAULT": "var(--fg-on-color)"
-            }
-          },
           "interactive": {
-            "hover": {
-              "DEFAULT": "var(--fg-interactive-hover)"
-            },
-            "DEFAULT": "var(--fg-interactive)"
-          },
-          "error": {
-            "DEFAULT": "var(--fg-error)"
-          },
-          "muted": {
-            "DEFAULT": "var(--fg-muted)"
+            "DEFAULT": "var(--bg-interactive)"
           },
           "disabled": {
-            "DEFAULT": "var(--fg-disabled)"
-          },
-          "base": {
-            "DEFAULT": "var(--fg-base)"
-          },
-          "subtle": {
-            "DEFAULT": "var(--fg-subtle)"
+            "DEFAULT": "var(--bg-disabled)"
           }
         },
-        "button": {
-          "danger": {
-            "DEFAULT": "var(--button-danger)",
-            "pressed": {
-              "DEFAULT": "var(--button-danger-pressed)"
+        "border": {
+          "menu": {
+            "bot": {
+              "DEFAULT": "var(--border-menu-bot)"
             },
-            "hover": {
-              "DEFAULT": "var(--button-danger-hover)"
+            "top": {
+              "DEFAULT": "var(--border-menu-top)"
             }
+          },
+          "strong": {
+            "DEFAULT": "var(--border-strong)"
+          },
+          "interactive": {
+            "DEFAULT": "var(--border-interactive)"
+          },
+          "base": {
+            "DEFAULT": "var(--border-base)"
+          },
+          "danger": {
+            "DEFAULT": "var(--border-danger)"
+          },
+          "error": {
+            "DEFAULT": "var(--border-error)"
           },
           "transparent": {
-            "DEFAULT": "var(--button-transparent)",
-            "hover": {
-              "DEFAULT": "var(--button-transparent-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--button-transparent-pressed)"
-            }
-          },
-          "neutral": {
-            "DEFAULT": "var(--button-neutral)",
-            "hover": {
-              "DEFAULT": "var(--button-neutral-hover)"
-            },
-            "pressed": {
-              "DEFAULT": "var(--button-neutral-pressed)"
-            }
-          },
-          "inverted": {
-            "DEFAULT": "var(--button-inverted)",
-            "pressed": {
-              "DEFAULT": "var(--button-inverted-pressed)"
-            },
-            "hover": {
-              "DEFAULT": "var(--button-inverted-hover)"
-            }
+            "DEFAULT": "var(--border-transparent)"
           }
         },
         "contrast": {
+          "border": {
+            "top": {
+              "DEFAULT": "var(--contrast-border-top)"
+            },
+            "base": {
+              "DEFAULT": "var(--contrast-border-base)"
+            },
+            "bot": {
+              "DEFAULT": "var(--contrast-border-bot)"
+            }
+          },
+          "fg": {
+            "primary": {
+              "DEFAULT": "var(--contrast-fg-primary)"
+            },
+            "secondary": {
+              "DEFAULT": "var(--contrast-fg-secondary)"
+            }
+          },
           "bg": {
             "base": {
               "pressed": {
@@ -280,50 +230,76 @@ export const theme = {
             },
             "subtle": {
               "DEFAULT": "var(--contrast-bg-subtle)"
-            },
-            "highlight": {
-              "DEFAULT": "var(--contrast-bg-highlight)"
-            },
-            "alpha": {
-              "DEFAULT": "var(--contrast-bg-alpha)"
-            }
-          },
-          "fg": {
-            "primary": {
-              "DEFAULT": "var(--contrast-fg-primary)"
-            },
-            "secondary": {
-              "DEFAULT": "var(--contrast-fg-secondary)"
-            }
-          },
-          "border": {
-            "base": {
-              "DEFAULT": "var(--contrast-border-base)"
             }
           }
         },
-        "code": {
-          "fg": {
-            "subtle": {
-              "DEFAULT": "var(--code-fg-subtle)"
+        "fg": {
+          "disabled": {
+            "DEFAULT": "var(--fg-disabled)"
+          },
+          "base": {
+            "DEFAULT": "var(--fg-base)"
+          },
+          "muted": {
+            "DEFAULT": "var(--fg-muted)"
+          },
+          "on": {
+            "color": {
+              "DEFAULT": "var(--fg-on-color)"
             },
-            "muted": {
-              "DEFAULT": "var(--code-fg-muted)"
-            },
-            "base": {
-              "DEFAULT": "var(--code-fg-base)"
+            "inverted": {
+              "DEFAULT": "var(--fg-on-inverted)"
             }
           },
-          "bg": {
-            "base": {
-              "DEFAULT": "var(--code-bg-base)"
+          "interactive": {
+            "hover": {
+              "DEFAULT": "var(--fg-interactive-hover)"
             },
-            "subtle": {
-              "DEFAULT": "var(--code-bg-subtle)"
+            "DEFAULT": "var(--fg-interactive)"
+          },
+          "error": {
+            "DEFAULT": "var(--fg-error)"
+          },
+          "subtle": {
+            "DEFAULT": "var(--fg-subtle)"
+          }
+        },
+        "button": {
+          "inverted": {
+            "pressed": {
+              "DEFAULT": "var(--button-inverted-pressed)"
+            },
+            "hover": {
+              "DEFAULT": "var(--button-inverted-hover)"
+            },
+            "DEFAULT": "var(--button-inverted)"
+          },
+          "transparent": {
+            "DEFAULT": "var(--button-transparent)",
+            "hover": {
+              "DEFAULT": "var(--button-transparent-hover)"
+            },
+            "pressed": {
+              "DEFAULT": "var(--button-transparent-pressed)"
             }
           },
-          "border": {
-            "DEFAULT": "var(--code-border)"
+          "danger": {
+            "pressed": {
+              "DEFAULT": "var(--button-danger-pressed)"
+            },
+            "DEFAULT": "var(--button-danger)",
+            "hover": {
+              "DEFAULT": "var(--button-danger-hover)"
+            }
+          },
+          "neutral": {
+            "DEFAULT": "var(--button-neutral)",
+            "hover": {
+              "DEFAULT": "var(--button-neutral-hover)"
+            },
+            "pressed": {
+              "DEFAULT": "var(--button-neutral-pressed)"
+            }
           }
         }
       }
@@ -345,13 +321,13 @@ export const theme = {
       "borders-base": "var(--borders-base)",
       "elevation-card-rest": "var(--elevation-card-rest)",
       "buttons-neutral-focus": "var(--buttons-neutral-focus)",
-      "details-code-block": "var(--details-code-block)",
       "details-switch-background-focus": "var(--details-switch-background-focus)",
       "details-switch-background": "var(--details-switch-background)",
       "elevation-flyout": "var(--elevation-flyout)",
       "elevation-tooltip": "var(--elevation-tooltip)",
       "elevation-modal": "var(--elevation-modal)",
-      "details-commandbar": "var(--details-commandbar)"
+      "elevation-commandbar": "var(--elevation-commandbar)",
+      "elevation-code-block": "var(--elevation-code-block)"
     }
   }
 }
