@@ -66,17 +66,10 @@ export function OrderCreateFulfillmentForm({
           })),
       })
 
+      toast.success(t("orders.fulfillment.toast.created"))
       handleSuccess(`/orders/${order.id}`)
-
-      toast.success(t("general.success"), {
-        description: t("orders.fulfillment.toast.created"),
-        dismissLabel: t("actions.close"),
-      })
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     }
   })
 

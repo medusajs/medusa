@@ -62,7 +62,7 @@ export const ProductDetail = () => {
             )
           })}
           <div className="hidden xl:block">
-            <JsonViewSection data={product} root="product" />
+            <JsonViewSection data={product} />
           </div>
         </div>
         <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">

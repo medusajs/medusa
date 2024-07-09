@@ -836,6 +836,10 @@ export interface OrderDTO {
    */
   version: number
   /**
+   * The active order change, if any.
+   */
+  order_change?: OrderChangeDTO
+  /**
    * The status of the order.
    */
   status: OrderStatus
@@ -1192,15 +1196,53 @@ export interface OrderChangeDTO {
    */
   id: string
   /**
+   * The version of the order change
+   */
+  version: string
+  /**
+   * The type of the order change
+   */
+  change_type?: "return" | "exchange" | "claim" | "edit"
+  /**
    * The ID of the associated order
    */
   order_id: string
+  /**
+   * The ID of the associated return order
+   */
+  return_id: string
+  /**
+   * The ID of the associated exchange order
+   */
+  exchange_id: string
+  /**
+   * The ID of the associated claim order
+   */
+  claim_id: string
   /**
    * The associated order
    *
    * @expandable
    */
   order: OrderDTO
+  /**
+   * The associated return order
+   *
+   * @expandable
+   */
+  return_order: ReturnDTO
+  /**
+   * The associated exchange order
+   *
+   * @expandable
+   */
+  exchange: OrderExchangeDTO
+  /**
+   * The associated claim order
+   *
+   * @expandable
+   */
+  claim: OrderClaimDTO
 
   /**
    * The actions of the order change

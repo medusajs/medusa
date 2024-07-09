@@ -109,6 +109,7 @@ function prepareShippingMethodData({
     order_id: orderId,
     shipping_option_id: returnShippingOption.id,
     amount: 0,
+    is_tax_inclusive: false,
     data: {},
     // Computed later in the flow
     tax_lines: [],
@@ -122,6 +123,9 @@ function prepareShippingMethodData({
       // TODO: retrieve calculated price and assign to amount
     } else {
       obj.amount = returnShippingOption.calculated_price.calculated_amount
+      obj.is_tax_inclusive =
+        !!returnShippingOption.calculated_price
+          .is_calculated_price_tax_inclusive
     }
   }
 
@@ -317,6 +321,7 @@ export const createReturnOrderWorkflow = createWorkflow(
         "name",
         "provider_id",
         "calculated_price.calculated_amount",
+        "calculated_price.is_calculated_price_tax_inclusive",
         "service_zone.fulfillment_set.location.id",
       ],
       variables: returnShippingOptionsVariables,

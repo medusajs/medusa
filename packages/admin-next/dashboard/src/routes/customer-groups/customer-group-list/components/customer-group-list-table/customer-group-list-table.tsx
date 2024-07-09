@@ -3,15 +3,16 @@ import {
   Button,
   Container,
   Heading,
+  Text,
   toast,
   usePrompt,
-  Text,
 } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
@@ -22,7 +23,6 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -112,18 +112,14 @@ const CustomerGroupRowActions = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("customerGroups.delete.successToast", {
+        toast.success(
+          t("customerGroups.delete.successToast", {
             name: group.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

@@ -1,5 +1,4 @@
 import { updateStoresWorkflow } from "@medusajs/core-flows"
-import { UpdateStoreDTO } from "@medusajs/types"
 import {
   remoteQueryObjectFromString,
   ContainerRegistrationKeys,
@@ -35,7 +34,7 @@ export const POST = async (
   const { result } = await updateStoresWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as UpdateStoreDTO,
+      update: req.validatedBody,
     },
   })
 

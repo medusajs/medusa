@@ -212,6 +212,7 @@ export interface CreateOrderShippingMethodDTO {
   exchange_id?: string
   version?: number
   amount: BigNumberInput
+  is_tax_inclusive?: boolean
   shipping_option_id?: string
   data?: Record<string, unknown>
   tax_lines?: CreateOrderTaxLineDTO[]
@@ -269,14 +270,15 @@ export interface UpdateOrderChangeDTO {
   status?: string
   description?: string
   internal_note?: string | null
-  requested_by?: string
-  requested_at?: Date
-  confirmed_by?: string
-  confirmed_at?: Date
-  declined_by?: string
-  declined_reason?: string
-  declined_at?: Date
-  canceled_by?: string
+  requested_by?: string | null
+  requested_at?: Date | null
+  confirmed_by?: string | null
+  confirmed_at?: Date | null
+  declined_by?: string | null
+  declined_reason?: string | null
+  declined_at?: Date | null
+  canceled_by?: string | null
+  canceled_at?: Date | null
   metadata?: Record<string, unknown> | null
 }
 

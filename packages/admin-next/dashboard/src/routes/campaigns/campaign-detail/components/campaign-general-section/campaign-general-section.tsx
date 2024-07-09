@@ -48,20 +48,16 @@ export const CampaignGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("campaigns.delete.successToast", {
+        toast.success(
+          t("campaigns.delete.successToast", {
             name: campaign.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/campaigns", { replace: true })
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

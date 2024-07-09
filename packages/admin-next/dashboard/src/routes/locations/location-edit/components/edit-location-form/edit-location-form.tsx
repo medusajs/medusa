@@ -7,10 +7,7 @@ import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type EditLocationFormProps = {
@@ -64,18 +61,11 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.edit.successToast"),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("stockLocations.edit.successToast"))
           handleSuccess()
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

@@ -304,12 +304,16 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/_events"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/claim/page.mdx",
+    "pathname": "/commerce-modules/order/claim"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/concepts/page.mdx",
     "pathname": "/commerce-modules/order/concepts"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/order-change/page.mdx",
-    "pathname": "/commerce-modules/order/order-change"
+    "filePath": "/www/apps/resources/app/commerce-modules/order/exchange/page.mdx",
+    "pathname": "/commerce-modules/order/exchange"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-versioning/page.mdx",
@@ -326,6 +330,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/order/relations-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/return/page.mdx",
+    "pathname": "/commerce-modules/order/return"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/tax-lines/page.mdx",
@@ -8544,12 +8552,12 @@ export const filesMap = [
     "pathname": "/references/types/DAL/interfaces/types.DAL.UpsertWithReplaceConfig"
   },
   {
-    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.EntityDateColumns/page.mdx",
-    "pathname": "/references/types/DAL/types/types.DAL.EntityDateColumns"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.FilterQuery/page.mdx",
     "pathname": "/references/types/DAL/types/types.DAL.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.ModelDateColumns/page.mdx",
+    "pathname": "/references/types/DAL/types/types.DAL.ModelDateColumns"
   },
   {
     "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.OperatorMap/page.mdx",
@@ -8560,8 +8568,8 @@ export const filesMap = [
     "pathname": "/references/types/DAL/types/types.DAL.PerformedActions"
   },
   {
-    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx",
-    "pathname": "/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns"
+    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.SoftDeletableModelDateColumns/page.mdx",
+    "pathname": "/references/types/DAL/types/types.DAL.SoftDeletableModelDateColumns"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/interfaces/types.DmlTypes.EntityConstructor/page.mdx",

@@ -69,11 +69,11 @@ export const EditReservationForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values as any, {
       onSuccess: () => {
+        toast.success(t("inventory.reservation.updateSuccessToast"))
         handleSuccess()
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("inventory.reservation.updateSuccessToast"),
-        })
+      },
+      onError: (e) => {
+        toast.error(e.message)
       },
     })
   })

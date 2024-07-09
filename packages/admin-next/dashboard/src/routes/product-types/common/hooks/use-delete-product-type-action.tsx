@@ -22,18 +22,10 @@ export const useDeleteProductTypeAction = (id: string) => {
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("productTypes.delete.successToast"),
-          dismissLabel: t("actions.close"),
-          dismissable: true,
-        })
+        toast.success(t("productTypes.delete.successToast"))
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-          dismissable: true,
-        })
+        toast.error(e.message)
       },
     })
   }

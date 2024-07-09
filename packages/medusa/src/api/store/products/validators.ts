@@ -9,7 +9,17 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 
-export const StoreGetProductParams = createSelectParams()
+export type StoreGetProductParamsType = z.infer<typeof StoreGetProductParams>
+
+export const StoreGetProductParams = createSelectParams().merge(
+  // These are used to populate the tax and pricing context
+  z.object({
+    region_id: z.string().optional(),
+    country_code: z.string().optional(),
+    province: z.string().optional(),
+    cart_id: z.string().optional(),
+  })
+)
 
 export type StoreGetProductVariantsParamsType = z.infer<
   typeof StoreGetProductVariantsParams
@@ -38,8 +48,12 @@ export const StoreGetProductsParams = createFindParams({
 }).merge(
   z
     .object({
+      // These are used to populate the tax and pricing context
       region_id: z.string().optional(),
-      currency_code: z.string().optional(),
+      country_code: z.string().optional(),
+      province: z.string().optional(),
+      cart_id: z.string().optional(),
+
       variants: z
         .object({
           status: ProductStatusEnum.array().optional(),

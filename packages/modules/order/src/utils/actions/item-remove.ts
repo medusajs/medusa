@@ -2,11 +2,14 @@ import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import { setActionReference } from "../set-action-reference"
+import {
+  setActionReference,
+  unsetActionReference,
+} from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
   isDeduction: true,
-  operation({ action, currentOrder }) {
+  operation({ action, currentOrder, options }) {
     const existingIndex = currentOrder.items.findIndex(
       (item) => item.id === action.details.reference_id
     )
@@ -21,7 +24,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       action.details.quantity
     )
 
-    setActionReference(existing, action)
+    setActionReference(existing, action, options)
 
     if (MathBN.lte(existing.quantity, 0)) {
       currentOrder.items.splice(existingIndex, 1)
@@ -40,6 +43,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
         existing.detail.quantity,
         action.details.quantity
       )
+
+      unsetActionReference(existing, action)
     } else {
       currentOrder.items.push({
         id: action.details.reference_id!,

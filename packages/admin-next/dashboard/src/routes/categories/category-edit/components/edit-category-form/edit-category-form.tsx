@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input, Select, Textarea } from "@medusajs/ui"
+import { Button, Input, Select, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -7,7 +7,8 @@ import { z } from "zod"
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { HandleInput } from "../../../../../components/inputs/handle-input"
-import { RouteDrawer } from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { useUpdateProductCategory } from "../../../../../hooks/api/categories"
 
 const EditCategorySchema = z.object({
   name: z.string().min(1),
@@ -23,6 +24,7 @@ type EditCategoryFormProps = {
 
 export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
   const { t } = useTranslation()
+  const { handleSuccess } = useRouteModal()
 
   const form = useForm<z.infer<typeof EditCategorySchema>>({
     defaultValues: {
@@ -35,9 +37,27 @@ export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
     resolver: zodResolver(EditCategorySchema),
   })
 
-  const isPending = false
-
-  const handleSubmit = form.handleSubmit(async (data) => console.log(data))
+  const { mutateAsync, isPending } = useUpdateProductCategory(category.id)
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await mutateAsync(
+      {
+        name: data.name,
+        description: data.description,
+        handle: data.handle,
+        is_active: data.status === "active",
+        is_internal: data.visibility === "internal",
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("categories.edit.successToast"))
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+  })
 
   return (
     <RouteDrawer.Form form={form}>
