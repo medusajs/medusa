@@ -20,5 +20,5 @@ export const WorkflowExecutionPayloadSection = ({
     payload = { input: payload }
   }
 
-  return <JsonViewSection title="Payload" data={payload as object} />
+  return <JsonViewSection data={payload as object} />
 }
