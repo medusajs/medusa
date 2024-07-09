@@ -8,6 +8,12 @@ export const metadata = {
 
 The Local File Module Provider stores files uploaded to your Medusa application in the `/uploads` directory.
 
+<Note type="warning">
+
+The Local File Module Provider is only for development purposes. Use the [S3 File Module Provider](../s3/page.mdx) in production instead.
+
+</Note>
+
 ---
 
 ## Install the Local File Module
@@ -77,29 +83,29 @@ module.exports = {
       </Table.Cell>
       <Table.Cell>
       
-      The directory to upload files to.
+      The directory to upload files to. Medusa exposes the content of the `static` directory publically. If you change the directory, it must be served and publically accessible.
       
       </Table.Cell>
       <Table.Cell>
       
-      `uploads`
+      `static`
       
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
       
-      `upload_dir`
+      `backend_url`
       
       </Table.Cell>
       <Table.Cell>
       
-      The URL of the Medusa application.
+      The URL that serves the files.
       
       </Table.Cell>
       <Table.Cell>
       
-      `http://localhost:9000`
+      `http://localhost:9000/static`
       
       </Table.Cell>
     </Table.Row>
