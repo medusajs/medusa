@@ -71,20 +71,20 @@ export interface UpdateStoreDTO {
   /**
    * The associated default sales channel's ID.
    */
-  default_sales_channel_id?: string
+  default_sales_channel_id?: string | null
 
   /**
    * The associated default region's ID.
    */
-  default_region_id?: string
+  default_region_id?: string | null
 
   /**
    * The associated default location's ID.
    */
-  default_location_id?: string
+  default_location_id?: string | null
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, any>
+  metadata?: Record<string, any> | null
 }
