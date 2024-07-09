@@ -2299,15 +2299,29 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/order/order-change",
-                "title": "Order Change",
+                "path": "/commerce-modules/order/order-versioning",
+                "title": "Order Versioning",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/order/order-versioning",
-                "title": "Order Versioning",
+                "path": "/commerce-modules/order/return",
+                "title": "Return",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/order/exchange",
+                "title": "Exchange",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/order/claim",
+                "title": "Claim",
                 "children": []
               },
               {
