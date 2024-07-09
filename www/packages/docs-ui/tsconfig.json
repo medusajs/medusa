@@ -13,9 +13,7 @@
     "module": "ESNext",
     "target": "es6",
     "declaration": true,
-    "declarationMap": true,
-    "composite": true,
-    "incremental": true
+    "declarationMap": true
   },
   "include": ["src/**/*", "tailwind.config.js", "postcss.config.js"]
 }
