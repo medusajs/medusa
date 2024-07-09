@@ -7,10 +7,7 @@ import { z } from "zod"
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { ChipInput } from "../../../../../components/inputs/chip-input"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useCreateProductOption } from "../../../../../hooks/api/products"
 
 type EditProductOptionsFormProps = {
@@ -41,19 +38,15 @@ export const CreateProductOptionForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("products.options.create.successToast", {
+        toast.success(
+          t("products.options.create.successToast", {
             title: values.title,
-          }),
-          dismissLabel: t("general.close"),
-        })
+          })
+        )
         handleSuccess()
       },
       onError: async (err) => {
-        toast.error(t("general.error"), {
-          description: err.message,
-          dismissLabel: t("general.close"),
-        })
+        toast.error(err.message)
       },
     })
   })

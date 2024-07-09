@@ -63,25 +63,16 @@ export function EditServiceZoneAreasForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t(
-              "stockLocations.serviceZones.manageAreas.successToast",
-              {
-                name: zone.name,
-              }
-            ),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.success(
+            t("stockLocations.serviceZones.manageAreas.successToast", {
+              name: zone.name,
+            })
+          )
 
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

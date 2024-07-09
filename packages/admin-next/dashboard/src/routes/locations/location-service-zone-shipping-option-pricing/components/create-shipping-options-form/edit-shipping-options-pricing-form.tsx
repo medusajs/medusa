@@ -186,16 +186,11 @@ export function EditShippingOptionsPricingForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            dismissLabel: t("general.close"),
-          })
+          toast.success(t("general.success"))
           handleSuccess()
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

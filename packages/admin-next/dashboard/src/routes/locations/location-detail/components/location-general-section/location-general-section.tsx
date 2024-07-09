@@ -127,20 +127,14 @@ function ShippingOption({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("stockLocations.shippingOptions.delete.successToast", {
+        toast.success(
+          t("stockLocations.shippingOptions.delete.successToast", {
             name: option.name,
-          }),
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
     })
   }
@@ -303,18 +297,14 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
 
     await deleteZone(undefined, {
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("stockLocations.serviceZones.delete.successToast", {
+        toast.success(
+          t("stockLocations.serviceZones.delete.successToast", {
             name: zone.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
       },
     })
   }
@@ -473,18 +463,10 @@ function FulfillmentSet(props: FulfillmentSetProps) {
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t(`stockLocations.fulfillmentSets.enable.${type}`),
-            dismissLabel: t("actions.close"),
-            dismissable: true,
-          })
+          toast.success(t(`stockLocations.fulfillmentSets.enable.${type}`))
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-            dismissable: true,
-          })
+          toast.error(e.message)
         },
       }
     )
@@ -506,18 +488,10 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 
     await deleteFulfillmentSet(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t(`stockLocations.fulfillmentSets.disable.${type}`),
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+        toast.success(t(`stockLocations.fulfillmentSets.disable.${type}`))
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
     })
   }
@@ -627,21 +601,15 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("stockLocations.create.successToast", {
+        toast.success(
+          t("stockLocations.create.successToast", {
             name: location.name,
-          }),
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
         navigate("/settings/locations", { replace: true })
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
     })
   }

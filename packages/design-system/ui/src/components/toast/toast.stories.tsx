@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
+import { Keyboard } from "@medusajs/icons"
+import { Kbd } from "../kbd"
 import { Toast } from "./toast"
 
 const meta: Meta<typeof Toast> = {
@@ -58,6 +60,13 @@ export const Loading: Story = {
   },
 }
 
+export const Message: Story = {
+  args: {
+    title: <span>Next time hit <Kbd>G</Kbd> then <Kbd>O</Kbd> to go to orders.</span>,
+    icon: <Keyboard className="text-ui-fg-subtle" />,
+  }
+}
+
 export const WithAction: Story = {
   args: {
     title: "Scheduled meeting",
@@ -68,5 +77,12 @@ export const WithAction: Story = {
       onClick: () => {},
       label: "Undo",
     },
+  },
+}
+
+export const NoDescription: Story = {
+  args: {
+    title: "Label",
+    variant: "info",
   },
 }

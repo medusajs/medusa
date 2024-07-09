@@ -95,19 +95,14 @@ export const AddCampaignPromotionsForm = ({
       { add: values.promotion_ids },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("campaigns.promotions.toast.success", {
+          toast.success(
+            t("campaigns.promotions.toast.success", {
               count: values.promotion_ids.length,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess()
         },
-        onError: (error) =>
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          }),
+        onError: (error) => toast.error(error.message),
       }
     )
   })

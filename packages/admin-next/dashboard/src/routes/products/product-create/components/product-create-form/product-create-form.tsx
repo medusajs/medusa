@@ -91,79 +91,69 @@ export const ProductCreateForm = ({
     [watchedVariants]
   )
 
-  const handleSubmit = form.handleSubmit(
-    async (values, e) => {
-      let isDraftSubmission = false
-      if (e?.nativeEvent instanceof SubmitEvent) {
-        const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
-        isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
-      }
-
-      const media = values.media || []
-      const payload = { ...values, media: undefined }
-
-      let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
-      try {
-        if (media.length) {
-          const thumbnailReq = media.find((m) => m.isThumbnail)
-          const otherMediaReq = media.filter((m) => !m.isThumbnail)
-
-          const fileReqs = []
-          if (thumbnailReq) {
-            fileReqs.push(
-              sdk.admin.upload
-                .create({ files: [thumbnailReq.file] })
-                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
-            )
-          }
-          if (otherMediaReq?.length) {
-            fileReqs.push(
-              sdk.admin.upload
-                .create({
-                  files: otherMediaReq.map((m) => m.file),
-                })
-                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: false })))
-            )
-          }
-
-          uploadedMedia = (await Promise.all(fileReqs)).flat()
-        }
-
-        const { product } = await mutateAsync(
-          normalizeProductFormValues({
-            ...payload,
-            media: uploadedMedia,
-            status: (isDraftSubmission ? "draft" : "published") as any,
-            regionsCurrencyMap,
-          })
-        )
-
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("products.create.successToast", {
-            title: product.title,
-          }),
-        })
-
-        handleSuccess(`../${product.id}`)
-      } catch (error) {
-        if (isFetchError(error) && error.status === 400) {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("general.close"),
-          })
-        } else {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("general.close"),
-          })
-        }
-      }
-    },
-    (err) => {
-      console.log(err)
+  const handleSubmit = form.handleSubmit(async (values, e) => {
+    let isDraftSubmission = false
+    if (e?.nativeEvent instanceof SubmitEvent) {
+      const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
+      isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
     }
-  )
+
+    const media = values.media || []
+    const payload = { ...values, media: undefined }
+
+    let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
+    try {
+      if (media.length) {
+        const thumbnailReq = media.find((m) => m.isThumbnail)
+        const otherMediaReq = media.filter((m) => !m.isThumbnail)
+
+        const fileReqs = []
+        if (thumbnailReq) {
+          fileReqs.push(
+            sdk.admin.upload
+              .create({ files: [thumbnailReq.file] })
+              .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
+          )
+        }
+        if (otherMediaReq?.length) {
+          fileReqs.push(
+            sdk.admin.upload
+              .create({
+                files: otherMediaReq.map((m) => m.file),
+              })
+              .then((r) => r.files.map((f) => ({ ...f, isThumbnail: false })))
+          )
+        }
+
+        uploadedMedia = (await Promise.all(fileReqs)).flat()
+      }
+
+      const { product } = await mutateAsync(
+        normalizeProductFormValues({
+          ...payload,
+          media: uploadedMedia,
+          status: (isDraftSubmission ? "draft" : "published") as any,
+          regionsCurrencyMap,
+        })
+      )
+
+      toast.success(
+        t("products.create.successToast", {
+          title: product.title,
+        })
+      )
+
+      handleSuccess(`../${product.id}`)
+    } catch (error) {
+      if (isFetchError(error) && error.status === 400) {
+        toast.error(error.message)
+      } else {
+        toast.error(t("general.error"), {
+          description: error.message,
+        })
+      }
+    }
+  })
 
   const onNext = async (currentTab: Tab) => {
     const valid = await form.trigger()

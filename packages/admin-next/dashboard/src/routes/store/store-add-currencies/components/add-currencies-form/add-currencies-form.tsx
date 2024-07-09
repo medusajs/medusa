@@ -113,26 +113,25 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
       defaultCurrency = currencies?.[0]
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies: currencies.map((c) => ({
           currency_code: c,
           is_default: c === defaultCurrency,
           // TODO: Add UI to manage this
           is_tax_inclsuive: false,
         })),
-      })
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesUpdated"),
-        dismissLabel: t("actions.close"),
-      })
-      handleSuccess()
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.currenciesUpdated"))
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   if (isError) {

@@ -109,14 +109,16 @@ export const AddCustomersForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("customerGroups.customers.add.successToast", {
+          toast.success(
+            t("customerGroups.customers.add.successToast", {
               count: data.customer_ids.length,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess(`/customer-groups/${customerGroupId}`)
+        },
+        onError: (error) => {
+          toast.error(error.message)
         },
       }
     )

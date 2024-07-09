@@ -102,27 +102,24 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload = [
-      ...(region.countries?.map((c) => c.iso_2) ?? []),
+      ...(region.countries?.map((c) => c.iso_2!) ?? []),
       ...values.countries,
     ]
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         countries: payload,
-      })
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("regions.toast.countries"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("regions.toast.countries"))
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   return (

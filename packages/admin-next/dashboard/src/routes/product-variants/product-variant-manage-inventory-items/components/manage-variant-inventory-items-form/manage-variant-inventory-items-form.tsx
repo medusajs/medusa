@@ -16,7 +16,6 @@ import {
 import { useProductVariantsInventoryItemsBatch } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
-import { useEffect } from "react"
 
 type ManageVariantInventoryItemsFormProps = {
   variant: AdminProductVariant & {
@@ -141,17 +140,11 @@ export function ManageVariantInventoryItemsForm({
 
     await mutateAsync(payload, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("products.variant.inventory.toast.itemsManageSuccess"),
-          dismissLabel: t("general.close"),
-        })
+        toast.success(t("products.variant.inventory.toast.itemsManageSuccess"))
         handleSuccess()
       },
       onError: (err) => {
-        toast.error(t("general.error"), {
-          description: err.message,
-          dismissLabel: t("general.close"),
-        })
+        toast.error(err.message)
       },
     })
   })
