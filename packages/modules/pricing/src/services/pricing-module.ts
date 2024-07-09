@@ -334,7 +334,9 @@ export default class PricingModuleService
             is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
             is_calculated_price_tax_inclusive: isTaxInclusive(
               priceRulesPriceMap.get(calculatedPrice.id),
-              pricingPreferences
+              pricingPreferences,
+              calculatedPrice.currency_code!,
+              pricingContext.context?.region_id as string
             ),
             calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
 
@@ -342,7 +344,9 @@ export default class PricingModuleService
             is_original_price_tax_inclusive: originalPrice?.id
               ? isTaxInclusive(
                   priceRulesPriceMap.get(originalPrice.id),
-                  pricingPreferences
+                  pricingPreferences,
+                  originalPrice.currency_code || calculatedPrice.currency_code!,
+                  pricingContext.context?.region_id as string
                 )
               : false,
             original_amount: parseInt(originalPrice?.amount || "") || null,
@@ -1451,19 +1455,23 @@ export default class PricingModuleService
 
 const isTaxInclusive = (
   priceRules: PriceRule[],
-  preferences: PricePreference[]
+  preferences: PricePreference[],
+  currencyCode: string,
+  regionId?: string
 ) => {
-  const regionPreference = preferences.find((p) => p.attribute === "region_id")
-  const currencyPreference = preferences.find(
-    (p) => p.attribute === "currency_code"
+  const regionRule = priceRules?.find(
+    (rule) => rule.attribute === "region_id" && rule.value === regionId
   )
-  const regionRule = priceRules?.find((rule) => rule.attribute === "region_id")
 
-  if (
-    regionRule &&
-    regionPreference &&
-    regionRule.value === regionPreference.value
-  ) {
+  const regionPreference = preferences.find(
+    (p) => p.attribute === "region_id" && p.value === regionId
+  )
+
+  const currencyPreference = preferences.find(
+    (p) => p.attribute === "currency_code" && p.value === currencyCode
+  )
+
+  if (regionRule && regionPreference) {
     return regionPreference.is_tax_inclusive
   }
 

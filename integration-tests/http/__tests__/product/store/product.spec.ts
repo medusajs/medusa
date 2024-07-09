@@ -1269,22 +1269,6 @@ medusaIntegrationTestRunner({
       let euCart
 
       beforeEach(async () => {
-        product1 = (
-          await api.post(
-            "/admin/products",
-            getProductFixture({ title: "test1", status: "published" }),
-            adminHeaders
-          )
-        ).data.product
-
-        product2 = (
-          await api.post(
-            "/admin/products",
-            getProductFixture({ title: "test2", status: "published" }),
-            adminHeaders
-          )
-        ).data.product
-
         usRegion = (
           await api.post(
             "/admin/regions",
@@ -1326,6 +1310,39 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.region
+
+        product1 = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "test1",
+              status: "published",
+              variants: [
+                {
+                  title: "Test taxes",
+                  prices: [
+                    {
+                      amount: 45,
+                      currency_code: "eur",
+                      rules: { region_id: euRegion.id },
+                    },
+                    {
+                      amount: 100,
+                      currency_code: "usd",
+                      rules: { region_id: usRegion.id },
+                    },
+                    {
+                      amount: 30,
+                      currency_code: "dkk",
+                      rules: { region_id: dkRegion.id },
+                    },
+                  ],
+                },
+              ],
+            }),
+            adminHeaders
+          )
+        ).data.product
 
         euCart = (await api.post("/store/carts", { region_id: euRegion.id }))
           .data.cart
@@ -1377,7 +1394,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants[0].calculated_price).not.toHaveProperty(
           "calculated_amount_with_tax"
         )
@@ -1393,7 +1410,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants[0].calculated_price).not.toHaveProperty(
           "calculated_amount_with_tax"
         )
@@ -1409,7 +1426,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1430,14 +1447,14 @@ medusaIntegrationTestRunner({
         ).toEqual("40.9")
       })
 
-      it.skip("should return prices with and without tax for a tax exclusive region when listing products", async () => {
+      it("should return prices with and without tax for a tax exclusive region when listing products", async () => {
         const products = (
           await api.get(
             `/store/products?fields=id,*variants.calculated_price&region_id=${dkRegion.id}&country_code=dk`
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1459,7 +1476,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1493,7 +1510,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(2)
+        expect(products.length).toBe(1)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({

@@ -21,6 +21,16 @@ export interface BaseCalculatedPriceSet {
   calculated_amount: number | null
 
   /**
+   * The amount of the calculated price with taxes included. If the calculated price is tax inclusive, this field will be the same as `calculated_amount`.
+   */
+  calculated_amount_with_tax?: number | null
+
+  /**
+   * The amount of the calculated price without taxes included. If the calculated price is tax exclusive, this field will be the same as `calculated_amount`.
+   */
+  calculated_amount_without_tax?: number | null
+
+  /**
    * Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override,
    * the original price will be the same as the calculated price. In that case, the value of this property is `true`.
    */

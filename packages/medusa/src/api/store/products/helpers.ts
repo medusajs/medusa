@@ -97,11 +97,8 @@ export const wrapProductsWithTaxPrices = async <T>(
           variant.calculated_price!.is_calculated_price_tax_inclusive!,
       })
 
-      // TODO: Resolve the typings when tax inclusivity is finalized.
-      ;(variant.calculated_price as any).calculated_amount_with_tax =
-        priceWithTax
-      ;(variant.calculated_price as any).calculated_amount_without_tax =
-        priceWithoutTax
+      variant.calculated_price.calculated_amount_with_tax = priceWithTax
+      variant.calculated_price.calculated_amount_without_tax = priceWithoutTax
     })
   })
 }

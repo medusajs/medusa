@@ -1449,6 +1449,39 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           })
 
+          it("should return the region tax inclusivity for the selected price when there are multiple region preferences", async () => {
+            await (service as any).createPricePreferences([
+              {
+                attribute: "region_id",
+                value: "DE",
+                is_tax_inclusive: false,
+              },
+              {
+                attribute: "region_id",
+                value: "PL",
+                is_tax_inclusive: true,
+              },
+            ])
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: { currency_code: "PLN", region_id: "PL" },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_tax_inclusive: true,
+                calculated_amount: 300,
+                is_original_price_tax_inclusive: true,
+                original_amount: 300,
+                currency_code: "PLN",
+              }),
+            ])
+          })
+
           it("should return the appropriate tax inclusive setting for each calculated and original price", async () => {
             await createPriceLists(service, {}, {})
             await (service as any).createPricePreferences([
