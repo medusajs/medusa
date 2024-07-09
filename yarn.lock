@@ -5230,7 +5230,6 @@ __metadata:
     "@radix-ui/react-popover": 1.1.1
     "@radix-ui/react-portal": 1.1.1
     "@radix-ui/react-radio-group": 1.2.0
-    "@radix-ui/react-scroll-area": ^1.1.0
     "@radix-ui/react-select": 2.1.1
     "@radix-ui/react-slot": 1.1.0
     "@radix-ui/react-switch": 1.1.0
@@ -6910,33 +6909,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: ce367d3033a12d639a8d445d2efa090aa4bc5a78125be568f8c8e4e59f30afd51b585a90031ec18cdba19afbaf1974633dbc0c2c3d2a14d9eb1bfea2ddbe5369
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-scroll-area@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@radix-ui/react-scroll-area@npm:1.1.0"
-  dependencies:
-    "@radix-ui/number": 1.1.0
-    "@radix-ui/primitive": 1.1.0
-    "@radix-ui/react-compose-refs": 1.1.0
-    "@radix-ui/react-context": 1.1.0
-    "@radix-ui/react-direction": 1.1.0
-    "@radix-ui/react-presence": 1.1.0
-    "@radix-ui/react-primitive": 2.0.0
-    "@radix-ui/react-use-callback-ref": 1.1.0
-    "@radix-ui/react-use-layout-effect": 1.1.0
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 46063b17f06bd2fe20ceaceb2fb0c1cd1b2767045d6d721904bc3f5d6726704a77eaf63997a514ca8f43d973da0c6446d7ca04057d9983cb0d46f4be8c01c9f5
   languageName: node
   linkType: hard
 
