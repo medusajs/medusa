@@ -1,5 +1,12 @@
-import { CancelOrderChangeDTO, IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import {
+  CancelOrderChangeDTO,
+  IOrderModuleService,
+  UpdateOrderChangeDTO,
+} from "@medusajs/types"
+import {
+  getSelectsAndRelationsFromObjectArray,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const cancelOrderChangeStepId = "cancel-order-change"
@@ -10,19 +17,19 @@ export const cancelOrderChangeStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data],
+      { objectFields: ["metadata"] }
+    )
+
     const dataBeforeUpdate = await service.retrieveOrderChange(data.id, {
-      select: ["status", "metadata"],
+      select: [...selects, "canceled_at"],
+      relations,
     })
 
     await service.cancelOrderChange(data)
 
-    return new StepResponse(void 0, {
-      id: data.id,
-      status: dataBeforeUpdate.status,
-      canceled_at: null,
-      canceled_by: null,
-      metadata: dataBeforeUpdate.metadata,
-    })
+    return new StepResponse(void 0, dataBeforeUpdate)
   },
   async (rollbackData, { container }) => {
     if (!rollbackData) {
@@ -33,6 +40,6 @@ export const cancelOrderChangeStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.updateOrderChanges(rollbackData)
+    await service.updateOrderChanges(rollbackData as UpdateOrderChangeDTO)
   }
 )
