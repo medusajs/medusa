@@ -9,7 +9,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateStoresStepInput = {
+type WorkflowInputData = {
   selector: FilterableStoreProps
   update: UpdateStoreDTO
 }
@@ -17,7 +17,7 @@ type UpdateStoresStepInput = {
 export const updateStoresStepId = "update-stores"
 export const updateStoresStep = createStep(
   updateStoresStepId,
-  async (data: UpdateStoresStepInput, { container }) => {
+  async (data: WorkflowInputData, { container }) => {
     const service = container.resolve<IStoreModuleService>(
       ModuleRegistrationName.STORE
     )
