@@ -52,6 +52,16 @@
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive."
   },
+  "json": {
+    "header": "JSON",
+    "numberOfKeys_one": "{{count}} key",
+    "numberOfKeys_other": "{{count}} keys",
+    "drawer": {
+      "header_one": "JSON <0>· {{count}} key</0>",
+      "header_other": "JSON <0>· {{count}} keys</0>",
+      "description": "View the JSON data for this object."
+    }
+  },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
@@ -1021,7 +1031,7 @@
       "successToast": "Shipping profile {{name}} was successfully deleted."
     },
     "tooltip": {
-      "type": "Enter shipping profile type, for example: Express, Freight, etc."
+      "type": "Enter shipping profile type, for example: Heavy, Oversized, Freight-only, etc."
     }
   },
   "discounts": {

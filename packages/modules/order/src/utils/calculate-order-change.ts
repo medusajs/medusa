@@ -19,6 +19,10 @@ import {
 interface InternalOrderSummary extends OrderSummaryCalculated {
   future_temporary_sum: BigNumberInput
 }
+interface ProcessOptions {
+  addActionReferenceToObject?: boolean
+  [key: string]: any
+}
 
 export class OrderChangeProcessing {
   private static typeDefinition: { [key: string]: ActionTypeDefinition } = {}
@@ -30,6 +34,7 @@ export class OrderChangeProcessing {
   private order: VirtualOrder
   private transactions: OrderTransaction[]
   private actions: InternalOrderChangeEvent[]
+  private options: ProcessOptions = {}
 
   private actionsProcessed: { [key: string]: InternalOrderChangeEvent[] } = {}
   private groupTotal: Record<string, BigNumberInput> = {}
@@ -43,14 +48,17 @@ export class OrderChangeProcessing {
     order,
     transactions,
     actions,
+    options,
   }: {
     order: VirtualOrder
     transactions: OrderTransaction[]
     actions: InternalOrderChangeEvent[]
+    options: ProcessOptions
   }) {
     this.order = JSON.parse(JSON.stringify(order))
     this.transactions = JSON.parse(JSON.stringify(transactions ?? []))
     this.actions = JSON.parse(JSON.stringify(actions ?? []))
+    this.options = options
 
     let paid = MathBN.convert(0)
     let refunded = MathBN.convert(0)
@@ -218,6 +226,7 @@ export class OrderChangeProcessing {
       summary: this.summary,
       transactions: this.transactions,
       type,
+      options: this.options,
     }
     if (typeof type.validate === "function") {
       type.validate(params)
@@ -393,12 +402,19 @@ export function calculateOrderChange({
   order,
   transactions = [],
   actions = [],
+  options = {},
 }: {
   order: VirtualOrder
   transactions?: OrderTransaction[]
   actions?: OrderChangeEvent[]
+  options?: ProcessOptions
 }) {
-  const calc = new OrderChangeProcessing({ order, transactions, actions })
+  const calc = new OrderChangeProcessing({
+    order,
+    transactions,
+    actions,
+    options,
+  })
   calc.processActions()
 
   return {
