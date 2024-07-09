@@ -1304,6 +1304,11 @@ export interface IOrderModuleService extends IModuleService {
    */
   cancelOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
 
+  previewOrderChange(
+    orderId: string,
+    sharedContext?: Context
+  ): Promise<OrderDTO>
+
   /**
    * This method Represents the completion of an asynchronous operation
    *
