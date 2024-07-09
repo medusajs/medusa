@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { OrderLineItemDTO } from "@medusajs/types"
 import {
@@ -165,7 +165,11 @@ export function OrderAllocateItemsItem({
             <div className="text-ui-fg-subtle txt-small mr-2 flex flex-row items-center gap-2">
               <Form.Field
                 control={form.control}
-                name={`quantity.${item.id}`}
+                name={
+                  hasInventoryKit
+                    ? `quantity.${item.id}-`
+                    : `quantity.${item.id}-${item.variant.inventory[0].id}`
+                }
                 rules={{ required: true, min: minValue, max: maxValue }}
                 render={({ field }) => {
                   return (
@@ -279,7 +283,7 @@ export function OrderAllocateItemsItem({
                 <div className="text-ui-fg-subtle txt-small mr-2 flex flex-row items-center gap-2">
                   <Form.Field
                     control={form.control}
-                    name={`quantity.${i.id}`}
+                    name={`quantity.${item.id}-${i.id}`}
                     rules={{ required: true, min: minValue, max: maxValue }}
                     render={({ field }) => {
                       return (
