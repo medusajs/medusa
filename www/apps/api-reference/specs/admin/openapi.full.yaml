@@ -7219,8 +7219,8 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostInventoryItemsInventoryItemLocationLevels
-      summary: Create a Location Level
-      description: Create a Location Level for a given Inventory Item.
+      summary: Create an Inventory Level
+      description: Create an Inventory Level for a given Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -7333,8 +7333,8 @@ paths:
   /admin/inventory-items/{id}/location-levels/{location_id}:
     post:
       operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
-      summary: Update a Location Level
-      description: Update a Location Level's details for a given Inventory Item.
+      summary: Update a Inventory Level
+      description: Update an inventory level's details for a given Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -7346,17 +7346,17 @@ paths:
         - in: path
           name: location_id
           required: true
-          description: The ID of the Location to update.
+          description: The ID of the inventory level to update.
           schema:
             type: string
         - in: query
           name: expand
-          description: Comma-separated relations that should be expanded in the returned location level.
+          description: Comma-separated relations that should be expanded in the returned inventory level.
           schema:
             type: string
         - in: query
           name: fields
-          description: Comma-separated fields that should be included in the returned location level.
+          description: Comma-separated fields that should be included in the returned inventory level.
           schema:
             type: string
       requestBody:
@@ -7450,8 +7450,8 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
-      summary: Delete a Location Level
-      description: Delete a location level of an Inventory Item.
+      summary: Delete a Inventory Level
+      description: Delete a inventory level of an Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -7463,7 +7463,7 @@ paths:
         - in: path
           name: location_id
           required: true
-          description: The ID of the location.
+          description: The ID of the inventory level.
           schema:
             type: string
       x-codegen:
@@ -29532,14 +29532,14 @@ components:
       type: object
       properties:
         stocked_quantity:
-          description: the total stock quantity of an inventory item at the given location ID
+          description: the total stock quantity of an inventory item at the specified inventory level
           type: number
         incoming_quantity:
-          description: the incoming stock quantity of an inventory item at the given location ID
+          description: the incoming stock quantity of an inventory item at the specified inventory level
           type: number
     AdminPostInventoryItemsItemLocationLevelsReq:
       type: object
-      description: The details of the location level to create.
+      description: The details of the inventory level to create.
       required:
         - location_id
         - stocked_quantity
@@ -37726,6 +37726,7 @@ components:
           description: The details of the products that belong to this product collection.
           type: array
           x-expandable: products
+          x-ignore: true
           items:
             type: object
         created_at:

@@ -126,5 +126,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "resolutions": {
+    "sucrase": "3.32.0"
   }
 }

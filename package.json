@@ -97,6 +97,7 @@
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
-    "pg": "8.10.0"
+    "pg": "8.10.0",
+    "glob": "^7.1.6"
   }
 }
