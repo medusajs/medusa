@@ -118,6 +118,8 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
         supported_currencies: currencies.map((c) => ({
           currency_code: c,
           is_default: c === defaultCurrency,
+          // TODO: Add UI to manage this
+          is_tax_inclsuive: false,
         })),
       })
       toast.success(t("general.success"), {

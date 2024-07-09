@@ -1,8 +1,10 @@
 import { DocsConfig } from "types"
-import { mobileSidebarItemsV2 } from "docs-ui"
+import { getMobileSidebarItems } from "docs-ui"
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export const config: DocsConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   // sidebar is auto generated
   sidebar: {
@@ -14,6 +16,9 @@ export const config: DocsConfig = {
       },
     ],
     bottom: [],
-    mobile: mobileSidebarItemsV2,
+    mobile: getMobileSidebarItems({
+      baseUrl,
+      version: "v2",
+    }),
   },
 }
