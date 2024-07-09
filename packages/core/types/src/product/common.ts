@@ -305,11 +305,11 @@ export interface ProductCategoryDTO {
    *
    * @expandable
    */
-  parent_category?: ProductCategoryDTO | null
+  parent_category: ProductCategoryDTO | null
   /**
    * The associated parent category id.
    */
-  parent_category_id?: string | null
+  parent_category_id: string | null
   /**
    * The associated child categories.
    *
@@ -330,6 +330,10 @@ export interface ProductCategoryDTO {
    * When the product category was updated.
    */
   updated_at: string | Date
+  /**
+   * When the product category was deleted.
+   */
+  deleted_at?: string | Date
 }
 
 /**

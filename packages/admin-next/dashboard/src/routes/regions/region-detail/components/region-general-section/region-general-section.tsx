@@ -9,13 +9,22 @@ import { ListSummary } from "../../../../../components/common/list-summary/index
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
 import { currencies } from "../../../../../lib/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
+import { SectionRow } from "../../../../../components/common/section/section-row.tsx"
 
 type RegionGeneralSectionProps = {
   region: HttpTypes.AdminRegion
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
-export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
+export const RegionGeneralSection = ({
+  region,
+  pricePreferences,
+}: RegionGeneralSectionProps) => {
   const { t } = useTranslation()
+  const pricePreferenceForRegion = pricePreferences?.find(
+    (preference) =>
+      preference.attribute === "region_id" && preference.value === region.id
+  )
 
   return (
     <Container className="divide-y p-0">
@@ -23,33 +32,48 @@ export const RegionGeneralSection = ({ region }: RegionGeneralSectionProps) => {
         <Heading>{region.name}</Heading>
         <RegionActions region={region} />
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.currency")}
-        </Text>
-        <div className="flex items-center gap-x-2">
-          <Badge size="2xsmall" className="uppercase">
-            {region.currency_code}
-          </Badge>
-          <Text size="small" leading="compact">
-            {currencies[region.currency_code.toUpperCase()].name}
-          </Text>
-        </div>
-      </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("fields.paymentProviders")}
-        </Text>
-        <div className="inline-flex">
-          {region.payment_providers?.length > 0 ? (
-            <ListSummary
-              list={region.payment_providers.map((p) => formatProvider(p.id))}
-            />
-          ) : (
-            "-"
-          )}
-        </div>
-      </div>
+      <SectionRow
+        title={t("fields.currency")}
+        value={
+          <div className="flex items-center gap-x-2">
+            <Badge size="2xsmall" className="uppercase">
+              {region.currency_code}
+            </Badge>
+            <Text size="small" leading="compact">
+              {currencies[region.currency_code.toUpperCase()].name}
+            </Text>
+          </div>
+        }
+      />
+
+      <SectionRow
+        title={t("fields.automaticTaxes")}
+        value={region.automatic_taxes ? t("fields.true") : t("fields.false")}
+      />
+
+      <SectionRow
+        title={t("fields.taxInclusivePricing")}
+        value={
+          pricePreferenceForRegion?.is_tax_inclusive
+            ? t("fields.true")
+            : t("fields.false")
+        }
+      />
+
+      <SectionRow
+        title={t("fields.paymentProviders")}
+        value={
+          <div className="inline-flex">
+            {region.payment_providers?.length ? (
+              <ListSummary
+                list={region.payment_providers.map((p) => formatProvider(p.id))}
+              />
+            ) : (
+              "-"
+            )}
+          </div>
+        }
+      />
     </Container>
   )
 }

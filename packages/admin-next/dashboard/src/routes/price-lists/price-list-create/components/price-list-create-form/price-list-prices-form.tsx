@@ -12,12 +12,14 @@ type PriceListPricesFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
   currencies: HttpTypes.AdminStoreCurrency[]
   regions: HttpTypes.AdminRegion[]
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
 export const PriceListPricesForm = ({
   form,
   currencies,
   regions,
+  pricePreferences,
 }: PriceListPricesFormProps) => {
   const ids = useWatch({
     control: form.control,
@@ -63,6 +65,7 @@ export const PriceListPricesForm = ({
   const columns = usePriceListGridColumns({
     currencies,
     regions,
+    pricePreferences,
   })
 
   if (isError) {

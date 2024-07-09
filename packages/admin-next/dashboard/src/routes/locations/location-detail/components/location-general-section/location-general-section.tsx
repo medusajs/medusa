@@ -274,7 +274,7 @@ type ServiceZoneProps = {
 function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const { mutateAsync: deleteZone } = useDeleteFulfillmentServiceZone(
     fulfillmentSetId,

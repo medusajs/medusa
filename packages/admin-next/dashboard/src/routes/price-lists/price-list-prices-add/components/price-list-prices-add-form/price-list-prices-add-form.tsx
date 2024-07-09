@@ -25,6 +25,7 @@ type PriceListPricesAddFormProps = {
   priceList: HttpTypes.AdminPriceList
   currencies: HttpTypes.AdminStoreCurrency[]
   regions: HttpTypes.AdminRegion[]
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
 enum Tab {
@@ -45,6 +46,7 @@ export const PriceListPricesAddForm = ({
   priceList,
   regions,
   currencies,
+  pricePreferences,
 }: PriceListPricesAddFormProps) => {
   const [tab, setTab] = useState<Tab>(Tab.PRODUCT)
   const [tabState, setTabState] = useState<TabState>(initialTabState)
@@ -87,10 +89,13 @@ export const PriceListPricesAddForm = ({
   ) => {
     form.clearErrors(fields)
 
-    const values = fields.reduce((acc, key) => {
-      acc[key] = form.getValues(key)
-      return acc
-    }, {} as Record<string, unknown>)
+    const values = fields.reduce(
+      (acc, key) => {
+        acc[key] = form.getValues(key)
+        return acc
+      },
+      {} as Record<string, unknown>
+    )
 
     const validationResult = schema.safeParse(values)
 
@@ -236,6 +241,7 @@ export const PriceListPricesAddForm = ({
                 form={form}
                 regions={regions}
                 currencies={currencies}
+                pricePreferences={pricePreferences}
               />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
