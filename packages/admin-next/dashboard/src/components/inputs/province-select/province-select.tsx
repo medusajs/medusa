@@ -63,7 +63,7 @@ export const ProvinceSelect = forwardRef<
     )
 
     const placeholderText = provinceObject
-      ? t(`provinces.placeholders.${provinceObject.type}`)
+      ? t(`taxRegions.fields.sublevels.placeholders.${provinceObject.type}`)
       : ""
 
     const placeholderOption = provinceObject ? (

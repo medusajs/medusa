@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
+import { useEffect, useRef, useState } from "react"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
@@ -15,7 +16,11 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
-import { getCountryProvinceObjectByIso2 } from "../../../../../lib/data/country-states"
+import { getCountryByIso2 } from "../../../../../lib/data/countries"
+import {
+  CountryProvinceObject,
+  getCountryProvinceObjectByIso2,
+} from "../../../../../lib/data/country-states"
 
 type TaxRegionProvinceCreateFormProps = {
   parent: HttpTypes.AdminTaxRegion
@@ -37,6 +42,9 @@ const CreateTaxRegionProvinceSchema = z.object({
 export const TaxRegionProvinceCreateForm = ({
   parent,
 }: TaxRegionProvinceCreateFormProps) => {
+  const [countryProvinceObject, setCountryProvinceObject] =
+    useState<CountryProvinceObject | null>(null)
+
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -52,6 +60,30 @@ export const TaxRegionProvinceCreateForm = ({
     },
     resolver: zodResolver(CreateTaxRegionProvinceSchema),
   })
+
+  const hasRun = useRef(false)
+
+  useEffect(() => {
+    if (hasRun.current) {
+      return
+    }
+    hasRun.current = true
+
+    const provinceObject = getCountryProvinceObjectByIso2(parent.country_code!)
+
+    if (!provinceObject) {
+      const parentCountry = getCountryByIso2(parent.country_code!)
+
+      toast.error(
+        `${parentCountry?.display_name} does not have sublevel tax regions.`
+      )
+      handleSuccess(`/settings/tax-regions/${parent.id}`)
+      return
+    }
+
+    setCountryProvinceObject(provinceObject)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { mutateAsync, isPending } = useCreateTaxRegion()
 
@@ -86,9 +118,7 @@ export const TaxRegionProvinceCreateForm = ({
     )
   })
 
-  const provinceObject = getCountryProvinceObjectByIso2(parent.country_code!)
-
-  const type = provinceObject?.type || "sublevel"
+  const type = countryProvinceObject?.type || "sublevel"
   const label = t(`taxRegions.fields.sublevels.labels.${type}`)
 
   return (
@@ -116,14 +146,14 @@ export const TaxRegionProvinceCreateForm = ({
                       <Form.Item>
                         <Form.Label
                           tooltip={
-                            !provinceObject &&
+                            !countryProvinceObject &&
                             t("taxRegions.fields.sublevels.tooltips.sublevel")
                           }
                         >
                           {label}
                         </Form.Label>
                         <Form.Control>
-                          {provinceObject ? (
+                          {countryProvinceObject ? (
                             <ProvinceSelect
                               country_code={parent.country_code!}
                               {...field}

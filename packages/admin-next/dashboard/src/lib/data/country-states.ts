@@ -1,4 +1,4 @@
-type CountryProvinceObject = {
+export type CountryProvinceObject = {
   type:
     | "province"
     | "stateOrTerritory"

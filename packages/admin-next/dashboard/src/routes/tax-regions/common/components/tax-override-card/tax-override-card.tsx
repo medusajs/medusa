@@ -20,6 +20,7 @@ import { useProducts } from "../../../../../hooks/api/products"
 import { useTags } from "../../../../../hooks/api/tags"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { TaxRateRuleReferenceType } from "../../constants"
+import { useDeleteTaxRateAction } from "../../hooks"
 
 interface TaxOverrideCardProps extends ComponentPropsWithoutRef<"div"> {
   taxRate: HttpTypes.AdminTaxRate
@@ -27,6 +28,7 @@ interface TaxOverrideCardProps extends ComponentPropsWithoutRef<"div"> {
 
 export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
   const { t } = useTranslation()
+  const handleDelete = useDeleteTaxRateAction(taxRate)
 
   if (taxRate.is_default) {
     return null
@@ -100,7 +102,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
                   {
                     label: t("actions.delete"),
                     icon: <Trash />,
-                    onClick: () => {},
+                    onClick: handleDelete,
                   },
                 ],
               },
