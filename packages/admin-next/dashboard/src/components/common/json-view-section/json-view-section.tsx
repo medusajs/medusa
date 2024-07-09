@@ -26,22 +26,6 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
   const { t } = useTranslation()
   const numberOfKeys = Object.keys(data).length
 
-  // const handleCopy = (_text: string, value?: object | undefined) => {
-  //   const isTextPrimitive = typeof value === "string"
-
-  //   if (isTextPrimitive) {
-  //     /**
-  //      * The library we use gives us no control over the clipboard API,
-  //      * so we need to use requestAnimationFrame to ensure the clipboard
-  //      * API is called after the library's internal copy function.
-  //      */
-  //     requestAnimationFrame(() => {
-  //       navigator.clipboard.writeText(value as string)
-  //     })
-  //     return
-  //   }
-  // }
-
   return (
     <Container className="flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-x-4">
