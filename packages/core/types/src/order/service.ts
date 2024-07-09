@@ -59,6 +59,7 @@ import {
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
+  UpdateOrderChangeDTO,
   UpdateOrderDTO,
   UpdateOrderItemDTO,
   UpdateOrderItemWithSelectorDTO,
@@ -1075,7 +1076,30 @@ export interface IOrderModuleService extends IModuleService {
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
+
   // Order Change
+
+  /**
+   * This method retrieves a {return type} by its ID.
+   *
+   * @param {string} orderChangeId - The order change ID.
+   * @param {FindConfig<OrderChangeDTO>} config - The configurations determining how the order is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a order.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeDTO>} The retrieved {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.retrieveOrder("orderId123");
+   * ```
+   *
+   */
+  retrieveOrderChange(
+    orderChangeId: string,
+    config?: FindConfig<OrderChangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+
   createOrderChange(
     data: CreateOrderChangeDTO,
     sharedContext?: Context
@@ -1126,6 +1150,93 @@ export interface IOrderModuleService extends IModuleService {
     data: CreateOrderChangeDTO | CreateOrderChangeDTO[],
     sharedContext?: Context
   ): Promise<OrderChangeDTO | OrderChangeDTO[]>
+
+  updateOrderChanges(
+    data: UpdateOrderChangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeDTO[]} data - The order change to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * // Example call to updateOrderChanges
+   *
+   * const updateOrderChangesData: UpdateOrderChangeDTO[] = [{
+   *     id: "orderchange123",
+   *     description: "Change due to customer request"
+   * }];
+   *
+   * const result = await orderModuleService.updateOrderChanges(updateOrderChangesData);
+   * ```
+   *
+   */
+  updateOrderChanges(
+    data: UpdateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO[]>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeDTO | UpdateOrderChangeDTO[]} data - The order change d t o |  order change to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeDTO | OrderChangeDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.createOrderChange({
+   *   order_id: "order123",
+   *   description: "Adding new item to the order"
+   * });
+   * ```
+   *
+   */
+  updateOrderChanges(
+    data: UpdateOrderChangeDTO | UpdateOrderChangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeDTO | OrderChangeDTO[]>
+
+  /**
+   * This method deletes order change by its ID.
+   *
+   * @param {string[]} orderChangeId - The list of {summary}
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * ```typescript
+   * await orderModuleService.deleteOrderChanges(["orderChangeId1", "orderChangeId2"]);
+   * ```
+   *
+   */
+  deleteOrderChanges(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method deletes order change by its ID.
+   *
+   * @param {string} orderChangeId - The order's ID.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * ```typescript
+   * await orderModuleService.deleteOrderChanges("orderChangeId");
+   * ```
+   *
+   */
+  deleteOrderChanges(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method deletes order change by its ID.
@@ -1388,6 +1499,18 @@ export interface IOrderModuleService extends IModuleService {
     data: DeclineOrderChangeDTO[],
     sharedContext?: Context
   ): Promise<void>
+
+  softDeleteOrderChanges<TReturnableLinkableKeys extends string = string>(
+    orderChangeId: string | string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderChanges<TReturnableLinkableKeys extends string = string>(
+    orderChangeId: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   /**
    * This method {summary}
