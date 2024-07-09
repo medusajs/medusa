@@ -10,8 +10,8 @@ export class LocalFileService extends AbstractFileProviderService {
 
   constructor(_, options: LocalFileServiceOptions) {
     super()
-    this.uploadDir_ = options?.upload_dir || path.join(__dirname, "uploads")
-    this.backendUrl_ = options?.backend_url || "http://localhost:9000"
+    this.uploadDir_ = options?.upload_dir || path.join(process.cwd(), "static")
+    this.backendUrl_ = options?.backend_url || "http://localhost:9000/static"
   }
 
   async upload(
@@ -83,7 +83,9 @@ export class LocalFileService extends AbstractFileProviderService {
   }
 
   private getUploadFileUrl = (fileKey: string) => {
-    return path.join(this.backendUrl_, this.getUploadFilePath(fileKey))
+    const baseUrl = new URL(this.backendUrl_)
+    baseUrl.pathname = path.join(baseUrl.pathname, fileKey)
+    return baseUrl.href
   }
 
   private async ensureDirExists(dirPath: string) {

@@ -9,6 +9,7 @@ interface Input {
   quantity: BigNumberInput
   metadata?: Record<string, any>
   unitPrice: BigNumberInput
+  isTaxInclusive?: boolean
   variant: ProductVariantDTO
   taxLines?: CreateOrderLineItemTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
@@ -19,6 +20,7 @@ export function prepareLineItemData(data: Input) {
   const {
     variant,
     unitPrice,
+    isTaxInclusive,
     quantity,
     metadata,
     cartId,
@@ -51,6 +53,7 @@ export function prepareLineItemData(data: Input) {
     variant_title: variant.title,
 
     unit_price: unitPrice,
+    is_tax_inclusive: !!isTaxInclusive,
     metadata,
   }
 
