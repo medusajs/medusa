@@ -1269,6 +1269,43 @@ medusaIntegrationTestRunner({
       let euCart
 
       beforeEach(async () => {
+        const store = (await api.get("/admin/stores", adminHeaders)).data
+          .stores[0]
+        if (store) {
+          await api.post(
+            `/admin/stores/${store.id}`,
+            {
+              supported_currencies: [
+                {
+                  currency_code: "usd",
+                  is_tax_inclusive: true,
+                  is_default: true,
+                },
+                { currency_code: "eur", is_tax_inclusive: false },
+                { currency_code: "dkk", is_tax_inclusive: true },
+              ],
+            },
+            adminHeaders
+          )
+        } else {
+          await api.post(
+            "/admin/stores",
+            {
+              name: "Test store",
+              supported_currencies: [
+                {
+                  currency_code: "usd",
+                  is_tax_inclusive: true,
+                  is_default: true,
+                },
+                { currency_code: "eur", is_tax_inclusive: false },
+                { currency_code: "dkk", is_tax_inclusive: true },
+              ],
+            },
+            adminHeaders
+          )
+        }
+
         usRegion = (
           await api.post(
             "/admin/regions",
@@ -1344,6 +1381,14 @@ medusaIntegrationTestRunner({
           )
         ).data.product
 
+        product2 = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({ title: "test2", status: "published" }),
+            adminHeaders
+          )
+        ).data.product
+
         euCart = (await api.post("/store/carts", { region_id: euRegion.id }))
           .data.cart
 
@@ -1394,7 +1439,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants[0].calculated_price).not.toHaveProperty(
           "calculated_amount_with_tax"
         )
@@ -1410,7 +1455,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants[0].calculated_price).not.toHaveProperty(
           "calculated_amount_with_tax"
         )
@@ -1426,7 +1471,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1445,6 +1490,19 @@ medusaIntegrationTestRunner({
             1
           )
         ).toEqual("40.9")
+
+        expect(products[1].variants).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              calculated_price: expect.objectContaining({
+                currency_code: "eur",
+                calculated_amount: 45,
+                calculated_amount_without_tax: 45,
+                calculated_amount_with_tax: 49.5,
+              }),
+            }),
+          ])
+        )
       })
 
       it("should return prices with and without tax for a tax exclusive region when listing products", async () => {
@@ -1454,7 +1512,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1463,6 +1521,18 @@ medusaIntegrationTestRunner({
                 calculated_amount: 30,
                 calculated_amount_with_tax: 36,
                 calculated_amount_without_tax: 30,
+              }),
+            }),
+          ])
+        )
+        expect(products[1].variants).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              calculated_price: expect.objectContaining({
+                currency_code: "dkk",
+                calculated_amount: 30,
+                calculated_amount_with_tax: 30,
+                calculated_amount_without_tax: 25,
               }),
             }),
           ])
@@ -1476,7 +1546,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -1510,7 +1580,7 @@ medusaIntegrationTestRunner({
           )
         ).data.products
 
-        expect(products.length).toBe(1)
+        expect(products.length).toBe(2)
         expect(products[0].variants).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
