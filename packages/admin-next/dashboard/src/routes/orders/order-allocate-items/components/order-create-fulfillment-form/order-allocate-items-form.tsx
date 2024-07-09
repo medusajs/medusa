@@ -16,6 +16,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { AllocateItemsSchema } from "./constants"
+import { useCreateReservationItem } from "../../../../../hooks/api/reservations.tsx"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -27,7 +28,8 @@ export function OrderAllocateItemsForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { mutateAsync: allocateItems, isPending: isMutating } = {} // useCreateOrderFulfillment(order.id)
+  const { mutateAsync: allocateItems, isPending: isMutating } =
+    useCreateReservationItem()
 
   const [itemsToAllocate, setItemsToAllocate] = useState(() =>
     order.items.filter(
@@ -51,9 +53,17 @@ export function OrderAllocateItemsForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await allocateItems({
-        location_id: data.location_id,
-      })
+      const promises = Object.entries(data.quantity).map(
+        ([inventoryItemId, quantity]) =>
+          allocateItems({
+            location_id: data.location_id,
+            inventory_item_id: inventoryItemId,
+            quantity,
+            // line_item_id: "TODO"
+          })
+      )
+
+      await Promise.all(promises)
 
       handleSuccess(`/orders/${order.id}`)
 
