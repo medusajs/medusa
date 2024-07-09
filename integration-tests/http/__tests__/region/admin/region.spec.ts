@@ -8,41 +8,39 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeAll(() => {})
+    let region1
+    let region2
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      region1 = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "United Kingdom",
+            currency_code: "gbp",
+          },
+          adminHeaders
+        )
+      ).data.region
+
+      region2 = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "United States",
+            currency_code: "usd",
+          },
+          adminHeaders
+        )
+      ).data.region
     })
 
+    // BREAKING: There is no more `tax_rate` field on the region.
+    // BREAKING: There are no more fulfillment providers list on a region.
     describe("GET /admin/regions", () => {
-      let region1
-      let region2
-
-      beforeEach(async () => {
-        region1 = (
-          await api.post(
-            "/admin/regions",
-            {
-              name: "United Kingdom",
-              currency_code: "gbp",
-            },
-            adminHeaders
-          )
-        ).data.region
-
-        region2 = (
-          await api.post(
-            "/admin/regions",
-            {
-              name: "United States",
-              currency_code: "usd",
-            },
-            adminHeaders
-          )
-        ).data.region
-      })
-
       it("should list regions", async () => {
         const response = await api.get("/admin/regions", adminHeaders)
 
@@ -79,20 +77,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("GET /admin/regions/:id", () => {
-      let region1
-      beforeEach(async () => {
-        region1 = (
-          await api.post(
-            "/admin/regions",
-            {
-              name: "United Kingdom",
-              currency_code: "gbp",
-            },
-            adminHeaders
-          )
-        ).data.region
-      })
-
       it("should retrieve the region from ID", async () => {
         const response = await api.get(
           `/admin/regions/${region1.id}`,
@@ -121,18 +105,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/regions", () => {
-      beforeEach(async () => {
-        await api.post(
-          "/admin/regions",
-          {
-            name: "United States",
-            currency_code: "usd",
-            countries: ["us"],
-          },
-          adminHeaders
-        )
-      })
-
       it("should create a region", async () => {
         const region = (
           await api.post(
@@ -150,6 +122,33 @@ medusaIntegrationTestRunner({
             name: "Test",
             currency_code: "usd",
           })
+        )
+      })
+
+      it("should create a region with tax inclusivity setting", async () => {
+        const region = (
+          await api.post(
+            "/admin/regions",
+            {
+              name: "Test",
+              currency_code: "usd",
+              // BREAKING: The property used to be called `includes_tax`
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+        ).data.region
+
+        const response = await api.get(`/admin/price-preferences`, adminHeaders)
+
+        expect(response.data.price_preferences).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              attribute: "region_id",
+              value: region.id,
+              is_tax_inclusive: true,
+            }),
+          ])
         )
       })
 
@@ -173,102 +172,64 @@ medusaIntegrationTestRunner({
       })
     })
 
-    // TODO: Migrate when tax_inclusive_pricing is implemented
-    // describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
-    //   let medusaProcess
-    //   let dbConnection
+    describe("POST /admin/regions/:id", () => {
+      it("should update a region", async () => {
+        const region = (
+          await api.post(
+            `/admin/regions/${region1.id}`,
+            {
+              name: "New test",
+              currency_code: "eur",
+            },
+            adminHeaders
+          )
+        ).data.region
 
-    //   beforeAll(async () => {
-    //     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    //     const [process, connection] = await startServerWithEnvironment({
-    //       cwd,
-    //       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-    //     })
-    //     dbConnection = connection
-    //     medusaProcess = process
-    //   })
+        expect(region).toEqual(
+          expect.objectContaining({
+            name: "New test",
+            currency_code: "eur",
+          })
+        )
+      })
 
-    //   afterAll(async () => {
-    //     const db = useDb()
-    //     await db.shutdown()
+      it("should update a region with tax inclusivity setting", async () => {
+        const beforeResponse = await api.get(
+          `/admin/price-preferences`,
+          adminHeaders
+        )
+        expect(beforeResponse.data.price_preferences).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              attribute: "region_id",
+              value: region1.id,
+              is_tax_inclusive: false,
+            }),
+          ])
+        )
 
-    //     medusaProcess.kill()
-    //   })
+        await api.post(
+          `/admin/regions/${region1.id}`,
+          {
+            is_tax_inclusive: true,
+          },
+          adminHeaders
+        )
 
-    //   describe("POST /admin/regions/:id", () => {
-    //     const region1TaxInclusiveId = "region-1-tax-inclusive"
-
-    //     beforeEach(async () => {
-    //       try {
-    //         await adminSeeder(dbConnection)
-    //         await simpleRegionFactory(dbConnection, {
-    //           id: region1TaxInclusiveId,
-    //           countries: ["fr"],
-    //         })
-    //       } catch (err) {
-    //         console.log(err)
-    //         throw err
-    //       }
-    //     })
-
-    //     afterEach(async () => {
-    //       const db = useDb()
-    //       await db.teardown()
-    //     })
-
-    //     it("should allow to create a region that includes tax", async function () {
-    //       const api = useApi()
-
-    //       const payload = {
-    //         name: "region-including-taxes",
-    //         currency_code: "usd",
-    //         tax_rate: 0,
-    //         payment_providers: ["test-pay"],
-    //         fulfillment_providers: ["test-ful"],
-    //         countries: ["us"],
-    //         includes_tax: true,
-    //       }
-
-    //       const response = await api
-    //         .post(`/admin/regions`, payload, adminReqConfig)
-    //         .catch((err) => {
-    //           console.log(err)
-    //         })
-
-    //       expect(response.data.region).toEqual(
-    //         expect.objectContaining({
-    //           id: expect.any(String),
-    //           includes_tax: true,
-    //           name: "region-including-taxes",
-    //         })
-    //       )
-    //     })
-
-    //     it("should allow to update a region that includes tax", async function () {
-    //       const api = useApi()
-    //       let response = await api
-    //         .get(`/admin/regions/${region1TaxInclusiveId}`, adminReqConfig)
-    //         .catch((err) => {
-    //           console.log(err)
-    //         })
-
-    //       expect(response.data.region.includes_tax).toBe(false)
-
-    //       response = await api
-    //         .post(
-    //           `/admin/regions/${region1TaxInclusiveId}`,
-    //           {
-    //             includes_tax: true,
-    //           },
-    //           adminReqConfig
-    //         )
-    //         .catch((err) => {
-    //           console.log(err)
-    //         })
-
-    //       expect(response.data.region.includes_tax).toBe(true)
-    //     })
-    //   })
-    // })
+        const afterResponse = await api.get(
+          `/admin/price-preferences`,
+          adminHeaders
+        )
+        expect(afterResponse.data.price_preferences).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              attribute: "region_id",
+              value: region1.id,
+              is_tax_inclusive: true,
+            }),
+          ])
+        )
+      })
+    })
   },
 })

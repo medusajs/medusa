@@ -17,12 +17,10 @@ type Options = Partial<Omit<MikroORMOptions, "entities" | "entitiesTs">> & {
     | EntitySchema
     | DmlEntity<any, any>
   )[]
-  databaseName?: string
 }
 
 type ReturnedOptions = Partial<MikroORMOptions> & {
   entities: MikroORMOptions["entities"]
-  clientUrl: string
   type: MikroORMOptions["type"]
   migrations: MikroORMOptions["migrations"]
 }
@@ -53,17 +51,11 @@ export function defineMikroOrmCliConfig(
   ) as MikroORMOptions["entities"]
 
   const normalizedModuleName = kebabCase(moduleName.replace("Service", ""))
-  let databaseName = `medusa-${normalizedModuleName}`
-
-  if (options.databaseName) {
-    databaseName = options.databaseName
-    // @ts-ignore
-    delete options.databaseName
-  }
+  const databaseName = `medusa-${normalizedModuleName}`
 
   return {
-    clientUrl: `postgres://postgres@localhost/${databaseName}`,
     type: "postgresql",
+    dbName: databaseName,
     ...options,
     entities,
     migrations: {

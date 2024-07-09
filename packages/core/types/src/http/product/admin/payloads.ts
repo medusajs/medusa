@@ -22,6 +22,8 @@ export interface AdminCreateProductVariantPrice {
   amount: number
   min_quantity?: number | null
   max_quantity?: number | null
+  // Note: Although the BE is generic, we only use region_id for price rules for now, so it's better to keep the typings stricter.
+  rules?: { region_id: string } | null
 }
 
 export interface AdminCreateProductVariant {

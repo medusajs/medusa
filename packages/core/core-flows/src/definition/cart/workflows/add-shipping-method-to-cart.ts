@@ -47,7 +47,12 @@ export const addShippingMethodToWorkflow = createWorkflow(
 
     const shippingOptions = useRemoteQueryStep({
       entry_point: "shipping_option",
-      fields: ["id", "name", "calculated_price.calculated_amount"],
+      fields: [
+        "id",
+        "name",
+        "calculated_price.calculated_amount",
+        "calculated_price.is_calculated_price_tax_inclusive",
+      ],
       variables: {
         id: optionIds,
         calculated_price: {
@@ -67,6 +72,9 @@ export const addShippingMethodToWorkflow = createWorkflow(
           return {
             shipping_option_id: shippingOption.id,
             amount: shippingOption.calculated_price.calculated_amount,
+            is_tax_inclusive:
+              !!shippingOption.calculated_price
+                .is_calculated_price_tax_inclusive,
             data: option.data ?? {},
             name: shippingOption.name,
             cart_id: data.input.cart_id,

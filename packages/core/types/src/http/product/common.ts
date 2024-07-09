@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
 import { FindParams } from "../common"
+import { BaseCalculatedPriceSet } from "../pricing/common"
 import { BaseProductCategory } from "../product-category/common"
 import { BaseProductTag } from "../product-tag/common"
 import { BaseProductType } from "../product-type/common"
@@ -57,10 +58,11 @@ export interface BaseProductVariant {
   length: number | null
   height: number | null
   width: number | null
+  variant_rank?: number | null
   options: BaseProductOptionValue[] | null
   product?: BaseProduct | null
   product_id?: string
-  variant_rank?: number | null
+  calculated_price?: BaseCalculatedPriceSet
   created_at: string
   updated_at: string
   deleted_at: string | null

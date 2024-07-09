@@ -17,6 +17,7 @@ import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-opti
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
 import { useShippingOptionPriceColumns } from "../../../common/hooks/use-shipping-option-price-columns"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 const getInitialCurrencyPrices = (
   prices: HttpTypes.AdminShippingOptionPrice[]
@@ -108,9 +109,12 @@ export function EditShippingOptionsPricingForm({
     limit: 999,
   })
 
+  const { price_preferences: pricePreferences } = usePricePreferences({})
+
   const columns = useShippingOptionPriceColumns({
     currencies,
     regions,
+    pricePreferences,
   })
 
   const data = useMemo(

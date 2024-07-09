@@ -8,6 +8,7 @@ import { useRegion } from "../../../hooks/api/regions"
 import { useStore } from "../../../hooks/api/store"
 import { currencies } from "../../../lib/data/currencies"
 import { EditRegionForm } from "./components/edit-region-form"
+import { usePricePreferences } from "../../../hooks/api/price-preferences"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -27,7 +28,20 @@ export const RegionEdit = () => {
     error: storeError,
   } = useStore()
 
-  const isLoading = isRegionLoading || isStoreLoading
+  const {
+    price_preferences: pricePreferences = [],
+    isPending: isPreferenceLoading,
+    isError: isPreferenceError,
+    error: preferenceError,
+  } = usePricePreferences(
+    {
+      attribute: "region_id",
+      value: id,
+    },
+    { enabled: !!region }
+  )
+
+  const isLoading = isRegionLoading || isStoreLoading || isPreferenceLoading
 
   const storeCurrencies = (store?.supported_currencies ?? []).map(
     (c) => currencies[c.currency_code.toUpperCase()]
@@ -44,6 +58,10 @@ export const RegionEdit = () => {
     throw storeError
   }
 
+  if (isPreferenceError) {
+    throw preferenceError
+  }
+
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
@@ -54,6 +72,7 @@ export const RegionEdit = () => {
           region={region}
           currencies={storeCurrencies}
           paymentProviders={paymentProviders}
+          pricePreferences={pricePreferences}
         />
       )}
     </RouteDrawer>

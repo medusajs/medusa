@@ -14,13 +14,13 @@ describe("defineMikroOrmCliConfig", () => {
   test("should return the correct config", () => {
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [{} as any],
-      databaseName: "medusa-fulfillment",
+      dbName: "medusa-fulfillment",
     })
 
     expect(config).toEqual({
       entities: [{}],
-      clientUrl: "postgres://postgres@localhost/medusa-fulfillment",
       type: "postgresql",
+      dbName: "medusa-fulfillment",
       migrations: {
         generator: expect.any(Function),
       },
@@ -34,8 +34,8 @@ describe("defineMikroOrmCliConfig", () => {
 
     expect(config).toEqual({
       entities: [{}],
-      clientUrl: "postgres://postgres@localhost/medusa-my-test",
       type: "postgresql",
+      dbName: "medusa-my-test",
       migrations: {
         generator: expect.any(Function),
       },

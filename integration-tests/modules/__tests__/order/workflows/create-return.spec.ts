@@ -40,6 +40,7 @@ async function prepareDataFixtures({ container }) {
     ModuleRegistrationName.STOCK_LOCATION
   )
   const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
+  const pricingModule = container.resolve(ModuleRegistrationName.PRICING)
   const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
 
   const shippingProfile = await fulfillmentService.createShippingProfiles({
@@ -142,6 +143,19 @@ async function prepareDataFixtures({ container }) {
       [Modules.INVENTORY]: {
         inventory_item_id: inventoryItem.id,
       },
+    },
+  ])
+
+  await pricingModule.createPricePreferences([
+    {
+      attribute: "currency_code",
+      value: "usd",
+      is_tax_inclusive: true,
+    },
+    {
+      attribute: "region_id",
+      value: region.id,
+      is_tax_inclusive: true,
     },
   ])
 
@@ -471,7 +485,7 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 name: shippingOption.name,
                 description: null,
-                is_tax_inclusive: false,
+                is_tax_inclusive: true,
                 shipping_option_id: shippingOption.id,
                 amount: 10,
                 order_id: expect.any(String),

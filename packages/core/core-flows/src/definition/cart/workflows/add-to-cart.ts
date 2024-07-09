@@ -75,6 +75,8 @@ export const addToCartWorkflow = createWorkflow(
         return prepareLineItemData({
           variant: variant,
           unitPrice: variant.calculated_price.calculated_amount,
+          isTaxInclusive:
+            variant.calculated_price.is_calculated_price_tax_inclusive,
           quantity: item.quantity,
           metadata: item?.metadata ?? {},
           cartId: data.input.cart.id,

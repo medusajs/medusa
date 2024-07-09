@@ -64,36 +64,18 @@ const shippingAdjustments =
   })
 ```
 
-### Returns, Exchanges, and Other Order Changes
+### Returns, Exchanges, and Claims
 
-<Note title="In Development" type="soon">
-
-Order Changes are still in development.
-
-</Note>
-
-Orders can be changed to return items from the customer, exchange an item with another, change the quantity of an item, or perform other changes.
-
-Changes are only applied after confirmation, and order history is preserved through versioning.
+Return or exchange items, with version-based control over the order's timeline.
 
 ```ts
-const orderChange = await orderModuleService.createOrderChange({
-  order_id: "ord_123",
-})
-
-// add item to the order
-await orderModuleService.addOrderAction({
-  order_change_id: orderChange.id,
-  action: "ADD_ITEM",
-  details: {
+const orderReturn = await orderModuleService.createReturn({
+  order_id: "order_123",
+  items: [{
+    id: "orditem_123",
     quantity: 1,
-    unit_price: 4000,
-    reference_id: "orditem_123",
-  },
+  }]
 })
-
-// confirm order change and apply it to order
-await orderModuleService.confirmOrderChange("ord_123")
 ```
 
 ---

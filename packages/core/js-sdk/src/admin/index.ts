@@ -7,6 +7,7 @@ import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Order } from "./order"
 import { PriceList } from "./price-list"
+import { PricePreference } from "./price-preference"
 import { Product } from "./product"
 import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
@@ -28,6 +29,7 @@ export class Admin {
   public productCollection: ProductCollection
   public productCategory: ProductCategory
   public priceList: PriceList
+  public pricePreference: PricePreference
   public product: Product
   public productType: ProductType
   public upload: Upload
@@ -52,6 +54,7 @@ export class Admin {
     this.productCollection = new ProductCollection(client)
     this.productCategory = new ProductCategory(client)
     this.priceList = new PriceList(client)
+    this.pricePreference = new PricePreference(client)
     this.product = new Product(client)
     this.productType = new ProductType(client)
     this.upload = new Upload(client)

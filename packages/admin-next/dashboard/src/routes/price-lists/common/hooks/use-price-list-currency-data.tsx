@@ -1,13 +1,20 @@
 import { HttpTypes } from "@medusajs/types"
 import { useRegions } from "../../../../hooks/api/regions"
 import { useStore } from "../../../../hooks/api/store"
+import { usePricePreferences } from "../../../../hooks/api/price-preferences"
 
 type UsePriceListCurrencyDataReturn =
-  | { isReady: false; currencies: undefined; regions: undefined }
+  | {
+      isReady: false
+      currencies: undefined
+      regions: undefined
+      pricePreferences: undefined
+    }
   | {
       isReady: true
       currencies: HttpTypes.AdminStoreCurrency[]
       regions: HttpTypes.AdminRegion[]
+      pricePreferences: HttpTypes.AdminPricePreference[]
     }
 
 export const usePriceListCurrencyData = (): UsePriceListCurrencyDataReturn => {
@@ -32,8 +39,20 @@ export const usePriceListCurrencyData = (): UsePriceListCurrencyDataReturn => {
     limit: 999,
   })
 
+  const {
+    price_preferences: pricePreferences,
+    isPending: isPreferencesPending,
+    isError: isPreferencesError,
+    error: preferencesError,
+  } = usePricePreferences({})
+
   const isReady =
-    !!currencies && !!regions && !isStorePending && !isRegionsPending
+    !!currencies &&
+    !!regions &&
+    !!pricePreferences &&
+    !isStorePending &&
+    !isRegionsPending &&
+    !isPreferencesPending
 
   if (isRegionsError) {
     throw regionsError
@@ -43,9 +62,18 @@ export const usePriceListCurrencyData = (): UsePriceListCurrencyDataReturn => {
     throw storeError
   }
 
-  if (!isReady) {
-    return { regions: undefined, currencies: undefined, isReady: false }
+  if (isPreferencesError) {
+    throw preferencesError
   }
 
-  return { regions, currencies, isReady }
+  if (!isReady) {
+    return {
+      regions: undefined,
+      currencies: undefined,
+      pricePreferences: undefined,
+      isReady: false,
+    }
+  }
+
+  return { regions, currencies, pricePreferences, isReady }
 }
