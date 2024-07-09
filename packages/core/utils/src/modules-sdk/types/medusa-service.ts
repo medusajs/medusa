@@ -36,9 +36,9 @@ export type ModelDTOConfig = {
   plural?: string
 }
 
-export type EntitiesConfigTemplate = { [key: string]: ModelDTOConfig }
+export type ModelsConfigTemplate = { [key: string]: ModelDTOConfig }
 
-export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
+export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
   [Key in keyof T]: {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
     model: T[Key] extends { model: infer MODEL }
@@ -90,7 +90,7 @@ export type ExtractPluralName<
 >
 
 // TODO: The future expected entry will be a MODEL object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
-export type TEntityEntries<Keys = string> = Record<
+export type ModelEntries<Keys = string> = Record<
   Keys & string,
   | DmlEntity<any, any>
   /**
@@ -103,45 +103,45 @@ export type TEntityEntries<Keys = string> = Record<
   | { name?: string; singular?: string; plural?: string }
 >
 
-export type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
+export type ExtractKeysFromConfig<ModelsConfig> = ModelsConfig extends {
   __empty: any
 }
   ? string
-  : keyof EntitiesConfig
+  : keyof ModelsConfig
 
 export type AbstractModuleService<
-  TEntitiesDtoConfig extends Record<string, any>
+  TModelsDtoConfig extends Record<string, any>
 > = {
-  [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `retrieve${ExtractSingularName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
+  ) => Promise<TModelsDtoConfig[TModelName]["dto"]>
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `list${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `list${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: (
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
+  ) => Promise<TModelsDtoConfig[TModelName]["dto"][]>
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `listAndCount${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `listAndCount${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TEntitiesDtoConfig[TEntityName]["dto"][], number]
+      [TModelsDtoConfig[TModelName]["dto"][], number]
     >
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `delete${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `delete${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (
       primaryKeyValues: string | object | string[] | object[],
@@ -149,9 +149,9 @@ export type AbstractModuleService<
     ): Promise<void>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `softDelete${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `softDelete${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
@@ -160,9 +160,9 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `restore${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `restore${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
@@ -171,16 +171,16 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (...args: any[]): Promise<any>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (...args: any[]): Promise<any>
   }
@@ -190,53 +190,53 @@ export type AbstractModuleService<
 
 // are not consistent accross modules
 /* & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (data: any[], sharedContext?: Context): Promise<
-      TEntitiesDtoConfig[TEntityName]["dto"][]
+      TModelsDtoConfig[TModelName]["dto"][]
     >
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (data: any, sharedContext?: Context): Promise<
-      TEntitiesDtoConfig[TEntityName]["dto"][]
+      TModelsDtoConfig[TModelName]["dto"][]
     >
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (
-      data: TEntitiesDtoConfig[TEntityName]["update"][],
+      data: TModelsDtoConfig[TModelName]["update"][],
       sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
+    ): Promise<TModelsDtoConfig[TModelName]["dto"][]>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (
-      data: TEntitiesDtoConfig[TEntityName]["update"],
+      data: TModelsDtoConfig[TModelName]["update"],
       sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
+    ): Promise<TModelsDtoConfig[TModelName]["dto"]>
   }
 } & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
+  [TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
+    TModelsDtoConfig,
+    TModelName
   >}`]: {
     (
       idOrdSelector: any,
-      data: TEntitiesDtoConfig[TEntityName]["update"],
+      data: TModelsDtoConfig[TModelName]["update"],
       sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
+    ): Promise<TModelsDtoConfig[TModelName]["dto"][]>
   }
 }*/
 

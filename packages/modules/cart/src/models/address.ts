@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.SoftDeletableEntityDateColumns
+type OptionalAddressProps = DAL.SoftDeletableModelDateColumns
 
 @Entity({ tableName: "cart_address" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

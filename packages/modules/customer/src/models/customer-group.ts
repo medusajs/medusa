@@ -20,7 +20,7 @@ import {
 import Customer from "./customer"
 import CustomerGroupCustomer from "./customer-group-customer"
 
-type OptionalGroupProps = DAL.SoftDeletableEntityDateColumns // TODO: To be revisited when more clear
+type OptionalGroupProps = DAL.SoftDeletableModelDateColumns // TODO: To be revisited when more clear
 
 const CustomerGroupUniqueName = createPsqlIndexStatementHelper({
   tableName: "customer_group",

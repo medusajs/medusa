@@ -4083,5 +4083,10 @@ export const slugChanges = [
     "origSlug": "/references/workflows/functions/workflows.transform",
     "newSlug": "/references/workflows/transform",
     "filePath": "/www/apps/resources/references/workflows/functions/workflows.transform/page.mdx"
+  },
+  {
+    "origSlug": "/references/workflows/functions/workflows.when",
+    "newSlug": "/references/workflows/when",
+    "filePath": "/www/apps/resources/references/workflows/functions/workflows.when/page.mdx"
   }
 ]

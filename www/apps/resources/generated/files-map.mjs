@@ -10464,6 +10464,10 @@ export const filesMap = [
     "pathname": "/references/workflows/functions/workflows.transform"
   },
   {
+    "filePath": "/www/apps/resources/references/workflows/functions/workflows.when/page.mdx",
+    "pathname": "/references/workflows/functions/workflows.when"
+  },
+  {
     "filePath": "/www/apps/resources/references/workflows/interfaces/workflows.StepExecutionContext/page.mdx",
     "pathname": "/references/workflows/interfaces/workflows.StepExecutionContext"
   },

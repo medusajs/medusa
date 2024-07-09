@@ -20,7 +20,7 @@ import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
-type OptionalFields = "description" | DAL.SoftDeletableEntityDateColumns
+type OptionalFields = "description" | DAL.SoftDeletableModelDateColumns
 type OptionalRelations = "values" | "promotions"
 
 @Entity({ tableName: "promotion_rule" })

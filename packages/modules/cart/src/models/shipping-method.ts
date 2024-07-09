@@ -28,7 +28,7 @@ import ShippingMethodTaxLine from "./shipping-method-tax-line"
 type OptionalShippingMethodProps =
   | "cart"
   | "is_tax_inclusive"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const CartIdIndex = createPsqlIndexStatementHelper({
   name: "IDX_shipping_method_cart_id",

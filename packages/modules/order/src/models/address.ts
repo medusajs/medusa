@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-type OptionalAddressProps = DAL.EntityDateColumns
+type OptionalAddressProps = DAL.ModelDateColumns
 
 const CustomerIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_address",
