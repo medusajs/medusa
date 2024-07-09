@@ -132,6 +132,16 @@ medusaIntegrationTestRunner({
           },
         ])
 
+        await api.post(
+          "/admin/price-preferences",
+          {
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          },
+          adminHeaders
+        )
+
         await remoteLink.create([
           {
             [Modules.PRODUCT]: {
@@ -252,7 +262,7 @@ medusaIntegrationTestRunner({
                   variant_option_values: null,
                   requires_shipping: true,
                   is_discountable: true,
-                  is_tax_inclusive: false,
+                  is_tax_inclusive: true,
                   raw_compare_at_unit_price: null,
                   raw_unit_price: expect.objectContaining({
                     value: "3000",
@@ -306,6 +316,7 @@ medusaIntegrationTestRunner({
                     note: "reduced price",
                   },
                   unit_price: 200,
+                  is_tax_inclusive: true,
                   quantity: 1,
                   raw_quantity: expect.objectContaining({
                     value: "1",

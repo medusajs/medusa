@@ -77,7 +77,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
         expect(response.data.file.url).toEqual(
-          expect.stringContaining(`/uploads/${fileKey}`)
+          expect.stringContaining(`/static/${fileKey}`)
         )
       })
     })

@@ -4,6 +4,7 @@ interface Input {
   quantity: BigNumberInput
   metadata?: Record<string, any>
   unitPrice: BigNumberInput
+  isTaxInclusive?: boolean
   variant: {
     title: string
     sku?: string
@@ -18,11 +19,12 @@ interface Output {
   variant_barcode?: string
   variant_title?: string
   unit_price: BigNumberInput
+  is_tax_inclusive: boolean
   metadata?: Record<string, any>
 }
 
 export function prepareCustomLineItemData(data: Input): Output {
-  const { variant, unitPrice, quantity, metadata } = data
+  const { variant, unitPrice, isTaxInclusive, quantity, metadata } = data
 
   const lineItem: any = {
     quantity,
@@ -32,6 +34,7 @@ export function prepareCustomLineItemData(data: Input): Output {
     variant_title: variant.title,
 
     unit_price: unitPrice,
+    is_tax_inclusive: !!isTaxInclusive,
     metadata,
   }
 

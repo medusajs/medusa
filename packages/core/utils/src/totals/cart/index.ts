@@ -16,20 +16,20 @@ export interface DecorateCartLikeInputDTO {
   items?: {
     id?: string
     unit_price: BigNumberInput
+    is_tax_inclusive?: boolean
     quantity: BigNumberInput
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   shipping_methods?: {
     id?: string
     amount: BigNumberInput
+    is_tax_inclusive?: boolean
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   region?: {
