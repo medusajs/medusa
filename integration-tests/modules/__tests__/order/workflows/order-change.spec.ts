@@ -2,6 +2,8 @@ import {
   cancelOrderChangeWorkflow,
   cancelOrderChangeWorkflowId,
   createOrderChangeWorkflow,
+  declineOrderChangeWorkflow,
+  declineOrderChangeWorkflowId,
   deleteOrderChangeWorkflow,
   deleteOrderChangeWorkflowId,
 } from "@medusajs/core-flows"
@@ -229,6 +231,85 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: orderChange.id,
               deleted_at: null,
+            })
+          )
+        })
+      })
+
+      describe("declineOrderChangeWorkflow", () => {
+        let orderChange: OrderChangeDTO
+
+        beforeEach(async () => {
+          const fixtures = await prepareDataFixtures({
+            container,
+          })
+
+          order = await createOrderFixture({
+            container,
+            product: fixtures.product,
+            location: fixtures.location,
+            inventoryItem: fixtures.inventoryItem,
+          })
+
+          const { result } = await createOrderChangeWorkflow(container).run({
+            input: { order_id: order.id },
+          })
+
+          orderChange = result
+          service = container.resolve(ModuleRegistrationName.ORDER)
+        })
+
+        it("should successfully decline an order change", async () => {
+          await declineOrderChangeWorkflow(container).run({
+            input: {
+              id: orderChange.id,
+              declined_by: "test",
+            },
+          })
+
+          const orderChange2 = await service.retrieveOrderChange(orderChange.id)
+
+          expect(orderChange2).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              declined_by: "test",
+              declined_at: expect.any(Date),
+            })
+          )
+        })
+
+        it("should rollback to its original state when step throws error", async () => {
+          const workflow = declineOrderChangeWorkflow(container)
+
+          workflow.appendAction("throw", declineOrderChangeWorkflowId, {
+            invoke: async function failStep() {
+              throw new Error(`Fail`)
+            },
+          })
+
+          const {
+            errors: [error],
+          } = await workflow.run({
+            input: {
+              id: orderChange.id,
+              declined_by: "test",
+            },
+            throwOnError: false,
+          })
+
+          expect(error.error).toEqual(
+            expect.objectContaining({
+              message: `Fail`,
+            })
+          )
+
+          const orderChange2 = await service.retrieveOrderChange(orderChange.id)
+
+          expect(orderChange2).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              declined_by: null,
+              declined_at: null,
             })
           )
         })
