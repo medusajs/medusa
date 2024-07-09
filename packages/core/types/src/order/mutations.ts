@@ -277,7 +277,8 @@ export interface UpdateOrderChangeDTO {
   declined_by?: string
   declined_reason?: string
   declined_at?: Date
-  canceled_by?: string
+  canceled_by?: string | null
+  canceled_at?: Date | null
   metadata?: Record<string, unknown> | null
 }
 
