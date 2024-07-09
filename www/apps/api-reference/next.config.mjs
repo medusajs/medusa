@@ -14,18 +14,20 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui/:path*`,
       },
       {
-        source: "/:path*",
-        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
-      }
-    ]
-    if (process.env.NEXT_PUBLIC_VERSIONING === "true") {
-      rewriteFallbacks.push({
+        source: "/v2",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2`,
+      },
+      {
         source: "/v2/:path*",
         destination: `${process.env.NEXT_PUBLIC_DOCS_V2_URL}/v2/:path*`,
-      })
-    }
+      },
+      {
+        source: "/:path*",
+        destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
+      },
+    ]
     return {
-      fallback: rewriteFallbacks
+      fallback: rewriteFallbacks,
     }
   },
   webpack: (config) => {

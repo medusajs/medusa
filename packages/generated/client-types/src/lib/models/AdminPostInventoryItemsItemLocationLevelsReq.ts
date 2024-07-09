@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * The details of the location level to create.
+ * The details of the inventory level to create.
  */
 export interface AdminPostInventoryItemsItemLocationLevelsReq {
   /**

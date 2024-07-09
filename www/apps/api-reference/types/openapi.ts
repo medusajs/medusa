@@ -87,6 +87,7 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   isRequired?: boolean
   "x-featureFlag"?: string
   "x-expandable"?: string
+  "x-ignore"?: boolean
 }
 
 export type PropertiesObject = {
