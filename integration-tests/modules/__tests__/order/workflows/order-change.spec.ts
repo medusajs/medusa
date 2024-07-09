@@ -2,6 +2,8 @@ import {
   cancelOrderChangeWorkflow,
   cancelOrderChangeWorkflowId,
   createOrderChangeWorkflow,
+  deleteOrderChangeWorkflow,
+  deleteOrderChangeWorkflowId,
 } from "@medusajs/core-flows"
 import { IOrderModuleService, OrderChangeDTO, OrderDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
@@ -118,7 +120,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should throw an error when creating an order change when an active one already exists", async () => {
+        it("should rollback to its original state when step throws error", async () => {
           const workflow = cancelOrderChangeWorkflow(container)
 
           workflow.appendAction("throw", cancelOrderChangeWorkflowId, {
@@ -150,6 +152,83 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               canceled_by: null,
               canceled_at: null,
+            })
+          )
+        })
+      })
+
+      describe("deleteOrderChangeWorkflow", () => {
+        let orderChange: OrderChangeDTO
+
+        beforeEach(async () => {
+          const fixtures = await prepareDataFixtures({
+            container,
+          })
+
+          order = await createOrderFixture({
+            container,
+            product: fixtures.product,
+            location: fixtures.location,
+            inventoryItem: fixtures.inventoryItem,
+          })
+
+          const { result } = await createOrderChangeWorkflow(container).run({
+            input: { order_id: order.id },
+          })
+
+          orderChange = result
+          service = container.resolve(ModuleRegistrationName.ORDER)
+        })
+
+        it("should successfully delete an order change", async () => {
+          await deleteOrderChangeWorkflow(container).run({
+            input: { id: orderChange.id },
+          })
+
+          const orderChange2 = await service.retrieveOrderChange(
+            orderChange.id,
+            { withDeleted: true }
+          )
+
+          expect(orderChange2).toEqual(
+            expect.objectContaining({
+              id: orderChange.id,
+              deleted_at: expect.any(Date),
+            })
+          )
+        })
+
+        it("should rollback to its original state when step throws error", async () => {
+          const workflow = deleteOrderChangeWorkflow(container)
+
+          workflow.appendAction("throw", deleteOrderChangeWorkflowId, {
+            invoke: async function failStep() {
+              throw new Error(`Fail`)
+            },
+          })
+
+          const {
+            errors: [error],
+          } = await workflow.run({
+            input: { id: orderChange.id },
+            throwOnError: false,
+          })
+
+          expect(error.error).toEqual(
+            expect.objectContaining({
+              message: `Fail`,
+            })
+          )
+
+          const orderChange2 = await service.retrieveOrderChange(
+            orderChange.id,
+            { withDeleted: true }
+          )
+
+          expect(orderChange2).toEqual(
+            expect.objectContaining({
+              id: orderChange.id,
+              deleted_at: null,
             })
           )
         })

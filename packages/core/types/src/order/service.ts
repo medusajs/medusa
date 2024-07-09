@@ -1500,6 +1500,18 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  softDeleteOrderChanges<TReturnableLinkableKeys extends string = string>(
+    orderChangeId: string | string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderChanges<TReturnableLinkableKeys extends string = string>(
+    orderChangeId: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
   /**
    * This method {summary}
    *
