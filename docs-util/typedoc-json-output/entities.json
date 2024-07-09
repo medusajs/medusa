@@ -23485,12 +23485,7 @@
 					"kind": 1024,
 					"flags": {},
 					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The details of the products that belong to this product collection."
-							}
-						],
+						"summary": [],
 						"modifierTags": [
 							"@expandable"
 						]
