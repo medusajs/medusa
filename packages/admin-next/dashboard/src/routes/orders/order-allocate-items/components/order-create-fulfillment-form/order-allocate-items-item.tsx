@@ -1,7 +1,11 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { OrderLineItemDTO } from "@medusajs/types"
-import { Component, TriangleDownMini } from "@medusajs/icons"
+import {
+  Component,
+  ExclamationCircleSolid,
+  TriangleDownMini,
+} from "@medusajs/icons"
 import { UseFormReturn } from "react-hook-form"
 import { Input, Text, clx } from "@medusajs/ui"
 import * as zod from "zod"
@@ -53,6 +57,35 @@ export function OrderAllocateItemsItem({
     }
   }, [variant, locationId])
 
+  const errorInventoryIds = useMemo(() => {
+    if (!variant || !locationId) {
+      return []
+    }
+
+    const errorIds: string[] = []
+
+    inventory.forEach((i) => {
+      const locationInventory = i?.location_levels?.find(
+        (inv) => inv.location_id === locationId
+      )
+
+      if (!locationInventory) {
+        return []
+      }
+
+      if (
+        locationInventory.required_quantity >
+        locationInventory.available_quantity
+      ) {
+        errorIds.push(i.id)
+      }
+    })
+
+    return errorIds
+  }, [variant, locationId])
+
+  const hasQuantityError = !!errorInventoryIds.length
+
   const minValue = 0
   const maxValue = Math.min(
     getFulfillableQuantity(item),
@@ -60,10 +93,13 @@ export function OrderAllocateItemsItem({
   )
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 divide-y divide-dashed rounded-xl ">
+    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 divide-y divide-dashed rounded-xl">
       <div className="flex items-center gap-x-3 p-3 text-sm">
         <div className="flex flex-1 items-center">
           <div className="flex items-center gap-x-3">
+            {hasQuantityError && (
+              <ExclamationCircleSolid className="text-ui-fg-error" />
+            )}
             <Thumbnail src={item.thumbnail} />
             <div className="flex flex-col">
               <div className="flex flex-row">
