@@ -673,7 +673,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
+												"text": "```ts\nimport {\n  PaymentProcessorContext,\n  PaymentProcessorSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -2398,7 +2398,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter."
+												"text": "If this payment processor is created in a plugin, the plugin's options are passed in this parameter."
 											}
 										]
 									},
@@ -2491,7 +2491,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter."
+								"text": "If this payment processor is created in a plugin, the plugin's options are passed in this parameter."
 							}
 						]
 					},
@@ -3194,7 +3194,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport {\n  PaymentContext,\n  PaymentSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
+												"text": "```ts\nimport {\n  PaymentProcessorContext,\n  PaymentProcessorSessionResponse,\n  // ...\n} from \"@medusajs/medusa\"\n\nclass MyPaymentService extends AbstractPaymentProcessor {\n  // ...\n  async initiatePayment(\n    context: PaymentProcessorContext\n  ): Promise<\n    PaymentProcessorError | PaymentProcessorSessionResponse\n  > {\n    // assuming client is an initialized client\n    // communicating with a third-party service.\n    const clientPayment = await this.client.initiate(context)\n\n    return {\n      session_data: {\n        id: clientPayment.id\n      },\n    }\n  }\n}\n```"
 											}
 										]
 									}

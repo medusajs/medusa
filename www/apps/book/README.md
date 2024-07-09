@@ -1,0 +1,1 @@
+Directory of new Medusa documentation. You can find it on the [develop branch](https://github.com/medusajs/medusa/tree/develop)
