@@ -7,5 +7,5 @@
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
   "outputDirectory": ".next",
-  "ignoreCommand": "bash ../../ignore-build-script.sh"
+  "ignoreCommand": "bash ../../ignore-build-script.sh docs-old"
 }
