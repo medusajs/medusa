@@ -45,6 +45,29 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should throw an error when creating an order change when an active one already exists", async () => {
+          await createOrderChangeWorkflow(container).run({
+            input: {
+              order_id: order.id,
+            },
+          })
+
+          const {
+            errors: [error],
+          } = await createOrderChangeWorkflow(container).run({
+            input: {
+              order_id: order.id,
+            },
+            throwOnError: false,
+          })
+
+          expect(error.error).toEqual(
+            expect.objectContaining({
+              message: `Order (${order.id}) already has an existing active order change`,
+            })
+          )
+        })
       })
     })
   },
