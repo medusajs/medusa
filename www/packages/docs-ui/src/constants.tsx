@@ -52,23 +52,22 @@ export const navbarItemsV1: NavbarItem[] = [
       href: `/ui`,
     },
   },
-  // TODO enable them later
-  // {
-  //   type: "divider",
-  // },
-  // {
-  //   type: "link",
-  //   props: {
-  //     label: "Learn Medusa v2",
-  //     target: "_blank",
-  //     rel: "noreferrer",
-  //     href: `/v2`,
-  //     badge: {
-  //       variant: "blue",
-  //       children: "New",
-  //     },
-  //   },
-  // },
+  {
+    type: "divider",
+  },
+  {
+    type: "link",
+    props: {
+      label: "Learn Medusa v2",
+      target: "_blank",
+      rel: "noreferrer",
+      href: `/v2`,
+      badge: {
+        variant: "blue",
+        children: "New",
+      },
+    },
+  },
 ]
 
 export const navbarItemsV2: NavbarItem[] = [
@@ -162,13 +161,13 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
     loaded: true,
     isPathHref: true,
   },
-  // {
-  //   title: "Learn Medusa V2",
-  //   path: `/v2`,
-  //   loaded: true,
-  //   isPathHref: true,
-  //   additionalElms: <Badge variant="blue">v2</Badge>,
-  // },
+  {
+    title: "Learn Medusa V2",
+    path: `/v2`,
+    loaded: true,
+    isPathHref: true,
+    additionalElms: <Badge variant="blue">v2</Badge>,
+  },
 ]
 
 export const mobileSidebarItemsV2: SidebarItemType[] = [

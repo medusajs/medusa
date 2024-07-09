@@ -14,7 +14,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD ?? " "
 
 const dbName = "my-test-service-generate"
 const moduleName = "myTestServiceGenerate"
-const fs = new FileSystem(join(__dirname, "./migrations/generate"))
+const fs = new FileSystem(join(__dirname, "./migrations-generate"))
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -24,6 +24,11 @@ const pgGodCredentials = {
 
 describe("Generate migrations", () => {
   beforeEach(async () => {
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
+    await fs.cleanup()
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
   })
 

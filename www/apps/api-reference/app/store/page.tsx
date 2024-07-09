@@ -22,7 +22,11 @@ const ReferencePage = async () => {
               <StoreContentV2 />
             </Section>
           }
-          codeContent={<ClientLibrariesV2 />}
+          codeContent={
+            <div className="mb-1 lg:mb-0">
+              <ClientLibrariesV2 />
+            </div>
+          }
           className="flex-col-reverse"
         />
         <Tags />

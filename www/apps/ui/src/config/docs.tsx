@@ -1,5 +1,5 @@
 import { ArrowUpRightOnBox } from "@medusajs/icons"
-import { NavbarItem, getNavbarItems, mobileSidebarItemsV1 } from "docs-ui"
+import { NavbarItem, getMobileSidebarItems, getNavbarItems } from "docs-ui"
 import { SidebarSectionItemsType } from "types"
 import { siteConfig } from "./site"
 
@@ -280,6 +280,9 @@ export const docsConfig: DocsConfig = {
         ],
       },
     ],
-    mobile: mobileSidebarItemsV1,
+    mobile: getMobileSidebarItems({
+      baseUrl: siteConfig.baseUrl,
+      version: "v1",
+    }),
   },
 }
