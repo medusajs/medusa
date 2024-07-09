@@ -12,6 +12,7 @@ module.exports = {
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,
+    "__fixtures__",
   ],
   transformIgnorePatterns: ["/dist", "/node_modules/"],
   transform: {
