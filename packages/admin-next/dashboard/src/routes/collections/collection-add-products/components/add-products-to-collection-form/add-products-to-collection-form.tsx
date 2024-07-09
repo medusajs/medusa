@@ -103,7 +103,7 @@ export const AddProductsToCollectionForm = ({
   const filters = useProductTableFilters(["collections"])
 
   const { table } = useDataTable({
-    data: (products ?? []) as ExtendedProductDTO[],
+    data: products ?? [],
     columns,
     count,
     pageSize: PAGE_SIZE,
@@ -127,13 +127,15 @@ export const AddProductsToCollectionForm = ({
       },
       {
         onSuccess: () => {
+          toast.success(
+            t("collections.products.add.successToast", {
+              count: values.add.length,
+            })
+          )
           handleSuccess()
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

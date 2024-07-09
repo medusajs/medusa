@@ -85,25 +85,23 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies:
           store.supported_currencies?.filter(
             (c) => !ids.includes(c.currency_code)
           ) ?? [],
-      })
-      setRowSelection({})
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          setRowSelection({})
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   if (isError) {
@@ -190,23 +188,21 @@ const CurrencyActions = ({
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies: supportedCurrencies.filter(
           (c) => c.currency_code !== currency.code
         ),
-      })
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (

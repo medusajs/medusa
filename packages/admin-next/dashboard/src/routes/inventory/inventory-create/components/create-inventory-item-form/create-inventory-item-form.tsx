@@ -89,7 +89,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
     useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    let { locations, ...payload } = data
+    const { locations, ...payload } = data
 
     for (const k in payload) {
       if (payload[k] === "") {
@@ -119,18 +119,12 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
           queryKey: inventoryItemsQueryKeys.lists(),
         })
       } catch (e) {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       }
 
       handleSuccess()
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     }
   })
 
@@ -344,7 +338,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                       />
                     </div>
 
-                    {/*<Form.Field*/}
+                    {/* <Form.Field*/}
                     {/*  className="col-span-1"*/}
                     {/*  control={form.control}*/}
                     {/*  name="location_ids"*/}
@@ -370,7 +364,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                     {/*      </Form.Item>*/}
                     {/*    )*/}
                     {/*  }}*/}
-                    {/*/>*/}
+                    {/* />*/}
                   </div>
 
                   <Heading level="h3" className="my-6">

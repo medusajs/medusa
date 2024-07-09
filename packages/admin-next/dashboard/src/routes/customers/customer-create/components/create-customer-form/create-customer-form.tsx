@@ -39,7 +39,7 @@ export const CreateCustomerForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        email: data.email || undefined,
+        email: data.email,
         first_name: data.first_name || undefined,
         last_name: data.last_name || undefined,
         company_name: data.company_name || undefined,
@@ -47,19 +47,15 @@ export const CreateCustomerForm = () => {
       },
       {
         onSuccess: ({ customer }) => {
-          toast.success(t("general.success"), {
-            description: t("customers.create.successToast", {
+          toast.success(
+            t("customers.create.successToast", {
               email: customer.email,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess(`/customers/${customer.id}`)
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

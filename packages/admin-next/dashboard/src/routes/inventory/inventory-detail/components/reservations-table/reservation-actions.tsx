@@ -1,10 +1,10 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { toast, usePrompt } from "@medusajs/ui"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InventoryTypes } from "@medusajs/types"
-import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 import { useTranslation } from "react-i18next"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 
 export const ReservationActions = ({
   reservation,
@@ -29,10 +29,10 @@ export const ReservationActions = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("inventory.reservation.deleteSuccessToast"),
-        })
+        toast.success(t("inventory.reservation.deleteSuccessToast"))
+      },
+      onError: (e) => {
+        toast.error(e.message)
       },
     })
   }

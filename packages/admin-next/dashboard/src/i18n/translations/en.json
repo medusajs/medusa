@@ -456,6 +456,14 @@
     "products": {
       "list": {
         "noRecordsMessage": "There are no products in the collection."
+      },
+      "add": {
+        "successToast_one": "Product was successfully added to the collection.",
+        "successToast_other": "Products were successfully added to the collection."
+      },
+      "remove": {
+        "successToast_one": "Product was successfully removed from the collection.",
+        "successToast_other": "Products were successfully removed from the collection."
       }
     }
   },
@@ -470,6 +478,11 @@
         "organize": "Organize Ranking"
       },
       "successToast": "Category {{name}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Category",
+      "description": "Edit the category to update its details.",
+      "successToast": "Category was successfully updated."
     },
     "delete": {
       "confirmation": "You are about to delete the category {{name}}. This action cannot be undone.",
@@ -556,7 +569,9 @@
       "deleteSuccessToast": "Reservation was successfully deleted."
     },
     "toast": {
-      "updateLocations": "Locations updated successfully."
+      "updateLocations": "Locations updated successfully.",
+      "updateLevel": "Inventory level updated successfully.",
+      "updateItem": "Inventory item updated successfully."
     }
   },
   "giftCards": {
