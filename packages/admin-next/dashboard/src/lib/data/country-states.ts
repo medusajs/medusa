@@ -11,6 +11,7 @@ export type CountryProvinceObject = {
     | "department"
     | "emirate"
     | "district"
+    | "canton"
   options: Record<string, string>
 }
 
@@ -258,6 +259,37 @@ const countryProvinceMap: Record<string, CountryProvinceObject> = {
       "CR-L": "Limón",
       "CR-P": "Puntarenas",
       "CR-SJ": "San José",
+    },
+  },
+  CH: {
+    type: "canton",
+    options: {
+      "CH-AG": "Aargau",
+      "CH-AR": "Appenzell Ausserrhoden",
+      "CH-AI": "Appenzell Innerrhoden",
+      "CH-BL": "Basel-Landschaft",
+      "CH-BS": "Basel-Stadt",
+      "CH-BE": "Bern",
+      "CH-FR": "Fribourg",
+      "CH-GE": "Geneva",
+      "CH-GL": "Glarus",
+      "CH-GR": "Graubünden",
+      "CH-JU": "Jura",
+      "CH-LU": "Lucerne",
+      "CH-NE": "Neuchâtel",
+      "CH-NW": "Nidwalden",
+      "CH-OW": "Obwalden",
+      "CH-SG": "St. Gallen",
+      "CH-SH": "Schaffhausen",
+      "CH-SZ": "Schwyz",
+      "CH-SO": "Solothurn",
+      "CH-TG": "Thurgau",
+      "CH-TI": "Ticino",
+      "CH-UR": "Uri",
+      "CH-VS": "Valais",
+      "CH-VD": "Vaud",
+      "CH-ZG": "Zug",
+      "CH-ZH": "Zurich",
     },
   },
   EG: {

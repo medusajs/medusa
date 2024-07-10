@@ -1138,6 +1138,13 @@
         "hint": "Create a new tax region to define tax rates for a specific governorate."
       }
     },
+    "canton": {
+      "header": "Cantons",
+      "create": {
+        "header": "Create Canton Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific canton."
+      }
+    },
     "emirate": {
       "header": "Emirates",
       "create": {
@@ -1246,6 +1253,7 @@
           "district": "District",
           "governorate": "Governorate",
           "emirate": "Emirate",
+          "canton": "Canton",
           "sublevel": "Sublevel code"
         },
         "placeholders": {
@@ -1259,7 +1267,8 @@
           "prefecture": "Select prefecture",
           "district": "Select district",
           "governorate": "Select governorate",
-          "emirate": "Select emirate"
+          "emirate": "Select emirate",
+          "canton": "Select canton"
         },
         "tooltips": {
           "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region.",
