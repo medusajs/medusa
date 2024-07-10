@@ -174,6 +174,7 @@ async function processAdditionalItems(
         reference_id: item.id,
         claim_id: claimReference.id,
         quantity: addedItem.quantity,
+        unit_price: item.unit_price,
         metadata: addedItem.metadata,
       },
     })

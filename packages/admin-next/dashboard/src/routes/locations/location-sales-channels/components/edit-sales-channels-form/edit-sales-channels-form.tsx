@@ -107,19 +107,11 @@ export const LocationEditSalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.salesChannels.successToast"),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("stockLocations.salesChannels.successToast"))
           handleSuccess(`/settings/locations/${location.id}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

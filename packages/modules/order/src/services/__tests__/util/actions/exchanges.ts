@@ -93,6 +93,9 @@ describe("Order Exchange - Actions", function () {
     const changes = calculateOrderChange({
       order: originalOrder,
       actions: actions,
+      options: {
+        addActionReferenceToObject: true,
+      },
     })
 
     const sumToJSON = JSON.parse(JSON.stringify(changes.summary))
@@ -152,11 +155,65 @@ describe("Order Exchange - Actions", function () {
           return_dismissed_quantity: 0,
           written_off_quantity: 0,
         },
+        actions: [
+          {
+            action: "RETURN_ITEM",
+            reference_id: "return_123",
+            details: {
+              reference_id: "3",
+              quantity: 1,
+            },
+            amount: "20",
+          },
+        ],
       },
       {
         id: "item_555",
         unit_price: 50,
         quantity: 1,
+        detail: {},
+        actions: [
+          {
+            action: "ITEM_ADD",
+            details: {
+              reference_id: "item_555",
+              unit_price: 50,
+              quantity: 1,
+            },
+            amount: "50",
+          },
+        ],
+      },
+    ])
+
+    expect(changes.order.shipping_methods).toEqual([
+      {
+        id: "ship_123",
+        price: 0,
+      },
+      {
+        id: "shipping_345",
+        price: 5,
+        detail: {},
+        actions: [
+          {
+            action: "SHIPPING_ADD",
+            reference_id: "shipping_345",
+            amount: 5,
+          },
+        ],
+      },
+      {
+        id: "return_shipping_345",
+        price: 7.5,
+        detail: {},
+        actions: [
+          {
+            action: "SHIPPING_ADD",
+            reference_id: "return_shipping_345",
+            amount: 7.5,
+          },
+        ],
       },
     ])
   })

@@ -16,6 +16,7 @@ import {
 import {
   BigNumber,
   createRawPropertiesFromBigNumber,
+  DecorateCartLikeInputDTO,
   decorateCartTotals,
   deduplicate,
   InjectManager,
@@ -306,6 +307,14 @@ export default class OrderModuleService<
     const includeTotals = this.shouldIncludeTotals(config)
 
     const order = await super.retrieveOrder(id, config, sharedContext)
+
+    const orderChange = await this.getActiveOrderChange_(
+      order.id,
+      false,
+      sharedContext
+    )
+
+    order.order_change = orderChange
 
     return formatOrder(order, {
       entity: Order,
@@ -1795,6 +1804,58 @@ export default class OrderModuleService<
     return await this.orderChangeService_.create(input, sharedContext)
   }
 
+  async previewOrderChange(orderChangeId: string, sharedContext?: Context) {
+    const orderChange = await super.retrieveOrderChange(
+      orderChangeId,
+      { relations: ["actions"] },
+      sharedContext
+    )
+
+    orderChange.actions = orderChange.actions.map((action) => {
+      return {
+        ...action,
+        version: orderChange.version,
+        order_id: orderChange.order_id,
+        return_id: orderChange.return_id,
+        claim_id: orderChange.claim_id,
+        exchange_id: orderChange.exchange_id,
+      }
+    })
+
+    const order = await this.retrieveOrder(
+      orderChange.order_id,
+      {
+        select: ["id", "version", "items.detail", "summary", "total"],
+        relations: [
+          "transactions",
+          "items",
+          "items.detail",
+          "shipping_methods",
+        ],
+      },
+      sharedContext
+    )
+
+    const calculated = calculateOrderChange({
+      order: order as any,
+      actions: orderChange.actions,
+      transactions: order.transactions ?? [],
+      options: {
+        addActionReferenceToObject: true,
+      },
+    })
+
+    createRawPropertiesFromBigNumber(calculated)
+
+    const calcOrder = calculated.order as any
+    decorateCartTotals(calcOrder as DecorateCartLikeInputDTO)
+    calcOrder.summary = calculated.summary
+
+    createRawPropertiesFromBigNumber(calcOrder)
+
+    return calcOrder
+  }
+
   async cancelOrderChange(
     orderId: string,
     sharedContext?: Context
@@ -2121,6 +2182,50 @@ export default class OrderModuleService<
       },
       sharedContext
     )
+  }
+
+  private async getActiveOrderChange_(
+    orderId: string,
+    includeActions: boolean,
+    sharedContext?: Context
+  ): Promise<any> {
+    const options = {
+      select: [
+        "id",
+        "change_type",
+        "order_id",
+        "return_id",
+        "claim_id",
+        "exchange_id",
+        "version",
+        "requested_at",
+        "requested_by",
+        "status",
+      ],
+      relations: [] as string[],
+      order: {},
+    }
+
+    if (includeActions) {
+      options.select.push("actions")
+      options.relations.push("actions")
+      options.order = {
+        actions: {
+          ordering: "ASC",
+        },
+      }
+    }
+
+    const [orderChange] = await this.listOrderChanges(
+      {
+        order_id: orderId,
+        status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+      },
+      options,
+      sharedContext
+    )
+
+    return orderChange
   }
 
   private async getAndValidateOrderChange_(

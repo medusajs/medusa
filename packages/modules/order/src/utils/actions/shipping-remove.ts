@@ -2,7 +2,7 @@ import { ChangeActionType, MedusaError, isDefined } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_REMOVE, {
-  operation({ action, currentOrder }) {
+  operation({ action, currentOrder, options }) {
     const shipping = Array.isArray(currentOrder.shipping_methods)
       ? currentOrder.shipping_methods
       : [currentOrder.shipping_methods]

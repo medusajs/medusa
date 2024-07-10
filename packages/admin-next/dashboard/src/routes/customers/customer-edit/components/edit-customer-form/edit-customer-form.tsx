@@ -61,20 +61,16 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
       },
       {
         onSuccess: ({ customer }) => {
-          toast.success(t("general.success"), {
-            description: t("customers.edit.successToast", {
+          toast.success(
+            t("customers.edit.successToast", {
               email: customer.email,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

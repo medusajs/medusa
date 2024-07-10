@@ -5,10 +5,13 @@ import {
   isDefined,
 } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import { setActionReference } from "../set-action-reference"
+import {
+  setActionReference,
+  unsetActionReference,
+} from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.REINSTATE_ITEM, {
-  operation({ action, currentOrder }) {
+  operation({ action, currentOrder, options }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id
     )!
@@ -19,7 +22,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.REINSTATE_ITEM, {
       action.details.quantity
     )
 
-    setActionReference(existing, action)
+    setActionReference(existing, action, options)
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
@@ -30,6 +33,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.REINSTATE_ITEM, {
       existing.detail.written_off_quantity,
       action.details.quantity
     )
+
+    unsetActionReference(existing, action)
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id

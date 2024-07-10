@@ -102,12 +102,11 @@ export const CreateRegionForm = ({
           })
         },
         onSuccess: ({ region }) => {
-          toast.success(t("general.success"), {
-            description: t("regions.toast.create"),
-            dismissLabel: t("actions.close"),
-          })
-
+          toast.success(t("regions.toast.create"))
           handleSuccess(`../${region.id}`)
+        },
+        onError: (e) => {
+          toast.error(e.message)
         },
       }
     )

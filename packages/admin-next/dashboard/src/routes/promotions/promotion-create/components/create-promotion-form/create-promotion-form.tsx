@@ -136,20 +136,16 @@ export const CreatePromotionForm = () => {
         },
         {
           onSuccess: ({ promotion }) => {
-            toast.success(t("general.success"), {
-              description: t("promotions.toasts.promotionCreateSuccess", {
+            toast.success(
+              t("promotions.toasts.promotionCreateSuccess", {
                 code: promotion.code,
-              }),
-              dismissLabel: t("actions.close"),
-            })
+              })
+            )
 
             handleSuccess()
           },
           onError: (e) => {
-            toast.error(t("general.error"), {
-              description: e.message,
-              dismissLabel: t("actions.close"),
-            })
+            toast.error(e.message)
           },
         }
       )
@@ -159,10 +155,7 @@ export const CreatePromotionForm = () => {
       const errorInPromotionTab = !!Object.keys(rest || {}).length
 
       if (errorInPromotionTab) {
-        toast.error(t("general.error"), {
-          description: t("promotions.errors.promotionTabError"),
-          dismissLabel: t("general.close"),
-        })
+        toast.error(t("promotions.errors.promotionTabError"))
       }
     }
   )

@@ -153,6 +153,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Relationships",
             },
             {
+              path: "/advanced-development/data-models/manage-relationships",
+              title: "Manage Relationships",
+            },
+            {
               path: "/advanced-development/data-models/index",
               title: "Index",
             },
