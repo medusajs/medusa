@@ -38,7 +38,6 @@ const providerId = FulfillmentProviderService.getRegistrationIdentifier(
 moduleIntegrationTestRunner<IFulfillmentModuleService>({
   moduleName: Modules.FULFILLMENT,
   moduleOptions,
-  debug: true,
   testSuite: ({ service }) => {
     let eventBusEmitSpy
 
