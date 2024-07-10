@@ -5,7 +5,6 @@ import {
   BaseProductImage,
   BaseProductOption,
   BaseProductOptionValue,
-  BaseProductTag,
   BaseProductVariant,
   ProductStatus,
 } from "../common"
@@ -15,7 +14,6 @@ export interface StoreProduct extends Omit<BaseProduct, "categories"> {
   type?: StoreProductType | null
 }
 export interface StoreProductVariant extends BaseProductVariant {}
-export interface StoreProductTag extends BaseProductTag {}
 export interface StoreProductOption extends BaseProductOption {}
 export interface StoreProductImage extends BaseProductImage {}
 export interface StoreProductOptionValue extends BaseProductOptionValue {}

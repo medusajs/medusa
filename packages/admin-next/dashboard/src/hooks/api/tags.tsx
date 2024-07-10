@@ -1,7 +1,8 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { TagsListRes, TagRes } from "../../types/api-responses"
 
 const TAGS_QUERY_KEY = "tags" as const
 export const tagsQueryKeys = queryKeysFactory(TAGS_QUERY_KEY)
@@ -9,13 +10,18 @@ export const tagsQueryKeys = queryKeysFactory(TAGS_QUERY_KEY)
 export const useTag = (
   id: string,
   options?: Omit<
-    UseQueryOptions<TagRes, Error, TagRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminProductTagResponse,
+      FetchError,
+      HttpTypes.AdminProductTagResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: tagsQueryKeys.detail(id),
-    queryFn: async () => client.tags.retrieve(id),
+    queryFn: async () => sdk.admin.productTag.retrieve(id),
     ...options,
   })
 
@@ -23,15 +29,20 @@ export const useTag = (
 }
 
 export const useTags = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminProductTagListParams,
   options?: Omit<
-    UseQueryOptions<TagsListRes, Error, TagsListRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminProductTagListResponse,
+      FetchError,
+      HttpTypes.AdminProductTagListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: tagsQueryKeys.list(query),
-    queryFn: async () => client.tags.list(query),
+    queryFn: async () => sdk.admin.productTag.list(query),
     ...options,
   })
 

@@ -7,7 +7,7 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
 type EditCampaignBudgetFormProps = {
   campaign: CampaignResponse

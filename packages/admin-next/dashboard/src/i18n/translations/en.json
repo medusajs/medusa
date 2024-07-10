@@ -98,7 +98,8 @@
     "add": "Add",
     "select": "Select",
     "browse": "Browse",
-    "logout": "Logout"
+    "logout": "Logout",
+    "hide": "Hide"
   },
   "operators": {
     "in": "In"
@@ -1049,127 +1050,239 @@
       "type": "Enter shipping profile type, for example: Heavy, Oversized, Freight-only, etc."
     }
   },
-  "discounts": {
-    "domain": "Discounts",
-    "startDate": "Start date",
-    "createDiscountTitle": "Create Discount",
-    "validDuration": "Duration of the discount",
-    "redemptionsLimit": "Redemptions limit",
-    "endDate": "End date",
-    "type": "Discount type",
-    "percentageDiscount": "Percentage discount",
-    "freeShipping": "Free shipping",
-    "fixedDiscount": "Fixed discount",
-    "fixedAmount": "Fixed amount",
-    "validRegions": "Valid regions",
-    "deleteWarning": "You are about to delete the discount {{code}}. This action cannot be undone.",
-    "editDiscountDetails": "Edit Discount Details",
-    "editDiscountConfiguration": "Edit Discount Configuration",
-    "hasStartDate": "Discount has a start date",
-    "hasEndDate": "Discount has an expiry date",
-    "startDateHint": "Schedule the discount to activate in the future.",
-    "endDateHint": "Schedule the discount to deactivate in the future.",
-    "codeHint": "Discount code applies from when you hit the publish button and forever if left untouched.",
-    "hasUsageLimit": "Limit the number of redemptions?",
-    "usageLimitHint": "Limit applies across all customers, not per customer.",
-    "titleHint": "The code your customers will enter during checkout. This will appear on your customer's invoice.\nUppercase letters and numbers only.",
-    "hasDurationLimit": "Availability duration",
-    "durationHint": "Set the duration of the discount",
-    "chooseValidRegions": "Choose valid regions",
-    "conditionsHint": "Create conditions to apply on the discount",
-    "isTemplateDiscount": "Is this a template discount?",
-    "percentageDescription": "Discount applied in %",
-    "fixedDescription": "Amount discount",
-    "shippingDescription": "Override delivery amount",
-    "selectRegionFirst": "Select a region first",
-    "templateHint": "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same.",
-    "conditions": {
-      "editHeader": "Edit Discount Conditions",
-      "editHint": "Specify conditions for when the discount can be applied to a cart.",
-      "manageTypesAction": "Manage condition types",
-      "including": {
-        "products_one": "Discount applies to <0/> product",
-        "products_other": "Discount applies to <0/> products",
-        "customer_groups_one": "Discount applies to <0/> customer group",
-        "customer_groups_other": "Discount applies to <0/> customer groups",
-        "product_tags_one": "Discount applies to <0/> tag",
-        "product_tags_other": "Discount applies to <0/> tags",
-        "product_collections_one": "Discount applies to <0/> product collection",
-        "product_collections_other": "Discount applies to <0/> product collections",
-        "product_types_one": "Discount applies to <0/> product type",
-        "product_types_other": "Discount applies to <0/> product types"
-      },
-      "excluding": {
-        "products": "Discount applies to <1>all</1> products except <0/>",
-        "customer_groups": "Discount applies to <1>all</1> customer groups except <0/>",
-        "product_tags": "Discount applies to <1>all</1> product tags except <0/>",
-        "product_collections": "Discount applies to <1>all</1> product collections except <0/>",
-        "product_types": "Discount applies to <1>all</1> product types except <0/>"
-      },
-      "edit": {
-        "appliesTo": "Discount applies to",
-        "except": {
-          "products_one": "product, except",
-          "products_other": "products, except",
-          "product_tags_one": "product tag, except",
-          "product_tags_other": "product tags, except",
-          "product_types_one": "product type, except",
-          "product_types_other": "product types, except",
-          "product_collections_one": "product collection, except",
-          "product_collections_other": "product collections, except",
-          "customer_groups_one": "customer group, except",
-          "customer_groups_other": "customer groups, except"
-        }
-      }
-    },
-    "discountStatus": {
-      "scheduled": "Scheduled",
-      "expired": "Expired",
-      "active": "Active",
-      "disabled": "Disabled"
-    }
-  },
-  "taxRates": {
-    "domain": "Tax Rates",
-    "fields": {
-      "isCombinable": "Is combinable?",
-      "appliesTo": "Tax Rate applies to",
-      "customer_groups": "Customer Group",
-      "product_collections": "Product Collection",
-      "product_tags": "Product Tag",
-      "product_types": "Product Type",
-      "products": "Product"
-    },
-    "edit": {
-      "title": "Edit Tax Rate",
-      "description": "Edits the tax rate of a tax region"
-    },
-    "create": {
-      "title": "Create Tax Rate Override",
-      "description": "Create a tax rate that overrides the default tax rates for selected conditions."
-    }
-  },
   "taxRegions": {
     "domain": "Tax Regions",
-    "subtitle": "Manage tax rates and settings for each region.",
-    "description": "Manage your region's tax structure",
+    "list": {
+      "hint": "Manage what you charge your customers when they shop from different countries and regions."
+    },
+    "delete": {
+      "confirmation": "You are about to delete a tax region. This action cannot be undone.",
+      "successToast": "The tax region was successfully deleted."
+    },
     "create": {
-      "title": "Create Tax Region",
-      "description": "Creates a tax region with a default tax rate."
-    },
-    "create-child": {
-      "title": "Create Default Rate for Province",
-      "description": "Creates a tax region for a province with default tax rate"
-    },
-    "removeWarning": "You are about to remove {{tax_region_name}}. This action cannot be undone.",
-    "fields": {
-      "rate": {
-        "name": "Rate",
-        "hint": "Tax rate to apply for a region or province"
+      "header": "Create Tax Region",
+      "hint": "Create a new tax region to define tax rates for a specific country.",
+      "errors": {
+        "rateIsRequired": "Tax rate is required when creating a default tax rate.",
+        "nameIsRequired": "Name is required when creating a default tax rate."
       },
-      "is_combinable": {
-        "name": "Is combinable",
-        "hint": "Whether this tax rate can be combined with the default rate from province or parent tax region."
+      "successToast": "The tax region was successfully created."
+    },
+    "province": {
+      "header": "Provinces",
+      "create": {
+        "header": "Create Province Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific province."
+      }
+    },
+    "state": {
+      "header": "States",
+      "create": {
+        "header": "Create State Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific state."
+      }
+    },
+    "stateOrTerritory": {
+      "header": "States or Territories",
+      "create": {
+        "header": "Create State/Territory Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific state/territory."
+      }
+    },
+    "county": {
+      "header": "Counties",
+      "create": {
+        "header": "Create County Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific county."
+      }
+    },
+    "region": {
+      "header": "Regions",
+      "create": {
+        "header": "Create Region Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific region."
+      }
+    },
+    "department": {
+      "header": "Departments",
+      "create": {
+        "header": "Create Department Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific department."
+      }
+    },
+    "territory": {
+      "header": "Territories",
+      "create": {
+        "header": "Create Territory Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific territory."
+      }
+    },
+    "prefecture": {
+      "header": "Prefectures",
+      "create": {
+        "header": "Create Prefecture Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific prefecture."
+      }
+    },
+    "district": {
+      "header": "Districts",
+      "create": {
+        "header": "Create District Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific district."
+      }
+    },
+    "governorate": {
+      "header": "Governorates",
+      "create": {
+        "header": "Create Governorate Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific governorate."
+      }
+    },
+    "canton": {
+      "header": "Cantons",
+      "create": {
+        "header": "Create Canton Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific canton."
+      }
+    },
+    "emirate": {
+      "header": "Emirates",
+      "create": {
+        "header": "Create Emirate Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific emirate."
+      }
+    },
+    "sublevel": {
+      "header": "Sublevels",
+      "create": {
+        "header": "Create Sublevel Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific sublevel."
+      }
+    },
+    "taxOverrides": {
+      "header": "Overrides",
+      "create": {
+        "header": "Create Override",
+        "hint": "Create a tax rate that overrides the default tax rates for selected conditions."
+      },
+      "edit": {
+        "header": "Edit Override",
+        "hint": "Edit the tax rate that overrides the default tax rates for selected conditions."
+      }
+    },
+    "taxRates": {
+      "create": {
+        "header": "Create Tax Rate",
+        "hint": "Create a new tax rate to define the tax rate for a region.",
+        "successToast": "Tax rate was successfully created."
+      },
+      "edit": {
+        "header": "Edit Tax Rate",
+        "hint": "Edit the tax rate to define the tax rate for a region.",
+        "successToast": "Tax rate was successfully updated."
+      },
+      "delete": {
+        "confirmation": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+        "successToast": "Tax rate was successfully deleted."
+      }
+    },
+    "fields": {
+      "isCombinable": {
+        "label": "Combinable",
+        "hint": "Whether this tax rate can be combined with the default rate from the tax region.",
+        "true": "Combinable",
+        "false": "Not combinable"
+      },
+      "defaultTaxRate": {
+        "label": "Default tax rate",
+        "tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country or region.",
+        "action": "Create default tax rate"
+      },
+      "taxRate": "Tax rate",
+      "taxCode": "Tax code",
+      "targets": {
+        "label": "Targets",
+        "hint": "Select the targets that this tax rate will apply to.",
+        "options": {
+          "product": "Products",
+          "productCollection": "Product collections",
+          "productTag": "Product tags",
+          "productType": "Product types",
+          "customerGroup": "Customer groups"
+        },
+        "operators": {
+          "in": "in",
+          "on": "on",
+          "and": "and"
+        },
+        "placeholders": {
+          "product": "Search for products",
+          "productCollection": "Search for product collections",
+          "productTag": "Search for product tags",
+          "productType": "Search for product types",
+          "customerGroup": "Search for customer groups"
+        },
+        "tags": {
+          "product": "Product",
+          "productCollection": "Product collection",
+          "productTag": "Product tag",
+          "productType": "Product type",
+          "customerGroup": "Customer group"
+        },
+        "modal": {
+          "header": "Add targets"
+        },
+        "values_one": "{{count}} value",
+        "values_other": "{{count}} values",
+        "numberOfTargets_one": "{{count}} target",
+        "numberOfTargets_other": "{{count}} targets",
+        "additionalValues_one": "and {{count}} more value",
+        "additionalValues_other": "and {{count}} more values",
+        "action": "Add target"
+      },
+      "sublevels": {
+        "labels": {
+          "province": "Province",
+          "state": "State",
+          "region": "Region",
+          "stateOrTerritory": "State/Territory",
+          "department": "Department",
+          "county": "County",
+          "territory": "Territory",
+          "prefecture": "Prefecture",
+          "district": "District",
+          "governorate": "Governorate",
+          "emirate": "Emirate",
+          "canton": "Canton",
+          "sublevel": "Sublevel code"
+        },
+        "placeholders": {
+          "province": "Select province",
+          "state": "Select state",
+          "region": "Select region",
+          "stateOrTerritory": "Select state/territory",
+          "department": "Select department",
+          "county": "Select county",
+          "territory": "Select territory",
+          "prefecture": "Select prefecture",
+          "district": "Select district",
+          "governorate": "Select governorate",
+          "emirate": "Select emirate",
+          "canton": "Select canton"
+        },
+        "tooltips": {
+          "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region.",
+          "notPartOfCountry": "{{province}} does not appear to be part of {{country}}. Please double-check if this is correct."
+        },
+        "alert": {
+          "header": "Sublevel regions are disabled for this tax region",
+          "description": "Sublevel regions are disabled for this region by default. You can enable them to create sublevel regions like provinces, states, or territories.",
+          "action": "Enable sublevel regions"
+        }
+      },
+      "noDefaultRate": {
+        "label": "No default rate",
+        "tooltip": "This tax region does not have a default tax rate. If there is a standard rate, such as a country's VAT, please add it to this region."
       }
     }
   },
@@ -1985,8 +2098,6 @@
     "note": "Note",
     "automaticTaxes": "Automatic Taxes",
     "taxInclusivePricing": "Tax inclusive pricing",
-    "taxRate": "Tax Rate",
-    "taxCode": "Tax Code",
     "currency": "Currency",
     "address": "Address",
     "address2": "Apartment, suite, etc.",

@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
@@ -25,7 +26,7 @@ export const useCustomerGroup = (
   options?: Omit<
     UseQueryOptions<
       { customer_group: HttpTypes.AdminCustomerGroup },
-      Error,
+      FetchError,
       { customer_group: HttpTypes.AdminCustomerGroup },
       QueryKey
     >,
@@ -46,7 +47,7 @@ export const useCustomerGroups = (
   options?: Omit<
     UseQueryOptions<
       PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
-      Error,
+      FetchError,
       PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
       QueryKey
     >,
@@ -65,7 +66,7 @@ export const useCustomerGroups = (
 export const useCreateCustomerGroup = (
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     z.infer<typeof CreateCustomerGroupSchema>
   >
 ) => {
@@ -85,7 +86,7 @@ export const useUpdateCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     z.infer<typeof EditCustomerGroupSchema>
   >
 ) => {
@@ -109,7 +110,7 @@ export const useDeleteCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
     { id: string; object: "customer-group"; deleted: boolean },
-    Error,
+    FetchError,
     void
   >
 ) => {
@@ -133,7 +134,7 @@ export const useAddCustomersToGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     { customer_ids: string[] }
   >
 ) => {
@@ -160,7 +161,7 @@ export const useRemoveCustomersFromGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     { customer_ids: string[] }
   >
 ) => {

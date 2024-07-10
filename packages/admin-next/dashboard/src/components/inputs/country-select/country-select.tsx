@@ -8,7 +8,7 @@ import {
 import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { countries } from "../../../lib/countries"
+import { countries } from "../../../lib/data/countries"
 
 export const CountrySelect = forwardRef<
   HTMLSelectElement,
