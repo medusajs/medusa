@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -49,7 +48,7 @@ export const AdminCreateTaxRegion = z.object({
       rate: z.number().optional(),
       code: z.string().optional(),
       name: z.string(),
-      is_combinable: OptionalBooleanValidator,
+      is_combinable: z.boolean().optional(),
       metadata: z.record(z.unknown()).nullish(),
     })
     .optional(),
