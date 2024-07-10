@@ -4,6 +4,7 @@
     "target": "es2021",
     "outDir": "./dist",
     "esModuleInterop": true,
+    "declarationMap": true,
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",

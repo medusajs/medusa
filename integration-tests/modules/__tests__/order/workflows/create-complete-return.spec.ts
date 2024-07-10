@@ -1,5 +1,5 @@
 import {
-  createReturnOrderWorkflow,
+  createAndCompleteReturnOrderWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
 import { RemoteLink } from "@medusajs/modules-sdk"
@@ -405,7 +405,7 @@ medusaIntegrationTestRunner({
             ],
           }
 
-        await createReturnOrderWorkflow(container).run({
+        await createAndCompleteReturnOrderWorkflow(container).run({
           input: createReturnOrderData,
           throwOnError: true,
         })
@@ -539,7 +539,9 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const { errors } = await createReturnOrderWorkflow(container).run({
+        const { errors } = await createAndCompleteReturnOrderWorkflow(
+          container
+        ).run({
           input: createReturnOrderData,
           throwOnError: false,
         })
@@ -571,7 +573,9 @@ medusaIntegrationTestRunner({
             ],
           }
 
-        const { errors } = await createReturnOrderWorkflow(container).run({
+        const { errors } = await createAndCompleteReturnOrderWorkflow(
+          container
+        ).run({
           input: createReturnOrderData,
           throwOnError: false,
         })
