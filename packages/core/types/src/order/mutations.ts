@@ -5,6 +5,7 @@ import {
   OrderLineItemDTO,
   OrderReturnReasonDTO,
   OrderTransactionDTO,
+  ReturnDTO,
 } from "./common"
 
 /** ADDRESS START */
@@ -256,6 +257,7 @@ export interface CreateOrderChangeDTO {
   return_id?: string
   claim_id?: string
   exchange_id?: string
+  change_type?: "return" | "exchange" | "claim" | "edit"
   description?: string
   internal_note?: string | null
   requested_by?: string
@@ -412,12 +414,12 @@ export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
 }
 
 export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
-  items: BaseOrderBundledItemActionsDTO[]
+  items?: BaseOrderBundledItemActionsDTO[]
   no_notification?: boolean
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
-  items: {
+  items?: {
     id: string
     quantity: BigNumberInput
     internal_note?: string | null
@@ -428,6 +430,20 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   shipping_method?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   refund_amount?: BigNumberInput
   no_notification?: boolean
+  claim_id?: string
+  exchange_id?: string
+}
+
+export interface UpdateOrderReturnDTO {
+  refund_amount?: BigNumberInput
+  no_notification?: boolean
+  claim_id?: string
+  exchange_id?: string
+}
+
+export interface UpdateOrderReturnWithSelectorDTO {
+  selector: Partial<ReturnDTO>
+  data: Partial<UpdateOrderReturnDTO>
 }
 
 export interface CancelOrderReturnDTO

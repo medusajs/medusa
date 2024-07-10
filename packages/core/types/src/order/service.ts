@@ -13,6 +13,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   FilterableOrderTransactionProps,
+  FilterableReturnProps,
   OrderAddressDTO,
   OrderChangeActionDTO,
   OrderChangeDTO,
@@ -66,8 +67,10 @@ import {
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
+  UpdateOrderReturnDTO,
   UpdateOrderReturnReasonDTO,
   UpdateOrderReturnReasonWithSelectorDTO,
+  UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
   UpsertOrderLineItemAdjustmentDTO,
@@ -1776,6 +1779,46 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<Record<string, string[]> | void>
 
   restoreReturnReasons<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createReturns(
+    returnReasonData: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  createReturns(
+    returnReasonData: CreateOrderReturnDTO[],
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+
+  updateReturns(data: UpdateOrderReturnWithSelectorDTO[]): Promise<ReturnDTO[]>
+
+  updateReturns(
+    selector: Partial<FilterableReturnProps>,
+    data: Partial<UpdateOrderReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+  updateReturns(
+    id: string,
+    data: Partial<UpdateOrderReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  deleteReturns(
+    returnReasonIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  softDeleteReturns<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreReturns<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

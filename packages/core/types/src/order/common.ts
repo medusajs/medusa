@@ -1609,11 +1609,23 @@ export interface FilterableOrderItemProps
   item_id?: string | string[] | OperatorMap<string>
 }
 
-export interface FilterableOrderReturnReasonProps {
+export interface FilterableOrderReturnReasonProps
+  extends BaseFilterable<FilterableOrderReturnReasonProps> {
   id?: string | string[]
   value?: string | string[]
   label?: string
   description?: string
+}
+
+export interface FilterableReturnProps
+  extends BaseFilterable<FilterableReturnProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  return_id?: string | string[]
+  claim_id?: string | string[]
+  exchange_id?: string | string[]
+  status?: string | string[]
+  refund_amount?: string | string[]
 }
 
 export interface OrderChangeReturn {
