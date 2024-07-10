@@ -47,6 +47,7 @@ import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middlewares"
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
+import { adminReturnsRoutesMiddlewares } from "./admin/returns/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -67,6 +68,7 @@ export const config: MiddlewaresConfig = {
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
     ...adminRegionRoutesMiddlewares,
+    ...adminReturnsRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
     ...adminTaxRateRoutesMiddlewares,
