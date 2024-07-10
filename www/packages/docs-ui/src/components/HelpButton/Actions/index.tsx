@@ -14,7 +14,7 @@ export const HelpButtonActions = () => {
     },
     {
       title: "Create a GitHub Issue",
-      url: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type:+docs&template=docs.yml&title=Medusa%20v2%20Docs:%20Issue%20in%201.%20Introduction%20-%20Medusa%20v2%20Docs",
+      url: "https://github.com/medusajs/medusa/issues/new/choose",
       icon: <Github />,
     },
     {
