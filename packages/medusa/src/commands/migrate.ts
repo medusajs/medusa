@@ -11,6 +11,7 @@ const main = async function ({ directory }) {
   args.shift()
   args.shift()
 
+  const action = args[0]
   const container = await initializeContainer(directory)
 
   const configModule = container.resolve(
@@ -20,7 +21,7 @@ const main = async function ({ directory }) {
   const plugins = getResolvedPlugins(directory, configModule, true) || []
   const pluginLinks = await resolvePluginsLinks(plugins, container)
 
-  if (args[0] === "run") {
+  if (action === "run") {
     await migrateMedusaApp({
       configModule,
       linkModules: pluginLinks,
@@ -29,11 +30,25 @@ const main = async function ({ directory }) {
 
     Logger.info("Migrations completed.")
     process.exit()
-  } else if (args[0] === "revert") {
-    await revertMedusaApp({ configModule, linkModules: pluginLinks, container })
+  } else if (action === "revert") {
+    const modulesToRevert = args.slice(1)
+    if (!modulesToRevert.length) {
+      Logger.error(
+        "Please provide the modules for which you want to revert migrations"
+      )
+      Logger.error(`For example: "npx medusa migration revert <moduleName>"`)
+      process.exit(1)
+    }
+
+    await revertMedusaApp({
+      modulesToRevert,
+      configModule,
+      linkModules: pluginLinks,
+      container,
+    })
 
     Logger.info("Migrations reverted.")
-  } else if (args[0] === "show") {
+  } else if (action === "show") {
     Logger.info("not supported")
     process.exit(0)
   }
