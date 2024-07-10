@@ -201,30 +201,9 @@ export function OrderAllocateItemsItem({
                               val,
                               true
                             )
-
-                            if (!isNaN(val)) {
-                              const key = hasInventoryKit
-                                ? `quantity.${item.id}-`
-                                : `quantity.${item.id}-${item.variant.inventory[0].id}`
-                              if (val < minValue || val > maxValue) {
-                                form.setError(key, {
-                                  type: "manual",
-                                  message: t(
-                                    "orders.fulfillment.error.wrongQuantity",
-                                    {
-                                      count: maxValue,
-                                      number: maxValue,
-                                    }
-                                  ),
-                                })
-                              } else {
-                                form.clearErrors(key)
-                              }
-                            }
                           }}
                         />
                       </Form.Control>
-                      {/*<Form.ErrorMessage />*/}
                     </Form.Item>
                   )
                 }}
@@ -297,61 +276,51 @@ export function OrderAllocateItemsItem({
                   </div>
                 </div>
 
-                <div className="text-ui-fg-subtle txt-small mr-2 flex flex-row items-center gap-2">
-                  <Form.Field
-                    control={form.control}
-                    name={`quantity.${item.id}-${i.id}`}
-                    rules={{ required: true, min: minValue, max: maxValue }}
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Control>
-                            <Input
-                              className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                              type="number"
-                              {...field}
-                              disabled={!locationId}
-                              onChange={(e) => {
-                                const val =
-                                  e.target.value === ""
-                                    ? null
-                                    : Number(e.target.value)
+                <div className="flex items-center gap-3">
+                  <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
 
-                                onQuantityChange(i, item, hasInventoryKit, val)
+                  <div className="text-ui-fg-subtle txt-small mr-1 flex flex-row items-center gap-2">
+                    <Form.Field
+                      control={form.control}
+                      name={`quantity.${item.id}-${i.id}`}
+                      rules={{
+                        required: true,
+                        min: 0,
+                        max: location?.available_quantity,
+                      }}
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Control>
+                              <Input
+                                className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                type="number"
+                                {...field}
+                                disabled={!locationId}
+                                onChange={(e) => {
+                                  const val =
+                                    e.target.value === ""
+                                      ? null
+                                      : Number(e.target.value)
 
-                                if (!isNaN(val)) {
-                                  if (val < minValue || val > maxValue) {
-                                    form.setError(
-                                      `quantity.${item.id}-${i.id}`,
-                                      {
-                                        type: "manual",
-                                        message: t(
-                                          "orders.fulfillment.error.wrongQuantity",
-                                          {
-                                            count: maxValue,
-                                            number: maxValue,
-                                          }
-                                        ),
-                                      }
-                                    )
-                                  } else {
-                                    form.clearErrors(
-                                      `quantity.${item.id}-${i.id}`
-                                    )
-                                  }
-                                }
-                              }}
-                            />
-                          </Form.Control>
-                          {/*<Form.ErrorMessage />*/}
-                        </Form.Item>
-                      )
-                    }}
-                  />{" "}
-                  /{" "}
-                  {item.quantity *
-                    variant.inventory_items[ind].required_quantity}{" "}
-                  {t("fields.qty")}
+                                  onQuantityChange(
+                                    i,
+                                    item,
+                                    hasInventoryKit,
+                                    val
+                                  )
+                                }}
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                    /{" "}
+                    {item.quantity *
+                      variant.inventory_items[ind].required_quantity}{" "}
+                    {t("fields.qty")}
+                  </div>
                 </div>
               </div>
             </div>

@@ -96,11 +96,23 @@ export function OrderAllocateItemsForm({
 
     if (hasInventoryKit && !isRoot) {
       // changed subitem in the kit -> we need to set parent to "-"
-      form.setValue(`quantity.${lineItem.id}-`, null)
+      form.resetField(`quantity.${lineItem.id}-`, { defaultValue: "" })
     }
 
     if (hasInventoryKit && isRoot) {
-      // changed root -< we need to set items to parent quantity x required_quantity
+      // changed root -> we need to set items to parent quantity x required_quantity
+
+      itemsToAllocate.forEach((item) => {
+        item.variant.inventory_items.forEach((ii, ind) => {
+          const num = value || 0
+          const inventory = item.variant.inventory[ind]
+
+          form.setValue(
+            `quantity.${lineItem.id}-${inventory.id}`,
+            num * ii.required_quantity
+          )
+        })
+      })
     }
   }
 
