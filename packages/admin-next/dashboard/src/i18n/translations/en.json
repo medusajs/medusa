@@ -554,7 +554,7 @@
     "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit reservation",
-      "orderID": "Order ID",
+      "lineItemId": "Line item ID",
       "description": "Description",
       "location": "Location",
       "inStockAtLocation": "In stock at this location",
