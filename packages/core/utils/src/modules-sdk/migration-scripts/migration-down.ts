@@ -1,9 +1,5 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-
-import { EntitySchema } from "@mikro-orm/core"
-import { upperCaseFirst } from "../../common"
 import { mikroOrmCreateConnection } from "../../dal"
-import { DmlEntity, toMikroORMEntity } from "../../dml"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
 
@@ -33,12 +29,8 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     logger.info(`Running migrations for module ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
-    const migrations = new Migrations({
-      ...dbData,
-      migrations: {
-        path: pathToMigrations,
-      },
-    })
+    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const migrations = new Migrations(orm)
 
     migrations.on("reverting", (migration) => {
       logger.info(`  Reverting migration ${migration.name}`)
