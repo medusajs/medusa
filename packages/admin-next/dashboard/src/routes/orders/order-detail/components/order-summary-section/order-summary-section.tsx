@@ -20,6 +20,7 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { useNavigate } from "react-router-dom"
+import { useReservationItems } from "../../../../../hooks/api/reservations.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -159,27 +160,23 @@ const Item = ({
 }
 
 const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
-  // const { reservations, isError, error } = useAdminReservations({
-  //   line_item_id: order.items.map((i) => i.id),
-  // })
-
-  // if (isError) {
-  //   throw error
-  // }
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
 
   return (
     <div>
       {order.items.map((item) => {
-        // const reservation = reservations
-        //   ? reservations.find((r) => r.line_item_id === item.id)
-        //   : null
+        const reservation = reservations
+          ? reservations.find((r) => r.line_item_id === item.id)
+          : null
 
         return (
           <Item
             key={item.id}
             item={item}
             currencyCode={order.currency_code}
-            reservation={null /* TODO: fetch reservation for this item */}
+            reservation={reservation}
           />
         )
       })}
