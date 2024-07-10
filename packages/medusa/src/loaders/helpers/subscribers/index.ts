@@ -173,7 +173,7 @@ export class SubscriberLoader {
     return kebabCase(idFromFile)
   }
 
-  private createSubscriber<T>({
+  private createSubscriber<T = unknown>({
     fileName,
     config,
     handler,
