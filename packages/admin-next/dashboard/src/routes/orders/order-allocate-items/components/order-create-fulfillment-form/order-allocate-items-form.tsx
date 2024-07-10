@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -13,11 +13,10 @@ import {
 } from "../../../../../components/modals"
 import { Form } from "../../../../../components/common/form"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
-import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { AllocateItemsSchema } from "./constants"
-import { boolean } from "zod"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -30,6 +29,7 @@ export function OrderAllocateItemsForm({
   const { handleSuccess } = useRouteModal()
 
   const [disableSubmit, setDisableSubmit] = useState(false)
+  const [filterTerm, setFilterTerm] = useState("")
 
   const { mutateAsync: allocateItems, isPending: isMutating } =
     useCreateReservationItem()
@@ -40,6 +40,14 @@ export function OrderAllocateItemsForm({
         item.variant.manage_inventory && getFulfillableQuantity(item) > 0
     )
   )
+
+  const filteredItems = useMemo(() => {
+    return itemsToAllocate.filter(
+      (i) =>
+        i.variant.title.toLowerCase().includes(filterTerm) ||
+        i.variant.product.title.toLowerCase().includes(filterTerm)
+    )
+  }, [itemsToAllocate, filterTerm])
 
   // TODO - empty state UI
   const noItemsToAllocate = !itemsToAllocate.length
@@ -228,12 +236,18 @@ export function OrderAllocateItemsForm({
                         </Form.Hint>
                       </div>
                       <div className="flex-1">
-                        <Input placeholder={t("orders.allocateItems.search")} />
+                        <Input
+                          value={filterTerm}
+                          onChange={(e) => setFilterTerm(e.target.value)}
+                          placeholder={t("orders.allocateItems.search")}
+                          autoComplete="off"
+                          type="search"
+                        />
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-y-1">
-                      {itemsToAllocate.map((item) => (
+                      {filteredItems.map((item) => (
                         <OrderAllocateItemsItem
                           key={item.id}
                           form={form}
