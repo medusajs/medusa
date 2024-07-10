@@ -41,7 +41,7 @@ export function OrderAllocateItemsItem({
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const qunatityField = useWatch({
+  const quantityField = useWatch({
     control: form.control,
     name: "quantity",
   })
@@ -70,34 +70,12 @@ export function OrderAllocateItemsItem({
     }
   }, [variant, locationId])
 
-  const errorInventoryIds = useMemo(() => {
-    if (!variant || !locationId) {
-      return []
-    }
-
-    const errorIds: string[] = []
-
-    inventory.forEach((i) => {
-      const locationInventory = i?.location_levels?.find(
-        (inv) => inv.location_id === locationId
-      )
-
-      if (!locationInventory) {
-        return []
-      }
-
-      if (
-        locationInventory.required_quantity >
-        locationInventory.available_quantity
-      ) {
-        errorIds.push(i.id)
-      }
-    })
-
-    return errorIds
-  }, [variant, locationId])
-
-  const hasQuantityError = !!errorInventoryIds.length
+  const hasQuantityError =
+    !hasInventoryKit &&
+    availableQuantity &&
+    quantityField[`${item.id}-${item.variant.inventory[0].id}`] &&
+    quantityField[`${item.id}-${item.variant.inventory[0].id}`] >
+      availableQuantity
 
   const minValue = 0
   const maxValue = Math.min(
@@ -155,13 +133,13 @@ export function OrderAllocateItemsItem({
                     {availableQuantity || "-"}
                     {availableQuantity &&
                       !hasInventoryKit &&
-                      qunatityField[
+                      quantityField[
                         `${item.id}-${item.variant.inventory[0].id}`
                       ] && (
                         <span className="text-ui-fg-error txt-small ml-1">
                           -
                           {
-                            qunatityField[
+                            quantityField[
                               `${item.id}-${item.variant.inventory[0].id}`
                             ]
                           }
@@ -279,9 +257,9 @@ export function OrderAllocateItemsItem({
                     <span className="text-ui-fg-muted">
                       {location?.available_quantity || "-"}
                       {location?.available_quantity &&
-                        qunatityField[`${item.id}-${i.id}`] && (
+                        quantityField[`${item.id}-${i.id}`] && (
                           <span className="text-ui-fg-error txt-small ml-1">
-                            -{qunatityField[`${item.id}-${i.id}`]}
+                            -{quantityField[`${item.id}-${i.id}`]}
                           </span>
                         )}
                     </span>
