@@ -1539,6 +1539,42 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderChangeActionDTO[]>
 
+  /**
+   * This method deletes {return type} by its ID.
+   *
+   * @param {string[]} actionId - The list of {summary}
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * ```typescript
+   * await orderModuleService.deleteOrderActions(["12345abc", "67890def"]);
+   * ```
+   *
+   */
+  deleteOrderChangeActions(
+    actionId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method deletes {return type} by its ID.
+   *
+   * @param {string} orderId - The order action's ID.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * ```typescript
+   * await orderModuleService.deleteOrderActions("orderActionId");
+   * ```
+   *
+   */
+  deleteOrderChangeActions(
+    actionId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
   softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,

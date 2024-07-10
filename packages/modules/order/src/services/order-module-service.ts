@@ -2128,6 +2128,7 @@ export default class OrderModuleService<
     includeActions: boolean,
     sharedContext?: Context
   ): Promise<any> {
+    orderChangeIds = deduplicate(orderChangeIds)
     const options = {
       select: [
         "id",
