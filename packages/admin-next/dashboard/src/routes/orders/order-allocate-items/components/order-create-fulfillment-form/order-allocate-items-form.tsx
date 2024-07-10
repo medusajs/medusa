@@ -17,6 +17,7 @@ import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { AllocateItemsSchema } from "./constants"
+import { boolean } from "zod"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -78,6 +79,21 @@ export function OrderAllocateItemsForm({
       })
     }
   })
+
+  const onQuantityChange = (
+    inventoryItemId: string,
+    lineItemId: string,
+    hasInventoryKit: boolean,
+    value: number | null,
+    isRoot?: boolean
+  ) => {
+    const key =
+      isRoot && hasInventoryKit
+        ? `quantity.${lineItemId}-`
+        : `quantity.${lineItemId}-${inventoryItemId}`
+
+    form.setValue(key, value)
+  }
 
   const selectedLocationId = useWatch({
     name: "location_id",
@@ -163,6 +179,7 @@ export function OrderAllocateItemsForm({
                           form={form}
                           item={item}
                           locationId={selectedLocationId}
+                          onQuantityChange={onQuantityChange}
                         />
                       ))}
                     </div>

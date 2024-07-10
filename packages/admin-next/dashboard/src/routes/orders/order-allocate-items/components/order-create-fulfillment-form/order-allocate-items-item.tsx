@@ -19,12 +19,20 @@ type OrderEditItemProps = {
   item: OrderLineItemDTO
   locationId?: string
   form: UseFormReturn<zod.infer<typeof AllocateItemsSchema>>
+  onQuantityChange: (
+    inventoryItemId: string,
+    lineItemId: string,
+    hasInventoryKit: boolean,
+    value: number | null,
+    isRoot?: boolean
+  ) => {}
 }
 
 export function OrderAllocateItemsItem({
   item,
   form,
   locationId,
+  onQuantityChange,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
@@ -186,11 +194,20 @@ export function OrderAllocateItemsItem({
                                 ? null
                                 : Number(e.target.value)
 
-                            field.onChange(val)
+                            onQuantityChange(
+                              item.variant.inventory[0].id,
+                              item.id,
+                              hasInventoryKit,
+                              val,
+                              true
+                            )
 
                             if (!isNaN(val)) {
+                              const key = hasInventoryKit
+                                ? `quantity.${item.id}-`
+                                : `quantity.${item.id}-${item.variant.inventory[0].id}`
                               if (val < minValue || val > maxValue) {
-                                form.setError(`quantity.${item.id}`, {
+                                form.setError(key, {
                                   type: "manual",
                                   message: t(
                                     "orders.fulfillment.error.wrongQuantity",
@@ -201,7 +218,7 @@ export function OrderAllocateItemsItem({
                                   ),
                                 })
                               } else {
-                                form.clearErrors(`quantity.${item.id}`)
+                                form.clearErrors(key)
                               }
                             }
                           }}
@@ -300,22 +317,32 @@ export function OrderAllocateItemsItem({
                                     ? null
                                     : Number(e.target.value)
 
-                                field.onChange(val)
+                                onQuantityChange(
+                                  i.id,
+                                  item.id,
+                                  hasInventoryKit,
+                                  val
+                                )
 
                                 if (!isNaN(val)) {
                                   if (val < minValue || val > maxValue) {
-                                    form.setError(`quantity.${item.id}`, {
-                                      type: "manual",
-                                      message: t(
-                                        "orders.fulfillment.error.wrongQuantity",
-                                        {
-                                          count: maxValue,
-                                          number: maxValue,
-                                        }
-                                      ),
-                                    })
+                                    form.setError(
+                                      `quantity.${item.id}-${i.id}`,
+                                      {
+                                        type: "manual",
+                                        message: t(
+                                          "orders.fulfillment.error.wrongQuantity",
+                                          {
+                                            count: maxValue,
+                                            number: maxValue,
+                                          }
+                                        ),
+                                      }
+                                    )
                                   } else {
-                                    form.clearErrors(`quantity.${item.id}`)
+                                    form.clearErrors(
+                                      `quantity.${item.id}-${i.id}`
+                                    )
                                   }
                                 }
                               }}
