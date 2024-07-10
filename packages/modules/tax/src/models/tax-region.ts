@@ -27,6 +27,8 @@ type OptionalTaxRegionProps = DAL.SoftDeletableModelDateColumns
 
 const TABLE_NAME = "tax_region"
 
+export const countryCodeNullProvinceIndexName =
+  "IDX_tax_region_unique_country_nullable_province"
 export const countryCodeProvinceIndexName =
   "IDX_tax_region_unique_country_province"
 const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
@@ -34,7 +36,17 @@ const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   tableName: TABLE_NAME,
   columns: ["country_code", "province_code"],
   unique: true,
+  where: "deleted_at IS NULL",
 })
+
+const countryCodeNullableProvinceIndexStatement =
+  createPsqlIndexStatementHelper({
+    name: countryCodeNullProvinceIndexName,
+    tableName: TABLE_NAME,
+    columns: ["country_code"],
+    unique: true,
+    where: "province_code IS NULL AND deleted_at IS NULL",
+  })
 
 export const taxRegionProviderTopLevelCheckName =
   "CK_tax_region_provider_top_level"
@@ -49,6 +61,7 @@ export const taxRegionCountryTopLevelCheckName =
   name: taxRegionCountryTopLevelCheckName,
   expression: `parent_id IS NULL OR province_code IS NOT NULL`,
 })
+@countryCodeNullableProvinceIndexStatement.MikroORMIndex()
 @countryCodeProvinceIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

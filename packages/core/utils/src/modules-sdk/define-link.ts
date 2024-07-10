@@ -1,5 +1,5 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { isObject, pluralize, toPascalCase } from "../common"
+import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
 import { composeLinkName } from "../link"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
@@ -25,6 +25,7 @@ type CombinedSource = Record<any, any> & InputToJson
 type InputOptions = {
   linkable: CombinedSource | InputSource
   isList?: boolean
+  deleteCascade?: boolean
 }
 
 type ExtraOptions = {
@@ -44,6 +45,7 @@ type ModuleLinkableKeyConfig = {
   module: string
   key: string
   isList?: boolean
+  deleteCascade?: boolean
   primaryKey: string
   alias: string
   shortcuts?: {
@@ -52,15 +54,15 @@ type ModuleLinkableKeyConfig = {
 }
 
 function isInputOptions(input: any): input is InputOptions {
-  return isObject(input) && "linkable" in input
+  return isObject(input) && input?.["linkable"]
 }
 
 function isInputSource(input: any): input is InputSource {
-  return (isObject(input) && "serviceName" in input) || "toJSON" in input
+  return (isObject(input) && input?.["serviceName"]) || input?.["toJSON"]
 }
 
 function isToJSON(input: any): input is InputToJson {
-  return isObject(input) && "toJSON" in input
+  return isObject(input) && input?.["toJSON"]
 }
 
 export function defineLink(
@@ -79,6 +81,7 @@ export function defineLink(
       alias: source.field,
       primaryKey: source.primaryKey,
       isList: false,
+      deleteCascade: false,
       module: source.serviceName,
     }
   } else if (isInputOptions(leftService)) {
@@ -91,6 +94,7 @@ export function defineLink(
       alias: source.field,
       primaryKey: source.primaryKey,
       isList: leftService.isList ?? false,
+      deleteCascade: leftService.deleteCascade ?? false,
       module: source.serviceName,
     }
   } else {
@@ -102,9 +106,10 @@ export function defineLink(
 
     serviceBObj = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: false,
+      deleteCascade: false,
       module: source.serviceName,
     }
   } else if (isInputOptions(rightService)) {
@@ -114,9 +119,10 @@ export function defineLink(
 
     serviceBObj = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: rightService.isList ?? false,
+      deleteCascade: rightService.deleteCascade ?? false,
       module: source.serviceName,
     }
   } else {
@@ -281,6 +287,7 @@ export function defineLink(
           args: {
             methodSuffix: serviceAMethodSuffix,
           },
+          deleteCascade: serviceAObj.deleteCascade,
         },
         {
           serviceName: serviceBObj.module,
@@ -290,6 +297,7 @@ export function defineLink(
           args: {
             methodSuffix: serviceBMethodSuffix,
           },
+          deleteCascade: serviceBObj.deleteCascade,
         },
       ],
       extends: [
@@ -297,13 +305,13 @@ export function defineLink(
           serviceName: serviceAObj.module,
           fieldAlias: {
             [serviceBObj.isList ? pluralize(aliasB) : aliasB]:
-              aliasB + "_link." + aliasB, //plural aliasA
+              aliasB + "_link." + aliasB,
           },
           relationship: {
             serviceName: output.serviceName,
             primaryKey: serviceAObj.key,
             foreignKey: serviceAPrimaryKey,
-            alias: aliasB + "_link", // plural alias
+            alias: aliasB + "_link",
             isList: serviceBObj.isList,
           },
         },
@@ -317,7 +325,7 @@ export function defineLink(
             serviceName: output.serviceName,
             primaryKey: serviceBObj.key,
             foreignKey: serviceBPrimaryKey,
-            alias: aliasA + "_link", // plural alias
+            alias: aliasA + "_link",
             isList: serviceAObj.isList,
           },
         },
