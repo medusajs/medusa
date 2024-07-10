@@ -168,7 +168,15 @@
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_province\" ON \"tax_region\" (country_code, province_code)"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_province\" ON \"tax_region\" (country_code, province_code) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_tax_region_unique_country_nullable_province",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_nullable_province\" ON \"tax_region\" (country_code) WHERE province_code IS NULL AND deleted_at IS NULL"
         },
         {
           "keyName": "tax_region_pkey",
