@@ -2844,8 +2844,24 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderAdjustmentLineDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderChangeDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderChangeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderClaimDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderClaimDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderDTO/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderExchangeDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderExchangeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderItemDTO/page.mdx",
@@ -2890,6 +2906,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.RestoreReturn/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.ReturnDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.ReturnDTO"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.ServiceZoneDTO/page.mdx",
@@ -2980,6 +3000,10 @@ export const filesMap = [
     "pathname": "/references/fulfillment/types/fulfillment.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ChangeActionType/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.ChangeActionType"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.CreateGeoZoneDTO/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.CreateGeoZoneDTO"
   },
@@ -3062,6 +3086,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ReadonlyPrimary/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ReturnStatus/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.ReturnStatus"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.RuleOperatorType/page.mdx",
@@ -4568,6 +4596,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders"
   },
@@ -4660,6 +4692,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.previewOrderChange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.previewOrderChange"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn"
   },
@@ -4686,6 +4722,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChanges"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders/page.mdx",
@@ -4718,6 +4758,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderChange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderChange"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderClaim/page.mdx",
@@ -4772,6 +4816,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChanges"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders"
   },
@@ -4802,6 +4850,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateLineItems/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateLineItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderChanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderChanges"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderItem/page.mdx",
@@ -5102,6 +5154,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderAdjustmentDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.UpdateOrderAdjustmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderChangeDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.UpdateOrderChangeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderDTO/page.mdx",
@@ -8552,12 +8608,12 @@ export const filesMap = [
     "pathname": "/references/types/DAL/interfaces/types.DAL.UpsertWithReplaceConfig"
   },
   {
-    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.EntityDateColumns/page.mdx",
-    "pathname": "/references/types/DAL/types/types.DAL.EntityDateColumns"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.FilterQuery/page.mdx",
     "pathname": "/references/types/DAL/types/types.DAL.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.ModelDateColumns/page.mdx",
+    "pathname": "/references/types/DAL/types/types.DAL.ModelDateColumns"
   },
   {
     "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.OperatorMap/page.mdx",
@@ -8568,8 +8624,8 @@ export const filesMap = [
     "pathname": "/references/types/DAL/types/types.DAL.PerformedActions"
   },
   {
-    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx",
-    "pathname": "/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns"
+    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.SoftDeletableModelDateColumns/page.mdx",
+    "pathname": "/references/types/DAL/types/types.DAL.SoftDeletableModelDateColumns"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/interfaces/types.DmlTypes.EntityConstructor/page.mdx",
