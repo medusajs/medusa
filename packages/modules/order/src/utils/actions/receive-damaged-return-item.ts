@@ -1,6 +1,10 @@
-import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  MathBN,
+  MedusaError,
+  isDefined,
+} from "@medusajs/utils"
 import { EVENT_STATUS } from "@types"
-import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
