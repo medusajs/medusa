@@ -175,7 +175,11 @@ export function OrderAllocateItemsItem({
                     ? `quantity.${item.id}-`
                     : `quantity.${item.id}-${item.variant.inventory[0].id}`
                 }
-                rules={{ required: true, min: minValue, max: maxValue }}
+                rules={{
+                  required: !hasInventoryKit,
+                  min: !hasInventoryKit && minValue,
+                  max: maxValue,
+                }}
                 render={({ field }) => {
                   return (
                     <Form.Item>
@@ -237,7 +241,7 @@ export function OrderAllocateItemsItem({
           )
 
           const hasQuantityError =
-            quantityField[`${item.id}-${i.id}`] &&
+            !!quantityField[`${item.id}-${i.id}`] &&
             quantityField[`${item.id}-${i.id}`] > location.available_quantity
 
           return (

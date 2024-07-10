@@ -748,7 +748,13 @@
       "itemsToAllocateDesc": "Select the number of items you wish to allocate",
       "search": "Search items",
       "consistsOf": "Consists of {{num}}x inventory items",
-      "requires": "Requires {{num}} per variant"
+      "requires": "Requires {{num}} per variant",
+      "toast": {
+        "created": "Items successfully allocated"
+      },
+      "error": {
+        "quantityNotAllocated": "There are unallocated items."
+      }
     },
     "shipment": {
       "title": "Mark fulfillment shipped",

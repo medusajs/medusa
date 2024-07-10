@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { AdminOrder, InventoryItemDTO, OrderLineItemDTO } from "@medusajs/types"
-import { Button, Heading, Input, Select, toast } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import {
@@ -17,14 +17,14 @@ import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { AllocateItemsSchema } from "./constants"
+import { queryClient } from "../../../../../lib/query-client.ts"
+import { ordersQueryKeys } from "../../../../../hooks/api/orders.tsx"
 
-type OrderCreateFulfillmentFormProps = {
+type OrderAllocateItemsFormProps = {
   order: AdminOrder
 }
 
-export function OrderAllocateItemsForm({
-  order,
-}: OrderCreateFulfillmentFormProps) {
+export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -55,7 +55,7 @@ export function OrderAllocateItemsForm({
   const form = useForm<zod.infer<typeof AllocateItemsSchema>>({
     defaultValues: {
       location_id: "",
-      quantity: {},
+      quantity: defaultAllocations(itemsToAllocate),
     },
     resolver: zodResolver(AllocateItemsSchema),
   })
@@ -64,22 +64,37 @@ export function OrderAllocateItemsForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      const promises = Object.entries(data.quantity)
+      const payload = Object.entries(data.quantity)
         .filter(([key]) => !key.endsWith("-"))
         .map(([key, quantity]) => [...key.split("-"), quantity])
-        .map(([itemId, invnetoryId, quantity]) =>
-          allocateItems({
-            location_id: data.location_id,
-            inventory_item_id: invnetoryId,
-            line_item_id: itemId,
-            quantity,
-          })
-        )
+
+      if (payload.some((d) => d[2] === "")) {
+        form.setError("root.quantityNotAllocated", {
+          type: "manual",
+          message: t("orders.allocateItems.error.quantityNotAllocated"),
+        })
+
+        return
+      }
+
+      const promises = payload.map(([itemId, inventoryId, quantity]) =>
+        allocateItems({
+          location_id: data.location_id,
+          inventory_item_id: inventoryId,
+          line_item_id: itemId,
+          quantity,
+        })
+      )
 
       /**
        * TODO: we should have bulk endpoint for this so this is executed in a workflow and can be reverted
        */
       await Promise.all(promises)
+
+      // invalidate order details so we get new item.variant.inventory items
+      await queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
 
       handleSuccess(`/orders/${order.id}`)
 
@@ -154,6 +169,7 @@ export function OrderAllocateItemsForm({
       })
     }
 
+    form.clearErrors("root.quantityNotAllocated")
     setDisableSubmit(shouldDisableSubmit)
   }
 
@@ -164,10 +180,12 @@ export function OrderAllocateItemsForm({
 
   useEffect(() => {
     if (selectedLocationId) {
-      // TODO
-      // form.setValue("quantity", {}, { shouldDirty: true, shouldTouch: true })
+      form.setValue("quantity", defaultAllocations(itemsToAllocate))
     }
   }, [selectedLocationId])
+
+  const allocationError =
+    form.formState.errors?.root?.quantityNotAllocated?.message
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -186,7 +204,7 @@ export function OrderAllocateItemsForm({
               size="small"
               type="submit"
               isLoading={isMutating}
-              disabled={disableSubmit}
+              disabled={!selectedLocationId || disableSubmit}
             >
               {t("orders.allocateItems.action")}
             </Button>
@@ -258,6 +276,12 @@ export function OrderAllocateItemsForm({
                       </div>
                     </div>
 
+                    {allocationError && (
+                      <Alert className="mb-4" dismissible variant="error">
+                        {allocationError}
+                      </Alert>
+                    )}
+
                     <div className="flex flex-col gap-y-1">
                       {filteredItems.map((item) => (
                         <OrderAllocateItemsItem
@@ -278,4 +302,26 @@ export function OrderAllocateItemsForm({
       </form>
     </RouteFocusModal.Form>
   )
+}
+
+function defaultAllocations(items: OrderLineItemDTO) {
+  const ret = {}
+
+  items.forEach((item) => {
+    const hasInventoryKit = item.variant.inventory_items.length > 1
+
+    ret[
+      hasInventoryKit
+        ? `${item.id}-`
+        : `${item.id}-${item.variant.inventory[0].id}`
+    ] = ""
+
+    if (hasInventoryKit) {
+      item.variant.inventory.forEach((i) => {
+        ret[`${item.id}-${i.id}`] = ""
+      })
+    }
+  })
+
+  return ret
 }
