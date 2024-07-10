@@ -112,8 +112,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   /**
    * Emit a single or number of events
-   * @param {Message} data - the data to send to the subscriber.
-   * @param {BulkJobOptions} data - the options to add to bull mq
+   * @param eventsData
+   * @param options
    */
   async emit<T = unknown>(
     eventsData: Message<T> | Message<T>[],
@@ -136,10 +136,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     for (const event of eventsToGroup) {
       const groupId = event.metadata?.eventGroupId!
-      const array = groupEventsMap.get(groupId) ?? []
+      const groupEvents = groupEventsMap.get(groupId) ?? []
 
-      array.push(event)
-      groupEventsMap.set(groupId, array)
+      groupEvents.push(event)
+      groupEventsMap.set(groupId, groupEvents)
     }
 
     const promises: Promise<unknown>[] = []

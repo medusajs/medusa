@@ -1,9 +1,6 @@
 import { Context } from "../shared-context"
 
-export type Subscriber<TData = unknown> = (
-  data: TData,
-  eventName: string
-) => Promise<void>
+export type Subscriber<TData = unknown> = (data: TData) => Promise<void>
 
 export type SubscriberContext = {
   subscriberId: string
