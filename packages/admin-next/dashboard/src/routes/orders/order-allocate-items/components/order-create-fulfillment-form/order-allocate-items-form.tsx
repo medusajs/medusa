@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -64,16 +64,21 @@ export function OrderAllocateItemsForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      const promises = Object.entries(data.quantity).map(
-        ([inventoryItemId, quantity]) =>
+      const promises = Object.entries(data.quantity)
+        .filter(([key]) => !key.endsWith("-"))
+        .map(([key, quantity]) => [...key.split("-"), quantity])
+        .map(([itemId, invnetoryId, quantity]) =>
           allocateItems({
             location_id: data.location_id,
-            inventory_item_id: inventoryItemId,
+            inventory_item_id: invnetoryId,
+            line_item_id: itemId,
             quantity,
-            // line_item_id: "TODO"
           })
-      )
+        )
 
+      /**
+       * TODO: we should have bulk endpoint for this so this is executed in a workflow and can be reverted
+       */
       await Promise.all(promises)
 
       handleSuccess(`/orders/${order.id}`)
@@ -125,27 +130,27 @@ export function OrderAllocateItemsForm({
     if (hasInventoryKit && isRoot) {
       // changed root -> we need to set items to parent quantity x required_quantity
 
-      itemsToAllocate.forEach((item) => {
-        item.variant.inventory_items.forEach((ii, ind) => {
-          const num = value || 0
-          const inventory = item.variant.inventory[ind]
+      const item = itemsToAllocate.find((i) => i.id === lineItem.id)
 
-          form.setValue(
-            `quantity.${lineItem.id}-${inventory.id}`,
-            num * ii.required_quantity
+      item.variant.inventory_items.forEach((ii, ind) => {
+        const num = value || 0
+        const inventory = item.variant.inventory[ind]
+
+        form.setValue(
+          `quantity.${lineItem.id}-${inventory.id}`,
+          num * ii.required_quantity
+        )
+
+        if (value) {
+          const location = inventory.location_levels.find(
+            (l) => l.location_id === selectedLocationId
           )
-
-          if (value) {
-            const location = inventory.location_levels.find(
-              (l) => l.location_id === selectedLocationId
-            )
-            if (location) {
-              if (location.available_quantity < value) {
-                shouldDisableSubmit = true
-              }
+          if (location) {
+            if (location.available_quantity < value) {
+              shouldDisableSubmit = true
             }
           }
-        })
+        }
       })
     }
 
@@ -156,6 +161,13 @@ export function OrderAllocateItemsForm({
     name: "location_id",
     control: form.control,
   })
+
+  useEffect(() => {
+    if (selectedLocationId) {
+      // TODO
+      // form.setValue("quantity", {}, { shouldDirty: true, shouldTouch: true })
+    }
+  }, [selectedLocationId])
 
   return (
     <RouteFocusModal.Form form={form}>
