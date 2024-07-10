@@ -4,6 +4,7 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
+  ChangeActionType,
   ReturnStatus,
   getShippingMethodsTotals,
   isDefined,
@@ -12,7 +13,6 @@ import {
 } from "@medusajs/utils"
 import { Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
-import { ChangeActionType } from "../../utils"
 
 function createReturnReference(em, data, order) {
   return em.create(Return, {
