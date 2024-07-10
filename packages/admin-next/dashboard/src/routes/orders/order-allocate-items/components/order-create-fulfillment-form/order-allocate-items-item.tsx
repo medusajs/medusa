@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { OrderLineItemDTO } from "@medusajs/types"
+import { InventoryItemDTO, OrderLineItemDTO } from "@medusajs/types"
 import {
   Component,
   ExclamationCircleSolid,
@@ -20,8 +20,8 @@ type OrderEditItemProps = {
   locationId?: string
   form: UseFormReturn<zod.infer<typeof AllocateItemsSchema>>
   onQuantityChange: (
-    inventoryItemId: string,
-    lineItemId: string,
+    inventoryItem: InventoryItemDTO,
+    lineItem: OrderLineItemDTO,
     hasInventoryKit: boolean,
     value: number | null,
     isRoot?: boolean
@@ -195,8 +195,8 @@ export function OrderAllocateItemsItem({
                                 : Number(e.target.value)
 
                             onQuantityChange(
-                              item.variant.inventory[0].id,
-                              item.id,
+                              item.variant.inventory[0],
+                              item,
                               hasInventoryKit,
                               val,
                               true
@@ -229,7 +229,7 @@ export function OrderAllocateItemsItem({
                   )
                 }}
               />{" "}
-              / {availableQuantity} {t("fields.qty")}
+              / {item.quantity} {t("fields.qty")}
             </div>
           </div>
         </div>
@@ -317,12 +317,7 @@ export function OrderAllocateItemsItem({
                                     ? null
                                     : Number(e.target.value)
 
-                                onQuantityChange(
-                                  i.id,
-                                  item.id,
-                                  hasInventoryKit,
-                                  val
-                                )
+                                onQuantityChange(i, item, hasInventoryKit, val)
 
                                 if (!isNaN(val)) {
                                   if (val < minValue || val > maxValue) {
@@ -353,7 +348,10 @@ export function OrderAllocateItemsItem({
                       )
                     }}
                   />{" "}
-                  / {availableQuantity} {t("fields.qty")}
+                  /{" "}
+                  {item.quantity *
+                    variant.inventory_items[ind].required_quantity}{" "}
+                  {t("fields.qty")}
                 </div>
               </div>
             </div>

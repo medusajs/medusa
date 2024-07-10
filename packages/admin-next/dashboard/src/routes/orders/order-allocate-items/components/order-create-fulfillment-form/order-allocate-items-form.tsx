@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { AdminOrder } from "@medusajs/types"
+import { AdminOrder, InventoryItemDTO, OrderLineItemDTO } from "@medusajs/types"
 import { Button, Heading, Input, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
@@ -81,18 +81,27 @@ export function OrderAllocateItemsForm({
   })
 
   const onQuantityChange = (
-    inventoryItemId: string,
-    lineItemId: string,
+    inventoryItem: InventoryItemDTO,
+    lineItem: OrderLineItemDTO,
     hasInventoryKit: boolean,
     value: number | null,
     isRoot?: boolean
   ) => {
     const key =
       isRoot && hasInventoryKit
-        ? `quantity.${lineItemId}-`
-        : `quantity.${lineItemId}-${inventoryItemId}`
+        ? `quantity.${lineItem.id}-`
+        : `quantity.${lineItem.id}-${inventoryItem.id}`
 
     form.setValue(key, value)
+
+    if (hasInventoryKit && !isRoot) {
+      // changed subitem in the kit -> we need to set parent to "-"
+      form.setValue(`quantity.${lineItem.id}-`, null)
+    }
+
+    if (hasInventoryKit && isRoot) {
+      // changed root -< we need to set items to parent quantity x required_quantity
+    }
   }
 
   const selectedLocationId = useWatch({
