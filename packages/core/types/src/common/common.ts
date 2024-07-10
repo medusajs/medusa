@@ -355,8 +355,6 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
   ? `${Singular}es`
   : Singular extends `${infer R}fe`
   ? `${R}ves`
-  : Singular extends `${infer R}is`
-  ? `${R}ises`
   : Singular extends `${infer R}ex` | `${infer R}ix`
   ? `${R}ices`
   : Singular extends `${infer R}eau`
@@ -365,6 +363,8 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
   ? `${R}ieux`
   : Singular extends `${infer R}sis`
   ? `${R}ses`
+  : Singular extends `${infer R}is`
+  ? `${R}ises`
   : `${Singular}s`
 
 export type SnakeCase<S extends string> =
