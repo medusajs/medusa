@@ -62,6 +62,7 @@ export const TaxRegionProvinceCreateForm = ({
             name: values.name,
             rate: values.rate.float,
             code: values.code,
+            is_combinable: values.is_combinable,
           }
         : undefined
 
