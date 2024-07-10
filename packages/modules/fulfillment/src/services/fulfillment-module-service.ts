@@ -2188,38 +2188,13 @@ export default class FulfillmentModuleService
       country_code: ["country_code"],
     }
 
-    /**
-     * Validate that the address has the required properties for the geo zones
-     * constraints to build after. We are going from the narrowest to the broadest
-     */
-    Object.entries(geoZoneRequirePropertyHierarchy).forEach(
-      ([prop, requiredProps]) => {
-        if (address![prop]) {
-          for (const requiredProp of requiredProps) {
-            if (!address![requiredProp]) {
-              throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `Missing required property ${requiredProp} for address when property ${prop} is set`
-              )
-            }
-          }
-        }
-      }
-    )
-
     const geoZoneConstraints = Object.entries(geoZoneRequirePropertyHierarchy)
       .map(([prop, requiredProps]) => {
         if (address![prop]) {
           return requiredProps.reduce((geoZoneConstraint, prop) => {
-            geoZoneConstraint.type =
-              prop === "postal_expression"
-                ? "zip"
-                : prop === "city"
-                ? "city"
-                : prop === "province_code"
-                ? "province"
-                : "country"
-            geoZoneConstraint[prop] = address![prop]
+            if (isPresent(address![prop])) {
+              geoZoneConstraint[prop] = address![prop]
+            }
             return geoZoneConstraint
           }, {} as Record<string, string | undefined>)
         }

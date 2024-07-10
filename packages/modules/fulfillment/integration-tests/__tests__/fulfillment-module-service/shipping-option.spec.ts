@@ -332,6 +332,15 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
           shippingOptions = await service.listShippingOptionsForContext({
             address: {
+              country_code: "fr",
+              postal_expression: "75006",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
               country_code: "us",
               province_code: "rhone",
               city: "paris",
