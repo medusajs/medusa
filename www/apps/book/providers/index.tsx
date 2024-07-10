@@ -3,6 +3,7 @@
 import {
   AnalyticsProvider,
   ColorModeProvider,
+  helpButtonNotification,
   HooksLoader,
   LearningPathProvider,
   MobileProvider,
@@ -28,7 +29,7 @@ const Providers = ({ children }: ProvidersProps) => {
           <ColorModeProvider>
             <ModalProvider>
               <LearningPathProvider>
-                <NotificationProvider>
+                <NotificationProvider initial={[helpButtonNotification]}>
                   <ScrollControllerProvider scrollableSelector="#main">
                     <SidebarProvider>
                       <PaginationProvider>
