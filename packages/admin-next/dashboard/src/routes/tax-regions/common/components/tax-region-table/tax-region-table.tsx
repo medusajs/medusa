@@ -10,7 +10,6 @@ import {
 import { TableFooterSkeleton } from "../../../../../components/common/skeleton"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { DataTableOrderBy } from "../../../../../components/table/data-table/data-table-order-by"
-import { DataTableSearch } from "../../../../../components/table/data-table/data-table-search"
 import { TaxRegionCard } from "../tax-region-card"
 
 type TaxRegionTableProps = {
@@ -64,9 +63,10 @@ export const TaxRegionTable = ({
         <div className="flex items-center gap-x-2">
           {!noRecords && (
             <div className="flex w-full items-center gap-x-2 md:w-fit">
-              <div className="w-full md:w-fit">
+              {/* Re-enable when we allow searching tax regions by country name rather than country_code */}
+              {/* <div className="w-full md:w-fit">
                 <DataTableSearch prefix={prefix} />
-              </div>
+              </div> */}
               <DataTableOrderBy
                 keys={["updated_at", "created_at"]}
                 prefix={prefix}
