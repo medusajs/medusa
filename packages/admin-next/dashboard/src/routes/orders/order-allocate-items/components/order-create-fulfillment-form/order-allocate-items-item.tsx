@@ -235,15 +235,25 @@ export function OrderAllocateItemsItem({
           const location = i.location_levels.find(
             (l) => l.location_id === locationId
           )
+
+          const hasQuantityError =
+            quantityField[`${item.id}-${i.id}`] &&
+            quantityField[`${item.id}-${i.id}`] > location.available_quantity
+
           return (
             <div key={i.id} className="txt-small flex items-center gap-x-3 p-4">
-              <div className="flex flex-1 flex-col">
-                <span className="text-ui-fg-subtle">{i.title}</span>
-                <span className="text-ui-fg-muted">
-                  {t("orders.allocateItems.requires", {
-                    num: variant.inventory_items[ind].required_quantity,
-                  })}
-                </span>
+              <div className="flex flex-1 flex-row items-center gap-3">
+                {hasQuantityError && (
+                  <ExclamationCircleSolid className="text-ui-fg-error" />
+                )}
+                <div className="flex flex-col">
+                  <span className="text-ui-fg-subtle">{i.title}</span>
+                  <span className="text-ui-fg-muted">
+                    {t("orders.allocateItems.requires", {
+                      num: variant.inventory_items[ind].required_quantity,
+                    })}
+                  </span>
+                </div>
               </div>
 
               <div className="flex flex-1 flex-row justify-between">
