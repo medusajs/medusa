@@ -27,7 +27,7 @@ export const HelpButtonActions = () => {
     <div
       className={clsx(
         "bg-medusa-bg-component shadow-elevation-flyout",
-        "flex flex-col rounded-docs_DEFAULT mb-docs_0.5",
+        "flex flex-col rounded-docs_DEFAULT",
         "mr-0 ml-auto"
       )}
     >

@@ -42,15 +42,21 @@ export const HelpButton = () => {
   }, [showHelp])
 
   return (
-    <div className="mr-0 ml-auto w-fit" ref={ref}>
+    <div
+      className={clsx(
+        "mr-0 ml-auto w-fit",
+        "flex flex-col gap-docs_0.5",
+        "max-[767px]:fixed max-[767px]:bottom-docs_1 max-[767px]:right-docs_1"
+      )}
+      ref={ref}
+    >
       {showHelp && <HelpButtonActions />}
       <Button
         variant="secondary"
         className={clsx(
           "!p-[10px] !shadow-elevation-flyout dark:!shadow-elevation-flyout-dark !text-medusa-fg-subtle",
-          "rounded-full border-0 !flex fixed md:relative max-[767px]:bottom-docs_1 max-[767px]:right-docs_1",
+          "rounded-full border-0 !flex relative mr-0 ml-auto",
           "h-docs_3 min-w-docs_3 !txt-medium-plus lg:txt-large-plus transition-[width] duration-300",
-          "mr-0 ml-auto",
           !showText && "!gap-0"
         )}
         onMouseOver={() => setShowText(true)}
