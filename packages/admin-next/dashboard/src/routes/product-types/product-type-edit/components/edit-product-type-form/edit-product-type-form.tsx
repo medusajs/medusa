@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateProductType } from "../../../../../hooks/api/product-types"
 
 const EditProductTypeSchema = z.object({
@@ -41,21 +38,15 @@ export const EditProductTypeForm = ({
       },
       {
         onSuccess: ({ product_type }) => {
-          toast.success(t("general.success"), {
-            description: t("productTypes.edit.successToast", {
+          toast.success(
+            t("productTypes.edit.successToast", {
               value: product_type.value,
-            }),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

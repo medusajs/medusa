@@ -1,4 +1,5 @@
 import { PlusMini, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import {
   ColumnDef,
@@ -9,12 +10,11 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useUpdateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useUpdateRegion } from "../../../../../hooks/api/regions"
-import { HttpTypes } from "@medusajs/types"
 
 type RegionCountrySectionProps = {
   region: HttpTypes.AdminRegion
@@ -79,24 +79,22 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
     }
 
     const payload = region.countries
-      .filter((c) => !ids.includes(c.iso_2))
-      .map((c) => c.iso_2)
+      ?.filter((c) => !ids.includes(c.iso_2!))
+      .map((c) => c.iso_2!)
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         countries: payload,
-      })
-
-      toast.success(t("general.success"), {
-        description: t("regions.toast.countries"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("regions.toast.countries"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (
@@ -170,21 +168,19 @@ const CountryActions = ({
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         countries: payload,
-      })
-
-      toast.success(t("general.success"), {
-        description: t("regions.toast.countries"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("regions.toast.countries"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (

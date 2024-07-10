@@ -94,15 +94,15 @@ export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ reservation }) => {
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("inventory.reservation.successToast"),
-        })
+        toast.success(t("inventory.reservation.successToast"))
         handleSuccess(
           props.inventoryItemId
             ? `/inventory/${props.inventoryItemId}`
             : `/reservations/${reservation.id}`
         )
+      },
+      onError: (e) => {
+        toast.error(e.message)
       },
     })
   })

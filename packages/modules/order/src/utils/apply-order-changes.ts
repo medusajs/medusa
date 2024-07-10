@@ -31,8 +31,9 @@ export function applyChangesToOrder(
     const version = actionsMap[order.id][0].version ?? 1
 
     for (const item of calculated.order.items) {
-      const orderItem = (item.detail as any) ?? item
-      const itemId = item.detail ? orderItem.item_id : item.id
+      const isExistingItem = item.id === item.detail?.item_id
+      const orderItem = isExistingItem ? (item.detail as any) : item
+      const itemId = isExistingItem ? orderItem.item_id : item.id
 
       itemsToUpsert.push({
         id: orderItem.version === version ? orderItem.id : undefined,

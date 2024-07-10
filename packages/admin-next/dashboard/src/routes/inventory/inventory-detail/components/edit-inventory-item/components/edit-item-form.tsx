@@ -1,10 +1,7 @@
 import * as zod from "zod"
 
 import { Button, Input, toast } from "@medusajs/ui"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"
@@ -44,17 +41,10 @@ export const EditInventoryItemForm = ({ item }: EditInventoryItemFormProps) => {
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values as any, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("inventory.toast.update"),
-          dismissLabel: t("actions.close"),
-        })
+        toast.success(t("inventory.toast.updateItem"))
         handleSuccess()
       },
-      onError: (e) =>
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        }),
+      onError: (e) => toast.error(e.message),
     })
   })
 

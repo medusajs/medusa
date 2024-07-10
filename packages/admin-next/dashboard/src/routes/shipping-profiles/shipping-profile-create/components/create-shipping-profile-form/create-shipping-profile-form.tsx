@@ -38,22 +38,18 @@ export function CreateShippingProfileForm() {
       },
       {
         onSuccess: ({ shipping_profile }) => {
-          toast.success(t("general.success"), {
-            description: t("shippingProfile.create.successToast", {
+          toast.success(
+            t("shippingProfile.create.successToast", {
               name: shipping_profile.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess(
             `/settings/locations/shipping-profiles/${shipping_profile.id}`
           )
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

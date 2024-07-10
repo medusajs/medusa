@@ -41,20 +41,16 @@ export const EditCampaignBudgetForm = ({
       },
       {
         onSuccess: ({ campaign }) => {
-          toast.success(t("general.success"), {
-            description: t("campaigns.edit.successToast", {
+          toast.success(
+            t("campaigns.edit.successToast", {
               name: campaign.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )
