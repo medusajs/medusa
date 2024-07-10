@@ -1,11 +1,9 @@
 import {
   BaseProductListParams,
   BaseProductOptionParams,
-  BaseProductTagParams,
   BaseProductVariantParams,
 } from "../common"
 
-export interface StoreProductTagParams extends BaseProductTagParams {}
 export interface StoreProductOptionParams extends BaseProductOptionParams {}
 export interface StoreProductVariantParams extends BaseProductVariantParams {}
 export interface StoreProductParams extends BaseProductListParams {

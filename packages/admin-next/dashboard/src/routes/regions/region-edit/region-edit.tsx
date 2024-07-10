@@ -6,7 +6,7 @@ import { RouteDrawer } from "../../../components/modals"
 import { usePaymentProviders } from "../../../hooks/api/payments"
 import { useRegion } from "../../../hooks/api/regions"
 import { useStore } from "../../../hooks/api/store"
-import { currencies } from "../../../lib/currencies"
+import { currencies } from "../../../lib/data/currencies"
 import { EditRegionForm } from "./components/edit-region-form"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
 
