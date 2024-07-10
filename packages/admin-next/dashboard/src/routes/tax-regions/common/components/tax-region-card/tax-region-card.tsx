@@ -1,15 +1,18 @@
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text, clx } from "@medusajs/ui"
+import { Heading, Text, Tooltip, clx } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 
-import { MapPin, Plus, Trash } from "@medusajs/icons"
+import { ExclamationCircle, MapPin, Plus, Trash } from "@medusajs/icons"
 import { ComponentPropsWithoutRef, ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { getCountryByIso2 } from "../../../../../lib/data/countries"
-import { getProvinceByIso2 } from "../../../../../lib/data/country-states"
+import {
+  getProvinceByIso2,
+  isProvinceInCountry,
+} from "../../../../../lib/data/country-states"
 import { useDeleteTaxRegionAction } from "../../hooks"
 
 interface TaxRegionCardProps extends ComponentPropsWithoutRef<"div"> {
@@ -27,17 +30,34 @@ export const TaxRegionCard = ({
   asLink = true,
   badge,
 }: TaxRegionCardProps) => {
+  const { t } = useTranslation()
   const { id, country_code, province_code } = taxRegion
 
   const country = getCountryByIso2(country_code)
   const province = getProvinceByIso2(province_code)
 
   let name = "N/A"
+  let misconfiguredSublevelTooltip: string | null = null
 
   if (province || province_code) {
     name = province ? province : province_code!.toUpperCase()
   } else if (country || country_code) {
     name = country ? country.display_name : country_code!.toUpperCase()
+  }
+
+  if (
+    country_code &&
+    province_code &&
+    !isProvinceInCountry(country_code, province_code)
+  ) {
+    name = province_code.toUpperCase()
+    misconfiguredSublevelTooltip = t(
+      "taxRegions.fields.sublevels.tooltips.notPartOfCountry",
+      {
+        country: country?.display_name,
+        province: province_code.toUpperCase(),
+      }
+    )
   }
 
   const showCreateDefaultTaxRate =
@@ -92,6 +112,11 @@ export const TaxRegionCard = ({
           </div>
         </div>
         <div className="flex size-fit items-center gap-x-2 md:hidden">
+          {misconfiguredSublevelTooltip && (
+            <Tooltip content={misconfiguredSublevelTooltip}>
+              <ExclamationCircle className="text-ui-tag-orange-icon" />
+            </Tooltip>
+          )}
           {badge}
           <TaxRegionCardActions
             taxRegion={taxRegion}
@@ -101,6 +126,11 @@ export const TaxRegionCard = ({
       </div>
 
       <div className="hidden size-fit items-center gap-x-2 md:flex">
+        {misconfiguredSublevelTooltip && (
+          <Tooltip content={misconfiguredSublevelTooltip}>
+            <ExclamationCircle className="text-ui-tag-orange-icon" />
+          </Tooltip>
+        )}
         {badge}
         <TaxRegionCardActions
           taxRegion={taxRegion}

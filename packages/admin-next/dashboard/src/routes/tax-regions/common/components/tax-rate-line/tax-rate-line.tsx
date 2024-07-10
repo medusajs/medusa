@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Text } from "@medusajs/ui"
+import { StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
@@ -8,11 +8,17 @@ import { useDeleteTaxRateAction } from "../../hooks"
 
 type TaxRateLineProps = {
   taxRate: HttpTypes.AdminTaxRate
+  isSublevelTaxRate?: boolean
 }
 
-export const TaxRateLine = ({ taxRate }: TaxRateLineProps) => {
+export const TaxRateLine = ({
+  taxRate,
+  isSublevelTaxRate,
+}: TaxRateLineProps) => {
+  const { t } = useTranslation()
+
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_28px] items-center gap-4 px-6 py-4">
+    <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_auto] items-center gap-4 px-6 py-4">
       <div className="flex items-center gap-x-1.5">
         <Text size="small" weight="plus" leading="compact">
           {taxRate.name}
@@ -31,7 +37,16 @@ export const TaxRateLine = ({ taxRate }: TaxRateLineProps) => {
       <Text size="small" leading="compact">
         {formatPercentage(taxRate.rate)}
       </Text>
-      <TaxRateActions taxRate={taxRate} />
+      <div className="flex items-center justify-end gap-x-2">
+        {isSublevelTaxRate && (
+          <StatusBadge color={taxRate.is_combinable ? "green" : "grey"}>
+            {taxRate.is_combinable
+              ? t("taxRegions.fields.isCombinable.true")
+              : t("taxRegions.fields.isCombinable.false")}
+          </StatusBadge>
+        )}
+        <TaxRateActions taxRate={taxRate} />
+      </div>
     </div>
   )
 }

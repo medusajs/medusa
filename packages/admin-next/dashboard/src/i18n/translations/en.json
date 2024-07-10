@@ -1262,7 +1262,8 @@
           "emirate": "Select emirate"
         },
         "tooltips": {
-          "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region."
+          "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region.",
+          "notPartOfCountry": "{{province}} does not appear to be part of {{country}}. Please double-check if this is correct."
         },
         "alert": {
           "header": "Sublevel regions are disabled for this tax region",

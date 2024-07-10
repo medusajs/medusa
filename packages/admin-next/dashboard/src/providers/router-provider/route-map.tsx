@@ -14,7 +14,10 @@ import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { PriceListRes } from "../../types/api-responses"
 
 import { getCountryByIso2 } from "../../lib/data/countries"
-import { getProvinceByIso2 } from "../../lib/data/country-states"
+import {
+  getProvinceByIso2,
+  isProvinceInCountry,
+} from "../../lib/data/country-states"
 import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
@@ -1156,11 +1159,19 @@ export const RouteMap: RouteObject[] = [
                       ),
                     handle: {
                       crumb: (data: AdminTaxRegionResponse) => {
-                        return (
-                          getProvinceByIso2(
-                            data.tax_region.province_code?.toUpperCase()
-                          ) || data.tax_region.province_code?.toUpperCase()
+                        const countryCode =
+                          data.tax_region.country_code?.toUpperCase()
+                        const provinceCode =
+                          data.tax_region.province_code?.toUpperCase()
+
+                        const isValid = isProvinceInCountry(
+                          countryCode,
+                          provinceCode
                         )
+
+                        return isValid
+                          ? getProvinceByIso2(provinceCode)
+                          : provinceCode
                       },
                     },
                     children: [

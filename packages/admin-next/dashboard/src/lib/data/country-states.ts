@@ -15,8 +15,12 @@ export type CountryProvinceObject = {
 }
 
 export function getCountryProvinceObjectByIso2(
-  iso2: string
+  iso2: string | null | undefined
 ): CountryProvinceObject | null {
+  if (!iso2) {
+    return null
+  }
+
   const code = iso2.toUpperCase()
 
   return countryProvinceMap[code] || null
@@ -40,6 +44,21 @@ export function getProvinceByIso2(iso2: string | null | undefined) {
   }
 
   return null
+}
+
+export function isProvinceInCountry(
+  countryCode?: string | null,
+  provinceCode?: string | null
+) {
+  if (!countryCode || !provinceCode) {
+    return false
+  }
+
+  const code = provinceCode.toUpperCase()
+
+  const country = countryProvinceMap[countryCode.toUpperCase()]
+
+  return country?.options[code] !== undefined
 }
 
 const countryProvinceMap: Record<string, CountryProvinceObject> = {
