@@ -2188,6 +2188,12 @@ export default class FulfillmentModuleService
       country_code: ["country_code"],
     }
 
+    /**
+     * The following changes assume that the lowest level check (e.g postal expression) can't exist multiple times in the higher level (e.g country)
+     * In case we encounter situations where it is possible to have multiple postal expressions for the same country we need to change the logic back
+     * to this pr https://github.com/medusajs/medusa/pull/8066
+     */
+
     const geoZoneConstraints = Object.entries(geoZoneRequirePropertyHierarchy)
       .map(([prop, requiredProps]) => {
         if (address![prop]) {
