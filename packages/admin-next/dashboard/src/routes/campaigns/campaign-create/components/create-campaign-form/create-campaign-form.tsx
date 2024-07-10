@@ -62,19 +62,15 @@ export const CreateCampaignForm = () => {
       },
       {
         onSuccess: ({ campaign }) => {
-          toast.success(t("general.success"), {
-            description: t("campaigns.create.successToast", {
+          toast.success(
+            t("campaigns.create.successToast", {
               name: campaign.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess(`/campaigns/${campaign.id}`)
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

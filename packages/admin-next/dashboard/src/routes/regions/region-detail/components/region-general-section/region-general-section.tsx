@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu/index.ts"
 import { ListSummary } from "../../../../../components/common/list-summary/index.ts"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
-import { currencies } from "../../../../../lib/currencies.ts"
+import { currencies } from "../../../../../lib/data/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
 import { SectionRow } from "../../../../../components/common/section/section-row.tsx"
 
@@ -100,19 +100,15 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
       return
     }
 
-    try {
-      await mutateAsync(undefined)
-      toast.success(t("general.success"), {
-        description: t("regions.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
-    navigate("/settings/regions", { replace: true })
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("regions.toast.delete"))
+        navigate("/settings/regions", { replace: true })
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

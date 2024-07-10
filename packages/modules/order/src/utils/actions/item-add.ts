@@ -1,12 +1,19 @@
-import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  MathBN,
+  MedusaError,
+  isDefined,
+} from "@medusajs/utils"
 import { VirtualOrder } from "@types"
-import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import { setActionReference } from "../set-action-reference"
+import {
+  setActionReference,
+  unsetActionReference,
+} from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
-  operation({ action, currentOrder }) {
-    const existing = currentOrder.items.find(
+  operation({ action, currentOrder, options }) {
+    let existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id
     )
 
@@ -19,10 +26,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
         existing.detail.quantity,
         action.details.quantity
       )
-
-      setActionReference(existing, action)
     } else {
-      currentOrder.items.push({
+      existing = {
         id: action.details.reference_id!,
         order_id: currentOrder.id,
         return_id: action.details.return_id,
@@ -31,8 +36,12 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
 
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,
-      } as VirtualOrder["items"][0])
+      } as VirtualOrder["items"][0]
+
+      currentOrder.items.push(existing)
     }
+
+    setActionReference(existing, action, options)
 
     return MathBN.mult(action.details.unit_price, action.details.quantity)
   },
@@ -52,6 +61,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
       if (MathBN.lte(existing.quantity, 0)) {
         currentOrder.items.splice(existingIndex, 1)
       }
+
+      unsetActionReference(existing, action)
     }
   },
   validate({ action }) {

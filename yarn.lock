@@ -5230,7 +5230,6 @@ __metadata:
     "@radix-ui/react-popover": 1.1.1
     "@radix-ui/react-portal": 1.1.1
     "@radix-ui/react-radio-group": 1.2.0
-    "@radix-ui/react-scroll-area": 1.1.0
     "@radix-ui/react-select": 2.1.1
     "@radix-ui/react-slot": 1.1.0
     "@radix-ui/react-switch": 1.1.0
@@ -5258,7 +5257,6 @@ __metadata:
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
-    date-fns: ^2.30.0
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
     jsdom: ^22.1.0
@@ -5273,7 +5271,7 @@ __metadata:
     react-stately: ^3.31.1
     resize-observer-polyfill: ^1.5.1
     rimraf: ^5.0.1
-    sonner: ^1.4.41
+    sonner: ^1.5.0
     storybook: ^7.0.23
     tailwind-merge: ^2.2.1
     tailwindcss: ^3.4.3
@@ -6910,33 +6908,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: ce367d3033a12d639a8d445d2efa090aa4bc5a78125be568f8c8e4e59f30afd51b585a90031ec18cdba19afbaf1974633dbc0c2c3d2a14d9eb1bfea2ddbe5369
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-scroll-area@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@radix-ui/react-scroll-area@npm:1.1.0"
-  dependencies:
-    "@radix-ui/number": 1.1.0
-    "@radix-ui/primitive": 1.1.0
-    "@radix-ui/react-compose-refs": 1.1.0
-    "@radix-ui/react-context": 1.1.0
-    "@radix-ui/react-direction": 1.1.0
-    "@radix-ui/react-presence": 1.1.0
-    "@radix-ui/react-primitive": 2.0.0
-    "@radix-ui/react-use-callback-ref": 1.1.0
-    "@radix-ui/react-use-layout-effect": 1.1.0
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 46063b17f06bd2fe20ceaceb2fb0c1cd1b2767045d6d721904bc3f5d6726704a77eaf63997a514ca8f43d973da0c6446d7ca04057d9983cb0d46f4be8c01c9f5
   languageName: node
   linkType: hard
 
@@ -15943,15 +15914,6 @@ __metadata:
   version: 1.4.0
   resolution: "dataloader@npm:1.4.0"
   checksum: 5fa4c843b9e60195092f1fc7e2acaff318ed46886dc670ddff683bc560f12d4079e6d1e77749501b7e111a8582d26a2aa2a2fbe6d7d5e1520cef64f4e1fd242d
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": ^7.21.0
-  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
   languageName: node
   linkType: hard
 
@@ -28004,13 +27966,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sonner@npm:^1.4.41":
-  version: 1.4.41
-  resolution: "sonner@npm:1.4.41"
+"sonner@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "sonner@npm:1.5.0"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 31467ecab0fcbd5161fb76d158c698841b524686f7f598eecbc2a58d76bc496b5d5242df4350e274575aa3df59428d3aacd534415c968b19fc309c192c443330
+  checksum: 9561b5861bede7f874cc442e447a68c8bfa6e4eadad603bc04e38db35a8b8108741f595a12c9856742062bae230ffedf73122015940491f482c5aa9e68ee85e0
   languageName: node
   linkType: hard
 

@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "strict": true,
+    "declarationMap": true,
     "declaration": true,
     "sourceMap": true,
     "noEmit": true,

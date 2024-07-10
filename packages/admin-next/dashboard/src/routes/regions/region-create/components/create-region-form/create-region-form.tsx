@@ -29,8 +29,8 @@ import {
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCreateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { countries as staticCountries } from "../../../../../lib/countries"
-import { CurrencyInfo } from "../../../../../lib/currencies"
+import { countries as staticCountries } from "../../../../../lib/data/countries"
+import { CurrencyInfo } from "../../../../../lib/data/currencies"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
@@ -102,12 +102,11 @@ export const CreateRegionForm = ({
           })
         },
         onSuccess: ({ region }) => {
-          toast.success(t("general.success"), {
-            description: t("regions.toast.create"),
-            dismissLabel: t("actions.close"),
-          })
-
+          toast.success(t("regions.toast.create"))
           handleSuccess(`../${region.id}`)
+        },
+        onError: (e) => {
+          toast.error(e.message)
         },
       }
     )

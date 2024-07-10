@@ -14,20 +14,17 @@ Versioning means assigning a version number to a record, such as an order and it
 
 ## version Property
 
-The `Order` and `OrderSummary` data models have a `version` property that indicates the current order version. By default, its value is `1`.
+The `Order` and `OrderSummary` data models have a `version` property that indicates the current version. By default, its value is `1`.
 
-The `OrderItem` data model also has a `version` property, but it indicates the version it belongs to. For example, original items in the order have version `1`. Then, when a new item is added, its version is `2`. If an existing item is modified, such as its quantity has been changed, its version is updated.
+Other order-related data models, such as `OrderItem`, also has a `version` property, but it indicates the version it belongs to.
 
 ---
 
-## Order Change Versioning
+## How the Version Changes
 
-The `OrderChange` and `OrderChangeAction` data models also have a `version` property. When an order change is created, the `version` property’s value is the associated order’s version incremented.
+When the order is changed, such as an item is exchanged, this changes the version of the order and its related data:
 
-So, if the order’s `version` is `1`, the order change’s version is `2`.
+1. The version of the order and its summary is incremented.
+2. Related order data that have a `version` property, such as the `OrderItem`, are duplicated. The duplicated item has the new version, whereas the original item has the previous version.
 
-Then, once the order change is confirmed and applied to the order, the versions of the order and order summary change to that of the order change.
-
-![A diagram showcasing how the version of an order changes](https://res.cloudinary.com/dza7lstvk/image/upload/v1712304242/Medusa%20Resources/order-versioning_rsx2rn.jpg)
-
-Order items change depending on the version they were added or modified in, as explained in the earlier section.
+When the order is retrieved, only the related data having the same version is retrieved.

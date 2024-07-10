@@ -4,6 +4,7 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
+  ChangeActionType,
   ClaimType,
   ReturnStatus,
   getShippingMethodsTotals,
@@ -12,7 +13,6 @@ import {
 } from "@medusajs/utils"
 import { ClaimItem, OrderClaim, Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
-import { ChangeActionType } from "../../utils"
 
 function createClaimAndReturnEntities(em, data, order) {
   const claimReference = em.create(OrderClaim, {
@@ -174,6 +174,7 @@ async function processAdditionalItems(
         reference_id: item.id,
         claim_id: claimReference.id,
         quantity: addedItem.quantity,
+        unit_price: item.unit_price,
         metadata: addedItem.metadata,
       },
     })

@@ -4,9 +4,9 @@ import {
   Button,
   Container,
   Heading,
+  Text,
   toast,
   usePrompt,
-  Text,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -112,18 +112,14 @@ const SalesChannelActions = ({
       return
     }
 
-    try {
-      await mutateAsync()
-      toast.success(t("general.success"), {
-        description: t("salesChannels.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.delete"))
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

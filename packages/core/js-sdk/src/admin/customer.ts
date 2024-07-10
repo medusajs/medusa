@@ -47,7 +47,7 @@ export class Customer {
   }
 
   async list(
-    queryParams?: FindParams & HttpTypes.AdminCollectionFilters,
+    queryParams?: FindParams & HttpTypes.AdminCustomerFilters,
     headers?: ClientHeaders
   ) {
     return this.client.fetch<

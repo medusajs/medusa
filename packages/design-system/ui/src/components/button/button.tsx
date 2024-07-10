@@ -14,7 +14,7 @@ const buttonVariants = cva({
   variants: {
     variant: {
       primary: clx(
-        "shadow-buttons-inverted text-ui-fg-on-inverted bg-ui-button-inverted after:button-inverted-gradient",
+        "shadow-buttons-inverted text-ui-contrast-fg-primary bg-ui-button-inverted after:button-inverted-gradient",
         "hover:bg-ui-button-inverted-hover hover:after:button-inverted-hover-gradient",
         "active:bg-ui-button-inverted-pressed active:after:button-inverted-pressed-gradient",
         "focus-visible:!shadow-buttons-inverted-focus"

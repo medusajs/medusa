@@ -17,7 +17,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import {
   StaticCountry,
   countries as staticCountries,
-} from "../../../../../lib/countries"
+} from "../../../../../lib/data/countries"
 import { useCountries } from "../../../../regions/common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"

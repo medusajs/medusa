@@ -6,6 +6,7 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
@@ -17,7 +18,6 @@ import { useProductTableFilters } from "../../../../../hooks/table/filters/use-p
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
-import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -109,13 +109,11 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
           description: t("products.toasts.delete.success.description", {
             title: product.title,
           }),
-          dismissLabel: t("actions.close"),
         })
       },
       onError: (e) => {
         toast.error(t("products.toasts.delete.error.header"), {
           description: e.message,
-          dismissLabel: t("actions.close"),
         })
       },
     })

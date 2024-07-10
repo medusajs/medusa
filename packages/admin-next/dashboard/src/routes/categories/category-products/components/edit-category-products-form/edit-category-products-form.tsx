@@ -116,22 +116,16 @@ export const EditCategoryProductsForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("categories.products.add.disabledTooltip", {
+          toast.success(
+            t("categories.products.add.disabledTooltip", {
               count: data.product_ids.length,
-            }),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

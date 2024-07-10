@@ -130,10 +130,7 @@ export const AddCustomerGroupsForm = ({
 
       handleSuccess(`/customers/${customerId}`)
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     } finally {
       setIsPending(false)
     }
