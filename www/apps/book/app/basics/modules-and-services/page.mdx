@@ -52,7 +52,9 @@ For example, create the file `src/modules/hello/index.ts` with the following con
 import HelloModuleService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module("helloModuleService", {
+export const HELLO_MODULE = "helloModuleService"
+
+export default Module(HELLO_MODULE, {
   service: HelloModuleService,
 })
 ```
@@ -68,18 +70,21 @@ The last step is to add the module in Medusa’s configurations.
 
 In `medusa-config.js`, add a `modules` property and pass to it your custom module:
 
-```js title="medusa-config.js" highlights={[["4", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
+```js title="medusa-config.js" highlights={[["7", "HELLO_MODULE", "The key of the main service to be registered in the Medusa container."]]}
+import { HELLO_MODULE } from "./src/modules/hello"
+// ...
+
 module.exports = defineConfig({
   // ...
   modules: {
-    helloModuleService: {
+    [HELLO_MODULE]: {
       resolve: "./modules/hello",
     },
   },
 })
 ```
 
-Its key (`helloModuleService`) is the name of the module’s main service. It will be registered in the Medusa container with that name. It should also be the same name passed as the first parameter to the `Module` function in the module's definition.
+Its key (`helloModuleService` or `HELLO_MODULE`) is the name of the module’s main service. It will be registered in the Medusa container with that name. It should also be the same name passed as the first parameter to the `Module` function in the module's definition.
 
 Its value is an object having the `resolve` property, whose value is either a path to module's directory relative to `src`(it shouldn't include `src` in the path), or an `npm` package’s name.
 
@@ -94,13 +99,14 @@ For example, create the API route `src/api/store/custom/route.ts` with the follo
 ```ts title="src/api/store/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import HelloModuleService from "../../../modules/hello/service"
+import { HELLO_MODULE } from "../../../modules/hello"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const helloModuleService: HelloModuleService = req.scope.resolve(
-    "helloModuleService"
+    HELLO_MODULE
   )
 
   res.json({
