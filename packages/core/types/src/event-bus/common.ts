@@ -11,11 +11,6 @@ export type SubscriberDescriptor = {
   subscriber: Subscriber
 }
 
-export type EventHandler<TData = unknown> = (
-  data: TData,
-  eventName: string
-) => Promise<void>
-
 export type EventMetadata = Record<string, unknown> & {
   eventGroupId?: string
 }
