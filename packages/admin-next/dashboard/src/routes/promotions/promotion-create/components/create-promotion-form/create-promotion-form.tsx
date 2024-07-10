@@ -26,14 +26,14 @@ import {
 } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
@@ -661,7 +661,7 @@ export const CreatePromotionForm = () => {
                                 disabled={!currencyCode}
                               />
                             ) : (
-                              <PercentageInput
+                              <DeprecatedPercentageInput
                                 key="amount"
                                 className="text-right"
                                 min={0}

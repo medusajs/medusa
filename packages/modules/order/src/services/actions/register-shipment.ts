@@ -3,7 +3,7 @@ import {
   CreateOrderChangeActionDTO,
   OrderTypes,
 } from "@medusajs/types"
-import { ChangeActionType } from "../../utils"
+import { ChangeActionType } from "@medusajs/utils"
 
 export async function registerShipment(
   this: any,

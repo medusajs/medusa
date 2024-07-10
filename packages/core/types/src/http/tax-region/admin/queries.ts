@@ -1,7 +1,9 @@
-import { OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
+import { BaseFilterable, OperatorMap } from "../../../dal"
+import { FindParams, SelectParams } from "../../common"
 
-export interface AdminTaxRegionListParams extends FindParams {
+export interface AdminTaxRegionListParams
+  extends FindParams,
+    BaseFilterable<AdminTaxRegionListParams> {
   id?: string | string[]
   q?: string
   parent_id?: string | string[] | OperatorMap<string | string[]>
@@ -12,3 +14,5 @@ export interface AdminTaxRegionListParams extends FindParams {
   deleted_at?: string | OperatorMap<string>
   created_by?: string | OperatorMap<string>
 }
+
+export interface AdminTaxRegionParams extends SelectParams {}
