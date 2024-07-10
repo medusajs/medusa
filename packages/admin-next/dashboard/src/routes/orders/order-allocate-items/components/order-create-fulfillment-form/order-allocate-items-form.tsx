@@ -29,6 +29,8 @@ export function OrderAllocateItemsForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const [disableSubmit, setDisableSubmit] = useState(false)
+
   const { mutateAsync: allocateItems, isPending: isMutating } =
     useCreateReservationItem()
 
@@ -87,12 +89,25 @@ export function OrderAllocateItemsForm({
     value: number | null,
     isRoot?: boolean
   ) => {
+    let shouldDisableSubmit = false
+
     const key =
       isRoot && hasInventoryKit
         ? `quantity.${lineItem.id}-`
         : `quantity.${lineItem.id}-${inventoryItem.id}`
 
     form.setValue(key, value)
+
+    if (value) {
+      const location = inventoryItem.location_levels.find(
+        (l) => l.location_id === selectedLocationId
+      )
+      if (location) {
+        if (location.available_quantity < value) {
+          shouldDisableSubmit = true
+        }
+      }
+    }
 
     if (hasInventoryKit && !isRoot) {
       // changed subitem in the kit -> we need to set parent to "-"
@@ -111,9 +126,22 @@ export function OrderAllocateItemsForm({
             `quantity.${lineItem.id}-${inventory.id}`,
             num * ii.required_quantity
           )
+
+          if (value) {
+            const location = inventory.location_levels.find(
+              (l) => l.location_id === selectedLocationId
+            )
+            if (location) {
+              if (location.available_quantity < value) {
+                shouldDisableSubmit = true
+              }
+            }
+          }
         })
       })
     }
+
+    setDisableSubmit(shouldDisableSubmit)
   }
 
   const selectedLocationId = useWatch({
@@ -134,7 +162,12 @@ export function OrderAllocateItemsForm({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isMutating}>
+            <Button
+              size="small"
+              type="submit"
+              isLoading={isMutating}
+              disabled={disableSubmit}
+            >
               {t("orders.allocateItems.action")}
             </Button>
           </div>
