@@ -1,11 +1,9 @@
 import {
   AdminApiKeyResponse,
   AdminProductCategoryResponse,
-  AdminTaxRateResponse,
   AdminTaxRegionResponse,
   HttpTypes,
   SalesChannelDTO,
-  UserDTO,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -15,6 +13,12 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { PriceListRes } from "../../types/api-responses"
 
+import { getCountryByIso2 } from "../../lib/data/countries"
+import {
+  getProvinceByIso2,
+  isProvinceInCountry,
+} from "../../lib/data/country-states"
+import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
 
@@ -1079,60 +1083,116 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           {
-            path: "taxes",
+            path: "tax-regions",
             element: <Outlet />,
             handle: {
-              crumb: () => "Taxes",
+              crumb: () => "Tax Regions",
             },
             children: [
               {
                 path: "",
-                lazy: () => import("../../routes/taxes/tax-region-list"),
+                lazy: () => import("../../routes/tax-regions/tax-region-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () => import("../../routes/taxes/tax-region-create"),
-                    children: [],
+                    lazy: () =>
+                      import("../../routes/tax-regions/tax-region-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/taxes/tax-region-detail"),
+                Component: Outlet,
+                loader: taxRegionLoader,
                 handle: {
                   crumb: (data: AdminTaxRegionResponse) => {
-                    return data.tax_region.country_code
+                    return (
+                      getCountryByIso2(data.tax_region.country_code)
+                        ?.display_name ||
+                      data.tax_region.country_code?.toUpperCase()
+                    )
                   },
                 },
                 children: [
                   {
-                    path: "create-default",
+                    path: "",
                     lazy: () =>
-                      import("../../routes/taxes/tax-province-create"),
-                    children: [],
-                  },
-                  {
-                    path: "create-override",
-                    lazy: () => import("../../routes/taxes/tax-rate-create"),
-                    children: [],
-                  },
-                  {
-                    path: "tax-rates",
+                      import("../../routes/tax-regions/tax-region-detail"),
                     children: [
                       {
-                        path: ":taxRateId",
-                        children: [
-                          {
-                            path: "edit",
-                            lazy: () =>
-                              import("../../routes/taxes/tax-rate-edit"),
-                            handle: {
-                              crumb: (data: AdminTaxRateResponse) => {
-                                return data.tax_rate.code
-                              },
-                            },
-                          },
-                        ],
+                        path: "provinces/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-province-create"
+                          ),
+                      },
+                      {
+                        path: "overrides/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-override-create"
+                          ),
+                      },
+                      {
+                        path: "overrides/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-override-edit"
+                          ),
+                      },
+                      {
+                        path: "tax-rates/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-create"
+                          ),
+                      },
+                      {
+                        path: "tax-rates/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-edit"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: "provinces/:province_id",
+                    lazy: () =>
+                      import(
+                        "../../routes/tax-regions/tax-region-province-detail"
+                      ),
+                    handle: {
+                      crumb: (data: AdminTaxRegionResponse) => {
+                        const countryCode =
+                          data.tax_region.country_code?.toUpperCase()
+                        const provinceCode =
+                          data.tax_region.province_code?.toUpperCase()
+
+                        const isValid = isProvinceInCountry(
+                          countryCode,
+                          provinceCode
+                        )
+
+                        return isValid
+                          ? getProvinceByIso2(provinceCode)
+                          : provinceCode
+                      },
+                    },
+                    children: [
+                      {
+                        path: "tax-rates/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-create"
+                          ),
+                      },
+                      {
+                        path: "tax-rates/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-edit"
+                          ),
                       },
                     ],
                   },

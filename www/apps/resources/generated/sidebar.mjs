@@ -2566,6 +2566,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderChanges",
+                        "title": "deleteOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrders",
                         "title": "deleteOrders",
                         "children": []
@@ -2727,6 +2734,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/previewOrderChange",
+                        "title": "previewOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/receiveReturn",
                         "title": "receiveReturn",
                         "children": []
@@ -2771,6 +2785,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/restoreLineItems",
                         "title": "restoreLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreOrderChanges",
+                        "title": "restoreOrderChanges",
                         "children": []
                       },
                       {
@@ -2827,6 +2848,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/retrieveOrder",
                         "title": "retrieveOrder",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrderChange",
+                        "title": "retrieveOrderChange",
                         "children": []
                       },
                       {
@@ -2923,6 +2951,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderChanges",
+                        "title": "softDeleteOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/softDeleteOrders",
                         "title": "softDeleteOrders",
                         "children": []
@@ -2974,6 +3009,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/updateLineItems",
                         "title": "updateLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrderChanges",
+                        "title": "updateOrderChanges",
                         "children": []
                       },
                       {

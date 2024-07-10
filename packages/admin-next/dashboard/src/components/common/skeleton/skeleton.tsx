@@ -136,6 +136,23 @@ export const GeneralSectionSkeleton = ({
   )
 }
 
+export const TableFooterSkeleton = ({ layout }: { layout: "fill" | "fit" }) => {
+  return (
+    <div
+      className={clx("flex items-center justify-between p-4", {
+        "border-t": layout === "fill",
+      })}
+    >
+      <Skeleton className="h-7 w-[138px]" />
+      <div className="flex items-center gap-x-2">
+        <Skeleton className="h-7 w-24" />
+        <Skeleton className="h-7 w-11" />
+        <Skeleton className="h-7 w-11" />
+      </div>
+    </div>
+  )
+}
+
 type TableSkeletonProps = {
   rowCount?: number
   search?: boolean
@@ -182,20 +199,7 @@ export const TableSkeleton = ({
           <Skeleton key={row} className="h-10 w-full rounded-none" />
         ))}
       </div>
-      {pagination && (
-        <div
-          className={clx("flex items-center justify-between p-4", {
-            "border-t": layout === "fill",
-          })}
-        >
-          <Skeleton className="h-7 w-[138px]" />
-          <div className="flex items-center gap-x-2">
-            <Skeleton className="h-7 w-24" />
-            <Skeleton className="h-7 w-11" />
-            <Skeleton className="h-7 w-11" />
-          </div>
-        </div>
-      )}
+      {pagination && <TableFooterSkeleton layout={layout} />}
     </div>
   )
 }
