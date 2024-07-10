@@ -11,7 +11,7 @@ import {
   useRouteModal,
 } from "../../../../../components/modals/index.ts"
 import { useUpdateRegion } from "../../../../../hooks/api/regions.tsx"
-import { CurrencyInfo } from "../../../../../lib/currencies.ts"
+import { CurrencyInfo } from "../../../../../lib/data/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
 
 type EditRegionFormProps = {

@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -9,6 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { taxRegionsQueryKeys } from "./tax-regions"
 
 const TAX_RATES_QUERY_KEY = "tax_rates" as const
 export const taxRatesQueryKeys = queryKeysFactory(TAX_RATES_QUERY_KEY)
@@ -19,7 +21,7 @@ export const useTaxRate = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminTaxRateResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminTaxRateResponse,
       QueryKey
     >,
@@ -72,6 +74,8 @@ export const useUpdateTaxRate = (
         queryKey: taxRatesQueryKeys.detail(id),
       })
 
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -81,7 +85,7 @@ export const useUpdateTaxRate = (
 export const useCreateTaxRate = (
   options?: UseMutationOptions<
     HttpTypes.AdminTaxRateResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateTaxRate
   >
 ) => {
@@ -89,6 +93,9 @@ export const useCreateTaxRate = (
     mutationFn: (payload) => sdk.admin.taxRate.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
+
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -110,6 +117,8 @@ export const useDeleteTaxRate = (
       queryClient.invalidateQueries({
         queryKey: taxRatesQueryKeys.detail(id),
       })
+
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
 
       options?.onSuccess?.(data, variables, context)
     },

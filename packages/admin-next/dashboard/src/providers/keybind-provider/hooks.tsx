@@ -220,7 +220,7 @@ export const useGlobalShortcuts = () => {
       },
       label: t("app.keyboardShortcuts.goToTaxRegions"),
       type: "settingShortcut",
-      callback: () => navigate("/settings/taxes"),
+      callback: () => navigate("/settings/tax-regions"),
     },
     {
       keys: {

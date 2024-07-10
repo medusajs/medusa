@@ -1,4 +1,4 @@
-import { currencies } from "./currencies"
+import { currencies } from "./data/currencies"
 
 export const getDecimalDigits = (currency: string) => {
   return currencies[currency.toUpperCase()]?.decimal_digits ?? 0
@@ -15,7 +15,7 @@ export const getDecimalDigits = (currency: string) => {
  * getFormattedAmount(10, "usd") // '10,00 $' if the browser's locale is fr-FR
  */
 export const getLocaleAmount = (amount: number, currencyCode: string) => {
-  const formatter = new Intl.NumberFormat(undefined, {
+  const formatter = new Intl.NumberFormat([], {
     style: "currency",
     currencyDisplay: "narrowSymbol",
     currency: currencyCode,
@@ -25,7 +25,7 @@ export const getLocaleAmount = (amount: number, currencyCode: string) => {
 }
 
 export const getNativeSymbol = (currencyCode: string) => {
-  const formatted = new Intl.NumberFormat(undefined, {
+  const formatted = new Intl.NumberFormat([], {
     style: "currency",
     currency: currencyCode,
     currencyDisplay: "narrowSymbol",

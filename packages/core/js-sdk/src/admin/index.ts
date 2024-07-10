@@ -11,6 +11,7 @@ import { PricePreference } from "./price-preference"
 import { Product } from "./product"
 import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
+import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
@@ -45,6 +46,7 @@ export class Admin {
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
+  public productTag: ProductTag
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -69,5 +71,6 @@ export class Admin {
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
+    this.productTag = new ProductTag(client)
   }
 }
