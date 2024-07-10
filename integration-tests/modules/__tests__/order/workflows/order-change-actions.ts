@@ -1,9 +1,10 @@
 import {
   createOrderChangeActionsWorkflow,
+  createOrderChangeActionsWorkflowId,
   createOrderChangeWorkflow,
 } from "@medusajs/core-flows"
 import { IOrderModuleService, OrderChangeDTO, OrderDTO } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 
@@ -39,6 +40,7 @@ medusaIntegrationTestRunner({
           })
 
           orderChange = result
+          service = container.resolve(ModuleRegistrationName.ORDER)
         })
 
         it("should successfully create an order change action", async () => {
@@ -78,21 +80,35 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should throw an error when creating an order change when an active one already exists", async () => {
+        it("should delete created actions when a rollback occurs on a workflow", async () => {
+          const workflow = createOrderChangeActionsWorkflow(container)
+
+          workflow.appendAction("throw", createOrderChangeActionsWorkflowId, {
+            invoke: async function failStep() {
+              throw new Error(`Fail`)
+            },
+          })
+
           const {
             errors: [error],
-          } = await createOrderChangeActionsWorkflow(container).run({
-            input: [{ order_id: order.id } as any],
+          } = await workflow.run({
+            input: [
+              {
+                action: ChangeActionType.ITEM_ADD,
+                order_change_id: orderChange.id,
+                order_id: order.id,
+              },
+            ],
             throwOnError: false,
           })
 
-          expect(error.error).toEqual(
-            expect.objectContaining({
-              message: expect.stringContaining(
-                `Value for OrderChangeAction.action is required, 'undefined' found`
-              ),
-            })
+          const orderChange1 = await service.retrieveOrderChange(
+            orderChange.id,
+            { relations: ["actions"] }
           )
+
+          expect(error).toBeDefined()
+          expect(orderChange1.actions).toHaveLength(0)
         })
       })
     })
