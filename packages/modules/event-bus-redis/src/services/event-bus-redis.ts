@@ -258,7 +258,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
-        return await subscriber(data, eventName)
+        return await subscriber(data)
           .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)

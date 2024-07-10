@@ -110,7 +110,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.storeSubscribers({ event, subscriberId: randId, subscriber })
     this.eventEmitter_.on(event, async (data: MessageBody) => {
       try {
-        await subscriber(data, event.toString())
+        await subscriber(data)
       } catch (e) {
         this.logger_?.error(
           `An error occurred while processing ${event.toString()}: ${e}`
