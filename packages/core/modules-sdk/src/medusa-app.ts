@@ -419,7 +419,7 @@ async function MedusaApp_({
     })
 
     const missingModules = moduleResolutions
-      .filter(({ resolution }) => !!resolution)
+      .filter(({ resolution }) => !resolution)
       .map(({ moduleName }) => moduleName)
 
     if (missingModules.length) {
