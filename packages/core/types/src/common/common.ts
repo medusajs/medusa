@@ -343,60 +343,26 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
   ? `${R}eys`
   : Singular extends `${infer R}y`
   ? `${R}ies`
-  : Singular extends `${infer R}ss`
-  ? `${R}es`
-  : Singular extends `${infer R}sh`
-  ? `${R}es`
-  : Singular extends `${infer R}ch`
-  ? `${R}es`
-  : Singular extends `${infer R}x`
-  ? `${R}es`
-  : Singular extends `${infer R}z`
-  ? `${R}es`
-  : Singular extends `${infer R}o`
-  ? `${R}es`
+  : Singular extends `${infer R}es`
+  ? `${Singular}`
+  : Singular extends
+      | `${infer R}ss`
+      | `${infer R}sh`
+      | `${infer R}ch`
+      | `${infer R}x`
+      | `${infer R}z`
+      | `${infer R}o`
+  ? `${Singular}es`
   : Singular extends `${infer R}fe`
   ? `${R}ves`
-  : Singular extends `${infer R}f`
-  ? `${R}ves`
-  : Singular extends `${infer R}us`
-  ? `${R}i`
   : Singular extends `${infer R}is`
-  ? `${R}es`
-  : Singular extends `${infer R}on`
-  ? `${R}a`
-  : Singular extends `${infer R}um`
-  ? `${R}a`
-  : Singular extends `${infer R}ex`
-  ? `${R}ices`
-  : Singular extends `${infer R}ix`
+  ? `${R}ises`
+  : Singular extends `${infer R}ex` | `${infer R}ix`
   ? `${R}ices`
   : Singular extends `${infer R}eau`
   ? `${R}eaux`
   : Singular extends `${infer R}ieu`
   ? `${R}ieux`
-  : Singular extends `${infer R}foot`
-  ? `${R}feet`
-  : Singular extends `${infer R}tooth`
-  ? `${R}teeth`
-  : Singular extends `${infer R}goose`
-  ? `${R}geese`
-  : Singular extends `${infer R}mouse`
-  ? `${R}mice`
-  : Singular extends `${infer R}louse`
-  ? `${R}lice`
-  : Singular extends `${infer R}child`
-  ? `${R}children`
-  : Singular extends `${infer R}person`
-  ? `${R}people`
-  : Singular extends `${infer R}man`
-  ? `${R}men`
-  : Singular extends `${infer R}die`
-  ? `${R}dice`
-  : Singular extends `${infer R}datum`
-  ? `${R}data`
-  : Singular extends `${infer R}cactus`
-  ? `${R}cacti`
   : Singular extends `${infer R}sis`
   ? `${R}ses`
   : `${Singular}s`
