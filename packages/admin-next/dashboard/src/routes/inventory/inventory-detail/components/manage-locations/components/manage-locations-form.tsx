@@ -6,14 +6,11 @@ import { Button, Text, toast } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
 
-import { LocationItem } from "./location-item"
 import { useEffect, useMemo } from "react"
+import { LocationItem } from "./location-item"
 
 type EditInventoryItemAttributeFormProps = {
   item: AdminInventoryItem
@@ -102,26 +99,23 @@ export const ManageLocationsForm = ({
       return handleSuccess()
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         create: selectedLocations.map((location_id) => ({
           location_id,
         })),
         delete: unselectedLocations,
-      })
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("inventory.toast.updateLocations"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateLocations"))
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   })
 
   return (

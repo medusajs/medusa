@@ -1,10 +1,4 @@
-import {
-  DeleteResponse,
-  FindParams,
-  HttpTypes,
-  PaginatedResponse,
-  SelectParams,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -16,10 +10,10 @@ export class ProductCollection {
 
   async create(
     body: HttpTypes.AdminCreateCollection,
-    query?: SelectParams,
+    query?: HttpTypes.AdminCollectionParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+    return this.client.fetch<HttpTypes.AdminCollectionResponse>(
       `/admin/collections`,
       {
         method: "POST",
@@ -32,10 +26,10 @@ export class ProductCollection {
   async update(
     id: string,
     body: HttpTypes.AdminUpdateCollection,
-    query?: SelectParams,
+    query?: HttpTypes.AdminCollectionParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+    return this.client.fetch<HttpTypes.AdminCollectionResponse>(
       `/admin/collections/${id}`,
       {
         method: "POST",
@@ -46,17 +40,25 @@ export class ProductCollection {
     )
   }
 
-  async list(queryParams?: FindParams, headers?: ClientHeaders) {
-    return this.client.fetch<
-      PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>
-    >(`/admin/collections`, {
-      headers,
-      query: queryParams,
-    })
+  async list(
+    queryParams?: HttpTypes.AdminCollectionListParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminCollectionListResponse>(
+      `/admin/collections`,
+      {
+        headers,
+        query: queryParams,
+      }
+    )
   }
 
-  async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
-    return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+  async retrieve(
+    id: string,
+    query?: HttpTypes.AdminCollectionParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminCollectionResponse>(
       `/admin/collections/${id}`,
       {
         query,
@@ -66,7 +68,7 @@ export class ProductCollection {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return this.client.fetch<DeleteResponse<"collection">>(
+    return this.client.fetch<HttpTypes.AdminCollectionDeleteResponse>(
       `/admin/collections/${id}`,
       {
         method: "DELETE",
@@ -80,7 +82,7 @@ export class ProductCollection {
     body: HttpTypes.AdminUpdateCollectionProducts,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<{ collection: HttpTypes.AdminCollection }>(
+    return this.client.fetch<HttpTypes.AdminCollectionResponse>(
       `/admin/collections/${id}/products`,
       {
         method: "POST",

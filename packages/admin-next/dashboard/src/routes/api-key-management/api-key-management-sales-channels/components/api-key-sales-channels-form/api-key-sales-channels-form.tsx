@@ -102,20 +102,16 @@ export const ApiKeySalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("apiKeyManagement.salesChannels.successToast", {
+          toast.success(
+            t("apiKeyManagement.salesChannels.successToast", {
               count: values.sales_channel_ids.length,
-            }),
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (err) => {
-          toast.error(t("general.error"), {
-            description: err.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(err.message)
         },
       }
     )

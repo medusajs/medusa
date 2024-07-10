@@ -7,11 +7,11 @@ import {
 } from "@medusajs/types"
 import { MedusaError, Modules } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
@@ -47,10 +47,7 @@ function prepareRegisterOrderFulfillmentData({
   order,
   fulfillment,
   input,
-}: {
-  order: OrderDTO
-  fulfillment: FulfillmentDTO
-  input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput
+  inputItemsMap,
 }) {
   return {
     order_id: order.id,
@@ -58,9 +55,10 @@ function prepareRegisterOrderFulfillmentData({
     reference_id: fulfillment.id,
     created_by: input.created_by,
     items: order.items!.map((i) => {
+      const inputQuantity = inputItemsMap[i.id]?.quantity
       return {
         id: i.id,
-        quantity: i.quantity,
+        quantity: inputQuantity ?? i.quantity,
       }
     }),
   }
@@ -129,14 +127,9 @@ function prepareFulfillmentData({
   }
 }
 
-function prepareInventoryUpdate({ reservations, order, input }) {
+function prepareInventoryUpdate({ reservations, order, input, inputItemsMap }) {
   const reservationMap = reservations.reduce((acc, reservation) => {
     acc[reservation.line_item_id as string] = reservation
-    return acc
-  }, {})
-
-  const inputItemsMap = input.items.reduce((acc, item) => {
-    acc[item.id] = item
     return acc
   }, {})
 
@@ -216,6 +209,13 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
 
     validateOrder({ order, inputItems: input.items })
 
+    const inputItemsMap = transform(input, ({ items }) => {
+      return items.reduce((acc, item) => {
+        acc[item.id] = item
+        return acc
+      }, {})
+    })
+
     const shippingOptionId = transform(order, (data) => {
       return data.shipping_methods?.[0]?.shipping_option_id
     })
@@ -257,7 +257,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     const registerOrderFulfillmentData = transform(
-      { order, fulfillment, input },
+      { order, fulfillment, input, inputItemsMap },
       prepareRegisterOrderFulfillmentData
     )
 
@@ -274,7 +274,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     )
 
     const { toDelete, toUpdate, inventoryAdjustment } = transform(
-      { order, reservations, input },
+      { order, reservations, input, inputItemsMap },
       prepareInventoryUpdate
     )
 

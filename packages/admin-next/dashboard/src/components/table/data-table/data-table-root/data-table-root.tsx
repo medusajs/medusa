@@ -14,7 +14,7 @@ import {
   useState,
 } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { NoResults } from "../../../common/empty-table-content"
 
 type BulkCommand = {
@@ -86,7 +86,7 @@ export const DataTableRoot = <TData,>({
   const navigate = useNavigate()
   const [showStickyBorder, setShowStickyBorder] = useState(false)
 
-  const scrollableRef = useRef()
+  const scrollableRef = useRef<HTMLDivElement>(null)
 
   const hasSelect = columns.find((c) => c.id === "select")
   const hasActions = columns.find((c) => c.id === "actions")
@@ -140,7 +140,7 @@ export const DataTableRoot = <TData,>({
                   <Table.Row
                     key={headerGroup.id}
                     className={clx({
-                      "border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
+                      "relative border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
                         hasActions,
                       "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
                         hasSelect,
@@ -171,7 +171,7 @@ export const DataTableRoot = <TData,>({
                               : undefined,
                           }}
                           className={clx({
-                            "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base sticky inset-y-0 left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyHeader,
                             "left-[68px]":
                               isStickyHeader && hasSelect && !isSelectHeader,
@@ -199,12 +199,15 @@ export const DataTableRoot = <TData,>({
 
                 const isOdd = row.depth % 2 !== 0
 
+                const cells = row.getVisibleCells()
+
                 return (
                   <Table.Row
                     key={row.id}
                     data-selected={row.getIsSelected()}
                     className={clx(
-                      "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      "transition-fg group/row group relative [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      "has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover",
                       {
                         "bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover": isOdd,
                         "cursor-pointer": !!to,
@@ -214,9 +217,8 @@ export const DataTableRoot = <TData,>({
                           isRowDisabled,
                       }
                     )}
-                    onClick={to ? () => navigate(to) : undefined}
                   >
-                    {row.getVisibleCells().map((cell, index) => {
+                    {cells.map((cell, index) => {
                       const visibleCells = row.getVisibleCells()
                       const isSelectCell = cell.column.id === "select"
 
@@ -239,16 +241,27 @@ export const DataTableRoot = <TData,>({
                           ? row.depth * 14 + 24
                           : undefined
 
+                      const hasLeftOfsset =
+                        isStickyCell && hasSelect && !isSelectCell
+
+                      const Inner = flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )
+
+                      const isTabableLink = isFirstCell && !!to
+                      const shouldRenderAsLink = !!to && !isSelectCell
+
                       return (
                         <Table.Cell
                           key={cell.id}
                           className={clx({
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "!pl-0 !pr-0": shouldRenderAsLink,
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky inset-y-0 left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
-                            "left-[68px]":
-                              isStickyCell && hasSelect && !isSelectCell,
+                            "bottom-0 left-[68px] top-0": hasLeftOfsset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
                             "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
@@ -260,9 +273,26 @@ export const DataTableRoot = <TData,>({
                               : undefined,
                           }}
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                          {shouldRenderAsLink ? (
+                            <Link
+                              to={to}
+                              className="size-full outline-none"
+                              data-row-link
+                              tabIndex={isTabableLink ? 0 : -1}
+                            >
+                              <div
+                                className={clx(
+                                  "flex size-full items-center pr-6",
+                                  {
+                                    "pl-6": isTabableLink && !hasLeftOfsset,
+                                  }
+                                )}
+                              >
+                                {Inner}
+                              </div>
+                            </Link>
+                          ) : (
+                            Inner
                           )}
                         </Table.Cell>
                       )

@@ -109,13 +109,11 @@ const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
           description: t("products.toasts.delete.success.description", {
             title: product.title,
           }),
-          dismissLabel: t("actions.close"),
         })
       },
       onError: (e) => {
         toast.error(t("products.toasts.delete.error.header"), {
           description: e.message,
-          dismissLabel: t("actions.close"),
         })
       },
     })

@@ -1,10 +1,11 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCustomerGroup } from "../../../../../hooks/api/customer-groups"
-import { HttpTypes } from "@medusajs/types"
 
 type CustomerGroupGeneralSectionProps = {
   group: HttpTypes.AdminCustomerGroup
@@ -35,20 +36,16 @@ export const CustomerGroupGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("customerGroups.delete.successToast", {
+        toast.success(
+          t("customerGroups.delete.successToast", {
             name: group.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/customer-groups", { replace: true })
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

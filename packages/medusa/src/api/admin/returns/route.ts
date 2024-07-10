@@ -1,4 +1,4 @@
-import { createReturnOrderWorkflow } from "@medusajs/core-flows"
+import { createAndCompleteReturnOrderWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -42,7 +42,7 @@ export const POST = async (
 ) => {
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
 
-  const workflow = createReturnOrderWorkflow(req.scope)
+  const workflow = createAndCompleteReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({
     input,
   })

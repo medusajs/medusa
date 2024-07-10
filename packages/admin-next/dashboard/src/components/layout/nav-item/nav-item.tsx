@@ -107,10 +107,7 @@ export const NavItem = ({
             <ul>
               {items.map((item) => {
                 return (
-                  <li
-                    key={item.to}
-                    className="flex h-[32px] items-center gap-x-1 pl-2"
-                  >
+                  <li key={item.to} className="flex h-[32px] items-center pl-1">
                     <div
                       role="presentation"
                       className="flex h-full w-5 items-center justify-center"

@@ -26,14 +26,14 @@ import {
 } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
@@ -136,20 +136,16 @@ export const CreatePromotionForm = () => {
         },
         {
           onSuccess: ({ promotion }) => {
-            toast.success(t("general.success"), {
-              description: t("promotions.toasts.promotionCreateSuccess", {
+            toast.success(
+              t("promotions.toasts.promotionCreateSuccess", {
                 code: promotion.code,
-              }),
-              dismissLabel: t("actions.close"),
-            })
+              })
+            )
 
             handleSuccess()
           },
           onError: (e) => {
-            toast.error(t("general.error"), {
-              description: e.message,
-              dismissLabel: t("actions.close"),
-            })
+            toast.error(e.message)
           },
         }
       )
@@ -159,10 +155,7 @@ export const CreatePromotionForm = () => {
       const errorInPromotionTab = !!Object.keys(rest || {}).length
 
       if (errorInPromotionTab) {
-        toast.error(t("general.error"), {
-          description: t("promotions.errors.promotionTabError"),
-          dismissLabel: t("general.close"),
-        })
+        toast.error(t("promotions.errors.promotionTabError"))
       }
     }
   )
@@ -668,7 +661,7 @@ export const CreatePromotionForm = () => {
                                 disabled={!currencyCode}
                               />
                             ) : (
-                              <PercentageInput
+                              <DeprecatedPercentageInput
                                 key="amount"
                                 className="text-right"
                                 min={0}

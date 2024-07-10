@@ -63,24 +63,16 @@ export function CreateServiceZoneForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.serviceZones.create.successToast", {
+          toast.success(
+            t("stockLocations.serviceZones.create.successToast", {
               name: data.name,
-            }),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
 
           handleSuccess(`/settings/locations/${location.id}`)
         },
         onError: (e) => {
-          console.error(e)
-
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

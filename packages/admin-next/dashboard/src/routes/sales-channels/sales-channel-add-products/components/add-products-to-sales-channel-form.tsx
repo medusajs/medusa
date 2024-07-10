@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
-import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
-  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
+  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -110,17 +110,10 @@ export const AddProductsToSalesChannelForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("salesChannels.toast.update"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("salesChannels.toast.update"))
           handleSuccess()
         },
-        onError: (error) =>
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          }),
+        onError: (error) => toast.error(error.message),
       }
     )
   })
