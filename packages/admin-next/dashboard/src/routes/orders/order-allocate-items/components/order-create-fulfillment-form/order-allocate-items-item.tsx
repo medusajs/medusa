@@ -6,7 +6,7 @@ import {
   ExclamationCircleSolid,
   TriangleDownMini,
 } from "@medusajs/icons"
-import { UseFormReturn } from "react-hook-form"
+import { UseFormReturn, useWatch } from "react-hook-form"
 import { Input, Text, clx } from "@medusajs/ui"
 import * as zod from "zod"
 
@@ -40,6 +40,11 @@ export function OrderAllocateItemsItem({
   const inventory = item.variant.inventory
 
   const [isOpen, setIsOpen] = useState(false)
+
+  const qunatityField = useWatch({
+    control: form.control,
+    name: "quantity",
+  })
 
   const hasInventoryKit =
     !!variant?.inventory_items.length && variant?.inventory_items.length > 1
@@ -101,7 +106,7 @@ export function OrderAllocateItemsItem({
   )
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 divide-y divide-dashed rounded-xl">
+    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 min-w-[720px] divide-y divide-dashed rounded-xl">
       <div className="flex items-center gap-x-3 p-3 text-sm">
         <div className="flex flex-1 items-center">
           <div className="flex items-center gap-x-3">
@@ -148,6 +153,20 @@ export function OrderAllocateItemsItem({
                   </span>
                   <span className="text-ui-fg-muted">
                     {availableQuantity || "-"}
+                    {availableQuantity &&
+                      !hasInventoryKit &&
+                      qunatityField[
+                        `${item.id}-${item.variant.inventory[0].id}`
+                      ] && (
+                        <span className="text-ui-fg-error txt-small ml-1">
+                          -
+                          {
+                            qunatityField[
+                              `${item.id}-${item.variant.inventory[0].id}`
+                            ]
+                          }
+                        </span>
+                      )}
                   </span>
                 </div>
               </div>
@@ -259,6 +278,12 @@ export function OrderAllocateItemsItem({
                     </span>
                     <span className="text-ui-fg-muted">
                       {location?.available_quantity || "-"}
+                      {location?.available_quantity &&
+                        qunatityField[`${item.id}-${i.id}`] && (
+                          <span className="text-ui-fg-error txt-small ml-1">
+                            -{qunatityField[`${item.id}-${i.id}`]}
+                          </span>
+                        )}
                     </span>
                   </div>
                 </div>

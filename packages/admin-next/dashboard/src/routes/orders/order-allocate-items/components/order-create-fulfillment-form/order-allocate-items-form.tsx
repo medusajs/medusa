@@ -151,27 +151,33 @@ export function OrderAllocateItemsForm({
                     render={({ field: { onChange, ref, ...field } }) => {
                       return (
                         <Form.Item>
-                          <Form.Label>{t("fields.location")}</Form.Label>
-                          <Form.Hint>
-                            {t("orders.allocateItems.locationDescription")}
-                          </Form.Hint>
-                          <Form.Control>
-                            <Select onValueChange={onChange} {...field}>
-                              <Select.Trigger
-                                className="bg-ui-bg-base"
-                                ref={ref}
-                              >
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {stock_locations.map((l) => (
-                                  <Select.Item key={l.id} value={l.id}>
-                                    {l.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select>
-                          </Form.Control>
+                          <div className="flex items-center gap-3">
+                            <div className="flex-1">
+                              <Form.Label>{t("fields.location")}</Form.Label>
+                              <Form.Hint>
+                                {t("orders.allocateItems.locationDescription")}
+                              </Form.Hint>
+                            </div>
+                            <div className="flex-1">
+                              <Form.Control>
+                                <Select onValueChange={onChange} {...field}>
+                                  <Select.Trigger
+                                    className="bg-ui-bg-base"
+                                    ref={ref}
+                                  >
+                                    <Select.Value />
+                                  </Select.Trigger>
+                                  <Select.Content>
+                                    {stock_locations.map((l) => (
+                                      <Select.Item key={l.id} value={l.id}>
+                                        {l.name}
+                                      </Select.Item>
+                                    ))}
+                                  </Select.Content>
+                                </Select>
+                              </Form.Control>
+                            </div>
+                          </div>
                           <Form.ErrorMessage />
                         </Form.Item>
                       )
@@ -179,7 +185,7 @@ export function OrderAllocateItemsForm({
                   />
 
                   <Form.Item className="mt-8 pt-8">
-                    <div className="flex flex-col items-center lg:flex-row">
+                    <div className="flex flex-row items-center">
                       <div className="flex-1">
                         <Form.Label>
                           {t("orders.allocateItems.itemsToAllocate")}

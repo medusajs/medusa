@@ -743,7 +743,7 @@
     "allocateItems": {
       "action": "Allocate items",
       "title": "Allocate order items",
-      "locationDescription": "Choose which location you want to allocate items from.",
+      "locationDescription": "Choose which location you want to allocate from.",
       "itemsToAllocate": "Items to allocate",
       "itemsToAllocateDesc": "Select the number of items you wish to allocate",
       "search": "Search items",
