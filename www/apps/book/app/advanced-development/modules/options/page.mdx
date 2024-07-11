@@ -23,10 +23,13 @@ To pass options to a module, add an `options` property to the module’s configu
 For example:
 
 ```js title="medusa-config.js"
+import { HELLO_MODULE } from "./src/modules/hello"
+// ...
+
 module.exports = defineConfig({
   // ...
   modules: {
-    helloModuleService: {
+    [HELLO_MODULE]: {
       resolve: "./modules/hello",
       options: {
         capitalize: true,

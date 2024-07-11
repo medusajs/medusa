@@ -291,7 +291,7 @@ export const subscriberHighlights = [
         Modules.NOTIFICATION
       )
 
-    const inventoryItemId = "data" in data ? data.data.id : data.id
+    const inventoryItemId = data.data.id
 
     const inventoryVariantLinkService = remoteLink.getLinkModule(
       Modules.PRODUCT, 
@@ -798,7 +798,7 @@ The `order.placed` event is currently not emitted.
     data,
     container,
   }: SubscriberArgs<{ id: string }>) {
-    const orderId = "data" in data ? data.data.id : data.id
+    const orderId = data.data.id
 
     const orderModuleService: IOrderModuleService = container
       .resolve(ModuleRegistrationName.ORDER)

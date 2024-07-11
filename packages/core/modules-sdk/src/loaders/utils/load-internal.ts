@@ -180,7 +180,6 @@ export async function loadModuleMigrations(
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration
 
-    // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
       const moduleResources = await loadResources(
         resolution,
@@ -190,8 +189,7 @@ export async function loadModuleMigrations(
 
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
-        models: moduleResources.models,
-        pathToMigrations: moduleResources.normalizedPath + "/migrations",
+        pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
