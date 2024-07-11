@@ -5,6 +5,8 @@ import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
 import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
 
+const TERMINAL_SIZE = process.stdout.columns
+
 const main = async function ({ directory }) {
   const args = process.argv
   args.shift()
@@ -30,6 +32,8 @@ const main = async function ({ directory }) {
       container,
     })
 
+    console.log("")
+    console.log(new Array(TERMINAL_SIZE).join("_"))
     Logger.info("Migrations completed")
     process.exit()
   } else if (action === "revert") {
@@ -51,7 +55,10 @@ const main = async function ({ directory }) {
       container,
     })
 
+    console.log("")
+    console.log(new Array(TERMINAL_SIZE).join("_"))
     Logger.info("Migrations reverted")
+    process.exit()
   } else if (action === "show") {
     Logger.info("Action not supported yet")
     process.exit(0)
