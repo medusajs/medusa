@@ -75,6 +75,35 @@ const myWorkflow = createWorkflow<
 })
 ```
 
+### No If Conditions
+
+You can't use if-conditions in a workflow. Instead, use the when-then utility function explained in the next chapter:
+
+```ts
+// Don't
+const myWorkflow = createWorkflow<
+  WorkflowInput,
+  WorkflowOutput
+>("hello-world", function (input) {
+  if (input.is_active) {
+    // perform an action
+  }
+})
+
+// Do (explained in the next chapter)
+const myWorkflow = createWorkflow<
+  WorkflowInput,
+  WorkflowOutput
+>("hello-world", function (input) {
+  when(input, (input) => {
+    return input.is_active
+  })
+  .then(() => {
+    // perform an action
+  })
+})
+```
+
 ---
 
 ## Step Constraints
