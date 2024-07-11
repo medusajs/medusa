@@ -18,7 +18,6 @@ import type {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   ContainerRegistrationKeys,
   createMedusaContainer,
   isObject,
