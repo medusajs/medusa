@@ -22,6 +22,7 @@ import {
   createMedusaContainer,
   isObject,
   isString,
+  MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
@@ -423,11 +424,15 @@ async function MedusaApp_({
 
     if (missingModules.length) {
       const action = revert ? "revert" : "run"
-      throw new Error(
+      const error = new MedusaError(
+        MedusaError.Types.UNKNOWN_MODULES,
         `Cannot ${action} migrations for unknown module(s) ${missingModules.join(
           ","
-        )}`
+        )}`,
+        MedusaError.Codes.UNKNOWN_MODULES
       )
+      error["allModules"] = Object.keys(allModules)
+      throw error
     }
 
     for (const { resolution: moduleResolution } of moduleResolutions) {
