@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
@@ -19,7 +20,7 @@ export const useCustomer = (
   options?: Omit<
     UseQueryOptions<
       { customer: HttpTypes.AdminCustomer },
-      Error,
+      FetchError,
       { customer: HttpTypes.AdminCustomer },
       QueryKey
     >,
@@ -40,7 +41,7 @@ export const useCustomers = (
   options?: Omit<
     UseQueryOptions<
       PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>,
-      Error,
+      FetchError,
       PaginatedResponse<{ customers: HttpTypes.AdminCustomer[] }>,
       QueryKey
     >,
@@ -59,7 +60,7 @@ export const useCustomers = (
 export const useCreateCustomer = (
   options?: UseMutationOptions<
     { customer: HttpTypes.AdminCustomer },
-    Error,
+    FetchError,
     HttpTypes.AdminCreateCustomer
   >
 ) => {
@@ -77,7 +78,7 @@ export const useUpdateCustomer = (
   id: string,
   options?: UseMutationOptions<
     { customer: HttpTypes.AdminCustomer },
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateCustomer
   >
 ) => {
@@ -95,7 +96,7 @@ export const useUpdateCustomer = (
 
 export const useDeleteCustomer = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse<"customer">, Error, void>
+  options?: UseMutationOptions<DeleteResponse<"customer">, FetchError, void>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.customer.delete(id),

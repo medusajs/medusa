@@ -18,5 +18,6 @@ export interface PageProps<TData> {
   widgets: WidgetProps
   data?: TData
   showJSON?: boolean
+  showMetadata?: boolean
   hasOutlet?: boolean
 }
