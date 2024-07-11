@@ -93,6 +93,7 @@ export class TransactionStep {
         TransactionStepState.COMPENSATING,
         TransactionStepState.FAILED,
         TransactionStepState.SKIPPED,
+        TransactionStepState.SKIPPED_FAILURE,
       ],
       [TransactionStepState.INVOKING]: [
         TransactionStepState.FAILED,

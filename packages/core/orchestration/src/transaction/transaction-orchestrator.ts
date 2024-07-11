@@ -21,6 +21,7 @@ import {
   isErrorLike,
   PermanentStepFailureError,
   serializeError,
+  SkipStepResponse,
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "./errors"
@@ -36,6 +37,7 @@ export type TransactionFlow = {
   }
   hasAsyncSteps: boolean
   hasFailedSteps: boolean
+  hasSkippedOnFailureSteps: boolean
   hasWaitingSteps: boolean
   hasSkippedSteps: boolean
   hasRevertedSteps: boolean
@@ -125,6 +127,7 @@ export class TransactionOrchestrator extends EventEmitter {
       TransactionStepState.FAILED,
       TransactionStepState.TIMEOUT,
       TransactionStepState.SKIPPED,
+      TransactionStepState.SKIPPED_FAILURE,
     ]
 
     const siblings = this.getPreviousStep(flow, previousStep).next.map(
@@ -253,6 +256,7 @@ export class TransactionOrchestrator extends EventEmitter {
     completed: number
   }> {
     let hasSkipped = false
+    let hasSkippedOnFailure = false
     let hasIgnoredFailure = false
     let hasFailed = false
     let hasWaiting = false
@@ -328,7 +332,9 @@ export class TransactionOrchestrator extends EventEmitter {
       } else {
         completedSteps++
 
-        if (curState.state === TransactionStepState.SKIPPED) {
+        if (curState.state === TransactionStepState.SKIPPED_FAILURE) {
+          hasSkippedOnFailure = true
+        } else if (curState.state === TransactionStepState.SKIPPED) {
           hasSkipped = true
         } else if (curState.state === TransactionStepState.REVERTED) {
           hasReverted = true
@@ -358,6 +364,9 @@ export class TransactionOrchestrator extends EventEmitter {
 
       return await this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
+      if (hasSkippedOnFailure) {
+        flow.hasSkippedOnFailureSteps = true
+      }
       if (hasSkipped) {
         flow.hasSkippedSteps = true
       }
@@ -453,6 +462,42 @@ export class TransactionOrchestrator extends EventEmitter {
     transaction.emit(eventName, { step, transaction })
   }
 
+  private static async skipStep(
+    transaction: DistributedTransaction,
+    step: TransactionStep
+  ): Promise<void> {
+    const hasStepTimedOut =
+      step.getStates().state === TransactionStepState.TIMEOUT
+
+    const flow = transaction.getFlow()
+    const options = TransactionOrchestrator.getWorkflowOptions(flow.modelId)
+
+    if (!hasStepTimedOut) {
+      step.changeStatus(TransactionStepStatus.OK)
+    }
+
+    if (!hasStepTimedOut) {
+      step.changeState(TransactionStepState.SKIPPED)
+    }
+
+    if (step.definition.async || options?.storeExecution) {
+      await transaction.saveCheckpoint()
+    }
+
+    const cleaningUp: Promise<unknown>[] = []
+    if (step.hasRetryScheduled()) {
+      cleaningUp.push(transaction.clearRetry(step))
+    }
+    if (step.hasTimeout()) {
+      cleaningUp.push(transaction.clearStepTimeout(step))
+    }
+
+    await promiseAll(cleaningUp)
+
+    const eventName = DistributedTransactionEvent.STEP_SKIPPED
+    transaction.emit(eventName, { step, transaction })
+  }
+
   private static async setStepTimeout(
     transaction: DistributedTransaction,
     step: TransactionStep,
@@ -539,7 +584,7 @@ export class TransactionOrchestrator extends EventEmitter {
         ) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
-            child.changeState(TransactionStepState.SKIPPED)
+            child.changeState(TransactionStepState.SKIPPED_FAILURE)
           }
         } else {
           flow.state = TransactionState.WAITING_TO_COMPENSATE
@@ -701,6 +746,11 @@ export class TransactionOrchestrator extends EventEmitter {
                   )
                 }
 
+                if (SkipStepResponse.isSkipStepResponse(response)) {
+                  await TransactionOrchestrator.skipStep(transaction, step)
+                  return
+                }
+
                 await TransactionOrchestrator.setStepSuccess(
                   transaction,
                   step,
@@ -752,6 +802,11 @@ export class TransactionOrchestrator extends EventEmitter {
                       transaction,
                       nextSteps.next.includes(step) ? nextSteps.next : [step]
                     )
+                  }
+
+                  if (SkipStepResponse.isSkipStepResponse(response)) {
+                    await TransactionOrchestrator.skipStep(transaction, step)
+                    return
                   }
 
                   await TransactionOrchestrator.setStepSuccess(
@@ -912,6 +967,7 @@ export class TransactionOrchestrator extends EventEmitter {
       metadata: flowMetadata,
       hasAsyncSteps: features.hasAsyncSteps,
       hasFailedSteps: false,
+      hasSkippedOnFailureSteps: false,
       hasSkippedSteps: false,
       hasWaitingSteps: false,
       hasRevertedSteps: false,
@@ -1174,6 +1230,41 @@ export class TransactionOrchestrator extends EventEmitter {
       throw new Error("Incorrect action type.")
     }
     return [transaction, step]
+  }
+
+  /** Skip the execution of a specific transaction and step
+   * @param responseIdempotencyKey - The idempotency key for the step
+   * @param handler - The handler function to execute the step
+   * @param transaction - The current transaction. If not provided it will be loaded based on the responseIdempotencyKey
+   */
+  public async skipStep(
+    responseIdempotencyKey: string,
+    handler?: TransactionStepHandler,
+    transaction?: DistributedTransaction
+  ): Promise<DistributedTransaction> {
+    const [curTransaction, step] =
+      await TransactionOrchestrator.getTransactionAndStepFromIdempotencyKey(
+        responseIdempotencyKey,
+        handler,
+        transaction
+      )
+
+    if (step.getStates().status === TransactionStepStatus.WAITING) {
+      this.emit(DistributedTransactionEvent.RESUME, {
+        transaction: curTransaction,
+      })
+
+      await TransactionOrchestrator.skipStep(curTransaction, step)
+
+      await this.executeNext(curTransaction)
+    } else {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot skip a step when status is ${step.getStates().status}`
+      )
+    }
+
+    return curTransaction
   }
 
   /** Register a step success for a specific transaction and step
