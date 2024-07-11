@@ -1965,14 +1965,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    title: "Configurations",
+    path: "/references/medusa-config",
+    title: "Medusa Configurations",
     hasTitleStyling: true,
-    children: [
-      {
-        path: "/references/medusa-config",
-        title: "Medusa Application",
-      },
-    ],
   },
   {
     title: "General",
@@ -2067,7 +2062,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
-            title: "Medusa Backend",
+            title: "Medusa Application",
             hasTitleStyling: true,
             children: [
               {
