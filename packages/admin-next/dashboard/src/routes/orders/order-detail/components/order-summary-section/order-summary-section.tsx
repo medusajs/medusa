@@ -38,7 +38,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   /**
    * Show Allocation button only if there are fulfilled items that don't have reservation and aren't shipped
    */
-  const shoAllocateButton = useMemo(() => {
+  const showAllocateButton = useMemo(() => {
     if (!reservations) {
       return false
     }
@@ -70,7 +70,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {shoAllocateButton && (
+      {showAllocateButton && (
         <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
           <Button
             onClick={() => navigate(`./allocate-items`)}
