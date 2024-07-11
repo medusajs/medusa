@@ -732,6 +732,10 @@ export const filesMap = [
     "pathname": "/recipes/integrate-ecommerce-stack"
   },
   {
+    "filePath": "/www/apps/resources/app/recipes/marketplace/examples/vendors/page.mdx",
+    "pathname": "/recipes/marketplace/examples/vendors"
+  },
+  {
     "filePath": "/www/apps/resources/app/recipes/marketplace/page.mdx",
     "pathname": "/recipes/marketplace"
   },
@@ -746,6 +750,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/recipes/oms/page.mdx",
     "pathname": "/recipes/oms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/page.mdx",
+    "pathname": "/recipes"
   },
   {
     "filePath": "/www/apps/resources/app/recipes/personalized-products/page.mdx",

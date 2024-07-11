@@ -65,6 +65,6 @@ export type AdminUpdateCustomerGroupType = z.infer<
   typeof AdminUpdateCustomerGroup
 >
 export const AdminUpdateCustomerGroup = z.object({
-  name: z.string(),
+  name: z.string().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })

@@ -6159,9 +6159,26 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "path": "/recipes",
     "title": "Recipes",
     "hasTitleStyling": true,
+    "isChildSidebar": true,
     "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/marketplace",
+        "title": "Marketplace",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/marketplace/examples/vendors",
+            "title": "Example: Vendors",
+            "children": []
+          }
+        ]
+      },
       {
         "loaded": true,
         "isPathHref": true,
@@ -6195,13 +6212,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/integrate-ecommerce-stack",
         "title": "Integrate Ecommerce Stack",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/marketplace",
-        "title": "Marketplace",
         "children": []
       },
       {
