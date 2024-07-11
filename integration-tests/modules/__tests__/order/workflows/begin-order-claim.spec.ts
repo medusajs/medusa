@@ -1,5 +1,5 @@
 import {
-  beginReturnOrderWorkflow,
+  beginClaimOrderWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
 import {
@@ -12,6 +12,7 @@ import {
   StockLocationDTO,
 } from "@medusajs/types"
 import {
+  ClaimType,
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
@@ -345,7 +346,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Begin return order workflow", () => {
+    describe("Begin claim order workflow", () => {
       let product: ProductDTO
 
       beforeEach(async () => {
@@ -356,16 +357,17 @@ medusaIntegrationTestRunner({
         product = fixtures.product
       })
 
-      it("should begin a return order", async () => {
+      it("should begin a claim order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createReturnOrderData: OrderWorkflow.beginOrderReturnWorkflowInput =
+        const createClaimOrderData: OrderWorkflow.beginOrderClaimWorkflowInput =
           {
+            type: ClaimType.REFUND,
             order_id: order.id,
           }
 
-        await beginReturnOrderWorkflow(container).run({
-          input: createReturnOrderData,
+        await beginClaimOrderWorkflow(container).run({
+          input: createClaimOrderData,
           throwOnError: true,
         })
 
@@ -373,17 +375,17 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_QUERY
         )
         const remoteQueryObject = remoteQueryObjectFromString({
-          entryPoint: "return",
+          entryPoint: "order_claim",
           variables: {
-            order_id: createReturnOrderData.order_id,
+            order_id: createClaimOrderData.order_id,
           },
-          fields: ["order_id", "id", "status"],
+          fields: ["order_id", "id", "type"],
         })
 
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
         expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.status).toEqual("requested")
+        expect(returnOrder.type).toEqual("refund")
         expect(returnOrder.id).toBeDefined()
       })
     })

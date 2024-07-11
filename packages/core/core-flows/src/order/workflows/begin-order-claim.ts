@@ -6,22 +6,22 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { createOrderClaimsStep } from "../steps/create-claims"
 import { createOrderChangeStep } from "../steps/create-order-change"
-import { createReturnsStep } from "../steps/create-returns"
 import { throwIfOrderIsCancelled } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "begin-return-order-validation",
+  "begin-claim-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
   }
 )
 
-export const beginReturnOrderWorkflowId = "begin-return-order"
-export const beginReturnOrderWorkflow = createWorkflow(
-  beginReturnOrderWorkflowId,
+export const beginClaimOrderWorkflowId = "begin-claim-order"
+export const beginClaimOrderWorkflow = createWorkflow(
+  beginClaimOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.beginOrderReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.beginOrderClaimWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -33,8 +33,9 @@ export const beginReturnOrderWorkflow = createWorkflow(
 
     validationStep({ order })
 
-    const created = createReturnsStep([
+    const created = createOrderClaimsStep([
       {
+        type: input.type,
         order_id: input.order_id,
         metadata: input.metadata,
       },
@@ -44,9 +45,9 @@ export const beginReturnOrderWorkflow = createWorkflow(
       { created, input },
       ({ created, input }) => {
         return {
-          change_type: "return" as const,
+          change_type: "claim" as const,
           order_id: input.order_id,
-          return_id: created[0].id,
+          claim_id: created[0].id,
           created_by: input.created_by,
           description: input.description,
           internal_note: input.internal_note,

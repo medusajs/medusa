@@ -12,13 +12,10 @@ export const createReturnsStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    console.log(service["createReturns"])
-    // @ts-expect-error
     const orderReturns = await service.createReturns(data)
 
     const returnIds = orderReturns.map((ret) => ret.id)
 
-    console.log(orderReturns)
     return new StepResponse(orderReturns, returnIds)
   },
   async (returnIds, { container }) => {
@@ -30,7 +27,6 @@ export const createReturnsStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    // @ts-expect-error
     await service.deleteReturns(returnIds)
   }
 )

@@ -1,5 +1,5 @@
 import {
-  beginReturnOrderWorkflow,
+  beginExchangeOrderWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
 import {
@@ -345,7 +345,7 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Begin return order workflow", () => {
+    describe("Begin exchange order workflow", () => {
       let product: ProductDTO
 
       beforeEach(async () => {
@@ -356,16 +356,21 @@ medusaIntegrationTestRunner({
         product = fixtures.product
       })
 
-      it("should begin a return order", async () => {
+      it("should begin an exchange order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createReturnOrderData: OrderWorkflow.beginOrderReturnWorkflowInput =
+        const createExchangeOrderData: OrderWorkflow.beginOrderExchangeWorkflowInput =
           {
             order_id: order.id,
+            metadata: {
+              reason: "test",
+              extra: "data",
+              value: 1234,
+            },
           }
 
-        await beginReturnOrderWorkflow(container).run({
-          input: createReturnOrderData,
+        await beginExchangeOrderWorkflow(container).run({
+          input: createExchangeOrderData,
           throwOnError: true,
         })
 
@@ -373,17 +378,21 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_QUERY
         )
         const remoteQueryObject = remoteQueryObjectFromString({
-          entryPoint: "return",
+          entryPoint: "order_exchange",
           variables: {
-            order_id: createReturnOrderData.order_id,
+            order_id: createExchangeOrderData.order_id,
           },
-          fields: ["order_id", "id", "status"],
+          fields: ["order_id", "id", "metadata"],
         })
 
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
         expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.status).toEqual("requested")
+        expect(returnOrder.metadata).toEqual({
+          reason: "test",
+          extra: "data",
+          value: 1234,
+        })
         expect(returnOrder.id).toBeDefined()
       })
     })

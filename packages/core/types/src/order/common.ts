@@ -1621,11 +1621,25 @@ export interface FilterableReturnProps
   extends BaseFilterable<FilterableReturnProps> {
   id?: string | string[]
   order_id?: string | string[]
-  return_id?: string | string[]
   claim_id?: string | string[]
   exchange_id?: string | string[]
   status?: string | string[]
   refund_amount?: string | string[]
+}
+
+export interface FilterableOrderClaimProps
+  extends BaseFilterable<FilterableOrderClaimProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  return_id?: string | string[]
+}
+
+export interface FilterableOrderExchangeProps
+  extends BaseFilterable<FilterableOrderExchangeProps> {
+  id?: string | string[]
+  order_id?: string | string[]
+  return_id?: string | string[]
+  allow_backorder?: boolean
 }
 
 export interface OrderChangeReturn {
