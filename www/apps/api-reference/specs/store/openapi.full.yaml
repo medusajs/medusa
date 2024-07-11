@@ -3737,6 +3737,14 @@ components:
       type: object
       description: The parent's collection.
       x-schemaName: AdminCollection
+      required:
+        - id
+        - title
+        - handle
+        - created_at
+        - updated_at
+        - deleted_at
+        - metadata
       properties:
         id:
           type: string
@@ -4730,10 +4738,9 @@ components:
               title: name
               description: The default tax rate's name.
             is_combinable:
-              type: string
-              enum:
-                - 'true'
-                - 'false'
+              type: boolean
+              title: is_combinable
+              description: The default tax rate's is combinable.
             metadata:
               type: object
               description: The default tax rate's metadata.
@@ -5318,7 +5325,6 @@ components:
         - is_giftcard
         - collection_id
         - type_id
-        - tags
         - images
         - discountable
         - external_id
@@ -5342,6 +5348,11 @@ components:
             $ref: '#/components/schemas/AdminProductVariant'
         type:
           type: object
+        tags:
+          type: array
+          description: The parent's tags.
+          items:
+            $ref: '#/components/schemas/AdminProductTag'
         title:
           type: string
           title: title
@@ -5440,11 +5451,6 @@ components:
           type: string
           title: type_id
           description: The parent's type id.
-        tags:
-          type: array
-          description: The parent's tags.
-          items:
-            $ref: '#/components/schemas/BaseProductTag'
         images:
           type: array
           description: The parent's images.
@@ -5684,6 +5690,42 @@ components:
       properties:
         product:
           $ref: '#/components/schemas/AdminProduct'
+    AdminProductTag:
+      type: object
+      description: The tag's tags.
+      x-schemaName: AdminProductTag
+      required:
+        - id
+        - value
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The tag's ID.
+        value:
+          type: string
+          title: value
+          description: The tag's value.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The tag's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The tag's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The tag's deleted at.
+        metadata:
+          type: object
+          description: The tag's metadata.
     AdminProductVariant:
       type: object
       description: The updated's details.
@@ -6892,6 +6934,7 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateTaxRate
       required:
+        - code
         - metadata
       properties:
         rate:
@@ -7151,7 +7194,6 @@ components:
         - material
         - collection_id
         - type_id
-        - tags
         - variants
         - options
         - images
@@ -7856,7 +7898,6 @@ components:
         - is_giftcard
         - collection_id
         - type_id
-        - tags
         - images
         - discountable
         - external_id

@@ -4,8 +4,15 @@ import {
   createOrderChangeWorkflow,
   deleteOrderChangeActionsWorkflow,
   deleteOrderChangeActionsWorkflowId,
+  updateOrderChangeActionsWorkflow,
+  updateOrderChangeActionsWorkflowId,
 } from "@medusajs/core-flows"
-import { IOrderModuleService, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import {
+  IOrderModuleService,
+  OrderChangeActionDTO,
+  OrderChangeDTO,
+  OrderDTO,
+} from "@medusajs/types"
 import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
@@ -44,7 +51,7 @@ medusaIntegrationTestRunner({
         service = container.resolve(ModuleRegistrationName.ORDER)
       })
 
-      describe("createOrderChangeActionWorkflow", () => {
+      describe("createOrderChangeActionsWorkflow", () => {
         it("should successfully create an order change action", async () => {
           const { result } = await createOrderChangeActionsWorkflow(
             container
@@ -210,6 +217,77 @@ medusaIntegrationTestRunner({
               }),
             ])
           )
+        })
+      })
+
+      describe("updateOrderChangeActionWorkflow", () => {
+        let createdOrderAction: OrderChangeActionDTO
+
+        beforeEach(async () => {
+          const { result } = await createOrderChangeActionsWorkflow(
+            container
+          ).run({
+            input: [
+              {
+                action: ChangeActionType.ITEM_ADD,
+                order_change_id: orderChange.id,
+                order_id: order.id,
+                internal_note: "existing",
+              },
+            ],
+          })
+
+          createdOrderAction = result[0]
+        })
+
+        it("should successfully update an order change action", async () => {
+          const {
+            result: [updatedOrderChange],
+          } = await updateOrderChangeActionsWorkflow(container).run({
+            input: [
+              {
+                id: createdOrderAction.id,
+                internal_note: "new",
+              },
+            ],
+          })
+
+          expect(updatedOrderChange).toEqual(
+            expect.objectContaining({
+              id: createdOrderAction.id,
+              internal_note: "new",
+            })
+          )
+        })
+
+        it("should rollback to original state when a future step has an error", async () => {
+          const workflow = updateOrderChangeActionsWorkflow(container)
+
+          workflow.appendAction("throw", updateOrderChangeActionsWorkflowId, {
+            invoke: async function failStep() {
+              throw new Error(`Fail`)
+            },
+          })
+
+          const {
+            errors: [error],
+          } = await workflow.run({
+            input: [
+              {
+                id: createdOrderAction.id,
+                internal_note: "new",
+              },
+            ],
+            throwOnError: false,
+          })
+
+          const orderChangeAction = await service.retrieveOrderChangeAction(
+            createdOrderAction.id,
+            {}
+          )
+
+          expect(error).toBeDefined()
+          expect(orderChangeAction.internal_note).toEqual("existing")
         })
       })
     })
