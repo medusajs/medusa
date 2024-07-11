@@ -42,6 +42,7 @@ export const useDeleteFulfillmentSet = (
       // We need to invalidate all related entities. We invalidate using `all` keys to ensure that all relevant entities are invalidated.
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
+        refetchType: "all",
       })
       await queryClient.invalidateQueries({
         queryKey: shippingOptionsQueryKeys.all,

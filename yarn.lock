@@ -5257,7 +5257,6 @@ __metadata:
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
-    date-fns: ^2.30.0
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
     jsdom: ^22.1.0
@@ -5331,6 +5330,7 @@ __metadata:
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
+    pluralize: ^8.0.0
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     typescript: ^5.1.6
@@ -15915,15 +15915,6 @@ __metadata:
   version: 1.4.0
   resolution: "dataloader@npm:1.4.0"
   checksum: 5fa4c843b9e60195092f1fc7e2acaff318ed46886dc670ddff683bc560f12d4079e6d1e77749501b7e111a8582d26a2aa2a2fbe6d7d5e1520cef64f4e1fd242d
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": ^7.21.0
-  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
   languageName: node
   linkType: hard
 

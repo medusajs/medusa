@@ -189,7 +189,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           children: [
             {
               path: "/advanced-development/workflows/constructor-constraints",
-              title: "Constructor Constraints",
+              title: "Workflow Constraints",
             },
             {
               path: "/advanced-development/workflows/compensation-function",

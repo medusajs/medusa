@@ -1,7 +1,7 @@
 import CurrencyInput from "react-currency-input-field"
 import { Controller } from "react-hook-form"
 
-import { currencies } from "../../../lib/currencies"
+import { currencies } from "../../../lib/data/currencies"
 import { useDataGridCell } from "../hooks"
 import { DataGridCellProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"

@@ -1,11 +1,11 @@
 import {
+  ChangeActionType,
   MathBN,
   MedusaError,
   isDefined,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
 import { EVENT_STATUS } from "@types"
-import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import {
   setActionReference,

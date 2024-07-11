@@ -30405,6 +30405,10 @@ paths:
                 metadata:
                   type: object
                   description: The region's metadata.
+                is_tax_inclusive:
+                  type: boolean
+                  title: is_tax_inclusive
+                  description: The region's is tax inclusive.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -30604,6 +30608,10 @@ paths:
                 metadata:
                   type: object
                   description: The region's metadata.
+                is_tax_inclusive:
+                  type: boolean
+                  title: is_tax_inclusive
+                  description: The region's is tax inclusive.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -39269,6 +39277,9 @@ components:
           type: number
           title: max_quantity
           description: The price's max quantity.
+        rules:
+          type: object
+          description: The price's rules.
     AdminCreateSalesChannel:
       type: object
       description: SUMMARY
@@ -40550,6 +40561,10 @@ components:
           type: number
           title: width
           description: The updated's width.
+        variant_rank:
+          type: number
+          title: variant_rank
+          description: The updated's variant rank.
         options:
           type: array
           description: The updated's options.
@@ -40561,10 +40576,8 @@ components:
           type: string
           title: product_id
           description: The updated's product id.
-        variant_rank:
-          type: number
-          title: variant_rank
-          description: The updated's variant rank.
+        calculated_price:
+          $ref: '#/components/schemas/BaseCalculatedPriceSet'
         created_at:
           type: string
           format: date-time
@@ -41610,7 +41623,6 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateStore
       required:
-        - name
         - default_sales_channel_id
         - default_region_id
         - default_location_id
@@ -41637,6 +41649,10 @@ components:
                 type: boolean
                 title: is_default
                 description: The supported currency's is default.
+              is_tax_inclusive:
+                type: boolean
+                title: is_tax_inclusive
+                description: The supported currency's is tax inclusive.
         default_sales_channel_id:
           type: string
           title: default_sales_channel_id
@@ -41732,6 +41748,62 @@ components:
           type: number
           title: required_quantity
           description: The product's required quantity.
+    BaseCalculatedPriceSet:
+      type: object
+      description: The updated's calculated price.
+      x-schemaName: BaseCalculatedPriceSet
+      required:
+        - id
+        - calculated_amount
+        - original_amount
+        - currency_code
+      properties:
+        id:
+          type: string
+          title: id
+          description: The calculated price's ID.
+        is_calculated_price_price_list:
+          type: boolean
+          title: is_calculated_price_price_list
+          description: The calculated price's is calculated price price list.
+        is_calculated_price_tax_inclusive:
+          type: boolean
+          title: is_calculated_price_tax_inclusive
+          description: The calculated price's is calculated price tax inclusive.
+        calculated_amount:
+          type: number
+          title: calculated_amount
+          description: The calculated price's calculated amount.
+        calculated_amount_with_tax:
+          type: number
+          title: calculated_amount_with_tax
+          description: The calculated price's calculated amount with tax.
+        calculated_amount_without_tax:
+          type: number
+          title: calculated_amount_without_tax
+          description: The calculated price's calculated amount without tax.
+        is_original_price_price_list:
+          type: boolean
+          title: is_original_price_price_list
+          description: The calculated price's is original price price list.
+        is_original_price_tax_inclusive:
+          type: boolean
+          title: is_original_price_tax_inclusive
+          description: The calculated price's is original price tax inclusive.
+        original_amount:
+          type: number
+          title: original_amount
+          description: The calculated price's original amount.
+        currency_code:
+          type: string
+          title: currency_code
+          description: The calculated price's currency code.
+        calculated_price:
+          type: object
+          description: The calculated price's details.
+        original_price:
+          type: object
+          description: The calculated price's original price.
     BaseCollection:
       type: object
       description: The product's collection.

@@ -1,4 +1,4 @@
-const formatter = new Intl.NumberFormat(undefined, {
+const formatter = new Intl.NumberFormat([], {
   style: "percent",
   minimumFractionDigits: 2,
 })

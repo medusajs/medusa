@@ -21,3 +21,5 @@ export const I18n = () => {
 
   return null
 }
+
+export { i18n }

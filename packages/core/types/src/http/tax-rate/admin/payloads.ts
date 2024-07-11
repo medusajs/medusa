@@ -17,7 +17,7 @@ export interface AdminCreateTaxRate {
 export interface AdminUpdateTaxRate {
   name?: string
   rate?: number
-  code?: string
+  code?: string | null
   rules?: AdminCreateTaxRateRule[]
   is_default?: boolean
   is_combinable?: boolean

@@ -51,7 +51,7 @@ const datePickerStyles = (
 ) =>
   cva({
     base: clx(
-      "bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-base transition-fg grid items-center gap-2 overflow-hidden rounded-md",
+      "bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-base transition-fg grid items-center gap-2 overflow-hidden rounded-md h-fit",
       "focus-within:shadow-borders-interactive-with-active focus-visible:shadow-borders-interactive-with-active",
       "aria-[invalid=true]:shadow-borders-error invalid:shadow-borders-error",
       {

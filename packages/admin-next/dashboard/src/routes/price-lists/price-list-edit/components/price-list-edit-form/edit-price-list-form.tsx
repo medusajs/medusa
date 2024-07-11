@@ -42,7 +42,7 @@ export const PriceListEditForm = ({ priceList }: PriceListEditFormProps) => {
     resolver: zodResolver(PriceListEditSchema),
   })
 
-  const { mutateAsync } = useUpdatePriceList(priceList.id)
+  const { mutateAsync, isPending } = useUpdatePriceList(priceList.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(values, {
@@ -172,7 +172,7 @@ export const PriceListEditForm = ({ priceList }: PriceListEditFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit">
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

@@ -1,5 +1,5 @@
 import { Context, OrderTypes } from "@medusajs/types"
-import { ChangeActionType } from "../../utils"
+import { ChangeActionType } from "@medusajs/utils"
 
 export async function cancelFulfillment(
   this: any,
