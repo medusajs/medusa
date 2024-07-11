@@ -12,6 +12,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
   createMedusaContainer,
   promiseAll,
   simpleHash,
@@ -344,7 +345,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -475,7 +478,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -546,7 +551,9 @@ class MedusaModule {
     })
 
     const logger_ =
-      container?.resolve("logger", { allowUnregistered: true }) ?? logger
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     for (const mod in moduleResolutions) {
       const [migrateUp] = await loadModuleMigrations(
@@ -578,7 +585,9 @@ class MedusaModule {
     })
 
     const logger_ =
-      container?.resolve("logger", { allowUnregistered: true }) ?? logger
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     for (const mod in moduleResolutions) {
       const [, migrateDown] = await loadModuleMigrations(

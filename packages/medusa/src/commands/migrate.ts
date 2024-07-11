@@ -1,4 +1,3 @@
-import { asValue } from "awilix"
 import Logger from "../loaders/logger"
 import { migrateMedusaApp, revertMedusaApp } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
@@ -14,7 +13,6 @@ const main = async function ({ directory }) {
 
   const action = args[0]
   const container = await initializeContainer(directory)
-  container.register("logger", asValue(Logger))
 
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
