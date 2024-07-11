@@ -142,10 +142,24 @@ export function defineLink(
     )!
 
     if (!serviceAInfo) {
-      throw new Error(`Service ${serviceAObj.module} was not found`)
+      throw new Error(`Service ${serviceAObj.module} was not found. If this is your module, make sure you set isQueryable to true in medusa-config.js:
+        
+${serviceAObj.module}: {
+  // ...
+  definition: {
+    isQueryable: true
+  }
+}`)
     }
     if (!serviceBInfo) {
-      throw new Error(`Service ${serviceBObj.module} was not found`)
+      throw new Error(`Service ${serviceBObj.module} was not found. If this is your module, make sure you set isQueryable to true in medusa-config.js:
+        
+${serviceBObj.module}: {
+  // ...
+  definition: {
+    isQueryable: true
+  }
+}`)
     }
 
     const serviceAKeyEntity = serviceAInfo.linkableKeys?.[serviceAObj.key]
