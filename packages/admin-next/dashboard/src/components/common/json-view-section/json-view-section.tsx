@@ -1,5 +1,5 @@
 import {
-  ArrowsPointingOut,
+  ArrowUpRightOnBox,
   Check,
   SquareTwoStack,
   TriangleDownMini,
@@ -30,7 +30,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
     <Container className="flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-x-4">
         <Heading level="h2">{t("json.header")}</Heading>
-        <Badge size="2xsmall">
+        <Badge size="2xsmall" rounded="full">
           {t("json.numberOfKeys", {
             count: numberOfKeys,
           })}
@@ -41,9 +41,9 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
           <IconButton
             size="small"
             variant="transparent"
-            className="text-ui-fg-subtle"
+            className="text-ui-fg-muted hover:text-ui-fg-subtle"
           >
-            <ArrowsPointingOut />
+            <ArrowUpRightOnBox />
           </IconButton>
         </Drawer.Trigger>
         <Drawer.Content className="bg-ui-contrast-bg-base text-ui-code-fg-subtle !shadow-elevation-commandbar overflow-hidden border border-none max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]">
