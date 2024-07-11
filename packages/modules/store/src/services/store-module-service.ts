@@ -29,8 +29,11 @@ type InjectedDependencies = {
 
 export default class StoreModuleService
   extends MedusaService<{
-    Store: { dto: StoreTypes.StoreDTO }
-    StoreCurrency: { dto: StoreTypes.StoreCurrencyDTO }
+    Store: { dto: StoreTypes.StoreDTO; model: typeof Store }
+    StoreCurrency: {
+      dto: StoreTypes.StoreCurrencyDTO
+      model: typeof StoreCurrency
+    }
   }>({ Store, StoreCurrency })
   implements IStoreModuleService
 {

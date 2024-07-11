@@ -2,7 +2,7 @@ import { model } from "@medusajs/utils"
 import { StoreCurrency } from "./index"
 
 const Store = model.define("store", {
-  id: model.id({ prefix: "store" }),
+  id: model.id({ prefix: "store" }).primaryKey(),
   name: model.text().default("Medusa Store").searchable(),
   supported_currencies: model.hasMany(() => StoreCurrency, {
     mappedBy: "store",
