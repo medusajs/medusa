@@ -8,7 +8,7 @@ export function OrderCreateShipment() {
   const { id, f_id } = useParams()
 
   const { order, isLoading, isError, error } = useOrder(id!, {
-    fields: "*fulfillments",
+    fields: "*fulfillments,*fulfillments.items",
   })
 
   if (isError) {

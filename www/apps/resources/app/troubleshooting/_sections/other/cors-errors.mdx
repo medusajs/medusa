@@ -1,4 +1,4 @@
-If you are experiencing connection issues when trying to access your Medusa backend from a storefront or the admin dashboard, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
+If you are experiencing connection issues when trying to access your Medusa application from a storefront or the admin dashboard, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
 
 You might see a log in your browser console, that looks like this:
 
@@ -12,8 +12,11 @@ module.exports = defineConfig({
     http: {
       storeCors: process.env.STORE_CORS,
       adminCors: process.env.ADMIN_CORS,
+      authCors: process.env.AUTH_CORS,
     },
     // ...
   },
 })
 ```
+
+Learn more about these configurations in [this documentation](/references/medusa-config#http)

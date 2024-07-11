@@ -282,6 +282,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             {
               eventName: "product-collection.deleted",
               data: { id: collectionId },
+              metadata: {
+                action: "",
+                object: "",
+                source: "",
+              },
             },
           ])
         })
