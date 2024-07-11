@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Service Factory`,
@@ -60,118 +60,216 @@ The method's names are the operation's name, suffixed by the data model's name.
 
 For example, the following methods are generated for the code snippet above:
 
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>Method</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-      
-      `listMyCustoms`
+<Tabs defaultValue="listMyCustoms" layoutType="vertical" className="mt-2">
+  <TabsList>
+    <TabsTrigger value="listMyCustoms">listMyCustoms</TabsTrigger>
+    <TabsTrigger value="listAndCountMyCustoms">listAndCountMyCustoms</TabsTrigger>
+    <TabsTrigger value="retrieveMyCustom">retrieveMyCustom</TabsTrigger>
+    <TabsTrigger value="createMyCustoms">createMyCustoms</TabsTrigger>
+    <TabsTrigger value="updateMyCustoms">updateMyCustoms</TabsTrigger>
+    <TabsTrigger value="deleteMyCustoms">deleteMyCustoms</TabsTrigger>
+    <TabsTrigger value="softDeleteMyCustoms">softDeleteMyCustoms</TabsTrigger>
+    <TabsTrigger value="restoreMyCustoms">restoreMyCustoms</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper className="[&_h3]:!mt-0">
+    <TabsContent value="listMyCustoms">
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Retrieves an array of records based on filters and pagination configurations.
+    ### listMyCustoms
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `listAndCountMyCustoms`
+    This method retrieves an array of records based on filters and pagination configurations.
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Retrieves a tuple of an array of records and the total count of available records based on the filters and pagination configurations provided.
+    For example:
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `retrieveMyCustom`
+    ```ts
+    const myCustoms = await helloModuleService
+      .listMyCustoms()
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Retrieves a record by its ID.
+    // with filters
+    const myCustoms = await helloModuleService
+      .listMyCustoms({
+        id: ["123"]
+      })
+    ```
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `createMyCustoms`
+    </TabsContent>
+    <TabsContent value="listAndCountMyCustoms">
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Create and retrieve records of the data model.
+    ### listAndCountMyCustoms
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `updateMyCustoms`
+    This method retrieves a tuple of an array of records and the total count of available records based on the filters and pagination configurations provided.
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Update and retrieve records of the data model.
+    For example:
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `deleteMyCustoms`
+    ```ts
+    const [
+      myCustoms, 
+      count
+    ] = await helloModuleService.listAndCountMyCustoms()
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Deletes records by an ID or filter.
+    // with filters
+    const [
+      myCustoms, 
+      count
+    ] = await helloModuleService.listAndCountMyCustoms({
+      id: ["123"]
+    })
+    ```
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `softDeleteMyCustoms`
+    </TabsContent>
+    <TabsContent value="retrieveMyCustom">
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Soft-deletes records using an array of IDs or an object of filters.
+    ### retrieveMyCustom
 
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `restoreMyCustoms`
+    This method retrieves a record by its ID.
 
-      </Table.Cell>
-      <Table.Cell>
-      
-      Restores soft-deleted records using an array of IDs or an object of filters.
+    For example:
 
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+    ```ts
+    const myCustom = await helloModuleService
+      .retrieveMyCustom("123")
+    ```
 
-<Note>
+    </TabsContent>
+    <TabsContent value="createMyCustoms">
 
-Except for the `retrieve` method, the suffixed data model's name is plural.
+    ### createMyCustoms
 
-</Note>
+    This method creates and retrieves records of the data model.
+
+    For example:
+
+    ```ts
+    const myCustom = await helloModuleService
+      .createMyCustoms({
+        name: "test"
+      })
+
+    // create multiple
+    const myCustoms = await helloModuleService
+      .createMyCustoms([
+        {
+          name: "test"
+        },
+        {
+          name: "test 2"
+        },
+      ])
+    ```
+
+    </TabsContent>
+    <TabsContent value="updateMyCustoms">
+
+    ### updateMyCustoms
+
+    This method updates and retrieves records of the data model.
+
+    For example:
+
+    ```ts
+    const myCustom = await helloModuleService
+      .updateMyCustoms({
+        id: "123",
+        name: "test"
+      })
+
+    // update multiple
+    const myCustoms = await helloModuleService
+      .updateMyCustoms([
+        {
+          id: "123",
+          name: "test"
+        },
+        {
+          id: "321",
+          name: "test 2"
+        },
+      ])
+
+    // use filters
+    const myCustoms = await helloModuleService
+      .updateMyCustoms([
+        {
+          selector: {
+            id: ["123", "321"]
+          },
+          data: {
+            name: "test"
+          }
+        },
+      ])
+    ```
+
+    </TabsContent>
+    <TabsContent value="deleteMyCustoms">
+
+    ### deleteMyCustoms
+
+    This method deletes records by an ID or filter.
+
+    For example:
+
+    ```ts
+    await helloModuleService.deleteMyCustoms("123")
+
+    // delete multiple
+    await helloModuleService.deleteMyCustoms([
+      "123", "321"
+    ])
+
+    // use filters
+    await helloModuleService.deleteMyCustoms({
+      selector: {
+        id: ["123", "321"]
+      }
+    })
+    ```
+
+    </TabsContent>
+    <TabsContent value="softDeleteMyCustoms">
+
+    ### softDeleteMyCustoms
+
+    This method soft-deletes records using an array of IDs or an object of filters.
+
+    For example:
+
+    ```ts
+    await helloModuleService.softDeleteMyCustoms("123")
+
+    // soft-delete multiple
+    await helloModuleService.softDeleteMyCustoms([
+      "123", "321"
+    ])
+
+    // use filters
+    await helloModuleService.softDeleteMyCustoms({
+      id: ["123", "321"]
+    })
+    ```
+
+    </TabsContent>
+    <TabsContent value="restoreMyCustoms">
+
+    ### restoreMyCustoms
+
+    This method restores soft-deleted records using an array of IDs or an object of filters.
+
+    For example:
+
+    ```ts
+    await helloModuleService.restoreMyCustoms([
+      "123", "321"
+    ])
+
+    // use filters
+    await helloModuleService.restoreMyCustoms({
+      id: ["123", "321"]
+    })
+    ```
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 ### Using a Constructor
 
