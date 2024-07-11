@@ -24,7 +24,7 @@ const main = async function ({ directory }) {
   const pluginLinks = await resolvePluginsLinks(plugins, container)
 
   if (action === "run") {
-    Logger.info("Running migrations...\n")
+    Logger.info("Running migrations...")
 
     await migrateMedusaApp({
       configModule,
@@ -32,7 +32,7 @@ const main = async function ({ directory }) {
       container,
     })
 
-    Logger.info("\nMigrations completed")
+    Logger.info("Migrations completed")
     process.exit()
   } else if (action === "revert") {
     const modulesToRevert = args.slice(1)
@@ -44,7 +44,7 @@ const main = async function ({ directory }) {
       process.exit(1)
     }
 
-    Logger.info("Reverting migrations...\n")
+    Logger.info("Reverting migrations...")
 
     await revertMedusaApp({
       modulesToRevert,
@@ -53,7 +53,7 @@ const main = async function ({ directory }) {
       container,
     })
 
-    Logger.info("\nMigrations reverted")
+    Logger.info("Migrations reverted")
   } else if (action === "show") {
     Logger.info("Action not supported yet")
     process.exit(0)

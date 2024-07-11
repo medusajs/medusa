@@ -3,6 +3,8 @@ import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
 
+const TERMINAL_SIZE = process.stdout.columns
+
 /**
  * Utility function to build a migration script that will run the migrations.
  * Only used in mikro orm based modules.
@@ -26,6 +28,8 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
+    console.log(new Array(TERMINAL_SIZE).join("_"))
+    console.log("")
     logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
@@ -42,12 +46,12 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
     try {
       const result = await migrations.run()
       if (result.length) {
-        logger.info("  Completed successfully")
+        logger.info("Completed successfully")
       } else {
-        logger.info("  Skipped. Database is upto-date")
+        logger.info("Skipped. Database is upto-date")
       }
     } catch (error) {
-      logger.error(`  Failed with error ${error.message}`, error)
+      logger.error(`Failed with error ${error.message}`, error)
     }
   }
 }

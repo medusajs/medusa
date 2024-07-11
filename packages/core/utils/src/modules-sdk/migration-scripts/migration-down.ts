@@ -3,6 +3,8 @@ import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
 
+const TERMINAL_SIZE = process.stdout.columns
+
 /**
  * Utility function to build a migration script that will revert the migrations.
  * Only used in mikro orm based modules.
@@ -26,6 +28,8 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
+    console.log(new Array(TERMINAL_SIZE).join("_"))
+    console.log("")
     logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
@@ -42,12 +46,12 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     try {
       const result = await migrations.revert()
       if (result.length) {
-        logger.info("  Reverted successfully")
+        logger.info("Reverted successfully")
       } else {
-        logger.info("  Skipped. Nothing to revert")
+        logger.info("Skipped. Nothing to revert")
       }
     } catch (error) {
-      logger.error(`  Failed with error ${error.message}`, error)
+      logger.error(`Failed with error ${error.message}`, error)
     }
   }
 }
