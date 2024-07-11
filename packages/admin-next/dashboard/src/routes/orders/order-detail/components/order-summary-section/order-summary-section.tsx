@@ -12,6 +12,8 @@ import {
   Text,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
+import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -19,8 +21,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { useNavigate } from "react-router-dom"
-import { useReservationItems } from "../../../../../hooks/api/reservations.tsx"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -30,9 +31,37 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const hasUnfulfilledItems = order.items!.some(
-    (i) => i.detail.fulfilled_quantity < i.quantity
-  )
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
+
+  /**
+   * Show Allocation button only if there are fulfilled items that don't have reservation and aren't shipped
+   */
+  const shoAllocateButton = useMemo(() => {
+    if (!reservations) {
+      return false
+    }
+
+    const reservationsMap = new Map(
+      reservations.map((r) => [r.line_item_id, r.id])
+    )
+
+    for (const item of order.items) {
+      // Inventory is managed
+      if (item.variant?.manage_inventory) {
+        // There are items that are fulfilled but not shipped
+        if (item.detail.fulfilled_quantity - item.detail.shipped_quantity > 0) {
+          // Reservation for this item doesn't exist
+          if (!reservationsMap.has(item.id)) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
+  }, [reservations])
 
   return (
     <Container className="divide-y divide-dashed p-0">
@@ -41,7 +70,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {hasUnfulfilledItems && (
+      {shoAllocateButton && (
         <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
           <Button
             onClick={() => navigate(`./allocate-items`)}
@@ -98,6 +127,7 @@ const Item = ({
   reservation?: ReservationItemDTO | null
 }) => {
   const { t } = useTranslation()
+  const isInventoryManaged = item.variant.manage_inventory
 
   return (
     <div
@@ -139,14 +169,16 @@ const Item = ({
             </Text>
           </div>
           <div className="overflow-visible">
-            <StatusBadge
-              color={reservation ? "green" : "orange"}
-              className="text-nowrap"
-            >
-              {reservation
-                ? t("orders.reservations.allocatedLabel")
-                : t("orders.reservations.notAllocatedLabel")}
-            </StatusBadge>
+            {isInventoryManaged && (
+              <StatusBadge
+                color={reservation ? "green" : "orange"}
+                className="text-nowrap"
+              >
+                {reservation
+                  ? t("orders.reservations.allocatedLabel")
+                  : t("orders.reservations.notAllocatedLabel")}
+              </StatusBadge>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-end">

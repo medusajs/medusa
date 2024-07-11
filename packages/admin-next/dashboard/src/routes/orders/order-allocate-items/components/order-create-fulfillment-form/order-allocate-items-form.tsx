@@ -14,11 +14,10 @@ import {
 import { Form } from "../../../../../components/common/form"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
-import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { AllocateItemsSchema } from "./constants"
-import { queryClient } from "../../../../../lib/query-client.ts"
-import { ordersQueryKeys } from "../../../../../hooks/api/orders.tsx"
+import { queryClient } from "../../../../../lib/query-client"
+import { ordersQueryKeys } from "../../../../../hooks/api/orders"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -34,11 +33,15 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
   const { mutateAsync: allocateItems, isPending: isMutating } =
     useCreateReservationItem()
 
-  const [itemsToAllocate, setItemsToAllocate] = useState(() =>
-    order.items.filter(
-      (item) =>
-        item.variant.manage_inventory && getFulfillableQuantity(item) > 0
-    )
+  const itemsToAllocate = useMemo(
+    () =>
+      order.items.filter(
+        (item) =>
+          item.variant.manage_inventory &&
+          item.variant.inventory.length &&
+          item.detail.fulfilled_quantity - item.detail.shipped_quantity > 0
+      ),
+    [order.items]
   )
 
   const filteredItems = useMemo(() => {
