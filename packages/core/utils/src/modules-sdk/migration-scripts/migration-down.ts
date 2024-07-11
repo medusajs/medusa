@@ -42,6 +42,9 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
     migrations.on("reverted", (migration) => {
       logger.info(`  ✔ Reverted ${migration.name}`)
     })
+    migrations.on("revert:skipped", (migration) => {
+      logger.info(`  ✔ Skipped ${migration.name}. ${migration.reason}`)
+    })
 
     try {
       const result = await migrations.revert()
