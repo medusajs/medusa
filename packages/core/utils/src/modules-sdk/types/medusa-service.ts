@@ -3,6 +3,7 @@ import {
   Context,
   FindConfig,
   IDmlEntity,
+  InferEntityType,
   Pluralize,
   RestoreReturn,
   SoftDeleteReturn,
@@ -40,7 +41,11 @@ export type ModelsConfigTemplate = { [key: string]: ModelDTOConfig }
 
 export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
   [Key in keyof T]: {
-    dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
+    dto: T[Key] extends IDmlEntity<any, any>
+      ? InferEntityType<T[Key]>
+      : T[Key] extends Constructor<any>
+      ? InstanceType<T[Key]>
+      : any
     model: T[Key] extends { model: infer MODEL }
       ? MODEL
       : T[Key] extends IDmlEntity<any, any>
