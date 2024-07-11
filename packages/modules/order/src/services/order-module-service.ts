@@ -1718,6 +1718,134 @@ export default class OrderModuleService<
     })
   }
 
+  // @ts-ignore
+  async createReturns(
+    data: OrderTypes.CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.ReturnDTO>
+
+  async createReturns(
+    data: OrderTypes.CreateOrderReturnDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.ReturnDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async createReturns(
+    data: OrderTypes.CreateOrderReturnDTO | OrderTypes.CreateOrderReturnDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.ReturnDTO | OrderTypes.ReturnDTO[]> {
+    const created = await this.createOrderRelatedEntity_(
+      data,
+      this.returnService_,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<OrderTypes.ReturnDTO>(
+      !Array.isArray(data) ? created[0] : created,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  // @ts-ignore
+  async createOrderClaims(
+    data: OrderTypes.CreateOrderClaimDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderClaimDTO>
+
+  async createOrderClaims(
+    data: OrderTypes.CreateOrderClaimDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderClaimDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async createOrderClaims(
+    data: OrderTypes.CreateOrderClaimDTO | OrderTypes.CreateOrderClaimDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.OrderClaimDTO | OrderTypes.OrderClaimDTO[]> {
+    const created = await this.createOrderRelatedEntity_(
+      data,
+      this.orderClaimService_,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderClaimDTO>(
+      !Array.isArray(data) ? created[0] : created,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  // @ts-ignore
+  async createOrderExchanges(
+    data: OrderTypes.CreateOrderExchangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderExchangeDTO>
+
+  async createOrderExchanges(
+    data: OrderTypes.CreateOrderExchangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderExchangeDTO[]>
+
+  @InjectTransactionManager("baseRepository_")
+  async createOrderExchanges(
+    data:
+      | OrderTypes.CreateOrderExchangeDTO
+      | OrderTypes.CreateOrderExchangeDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.OrderExchangeDTO | OrderTypes.OrderExchangeDTO[]> {
+    const created = await this.createOrderRelatedEntity_(
+      data,
+      this.orderExchangeService_,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderExchangeDTO>(
+      !Array.isArray(data) ? created[0] : created,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async createOrderRelatedEntity_(
+    data: any,
+    service: any,
+    sharedContext?: Context
+  ) {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    const inputDataMap = data_.reduce((acc, curr) => {
+      acc[curr.order_id] = curr
+      return acc
+    }, {})
+
+    const orderIds = data_.map((d) => d.order_id)
+    const orders = await this.orderService_.list(
+      { id: orderIds },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+
+    if (orders.length !== orderIds.length) {
+      const foundOrders = orders.map((o) => o.id)
+      const missing = orderIds.filter((id) => !foundOrders.includes(id))
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order could not be found: ${missing.join(", ")}`
+      )
+    }
+
+    for (const order of orders) {
+      inputDataMap[order.id].order_version = order.version
+    }
+
+    return await service.create(data_, sharedContext)
+  }
+
   async createOrderChange(
     data: CreateOrderChangeDTO,
     sharedContext?: Context
@@ -1770,7 +1898,7 @@ export default class OrderModuleService<
       dataMap[change.order_id] = change
     }
 
-    const orders = await this.listOrders(
+    const orders = await this.orderService_.list(
       { id: orderIds },
       { select: ["id", "version"] },
       sharedContext
@@ -2013,7 +2141,7 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderChangeReturn> {
     const orderIds = Array.isArray(orderId) ? orderId : [orderId]
 
-    const orders = await this.listOrders(
+    const orders = await this.orderService_.list(
       { id: orderIds },
       {
         select: ["id", "version"],
