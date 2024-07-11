@@ -43,10 +43,10 @@ export const useCancelFulfillment = (
   })
 }
 
-export const useCreateShipment = (
+export const useCreateFulfillmentShipment = (
   fulfillmentId: string,
   options?: UseMutationOptions<
-    { order: HttpTypes.AdminOrder },
+    { fulfillment: HttpTypes.AdminFulfillment },
     Error,
     HttpTypes.AdminCreateFulfillmentShipment
   >

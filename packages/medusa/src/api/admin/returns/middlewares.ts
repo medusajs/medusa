@@ -8,7 +8,7 @@ import {
   AdminPostReturnsReqSchema,
 } from "./validators"
 
-export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
+export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/returns",
