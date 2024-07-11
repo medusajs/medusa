@@ -18,7 +18,7 @@ export function throwIfItemsDoesNotExistsInOrder({
   inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
 }) {
   const orderItemIds = order.items?.map((i) => i.id) ?? []
-  const inputItemIds = inputItems.map((i) => i.id)
+  const inputItemIds = inputItems?.map((i) => i.id)
   const diff = arrayDifference(inputItemIds, orderItemIds)
 
   if (diff.length) {
