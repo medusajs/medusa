@@ -33,16 +33,6 @@ describe("TSMigrationGenerator", () => {
     )
   })
 
-  it('should add "if exists" to "alter table" statements as well as to the alter column', () => {
-    const sql = "alter table my_table alter column name"
-    const result = unwrapSql(
-      TSMigrationGenerator.prototype.createStatement(sql, 0)
-    )
-    expect(result).toBe(
-      "alter table if exists my_table alter column if exists name"
-    )
-  })
-
   it('should add "if not exists" to "create index" statements', () => {
     const sql = "create index idx_name on my_table(name)"
     const result = unwrapSql(

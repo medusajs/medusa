@@ -3,70 +3,35 @@ import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { isString } from "../../common"
 import { FilterDef } from "@mikro-orm/core/typings"
 
-// Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
-const originalCreateStatement = TSMigrationGenerator.prototype.createStatement
-
-/**
- * Safe migration generation for MikroORM
- *
- * @param sql The sql statement
- * @param padLeft The padding
- *
- * @example see test file
- */
-TSMigrationGenerator.prototype.createStatement = function (
-  sql: string,
-  padLeft: number
-) {
-  if (isString(sql)) {
-    if (!sql.includes("create table if not exists")) {
-      sql = sql.replace("create table", "create table if not exists")
-    }
-
-    if (!sql.includes("alter table if exists")) {
-      sql = sql.replace("alter table", "alter table if exists")
-    }
-
-    if (!sql.includes("create index if not exists")) {
-      sql = sql.replace("create index", "create index if not exists")
-    }
-
-    if (!sql.includes("drop index if exists")) {
-      sql = sql.replace("drop index", "drop index if exists")
-    }
-
-    if (!sql.includes("create unique index if not exists")) {
-      sql = sql.replace(
-        "create unique index",
-        "create unique index if not exists"
+export class CustomTsMigrationGenerator extends TSMigrationGenerator {
+  createStatement(sql: string, padLeft: number): string {
+    if (isString(sql)) {
+      sql.replace(/"create table (?!if exists)/g, "create table if exists ")
+      sql.replace(/"alter table (?!if exists)/g, "alter table if exists ")
+      sql.replace(
+        /"create index (?!if not exists)/g,
+        "create index if not exists "
+      )
+      sql.replace(/"drop index (?!if exists)/g, "drop index if exists ")
+      sql.replace(
+        /"create unique index (?!if not exists)/g,
+        "create unique index if not exists "
+      )
+      sql.replace(
+        /"drop unique index (?!if exists)/g,
+        "drop unique index if exists "
+      )
+      sql.replace(/add column (?!if not exists)/g, "add column if not exists ")
+      sql.replace(/drop column (?!if exists)/g, "drop column if exists ")
+      sql.replace(
+        /drop constraint (?!if exists)/g,
+        "drop constraint if exists "
       )
     }
 
-    if (!sql.includes("drop unique index if exists")) {
-      sql = sql.replace("drop unique index", "drop unique index if exists")
-    }
-
-    if (!sql.includes("add column if not exists")) {
-      sql = sql.replace("add column", "add column if not exists")
-    }
-
-    if (!sql.includes("alter column if exists exists")) {
-      sql = sql.replace("alter column", "alter column if exists")
-    }
-
-    if (!sql.includes("drop column if exists")) {
-      sql = sql.replace("drop column", "drop column if exists")
-    }
-
-    if (!sql.includes("drop constraint if exists")) {
-      sql = sql.replace("drop constraint", "drop constraint if exists")
-    }
+    return super.createStatement(sql, padLeft)
   }
-
-  return originalCreateStatement(sql, padLeft)
 }
-
-export { TSMigrationGenerator }
 
 export type Filter = {
   name?: string
@@ -99,7 +64,7 @@ export async function mikroOrmCreateConnection(
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
-    discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false,  },
+    discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
@@ -112,7 +77,7 @@ export async function mikroOrmCreateConnection(
     migrations: {
       disableForeignKeys: false,
       path: pathToMigrations,
-      generator: TSMigrationGenerator,
+      generator: CustomTsMigrationGenerator,
       silent: !(
         database.debug ??
         process.env.NODE_ENV?.startsWith("dev") ??
@@ -120,7 +85,7 @@ export async function mikroOrmCreateConnection(
       ),
     },
     schemaGenerator: {
-      disableForeignKeys: false
+      disableForeignKeys: false,
     },
     pool: database.pool as any,
   })

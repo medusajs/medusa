@@ -2,7 +2,7 @@ import { MetadataStorage, MikroORM } from "@mikro-orm/core"
 import { model } from "../entity-builder"
 import { toMikroOrmEntities } from "../helpers/create-mikro-orm-entity"
 import { createDatabase, dropDatabase } from "pg-god"
-import { mikroOrmSerializer, TSMigrationGenerator } from "../../dal"
+import { CustomTsMigrationGenerator, mikroOrmSerializer } from "../../dal"
 import { FileSystem } from "../../common"
 import { join } from "path"
 import { EntityConstructor } from "@medusajs/types"
@@ -70,7 +70,7 @@ describe("manyToMany - manyToMany", () => {
       debug: true,
       type: "postgresql",
       migrations: {
-        generator: TSMigrationGenerator,
+        generator: CustomTsMigrationGenerator,
       },
     })
 
