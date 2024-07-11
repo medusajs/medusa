@@ -2566,6 +2566,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderChangeActions",
+                        "title": "deleteOrderChangeActions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrderChanges",
                         "title": "deleteOrderChanges",
                         "children": []
@@ -2790,6 +2797,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/restoreOrderChangeActions",
+                        "title": "restoreOrderChangeActions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/restoreOrderChanges",
                         "title": "restoreOrderChanges",
                         "children": []
@@ -2946,6 +2960,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/softDeleteLineItems",
                         "title": "softDeleteLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderChangeActions",
+                        "title": "softDeleteOrderChangeActions",
                         "children": []
                       },
                       {
@@ -7705,17 +7726,10 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "title": "Configurations",
+    "path": "/references/medusa-config",
+    "title": "Medusa Configurations",
     "hasTitleStyling": true,
-    "children": [
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/references/medusa-config",
-        "title": "Medusa Application",
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "loaded": true,
@@ -7865,7 +7879,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "title": "Medusa Backend",
+            "title": "Medusa Application",
             "hasTitleStyling": true,
             "children": [
               {

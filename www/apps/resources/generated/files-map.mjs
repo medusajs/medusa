@@ -924,14 +924,6 @@ export const filesMap = [
     "pathname": "/storefront-development/tips"
   },
   {
-    "filePath": "/www/apps/resources/app/troubleshooting/_s3-plugin-acl-error/page.mdx",
-    "pathname": "/troubleshooting/_s3-plugin-acl-error"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_transaction-promise-all/page.mdx",
-    "pathname": "/troubleshooting/_transaction-promise-all"
-  },
-  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },
@@ -4596,6 +4588,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChangeActions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChangeActions"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges"
   },
@@ -4724,6 +4720,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChangeActions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChangeActions"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChanges/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChanges"
   },
@@ -4814,6 +4814,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChangeActions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChangeActions"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChanges/page.mdx",
@@ -8752,10 +8756,6 @@ export const filesMap = [
     "pathname": "/references/types/EventBusTypes/interfaces/types.EventBusTypes.IEventBusService"
   },
   {
-    "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.EventHandler/page.mdx",
-    "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.EventHandler"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.EventMetadata/page.mdx",
     "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.EventMetadata"
   },
@@ -8856,8 +8856,24 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollection"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters/page.mdx",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCampaign/page.mdx",
@@ -8890,6 +8906,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductCategory/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductTag/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductTag"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductType/page.mdx",
@@ -9044,6 +9064,30 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTag/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTag"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTagResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductType/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductType"
   },
@@ -9188,6 +9232,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionListParams"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse"
   },
@@ -9230,6 +9278,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategoryProducts/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategoryProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductTag/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductTag"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductType/page.mdx",
@@ -9816,8 +9868,12 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.BaseCollection"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseCollectionFilters/page.mdx",
-    "pathname": "/references/types/interfaces/types.BaseCollectionFilters"
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseCollectionListParams/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseCollectionListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseCollectionParams/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseCollectionParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.BaseFile/page.mdx",
@@ -9834,6 +9890,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductCategoryParams/page.mdx",
     "pathname": "/references/types/interfaces/types.BaseProductCategoryParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductTag/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductTag"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductTagListParams/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductTagListParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductType/page.mdx",
