@@ -1,0 +1,47 @@
+---
+displayed_sidebar: orderReference
+slug: /references/order/deleteOrderChangeActions
+sidebar_label: deleteOrderChangeActions
+---
+
+import { TypeList } from "docs-ui"
+
+# deleteOrderChangeActions - Order Module Reference
+
+This documentation provides a reference to the `deleteOrderChangeActions` method. This belongs to the Order Module.
+
+## deleteOrderChangeActions(actionId, sharedContext?): Promise&#60;void&#62;
+
+This method deletes &#123;return type&#125; by its ID.
+
+### Example
+
+```typescript
+await orderModuleService.deleteOrderActions(["12345abc", "67890def"]);
+```
+
+### Parameters
+
+<TypeList types={[{"name":"actionId","type":"`string`[]","description":"The list of &#123;summary&#125;","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/order.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/order.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteOrderChangeActions"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when &#123;summary&#125;","expandable":false,"children":[]}]}  sectionTitle="deleteOrderChangeActions"/>
+
+## deleteOrderChangeActions(actionId, sharedContext?): Promise&#60;void&#62;
+
+This method deletes &#123;return type&#125; by its ID.
+
+### Example
+
+```typescript
+await orderModuleService.deleteOrderActions("orderActionId");
+```
+
+### Parameters
+
+<TypeList types={[{"name":"actionId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/order.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/order.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteOrderChangeActions"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when &#123;summary&#125;","expandable":false,"children":[]}]}  sectionTitle="deleteOrderChangeActions"/>
