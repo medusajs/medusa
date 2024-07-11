@@ -12,6 +12,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
   createMedusaContainer,
   promiseAll,
   simpleHash,
@@ -344,7 +345,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -475,7 +478,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -534,6 +539,7 @@ class MedusaModule {
   public static async migrateUp(
     moduleKey: string,
     modulePath: string,
+    container?: MedusaContainer,
     options?: Record<string, any>,
     moduleExports?: ModuleExports
   ): Promise<void> {
@@ -543,6 +549,11 @@ class MedusaModule {
       resolve: modulePath,
       options,
     })
+
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     for (const mod in moduleResolutions) {
       const [migrateUp] = await loadModuleMigrations(
@@ -553,7 +564,7 @@ class MedusaModule {
       if (typeof migrateUp === "function") {
         await migrateUp({
           options,
-          logger,
+          logger: logger_,
         })
       }
     }
@@ -562,6 +573,7 @@ class MedusaModule {
   public static async migrateDown(
     moduleKey: string,
     modulePath: string,
+    container?: MedusaContainer,
     options?: Record<string, any>,
     moduleExports?: ModuleExports
   ): Promise<void> {
@@ -572,6 +584,11 @@ class MedusaModule {
       options,
     })
 
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
+
     for (const mod in moduleResolutions) {
       const [, migrateDown] = await loadModuleMigrations(
         moduleResolutions[mod],
@@ -581,7 +598,7 @@ class MedusaModule {
       if (typeof migrateDown === "function") {
         await migrateDown({
           options,
-          logger,
+          logger: logger_,
         })
       }
     }

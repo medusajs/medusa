@@ -5,6 +5,7 @@ import {
   UmzugMigration,
 } from "@mikro-orm/migrations"
 import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
+import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 
 /**
  * Events emitted by the migrations class
@@ -20,11 +21,13 @@ export type MigrationsEvents = {
  * Exposes the API to programmatically manage Mikro ORM migrations
  */
 export class Migrations extends EventEmitter<MigrationsEvents> {
-  #config: Partial<MikroORMOptions>
+  #configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
 
-  constructor(config: Partial<MikroORMOptions>) {
+  constructor(
+    configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
+  ) {
     super()
-    this.#config = config
+    this.#configOrConnection = configOrConnection
   }
 
   /**
@@ -32,10 +35,14 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * one
    */
   async #getConnection() {
+    if ("connect" in this.#configOrConnection) {
+      return this.#configOrConnection as MikroORM<PostgreSqlDriver>
+    }
+
     return await MikroORM.init({
-      ...this.#config,
+      ...this.#configOrConnection,
       migrations: {
-        ...this.#config.migrations,
+        ...this.#configOrConnection.migrations,
         silent: true,
       },
     })

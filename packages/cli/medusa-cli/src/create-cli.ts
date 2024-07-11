@@ -170,12 +170,17 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `migrations [action]`,
+      command: `migrations [action] [modules...]`,
       desc: `Manage migrations from the core and your own project`,
       builder: {
         action: {
           demand: true,
+          description: "The action to perform on migrations",
           choices: ["run", "revert", "show"],
+        },
+        modules: {
+          description: "Revert migrations for defined modules",
+          demand: false,
         },
       },
       handler: handlerP(

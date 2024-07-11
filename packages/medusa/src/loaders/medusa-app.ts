@@ -60,6 +60,7 @@ export function mergeDefaultModules(
 async function runMedusaAppMigrations({
   configModule,
   container,
+  moduleNames,
   revert = false,
   linkModules,
 }: {
@@ -69,8 +70,16 @@ async function runMedusaAppMigrations({
   }
   linkModules?: MedusaAppOptions["linkModules"]
   container: MedusaContainer
-  revert?: boolean
-}): Promise<void> {
+} & (
+  | {
+      moduleNames?: never
+      revert: false
+    }
+  | {
+      moduleNames: string[]
+      revert: true
+    }
+)): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -93,7 +102,7 @@ async function runMedusaAppMigrations({
   const configModules = mergeDefaultModules(configModule.modules)
 
   if (revert) {
-    await MedusaAppMigrateDown({
+    await MedusaAppMigrateDown(moduleNames!, {
       modulesConfig: configModules,
       sharedContainer: container,
       linkModules,
@@ -111,6 +120,12 @@ async function runMedusaAppMigrations({
   }
 }
 
+/**
+ *
+ * @param configModule The config module
+ * @param linkModules Custom links from the plugins
+ * @param container The medusa container
+ */
 export async function migrateMedusaApp({
   configModule,
   linkModules,
@@ -127,14 +142,25 @@ export async function migrateMedusaApp({
     configModule,
     container,
     linkModules,
+    revert: false,
   })
 }
 
+/**
+ *
+ * @param modulesToRevert An array of modules for which you want to revert
+ * migrations
+ * @param configModule The config module
+ * @param linkModules Custom links from the plugins
+ * @param container The medusa container
+ */
 export async function revertMedusaApp({
+  modulesToRevert,
   configModule,
   linkModules,
   container,
 }: {
+  modulesToRevert: string[]
   configModule: {
     modules?: CommonTypes.ConfigModule["modules"]
     projectConfig: CommonTypes.ConfigModule["projectConfig"]
@@ -143,6 +169,7 @@ export async function revertMedusaApp({
   linkModules?: MedusaAppOptions["linkModules"]
 }): Promise<void> {
   await runMedusaAppMigrations({
+    moduleNames: modulesToRevert,
     configModule,
     container,
     revert: true,
