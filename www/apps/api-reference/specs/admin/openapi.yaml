@@ -61,6 +61,8 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminProductCategory.yaml
   - name: Product Tags
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductTag.yaml
   - name: Product Types
   - name: Products
     x-associatedSchema:
@@ -192,8 +194,8 @@ paths:
     $ref: paths/admin_orders_{id}_fulfillments.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_cancel.yaml
-  /admin/orders/{id}/fulfillments/{fulfillment_id}/shipment:
-    $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipment.yaml
+  /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
+    $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:
