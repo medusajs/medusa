@@ -1,9 +1,9 @@
 import { Buildings, Component, PencilSquare, Trash } from "@medusajs/icons"
-import { Badge, usePrompt, clx } from "@medusajs/ui"
-import { createColumnHelper } from "@tanstack/react-table"
 import { HttpTypes, InventoryItemDTO } from "@medusajs/types"
-import { useTranslation } from "react-i18next"
+import { Badge, clx, usePrompt } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
@@ -128,7 +128,7 @@ export const useProductVariantTableColumns = (
               <Badge
                 size="2xsmall"
                 title={variantOpt.value}
-                className="inline-block min-w-[20px] max-w-[140px] overflow-hidden truncate"
+                className="inline-flex min-w-[20px] max-w-[140px] items-center justify-center overflow-hidden truncate"
               >
                 {variantOpt.value}
               </Badge>
