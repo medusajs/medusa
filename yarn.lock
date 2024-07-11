@@ -5330,6 +5330,7 @@ __metadata:
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
+    pluralize: ^8.0.0
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     typescript: ^5.1.6

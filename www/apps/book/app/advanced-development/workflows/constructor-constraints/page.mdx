@@ -1,12 +1,14 @@
 export const metadata = {
-  title: `${pageNumber} Constraints on Workflow Constructor Function`,
+  title: `${pageNumber} Workflow Constraints`,
 }
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining a workflow's constructor function.
+This chapter lists some constraints to keep in mind when defining a workflow or its steps.
 
-## No Async Functions
+## Workflow Constraints
+
+### No Async Functions
 
 The function passed to the `createWorkflow` can’t be an async function:
 
@@ -28,9 +30,7 @@ const myWorkflow = createWorkflow<
 })
 ```
 
----
-
-## No Direct Data Manipulation
+### No Direct Data Manipulation
 
 Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. Instead, use the `transform` function:
 
@@ -73,4 +73,52 @@ const myWorkflow = createWorkflow<
 
   return result
 })
+```
+
+---
+
+## Step Constraints
+
+### Returned Values
+
+A step must only return [primitive values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values) or an object. Values of other types, such as Maps, aren't allowed.
+
+```ts
+// Don't
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myMap = new Map()
+
+    // ...
+
+    return new StepResponse({
+      myMap
+    })
+  }
+)
+
+// Do
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myObj: Record<string, unknown> = {}
+
+    // ...
+
+    return new StepResponse({
+      myObj
+    })
+  }
+)
 ```

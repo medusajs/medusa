@@ -682,6 +682,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             expect.objectContaining({
               data: { id: productCategoryOne.id },
               eventName: "product-category.deleted",
+              metadata: {
+                action: "",
+                object: "",
+                source: "",
+              },
             }),
           ])
         })

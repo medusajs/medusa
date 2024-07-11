@@ -265,6 +265,7 @@ export function MedusaService<
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
+              metadata: { source: "", action: "", object: "" },
             }))
           )
         }
