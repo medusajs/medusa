@@ -190,7 +190,8 @@ export function defineProperty(
     /**
      * Hook to generate entity within the code
      */
-    MikroORMEntity.prototype.generateId = function () {
+    const generateIdMethodName = `generateId_${field.fieldName}`
+    MikroORMEntity.prototype[generateIdMethodName] = function () {
       this[field.fieldName] = generateEntityId(
         this[field.fieldName],
         field.dataType.options?.prefix
@@ -200,8 +201,8 @@ export function defineProperty(
     /**
      * Execute hook via lifecycle decorators
      */
-    BeforeCreate()(MikroORMEntity.prototype, "generateId")
-    OnInit()(MikroORMEntity.prototype, "generateId")
+    BeforeCreate()(MikroORMEntity.prototype, generateIdMethodName)
+    OnInit()(MikroORMEntity.prototype, generateIdMethodName)
 
     return
   }
