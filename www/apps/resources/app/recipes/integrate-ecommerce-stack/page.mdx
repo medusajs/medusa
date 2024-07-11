@@ -269,7 +269,7 @@ export const workflowHighlights = [
       createProductWorkflow(container)
         .run({
           input: {
-            productId: "data" in data ? data.data.id : data.id
+            productId: data.data.id
           }
         })
         .then(() => {
