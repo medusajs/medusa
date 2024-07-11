@@ -32,7 +32,7 @@ const main = async function ({ directory }) {
       container,
     })
 
-    console.log(new Array(TERMINAL_SIZE).join("_"))
+    console.log(new Array(TERMINAL_SIZE).join("-"))
     Logger.info("Migrations completed")
     process.exit()
   } else if (action === "revert") {
@@ -54,11 +54,11 @@ const main = async function ({ directory }) {
         linkModules: pluginLinks,
         container,
       })
-      console.log(new Array(TERMINAL_SIZE).join("_"))
+      console.log(new Array(TERMINAL_SIZE).join("-"))
       Logger.info("Migrations reverted")
       process.exit()
     } catch (error) {
-      console.log(new Array(TERMINAL_SIZE).join("_"))
+      console.log(new Array(TERMINAL_SIZE).join("-"))
       if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
         Logger.error(error.message)
         const modulesList = error.allModules.map(

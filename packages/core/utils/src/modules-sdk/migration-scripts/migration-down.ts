@@ -28,7 +28,7 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
-    console.log(new Array(TERMINAL_SIZE).join("_"))
+    console.log(new Array(TERMINAL_SIZE).join("-"))
     console.log("")
     logger.info(`MODULE: ${moduleName}`)
 
