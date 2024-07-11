@@ -4,6 +4,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableOrderAddressProps,
+  FilterableOrderChangeActionProps,
   FilterableOrderLineItemAdjustmentProps,
   FilterableOrderLineItemProps,
   FilterableOrderLineItemTaxLineProps,
@@ -59,6 +60,7 @@ import {
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
+  UpdateOrderChangeActionDTO,
   UpdateOrderChangeDTO,
   UpdateOrderDTO,
   UpdateOrderItemDTO,
@@ -1534,6 +1536,99 @@ export interface IOrderModuleService extends IModuleService {
     orderId: string | string[],
     sharedContext?: Context
   ): Promise<OrderChangeReturn>
+
+  /**
+   * This method retrieves a paginated list of {return type}(s) based on optional filters and configuration.
+   *
+   * @param {FilterableOrderChangeActionProps} filters - The filters to apply on the retrieved order change action.
+   * @param {FindConfig<OrderChangeActionDTO>} config - The configurations determining how the order is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a order.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO[]>} The list of {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const orderChangeActions = await orderModuleService.listOrderChangeActions();
+   * ```
+   *
+   */
+  listOrderChangeActions(
+    filters?: FilterableOrderChangeActionProps,
+    config?: FindConfig<OrderChangeActionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  /**
+   * This method retrieves a {return type} by its ID.
+   *
+   * @param {string} actionId - The order change action's ID.
+   * @param {FindConfig<OrderChangeActionDTO>} config - The configurations determining how the order is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a order.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO>} The retrieved {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.retrieveOrderChangeAction("actionId123");
+   * ```
+   *
+   */
+  retrieveOrderChangeAction(
+    actionId: string,
+    config?: FindConfig<OrderChangeActionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeActionDTO[]} data - The order change action to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * // Example call to updateOrderChangeActions
+   *
+   * const updateOrderChangeActionsData: UpdateOrderChangeActionDTO[] = [{
+   *     id: "orderchangeaction123",
+   *     ...
+   * }];
+   *
+   * const result = await orderModuleService.updateOrderChangeActions(updateOrderChangeActionsData);
+   * ```
+   *
+   */
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeActionDTO | UpdateOrderChangeActionDTO[]} data - The order change action d t o |  order change to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO | OrderChangeActionDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.updateOrderChangeActions({
+   *   id: "orderChangeAction123",
+   *   ...
+   * });
+   * ```
+   *
+   */
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO | UpdateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO | OrderChangeActionDTO[]>
 
   addOrderAction(
     data: CreateOrderChangeActionDTO,
