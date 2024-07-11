@@ -340,12 +340,20 @@ npx medusa start
   </Table.Body>
 </Table>
 
-### migrations
+### migrations run
 
-Perform migration actions to reflect changes on the database, such as running or reverting migrations.
+Run the latest migrations to reflect changes on the database.
 
 ```bash
-npx medusa migrations <action>
+npx medusa migrations run
+```
+
+### migration revert
+
+Revert the last migrations ran on one or more modules.
+
+```bash
+npx medusa migrations revert <module_names...>
 ```
 
 #### Arguments
@@ -362,15 +370,12 @@ npx medusa migrations <action>
     <Table.Row>
       <Table.Cell>
       
-      `action`
+      `module_names`
       
       </Table.Cell>
       <Table.Cell>
 
-      The action to perform. Values can be `run`, `show`, or `revert`.
-      `run` is used to run the migrations; `show` is used to only show 
-      what migrations are available to run; and `revert` is to undo the 
-      last migration.
+      The name of one or more module, separated by spaces. For example, `helloModuleService`.
       
       </Table.Cell>
       <Table.Cell>
