@@ -93,10 +93,6 @@ properties:
     type: number
     title: width
     description: The updated's width.
-  variant_rank:
-    type: number
-    title: variant_rank
-    description: The updated's variant rank.
   options:
     type: array
     description: The updated's options.
@@ -108,8 +104,10 @@ properties:
     type: string
     title: product_id
     description: The updated's product id.
-  calculated_price:
-    $ref: ./BaseCalculatedPriceSet.yaml
+  variant_rank:
+    type: number
+    title: variant_rank
+    description: The updated's variant rank.
   created_at:
     type: string
     format: date-time

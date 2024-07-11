@@ -27,6 +27,9 @@ tags:
   - name: Product Categories
     x-associatedSchema:
       $ref: '#/components/schemas/StoreProductCategory'
+  - name: Products
+    x-associatedSchema:
+      $ref: '#/components/schemas/StoreProduct'
   - name: Regions
     description: |
       Regions are different countries or geographical regions that the commerce store serves customers in.
@@ -55,12 +58,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -97,6 +106,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -132,12 +143,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -169,6 +186,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -203,12 +222,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -245,6 +270,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -280,12 +307,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -328,6 +361,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -363,12 +398,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -412,6 +453,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -453,12 +496,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -501,6 +550,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -541,12 +592,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -640,12 +697,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -700,6 +763,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -734,12 +799,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -771,6 +842,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -806,12 +879,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -864,6 +943,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -899,12 +980,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -941,6 +1028,8 @@ paths:
       tags:
         - Carts
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -970,12 +1059,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1007,6 +1102,8 @@ paths:
       tags:
         - Collections
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1042,12 +1139,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1079,6 +1182,8 @@ paths:
       tags:
         - Collections
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1108,12 +1213,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1145,6 +1256,8 @@ paths:
       tags:
         - Currencies
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1180,12 +1293,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1217,6 +1336,8 @@ paths:
       tags:
         - Currencies
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1246,12 +1367,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1297,6 +1424,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1326,12 +1455,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1368,6 +1503,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1396,12 +1533,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1450,6 +1593,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1479,12 +1624,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1632,6 +1783,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1660,12 +1813,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1792,6 +1951,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1827,12 +1988,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1869,6 +2036,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1903,12 +2072,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2035,6 +2210,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2069,12 +2246,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2111,6 +2294,8 @@ paths:
       tags:
         - Customers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2140,12 +2325,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2213,6 +2404,8 @@ paths:
       tags:
         - Orders
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2248,12 +2441,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2321,6 +2520,8 @@ paths:
       tags:
         - Orders
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2350,12 +2551,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2423,6 +2630,8 @@ paths:
       tags:
         - Payment Collections
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2458,12 +2667,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2519,6 +2734,8 @@ paths:
       tags:
         - Payment Collections
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2548,12 +2765,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2623,6 +2846,8 @@ paths:
       tags:
         - Payment Providers
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2652,12 +2877,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2917,12 +3148,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2988,6 +3225,678 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /store/products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
+      x-authenticated: false
+      parameters:
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+        - name: currency_code
+          in: query
+          description: The product's currency code.
+          required: false
+          schema:
+            type: string
+            title: currency_code
+            description: The product's currency code.
+        - name: region_id
+          in: query
+          description: The product's region id.
+          required: false
+          schema:
+            type: string
+            title: region_id
+            description: The product's region id.
+        - name: $and
+          in: query
+          required: false
+          schema: {}
+        - name: $or
+          in: query
+          required: false
+          schema: {}
+        - name: variants
+          in: query
+          description: The product's variants.
+          required: false
+          schema:
+            type: object
+            description: The product's variants.
+            properties:
+              status:
+                type: array
+                description: The variant's status.
+                items:
+                  type: string
+                  enum:
+                    - draft
+                    - proposed
+                    - published
+                    - rejected
+              options:
+                type: object
+                description: The variant's options.
+                required:
+                  - value
+                  - option_id
+                properties:
+                  value:
+                    type: string
+                    title: value
+                    description: The option's value.
+                  option_id:
+                    type: string
+                    title: option_id
+                    description: The option's option id.
+              $and: {}
+              $or: {}
+        - name: q
+          in: query
+          description: The product's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The product's q.
+        - name: id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: id
+                description: The product's ID.
+              - type: array
+                description: The product's ID.
+                items:
+                  type: string
+                  title: id
+                  description: The id's ID.
+        - name: title
+          in: query
+          description: The product's title.
+          required: true
+          schema:
+            type: string
+            title: title
+            description: The product's title.
+        - name: handle
+          in: query
+          description: The product's handle.
+          required: true
+          schema:
+            type: string
+            title: handle
+            description: The product's handle.
+        - name: is_giftcard
+          in: query
+          description: The product's is giftcard.
+          required: true
+          schema:
+            type: boolean
+            title: is_giftcard
+            description: The product's is giftcard.
+        - name: category_id
+          in: query
+          description: The product's category id.
+          required: true
+          schema:
+            type: array
+            description: The product's category id.
+            items:
+              type: string
+              title: category_id
+              description: The category id's details.
+        - name: sales_channel_id
+          in: query
+          description: The product's sales channel id.
+          required: true
+          schema:
+            type: array
+            description: The product's sales channel id.
+            items:
+              type: string
+              title: sales_channel_id
+              description: The sales channel id's details.
+        - name: collection_id
+          in: query
+          description: The product's collection id.
+          required: true
+          schema:
+            type: array
+            description: The product's collection id.
+            items:
+              type: string
+              title: collection_id
+              description: The collection id's details.
+        - name: tags
+          in: query
+          description: The product's tags.
+          required: false
+          schema:
+            type: array
+            description: The product's tags.
+            items:
+              type: string
+              title: tags
+              description: The tag's tags.
+        - name: type_id
+          in: query
+          description: The product's type id.
+          required: false
+          schema:
+            type: array
+            description: The product's type id.
+            items:
+              type: string
+              title: type_id
+              description: The type id's details.
+        - name: created_at
+          in: query
+          description: The product's created at.
+          required: false
+          schema:
+            type: object
+            description: The product's created at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+        - name: updated_at
+          in: query
+          description: The product's updated at.
+          required: false
+          schema:
+            type: object
+            description: The product's updated at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+        - name: deleted_at
+          in: query
+          description: The product's deleted at.
+          required: false
+          schema:
+            type: object
+            description: The product's deleted at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/store/products'
+      tags:
+        - Products
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /store/products/{id}:
+    get:
+      operationId: GetProductsId
+      summary: Get a Product
+      description: Retrieve a product by its ID. You can expand the product's relations or select the fields that should be returned.
+      x-authenticated: false
+      parameters:
+        - name: id
+          in: path
+          description: The product's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+        - name: currency_code
+          in: query
+          description: The product's currency code.
+          required: false
+          schema:
+            type: string
+            title: currency_code
+            description: The product's currency code.
+        - name: region_id
+          in: query
+          description: The product's region id.
+          required: false
+          schema:
+            type: string
+            title: region_id
+            description: The product's region id.
+        - name: $and
+          in: query
+          required: false
+          schema: {}
+        - name: $or
+          in: query
+          required: false
+          schema: {}
+        - name: variants
+          in: query
+          description: The product's variants.
+          required: false
+          schema:
+            type: object
+            description: The product's variants.
+            properties:
+              status:
+                type: array
+                description: The variant's status.
+                items:
+                  type: string
+                  enum:
+                    - draft
+                    - proposed
+                    - published
+                    - rejected
+              options:
+                type: object
+                description: The variant's options.
+                required:
+                  - value
+                  - option_id
+                properties:
+                  value:
+                    type: string
+                    title: value
+                    description: The option's value.
+                  option_id:
+                    type: string
+                    title: option_id
+                    description: The option's option id.
+              $and: {}
+              $or: {}
+        - name: q
+          in: query
+          description: The product's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The product's q.
+        - name: id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: id
+                description: The product's ID.
+              - type: array
+                description: The product's ID.
+                items:
+                  type: string
+                  title: id
+                  description: The id's ID.
+        - name: title
+          in: query
+          description: The product's title.
+          required: true
+          schema:
+            type: string
+            title: title
+            description: The product's title.
+        - name: handle
+          in: query
+          description: The product's handle.
+          required: true
+          schema:
+            type: string
+            title: handle
+            description: The product's handle.
+        - name: is_giftcard
+          in: query
+          description: The product's is giftcard.
+          required: true
+          schema:
+            type: boolean
+            title: is_giftcard
+            description: The product's is giftcard.
+        - name: category_id
+          in: query
+          description: The product's category id.
+          required: true
+          schema:
+            type: array
+            description: The product's category id.
+            items:
+              type: string
+              title: category_id
+              description: The category id's details.
+        - name: sales_channel_id
+          in: query
+          description: The product's sales channel id.
+          required: true
+          schema:
+            type: array
+            description: The product's sales channel id.
+            items:
+              type: string
+              title: sales_channel_id
+              description: The sales channel id's details.
+        - name: collection_id
+          in: query
+          description: The product's collection id.
+          required: true
+          schema:
+            type: array
+            description: The product's collection id.
+            items:
+              type: string
+              title: collection_id
+              description: The collection id's details.
+        - name: tags
+          in: query
+          description: The product's tags.
+          required: false
+          schema:
+            type: array
+            description: The product's tags.
+            items:
+              type: string
+              title: tags
+              description: The tag's tags.
+        - name: type_id
+          in: query
+          description: The product's type id.
+          required: false
+          schema:
+            type: array
+            description: The product's type id.
+            items:
+              type: string
+              title: type_id
+              description: The type id's details.
+        - name: created_at
+          in: query
+          description: The product's created at.
+          required: false
+          schema:
+            type: object
+            description: The product's created at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+        - name: updated_at
+          in: query
+          description: The product's updated at.
+          required: false
+          schema:
+            type: object
+            description: The product's updated at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+        - name: deleted_at
+          in: query
+          description: The product's deleted at.
+          required: false
+          schema:
+            type: object
+            description: The product's deleted at.
+            required:
+              - $eq
+              - $ne
+              - $in
+              - $nin
+              - $like
+              - $ilike
+              - $re
+              - $contains
+              - $gt
+              - $gte
+              - $lt
+              - $lte
+            properties:
+              $eq: {}
+              $ne: {}
+              $in: {}
+              $nin: {}
+              $like: {}
+              $ilike: {}
+              $re: {}
+              $contains: {}
+              $gt: {}
+              $gte: {}
+              $lt: {}
+              $lte: {}
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: curl '{backend_url}/store/products/{id}'
+      tags:
+        - Products
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /store/regions:
     get:
       operationId: GetRegions
@@ -3005,12 +3914,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3042,6 +3957,8 @@ paths:
       tags:
         - Regions
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3077,12 +3994,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3114,6 +4037,8 @@ paths:
       tags:
         - Regions
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3143,12 +4068,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3204,6 +4135,8 @@ paths:
       tags:
         - Return
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3233,12 +4166,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3270,6 +4209,8 @@ paths:
       tags:
         - Return Reasons
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3305,12 +4246,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3342,6 +4289,8 @@ paths:
       tags:
         - Return Reasons
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3371,12 +4320,18 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3408,6 +4363,8 @@ paths:
       tags:
         - Shipping Options
       responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3737,14 +4694,6 @@ components:
       type: object
       description: The parent's collection.
       x-schemaName: AdminCollection
-      required:
-        - id
-        - title
-        - handle
-        - created_at
-        - updated_at
-        - deleted_at
-        - metadata
       properties:
         id:
           type: string
@@ -4212,23 +5161,6 @@ components:
               rules:
                 type: object
                 description: The price's rules.
-    AdminCreatePricePreference:
-      type: object
-      description: SUMMARY
-      x-schemaName: AdminCreatePricePreference
-      properties:
-        attribute:
-          type: string
-          title: attribute
-          description: The price preference's attribute.
-        value:
-          type: string
-          title: value
-          description: The price preference's value.
-        is_tax_inclusive:
-          type: boolean
-          title: is_tax_inclusive
-          description: The price preference's is tax inclusive.
     AdminCreateProduct:
       type: object
       description: The create's details.
@@ -4504,9 +5436,6 @@ components:
           type: number
           title: max_quantity
           description: The price's max quantity.
-        rules:
-          type: object
-          description: The price's rules.
     AdminCreateSalesChannel:
       type: object
       description: SUMMARY
@@ -4738,9 +5667,10 @@ components:
               title: name
               description: The default tax rate's name.
             is_combinable:
-              type: boolean
-              title: is_combinable
-              description: The default tax rate's is combinable.
+              type: string
+              enum:
+                - 'true'
+                - 'false'
             metadata:
               type: object
               description: The default tax rate's metadata.
@@ -5169,6 +6099,7 @@ components:
       required:
         - order_id
         - items
+        - return_shipping
         - internal_note
         - location_id
       properties:
@@ -5325,6 +6256,7 @@ components:
         - is_giftcard
         - collection_id
         - type_id
+        - tags
         - images
         - discountable
         - external_id
@@ -5348,11 +6280,6 @@ components:
             $ref: '#/components/schemas/AdminProductVariant'
         type:
           type: object
-        tags:
-          type: array
-          description: The parent's tags.
-          items:
-            $ref: '#/components/schemas/AdminProductTag'
         title:
           type: string
           title: title
@@ -5451,6 +6378,11 @@ components:
           type: string
           title: type_id
           description: The parent's type id.
+        tags:
+          type: array
+          description: The parent's tags.
+          items:
+            $ref: '#/components/schemas/BaseProductTag'
         images:
           type: array
           description: The parent's images.
@@ -5690,42 +6622,6 @@ components:
       properties:
         product:
           $ref: '#/components/schemas/AdminProduct'
-    AdminProductTag:
-      type: object
-      description: The tag's tags.
-      x-schemaName: AdminProductTag
-      required:
-        - id
-        - value
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          title: id
-          description: The tag's ID.
-        value:
-          type: string
-          title: value
-          description: The tag's value.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The tag's created at.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The tag's updated at.
-        deleted_at:
-          type: string
-          format: date-time
-          title: deleted_at
-          description: The tag's deleted at.
-        metadata:
-          type: object
-          description: The tag's metadata.
     AdminProductVariant:
       type: object
       description: The updated's details.
@@ -5822,10 +6718,6 @@ components:
           type: number
           title: width
           description: The updated's width.
-        variant_rank:
-          type: number
-          title: variant_rank
-          description: The updated's variant rank.
         options:
           type: array
           description: The updated's options.
@@ -5837,8 +6729,10 @@ components:
           type: string
           title: product_id
           description: The updated's product id.
-        calculated_price:
-          $ref: '#/components/schemas/BaseCalculatedPriceSet'
+        variant_rank:
+          type: number
+          title: variant_rank
+          description: The updated's variant rank.
         created_at:
           type: string
           format: date-time
@@ -6395,8 +7289,6 @@ components:
         budget:
           type: object
           description: The campaign's budget.
-          required:
-            - limit
           properties:
             limit:
               type: number
@@ -6532,23 +7424,6 @@ components:
         rules:
           type: object
           description: The price list's rules.
-    AdminUpdatePricePreference:
-      type: object
-      description: SUMMARY
-      x-schemaName: AdminUpdatePricePreference
-      properties:
-        attribute:
-          type: string
-          title: attribute
-          description: The price preference's attribute.
-        value:
-          type: string
-          title: value
-          description: The price preference's value.
-        is_tax_inclusive:
-          type: boolean
-          title: is_tax_inclusive
-          description: The price preference's is tax inclusive.
     AdminUpdateProduct:
       type: object
       description: The update's details.
@@ -6884,6 +7759,7 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateStore
       required:
+        - name
         - default_sales_channel_id
         - default_region_id
         - default_location_id
@@ -6910,10 +7786,6 @@ components:
                 type: boolean
                 title: is_default
                 description: The supported currency's is default.
-              is_tax_inclusive:
-                type: boolean
-                title: is_tax_inclusive
-                description: The supported currency's is tax inclusive.
         default_sales_channel_id:
           type: string
           title: default_sales_channel_id
@@ -6934,7 +7806,6 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateTaxRate
       required:
-        - code
         - metadata
       properties:
         rate:
@@ -7010,62 +7881,6 @@ components:
           type: number
           title: required_quantity
           description: The product's required quantity.
-    BaseCalculatedPriceSet:
-      type: object
-      description: The updated's calculated price.
-      x-schemaName: BaseCalculatedPriceSet
-      required:
-        - id
-        - calculated_amount
-        - original_amount
-        - currency_code
-      properties:
-        id:
-          type: string
-          title: id
-          description: The calculated price's ID.
-        is_calculated_price_price_list:
-          type: boolean
-          title: is_calculated_price_price_list
-          description: The calculated price's is calculated price price list.
-        is_calculated_price_tax_inclusive:
-          type: boolean
-          title: is_calculated_price_tax_inclusive
-          description: The calculated price's is calculated price tax inclusive.
-        calculated_amount:
-          type: number
-          title: calculated_amount
-          description: The calculated price's calculated amount.
-        calculated_amount_with_tax:
-          type: number
-          title: calculated_amount_with_tax
-          description: The calculated price's calculated amount with tax.
-        calculated_amount_without_tax:
-          type: number
-          title: calculated_amount_without_tax
-          description: The calculated price's calculated amount without tax.
-        is_original_price_price_list:
-          type: boolean
-          title: is_original_price_price_list
-          description: The calculated price's is original price price list.
-        is_original_price_tax_inclusive:
-          type: boolean
-          title: is_original_price_tax_inclusive
-          description: The calculated price's is original price tax inclusive.
-        original_amount:
-          type: number
-          title: original_amount
-          description: The calculated price's original amount.
-        currency_code:
-          type: string
-          title: currency_code
-          description: The calculated price's currency code.
-        calculated_price:
-          type: object
-          description: The calculated price's details.
-        original_price:
-          type: object
-          description: The calculated price's original price.
     BaseCollection:
       type: object
       description: The product's collection.
@@ -7194,6 +8009,7 @@ components:
         - material
         - collection_id
         - type_id
+        - tags
         - variants
         - options
         - images
@@ -7898,6 +8714,7 @@ components:
         - is_giftcard
         - collection_id
         - type_id
+        - tags
         - images
         - discountable
         - external_id

@@ -39,9 +39,10 @@ properties:
         title: name
         description: The default tax rate's name.
       is_combinable:
-        type: boolean
-        title: is_combinable
-        description: The default tax rate's is combinable.
+        type: string
+        enum:
+          - 'true'
+          - 'false'
       metadata:
         type: object
         description: The default tax rate's metadata.

@@ -1,5 +1,5 @@
 post:
-  operationId: PostOrdersIdFulfillmentsFulfillment_idShipments
+  operationId: PostOrdersIdFulfillmentsFulfillment_idShipment
   summary: Add Shipments to Order
   description: Add a list of shipments to a order.
   x-authenticated: true
@@ -83,7 +83,7 @@ post:
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments/post.sh
+          ../code_samples/Shell/admin_orders_{id}_fulfillments_{fulfillment_id}_shipment/post.sh
   tags:
     - Orders
   responses:

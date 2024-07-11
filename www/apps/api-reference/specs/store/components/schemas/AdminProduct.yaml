@@ -25,6 +25,7 @@ required:
   - is_giftcard
   - collection_id
   - type_id
+  - tags
   - images
   - discountable
   - external_id
@@ -48,11 +49,6 @@ properties:
       $ref: ./AdminProductVariant.yaml
   type:
     type: object
-  tags:
-    type: array
-    description: The parent's tags.
-    items:
-      $ref: ./AdminProductTag.yaml
   title:
     type: string
     title: title
@@ -151,6 +147,11 @@ properties:
     type: string
     title: type_id
     description: The parent's type id.
+  tags:
+    type: array
+    description: The parent's tags.
+    items:
+      $ref: ./BaseProductTag.yaml
   images:
     type: array
     description: The parent's images.
