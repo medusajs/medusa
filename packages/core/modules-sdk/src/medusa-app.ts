@@ -442,6 +442,7 @@ async function MedusaApp_({
         await MedusaModule.migrateDown(
           moduleResolution.definition.key,
           moduleResolution.resolutionPath as string,
+          sharedContainer,
           moduleResolution.options,
           moduleResolution.moduleExports
         )
@@ -449,6 +450,7 @@ async function MedusaApp_({
         await MedusaModule.migrateUp(
           moduleResolution.definition.key,
           moduleResolution.resolutionPath as string,
+          sharedContainer,
           moduleResolution.options,
           moduleResolution.moduleExports
         )

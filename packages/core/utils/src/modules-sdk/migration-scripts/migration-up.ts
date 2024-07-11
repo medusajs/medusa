@@ -26,23 +26,28 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
-    logger.info(`Running migrations for module ${moduleName}`)
+    logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
     const migrations = new Migrations(orm)
 
     migrations.on("migrating", (migration) => {
-      logger.info(`  Running migration ${migration.name}`)
+      logger.info(`  ● Migrating ${migration.name}`)
     })
     migrations.on("migrated", (migration) => {
-      logger.info(`  Executed migration ${migration.name}`)
+      logger.info(`  ✔ Migrated ${migration.name}`)
     })
 
     try {
-      await migrations.run()
+      const result = await migrations.run()
+      if (result.length) {
+        logger.info("  Completed successfully")
+      } else {
+        logger.info("  Skipped. Database is upto-date")
+      }
     } catch (error) {
-      logger.error(`Migrations failed for module ${moduleName}`, error)
+      logger.error(`  Failed with error ${error.message}`, error)
     }
   }
 }

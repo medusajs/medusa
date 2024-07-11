@@ -26,23 +26,28 @@ export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
-    logger.info(`Running migrations for module ${moduleName}`)
+    logger.info(`MODULE: ${moduleName}`)
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
     const migrations = new Migrations(orm)
 
     migrations.on("reverting", (migration) => {
-      logger.info(`  Reverting migration ${migration.name}`)
+      logger.info(`  ● Reverting ${migration.name}`)
     })
     migrations.on("reverted", (migration) => {
-      logger.info(`  Reverted migration ${migration.name}`)
+      logger.info(`  ✔ Reverted ${migration.name}`)
     })
 
     try {
-      await migrations.revert()
+      const result = await migrations.revert()
+      if (result.length) {
+        logger.info("  Reverted successfully")
+      } else {
+        logger.info("  Skipped. Nothing to revert")
+      }
     } catch (error) {
-      logger.error(`Revert action failed for module ${moduleName}`, error)
+      logger.error(`  Failed with error ${error.message}`, error)
     }
   }
 }

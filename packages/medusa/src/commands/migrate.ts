@@ -1,3 +1,4 @@
+import { asValue } from "awilix"
 import Logger from "../loaders/logger"
 import { migrateMedusaApp, revertMedusaApp } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
@@ -13,6 +14,7 @@ const main = async function ({ directory }) {
 
   const action = args[0]
   const container = await initializeContainer(directory)
+  container.register("logger", asValue(Logger))
 
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -22,13 +24,15 @@ const main = async function ({ directory }) {
   const pluginLinks = await resolvePluginsLinks(plugins, container)
 
   if (action === "run") {
+    Logger.info("Running migrations...\n")
+
     await migrateMedusaApp({
       configModule,
       linkModules: pluginLinks,
       container,
     })
 
-    Logger.info("Migrations completed.")
+    Logger.info("\nMigrations completed")
     process.exit()
   } else if (action === "revert") {
     const modulesToRevert = args.slice(1)
@@ -40,6 +44,8 @@ const main = async function ({ directory }) {
       process.exit(1)
     }
 
+    Logger.info("Reverting migrations...\n")
+
     await revertMedusaApp({
       modulesToRevert,
       configModule,
@@ -47,9 +53,9 @@ const main = async function ({ directory }) {
       container,
     })
 
-    Logger.info("Migrations reverted.")
+    Logger.info("\nMigrations reverted")
   } else if (action === "show") {
-    Logger.info("not supported")
+    Logger.info("Action not supported yet")
     process.exit(0)
   }
 }
