@@ -39,7 +39,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
         (item) =>
           item.variant.manage_inventory &&
           item.variant.inventory.length &&
-          item.detail.fulfilled_quantity - item.detail.shipped_quantity > 0
+          item.quantity - item.detail.fulfilled_quantity > 0
       ),
     [order.items]
   )

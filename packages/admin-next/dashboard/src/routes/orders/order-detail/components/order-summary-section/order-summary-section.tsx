@@ -36,7 +36,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   })
 
   /**
-   * Show Allocation button only if there are fulfilled items that don't have reservation and aren't shipped
+   * Show Allocation button only if there are unfulfilled items that don't have reservations
    */
   const showAllocateButton = useMemo(() => {
     if (!reservations) {
@@ -50,8 +50,8 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     for (const item of order.items) {
       // Inventory is managed
       if (item.variant?.manage_inventory) {
-        // There are items that are fulfilled but not shipped
-        if (item.detail.fulfilled_quantity - item.detail.shipped_quantity > 0) {
+        // There are items that are unfulfilled
+        if (item.quantity - item.detail.fulfilled_quantity > 0) {
           // Reservation for this item doesn't exist
           if (!reservationsMap.has(item.id)) {
             return true
