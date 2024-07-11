@@ -924,14 +924,6 @@ export const filesMap = [
     "pathname": "/storefront-development/tips"
   },
   {
-    "filePath": "/www/apps/resources/app/troubleshooting/_s3-plugin-acl-error/page.mdx",
-    "pathname": "/troubleshooting/_s3-plugin-acl-error"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_transaction-promise-all/page.mdx",
-    "pathname": "/troubleshooting/_transaction-promise-all"
-  },
-  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },
