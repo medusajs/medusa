@@ -48,7 +48,7 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
       if (result.length) {
         logger.info("Completed successfully")
       } else {
-        logger.info("Skipped. Database is upto-date")
+        logger.info(`Skipped. Database is up-to-date for module.`)
       }
     } catch (error) {
       logger.error(`Failed with error ${error.message}`, error)
