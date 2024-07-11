@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
@@ -10,7 +9,10 @@ import {
   IRegionModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -290,6 +292,14 @@ medusaIntegrationTestRunner({
               discount_tax_total: 0,
               tax_total: 0,
               original_tax_total: 0,
+              refundable_total: 50,
+              refundable_total_per_unit: 50,
+              fulfilled_total: 0,
+              return_dismissed_total: 0,
+              return_received_total: 0,
+              return_requested_total: 0,
+              shipped_total: 0,
+              write_off_total: 0,
               raw_subtotal: {
                 value: "50",
                 precision: 20,
@@ -317,6 +327,38 @@ medusaIntegrationTestRunner({
               raw_original_tax_total: {
                 value: "0",
                 precision: 20,
+              },
+              raw_refundable_total: {
+                precision: 20,
+                value: "49.999999999999999995",
+              },
+              raw_refundable_total_per_unit: {
+                precision: 20,
+                value: "49.999999999999999995",
+              },
+              raw_fulfilled_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_dismissed_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_received_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_return_requested_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_shipped_total: {
+                precision: 20,
+                value: "0",
+              },
+              raw_write_off_total: {
+                precision: 20,
+                value: "0",
               },
             },
           ],

@@ -17,7 +17,7 @@ A promotion discounts an amount or percentage of a cart's items, shipping method
 The Promotion Module allows you to store and manage promotions.
 
 ```ts
-const promotion = await promotionModuleService.create({
+const promotion = await promotionModuleService.createPromotions({
   code: "10%OFF",
   type: "standard",
   application_method: {
@@ -34,7 +34,7 @@ const promotion = await promotionModuleService.create({
 A promotion has rules that restricts when it's applied. For example, you can create a promotion that's only applied to VIP customers.
 
 ```ts
-const promotion = await promotionModuleService.create({
+const promotion = await promotionModuleService.createPromotions({
   code: "10%OFF",
   type: "standard",
   application_method: {
@@ -60,14 +60,12 @@ A campaign combines promotions under the same conditions, such as start and end 
 A campaign can also have an identifier for tracking purposes, such as tracking through tools like Google Analytics.
 
 ```ts
-const campaign = await promotionModuleService.createCampaigns(
-  {
-    name: "Summer Discounts",
-    campaign_identifier: "G-123445",
-    starts_at: new Date("2024-05-02"),
-    ends_at: new Date("2024-07-20"),
-  }
-)
+const campaign = await promotionModuleService.createCampaigns({
+  name: "Summer Discounts",
+  campaign_identifier: "G-123445",
+  starts_at: new Date("2024-05-02"),
+  ends_at: new Date("2024-07-20"),
+})
 ```
 
 ---
@@ -84,20 +82,21 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const promotionModuleService: IPromotionModuleService =
-      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+    ModuleRegistrationName.PROMOTION
+  )
 
-    res.json({
-      promotions: await promotionModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    promotions: await promotionModuleService.listPromotions(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -105,17 +104,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const promotionModuleService: IPromotionModuleService =
-      container.resolve(ModuleRegistrationName.PROMOTION)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const promotionModuleService: IPromotionModuleService = container.resolve(
+    ModuleRegistrationName.PROMOTION
+  )
 
-    const promotions = await promotionModuleService.list()
-  }
-  ```
+  const promotions = await promotionModuleService.listPromotions()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -123,17 +121,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IPromotionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const promotionModuleService: IPromotionModuleService =
-      container.resolve(ModuleRegistrationName.PROMOTION)
+const step1 = createStep("step-1", async (_, { container }) => {
+  const promotionModuleService: IPromotionModuleService = container.resolve(
+    ModuleRegistrationName.PROMOTION
+  )
 
-    const promotions = await promotionModuleService.list()
-  })
-  ```
+  const promotions = await promotionModuleService.listPromotions()
+})
+```
 
   </CodeTab>
 </CodeTabs>

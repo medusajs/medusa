@@ -1,19 +1,16 @@
 import * as zod from "zod"
 
-import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
 import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/route-modal"
+import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
-import { Form } from "../../../../../../components/common/form"
-import { InventoryItemRes } from "../../../../../../types/api-responses"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Form } from "../../../../../../components/common/form"
+import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
+import { InventoryItemRes } from "../../../../../../types/api-responses"
 
 type EditReservationFormProps = {
   reservation: InventoryTypes.ReservationItemDTO
@@ -72,11 +69,11 @@ export const EditReservationForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     mutateAsync(values as any, {
       onSuccess: () => {
+        toast.success(t("inventory.reservation.updateSuccessToast"))
         handleSuccess()
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("inventory.reservation.updateSuccessToast"),
-        })
+      },
+      onError: (e) => {
+        toast.error(e.message)
       },
     })
   })
@@ -140,7 +137,11 @@ export const EditReservationForm = ({
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={level!.stocked_quantity - reservedQuantity}
+              value={
+                level!.stocked_quantity -
+                (level.reserved_quantity - reservation.quantity) -
+                reservedQuantity
+              }
             />
           </div>
           <Form.Field

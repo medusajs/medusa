@@ -1,9 +1,9 @@
 import {
   AdminCampaignListResponse,
   AdminCampaignResponse,
-  CreateCampaignDTO,
+  AdminCreateCampaign,
+  AdminUpdateCampaign,
   LinkMethodRequest,
-  UpdateCampaignDTO,
 } from "@medusajs/types"
 import { CampaignDeleteRes } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
@@ -16,11 +16,11 @@ async function listCampaigns(query?: Record<string, any>) {
   return getRequest<AdminCampaignListResponse>(`/admin/campaigns`, query)
 }
 
-async function createCampaign(payload: CreateCampaignDTO) {
+async function createCampaign(payload: AdminCreateCampaign) {
   return postRequest<AdminCampaignResponse>(`/admin/campaigns`, payload)
 }
 
-async function updateCampaign(id: string, payload: UpdateCampaignDTO) {
+async function updateCampaign(id: string, payload: AdminUpdateCampaign) {
   return postRequest<AdminCampaignResponse>(`/admin/campaigns/${id}`, payload)
 }
 

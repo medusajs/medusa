@@ -37,7 +37,7 @@ medusa.orders.retrieve(orderId)
 
 #### Returns
 
-<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"[StoreOrdersRes](../../../medusa/types/medusa.StoreOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"`StoreOrdersRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
 
 ### retrieveByCartId
 
@@ -60,7 +60,7 @@ medusa.orders.retrieveByCartId(cartId)
 
 #### Returns
 
-<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"[StoreOrdersRes](../../../medusa/types/medusa.StoreOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCartId"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"`StoreOrdersRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCartId"/>
 
 ### lookupOrder
 
@@ -82,11 +82,11 @@ medusa.orders.lookupOrder({
 
 #### Parameters
 
-<TypeList types={[{"name":"payload","type":"[StoreGetOrdersParams](../../../medusa/classes/medusa.StoreGetOrdersParams/page.mdx)","description":"Filters used to retrieve the order.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"display_id","type":"`number`","description":"Display ID of the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"Email of the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"[ShippingAddressPayload](../../../medusa/classes/medusa.ShippingAddressPayload/page.mdx)","description":"Filter the retrieved order by its shipping address details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"postal_code","type":"`string`","description":"Postal code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="lookupOrder"/>
+<TypeList types={[{"name":"payload","type":"`StoreGetOrdersParams`","description":"Filters used to retrieve the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="lookupOrder"/>
 
 #### Returns
 
-<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"[StoreOrdersRes](../../../medusa/types/medusa.StoreOrdersRes/page.mdx)","optional":false,"defaultValue":"","description":"The order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="lookupOrder"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the order.","expandable":false,"children":[{"name":"StoreOrdersRes","type":"`StoreOrdersRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="lookupOrder"/>
 
 ### requestCustomerOrders
 
@@ -113,7 +113,7 @@ medusa.orders.requestCustomerOrders({
 
 #### Parameters
 
-<TypeList types={[{"name":"payload","type":"[StorePostCustomersCustomerOrderClaimReq](../../../medusa/classes/medusa.StorePostCustomersCustomerOrderClaimReq/page.mdx)","description":"The orders to claim.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_ids","type":"`string`[]","description":"The ID of the orders to claim","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="requestCustomerOrders"/>
+<TypeList types={[{"name":"payload","type":"`StorePostCustomersCustomerOrderClaimReq`","description":"The orders to claim.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="requestCustomerOrders"/>
 
 #### Returns
 
@@ -142,7 +142,7 @@ medusa.orders.confirmRequest(
 
 #### Parameters
 
-<TypeList types={[{"name":"payload","type":"[StorePostCustomersCustomerAcceptClaimReq](../../../medusa/classes/medusa.StorePostCustomersCustomerAcceptClaimReq/page.mdx)","description":"The claim order to verify.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"token","type":"`string`","description":"The claim token generated by previous request to the Claim Order API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="confirmRequest"/>
+<TypeList types={[{"name":"payload","type":"`StorePostCustomersCustomerAcceptClaimReq`","description":"The claim order to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="confirmRequest"/>
 
 #### Returns
 

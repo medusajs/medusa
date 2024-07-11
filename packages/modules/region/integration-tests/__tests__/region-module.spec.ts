@@ -1,6 +1,7 @@
 import { IRegionModuleService } from "@medusajs/types"
+import { Module, Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { RegionModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -8,6 +9,37 @@ moduleIntegrationTestRunner<IRegionModuleService>({
   moduleName: Modules.REGION,
   testSuite: ({ service }) => {
     describe("Region Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.REGION, {
+          service: RegionModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["region", "country"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          region: {
+            id: {
+              linkable: "region_id",
+              primaryKey: "id",
+              serviceName: "region",
+              field: "region",
+            },
+          },
+          country: {
+            iso_2: {
+              linkable: "country_iso_2",
+              primaryKey: "iso_2",
+              serviceName: "region",
+              field: "country",
+            },
+          },
+        })
+      })
+
       it("should create countries on application start", async () => {
         const countries = await service.listCountries({}, { take: null })
         expect(countries.length).toEqual(250)
@@ -355,6 +387,28 @@ moduleIntegrationTestRunner<IRegionModuleService>({
         })
 
         await service.deleteRegions(createdRegion.id)
+
+        const newRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        const resp = await service.retrieveRegion(newRegion.id, {
+          relations: ["countries"],
+        })
+
+        expect(resp.countries).toHaveLength(2)
+      })
+
+      it("should unset the region ID on the country when soft deleting a region", async () => {
+        const createdRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        await service.softDeleteRegions([createdRegion.id])
 
         const newRegion = await service.createRegions({
           name: "North America",

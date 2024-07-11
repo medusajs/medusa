@@ -11,12 +11,13 @@ import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal/index"
+} from "../../../../../components/modals/index"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
 import { useShippingOptionPriceColumns } from "../../../common/hooks/use-shipping-option-price-columns"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 const getInitialCurrencyPrices = (
   prices: HttpTypes.AdminShippingOptionPrice[]
@@ -108,9 +109,12 @@ export function EditShippingOptionsPricingForm({
     limit: 999,
   })
 
+  const { price_preferences: pricePreferences } = usePricePreferences({})
+
   const columns = useShippingOptionPriceColumns({
     currencies,
     regions,
+    pricePreferences,
   })
 
   const data = useMemo(
@@ -182,16 +186,11 @@ export function EditShippingOptionsPricingForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            dismissLabel: t("general.close"),
-          })
+          toast.success(t("general.success"))
           handleSuccess()
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

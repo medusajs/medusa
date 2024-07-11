@@ -16,49 +16,48 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const user = await userModuleService.create({
-      email: "user@example.com",
-      first_name: "John",
-      last_name: "Smith",
-    })
+  const user = await userModuleService.createUsers({
+    email: "user@example.com",
+    first_name: "John",
+    last_name: "Smith",
+  })
 
-    res.json({ user })
-  }
-  ```
+  res.json({ user })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function POST(request: Request) {
-    const userModuleService = await initializeUserModule()
+export async function POST(request: Request) {
+  const userModuleService = await initializeUserModule()
 
-    const user = await userModuleService.create({
-      email: "user@example.com",
-      first_name: "John",
-      last_name: "Smith",
-    })
+  const user = await userModuleService.createUsers({
+    email: "user@example.com",
+    first_name: "John",
+    last_name: "Smith",
+  })
 
-    return NextResponse.json({
-      user,
-    })
-  }
-  ```
+  return NextResponse.json({
+    user,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -73,39 +72,38 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    res.json({
-      users: await userModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    users: await userModuleService.listUsers(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function GET(request: Request) {
-    const userModuleService = await initializeUserModule()
+export async function GET(request: Request) {
+  const userModuleService = await initializeUserModule()
 
-    return NextResponse.json({
-      users: await userModuleService.list(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    users: await userModuleService.listUsers(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -120,49 +118,46 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const user = await userModuleService.update({
-      id: "user_123",
-      last_name: "Smith",
-    })
+  const user = await userModuleService.updateUsers({
+    id: "user_123",
+    last_name: "Smith",
+  })
 
-    res.json({ user })
-  }
-  ```
+  res.json({ user })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function POST(
-    request: Request
-  ) {
-    const userModuleService = await initializeUserModule()
+export async function POST(request: Request) {
+  const userModuleService = await initializeUserModule()
 
-    const user = await userModuleService.update({
-      id: "user_123",
-      last_name: "Smith",
-    })
+  const user = await userModuleService.updateUsers({
+    id: "user_123",
+    last_name: "Smith",
+  })
 
-    return NextResponse.json({
-      user,
-    })
-  }
-  ```
+  return NextResponse.json({
+    user,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -177,37 +172,34 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    await userModuleService.delete(["user_123"])
-  }
-  ```
+  await userModuleService.deleteUsers(["user_123"])
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function DELETE(
-    request: Request
-  ) {
-    const userModuleService = await initializeUserModule()
+export async function DELETE(request: Request) {
+  const userModuleService = await initializeUserModule()
 
-    await userModuleService.delete(["user_123"])
-  }
-  ```
+  await userModuleService.deleteUsers(["user_123"])
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -222,50 +214,46 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const invite = await userModuleService.createInvites({
-      email: "user2@example.com",
-    })
+  const invite = await userModuleService.createInvites({
+    email: "user2@example.com",
+  })
 
-    res.json({
-      invite,
-    })
-  }
-  ```
+  res.json({
+    invite,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const userModuleService = await initializeUserModule()
+export async function POST(request: Request, { params }: ContextType) {
+  const userModuleService = await initializeUserModule()
 
-    const invite = await userModuleService.createInvites({
-      email: "user2@example.com",
-    })
+  const invite = await userModuleService.createInvites({
+    email: "user2@example.com",
+  })
 
-    return NextResponse.json({
-      invite,
-    })
-  }
-  ```
+  return NextResponse.json({
+    invite,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -280,68 +268,62 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const invite =
-      await userModuleService.validateInviteToken("secret_123")
+  const invite = await userModuleService.validateInviteToken("secret_123")
 
-    const user = await userModuleService.create({
-      email: invite.email,
-      metadata: invite.metadata,
-    })
+  const user = await userModuleService.createUsers({
+    email: invite.email,
+    metadata: invite.metadata,
+  })
 
-    await userModuleService.updateInvites({
-      id: invite.id,
-      accepted: true,
-    })
+  await userModuleService.updateInvites({
+    id: invite.id,
+    accepted: true,
+  })
 
-    res.json({
-      user,
-    })
-  }
-  ```
+  res.json({
+    user,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const userModuleService = await initializeUserModule()
+export async function POST(request: Request, { params }: ContextType) {
+  const userModuleService = await initializeUserModule()
 
-    const invite =
-      await userModuleService.validateInviteToken("secret_123")
+  const invite = await userModuleService.validateInviteToken("secret_123")
 
-    const user = await userModuleService.create({
-      email: invite.email,
-      metadata: invite.metadata,
-    })
+  const user = await userModuleService.createUsers({
+    email: invite.email,
+    metadata: invite.metadata,
+  })
 
-    await userModuleService.updateInvites({
-      id: invite.id,
-      accepted: true,
-    })
+  await userModuleService.updateInvites({
+    id: invite.id,
+    accepted: true,
+  })
 
-    return NextResponse.json({
-      user,
-    })
-  }
-  ```
+  return NextResponse.json({
+    user,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -356,50 +338,42 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const invites = await userModuleService.refreshInviteTokens([
-      "invite_123",
-    ])
+  const invites = await userModuleService.refreshInviteTokens(["invite_123"])
 
-    res.json({
-      invite: invites[0],
-    })
-  }
-  ```
+  res.json({
+    invite: invites[0],
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeUserModule,
-  } from "@medusajs/user"
+import { initialize as initializeUserModule } from "@medusajs/user"
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const userModuleService = await initializeUserModule()
+export async function POST(request: Request, { params }: ContextType) {
+  const userModuleService = await initializeUserModule()
 
-    const invites = await userModuleService.refreshInviteTokens([
-      "invite_123",
-    ])
+  const invites = await userModuleService.refreshInviteTokens(["invite_123"])
 
-    return NextResponse.json({
-      invite: invites[0],
-    })
-  }
-  ```
+  return NextResponse.json({
+    invite: invites[0],
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>

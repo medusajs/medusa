@@ -1,7 +1,9 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
 import { FindParams } from "../common"
+import { BaseCalculatedPriceSet } from "../pricing/common"
 import { BaseProductCategory } from "../product-category/common"
+import { BaseProductTag } from "../product-tag/common"
 import { BaseProductType } from "../product-type/common"
 
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
@@ -27,7 +29,7 @@ export interface BaseProduct {
   categories?: BaseProductCategory[] | null
   type?: BaseProductType | null
   type_id: string | null
-  tags: BaseProductTag[] | null
+  tags?: BaseProductTag[] | null
   variants: BaseProductVariant[] | null
   options: BaseProductOption[] | null
   images: BaseProductImage[] | null
@@ -56,20 +58,14 @@ export interface BaseProductVariant {
   length: number | null
   height: number | null
   width: number | null
+  variant_rank?: number | null
   options: BaseProductOptionValue[] | null
   product?: BaseProduct | null
   product_id?: string
-  variant_rank?: number | null
+  calculated_price?: BaseCalculatedPriceSet
   created_at: string
   updated_at: string
   deleted_at: string | null
-  metadata?: Record<string, unknown> | null
-}
-
-export interface BaseProductTag {
-  id: string
-  value: string
-  products?: BaseProduct[]
   metadata?: Record<string, unknown> | null
 }
 
@@ -125,14 +121,6 @@ export interface BaseProductListParams
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
   deleted_at?: OperatorMap<string>
-}
-
-export interface BaseProductTagParams
-  extends FindParams,
-    BaseFilterable<BaseProductTagParams> {
-  q?: string
-  id?: string | string[]
-  value?: string | string[]
 }
 
 export interface BaseProductOptionParams

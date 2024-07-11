@@ -20,7 +20,7 @@ import {
 } from "@mikro-orm/core"
 import ServiceZone from "./service-zone"
 
-type FulfillmentSetOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentSetOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_set",

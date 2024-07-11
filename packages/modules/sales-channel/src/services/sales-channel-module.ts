@@ -5,10 +5,10 @@ import {
   FilterableSalesChannelProps,
   InternalModuleDeclaration,
   ISalesChannelModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   SalesChannelDTO,
   UpdateSalesChannelDTO,
+  UpsertSalesChannelDTO,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -20,10 +20,7 @@ import {
 } from "@medusajs/utils"
 
 import { SalesChannel } from "@models"
-
-import { UpsertSalesChannelDTO } from "@medusajs/types"
 import { UpdateSalesChanneInput } from "@types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -31,10 +28,9 @@ type InjectedDependencies = {
 }
 
 export default class SalesChannelModuleService
-  extends MedusaService<{ SalesChannel: { dto: SalesChannelDTO } }>(
-    { SalesChannel },
-    entityNameToLinkableKeysMap
-  )
+  extends MedusaService<{ SalesChannel: { dto: SalesChannelDTO } }>({
+    SalesChannel,
+  })
   implements ISalesChannelModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -48,10 +44,6 @@ export default class SalesChannelModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.salesChannelService_ = salesChannelService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

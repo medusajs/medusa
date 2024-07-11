@@ -8,7 +8,7 @@ import { useState } from "react"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { castNumber } from "../../../../../lib/cast-number"
 import { ShippingOptionPriceType } from "../../../common/constants"
@@ -113,27 +113,21 @@ export function CreateShippingOptionsForm({
       },
       {
         onSuccess: ({ shipping_option }) => {
-          toast.success(t("general.success"), {
-            description: t(
+          toast.success(
+            t(
               `stockLocations.shippingOptions.create.${
                 isReturn ? "returns" : "shipping"
               }.successToast`,
               {
                 name: shipping_option.name,
               }
-            ),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+            )
+          )
 
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

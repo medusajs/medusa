@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CartLineItemDTO,
   CartShippingMethodDTO,
@@ -10,7 +9,7 @@ import {
   TaxableItemDTO,
   TaxableShippingDTO,
 } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

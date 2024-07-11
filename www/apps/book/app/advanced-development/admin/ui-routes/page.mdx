@@ -14,15 +14,17 @@ For example, you may add a new page to manage product reviews.
 
 ---
 
-## How to Create a UI Route
+## How to Create a UI Route?
 
 A UI route is created in a file named `page.tsx` under the `src/admin/routes` directory. The file’s default export must be the UI route’s React component.
 
 For example, create the file `src/admin/routes/custom/page.tsx` with the following content:
 
 ```tsx title="src/admin/routes/custom/page.tsx"
+import { Container } from "@medusajs/ui"
+
 const CustomPage = () => {
-  return <div>This is my custom route</div>
+  return <Container>This is my custom route</Container>
 }
 
 export default CustomPage
@@ -30,7 +32,9 @@ export default CustomPage
 
 The new page’s path is the file’s path relative to `src/admin/routes`. So, the above UI route is a new page added at the path `localhost:9000/app/custom`. 
 
-### Test the UI Route
+---
+
+## Test the UI Route
 
 To test the UI route, start the Medusa application:
 
@@ -56,37 +60,6 @@ export const highlights = [
 ```tsx title="src/admin/routes/custom/page.tsx" highlights={[["21"], ["22"], ["23"], ["24"], ["25"], ["26"]]}
 import { defineRouteConfig } from "@medusajs/admin-shared"
 import { ChatBubbleLeftRight } from "@medusajs/icons"
-
-const CustomPage = () => {
-  return <div>This is my custom route</div>
-}
-
-export const config = defineRouteConfig({
-    label: "Custom Route",
-    icon: ChatBubbleLeftRight,
-  })
-
-export default CustomPage
-```
-
-The configuration object is creaetd by the `defineRouteConfig` function imported from `@medusajs/admin-shared`. It accepts the following properties:
-
-- `label`: the new sidebar item’s label.
-- `icon`: an optional React component that acts as an icon in the sidebar.
-
-The above example adds a new sidebar item with the label `Custom Route` and an icon from the [Medusa UI Icons package](!ui!/icons/overview).
-
----
-
-## Using UI Components
-
-Similar to Widgets, it’s highly recommended that you use the [Medusa UI package](https://docs.medusajs.com/ui) to match your page’s design with the rest of the Medusa Admin.
-
-For example, you can rewrite the above UI route to the following:
-
-```tsx title="src/admin/routes/custom/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-shared"
-import { ChatBubbleLeftRight } from "@medusajs/icons"
 import { Container } from "@medusajs/ui"
 
 const CustomPage = () => {
@@ -100,6 +73,13 @@ export const config = defineRouteConfig({
 
 export default CustomPage
 ```
+
+The configuration object is created using the `defineRouteConfig` function imported from `@medusajs/admin-shared`. It accepts the following properties:
+
+- `label`: the sidebar item’s label.
+- `icon`: an optional React component used as an icon in the sidebar.
+
+The above example adds a new sidebar item with the label `Custom Route` and an icon from the [Medusa UI Icons package](!ui!/icons/overview).
 
 ---
 
@@ -134,13 +114,7 @@ This adds a page under the path `/app/settings/custom`. An item is also added to
 
 ## Path Parameters
 
-A UI route can accept path parameters if the name of any of the directories in its path is of the format `[param]`. For example, `src/admin/routes/custom/[id]/page.tsx`.
-
-To retrieve the path parameters, install the `react-router-dom` to use its `useParams` hook:
-
-```bash npm2yarn
-npm install react-router-dom
-```
+A UI route can accept path parameters if the name of any of the directories in its path is of the format `[param]`.
 
 For example, create the file `src/admin/routes/custom/[id]/page.tsx` with the following content:
 
@@ -156,5 +130,7 @@ const CustomPage = () => {
 
 export default CustomPage
 ```
+
+You access the passed parameter using `react-router-dom`'s [useParams hook](https://reactrouter.com/en/main/hooks/use-params).
 
 If you run the Medusa application and go to `localhost:9000/app/custom/123`, you'll see `123` printed in the page.

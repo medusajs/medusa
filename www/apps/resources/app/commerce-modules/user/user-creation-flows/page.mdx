@@ -25,7 +25,7 @@ await userModuleService.updateInvites({
   accepted: true,
 })
 
-const user = await userModuleService.create({
+const user = await userModuleService.createUsers({
   email: invite.email,
 })
 ```
@@ -45,7 +45,7 @@ await userModuleService.refreshInviteTokens(["invite_123"])
 Finally, you can create a user using the [create method of the User Module’s main service](/references/user/create):
 
 ```ts
-const user = await userModuleService.create({
+const user = await userModuleService.createUsers({
   email: "user@example.com",
 })
 ```
@@ -63,12 +63,12 @@ const { success, authIdentity } =
   })
 
 // assuming authIdentity is defined
-const [, count] = await userModuleService.listAndCount({
+const [, count] = await userModuleService.listAndCountUsers({
   email: authIdentity.entity_id,
 })
 
 if (!count) {
-  const user = await userModuleService.create({
+  const user = await userModuleService.createUsers({
     email: authIdentity.entity_id,
   })
 }

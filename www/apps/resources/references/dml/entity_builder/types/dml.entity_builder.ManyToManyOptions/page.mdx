@@ -1,0 +1,34 @@
+import { TypeList } from "docs-ui"
+
+# ManyToManyOptions
+
+ **ManyToManyOptions**: [RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx) & `object` \| `object`
+
+## mappedBy
+
+ `Optional` **mappedBy**: `string`
+
+The name of the relationship as defined in the other
+data model. This is only required by the `belongsTo`
+relationship method.
+
+___
+
+## pivotTable
+
+ `Optional` **pivotTable**: `string`
+
+The name of the pivot table
+created in the database for this relationship.
+
+___
+
+## pivotEntity
+
+ `Optional` **pivotEntity**: () => [DmlEntity](../../../entity/classes/dml.entity.DmlEntity/page.mdx)&#60;any&#62;
+
+A function that returns the data model 
+representing the pivot table created in the
+database for this relationship.
+
+### Type declaration

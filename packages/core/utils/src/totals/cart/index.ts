@@ -16,20 +16,20 @@ export interface DecorateCartLikeInputDTO {
   items?: {
     id?: string
     unit_price: BigNumberInput
+    is_tax_inclusive?: boolean
     quantity: BigNumberInput
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   shipping_methods?: {
     id?: string
     amount: BigNumberInput
+    is_tax_inclusive?: boolean
     adjustments?: { amount: BigNumberInput }[]
     tax_lines?: {
       rate: BigNumberInput
-      is_tax_inclusive?: boolean
     }[]
   }[]
   region?: {
@@ -44,12 +44,12 @@ export function decorateCartTotals(
   transformPropertiesToBigNumber(cartLike)
 
   const optionalFields = {
-    fulfilled_quantity: "fulfilled_total",
-    shipped_quantity: "shipped_total",
-    return_requested_quantity: "return_requested_total",
-    return_received_quantity: "return_received_total",
-    return_dismissed_quantity: "return_dismissed_total",
-    written_off_quantity: "write_off_total",
+    "detail.fulfilled_quantity": "fulfilled_total",
+    "detail.shipped_quantity": "shipped_total",
+    "detail.return_requested_quantity": "return_requested_total",
+    "detail.return_received_quantity": "return_received_total",
+    "detail.return_dismissed_quantity": "return_dismissed_total",
+    "detail.written_off_quantity": "write_off_total",
   }
 
   const items = (cartLike.items ?? []) as unknown as GetItemTotalInput[]

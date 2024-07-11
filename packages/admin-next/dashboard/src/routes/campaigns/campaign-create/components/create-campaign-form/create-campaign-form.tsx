@@ -8,7 +8,7 @@ import { CampaignBudgetTypeValues } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateCampaign } from "../../../../../hooks/api/campaigns"
 import { CreateCampaignFormFields } from "../../../common/components/create-campaign-form-fields"
 
@@ -18,16 +18,11 @@ export const CreateCampaignSchema = zod.object({
   campaign_identifier: zod.string().min(1),
   starts_at: zod.date().optional(),
   ends_at: zod.date().optional(),
-  budget: zod
-    .object({
-      limit: zod.number().min(0).optional().nullable(),
-      type: zod.enum(["spend", "usage"]),
-      currency_code: zod.string().optional().nullable(),
-    })
-    .refine((data) => data.type !== "spend" || data.currency_code, {
-      path: ["currency_code"],
-      message: `required field`,
-    }),
+  budget: zod.object({
+    limit: zod.number().min(0).nullish(),
+    type: zod.enum(["spend", "usage"]),
+    currency_code: zod.string().nullish(),
+  }),
 })
 
 export const defaultCampaignValues = {
@@ -35,7 +30,7 @@ export const defaultCampaignValues = {
   description: "",
   campaign_identifier: "",
   budget: {
-    type: "spend" as CampaignBudgetTypeValues,
+    type: "usage" as CampaignBudgetTypeValues,
     currency_code: null,
     limit: null,
   },
@@ -67,19 +62,15 @@ export const CreateCampaignForm = () => {
       },
       {
         onSuccess: ({ campaign }) => {
-          toast.success(t("general.success"), {
-            description: t("campaigns.create.successToast", {
+          toast.success(
+            t("campaigns.create.successToast", {
               name: campaign.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess(`/campaigns/${campaign.id}`)
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

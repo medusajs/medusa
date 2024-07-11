@@ -1,13 +1,6 @@
 import { model } from "@medusajs/utils"
 import { StoreCurrency } from "./index"
 
-// TODO Re apply the index when available
-/*const StoreDeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "store",
-  columns: "deleted_at",
-  where: "deleted_at IS NOT NULL",
-})*/
-
 const Store = model.define("store", {
   id: model.id({ prefix: "store" }),
   name: model.text().default("Medusa Store").searchable(),

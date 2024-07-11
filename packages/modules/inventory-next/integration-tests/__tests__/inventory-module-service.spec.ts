@@ -1,6 +1,7 @@
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { InventoryModuleService } from "../../src/services"
 
 jest.setTimeout(100000)
 
@@ -8,6 +9,49 @@ moduleIntegrationTestRunner<IInventoryService>({
   moduleName: Modules.INVENTORY,
   testSuite: ({ service }) => {
     describe("Inventory Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.INVENTORY, {
+          service: InventoryModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "inventoryItem",
+          "inventoryLevel",
+          "reservationItem",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          inventoryItem: {
+            id: {
+              field: "inventoryItem",
+              linkable: "inventory_item_id",
+              primaryKey: "id",
+              serviceName: "inventoryService",
+            },
+          },
+          inventoryLevel: {
+            id: {
+              field: "inventoryLevel",
+              linkable: "inventory_level_id",
+              primaryKey: "id",
+              serviceName: "inventoryService",
+            },
+          },
+          reservationItem: {
+            id: {
+              field: "reservationItem",
+              linkable: "reservation_item_id",
+              primaryKey: "id",
+              serviceName: "inventoryService",
+            },
+          },
+        })
+      })
+
       describe("create", () => {
         it("should create an inventory item", async () => {
           const data = { sku: "test-sku", origin_country: "test-country" }

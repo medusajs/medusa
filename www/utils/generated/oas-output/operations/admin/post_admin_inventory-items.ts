@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -55,6 +65,20 @@
  *       schema:
  *         type: object
  *         description: SUMMARY
+ *         required:
+ *           - sku
+ *           - hs_code
+ *           - weight
+ *           - length
+ *           - height
+ *           - width
+ *           - origin_country
+ *           - mid_code
+ *           - material
+ *           - title
+ *           - description
+ *           - thumbnail
+ *           - metadata
  *         properties:
  *           sku:
  *             type: string
@@ -100,6 +124,10 @@
  *             type: string
  *             title: description
  *             description: The inventory item's description.
+ *           requires_shipping:
+ *             type: boolean
+ *             title: requires_shipping
+ *             description: The inventory item's requires shipping.
  *           thumbnail:
  *             type: string
  *             title: thumbnail
@@ -107,35 +135,54 @@
  *           metadata:
  *             type: object
  *             description: The inventory item's metadata.
- *             properties: {}
- *           requires_shipping:
- *             type: boolean
- *             title: requires_shipping
- *             description: The inventory item's requires shipping.
- *         required:
- *           - sku
- *           - hs_code
- *           - weight
- *           - length
- *           - height
- *           - width
- *           - origin_country
- *           - mid_code
- *           - material
- *           - title
- *           - description
- *           - requires_shipping
- *           - thumbnail
- *           - metadata
+ *           location_levels:
+ *             type: array
+ *             description: The inventory item's location levels.
+ *             items:
+ *               type: object
+ *               description: The location level's location levels.
+ *               required:
+ *                 - location_id
+ *               properties:
+ *                 location_id:
+ *                   type: string
+ *                   title: location_id
+ *                   description: The location level's location id.
+ *                 stocked_quantity:
+ *                   type: number
+ *                   title: stocked_quantity
+ *                   description: The location level's stocked quantity.
+ *                 incoming_quantity:
+ *                   type: number
+ *                   title: incoming_quantity
+ *                   description: The location level's incoming quantity.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/inventory-items' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "sku": "{value}",
+ *         "hs_code": "{value}",
+ *         "weight": 2857134683324416,
+ *         "length": 2322256963305472,
+ *         "height": 8391220613087232,
+ *         "width": 1297863250280448,
+ *         "origin_country": "{value}",
+ *         "mid_code": "{value}",
+ *         "material": "{value}",
+ *         "title": "{value}",
+ *         "description": "{value}",
+ *         "thumbnail": "{value}",
+ *         "metadata": {}
+ *       }'
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

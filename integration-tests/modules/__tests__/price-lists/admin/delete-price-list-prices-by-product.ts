@@ -5,7 +5,6 @@ import {
 
 import { IPricingModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -39,7 +38,6 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
-        await createDefaultRuleTypes(appContainer)
 
         await simpleRegionFactory(dbConnection, {
           id: "test-region",

@@ -78,6 +78,7 @@ export const CodeBlock = ({
   const [showTesting, setShowTesting] = useState(false)
   const codeContainerRef = useRef<HTMLDivElement>(null)
   const codeRef = useRef<HTMLElement>(null)
+  const apiRunnerRef = useRef<HTMLDivElement>(null)
   const [scrollable, setScrollable] = useState(false)
   const hasInnerCodeBlock = useMemo(
     () => hasTabs || title.length > 0,
@@ -334,7 +335,8 @@ export const CodeBlock = ({
                     !hasInnerCodeBlock &&
                       tokens.length <= 1 &&
                       "px-docs_0.5 py-[6px]",
-                    !title.length && "xs:max-w-[83%]",
+                    !title.length && (!noCopy || !noReport) && "xs:max-w-[83%]",
+                    noLineNumbers && "pl-docs_1",
                     preClassName
                   )}
                 >
@@ -398,6 +400,7 @@ export const CodeBlock = ({
             enter: "animate-fadeIn animate-fastest",
             exit: "animate-fadeOut animate-fastest",
           }}
+          nodeRef={apiRunnerRef}
         >
           <ApiRunner
             apiMethod={rest.testApiMethod!}
@@ -405,6 +408,7 @@ export const CodeBlock = ({
             pathData={rest.testPathParams}
             bodyData={rest.testBodyParams}
             queryData={rest.testQueryParams}
+            ref={apiRunnerRef}
           />
         </CSSTransition>
       )}

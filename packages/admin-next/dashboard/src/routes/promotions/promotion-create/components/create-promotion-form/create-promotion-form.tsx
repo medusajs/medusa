@@ -10,6 +10,7 @@ import {
   ProgressTabs,
   RadioGroup,
   Text,
+  toast,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -25,14 +26,14 @@ import {
 } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
@@ -121,21 +122,41 @@ export const CreatePromotionForm = () => {
           }))
       }
 
-      createPromotion({
-        ...promotionData,
-        rules: buildRulesData(rules),
-        application_method: {
-          ...applicationMethodData,
-          ...applicationMethodRuleData,
-          target_rules: buildRulesData(targetRulesData),
-          buy_rules: buildRulesData(buyRulesData),
+      createPromotion(
+        {
+          ...promotionData,
+          rules: buildRulesData(rules),
+          application_method: {
+            ...applicationMethodData,
+            ...applicationMethodRuleData,
+            target_rules: buildRulesData(targetRulesData),
+            buy_rules: buildRulesData(buyRulesData),
+          },
+          is_automatic: is_automatic === "true",
         },
-        is_automatic: is_automatic === "true",
-      }).then(() => handleSuccess())
+        {
+          onSuccess: ({ promotion }) => {
+            toast.success(
+              t("promotions.toasts.promotionCreateSuccess", {
+                code: promotion.code,
+              })
+            )
+
+            handleSuccess()
+          },
+          onError: (e) => {
+            toast.error(e.message)
+          },
+        }
+      )
     },
     async (error) => {
-      // TODO: showcase error when something goes wrong
-      // Wait for alert component and use it here
+      const { campaign, ...rest } = error || {}
+      const errorInPromotionTab = !!Object.keys(rest || {}).length
+
+      if (errorInPromotionTab) {
+        toast.error(t("promotions.errors.promotionTabError"))
+      }
     }
   )
 
@@ -322,18 +343,18 @@ export const CreatePromotionForm = () => {
                     value={Tab.TYPE}
                     status={detailsProgress}
                   >
-                    {t("fields.type")}
+                    {t("promotions.tabs.template")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger
                     className="w-full"
                     value={Tab.PROMOTION}
                   >
-                    {t("fields.details")}
+                    {t("promotions.tabs.details")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger className="w-full" value={Tab.CAMPAIGN}>
-                    {t("promotions.fields.campaign")}
+                    {t("promotions.tabs.campaign")}
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
               </div>
@@ -599,7 +620,7 @@ export const CreatePromotionForm = () => {
                 />
               )}
 
-              <div className="flex gap-y-4 gap-x-2">
+              <div className="flex gap-x-2 gap-y-4">
                 {!currentTemplate?.hiddenFields?.includes(
                   "application_method.value"
                 ) && (
@@ -640,7 +661,7 @@ export const CreatePromotionForm = () => {
                                 disabled={!currencyCode}
                               />
                             ) : (
-                              <PercentageInput
+                              <DeprecatedPercentageInput
                                 key="amount"
                                 className="text-right"
                                 min={0}

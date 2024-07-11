@@ -19,19 +19,18 @@ tags:
       description: How to implement cart functionality in your storefront
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+  - name: Collections
   - name: Currencies
   - name: Customers
-    description: >
-      A customer can register and manage their information such as addresses,
-      orders, payment methods, and more.
-    externalDocs:
-      description: How to implement customer profiles in your storefront
-      url: >-
-        https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
+  - name: Orders
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+  - name: Payment Providers
+  - name: Product Categories
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreProductCategory.yaml
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -43,29 +42,30 @@ tags:
       description: How to use regions in a storefront
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
+  - name: Return
+  - name: Return Reasons
   - name: Shipping Options
-    description: >
-      A shipping option is used to define the available shipping methods during
-      checkout or when creating a return.
-    externalDocs:
-      description: Shipping Option architecture
-      url: >-
-        https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
 paths:
   /store/carts:
     $ref: paths/store_carts.yaml
   /store/carts/{id}:
     $ref: paths/store_carts_{id}.yaml
+  /store/carts/{id}/complete:
+    $ref: paths/store_carts_{id}_complete.yaml
   /store/carts/{id}/line-items:
     $ref: paths/store_carts_{id}_line-items.yaml
   /store/carts/{id}/line-items/{line_id}:
     $ref: paths/store_carts_{id}_line-items_{line_id}.yaml
-  /store/carts/{id}/payment-collections:
-    $ref: paths/store_carts_{id}_payment-collections.yaml
   /store/carts/{id}/promotions:
     $ref: paths/store_carts_{id}_promotions.yaml
+  /store/carts/{id}/shipping-methods:
+    $ref: paths/store_carts_{id}_shipping-methods.yaml
   /store/carts/{id}/taxes:
     $ref: paths/store_carts_{id}_taxes.yaml
+  /store/collections:
+    $ref: paths/store_collections.yaml
+  /store/collections/{id}:
+    $ref: paths/store_collections_{id}.yaml
   /store/currencies:
     $ref: paths/store_currencies.yaml
   /store/currencies/{code}:
@@ -78,16 +78,32 @@ paths:
     $ref: paths/store_customers_me_addresses.yaml
   /store/customers/me/addresses/{address_id}:
     $ref: paths/store_customers_me_addresses_{address_id}.yaml
+  /store/orders:
+    $ref: paths/store_orders.yaml
+  /store/orders/{id}:
+    $ref: paths/store_orders_{id}.yaml
+  /store/payment-collections:
+    $ref: paths/store_payment-collections.yaml
   /store/payment-collections/{id}/payment-sessions:
     $ref: paths/store_payment-collections_{id}_payment-sessions.yaml
+  /store/payment-providers:
+    $ref: paths/store_payment-providers.yaml
+  /store/product-categories:
+    $ref: paths/store_product-categories.yaml
+  /store/product-categories/{id}:
+    $ref: paths/store_product-categories_{id}.yaml
   /store/regions:
     $ref: paths/store_regions.yaml
   /store/regions/{id}:
     $ref: paths/store_regions_{id}.yaml
-  /store/regions/{id}/payment-providers:
-    $ref: paths/store_regions_{id}_payment-providers.yaml
-  /store/shipping-options/{cart_id}:
-    $ref: paths/store_shipping-options_{cart_id}.yaml
+  /store/return:
+    $ref: paths/store_return.yaml
+  /store/return-reasons:
+    $ref: paths/store_return-reasons.yaml
+  /store/return-reasons/{id}:
+    $ref: paths/store_return-reasons_{id}.yaml
+  /store/shipping-options:
+    $ref: paths/store_shipping-options.yaml
 components:
   securitySchemes:
     jwt_token:

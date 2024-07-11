@@ -1,0 +1,30 @@
+export const metadata = {
+  title: `${pageNumber} Data Model’s Primary Key`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to configure the primary key of a data model.
+
+## primaryKey Method
+
+To set any `id`, `text`, or `number` property as a primary key, use the `primaryKey` method.
+
+For example:
+
+export const highlights = [
+  ["4", "primaryKey", "Define the `id` property to be the data model's primary key."]
+]
+
+```ts highlights={highlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  // ...
+})
+
+export default MyCustom
+```
+
+In the example above, the `id` property is defined as the data model's primary key.

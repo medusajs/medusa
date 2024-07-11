@@ -6,12 +6,9 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
-  Collection,
   Entity,
   Filter,
   ManyToOne,
-  OneToMany,
   OnInit,
   OptionalProps,
   PrimaryKey,
@@ -19,23 +16,14 @@ import {
   Rel,
 } from "@mikro-orm/core"
 import PriceList from "./price-list"
-import PriceListRuleValue from "./price-list-rule-value"
-import RuleType from "./rule-type"
 
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+type OptionalFields = DAL.SoftDeletableModelDateColumns
 
 const tableName = "price_list_rule"
 const PriceListRuleDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
-})
-
-const PriceListRuleRuleTypeIdIndex = createPsqlIndexStatementHelper({
-  tableName: tableName,
-  columns: "rule_type_id",
-  where: "deleted_at IS NULL",
-  unique: true,
 })
 
 const PriceListRulePriceListIdIndex = createPsqlIndexStatementHelper({
@@ -52,21 +40,11 @@ export default class PriceListRule {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @PriceListRuleRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne(() => RuleType, {
-    columnType: "text",
-    mapToPk: true,
-    fieldName: "rule_type_id",
-  })
-  rule_type_id: string
+  @Property({ columnType: "text" })
+  attribute: string
 
-  @ManyToOne(() => RuleType, { persist: false })
-  rule_type: Rel<RuleType>
-
-  @OneToMany(() => PriceListRuleValue, (plrv) => plrv.price_list_rule, {
-    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
-  })
-  price_list_rule_values = new Collection<Rel<PriceListRuleValue>>(this)
+  @Property({ columnType: "jsonb", nullable: true })
+  value: string | string[] | null = null
 
   @PriceListRulePriceListIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceList, {
@@ -103,13 +81,11 @@ export default class PriceListRule {
   beforeCreate() {
     this.id = generateEntityId(this.id, "plrule")
     this.price_list_id ??= this.price_list?.id!
-    this.rule_type_id ??= this.rule_type?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "plrule")
     this.price_list_id ??= this.price_list?.id!
-    this.rule_type_id ??= this.rule_type?.id!
   }
 }

@@ -1,4 +1,4 @@
-import {createReturnOrderWorkflow} from "@medusajs/core-flows"
+import { createAndCompleteReturnOrderWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {AdminPostReturnsReqSchemaType} from "./validators"
+import { AdminPostReturnsReqSchemaType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -16,7 +16,7 @@ export const GET = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
+    entryPoint: "returns",
     variables: {
       filters: {
         ...req.filterableFields,
@@ -26,10 +26,10 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: orders, metadata } = await remoteQuery(queryObject)
+  const { rows: returns, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    orders,
+    returns,
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
@@ -42,7 +42,7 @@ export const POST = async (
 ) => {
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
 
-  const workflow = createReturnOrderWorkflow(req.scope)
+  const workflow = createAndCompleteReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({
     input,
   })

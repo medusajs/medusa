@@ -1,11 +1,11 @@
+import { HttpTypes } from "@medusajs/types"
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { json, useLoaderData, useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 import { editProductVariantLoader } from "./loader"
-import { HttpTypes } from "@medusajs/types"
 
 export const ProductVariantEdit = () => {
   const initialData = useLoaderData() as Awaited<

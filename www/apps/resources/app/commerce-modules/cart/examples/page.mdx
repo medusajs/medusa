@@ -16,67 +16,66 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const cart = await cartModuleService.create({
-      currency_code: "usd",
-      shipping_address: {
-        address_1: "1512 Barataria Blvd",
-        country_code: "us",
+  const cart = await cartModuleService.createCarts({
+    currency_code: "usd",
+    shipping_address: {
+      address_1: "1512 Barataria Blvd",
+      country_code: "us",
+    },
+    items: [
+      {
+        title: "Shirt",
+        unit_price: 1000,
+        quantity: 1,
       },
-      items: [
-        {
-          title: "Shirt",
-          unit_price: 1000,
-          quantity: 1,
-        },
-      ],
-    })
+    ],
+  })
 
-    res.json({ cart })
-  }
-  ```
+  res.json({ cart })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function POST(request: Request) {
-    const cartModuleService = await initializeCartModule()
+export async function POST(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const cart = await cartModuleService.create({
-      currency_code: "usd",
-      shipping_address: {
-        address_1: "1512 Barataria Blvd",
-        country_code: "us",
+  const cart = await cartModuleService.createCarts({
+    currency_code: "usd",
+    shipping_address: {
+      address_1: "1512 Barataria Blvd",
+      country_code: "us",
+    },
+    items: [
+      {
+        title: "Shirt",
+        unit_price: 1000,
+        quantity: 1,
       },
-      items: [
-        {
-          title: "Shirt",
-          unit_price: 1000,
-          quantity: 1,
-        },
-      ],
-    })
+    ],
+  })
 
-    return NextResponse.json({
-      cart,
-    })
-  }
-  ```
+  return NextResponse.json({
+    cart,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -91,41 +90,40 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const cart = await cartModuleService.retrieve("cart_123")
+  const cart = await cartModuleService.retrieveCart("cart_123")
 
-    res.json({ cart })
-  }
-  ```
+  res.json({ cart })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function GET(request: Request) {
-    const cartModuleService = await initializeCartModule()
+export async function GET(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const cart = await cartModuleService.retrieve("cart_123")
+  const cart = await cartModuleService.retrieveCart("cart_123")
 
-    return NextResponse.json({
-      cart,
-    })
-  }
-  ```
+  return NextResponse.json({
+    cart,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -140,55 +138,52 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const lineItem = await cartModuleService.addLineItems({
-      cart_id: "cart_123",
-      title: "Shirt",
-      quantity: 2,
-      unit_price: 5000,
-    })
+  const lineItem = await cartModuleService.addLineItems({
+    cart_id: "cart_123",
+    title: "Shirt",
+    quantity: 2,
+    unit_price: 5000,
+  })
 
-    res.json({
-      line_item: lineItem,
-    })
-  }
-  ```
+  res.json({
+    line_item: lineItem,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function POST(
-    request: Request
-  ) {
-    const cartModuleService = await initializeCartModule()
+export async function POST(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const lineItem = await cartModuleService.addLineItems({
-      cart_id: "cart_123",
-      title: "Shirt",
-      quantity: 2,
-      unit_price: 5000,
-    })
+  const lineItem = await cartModuleService.addLineItems({
+    cart_id: "cart_123",
+    title: "Shirt",
+    quantity: 2,
+    unit_price: 5000,
+  })
 
-    return NextResponse.json({
-      line_item: lineItem,
-    })
-  }
-  ```
+  return NextResponse.json({
+    line_item: lineItem,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -203,55 +198,50 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const shippingMethod =
-      await cartModuleService.addShippingMethods({
-        cart_id: "cart_123",
-        name: "Custom shipping",
-        amount: 1000,
-      })
+  const shippingMethod = await cartModuleService.addShippingMethods({
+    cart_id: "cart_123",
+    name: "Custom shipping",
+    amount: 1000,
+  })
 
-    res.json({
-      shipping_method: shippingMethod,
-    })
-  }
-  ```
+  res.json({
+    shipping_method: shippingMethod,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function POST(
-    request: Request
-  ) {
-    const cartModuleService = await initializeCartModule()
+export async function POST(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const shippingMethod =
-      await cartModuleService.addShippingMethods({
-        cart_id: "cart_123",
-        name: "Custom shipping",
-        amount: 1000,
-      })
+  const shippingMethod = await cartModuleService.addShippingMethods({
+    cart_id: "cart_123",
+    name: "Custom shipping",
+    amount: 1000,
+  })
 
-    return NextResponse.json({
-      shipping_method: shippingMethod,
-    })
-  }
-  ```
+  return NextResponse.json({
+    shipping_method: shippingMethod,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -266,55 +256,50 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const itemAdjustment =
-      await cartModuleService.addLineItemAdjustments({
-        item_id: "cali_123",
-        amount: 500,
-        code: "50%OFF",
-      })
+  const itemAdjustment = await cartModuleService.addLineItemAdjustments({
+    item_id: "cali_123",
+    amount: 500,
+    code: "50%OFF",
+  })
 
-    res.json({
-      adjustment: itemAdjustment,
-    })
-  }
-  ```
+  res.json({
+    adjustment: itemAdjustment,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function POST(
-    request: Request
-  ) {
-    const cartModuleService = await initializeCartModule()
+export async function POST(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const itemAdjustment =
-      await cartModuleService.addLineItemAdjustments({
-        item_id: "cali_123",
-        amount: 500,
-        code: "50%OFF",
-      })
+  const itemAdjustment = await cartModuleService.addLineItemAdjustments({
+    item_id: "cali_123",
+    amount: 500,
+    code: "50%OFF",
+  })
 
-    return NextResponse.json({
-      adjustment: itemAdjustment,
-    })
-  }
-  ```
+  return NextResponse.json({
+    adjustment: itemAdjustment,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -329,55 +314,52 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const shippingMethodAdjustment =
-      await cartModuleService.addShippingMethodAdjustments({
-        shipping_method_id: "casm_123",
-        amount: 500,
-        code: "FREESHIPPING",
-      })
-
-    res.json({
-      adjustment: shippingMethodAdjustment,
+  const shippingMethodAdjustment =
+    await cartModuleService.addShippingMethodAdjustments({
+      shipping_method_id: "casm_123",
+      amount: 500,
+      code: "FREESHIPPING",
     })
-  }
-  ```
+
+  res.json({
+    adjustment: shippingMethodAdjustment,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function POST(
-    request: Request
-  ) {
-    const cartModuleService = await initializeCartModule()
+export async function POST(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    const shippingMethodAdjustment =
-      await cartModuleService.addShippingMethodAdjustments({
-        shipping_method_id: "casm_123",
-        amount: 500,
-        code: "FREESHIPPING",
-      })
-
-    return NextResponse.json({
-      adjustment: shippingMethodAdjustment,
+  const shippingMethodAdjustment =
+    await cartModuleService.addShippingMethodAdjustments({
+      shipping_method_id: "casm_123",
+      amount: 500,
+      code: "FREESHIPPING",
     })
-  }
-  ```
+
+  return NextResponse.json({
+    adjustment: shippingMethodAdjustment,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -392,39 +374,36 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    await cartModuleService.deleteLineItems(["cali_123"])
+  await cartModuleService.deleteLineItems(["cali_123"])
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCartModule,
-  } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/cart"
 
-  export async function DELETE(
-    request: Request
-  ) {
-    const cartModuleService = await initializeCartModule()
+export async function DELETE(request: Request) {
+  const cartModuleService = await initializeCartModule()
 
-    await cartModuleService.deleteLineItems(["cali_123"])
-  }
-  ```
+  await cartModuleService.deleteLineItems(["cali_123"])
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -439,20 +418,21 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    await cartModuleService.deleteShippingMethods(["casm_123"])
+  await cartModuleService.deleteShippingMethods(["casm_123"])
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
@@ -460,20 +440,21 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    await cartModuleService.deleteShippingMethods(["casm_123"])
+  await cartModuleService.deleteShippingMethods(["casm_123"])
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
 </CodeTabs>

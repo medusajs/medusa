@@ -1,7 +1,6 @@
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createDefaultRuleTypes } from "../../helpers/create-default-rule-types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 
@@ -33,7 +32,6 @@ medusaIntegrationTestRunner({
         medusaContainer = getContainer()
       })
       beforeEach(async () => {
-        await createDefaultRuleTypes(medusaContainer)
         await createAdminUser(dbConnection, adminHeaders, medusaContainer)
         await simpleRegionFactory(dbConnection, {
           id: "region-1",
@@ -78,12 +76,7 @@ medusaIntegrationTestRunner({
           productId = response.data.product.id
           const variant = response.data.product.variants[0]
 
-          ruleType = await pricingModuleService.createRuleTypes([
-            { name: "region_id", rule_attribute: "region_id" },
-          ])
-
           priceSet = await pricingModuleService.createPriceSets({
-            rules: [{ rule_attribute: "region_id" }],
             prices: [
               {
                 amount: 1000,

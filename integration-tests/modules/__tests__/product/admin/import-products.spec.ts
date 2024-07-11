@@ -8,7 +8,6 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 import { simpleProductCollectionFactory } from "../../../../factories/simple-product-collection-factory"
 import batchJobSeeder from "../../../../helpers/batch-job-seeder"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import {
   adminHeaders,
   createAdminUser,
@@ -99,7 +98,6 @@ describe.skip("Product import batch job", () => {
 
   beforeEach(async () => {
     const container = getContainer()
-    await createDefaultRuleTypes(container)
     await batchJobSeeder(dbConnection)
     await createAdminUser(dbConnection, adminHeaders, container)
     await userSeeder(dbConnection)

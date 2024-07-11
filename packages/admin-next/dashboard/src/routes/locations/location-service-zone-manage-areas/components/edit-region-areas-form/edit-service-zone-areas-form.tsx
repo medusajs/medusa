@@ -10,9 +10,9 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
-import { countries } from "../../../../../lib/countries"
+import { countries } from "../../../../../lib/data/countries"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
 
 const EditeServiceZoneSchema = z.object({
@@ -63,25 +63,16 @@ export function EditServiceZoneAreasForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t(
-              "stockLocations.serviceZones.manageAreas.successToast",
-              {
-                name: zone.name,
-              }
-            ),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.success(
+            t("stockLocations.serviceZones.manageAreas.successToast", {
+              name: zone.name,
+            })
+          )
 
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

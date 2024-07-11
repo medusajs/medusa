@@ -32,19 +32,14 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const {
-    currencies,
-    count,
-    isPending: isLoading,
-    isError,
-    error,
-  } = useCurrencies(
+  const { currencies, count, isPending, isError, error } = useCurrencies(
     {
       code: store.supported_currencies?.map((c) => c.currency_code),
       ...searchParams,
     },
     {
       placeholderData: keepPreviousData,
+      enabled: !!store.supported_currencies?.length,
     }
   )
 
@@ -90,25 +85,23 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies:
           store.supported_currencies?.filter(
             (c) => !ids.includes(c.currency_code)
           ) ?? [],
-      })
-      setRowSelection({})
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          setRowSelection({})
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   if (isError) {
@@ -140,8 +133,8 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         table={table}
         pageSize={PAGE_SIZE}
         columns={columns}
-        count={count}
-        isLoading={isLoading}
+        count={!store.supported_currencies?.length ? 0 : count}
+        isLoading={!store.supported_currencies?.length ? false : isPending}
         queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>
@@ -195,23 +188,21 @@ const CurrencyActions = ({
       return
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies: supportedCurrencies.filter(
           (c) => c.currency_code !== currency.code
         ),
-      })
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (

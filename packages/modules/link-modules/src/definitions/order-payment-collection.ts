@@ -6,7 +6,7 @@ export const OrderPaymentCollection: ModuleJoinerConfig = {
   isLink: true,
   databaseConfig: {
     tableName: "order_payment_collection",
-    idPrefix: "capaycol",
+    idPrefix: "ordpay",
   },
   alias: [
     {

@@ -14,7 +14,7 @@ export function getModuleService(
   // database config if any fields are provided.
   if (!isDefined(joinerConfig_.extraDataFields)) {
     joinerConfig_.extraDataFields = Object.keys(
-      databaseConfig.extraFields || {}
+      databaseConfig?.extraFields || {}
     )
   }
 

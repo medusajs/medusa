@@ -42,6 +42,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         "stock_locations.fulfillment_sets.service_zones.shipping_options.provider.is_enabled",
 
         "stock_locations.fulfillment_sets.service_zones.shipping_options.calculated_price.calculated_amount",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.calculated_price.is_calculated_price_tax_inclusive",
       ],
       variables: {
         id: input.sales_channel_id,
@@ -88,6 +89,8 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
             return {
               ...options,
               amount: calculated_price?.calculated_amount,
+              is_tax_inclusive:
+                !!calculated_price?.is_calculated_price_tax_inclusive,
             }
           }
         )

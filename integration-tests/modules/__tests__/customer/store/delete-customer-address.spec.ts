@@ -1,7 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 

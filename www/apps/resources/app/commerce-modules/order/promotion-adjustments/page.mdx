@@ -18,13 +18,19 @@ The [LineItemAdjustment data model](/references/order/models/LineItemAdjustment)
 
 ![A diagram showcasing the relation between an order, its items and shipping methods, and their adjustment lines](https://res.cloudinary.com/dza7lstvk/image/upload/v1712306017/Medusa%20Resources/order-adjustments_myflir.jpg)
 
-The `amount` field of the adjustment line indicates the amount to be discounted from the original amount. Also, the ID of the applied promotion can be stored in the `promotion_id` field of the adjustment line.
+The `amount` property of the adjustment line indicates the amount to be discounted from the original amount.
+
+<Note title="Tip">
+
+The ID of the applied promotion is stored in the `promotion_id` property of the adjustment line.
+
+</Note>
 
 ---
 
 ## Discountable Option
 
-The `LineItem` data model has an `is_discountable` field that indicates whether promotions can be applied to the line item. It’s enabled by default.
+The `LineItem` data model has an `is_discountable` property that indicates whether promotions can be applied to the line item. It’s enabled by default.
 
 When disabled, a promotion can’t be applied to a line item. In the context of the Promotion Module, the promotion isn’t applied to the line item even if it matches its rules.
 
@@ -52,10 +58,10 @@ import {
 // ...
 
 // retrieve the order
-const order = await orderModuleService.retrieve("ord_123", {
+const order = await orderModuleService.retrieveOrder("ord_123", {
   relations: [
     "items.item.adjustments",
-    "shipping_methods.adjustments",
+    "shipping_methods.shipping_method.adjustments",
   ],
 })
 // retrieve the line item adjustments
@@ -95,6 +101,8 @@ const actions = await promotionModuleService.computeActions(
   {
     items: lineItemAdjustments,
     shipping_methods: shippingMethodAdjustments,
+    // TODO infer from cart or region
+    currency_code: "usd"
   }
 )
 ```

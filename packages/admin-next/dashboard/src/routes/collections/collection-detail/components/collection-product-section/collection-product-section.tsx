@@ -30,7 +30,7 @@ export const CollectionProductSection = ({
     {
       limit: PAGE_SIZE,
       ...searchParams,
-      collection_id: [collection.id],
+      collection_id: [collection.id!],
     },
     {
       placeholderData: keepPreviousData,
@@ -78,11 +78,15 @@ export const CollectionProductSection = ({
         remove: ids,
       },
       {
+        onSuccess: () => {
+          toast.success(
+            t("collections.products.remove.successToast", {
+              count: ids.length,
+            })
+          )
+        },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )
@@ -129,6 +133,9 @@ export const CollectionProductSection = ({
             shortcut: "r",
           },
         ]}
+        noRecords={{
+          message: t("collections.products.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
@@ -164,11 +171,15 @@ const ProductActions = ({
         remove: [product.id],
       },
       {
+        onSuccess: () => {
+          toast.success(
+            t("collections.products.remove.successToast", {
+              count: 1,
+            })
+          )
+        },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

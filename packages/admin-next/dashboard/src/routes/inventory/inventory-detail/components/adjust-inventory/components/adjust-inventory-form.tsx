@@ -1,16 +1,13 @@
-import * as zod from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import * as zod from "zod"
 
+import { HttpTypes, InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
 import { Button, Input, Text, toast } from "@medusajs/ui"
-import { InventoryLevelDTO, StockLocationDTO, HttpTypes } from "@medusajs/types"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
-import { Form } from "../../../../../../components/common/form"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { Form } from "../../../../../../components/common/form"
 import { useUpdateInventoryLevel } from "../../../../../../hooks/api/inventory"
 
 type AdjustInventoryFormProps = {
@@ -69,23 +66,20 @@ export const AdjustInventoryForm = ({
       return handleSuccess()
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         stocked_quantity: value.stocked_quantity,
-      })
-
-      toast.success(t("general.success"), {
-        description: t("inventory.toast.updateLevel"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
-
-    return handleSuccess()
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateLevel"))
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   })
 
   return (

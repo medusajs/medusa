@@ -1,17 +1,15 @@
 import * as zod from "zod"
 
-import { Button, Text, toast } from "@medusajs/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminInventoryItem, AdminStockLocation } from "@medusajs/types"
+import { Button, Text, toast } from "@medusajs/ui"
+import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
-import { useFieldArray, useForm } from "react-hook-form"
 
+import { useEffect, useMemo } from "react"
 import { LocationItem } from "./location-item"
 
 type EditInventoryItemAttributeFormProps = {
@@ -46,8 +44,9 @@ export const ManageLocationsForm = ({
   item,
   locations,
 }: EditInventoryItemAttributeFormProps) => {
-  const existingLocationLevels = new Set(
-    item.location_levels?.map((l) => l.location_id) ?? []
+  const existingLocationLevels = useMemo(
+    () => new Set(item.location_levels?.map((l) => l.location_id) ?? []),
+    item.location_levels
   )
 
   const { t } = useTranslation()
@@ -62,6 +61,13 @@ export const ManageLocationsForm = ({
     control: form.control,
     name: "locations",
   })
+
+  useEffect(() => {
+    form.setValue(
+      "locations",
+      getDefaultValues(locations, existingLocationLevels).locations
+    )
+  }, [existingLocationLevels, locations])
 
   const { mutateAsync } = useBatchUpdateInventoryLevels(item.id)
 
@@ -93,26 +99,23 @@ export const ManageLocationsForm = ({
       return handleSuccess()
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         create: selectedLocations.map((location_id) => ({
           location_id,
         })),
         delete: unselectedLocations,
-      })
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("inventory.toast.updateLocations"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateLocations"))
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   })
 
   return (

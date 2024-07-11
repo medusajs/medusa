@@ -9,19 +9,19 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useUpdateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { countries as staticCountries } from "../../../../../lib/countries"
+import { countries as staticCountries } from "../../../../../lib/data/countries"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
-import { useUpdateRegion } from "../../../../../hooks/api/regions"
-import { HttpTypes } from "@medusajs/types"
 
 type AddCountriesFormProps = {
   region: HttpTypes.AdminRegion
@@ -102,27 +102,24 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const payload = [
-      ...(region.countries?.map((c) => c.iso_2) ?? []),
+      ...(region.countries?.map((c) => c.iso_2!) ?? []),
       ...values.countries,
     ]
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         countries: payload,
-      })
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("regions.toast.countries"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("regions.toast.countries"))
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   return (

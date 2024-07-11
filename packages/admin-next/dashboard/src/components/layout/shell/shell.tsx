@@ -10,6 +10,7 @@ import {
   Keyboard,
   MagnifyingGlass,
   SidebarLeft,
+  TriangleRightMini,
   User as UserIcon,
 } from "@medusajs/icons"
 import {
@@ -92,18 +93,17 @@ const Breadcrumbs = () => {
     })
 
   return (
-    <ol className={clx("text-ui-fg-muted flex select-none items-center")}>
+    <ol
+      className={clx(
+        "text-ui-fg-muted txt-compact-small-plus flex select-none items-center"
+      )}
+    >
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
         const isSingle = crumbs.length === 1
 
         return (
-          <li
-            key={index}
-            className={clx("txt-compact-small-plus flex items-center", {
-              "text-ui-fg-subtle": isLast,
-            })}
-          >
+          <li key={index} className={clx("flex items-center")}>
             {!isLast ? (
               <Link
                 className="transition-fg hover:text-ui-fg-subtle"
@@ -124,7 +124,11 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {!isLast && <span className="mx-2 -mt-0.5">›</span>}
+            {!isLast && (
+              <span className="mx-2">
+                <TriangleRightMini />
+              </span>
+            )}
           </li>
         )
       })}
@@ -319,11 +323,7 @@ const LoggedInUser = () => {
           <Profile />
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
-            <Link
-              // TODO change link once docs are public
-              to="https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app/"
-              target="_blank"
-            >
+            <Link to="https://docs.medusajs.com/v2" target="_blank">
               <BookOpen className="text-ui-fg-subtle mr-2" />
               Documentation
             </Link>

@@ -52,12 +52,30 @@ const ItemSchema = z.object({
 export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
   items: z.array(ItemSchema),
-  return_shipping: ReturnShippingSchema,
-  note: z.string().nullish(),
+  return_shipping: ReturnShippingSchema.optional(),
+  internal_note: z.string().nullish(),
   receive_now: z.boolean().optional(),
   refund_amount: z.number().optional(),
   location_id: z.string().nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<
   typeof AdminPostReturnsReqSchema
+>
+
+export const AdminPostReceiveReturnsReqSchema = z.object({
+  return_id: z.string(),
+  items: z.array(ItemSchema),
+  internal_note: z.string().nullish(),
+})
+export type AdminPostReceiveReturnsReqSchemaType = z.infer<
+  typeof AdminPostReceiveReturnsReqSchema
+>
+
+export const AdminPostCancelReturnReqSchema = z.object({
+  return_id: z.string(),
+  no_notification: z.boolean().optional(),
+  internal_note: z.string().nullish(),
+})
+export type AdminPostCancelReturnReqSchemaType = z.infer<
+  typeof AdminPostReceiveReturnsReqSchema
 >

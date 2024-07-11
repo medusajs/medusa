@@ -8,10 +8,7 @@ import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
@@ -104,21 +101,15 @@ export const EditShippingOptionForm = ({
       },
       {
         onSuccess: ({ shipping_option }) => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.shippingOptions.edit.successToast", {
+          toast.success(
+            t("stockLocations.shippingOptions.edit.successToast", {
               name: shipping_option.name,
-            }),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

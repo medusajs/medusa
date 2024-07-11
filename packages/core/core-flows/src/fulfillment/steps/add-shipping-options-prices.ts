@@ -1,10 +1,10 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface PriceCurrencyCode {
   currency_code: string
@@ -25,8 +25,6 @@ function buildPriceSet(
   prices: StepInput[0]["prices"],
   regionToCurrencyMap: Map<string, string>
 ): CreatePriceSetDTO {
-  const rules: CreatePriceSetDTO["rules"] = []
-
   const shippingOptionPrices = prices.map((price) => {
     if ("currency_code" in price) {
       return {
@@ -34,10 +32,6 @@ function buildPriceSet(
         amount: price.amount,
       }
     }
-
-    rules.push({
-      rule_attribute: "region_id",
-    })
 
     return {
       currency_code: regionToCurrencyMap.get(price.region_id)!,
@@ -48,7 +42,7 @@ function buildPriceSet(
     }
   })
 
-  return { rules, prices: shippingOptionPrices }
+  return { prices: shippingOptionPrices }
 }
 
 export const createShippingOptionsPriceSetsStepId =

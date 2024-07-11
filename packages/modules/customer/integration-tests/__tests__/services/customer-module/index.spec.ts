@@ -1,6 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { CustomerModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -8,6 +9,58 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
   moduleName: Modules.CUSTOMER,
   testSuite: ({ service }) => {
     describe("Customer Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.CUSTOMER, {
+          service: CustomerModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "address",
+          "customerGroupCustomer",
+          "customerGroup",
+          "customer",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          address: {
+            id: {
+              linkable: "address_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "address",
+            },
+          },
+          customerGroupCustomer: {
+            id: {
+              linkable: "customer_group_customer_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customerGroupCustomer",
+            },
+          },
+          customerGroup: {
+            id: {
+              linkable: "customer_group_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customerGroup",
+            },
+          },
+          customer: {
+            id: {
+              linkable: "customer_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customer",
+            },
+          },
+        })
+      })
+
       describe("create", () => {
         it("should create a single customer", async () => {
           const customerData = {

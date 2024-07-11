@@ -1,9 +1,9 @@
 import { Currency } from "@medusajs/medusa"
 import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
+  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
-  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useUpdateStore } from "../../../../../hooks/api/store"
@@ -113,24 +113,25 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
       defaultCurrency = currencies?.[0]
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         supported_currencies: currencies.map((c) => ({
           currency_code: c,
           is_default: c === defaultCurrency,
+          // TODO: Add UI to manage this
+          is_tax_inclsuive: false,
         })),
-      })
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesUpdated"),
-        dismissLabel: t("actions.close"),
-      })
-      handleSuccess()
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.currenciesUpdated"))
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   if (isError) {

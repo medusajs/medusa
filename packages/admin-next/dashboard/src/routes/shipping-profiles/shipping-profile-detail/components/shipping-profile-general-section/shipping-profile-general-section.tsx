@@ -38,20 +38,16 @@ export const ShippingProfileGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("shippingProfile.delete.successToast", {
+        toast.success(
+          t("shippingProfile.delete.successToast", {
             name: profile.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/settings/locations/shipping-profiles", { replace: true })
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

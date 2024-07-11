@@ -6,9 +6,9 @@ export const metadata = {
 
 In this chapter, you'll learn about how to add new API routes for each HTTP method.
 
-## Handlers of HTTP Methods
+## HTTP Method Handler
 
-You can export handler functions for more than one HTTP method in a route file. An API route is created for every HTTP method you export a function for.
+An API route is created for every HTTP method you export a handler function for in a route file.
 
 Allowed HTTP methods are: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`.
 
@@ -41,5 +41,5 @@ export const POST = (
 
 This adds two API Routes:
 
-- A `GET` route at `localhost:9000/store/hello-world`.
-- A `POST` route at `localhost:9000/store/hello-world`.
+- A `GET` route at `http://localhost:9000/store/hello-world`.
+- A `POST` route at `http://localhost:9000/store/hello-world`.

@@ -1,12 +1,12 @@
 import { Table } from "docs-ui"
 
 export const metadata = {
-  title: `SendGrid Notification Provider Module`,
+  title: `SendGrid Notification Module Provider`,
 }
 
 # {metadata.title}
 
-The SendGrid Notification Provider Module integrates [SendGrid](https://sendgrid.com) to send emails to users and customers.
+The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid.com) to send emails to users and customers.
 
 ---
 
@@ -20,7 +20,7 @@ The SendGrid Notification Provider Module integrates [SendGrid](https://sendgrid
 
 </Note>
 
-To install the SendGrid Notification Provider Module, run the following command in the directory of your Medusa application:
+To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
 npm install @medusajs/notification-sendgrid
@@ -35,7 +35,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -49,14 +49,11 @@ module.exports = defineConfig({
           // ...
           {
             resolve: "@medusajs/notification-sendgrid",
+            id: "sendgrid",
             options: {
-              config: {
-                sendgrid: {
-                  channels: ["email"],
-                  api_key: process.env.SENDGRID_API_KEY,
-                  from: process.env.SENDGRID_FROM,
-                },
-              },
+              channels: ["email"],
+              api_key: process.env.SENDGRID_API_KEY,
+              from: process.env.SENDGRID_FROM,
             },
           },
         ],
@@ -86,40 +83,19 @@ SENDGRID_FROM=<YOUR_SENDGRID_FROM>
   </Table.Header>
   <Table.Body>
     <Table.Row>
+      <Table.Cell>`channels`</Table.Cell>
       <Table.Cell>
-      
-      `channels`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      The channels this notification module is used to send notifications for. Only one provider can be defined for a channel.
-      
+        The channels this notification module is used to send notifications for.
+        Only one provider can be defined for a channel.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>
-      
-      `api_key`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      The SendGrid API key.
-      
-      </Table.Cell>
+      <Table.Cell>`api_key`</Table.Cell>
+      <Table.Cell>The SendGrid API key.</Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>
-      
-      `from`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      The SendGrid from email.
-      
-      </Table.Cell>
+      <Table.Cell>`from`</Table.Cell>
+      <Table.Cell>The SendGrid from email.</Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
@@ -141,9 +117,13 @@ To test the module out, create a simple subscriber at `src/subscribers/product-c
 export const highlights = [
   ["12", "notificationModuleService", "Resolve the Notification Module."],
   ["17", "create", "Create the notification to be sent."],
-  ["19", '"email"', "By specifying the `email` channel, SendGrid will be used to send the notification."],
+  [
+    "19",
+    '"email"',
+    "By specifying the `email` channel, SendGrid will be used to send the notification.",
+  ],
   ["20", '"product-created"', "The ID of the template defined in SendGrid."],
-  ["21", "data", "The data to pass to the template defined in SendGrid."]
+  ["21", "data", "The data to pass to the template defined in SendGrid."],
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
@@ -151,7 +131,7 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
@@ -159,15 +139,13 @@ export default async function productCreateHandler({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
-    container.resolve(
-      ModuleRegistrationName.NOTIFICATION
-    )
+    container.resolve(ModuleRegistrationName.NOTIFICATION)
 
   await notificationModuleService.create({
     to: "test@gmail.com",
     channel: "email",
     template: "product-created",
-    data: "data" in data ? data.data : data,
+    data: data.data,
   })
 }
 
@@ -178,9 +156,9 @@ export const config: SubscriberConfig = {
 
 In this subscriber:
 
-- Resolve the Notification Module's main service. 
+- Resolve the Notification Module's main service.
 - Use the `create` method of the main service to create a notification to be sent to the specified email.
-- By specifying the `email` channel, the SendGrid Notification Provider Module is used to send the notification.
+- By specifying the `email` channel, the SendGrid Notification Module Provider is used to send the notification.
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
 

@@ -7,7 +7,7 @@
  *   - product_category
  * properties:
  *   product_category:
- *     $ref: "#/components/schemas/ProductCategoryResponse"
+ *     $ref: "#/components/schemas/AdminProductCategory"
  * 
 */
 

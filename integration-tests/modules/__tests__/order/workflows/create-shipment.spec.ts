@@ -3,7 +3,6 @@ import {
   createOrderShipmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
@@ -17,11 +16,12 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
-  remoteQueryObjectFromString,
   RuleOperator,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(500000)
 

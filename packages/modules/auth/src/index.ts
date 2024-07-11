@@ -1,9 +1,8 @@
-import { ModuleExports } from "@medusajs/types"
 import { AuthModuleService } from "@services"
 import loadProviders from "./loaders/providers"
+import { Module, Modules } from "@medusajs/utils"
 
-const moduleDefinition: ModuleExports = {
+export default Module(Modules.AUTH, {
   service: AuthModuleService,
-  loaders: [loadProviders] as any,
-}
-export default moduleDefinition
+  loaders: [loadProviders],
+})

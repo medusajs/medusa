@@ -4,7 +4,6 @@ import {
   InferEntityType,
   InternalModuleDeclaration,
   IStoreModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   StoreTypes,
 } from "@medusajs/types"
@@ -21,7 +20,6 @@ import {
 } from "@medusajs/utils"
 
 import { Store, StoreCurrency } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
 type InjectedDependencies = {
@@ -33,7 +31,7 @@ export default class StoreModuleService
   extends MedusaService<{
     Store: { dto: StoreTypes.StoreDTO }
     StoreCurrency: { dto: StoreTypes.StoreCurrencyDTO }
-  }>({ Store, StoreCurrency }, entityNameToLinkableKeysMap)
+  }>({ Store, StoreCurrency })
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -49,10 +47,6 @@ export default class StoreModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.storeService_ = storeService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error
@@ -205,7 +199,9 @@ export default class StoreModuleService
     )
   }
 
-  private static validateCreateRequest(stores: StoreTypes.CreateStoreDTO[]) {
+  private static validateCreateRequest(
+    stores: StoreTypes.CreateStoreDTO[] | StoreTypes.UpdateStoreDTO[]
+  ) {
     for (const store of stores) {
       if (store.supported_currencies?.length) {
         const duplicates = getDuplicates(

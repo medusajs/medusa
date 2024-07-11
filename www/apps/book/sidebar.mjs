@@ -17,8 +17,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       title: "The Basics",
       children: [
         {
-          path: "/basics/important-directories-files",
-          title: "Important Directories and Files",
+          path: "/basics/project-directories-files",
+          title: "Project Directories and Files",
         },
         {
           path: "/basics/medusa-container",
@@ -86,12 +86,12 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Middlewares",
             },
             {
-              path: "/advanced-development/api-routes/cors",
-              title: "Handling CORS",
-            },
-            {
               path: "/advanced-development/api-routes/protected-routes",
               title: "Protected Routes",
+            },
+            {
+              path: "/advanced-development/api-routes/cors",
+              title: "Handling CORS",
             },
           ],
         },
@@ -107,50 +107,62 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Service Factory",
             },
             {
-              path: "/advanced-development/modules/database-operations-in-services",
-              title: "Database Operations",
+              path: "/advanced-development/modules/isolation",
+              title: "Module Isolation",
             },
             {
-              path: "/advanced-development/modules/options",
-              title: "Module Options",
+              path: "/advanced-development/modules/module-links",
+              title: "Module Links",
             },
             {
-              path: "/advanced-development/modules/module-relationships",
-              title: "Module Relationships",
+              path: "/advanced-development/modules/remote-link",
+              title: "Remote Link",
             },
             {
               path: "/advanced-development/modules/remote-query",
               title: "Remote Query",
             },
             {
-              path: "/advanced-development/modules/link-modules",
-              title: "Link Modules",
-            },
-            {
-              path: "/advanced-development/modules/remote-link",
-              title: "Remote Link",
+              path: "/advanced-development/modules/options",
+              title: "Module Options",
             },
           ],
         },
         {
+          path: "/advanced-development/data-models",
           title: "Data Models",
           children: [
             {
-              path: "/advanced-development/data-models/common-definitions",
-              title: "Common Definitions",
+              path: "/advanced-development/data-models/property-types",
+              title: "Property Types",
             },
             {
-              path: "/advanced-development/data-models/soft-deletable",
-              title: "Soft-Deletable Models",
+              path: "/advanced-development/data-models/primary-key",
+              title: "Primary Key",
             },
-          ],
-        },
-        {
-          title: "Loaders",
-          children: [
             {
-              path: "/advanced-development/loaders/outside-modules",
-              title: "Create Outside Module",
+              path: "/advanced-development/data-models/default-properties",
+              title: "Default Properties",
+            },
+            {
+              path: "/advanced-development/data-models/configure-properties",
+              title: "Configure Properties",
+            },
+            {
+              path: "/advanced-development/data-models/relationships",
+              title: "Relationships",
+            },
+            {
+              path: "/advanced-development/data-models/manage-relationships",
+              title: "Manage Relationships",
+            },
+            {
+              path: "/advanced-development/data-models/index",
+              title: "Index",
+            },
+            {
+              path: "/advanced-development/data-models/searchable-property",
+              title: "Searchable Property",
             },
           ],
         },
@@ -164,11 +176,24 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          title: "Scheduled Jobs",
+          children: [
+            {
+              path: "/advanced-development/scheduled-jobs/execution-number",
+              title: "Execution Number",
+            },
+          ],
+        },
+        {
           title: "Workflows",
           children: [
             {
               path: "/advanced-development/workflows/constructor-constraints",
-              title: "Constructor Constraints",
+              title: "Workflow Constraints",
+            },
+            {
+              path: "/advanced-development/workflows/conditions",
+              title: "Conditions in Workflows",
             },
             {
               path: "/advanced-development/workflows/compensation-function",
@@ -235,7 +260,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
       ],
     },
     {
-      path: "/architectural-concepts/architectural-modules",
+      path: "/architectural-modules",
       title: "Architectural Modules",
     },
     {
@@ -249,10 +274,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
         {
           path: "/debugging-and-testing/tools",
           title: "Tools",
-        },
-        {
-          path: "/debugging-and-testing/feature-flags",
-          title: "Feature Flags",
         },
       ],
     },

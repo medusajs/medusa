@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/array
+sidebar_label: array
+---
+
+import { TypeList } from "docs-ui"
+
+# array Property Method - API Reference
+
+This method defines an array of strings property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  names: model.array(),
+  // ...
+})
+
+export default MyCustom
+```

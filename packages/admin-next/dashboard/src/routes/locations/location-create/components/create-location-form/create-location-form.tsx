@@ -8,7 +8,7 @@ import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 const CreateLocationSchema = zod.object({
@@ -56,20 +56,12 @@ export const CreateLocationForm = () => {
       },
       {
         onSuccess: ({ stock_location }) => {
-          toast.success(t("general.success"), {
-            description: t("locations.toast.create"),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("locations.toast.create"))
 
           handleSuccess(`/settings/locations/${stock_location.id}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

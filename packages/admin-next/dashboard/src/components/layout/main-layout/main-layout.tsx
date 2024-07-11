@@ -14,13 +14,13 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
+import { settingsRouteRegex } from "../../../lib/extension-helpers"
+import { Divider } from "../../common/divider"
 import { Skeleton } from "../../common/skeleton"
 import { NavItem, NavItemProps } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import routes from "virtual:medusa/routes/links"
-import { settingsRouteRegex } from "../../../lib/extension-helpers"
-import { Divider } from "../../common/divider"
 
 export const MainLayout = () => {
   return (
@@ -150,8 +150,8 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <CurrencyDollar />,
-      label: t("pricing.domain"),
-      to: "/pricing",
+      label: t("priceLists.domain"),
+      to: "/price-lists",
     },
   ]
 }
@@ -173,9 +173,9 @@ const ExtensionRouteSection = () => {
 
   const links = routes.links
 
-  const extensionLinks = links.filter(
-    (link) => !settingsRouteRegex.test(link.path)
-  )
+  const extensionLinks = links
+    .filter((link) => !settingsRouteRegex.test(link.path))
+    .sort((a, b) => a.label.localeCompare(b.label))
 
   if (!extensionLinks.length) {
     return null

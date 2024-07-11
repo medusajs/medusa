@@ -1,11 +1,14 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICustomerModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import {
+  ModuleRegistrationName,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
@@ -66,11 +69,6 @@ medusaIntegrationTestRunner({
 
         variant = product.variants[0]
         variant2 = product.variants[1]
-
-        await pricingModule.createRuleTypes([
-          { name: "Customer Group ID", rule_attribute: "customer_group_id" },
-          { name: "Region ID", rule_attribute: "region_id" },
-        ])
       })
 
       describe("GET /admin/price-lists", () => {

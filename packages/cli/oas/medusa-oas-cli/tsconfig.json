@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2019"
-    ],
+    "lib": ["es2019"],
     "target": "es2019",
     "outDir": "./dist",
     "esModuleInterop": true,
+    "declarationMap": true,
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -20,9 +19,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "exclude": [
     "dist",
     "src/**/__tests__",

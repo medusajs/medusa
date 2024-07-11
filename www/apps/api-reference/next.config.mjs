@@ -3,7 +3,7 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/api",
   async rewrites() {
     return {
       fallback: [
@@ -12,6 +12,7 @@ const nextConfig = {
           destination: `${
             process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
           }/:path*`,
+          basePath: false,
         },
       ],
     }

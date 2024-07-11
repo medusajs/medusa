@@ -1,7 +1,6 @@
 import * as entities from "./src/models"
-import { defineMikroOrmCliConfig } from "@medusajs/utils"
+import { defineMikroOrmCliConfig, Modules } from "@medusajs/utils"
 
-module.exports = defineMikroOrmCliConfig({
+export default defineMikroOrmCliConfig(Modules.STORE, {
   entities: Object.values(entities),
-  databaseName: "medusa-store",
 })

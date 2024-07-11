@@ -1,20 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse, PromotionDTO } from "@medusajs/types"
-import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
-  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
+  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../components/route-modal"
+import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useAddOrRemoveCampaignPromotions } from "../../../../hooks/api/campaigns"
 import { usePromotions } from "../../../../hooks/api/promotions"
@@ -98,19 +95,14 @@ export const AddCampaignPromotionsForm = ({
       { add: values.promotion_ids },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("campaigns.promotions.toast.success", {
+          toast.success(
+            t("campaigns.promotions.toast.success", {
               count: values.promotion_ids.length,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess()
         },
-        onError: (error) =>
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          }),
+        onError: (error) => toast.error(error.message),
       }
     )
   })
@@ -151,6 +143,9 @@ export const AddCampaignPromotionsForm = ({
             layout="fill"
             pagination
             search
+            noRecords={{
+              message: t("campaigns.promotions.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

@@ -11,10 +11,10 @@
     "lint": "eslint --ext .ts src"
   },
   "peerDependencies": {
-    "typedoc": "0.25.x"
+    "typedoc": "0.26.x"
   },
   "devDependencies": {
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "version": "0.0.0",
   "main": "./lib/index.js",

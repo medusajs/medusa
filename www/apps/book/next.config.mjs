@@ -108,6 +108,13 @@ const nextConfig = {
           }/v2/resources/:path*`,
           basePath: false,
         },
+        {
+          source: "/v2/api/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_URL || "https://localhost:3001"
+          }/v2/api/:path*`,
+          basePath: false,
+        },
         // TODO comment out once we have the user guide published
         // {
         //   source: "/user-guide",
@@ -120,9 +127,9 @@ const nextConfig = {
         //   basePath: false,
         // },
         {
-          source: "/:path*",
+          source: "/:path((?!v2).*)",
           destination: `${
-            process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3000"
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
           }/:path*`,
           basePath: false,
         },

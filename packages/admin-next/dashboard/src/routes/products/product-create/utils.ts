@@ -3,7 +3,10 @@ import { ProductCreateSchemaType } from "./types"
 import { castNumber } from "../../../lib/cast-number"
 
 export const normalizeProductFormValues = (
-  values: ProductCreateSchemaType & { status: HttpTypes.AdminProductStatus }
+  values: ProductCreateSchemaType & {
+    status: HttpTypes.AdminProductStatus
+    regionsCurrencyMap: Record<string, string>
+  }
 ) => {
   const thumbnail = values.media?.find((media) => media.isThumbnail)?.url
   const images = values.media
@@ -39,13 +42,15 @@ export const normalizeProductFormValues = (
     weight: values.weight ? parseFloat(values.weight) : undefined,
     options: values.options.filter((o) => o.title), // clean temp. values
     variants: normalizeVariants(
-      values.variants.filter((variant) => variant.should_create)
+      values.variants.filter((variant) => variant.should_create),
+      values.regionsCurrencyMap
     ),
   }
 }
 
 export const normalizeVariants = (
-  variants: ProductCreateSchemaType["variants"]
+  variants: ProductCreateSchemaType["variants"],
+  regionsCurrencyMap: Record<string, string>
 ) => {
   return variants.map((variant) => ({
     title:
@@ -71,8 +76,11 @@ export const normalizeVariants = (
     prices: Object.entries(variant.prices || {})
       .map(([key, value]: any) => {
         if (key.startsWith("reg_")) {
-          // TODO: route needs to accept region prices as well
-          return undefined
+          return {
+            currency_code: regionsCurrencyMap[key],
+            amount: castNumber(value),
+            rules: { region_id: key },
+          }
         } else {
           return {
             currency_code: key,

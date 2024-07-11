@@ -15,26 +15,25 @@ The Fulfillment Module is the `@medusajs/fulfillment` NPM package that provides 
 Create fulfillments and keep track of their status, items, and more.
 
 ```ts
-const fulfillment =
-  await fulfillmentModuleService.createFulfillment({
-    location_id: "loc_123",
-    provider_id: "webshipper",
-    delivery_address: {
-      country_code: "us",
-      city: "Strongsville",
-      address_1: "18290 Royalton Rd",
+const fulfillment = await fulfillmentModuleService.createFulfillment({
+  location_id: "loc_123",
+  provider_id: "webshipper",
+  delivery_address: {
+    country_code: "us",
+    city: "Strongsville",
+    address_1: "18290 Royalton Rd",
+  },
+  items: [
+    {
+      title: "Shirt",
+      sku: "SHIRT",
+      quantity: 1,
+      barcode: "123456",
     },
-    items: [
-      {
-        title: "Shirt",
-        sku: "SHIRT",
-        quantity: 1,
-        barcode: "123456",
-      },
-    ],
-    labels: [],
-    order: {},
-  })
+  ],
+  labels: [],
+  order: {},
+})
 ```
 
 ### Integrate Third-Party Fulfillment Providers
@@ -42,11 +41,10 @@ const fulfillment =
 Use third-party fulfillment providers to provide customers with shipping options and fulfill their orders.
 
 ```ts
-const shippingOption =
-  await fulfillmentModuleService.createShippingOptions({
-    // ...
-    provider_id: "webshipper",
-  })
+const shippingOption = await fulfillmentModuleService.createShippingOptions({
+  // ...
+  provider_id: "webshipper",
+})
 ```
 
 ### Restrict By Location and Rules
@@ -54,33 +52,31 @@ const shippingOption =
 Shipping options can be restricted to specific geographical locations. You can also specify custom rules to restrict shipping options.
 
 ```ts
-const serviceZone =
-  await fulfillmentModuleService.createServiceZones({
-    name: "US",
-    fulfillment_set_id: "fset_123",
-    geo_zones: [
-      {
-        type: "country",
-        country_code: "us",
-      },
-    ],
-  })
+const serviceZone = await fulfillmentModuleService.createServiceZones({
+  name: "US",
+  fulfillment_set_id: "fset_123",
+  geo_zones: [
+    {
+      type: "country",
+      country_code: "us",
+    },
+  ],
+})
 
-const shippingOption =
-  await fulfillmentModuleService.createShippingOptions({
-    name: "Express Shipping",
-    // restrict location
-    service_zone_id: serviceZone.id,
-    // restrict by custom rules
-    rules: [
-      {
-        field: "customer_group",
-        operator: "eq",
-        value: "vip",
-      },
-    ],
-    // ...
-  })
+const shippingOption = await fulfillmentModuleService.createShippingOptions({
+  name: "Express Shipping",
+  // restrict location
+  service_zone_id: serviceZone.id,
+  // restrict by custom rules
+  rules: [
+    {
+      field: "customer_group",
+      operator: "eq",
+      value: "vip",
+    },
+  ],
+  // ...
+})
 ```
 
 ### Support Different Fulfillment Forms
@@ -88,18 +84,16 @@ const shippingOption =
 Support various fulfillment forms, such as shipping or pick up.
 
 ```ts
-const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets(
-  [
-    {
-      name: "Shipping",
-      type: "shipping",
-    },
-    {
-      name: "Pick-up",
-      type: "pick-up",
-    },
-  ]
-)
+const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets([
+  {
+    name: "Shipping",
+    type: "shipping",
+  },
+  {
+    name: "Pick-up",
+    type: "pick-up",
+  },
+])
 ```
 
 ---
@@ -122,21 +116,21 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IFulfillmentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const fulfillmentModuleService: IFulfillmentModuleService =
-      req.scope.resolve(ModuleRegistrationName.FULFILLMENT)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const fulfillmentModuleService: IFulfillmentModuleService = req.scope.resolve(
+    ModuleRegistrationName.FULFILLMENT
+  )
 
-    res.json({
-      fulfillments:
-        await fulfillmentModuleService.listFulfillments(),
-    })
-  }
-  ```
+  res.json({
+    fulfillments: await fulfillmentModuleService.listFulfillments(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -144,18 +138,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IFulfillmentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const fulfillmentModuleService: IFulfillmentModuleService =
-      container.resolve(ModuleRegistrationName.FULFILLMENT)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const fulfillmentModuleService: IFulfillmentModuleService = container.resolve(
+    ModuleRegistrationName.FULFILLMENT
+  )
 
-    const fulfillments = 
-      await fulfillmentModuleService.listFulfillments()
-  }
-  ```
+  const fulfillments = await fulfillmentModuleService.listFulfillments()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -163,20 +155,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IFulfillmentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const fulfillmentModuleService: IFulfillmentModuleService =
-      container.resolve(
-        ModuleRegistrationName.FULFILLMENT
-      )
-      
-    const fulfillments = 
-      await fulfillmentModuleService.listFulfillments()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const fulfillmentModuleService: IFulfillmentModuleService = container.resolve(
+    ModuleRegistrationName.FULFILLMENT
+  )
+
+  const fulfillments = await fulfillmentModuleService.listFulfillments()
+})
+```
 
   </CodeTab>
 </CodeTabs>

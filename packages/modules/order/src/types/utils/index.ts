@@ -20,6 +20,7 @@ export type VirtualOrder = {
       claim_id?: string
       exchange_id?: string
 
+      item_id?: string
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput
@@ -32,7 +33,7 @@ export type VirtualOrder = {
   }[]
 
   shipping_methods: {
-    shipping_method_id: string
+    id: string
     order_id: string
     return_id?: string
     claim_id?: string
@@ -89,14 +90,14 @@ export interface OrderChangeEvent {
   claim_id?: string
   exchange_id?: string
 
-  group_id?: string
+  change_id?: string
 
   evaluationOnly?: boolean
 
   details?: any
 
   resolve?: {
-    group_id?: string
+    change_id?: string
     reference_id?: string
     amount?: BigNumberInput
   }
@@ -115,6 +116,10 @@ export type OrderReferences = {
   transactions: OrderTransaction[]
   type: ActionTypeDefinition
   actions: InternalOrderChangeEvent[]
+  options?: {
+    addActionReferenceToObject?: boolean
+    [key: string]: unknown
+  }
 }
 
 export interface ActionTypeDefinition {

@@ -1,5 +1,6 @@
-import { ModuleExports } from "@medusajs/types"
+import { Module, Modules } from "@medusajs/utils"
 import { ApiKeyModuleService } from "@services"
 
-const moduleDefinition: ModuleExports = { service: ApiKeyModuleService }
-export default moduleDefinition
+export default Module(Modules.API_KEY, {
+  service: ApiKeyModuleService,
+})

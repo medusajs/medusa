@@ -81,7 +81,7 @@ export const CustomerGroupSection = ({
       title: t("general.areYouSure"),
       description: t("customers.groups.removeMany", {
         groups: customer_groups
-          .filter((g) => customerGroupIds.includes(g.id))
+          ?.filter((g) => customerGroupIds.includes(g.id))
           .map((g) => g.name)
           .join(","),
       }),
@@ -109,10 +109,7 @@ export const CustomerGroupSection = ({
         queryKey: customerGroupsQueryKeys.lists(),
       })
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("general.close"),
-      })
+      toast.error(e.message)
     }
   }
 
@@ -149,6 +146,9 @@ export const CustomerGroupSection = ({
           },
         ]}
         queryObject={raw}
+        noRecords={{
+          message: t("customers.groups.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
@@ -180,14 +180,14 @@ const CustomerGroupRowActions = ({
       return
     }
 
-    try {
-      await mutateAsync({ customer_ids: [customerId] })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("general.close"),
-      })
-    }
+    await mutateAsync(
+      { customer_ids: [customerId] },
+      {
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   }
 
   return (

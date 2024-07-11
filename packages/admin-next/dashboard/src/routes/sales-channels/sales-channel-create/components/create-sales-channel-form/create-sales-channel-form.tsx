@@ -16,7 +16,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateSalesChannel } from "../../../../../hooks/api/sales-channels"
 
 const CreateSalesChannelSchema = zod.object({
@@ -48,17 +48,10 @@ export const CreateSalesChannelForm = () => {
       },
       {
         onSuccess: ({ sales_channel }) => {
-          toast.success(t("general.success"), {
-            description: t("salesChannels.toast.create"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("salesChannels.toast.create"))
           handleSuccess(`../${sales_channel.id}`)
         },
-        onError: (error) =>
-          toast.success(t("general.success"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          }),
+        onError: (error) => toast.success(error.message),
       }
     )
   })

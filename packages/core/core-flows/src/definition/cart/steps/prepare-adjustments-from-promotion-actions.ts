@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AddItemAdjustmentAction,
   AddShippingMethodAdjustment,
@@ -8,7 +7,7 @@ import {
   RemoveItemAdjustmentAction,
   RemoveShippingMethodAdjustment,
 } from "@medusajs/types"
-import { ComputedActions } from "@medusajs/utils"
+import { ComputedActions, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

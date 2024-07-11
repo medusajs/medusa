@@ -4,14 +4,15 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
+  ChangeActionType,
   ReturnStatus,
   getShippingMethodsTotals,
+  isDefined,
   isString,
   promiseAll,
 } from "@medusajs/utils"
 import { Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
-import { ChangeActionType } from "../../utils"
 
 function createReturnReference(em, data, order) {
   return em.create(Return, {
@@ -59,13 +60,17 @@ async function processShippingMethod(
 ) {
   let shippingMethodId
 
+  if (!isDefined(data.shipping_method)) {
+    return
+  }
+
   if (!isString(data.shipping_method)) {
     const methods = await service.createShippingMethods(
       [
         {
+          ...data.shipping_method,
           order_id: data.order_id,
           return_id: returnRef.id,
-          ...data.shipping_method,
         },
       ],
       sharedContext
@@ -90,8 +95,11 @@ async function processShippingMethod(
       action: ChangeActionType.SHIPPING_ADD,
       reference: "order_shipping_method",
       reference_id: shippingMethodId,
-      return_id: returnRef.id,
       amount: calculatedAmount.total,
+      details: {
+        order_id: returnRef.order_id,
+        return_id: returnRef.id,
+      },
     })
   }
 }
@@ -134,8 +142,11 @@ export async function createReturn(
   const em = sharedContext!.transactionManager as any
   const returnRef = createReturnReference(em, data, order)
   const actions: CreateOrderChangeActionDTO[] = []
+
   returnRef.items = createReturnItems(em, data, returnRef, actions)
+
   await processShippingMethod(this, data, returnRef, actions, sharedContext)
+
   const change = await createOrderChange(
     this,
     data,

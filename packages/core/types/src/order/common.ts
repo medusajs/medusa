@@ -6,7 +6,7 @@ import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type ChangeActionType =
   | "CANCEL"
-  | "CANCEL_RETURN"
+  | "CANCEL_RETURN_ITEM"
   | "FULFILL_ITEM"
   | "CANCEL_ITEM_FULFILLMENT"
   | "ITEM_ADD"
@@ -15,8 +15,10 @@ export type ChangeActionType =
   | "RECEIVE_RETURN_ITEM"
   | "RETURN_ITEM"
   | "SHIPPING_ADD"
+  | "SHIPPING_REMOVE"
   | "SHIP_ITEM"
   | "WRITE_OFF_ITEM"
+  | "REINSTATE_ITEM"
 
 export type OrderSummaryDTO = {
   total: BigNumberValue
@@ -478,6 +480,17 @@ export interface OrderLineItemTotalsDTO {
   discount_tax_total: BigNumberValue
 
   /**
+   * The refundable total of the order line item.
+   */
+  refundable_total: BigNumberValue
+
+  /**
+   * The refundable total per unit of the order line item.
+   */
+
+  refundable_total_per_unit: BigNumberValue
+
+  /**
    * The raw original total of the order line item.
    */
   raw_original_total: BigNumberRawValue
@@ -531,6 +544,16 @@ export interface OrderLineItemTotalsDTO {
    * The raw discount tax total of the order line item.
    */
   raw_discount_tax_total: BigNumberRawValue
+
+  /**
+   * The raw refundable total of the order line item..
+   */
+  raw_refundable_total: BigNumberRawValue
+
+  /**
+   * The raw  refundable total per unit of the order line item.
+   */
+  raw_refundable_total_per_unit: BigNumberRawValue
 }
 
 export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
@@ -812,6 +835,10 @@ export interface OrderDTO {
    * The version of the order.
    */
   version: number
+  /**
+   * The active order change, if any.
+   */
+  order_change?: OrderChangeDTO
   /**
    * The status of the order.
    */
@@ -1169,15 +1196,53 @@ export interface OrderChangeDTO {
    */
   id: string
   /**
+   * The version of the order change
+   */
+  version: string
+  /**
+   * The type of the order change
+   */
+  change_type?: "return" | "exchange" | "claim" | "edit"
+  /**
    * The ID of the associated order
    */
   order_id: string
+  /**
+   * The ID of the associated return order
+   */
+  return_id: string
+  /**
+   * The ID of the associated exchange order
+   */
+  exchange_id: string
+  /**
+   * The ID of the associated claim order
+   */
+  claim_id: string
   /**
    * The associated order
    *
    * @expandable
    */
   order: OrderDTO
+  /**
+   * The associated return order
+   *
+   * @expandable
+   */
+  return_order: ReturnDTO
+  /**
+   * The associated exchange order
+   *
+   * @expandable
+   */
+  exchange: OrderExchangeDTO
+  /**
+   * The associated claim order
+   *
+   * @expandable
+   */
+  claim: OrderClaimDTO
 
   /**
    * The actions of the order change

@@ -6,10 +6,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { CreateCampaignFormFields } from "../../../../campaigns/common/components/create-campaign-form-fields"
 import { CampaignDetails } from "./campaign-details"
@@ -54,7 +51,7 @@ export const AddCampaignPromotionFields = ({
         render={({ field }) => {
           return (
             <Form.Item>
-              <Form.Label>Method</Form.Label>
+              <Form.Label>{t("promotions.fields.campaign")}</Form.Label>
 
               <Form.Control>
                 <RadioGroup

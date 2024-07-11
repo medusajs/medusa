@@ -1,0 +1,29 @@
+---
+slug: /references/data-model/property-configuration/index
+sidebar_label: index
+---
+
+import { TypeList } from "docs-ui"
+
+# index Method - API Reference
+
+This method defines an index on a property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id(),
+  name: model.text().index(
+    "IDX_MY_CUSTOM_NAME"
+  ),
+})
+
+export default MyCustom
+```
+
+## Parameters
+
+<TypeList types={[{"name":"name","type":"`string`","description":"The index's name. If not provided,\nMedusa generates the name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="index"/>

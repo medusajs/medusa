@@ -1,3 +1,5 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -12,7 +14,6 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCustomerGroupSchema } from "../../routes/customer-groups/customer-group-create/components/create-customer-group-form"
 import { EditCustomerGroupSchema } from "../../routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
 import { customersQueryKeys } from "./customers"
-import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
 export const customerGroupsQueryKeys = queryKeysFactory(
@@ -25,7 +26,7 @@ export const useCustomerGroup = (
   options?: Omit<
     UseQueryOptions<
       { customer_group: HttpTypes.AdminCustomerGroup },
-      Error,
+      FetchError,
       { customer_group: HttpTypes.AdminCustomerGroup },
       QueryKey
     >,
@@ -45,9 +46,9 @@ export const useCustomerGroups = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
-      Error,
-      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
+      PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
+      FetchError,
+      PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -65,7 +66,7 @@ export const useCustomerGroups = (
 export const useCreateCustomerGroup = (
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     z.infer<typeof CreateCustomerGroupSchema>
   >
 ) => {
@@ -85,7 +86,7 @@ export const useUpdateCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     z.infer<typeof EditCustomerGroupSchema>
   >
 ) => {
@@ -109,7 +110,7 @@ export const useDeleteCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
     { id: string; object: "customer-group"; deleted: boolean },
-    Error,
+    FetchError,
     void
   >
 ) => {
@@ -133,7 +134,7 @@ export const useAddCustomersToGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     { customer_ids: string[] }
   >
 ) => {
@@ -160,7 +161,7 @@ export const useRemoveCustomersFromGroup = (
   id: string,
   options?: UseMutationOptions<
     { customer_group: HttpTypes.AdminCustomerGroup },
-    Error,
+    FetchError,
     { customer_ids: string[] }
   >
 ) => {

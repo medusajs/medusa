@@ -8,20 +8,21 @@ import {
 import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = FileProviderService.getRegistrationIdentifier(klass, name)
+  const key = FileProviderService.getRegistrationIdentifier(
+    klass,
+    pluginOptions.id
+  )
 
-    container.register({
-      [FileProviderRegistrationPrefix + key]: asFunction(
-        (cradle) => new klass(cradle, config),
-        {
-          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-        }
-      ),
-    })
-
-    container.registerAdd(FileProviderIdentifierRegistrationName, asValue(key))
+  container.register({
+    [FileProviderRegistrationPrefix + key]: asFunction(
+      (cradle) => new klass(cradle, pluginOptions.options ?? {}),
+      {
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+      }
+    ),
   })
+
+  container.registerAdd(FileProviderIdentifierRegistrationName, asValue(key))
 }
 
 export default async ({

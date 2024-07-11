@@ -12,4 +12,8 @@ import { BaseRelationship } from "./base"
  */
 export class HasMany<T> extends BaseRelationship<T> {
   type = "hasMany" as const
+
+  static isHasMany<T>(relationship: any): relationship is HasMany<T> {
+    return relationship?.type === "hasMany"
+  }
 }

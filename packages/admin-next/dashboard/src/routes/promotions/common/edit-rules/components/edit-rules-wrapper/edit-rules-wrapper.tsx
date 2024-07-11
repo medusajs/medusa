@@ -5,7 +5,7 @@ import {
   PromotionRuleOperatorValues,
   PromotionRuleResponse,
 } from "@medusajs/types"
-import { useRouteModal } from "../../../../../../components/route-modal"
+import { useRouteModal } from "../../../../../../components/modals"
 import {
   usePromotionAddRules,
   usePromotionRemoveRules,

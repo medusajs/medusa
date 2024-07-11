@@ -13,7 +13,6 @@ import {
   updateLineItemsStepId,
   updatePaymentCollectionStepId,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -28,6 +27,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
@@ -143,6 +143,12 @@ medusaIntegrationTestRunner({
             ],
           })
 
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
@@ -200,6 +206,7 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   quantity: 1,
                   unit_price: 3000,
+                  is_tax_inclusive: true,
                 }),
               ]),
             })
@@ -596,6 +603,12 @@ medusaIntegrationTestRunner({
             ],
           })
 
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
@@ -650,6 +663,7 @@ medusaIntegrationTestRunner({
               items: expect.arrayContaining([
                 expect.objectContaining({
                   unit_price: 3000,
+                  is_tax_inclusive: true,
                   quantity: 1,
                   title: "Test variant",
                 }),
@@ -1458,6 +1472,12 @@ medusaIntegrationTestRunner({
           priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
         })
 
         it("should add shipping method to cart", async () => {
@@ -1500,6 +1520,21 @@ medusaIntegrationTestRunner({
             },
           })
 
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+          })
+
+          // should remove the previous shipping method
+          await addShippingMethodToWorkflow(appContainer).run({
+            input: {
+              options: [{ id: shippingOption.id }],
+              cart_id: cart.id,
+            },
+          })
+
           cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["shipping_methods"],
           })
@@ -1508,12 +1543,13 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: cart.id,
               currency_code: "usd",
-              shipping_methods: expect.arrayContaining([
+              shipping_methods: [
                 expect.objectContaining({
                   amount: 3000,
+                  is_tax_inclusive: true,
                   name: "Test shipping option",
                 }),
-              ]),
+              ],
             })
           )
         })

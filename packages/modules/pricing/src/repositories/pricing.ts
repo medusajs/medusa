@@ -61,65 +61,53 @@ export class PricingRepository
       price: "price",
     })
       .select({
-        id: "price1.id",
-        amount: "price1.amount",
-        min_quantity: "price1.min_quantity",
-        max_quantity: "price1.max_quantity",
-        currency_code: "price1.currency_code",
-        price_set_id: "price1.price_set_id",
-        rules_count: "price1.rules_count",
-        price_list_id: "price1.price_list_id",
+        id: "price.id",
+        amount: "price.amount",
+        min_quantity: "price.min_quantity",
+        max_quantity: "price.max_quantity",
+        currency_code: "price.currency_code",
+        price_set_id: "price.price_set_id",
+        rules_count: "price.rules_count",
+        price_list_id: "price.price_list_id",
         pl_rules_count: "pl.rules_count",
         pl_type: "pl.type",
         has_price_list: knex.raw(
-          "case when price1.price_list_id IS NULL then False else True end"
+          "case when price.price_list_id IS NULL then False else True end"
         ),
       })
-      .leftJoin("price as price1", "price1.id", "price1.id")
-      .leftJoin("price_rule as pr", "pr.price_id", "price1.id")
+      .leftJoin("price_rule as pr", "pr.price_id", "price.id")
       .leftJoin("price_list as pl", function () {
-        this.on("pl.id", "price1.price_list_id").andOn(
+        this.on("pl.id", "price.price_list_id").andOn(
           "pl.status",
           knex.raw("?", [PriceListStatus.ACTIVE])
         )
       })
       .leftJoin("price_list_rule as plr", "plr.price_list_id", "pl.id")
-      .leftJoin(
-        "price_list_rule_value as plrv",
-        "plrv.price_list_rule_id",
-        "plr.id"
-      )
-      .leftJoin("rule_type as plrt", "plrt.id", "plr.rule_type_id")
-      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .orderBy([
-        { column: "rules_count", order: "desc" },
-        { column: "pl.rules_count", order: "desc" },
-      ])
-      .groupBy("price1.id", "pl.id")
+      .groupBy("price.id", "pl.id")
       .having(
         knex.raw(
-          "count(DISTINCT rt.rule_attribute) = price1.rules_count AND price1.price_list_id IS NULL"
+          "count(DISTINCT pr.attribute) = price.rules_count AND price.price_list_id IS NULL"
         )
       )
       .orHaving(
         knex.raw(
-          "count(DISTINCT plrt.rule_attribute) = pl.rules_count AND price1.price_list_id IS NOT NULL"
+          "count(DISTINCT plr.attribute) = pl.rules_count AND price.price_list_id IS NOT NULL"
         )
       )
 
     priceSubQueryKnex.orWhere((q) => {
       for (const [key, value] of Object.entries(context)) {
         q.orWhere({
-          "rt.rule_attribute": key,
+          "pr.attribute": key,
           "pr.value": value,
         })
       }
-      q.orWhere("price1.rules_count", "=", 0)
-      q.whereNull("price1.price_list_id")
+      q.orWhere("price.rules_count", "=", 0)
+      q.whereNull("price.price_list_id")
     })
 
     priceSubQueryKnex.orWhere((q) => {
-      q.whereNotNull("price1.price_list_id")
+      q.whereNotNull("price.price_list_id")
         .andWhere(function () {
           this.whereNull("pl.starts_at").orWhere("pl.starts_at", "<=", date)
         })
@@ -130,9 +118,13 @@ export class PricingRepository
           this.andWhere(function () {
             for (const [key, value] of Object.entries(context)) {
               this.orWhere({
-                "plrt.rule_attribute": key,
+                "plr.attribute": key,
               })
-              this.whereIn("plrv.value", [value])
+              this.where(
+                "plr.value",
+                "@>",
+                JSON.stringify(Array.isArray(value) ? value : [value])
+              )
             }
 
             this.orWhere("pl.rules_count", "=", 0)
@@ -142,13 +134,13 @@ export class PricingRepository
             this.andWhere(function () {
               for (const [key, value] of Object.entries(context)) {
                 this.orWhere({
-                  "rt.rule_attribute": key,
+                  "pr.attribute": key,
                   "pr.value": value,
                 })
               }
-              this.andWhere("price1.rules_count", ">", 0)
+              this.andWhere("price.rules_count", ">", 0)
             })
-            this.orWhere("price1.rules_count", "=", 0)
+            this.orWhere("price.rules_count", "=", 0)
           })
         })
     })
@@ -163,23 +155,22 @@ export class PricingRepository
         min_quantity: "price.min_quantity",
         max_quantity: "price.max_quantity",
         currency_code: "price.currency_code",
-        default_priority: "rt.default_priority",
         rules_count: "price.rules_count",
         pl_rules_count: "price.pl_rules_count",
         price_list_type: "price.pl_type",
         price_list_id: "price.price_list_id",
+        all_rules_count: knex.raw(
+          "COALESCE(price.rules_count, 0) + COALESCE(price.pl_rules_count, 0)"
+        ),
       })
       .join(priceSubQueryKnex.as("price"), "price.price_set_id", "ps.id")
-      .leftJoin("price_rule as pr", "pr.price_id", "price.id")
-      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("price.currency_code", "=", currencyCode)
 
       .orderBy([
         { column: "price.has_price_list", order: "asc" },
+        { column: "all_rules_count", order: "desc" },
         { column: "amount", order: "asc" },
-        { column: "rules_count", order: "desc" },
-        { column: "default_priority", order: "desc" },
       ])
 
     if (quantity) {

@@ -1,7 +1,7 @@
 import { ChildDocs } from "docs-ui"
 
 export const metadata = {
-  title: `Notification Provider Modules`,
+  title: `Notification Module Providers`,
 }
 
 # {metadata.title}
@@ -12,26 +12,26 @@ You can resolve the Notification Module and send notifications in API routes, su
 
 ---
 
-## What is a Notification Provider Module?
+## What is a Notification Module Provider?
 
-A notification provider module implements the logic of sending the notification. It either integrates a third-party service or uses custom logic to send the notification.
+A notification module provider implements the logic of sending the notification. It either integrates a third-party service or uses custom logic to send the notification.
 
 By default, Medusa uses the Local Notification Module which only simulates sending the notification by logging a message in the terminal.
 
-Medusa provides other Notification Modules that actually send notifications, such as the SendGrid Notification Provider Module.
+Medusa provides other Notification Modules that actually send notifications, such as the SendGrid Notification Module Provider.
 
 <ChildDocs type="item" hideItems={["Guides"]} onlyTopLevel={true} />
 
 ---
 
-## Notification Provider Module Channels
+## Notification Module Provider Channels
 
 When you send a notification, you specify the channel to send it through, such as `email` or `sms`. Each provider defined in the Notification Module's `providers` option has a `channels` option specifying which channels it can be used in. Only one provider can be setup for each channel.
 
 For example:
 
 ```js title="medusa-config.js" highlights={[["19"]]}
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -46,12 +46,9 @@ module.exports = {
           // ...
           {
             resolve: "@medusajs/notification-local",
+            id: "notification",
             options: {
-              config: {
-                local: {
-                  channels: ["email"],
-                },
-              },
+              channels: ["email"],
             },
           },
         ],
@@ -65,6 +62,6 @@ The `channels` option is an array of strings indicating the channels this provid
 
 ---
 
-## Create a Notification Provider Module
+## Create a Notification Module Provider
 
-To create a notification provider module, refer to [this guide](/references/notification-provider-module).
+To create a notification module provider, refer to [this guide](/references/notification-provider-module).

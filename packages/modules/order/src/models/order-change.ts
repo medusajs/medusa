@@ -24,7 +24,7 @@ import Order from "./order"
 import OrderChangeAction from "./order-change-action"
 import Return from "./return"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
@@ -211,7 +211,7 @@ export default class OrderChange {
     columnType: "timestamptz",
     nullable: true,
   })
-  canceled_at?: Date
+  canceled_at?: Date | null = null
 
   @Property({
     onCreate: () => new Date(),

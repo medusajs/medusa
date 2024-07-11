@@ -11,13 +11,13 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
+import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
-import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
-import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { CreateFulfillmentSchema } from "./constants"
+import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -66,17 +66,10 @@ export function OrderCreateFulfillmentForm({
           })),
       })
 
+      toast.success(t("orders.fulfillment.toast.created"))
       handleSuccess(`/orders/${order.id}`)
-
-      toast.success(t("general.success"), {
-        description: t("orders.fulfillment.toast.created"),
-        dismissLabel: t("actions.close"),
-      })
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     }
   })
 

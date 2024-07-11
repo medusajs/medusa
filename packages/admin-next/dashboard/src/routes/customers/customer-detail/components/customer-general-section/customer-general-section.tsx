@@ -1,4 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import {
   Container,
   Heading,
@@ -9,9 +10,9 @@ import {
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCustomer } from "../../../../../hooks/api/customers"
-import { HttpTypes } from "@medusajs/types"
 
 type CustomerGeneralSectionProps = {
   customer: HttpTypes.AdminCustomer
@@ -53,20 +54,16 @@ export const CustomerGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("customers.delete.successToast", {
+        toast.success(
+          t("customers.delete.successToast", {
             email: customer.email,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/customers", { replace: true })
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

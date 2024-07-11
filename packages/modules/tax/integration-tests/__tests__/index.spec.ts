@@ -1,7 +1,8 @@
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
+import { Module, Modules } from "@medusajs/utils"
+import { TaxModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
-import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -9,6 +10,243 @@ moduleIntegrationTestRunner<ITaxModuleService>({
   moduleName: Modules.TAX,
   testSuite: ({ service }) => {
     describe("TaxModuleService", function () {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.TAX, {
+          service: TaxModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "taxProvider",
+          "taxRateRule",
+          "taxRate",
+          "taxRegion",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          taxProvider: {
+            id: {
+              linkable: "tax_provider_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxProvider",
+            },
+          },
+          taxRateRule: {
+            id: {
+              linkable: "tax_rate_rule_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRateRule",
+            },
+          },
+          taxRate: {
+            id: {
+              linkable: "tax_rate_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRate",
+            },
+          },
+          taxRegion: {
+            id: {
+              linkable: "tax_region_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRegion",
+            },
+          },
+        })
+      })
+
+      it("should create tax region", async () => {
+        const region = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        expect(region).toEqual(
+          expect.objectContaining({
+            id: region.id,
+            country_code: "us",
+          })
+        )
+      })
+
+      it("should create two tax regions with the same country code but different province", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          province_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: "ca",
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+      })
+
+      it("should create two tax regions in a child-parent-like relationship", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: null,
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+      })
+
+      it("should create three tax regions in a child-parent-like relationship", async () => {
+        const regionOne = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const regionTwo = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NY",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const regionThree = await service.createTaxRegions({
+          country_code: "US",
+          parent_id: regionOne.id,
+          province_code: "NE",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        expect(regionOne).toEqual(
+          expect.objectContaining({
+            id: regionOne.id,
+            country_code: "us",
+            province_code: null,
+          })
+        )
+
+        expect(regionTwo).toEqual(
+          expect.objectContaining({
+            id: regionTwo.id,
+            country_code: "us",
+            province_code: "ny",
+          })
+        )
+
+        expect(regionThree).toEqual(
+          expect.objectContaining({
+            id: regionThree.id,
+            country_code: "us",
+            province_code: "ne",
+          })
+        )
+      })
+
+      it("should throw when creating a tax region with a country code of an existing region", async () => {
+        await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const error = await service.createTaxRegions({
+          country_code: "US",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        }).catch(e => e)
+
+        expect(error.message).toEqual("Tax region with country_code: us, already exists.")
+      })
+
+      it("should throw when creating a tax region with a country code and province code of an existing region", async () => {
+        await service.createTaxRegions({
+          country_code: "US",
+          province_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        })
+
+        const error = await service.createTaxRegions({
+          country_code: "US",
+          province_code: "CA",
+          default_tax_rate: {
+            name: "Test Rate",
+            rate: 0.2,
+          },
+        }).catch(e => e)
+
+        expect(error.message).toEqual("Tax region with country_code: us, province_code: ca, already exists.")
+      })
+      
       it("should create tax rates and update them", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",

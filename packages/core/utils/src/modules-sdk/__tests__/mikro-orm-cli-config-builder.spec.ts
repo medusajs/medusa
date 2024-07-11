@@ -1,36 +1,41 @@
 import { defineMikroOrmCliConfig } from "../mikro-orm-cli-config-builder"
 
+const moduleName = "myTestService"
+
 describe("defineMikroOrmCliConfig", () => {
   test(`should throw an error if entities is not provided`, () => {
-    const options = {
-      databaseName: "medusa-fulfillment",
-    }
+    const options = {}
 
-    expect(() => defineMikroOrmCliConfig(options as any)).toThrow(
+    expect(() => defineMikroOrmCliConfig(moduleName, options as any)).toThrow(
       "defineMikroOrmCliConfig failed with: entities is required"
     )
   })
 
-  test("should throw an error if databaseName is not provided", () => {
-    const options = {
-      entities: [{}],
-    }
-
-    expect(() => defineMikroOrmCliConfig(options as any)).toThrow(
-      "defineMikroOrmCliConfig failed with: databaseName is required"
-    )
-  })
-
   test("should return the correct config", () => {
-    const config = defineMikroOrmCliConfig({
+    const config = defineMikroOrmCliConfig(moduleName, {
       entities: [{} as any],
-      databaseName: "medusa-fulfillment",
+      dbName: "medusa-fulfillment",
     })
 
     expect(config).toEqual({
       entities: [{}],
-      clientUrl: "postgres://postgres@localhost/medusa-fulfillment",
       type: "postgresql",
+      dbName: "medusa-fulfillment",
+      migrations: {
+        generator: expect.any(Function),
+      },
+    })
+  })
+
+  test("should return the correct config inferring the databaseName", () => {
+    const config = defineMikroOrmCliConfig(moduleName, {
+      entities: [{} as any],
+    })
+
+    expect(config).toEqual({
+      entities: [{}],
+      type: "postgresql",
+      dbName: "medusa-my-test",
       migrations: {
         generator: expect.any(Function),
       },

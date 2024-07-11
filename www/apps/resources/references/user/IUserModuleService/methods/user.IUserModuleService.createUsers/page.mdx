@@ -1,0 +1,56 @@
+---
+displayed_sidebar: userReference
+slug: /references/user/createUsers
+sidebar_label: createUsers
+---
+
+import { TypeList } from "docs-ui"
+
+# createUsers - User Module Reference
+
+This documentation provides a reference to the `createUsers` method. This belongs to the User Module.
+
+## createUsers(data, sharedContext?): Promise&#60;[UserDTO](../../../interfaces/user.UserDTO/page.mdx)[]&#62;
+
+This method creates users.
+
+### Example
+
+```ts
+const users = await userModuleService.createUsers([
+  {
+    email: "john@doe.com"
+  },
+  {
+    email: "john2@doe.com"
+  }
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateUserDTO](../../../interfaces/user.CreateUserDTO/page.mdx)[]","description":"The users to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/user.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/user.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createUsers"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[UserDTO](../../../interfaces/user.UserDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created users.","expandable":false,"children":[{"name":"UserDTO[]","type":"[UserDTO](../../../interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UserDTO","type":"`object`","description":"The user details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createUsers"/>
+
+## createUsers(data, sharedContext?): Promise&#60;[UserDTO](../../../interfaces/user.UserDTO/page.mdx)&#62;
+
+This method creates a user.
+
+### Example
+
+```ts
+const user = await userModuleService.createUsers({
+  email: "john@doe.com"
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateUserDTO](../../../interfaces/user.CreateUserDTO/page.mdx)","description":"The user to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/user.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/user.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createUsers"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[UserDTO](../../../interfaces/user.UserDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created user.","expandable":false,"children":[{"name":"UserDTO","type":"[UserDTO](../../../interfaces/user.UserDTO/page.mdx)","optional":false,"defaultValue":"","description":"The user details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createUsers"/>

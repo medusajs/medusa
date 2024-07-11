@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateOrderReturnDTO, IOrderModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CreateReturnStepInput = CreateOrderReturnDTO
@@ -12,8 +12,8 @@ export const createReturnStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.createReturn(data)
-    return new StepResponse(void 0, data.order_id)
+    const orderReturn = await service.createReturn(data)
+    return new StepResponse(orderReturn, data.order_id)
   },
   async (orderId, { container }) => {
     if (!orderId) {

@@ -5,13 +5,10 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 import { ExtendedStoreDTO } from "../../../../../types/api-responses"
-import { useRegions } from "../../../../../hooks/api/regions"
 
 type EditStoreFormProps = {
   store: ExtendedStoreDTO
@@ -44,29 +41,23 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const { regions, isPending: isRegionsLoading } = useRegions({ limit: 999 })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      const normalizedMutation = {
-        ...values,
-        default_currency_code: undefined,
-        supported_currencies: store.supported_currencies?.map((c) => ({
-          ...c,
-          is_default: c.currency_code === values.default_currency_code,
-        })),
-      }
-      await mutateAsync(normalizedMutation)
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.update"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+    const normalizedMutation = {
+      ...values,
+      default_currency_code: undefined,
+      supported_currencies: store.supported_currencies?.map((c) => ({
+        ...c,
+        is_default: c.currency_code === values.default_currency_code,
+      })),
     }
+    await mutateAsync(normalizedMutation, {
+      onSuccess: () => {
+        toast.success(t("store.toast.update"))
+        handleSuccess()
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
   })
 
   return (

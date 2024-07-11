@@ -15,7 +15,7 @@ The Customer Module is the `@medusajs/customer` NPM package that provides custom
 With the Customer Module, store and manage customers in your store.
 
 ```ts
-const customer = await customerModuleService.create({
+const customer = await customerModuleService.createCustomers({
   first_name: "Peter",
   last_name: "Hayes",
   email: "peter.hayes@example.com",
@@ -27,10 +27,9 @@ const customer = await customerModuleService.create({
 You can organize customers into groups. This has a lot of benefits and supports more use cases, such as provide discounts for specific customer groups using the Promotion Module.
 
 ```ts
-const customerGroup =
-  await customerModuleService.createCustomerGroup({
-    name: "VIP",
-  })
+const customerGroup = await customerModuleService.createCustomerGroups({
+  name: "VIP",
+})
 
 await customerModuleService.addCustomerToGroup({
   customer_id: "cus_123",
@@ -52,20 +51,18 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    res.json({
-      customers: await customerModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    customers: await customerModuleService.listCustomers(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -73,17 +70,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const customerModuleService: ICustomerModuleService =
-      container.resolve(ModuleRegistrationName.CUSTOMER)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const customerModuleService: ICustomerModuleService = container.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    const customers = await customerModuleService.list()
-  }
-  ```
+  const customers = await customerModuleService.listCustomers()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -91,17 +87,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const customerModuleService: ICustomerModuleService =
-      container.resolve(ModuleRegistrationName.CUSTOMER)
+const step1 = createStep("step-1", async (_, { container }) => {
+  const customerModuleService: ICustomerModuleService = container.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    const customers = await customerModuleService.list()
-  })
-  ```
+  const customers = await customerModuleService.listCustomers()
+})
+```
 
   </CodeTab>
 </CodeTabs>

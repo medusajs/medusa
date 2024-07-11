@@ -1,4 +1,4 @@
-import { DMLSchema } from "../../entity-builder"
+import { DMLSchema } from "@medusajs/types"
 import { BigNumberProperty } from "../../properties/big-number"
 import { JSONProperty } from "../../properties/json"
 import { NullableModifier } from "../../properties/nullable"
@@ -13,7 +13,7 @@ import { NullableModifier } from "../../properties/nullable"
  * test.amount // valid | type = number
  * test.raw_amount // valid | type = Record<string, any>
  */
-type DMLSchemaWithBigNumber<T extends DMLSchema> = {
+export type DMLSchemaWithBigNumber<T extends DMLSchema> = {
   [K in keyof T]: T[K]
 } & {
   [K in keyof T as T[K] extends
@@ -32,8 +32,8 @@ export function createBigNumberProperties<Schema extends DMLSchema>(
 
   for (const [key, property] of Object.entries(schema)) {
     if (
-      property instanceof BigNumberProperty ||
-      property instanceof NullableModifier
+      BigNumberProperty.isBigNumberProperty(property) ||
+      NullableModifier.isNullableModifier(property)
     ) {
       const parsed = property.parse(key)
 

@@ -8,7 +8,7 @@ In this chapter, you’ll learn how to use Medusa’s logging utility.
 
 ## Logger Class
 
-Medusa provides a `Logger` class that provides advanced logging functionalities. This includes configuring logging levels or saving logs to a file.
+Medusa provides a `Logger` class with advanced logging functionalities. This includes configuring logging levels or saving logs to a file.
 
 The Medusa application registers the `Logger` class in the Medusa container and each module's container as `logger`. 
 
@@ -18,34 +18,43 @@ The Medusa application registers the `Logger` class in the Medusa container and 
 
 Resolve the `logger` using the Medusa container to log a message in your resource.
 
-For example, create the file `src/loaders/log-message.ts` with the following content:
+For example, create the file `src/jobs/log-message.ts` with the following content:
 
 export const highlights = [
-  ["4", "resolve", "Resolve the `Logger` class."],
-  ["6", "info", "Log a message of level `info`."]
+  ["7", "resolve", "Resolve the `Logger` class."],
+  ["9", "info", "Log a message of level `info`."]
 ]
 
-```ts title="src/loaders/log-message.ts" highlights={highlights}
-import { Logger, MedusaContainer } from "@medusajs/medusa"
+```ts title="src/jobs/log-message.ts" highlights={highlights}
+import { Logger } from "@medusajs/medusa"
+import { MedusaContainer } from "@medusajs/types"
 
-export default async (container: MedusaContainer) => {
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
   const logger: Logger = container.resolve("logger")
 
   logger.info("I'm using the logger!")
 }
+
+export const config = {
+  name: "test-logger",
+  // execute every minute
+  schedule: "* * * * *",
+}
 ```
 
-This creates a loader that resolves the `logger` from the Medusa container and uses it to log a message.
+This creates a scheduled job that resolves the `logger` from the Medusa container and uses it to log a message.
 
-### Test the Loader
+### Test the Scheduled Job
 
-To test out the above loader, start the Medusa application:
+To test out the above scheduled job, start the Medusa application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
-You’ll see the following message as part of the logged messages:
+After a minute, you'll see the following message as part of the logged messages:
 
 ```text
 info:    I'm using the logger!
@@ -116,7 +125,7 @@ The environment variable must be set as a system environment variable and not in
 
 ## Show Log with Progress
 
-The `Logger` class has an `activity` method used to log a message of level `info`. If the Medusa application is running in a development environment, a spinner starts that can be used to show progress and succeed or fail the progress.
+The `Logger` class has an `activity` method used to log a message of level `info`. If the Medusa application is running in a development environment, a spinner starts to show the activity's progress.
 
 For example:
 

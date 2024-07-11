@@ -20,7 +20,7 @@ import {
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
 
-type FulfillmentItemOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentItemOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentIdIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment_item",

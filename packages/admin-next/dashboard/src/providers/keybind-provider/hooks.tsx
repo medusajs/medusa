@@ -171,7 +171,7 @@ export const useGlobalShortcuts = () => {
       },
       label: t("app.keyboardShortcuts.goToPriceLists"),
       type: "pageShortcut",
-      callback: () => navigate("/pricing"),
+      callback: () => navigate("/price-lists"),
     },
     {
       keys: {
@@ -220,7 +220,7 @@ export const useGlobalShortcuts = () => {
       },
       label: t("app.keyboardShortcuts.goToTaxRegions"),
       type: "settingShortcut",
-      callback: () => navigate("/settings/taxes"),
+      callback: () => navigate("/settings/tax-regions"),
     },
     {
       keys: {

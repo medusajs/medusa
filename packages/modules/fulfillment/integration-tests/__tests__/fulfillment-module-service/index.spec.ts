@@ -1,15 +1,15 @@
 import { ModulesDefinition } from "@medusajs/modules-sdk"
 import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
+import { Module, Modules } from "@medusajs/utils"
+import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
   initModules,
   moduleIntegrationTestRunner,
   SuiteOptions,
-} from "medusa-test-utils/dist"
+} from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
-import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { Modules } from "@medusajs/utils"
 
 let moduleOptions = {
   providers: [
@@ -18,11 +18,7 @@ let moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "test-provider": {},
-        },
-      },
+      id: "test-provider",
     },
   ],
 }
@@ -107,6 +103,58 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IFulfillmentModuleService>) =>
     describe("Fulfillment Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.FULFILLMENT, {
+          service: FulfillmentModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "fulfillment",
+          "fulfillmentSet",
+          "shippingOption",
+          "shippingOptionRule",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          fulfillment: {
+            id: {
+              linkable: "fulfillment_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillment",
+            },
+          },
+          fulfillmentSet: {
+            id: {
+              linkable: "fulfillment_set_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentSet",
+            },
+          },
+          shippingOption: {
+            id: {
+              linkable: "shipping_option_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOption",
+            },
+          },
+          shippingOptionRule: {
+            id: {
+              linkable: "shipping_option_rule_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOptionRule",
+            },
+          },
+        })
+      })
+
       it("should load and save all the providers on bootstrap with the correct is_enabled value", async () => {
         const databaseConfig = {
           schema: "public",
@@ -125,17 +173,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },
@@ -179,17 +223,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig2,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig2).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },

@@ -1,4 +1,9 @@
-import { HttpTypes, SelectParams } from "@medusajs/types"
+import {
+  AdminBatchProductVariantInventoryItemRequest,
+  AdminBatchProductVariantInventoryItemResponse,
+  HttpTypes,
+  SelectParams,
+} from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -101,6 +106,7 @@ export class Product {
       }
     )
   }
+
   async createVariant(
     productId: string,
     body: HttpTypes.AdminCreateProductVariant,
@@ -117,6 +123,7 @@ export class Product {
       }
     )
   }
+
   async updateVariant(
     productId: string,
     id: string,
@@ -134,6 +141,7 @@ export class Product {
       }
     )
   }
+
   async listVariants(
     productId: string,
     queryParams?: HttpTypes.AdminProductVariantParams,
@@ -147,6 +155,7 @@ export class Product {
       }
     )
   }
+
   async retrieveVariant(
     productId: string,
     id: string,
@@ -161,6 +170,7 @@ export class Product {
       }
     )
   }
+
   async deleteVariant(productId: string, id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
       `/admin/products/${productId}/variants/${id}`,
@@ -170,6 +180,24 @@ export class Product {
       }
     )
   }
+
+  async batchVariantInventoryItems(
+    productId: string,
+    body: HttpTypes.AdminBatchProductVariantInventoryItemRequest,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminBatchProductVariantInventoryItemResponse>(
+      `/admin/products/${productId}/variants/inventory-items/batch`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async createOption(
     productId: string,
     body: HttpTypes.AdminCreateProductOption,
@@ -186,6 +214,7 @@ export class Product {
       }
     )
   }
+
   async updateOption(
     productId: string,
     id: string,
@@ -194,7 +223,7 @@ export class Product {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminProductResponse>(
-      `/admin/products/${productId}/variants/${id}`,
+      `/admin/products/${productId}/options/${id}`,
       {
         method: "POST",
         headers,
@@ -203,6 +232,7 @@ export class Product {
       }
     )
   }
+
   async listOptions(
     productId: string,
     queryParams?: HttpTypes.AdminProductOptionParams,
@@ -216,6 +246,7 @@ export class Product {
       }
     )
   }
+
   async retrieveOption(
     productId: string,
     id: string,
@@ -230,6 +261,7 @@ export class Product {
       }
     )
   }
+
   async deleteOption(productId: string, id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminProductOptionDeleteResponse>(
       `/admin/products/${productId}/options/${id}`,

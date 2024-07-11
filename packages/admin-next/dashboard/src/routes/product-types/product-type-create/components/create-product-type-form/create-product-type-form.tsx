@@ -7,7 +7,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProductType } from "../../../../../hooks/api/product-types"
 
 const CreateProductTypeSchema = z.object({
@@ -31,22 +31,16 @@ export const CreateProductTypeForm = () => {
     async (values: z.infer<typeof CreateProductTypeSchema>) => {
       await mutateAsync(values, {
         onSuccess: ({ product_type }) => {
-          toast.success(t("general.success"), {
-            description: t("productTypes.create.successToast", {
+          toast.success(
+            t("productTypes.create.successToast", {
               value: product_type.value,
-            }),
-            dismissLabel: t("actions.close"),
-            dismissable: true,
-          })
+            })
+          )
 
           handleSuccess(`/settings/product-types/${product_type.id}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-            dismissable: true,
-          })
+          toast.error(e.message)
         },
       })
     }

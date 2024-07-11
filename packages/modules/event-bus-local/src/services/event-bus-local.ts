@@ -14,7 +14,7 @@ type InjectedDependencies = {
   logger: Logger
 }
 
-type StagingQueueType = Map<string, { eventName: string; data?: unknown }[]>
+type StagingQueueType = Map<string, Message[]>
 
 const eventEmitter = new EventEmitter()
 eventEmitter.setMaxListeners(Infinity)
@@ -72,16 +72,15 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     if (eventGroupId) {
       await this.groupEvent(eventGroupId, eventData)
     } else {
-      this.eventEmitter_.emit(eventData.eventName, {
-        data: eventData.data,
-      })
+      const { options, ...eventBody } = eventData
+      this.eventEmitter_.emit(eventData.eventName, eventBody)
     }
   }
 
   // Groups an event to a queue to be emitted upon explicit release
   private async groupEvent<T = unknown>(
     eventGroupId: string,
-    eventData: MessageBody<T>
+    eventData: Message<T>
   ) {
     const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
@@ -94,9 +93,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
     for (const event of groupedEvents) {
-      const { eventName, data } = event
+      const { options, ...eventBody } = event
 
-      this.eventEmitter_.emit(eventName, { data })
+      this.eventEmitter_.emit(event.eventName, eventBody)
     }
 
     this.clearGroupedEvents(eventGroupId)
@@ -109,10 +108,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
     const randId = ulid()
     this.storeSubscribers({ event, subscriberId: randId, subscriber })
-    this.eventEmitter_.on(event, async (...args) => {
+    this.eventEmitter_.on(event, async (data: MessageBody) => {
       try {
-        // @ts-ignore
-        await subscriber(...args)
+        await subscriber(data)
       } catch (e) {
         this.logger_?.error(
           `An error occurred while processing ${event.toString()}: ${e}`

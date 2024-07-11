@@ -19,6 +19,10 @@ import {
 interface InternalOrderSummary extends OrderSummaryCalculated {
   future_temporary_sum: BigNumberInput
 }
+interface ProcessOptions {
+  addActionReferenceToObject?: boolean
+  [key: string]: any
+}
 
 export class OrderChangeProcessing {
   private static typeDefinition: { [key: string]: ActionTypeDefinition } = {}
@@ -30,6 +34,7 @@ export class OrderChangeProcessing {
   private order: VirtualOrder
   private transactions: OrderTransaction[]
   private actions: InternalOrderChangeEvent[]
+  private options: ProcessOptions = {}
 
   private actionsProcessed: { [key: string]: InternalOrderChangeEvent[] } = {}
   private groupTotal: Record<string, BigNumberInput> = {}
@@ -43,14 +48,17 @@ export class OrderChangeProcessing {
     order,
     transactions,
     actions,
+    options,
   }: {
     order: VirtualOrder
     transactions: OrderTransaction[]
     actions: InternalOrderChangeEvent[]
+    options: ProcessOptions
   }) {
     this.order = JSON.parse(JSON.stringify(order))
     this.transactions = JSON.parse(JSON.stringify(transactions ?? []))
     this.actions = JSON.parse(JSON.stringify(actions ?? []))
+    this.options = options
 
     let paid = MathBN.convert(0)
     let refunded = MathBN.convert(0)
@@ -118,10 +126,10 @@ export class OrderChangeProcessing {
 
       const amount = MathBN.mult(action.amount!, type.isDeduction ? -1 : 1)
 
-      if (action.group_id && !action.evaluationOnly) {
-        this.groupTotal[action.group_id] ??= 0
-        this.groupTotal[action.group_id] = MathBN.add(
-          this.groupTotal[action.group_id],
+      if (action.change_id && !action.evaluationOnly) {
+        this.groupTotal[action.change_id] ??= 0
+        this.groupTotal[action.change_id] = MathBN.add(
+          this.groupTotal[action.change_id],
           amount
         )
       }
@@ -146,7 +154,7 @@ export class OrderChangeProcessing {
           amount
         )
       } else {
-        if (!this.isEventDone(action) && !action.group_id) {
+        if (!this.isEventDone(action) && !action.change_id) {
           summary.difference_sum = MathBN.add(summary.difference_sum, amount)
         }
         summary.current_order_total = MathBN.add(
@@ -218,6 +226,7 @@ export class OrderChangeProcessing {
       summary: this.summary,
       transactions: this.transactions,
       type,
+      options: this.options,
     }
     if (typeof type.validate === "function") {
       type.validate(params)
@@ -243,8 +252,8 @@ export class OrderChangeProcessing {
       if (action.resolve.reference_id) {
         this.resolveReferences(action)
       }
-      const groupId = action.resolve.group_id ?? "__default"
-      if (action.resolve.group_id) {
+      const groupId = action.resolve.change_id ?? "__default"
+      if (action.resolve.change_id) {
         // resolve all actions in the same group
         this.resolveGroup(action)
       }
@@ -320,7 +329,7 @@ export class OrderChangeProcessing {
       const type = OrderChangeProcessing.typeDefinition[actionKey]
       const actions = this.actionsProcessed[actionKey]
       for (const action of actions) {
-        if (!resolve?.group_id || action?.group_id !== resolve.group_id) {
+        if (!resolve?.change_id || action?.change_id !== resolve.change_id) {
           continue
         }
 
@@ -393,12 +402,19 @@ export function calculateOrderChange({
   order,
   transactions = [],
   actions = [],
+  options = {},
 }: {
   order: VirtualOrder
   transactions?: OrderTransaction[]
   actions?: OrderChangeEvent[]
+  options?: ProcessOptions
 }) {
-  const calc = new OrderChangeProcessing({ order, transactions, actions })
+  const calc = new OrderChangeProcessing({
+    order,
+    transactions,
+    actions,
+    options,
+  })
   calc.processActions()
 
   return {

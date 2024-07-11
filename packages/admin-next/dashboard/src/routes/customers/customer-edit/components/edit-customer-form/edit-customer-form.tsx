@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -9,14 +10,13 @@ import { Metadata } from "../../../../../components/forms/metadata/index.ts"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal/index.ts"
+} from "../../../../../components/modals/index.ts"
 import { useUpdateCustomer } from "../../../../../hooks/api/customers.tsx"
 import {
   formValuesToMetadata,
   metadataToFormValues,
 } from "../../../../../lib/metadata.ts"
 import { metadataFormSchema } from "../../../../../lib/validation.ts"
-import { HttpTypes } from "@medusajs/types"
 
 type EditCustomerFormProps = {
   customer: HttpTypes.AdminCustomer
@@ -61,20 +61,16 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
       },
       {
         onSuccess: ({ customer }) => {
-          toast.success(t("general.success"), {
-            description: t("customers.edit.successToast", {
+          toast.success(
+            t("customers.edit.successToast", {
               email: customer.email,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

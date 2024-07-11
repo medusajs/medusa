@@ -38,8 +38,11 @@ export default function (theme: MarkdownTheme) {
         md.push(`${memberSymbol(this)} `)
       }
 
-      if (this.parent && this.parent.flags?.length > 0) {
-        md.push(this.parent.flags.join(" ") + " ")
+      const parentFlags = this.parent.flags.getFlagStrings(
+        theme.application.internationalization
+      )
+      if (this.parent && parentFlags.length > 0) {
+        md.push(parentFlags.join(" ") + " ")
       }
 
       if (accessor) {

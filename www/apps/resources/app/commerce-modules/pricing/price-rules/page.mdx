@@ -8,40 +8,24 @@ In this document, you'll learn about price rules for price sets and price lists.
 
 ## Price Rule
 
-Each rule of a price within a price set is represented by the [PriceRule data model](/references/pricing/models/PriceRule), which holds the value of a rule type. The `Price` data model has a `rules_count` field, which indicates how many rules, represented by `PriceRule`, are applied to the price.
+Prices can be restricted by rules. Each rule of a price is represented by the [PriceRule data model](/references/pricing/models/PriceRule).
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648772/Medusa%20Resources/price-rule-1_vy8bn9.jpg)
+The `Price` data model has a `rules_count` property, which indicates how many rules, represented by `PriceRule`, are applied to the price.
 
-For example, you create a `zip_code` rule type. Then, a price within the price set can have the rule value `10557`, indicating that the price can only be applied within the `10557` zip code.
+![A diagram showcasing the relation between the PriceRule and Price](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648772/Medusa%20Resources/price-rule-1_vy8bn9.jpg)
 
-Each price within the price set can have different values for the same rule type.
+For exmaple, you create a price restricted to `10557` zip codes.
 
-For example:
+A price can have multiple price rules. For example:
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648884/Medusa%20Resources/price-rule-2_b6fuyb.jpg)
+![A diagram showcasing the relation between the PriceRule and Price with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649296/Medusa%20Resources/price-rule-3_pwpocz.jpg)
 
-Each price can have multiple rules applied to it as well.
-
-For example, a price can have the rules `zip_code` and `region_id` applied to it. In this case, the value of each rule is represented by a `PriceRule`.
-
-![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649296/Medusa%20Resources/price-rule-3_pwpocz.jpg)
-
----
-
-## Restrict Price Rules
-
-The [PriceSetRuleType data model](/references/pricing/models/PriceSetRuleType) indicates what rules the prices can have within a price set. It creates a relation between the `PriceSet` and `RuleType` data models.
-
-For example, to use the `zip_code` rule type on a price in a price set, the rule type must first be enabled on the price set through the `PriceSetRuleType`.
-
-![A diagram showcasing the relation between the PriceSet, PriceRule, Price, RuleType, and PriceSetRuleType](https://res.cloudinary.com/dza7lstvk/image/upload/v1709649375/Medusa%20Resources/price-set-rule-type_cqqt0u.jpg)
+For example, a price can be restricted by a region and a zip code.
 
 ---
 
 ## Price List Rules
 
-Rules that can be applied to a price list are represented by the [PriceListRule data model](/references/pricing/models/PriceListRule). The `rules_count` field of a `PriceList` indicates how many rules are applied to it.
-
-Each rule of a price list can have more than one value, representing its values by the [PriceListRuleValue data model](/references/pricing/models/PriceListRuleValue).
+Rules that can be applied to a price list are represented by the [PriceListRule data model](/references/pricing/models/PriceListRule). The `rules_count` property of a `PriceList` indicates how many rules are applied to it.
 
 ![A diagram showcasing the relation between the PriceSet, PriceList, Price, RuleType, and PriceListRuleValue](https://res.cloudinary.com/dza7lstvk/image/upload/v1709641999/Medusa%20Resources/price-list_zd10yd.jpg)

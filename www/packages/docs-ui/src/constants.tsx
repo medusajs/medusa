@@ -1,7 +1,8 @@
 import React from "react"
-import { Badge, NavbarItem } from "@/components"
-import { OptionType } from "./hooks"
+import { Badge, NavbarItem, HelpButton } from "@/components"
+import { OptionType } from "@/hooks"
 import { SidebarItemType } from "types"
+import { NotificationItemType } from "@/providers"
 
 export const GITHUB_ISSUES_PREFIX = `https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml`
 export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/new?labels=documentation`
@@ -122,71 +123,10 @@ export const navbarItemsV2: NavbarItem[] = [
   {
     type: "link",
     props: {
-      label: "Medusa V1",
+      label: "Medusa v1",
       target: "_blank",
       rel: "noreferrer",
       href: `/`,
-      badge: {
-        variant: "neutral",
-        children: "v1",
-      },
-    },
-  },
-]
-
-export const legacyNavbarItems: NavbarItem[] = [
-  {
-    type: "link",
-    props: {
-      label: "Docs",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/`,
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "Resources",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/resources`,
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "User Guide",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/user-guide`,
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "Store API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/api/store`,
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "Admin API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/api/admin`,
-    },
-  },
-  {
-    type: "link",
-    props: {
-      label: "UI",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/ui`,
     },
   },
 ]
@@ -263,42 +203,8 @@ export const mobileSidebarItemsV2: SidebarItemType[] = [
     isPathHref: true,
   },
   {
-    title: "Docs",
+    title: "Medusa v1",
     path: `/`,
-    loaded: true,
-    isPathHref: true,
-    additionalElms: <Badge variant="neutral">v1</Badge>,
-  },
-]
-
-export const legacyMobileSidebarItems: SidebarItemType[] = [
-  {
-    title: "Docs",
-    path: `/`,
-    loaded: true,
-    isPathHref: true,
-  },
-  {
-    title: "User Guide",
-    path: `/user-guide`,
-    loaded: true,
-    isPathHref: true,
-  },
-  {
-    title: "Store API",
-    path: `/api/store`,
-    loaded: true,
-    isPathHref: true,
-  },
-  {
-    title: "Admin API",
-    path: `/api/admin`,
-    loaded: true,
-    isPathHref: true,
-  },
-  {
-    title: "UI",
-    path: `/ui`,
     loaded: true,
     isPathHref: true,
   },
@@ -307,7 +213,7 @@ export const legacyMobileSidebarItems: SidebarItemType[] = [
 export const searchFiltersV2: OptionType[] = [
   {
     value: "book",
-    label: "Docs V2",
+    label: "Docs v2",
   },
   {
     value: "resources",
@@ -315,11 +221,11 @@ export const searchFiltersV2: OptionType[] = [
   },
   {
     value: "admin-v2",
-    label: "Admin API",
+    label: "Admin API (v2)",
   },
   {
     value: "store-v2",
-    label: "Store API",
+    label: "Store API (v2)",
   },
   // TODO add more filters
 ]
@@ -354,3 +260,8 @@ export const searchFiltersV1: OptionType[] = [
     label: "UI",
   },
 ]
+
+export const helpButtonNotification: NotificationItemType = {
+  layout: "empty",
+  children: <HelpButton />,
+}

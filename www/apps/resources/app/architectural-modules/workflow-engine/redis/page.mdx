@@ -31,7 +31,7 @@ export const highlights = [
 ]
 
 ```js title="medusa-config.js" highlights={highlights}
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -42,7 +42,7 @@ module.exports = defineConfig({
       resolve: "@medusajs/workflow-engine-redis",
       options: {
         redis: {
-          url: process.emv.WE_REDIS_URL,
+          url: process.env.WE_REDIS_URL,
         },
       },
     },

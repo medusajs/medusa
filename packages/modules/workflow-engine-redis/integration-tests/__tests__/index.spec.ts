@@ -4,13 +4,26 @@ import {
   TransactionTimeoutError,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { IWorkflowEngineService, RemoteQueryFunction } from "@medusajs/types"
-import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
+import {
+  IWorkflowEngineService,
+  MedusaContainer,
+  RemoteQueryFunction,
+} from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+  Module,
+  Modules,
+  TransactionHandlerType,
+  TransactionStepState,
+} from "@medusajs/utils"
+import { asValue } from "awilix"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
+import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
 
 jest.setTimeout(100000)
 
@@ -28,42 +41,70 @@ const afterEach_ = async () => {
 }
 
 describe("Workflow Orchestrator module", function () {
-  describe("Testing basic workflow", function () {
-    let workflowOrcModule: IWorkflowEngineService
-    let query: RemoteQueryFunction
+  let workflowOrcModule: IWorkflowEngineService
+  let query: RemoteQueryFunction
+  let sharedContainer_: MedusaContainer
 
-    afterEach(afterEach_)
+  beforeAll(async () => {
+    const container = createMedusaContainer()
+    container.register(ContainerRegistrationKeys.LOGGER, asValue(console))
 
-    beforeAll(async () => {
-      const {
-        runMigrations,
-        query: remoteQuery,
-        modules,
-      } = await MedusaApp({
-        sharedResourcesConfig: {
-          database: {
-            connection: sharedPgConnection,
-          },
+    const {
+      runMigrations,
+      query: remoteQuery,
+      modules,
+      sharedContainer,
+    } = await MedusaApp({
+      sharedContainer: container,
+      sharedResourcesConfig: {
+        database: {
+          connection: sharedPgConnection,
         },
-        modulesConfig: {
-          workflows: {
-            resolve: __dirname + "/../..",
-            options: {
-              redis: {
-                url: "localhost:6379",
-              },
+      },
+      modulesConfig: {
+        workflows: {
+          resolve: __dirname + "/../..",
+          options: {
+            redis: {
+              url: "localhost:6379",
             },
           },
         },
-      })
-
-      query = remoteQuery
-
-      await runMigrations()
-
-      workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+      },
     })
 
+    query = remoteQuery
+    sharedContainer_ = sharedContainer!
+
+    await runMigrations()
+
+    workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+  })
+
+  it(`should export the appropriate linkable configuration`, () => {
+    const linkable = Module(Modules.WORKFLOW_ENGINE, {
+      service: WorkflowsModuleService,
+    }).linkable
+
+    expect(Object.keys(linkable)).toEqual(["workflowExecution"])
+
+    Object.keys(linkable).forEach((key) => {
+      delete linkable[key].toJSON
+    })
+
+    expect(linkable).toEqual({
+      workflowExecution: {
+        id: {
+          linkable: "workflow_execution_id",
+          primaryKey: "id",
+          serviceName: "workflows",
+          field: "workflowExecution",
+        },
+      },
+    })
+  })
+
+  describe("Testing basic workflow", function () {
     afterEach(afterEach_)
 
     it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
@@ -320,10 +361,14 @@ describe("Workflow Orchestrator module", function () {
     })
 
     it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const logger = sharedContainer_.resolve<Logger>(
+        ContainerRegistrationKeys.LOGGER
+      )
+
       const spy = await createScheduled("remove-scheduled", {
         cron: "* * * * * *",
       })
-      const logSpy = jest.spyOn(console, "warn")
+      const logSpy = jest.spyOn(logger, "warn")
 
       await setTimeout(1100)
       expect(spy).toHaveBeenCalledTimes(1)

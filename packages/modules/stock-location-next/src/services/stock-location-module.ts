@@ -21,7 +21,7 @@ import {
   MedusaService,
   promiseAll,
 } from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
 
 type InjectedDependencies = {
@@ -38,7 +38,7 @@ export default class StockLocationModuleService
   extends MedusaService<{
     StockLocation: { dto: StockLocationTypes.StockLocationDTO }
     StockLocationAddress: { dto: StockLocationTypes.StockLocationAddressDTO }
-  }>({ StockLocation, StockLocationAddress }, entityNameToLinkableKeysMap)
+  }>({ StockLocation, StockLocationAddress })
   implements IStockLocationService
 {
   protected readonly eventBusModuleService_: IEventBusService

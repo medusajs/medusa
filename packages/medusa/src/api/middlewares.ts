@@ -14,7 +14,7 @@ import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
 import { adminOrderRoutesMiddlewares } from "./admin/orders/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
-import { adminPricingRoutesMiddlewares } from "./admin/pricing/middlewares"
+import { adminPricePreferencesRoutesMiddlewares } from "./admin/price-preferences/middlewares"
 import { adminProductCategoryRoutesMiddlewares } from "./admin/product-categories/middlewares"
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminProductTagRoutesMiddlewares } from "./admin/product-tags/middlewares"
@@ -47,6 +47,7 @@ import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middlewares"
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
+import { adminReturnRoutesMiddlewares } from "./admin/returns/middlewares"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -67,6 +68,7 @@ export const config: MiddlewaresConfig = {
     ...adminWorkflowsExecutionsMiddlewares,
     ...storeRegionRoutesMiddlewares,
     ...adminRegionRoutesMiddlewares,
+    ...adminReturnRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
     ...adminInviteRoutesMiddlewares,
     ...adminTaxRateRoutesMiddlewares,
@@ -79,9 +81,9 @@ export const config: MiddlewaresConfig = {
     ...adminProductRoutesMiddlewares,
     ...adminPaymentRoutesMiddlewares,
     ...adminPriceListsRoutesMiddlewares,
+    ...adminPricePreferencesRoutesMiddlewares,
     ...adminInventoryRoutesMiddlewares,
     ...adminCollectionRoutesMiddlewares,
-    ...adminPricingRoutesMiddlewares,
     ...adminShippingOptionRoutesMiddlewares,
     ...adminDraftOrderRoutesMiddlewares,
     ...adminSalesChannelRoutesMiddlewares,

@@ -1,0 +1,143 @@
+export const metadata = {
+  title: `${pageNumber} Module Link`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what a module link is.
+
+<Note type="soon" title="In Development">
+
+Module links are in active development.
+
+</Note>
+
+## What is a Module Link?
+
+A module link forms an association between two data models of different modules, while maintaining module isolation.
+
+You can then retrieve data across the linked modules, and manage their linked records.
+
+<Note title="Use module links when" type="success">
+
+- You want to create a relation between data models from different modules.
+
+</Note>
+
+<Note title="Don't use module links if" type="error">
+
+- You want to create a relationship between data models in the same module. Use data model relationships instead.
+
+</Note>
+
+---
+
+## Prerequisite: isQueryable Configuration
+
+Before you define a module link, you must enable the `isQueryable` configuration of the module.
+
+For example:
+
+```js
+import { HELLO_MODULE } from "./src/modules/hello"
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [HELLO_MODULE]: {
+      resolve: "./modules/hello",
+      definition: {
+        isQueryable: true,
+      },
+    },
+  },
+})
+```
+
+---
+
+## How to Define a Module Link?
+
+### 1. Create Link File
+
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
+
+For example:
+
+export const highlights = [
+  ["6", "linkable", "Special `linkable` property that holds the linkable data models of `HelloModule`."],
+  ["7", "linkable", "Special `linkable` property that holds the linkable data models of `ProductModule`."],
+]
+
+```ts title="src/links/hello-product.ts" highlights={highlights}
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  HelloModule.linkable.myCustom,
+  ProductModule.linkable.product
+)
+```
+
+The `defineLink` function accepts as parameters the link configurations of each module's data model. A module has a special `linkable` property that holds these configurations for its data models.
+
+In this example, you define a module link between the `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
+
+### 2. Run Migrations
+
+Medusa stores links as pivot tables in the database, so you must run migrations after defining a link:
+
+```bash
+npx medusa migrations run
+```
+
+---
+
+## Define a List Link
+
+By default, the defined link establishes a one-to-one relation: a record of a data model is linked to one record of the other data model.
+
+To specify that a data model can have multiple of its records linked to the other data model's record, use the `isList` option.
+
+For example:
+
+```ts
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    linkable: HelloModule.linkable.myCustom,
+    isList: true
+  },
+  ProductModule.linkable.product
+)
+```
+
+In this case, you pass an object of configuration as a parameter instead. The object accepts the following properties:
+
+- `linkable`: The data model's link configuration.
+- `isList`: Whether multiple records can be linked to one record of the other data model.
+
+In this example, a record of `product` can be linked to more than one record of `myCustom`.
+
+---
+
+## Extend Data Models with Module Links
+
+Module links are most useful when you want to add properties to a data model of another module.
+
+For example, to add custom properties to the `Product` data model of the Product Module, you:
+
+1. Create a module.
+2. Create in the module a data model that holds the custom properties you want to add to the `Product` data model.
+2. Define a module link that links your module to the Product Module.
+
+Then, in the next chapters, you'll learn how to:
+
+- Link each product to a record of your data model.
+- Retrieve your data model's properties when you retrieve products.
+

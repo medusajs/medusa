@@ -1,6 +1,7 @@
 import { ISalesChannelModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { SalesChannelModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -31,6 +32,29 @@ moduleIntegrationTestRunner<ISalesChannelModuleService>({
     describe("Sales Channel Service", () => {
       beforeEach(async () => {
         await service.createSalesChannels(salesChannelData)
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.SALES_CHANNEL, {
+          service: SalesChannelModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["salesChannel"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          salesChannel: {
+            id: {
+              linkable: "sales_channel_id",
+              primaryKey: "id",
+              serviceName: "salesChannel",
+              field: "salesChannel",
+            },
+          },
+        })
       })
 
       describe("create", () => {

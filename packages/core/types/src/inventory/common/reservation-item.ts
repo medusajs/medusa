@@ -82,7 +82,7 @@ export interface FilterableReservationItemProps {
   /**
    * @ignore
    *
-   * @privateRemark
+   * @privateRemarks
    * This property is not used.
    */
   type?: string | string[]

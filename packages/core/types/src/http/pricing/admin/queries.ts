@@ -1,3 +1,12 @@
-import { SelectParams } from "../../common"
+import { BaseFilterable } from "../../../dal"
+import { FindParams, SelectParams } from "../../common"
 
-export interface AdminPriceListParams extends SelectParams {}
+export interface AdminPricePreferenceListParams
+  extends FindParams,
+    BaseFilterable<AdminPricePreferenceListParams> {
+  id?: string | string[]
+  attribute?: string | string[]
+  value?: string | string[]
+}
+
+export interface AdminPricePreferenceParams extends SelectParams {}

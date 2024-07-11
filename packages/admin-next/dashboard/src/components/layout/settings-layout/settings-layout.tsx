@@ -42,8 +42,8 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/regions",
       },
       {
-        label: "Taxes",
-        to: "/settings/taxes",
+        label: t("taxRegions.domain"),
+        to: "/settings/tax-regions",
       },
       {
         label: t("salesChannels.domain"),

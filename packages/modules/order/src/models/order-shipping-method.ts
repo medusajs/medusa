@@ -19,7 +19,7 @@ import Order from "./order"
 import Return from "./return"
 import ShippingMethod from "./shipping-method"
 
-type OptionalShippingMethodProps = DAL.EntityDateColumns
+type OptionalShippingMethodProps = DAL.ModelDateColumns
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping",

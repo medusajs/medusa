@@ -92,22 +92,6 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.price_list
-
-      // BREAKING: You need to register rule types before you can use them
-      await api.post(
-        "/admin/pricing/rule-types",
-        { name: "Region ID", rule_attribute: "region_id", default_priority: 0 },
-        adminHeaders
-      )
-      await api.post(
-        "/admin/pricing/rule-types",
-        {
-          name: "Customer Group ID",
-          rule_attribute: "customer_group_id",
-          default_priority: 0,
-        },
-        adminHeaders
-      )
     })
 
     describe("/admin/price-lists", () => {
@@ -129,7 +113,9 @@ medusaIntegrationTestRunner({
               {
                 amount: 105,
                 currency_code: region1.currency_code,
-                region_id: region1.id,
+                rules: {
+                  region_id: region1.id,
+                },
                 variant_id: product1.variants[0].id,
               },
             ],
@@ -524,84 +510,61 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it.skip("Adds a batch of new prices to a price list overriding existing prices", async () => {
-          // BREAKING: There is no support for overriding configuration
+        it("Adds a batch of new prices to a price list overriding existing prices", async () => {
+          // BREAKING: The payload of the batch request changed
+          // BREAKING: The create dataset does an upsert (before an explicit `override` flag was passed)
           const payload = {
-            prices: [
+            create: [
               {
                 amount: 45,
                 currency_code: "usd",
-                variant_id: "test-variant",
-                min_quantity: 1001,
-                max_quantity: 2000,
+                variant_id: product1.variants[0].id,
+                min_quantity: 1,
+                max_quantity: 100,
               },
               {
                 amount: 35,
                 currency_code: "usd",
-                variant_id: "test-variant",
-                min_quantity: 2001,
-                max_quantity: 3000,
-              },
-              {
-                amount: 25,
-                currency_code: "usd",
-                variant_id: "test-variant",
-                min_quantity: 3001,
-                max_quantity: 4000,
+                variant_id: product1.variants[0].id,
+                min_quantity: 101,
+                max_quantity: 500,
               },
             ],
-            override: true,
           }
 
-          const response = await api.post(
-            "/admin/price-lists/pl_no_customer_groups/prices/batch",
+          await api.post(
+            `/admin/price-lists/${pricelist1.id}/prices/batch`,
             payload,
             adminHeaders
           )
 
+          const response = await api.get(
+            `/admin/price-lists/${pricelist1.id}`,
+            adminHeaders
+          )
+
           expect(response.status).toEqual(200)
-          expect(response.data.price_list.prices.length).toEqual(3)
-          expect(response.data.price_list.prices).toMatchSnapshot([
-            {
-              id: expect.any(String),
-              price_list_id: "pl_no_customer_groups",
-              amount: 45,
-              currency_code: "usd",
-              variant_id: "test-variant",
-              min_quantity: 1001,
-              max_quantity: 2000,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              variant: expect.any(Object),
-              variants: expect.any(Array),
-            },
-            {
-              id: expect.any(String),
-              price_list_id: "pl_no_customer_groups",
-              amount: 35,
-              currency_code: "usd",
-              variant_id: "test-variant",
-              min_quantity: 2001,
-              max_quantity: 3000,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              variant: expect.any(Object),
-              variants: expect.any(Array),
-            },
-            {
-              id: expect.any(String),
-              price_list_id: "pl_no_customer_groups",
-              amount: 25,
-              currency_code: "usd",
-              variant_id: "test-variant",
-              min_quantity: 3001,
-              max_quantity: 4000,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              variant: expect.any(Object),
-              variants: expect.any(Array),
-            },
-          ])
+          expect(response.data.price_list.prices.length).toEqual(2)
+          expect(response.data.price_list.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 45,
+                currency_code: "usd",
+                min_quantity: "1",
+                max_quantity: "100",
+                variant_id: product1.variants[0].id,
+              }),
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 35,
+                currency_code: "usd",
+                min_quantity: "101",
+                max_quantity: "500",
+                variant_id: product1.variants[0].id,
+              }),
+            ])
+          )
         })
 
         it("Adds a batch of new prices where a MA record have a `region_id` instead of `currency_code`", async () => {
@@ -612,7 +575,9 @@ medusaIntegrationTestRunner({
                 amount: 100,
                 variant_id: product1.variants[0].id,
                 currency_code: "eur",
-                region_id: region1.id,
+                rules: {
+                  region_id: region1.id,
+                },
               },
               {
                 amount: 200,
@@ -656,7 +621,7 @@ medusaIntegrationTestRunner({
                 id: expect.any(String),
                 amount: 100,
                 currency_code: "eur",
-                // region_id: region1.id,
+                rules: { region_id: region1.id },
                 variant_id: product1.variants[0].id,
               }),
               expect.objectContaining({

@@ -18,12 +18,18 @@ tags:
   - name: Collections
   - name: Currencies
   - name: Customers
+  - name: Orders
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+  - name: Payment Providers
   - name: Product Categories
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreProductCategory"
   - name: Products
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreProduct"
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -33,6 +39,8 @@ tags:
     externalDocs:
       description: How to use regions in a storefront
       url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
+  - name: Return
+  - name: Return Reasons
   - name: Shipping Options
 servers:
   - url: http://localhost:9000
