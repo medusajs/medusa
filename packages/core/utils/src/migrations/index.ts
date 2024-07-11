@@ -5,6 +5,7 @@ import {
   UmzugMigration,
 } from "@mikro-orm/migrations"
 import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
+import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 
 /**
  * Events emitted by the migrations class
@@ -14,17 +15,20 @@ export type MigrationsEvents = {
   migrated: [UmzugMigration]
   reverting: [UmzugMigration]
   reverted: [UmzugMigration]
+  "revert:skipped": [UmzugMigration & { reason: string }]
 }
 
 /**
  * Exposes the API to programmatically manage Mikro ORM migrations
  */
 export class Migrations extends EventEmitter<MigrationsEvents> {
-  #config: Partial<MikroORMOptions>
+  #configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
 
-  constructor(config: Partial<MikroORMOptions>) {
+  constructor(
+    configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
+  ) {
     super()
-    this.#config = config
+    this.#configOrConnection = configOrConnection
   }
 
   /**
@@ -32,10 +36,14 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * one
    */
   async #getConnection() {
+    if ("connect" in this.#configOrConnection) {
+      return this.#configOrConnection as MikroORM<PostgreSqlDriver>
+    }
+
     return await MikroORM.init({
-      ...this.#config,
+      ...this.#configOrConnection,
       migrations: {
-        ...this.#config.migrations,
+        ...this.#configOrConnection.migrations,
         silent: true,
       },
     })
@@ -98,6 +106,29 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
 
     try {
       return await migrator.down(options)
+    } catch (error) {
+      /**
+       * This is a very ugly hack to recover from an exception thrown by
+       * MikrORM when the `down` method is not implemented by the
+       * migration.
+       *
+       * We cannot check if "down" method exists on the migration, because it
+       * always exists (as inherited from the parent class). Also, throwing
+       * an exception is important, so that Mikro ORM does not consider the
+       * given migration as reverted.
+       */
+      if (
+        error?.migration &&
+        error?.cause?.message === "This migration cannot be reverted"
+      ) {
+        this.emit("revert:skipped", {
+          ...error.migration,
+          reason: "Missing down method",
+        })
+        return []
+      }
+
+      throw error
     } finally {
       migrator["umzug"].clearListeners()
       await connection.close(true)

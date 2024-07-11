@@ -1,3 +1,4 @@
+import { ClaimType } from "@medusajs/utils"
 import { z } from "zod"
 import {
   createFindParams,
@@ -37,29 +38,42 @@ export const AdminGetOrdersParams = createFindParams({
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
-const ReturnShippingSchema = z.object({
-  option_id: z.string(),
-  price: z.number().optional(),
-})
-
 const ItemSchema = z.object({
   id: z.string(),
   quantity: z.number().min(1),
   reason_id: z.string().nullish(),
-  note: z.string().nullish(),
+  note: z.string().optional(),
 })
 
 export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
-  items: z.array(ItemSchema),
-  return_shipping: ReturnShippingSchema.optional(),
-  internal_note: z.string().nullish(),
-  receive_now: z.boolean().optional(),
-  refund_amount: z.number().optional(),
-  location_id: z.string().nullish(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<
   typeof AdminPostReturnsReqSchema
+>
+
+export const AdminPostOrderClaimsReqSchema = z.object({
+  type: z.nativeEnum(ClaimType),
+  order_id: z.string(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
+  metadata: z.record(z.unknown()).nullish(),
+})
+export type AdminPostOrderClaimsReqSchemaType = z.infer<
+  typeof AdminPostOrderClaimsReqSchema
+>
+
+export const AdminPostOrderExchangesReqSchema = z.object({
+  order_id: z.string(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
+  metadata: z.record(z.unknown()).nullish(),
+})
+export type AdminPostOrderExchangesReqSchemaType = z.infer<
+  typeof AdminPostOrderExchangesReqSchema
 >
 
 export const AdminPostReceiveReturnsReqSchema = z.object({
