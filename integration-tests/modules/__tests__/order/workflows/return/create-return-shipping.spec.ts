@@ -2,18 +2,15 @@ import {
   beginReturnOrderWorkflow,
   createReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
-import { IFulfillmentModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
+import { OrderDTO, ReturnDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "../__fixtures__"
 
 jest.setTimeout(50000)
-
-const providerId = "manual_test-provider"
 
 medusaIntegrationTestRunner({
   env: { MEDUSA_FF_MEDUSA_V2: true },
@@ -26,7 +23,6 @@ medusaIntegrationTestRunner({
 
     describe("Order change: Create return shipping", () => {
       let order: OrderDTO
-      let service: IFulfillmentModuleService
       let fixtures
 
       let returnOrder: ReturnDTO
@@ -56,7 +52,6 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "status", "order_change_id"],
         })
 
-        service = container.resolve(ModuleRegistrationName.FULFILLMENT)
         ;[returnOrder] = await remoteQuery(remoteQueryObject)
       })
 

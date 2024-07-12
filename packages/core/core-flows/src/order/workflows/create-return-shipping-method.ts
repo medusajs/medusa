@@ -15,9 +15,8 @@ import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
 import {
-  throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
-  throwIfReturnIsCancelled,
+  throwIfIsCancelled,
+  throwIfOrderChangeIsNotActive
 } from "../utils/order-validation"
 
 const validationStep = createStep(
@@ -31,8 +30,8 @@ const validationStep = createStep(
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
   }) {
-    throwIfOrderIsCancelled({ order })
-    throwIfReturnIsCancelled({ orderReturn })
+    throwIfIsCancelled(order, "Order")
+    throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
