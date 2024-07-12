@@ -1160,6 +1160,8 @@ export interface OrderExchangeDTO
   no_notification?: boolean
   difference_due?: BigNumberValue
   return?: ReturnDTO
+  return_id?: string
+  order_id: string
 }
 
 export type PaymentStatus =

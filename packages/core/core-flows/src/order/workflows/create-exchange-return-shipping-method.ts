@@ -2,7 +2,7 @@ import {
   BigNumberInput,
   OrderChangeDTO,
   OrderDTO,
-  ReturnDTO,
+  OrderExchangeDTO,
 } from "@medusajs/types"
 import { ChangeActionType } from "@medusajs/utils"
 import {
@@ -17,39 +17,35 @@ import { createOrderShippingMethods } from "../steps/create-order-shipping-metho
 import {
   throwIfOrderChangeIsNotActive,
   throwIfOrderIsCancelled,
-  throwIfReturnIsCancelled,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "validate-create-return-shipping-method",
+  "validate-create-exchange-return-shipping-method",
   async function ({
     order,
     orderChange,
-    orderReturn,
   }: {
     order: OrderDTO
-    orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
   }) {
     throwIfOrderIsCancelled({ order })
-    throwIfReturnIsCancelled({ orderReturn })
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
 
-export const createReturnShippingMethodWorkflowId =
-  "create-return-shipping-method"
-export const createReturnShippingMethodWorkflow = createWorkflow(
-  createReturnShippingMethodWorkflowId,
+export const createExchangeReturnShippingMethodWorkflowId =
+  "create-exchange-return-shipping-method"
+export const createExchangeReturnShippingMethodWorkflow = createWorkflow(
+  createExchangeReturnShippingMethodWorkflowId,
   function (input: {
-    returnId: string
+    exchangeId: string
     shippingOptionId: string
     customShippingPrice?: BigNumberInput
   }): WorkflowData {
-    const orderReturn: ReturnDTO = useRemoteQueryStep({
-      entry_point: "return",
-      fields: ["id", "status", "order_id"],
-      variables: { id: input.returnId },
+    const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
+      entry_point: "order_exchange",
+      fields: ["id", "status", "order_id", "return_id"],
+      variables: { id: input.exchangeId },
       list: false,
       throw_if_key_not_found: true,
     })
@@ -57,7 +53,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "currency_code"],
-      variables: { id: orderReturn.order_id },
+      variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -79,7 +75,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     }).config({ name: "fetch-shipping-option" })
 
     const shippingMethodInput = transform(
-      { orderReturn, shippingOptions },
+      { orderExchange, shippingOptions },
       (data) => {
         const option = data.shippingOptions[0]
 
@@ -90,8 +86,9 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
           name: option.name,
-          order_id: data.orderReturn.order_id,
-          return_id: data.orderReturn.id,
+          order_id: data.orderExchange.order_id,
+          return_id: data.orderExchange.return_id,
+          exchange_id: data.orderExchange.id,
         }
       }
     )
@@ -103,21 +100,29 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
       fields: ["id", "status"],
-      variables: { order_id: orderReturn.order_id },
+      variables: { order_id: orderExchange.order_id },
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderReturn, orderChange })
+    validationStep({ order, orderChange })
 
     const orderChangeActionInput = transform(
       {
         orderId: order.id,
-        returnId: orderReturn.id,
+        returnId: orderExchange.return_id,
+        exchangeId: orderExchange.id,
         shippingOption: shippingOptions[0],
         methodId: createdMethods[0].id,
         customPrice: input.customShippingPrice,
       },
-      ({ shippingOption, returnId, orderId, methodId, customPrice }) => {
+      ({
+        shippingOption,
+        exchangeId,
+        returnId,
+        orderId,
+        methodId,
+        customPrice,
+      }) => {
         const methodPrice =
           customPrice ?? shippingOption.calculated_price.calculated_amount
 
@@ -129,6 +134,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
           details: {
             order_id: orderId,
             return_id: returnId,
+            exchange_id: exchangeId,
           },
         }
       }
