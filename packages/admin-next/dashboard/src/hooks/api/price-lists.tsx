@@ -70,7 +70,7 @@ export const useCreatePriceList = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.create(payload, query),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
