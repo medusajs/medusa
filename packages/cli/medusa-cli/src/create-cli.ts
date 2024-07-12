@@ -176,10 +176,10 @@ function buildLocalCommands(cli, isLocalProject) {
         action: {
           demand: true,
           description: "The action to perform on migrations",
-          choices: ["run", "revert", "show"],
+          choices: ["run", "revert", "show", "generate"],
         },
         modules: {
-          description: "Revert migrations for defined modules",
+          description: "Modules for which to run the action (revert, generate)",
           demand: false,
         },
       },

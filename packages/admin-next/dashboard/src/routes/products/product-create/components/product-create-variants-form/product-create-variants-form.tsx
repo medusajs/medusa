@@ -26,6 +26,11 @@ export const ProductCreateVariantsForm = ({
 
   const { price_preferences: pricePreferences } = usePricePreferences({})
 
+  const currencyCodes = useMemo(
+    () => store?.supported_currencies?.map((c) => c.currency_code) || [],
+    [store]
+  )
+
   const variants = useWatch({
     control: form.control,
     name: "variants",
@@ -38,9 +43,12 @@ export const ProductCreateVariantsForm = ({
     defaultValue: [],
   })
 
+  /**
+   * NOTE: anything that goes to the datagrid component needs to be memoised otherwise DataGrid will rerender and inputs will loose focus
+   */
   const columns = useColumns({
     options,
-    currencies: store?.supported_currencies?.map((c) => c.currency_code) || [],
+    currencies: currencyCodes,
     regions,
     pricePreferences,
   })

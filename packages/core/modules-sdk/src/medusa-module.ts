@@ -52,6 +52,14 @@ type ModuleAlias = {
   main?: boolean
 }
 
+export type MigrationOptions = {
+  moduleKey: string
+  modulePath: string
+  container?: MedusaContainer
+  options?: Record<string, any>
+  moduleExports?: ModuleExports
+}
+
 export type ModuleBootstrapOptions = {
   moduleKey: string
   defaultPath: string
@@ -536,13 +544,13 @@ class MedusaModule {
     return services
   }
 
-  public static async migrateUp(
-    moduleKey: string,
-    modulePath: string,
-    container?: MedusaContainer,
-    options?: Record<string, any>,
-    moduleExports?: ModuleExports
-  ): Promise<void> {
+  public static async migrateGenerate({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -555,28 +563,31 @@ class MedusaModule {
         allowUnregistered: true,
       }) ?? logger
 
+    container ??= createMedusaContainer()
+
     for (const mod in moduleResolutions) {
-      const [migrateUp] = await loadModuleMigrations(
+      const { generateMigration } = await loadModuleMigrations(
         moduleResolutions[mod],
         moduleExports
       )
 
-      if (typeof migrateUp === "function") {
-        await migrateUp({
+      if (typeof generateMigration === "function") {
+        await generateMigration({
           options,
+          container: container!,
           logger: logger_,
         })
       }
     }
   }
 
-  public static async migrateDown(
-    moduleKey: string,
-    modulePath: string,
-    container?: MedusaContainer,
-    options?: Record<string, any>,
-    moduleExports?: ModuleExports
-  ): Promise<void> {
+  public static async migrateUp({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -589,15 +600,55 @@ class MedusaModule {
         allowUnregistered: true,
       }) ?? logger
 
+    container ??= createMedusaContainer()
+
     for (const mod in moduleResolutions) {
-      const [, migrateDown] = await loadModuleMigrations(
+      const { runMigrations } = await loadModuleMigrations(
         moduleResolutions[mod],
         moduleExports
       )
 
-      if (typeof migrateDown === "function") {
-        await migrateDown({
+      if (typeof runMigrations === "function") {
+        await runMigrations({
           options,
+          container: container!,
+          logger: logger_,
+        })
+      }
+    }
+  }
+
+  public static async migrateDown({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
+    const moduleResolutions = registerMedusaModule(moduleKey, {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resolve: modulePath,
+      options,
+    })
+
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
+
+    container ??= createMedusaContainer()
+
+    for (const mod in moduleResolutions) {
+      const { revertMigration } = await loadModuleMigrations(
+        moduleResolutions[mod],
+        moduleExports
+      )
+
+      if (typeof revertMigration === "function") {
+        await revertMigration({
+          options,
+          container: container!,
           logger: logger_,
         })
       }

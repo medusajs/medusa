@@ -2489,6 +2489,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createOrderClaims",
+                        "title": "createOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createOrderExchanges",
+                        "title": "createOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createOrders",
                         "title": "createOrders",
                         "children": []
@@ -2505,6 +2519,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/createReturnReasons",
                         "title": "createReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createReturns",
+                        "title": "createReturns",
                         "children": []
                       },
                       {
@@ -2580,6 +2601,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaims",
+                        "title": "deleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderExchanges",
+                        "title": "deleteOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrders",
                         "title": "deleteOrders",
                         "children": []
@@ -2589,6 +2624,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/deleteReturnReasons",
                         "title": "deleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteReturns",
+                        "title": "deleteReturns",
                         "children": []
                       },
                       {
@@ -2673,6 +2715,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/listLineItems",
                         "title": "listLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listOrderChangeActions",
+                        "title": "listOrderChangeActions",
                         "children": []
                       },
                       {
@@ -2811,6 +2860,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/restoreOrderClaims",
+                        "title": "restoreOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreOrderExchanges",
+                        "title": "restoreOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/restoreOrders",
                         "title": "restoreOrders",
                         "children": []
@@ -2820,6 +2883,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/restoreReturnReasons",
                         "title": "restoreReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreReturns",
+                        "title": "restoreReturns",
                         "children": []
                       },
                       {
@@ -2869,6 +2939,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/retrieveOrderChange",
                         "title": "retrieveOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrderChangeAction",
+                        "title": "retrieveOrderChangeAction",
                         "children": []
                       },
                       {
@@ -2979,6 +3056,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderClaims",
+                        "title": "softDeleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderExchanges",
+                        "title": "softDeleteOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/softDeleteOrders",
                         "title": "softDeleteOrders",
                         "children": []
@@ -2988,6 +3079,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/softDeleteReturnReasons",
                         "title": "softDeleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteReturns",
+                        "title": "softDeleteReturns",
                         "children": []
                       },
                       {
@@ -3035,8 +3133,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/updateOrderChangeActions",
+                        "title": "updateOrderChangeActions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/updateOrderChanges",
                         "title": "updateOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrderClaims",
+                        "title": "updateOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrderExchanges",
+                        "title": "updateOrderExchanges",
                         "children": []
                       },
                       {
@@ -3058,6 +3177,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/updateReturnReasons",
                         "title": "updateReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateReturns",
+                        "title": "updateReturns",
                         "children": []
                       }
                     ]
@@ -6159,9 +6285,26 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "path": "/recipes",
     "title": "Recipes",
     "hasTitleStyling": true,
+    "isChildSidebar": true,
     "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/marketplace",
+        "title": "Marketplace",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/marketplace/examples/vendors",
+            "title": "Example: Vendors",
+            "children": []
+          }
+        ]
+      },
       {
         "loaded": true,
         "isPathHref": true,
@@ -6195,13 +6338,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/integrate-ecommerce-stack",
         "title": "Integrate Ecommerce Stack",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/marketplace",
-        "title": "Marketplace",
         "children": []
       },
       {
