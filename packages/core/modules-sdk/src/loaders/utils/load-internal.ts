@@ -200,6 +200,7 @@ export async function loadModuleMigrations(
 
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
+        models: moduleResources.models,
         pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
       }
 
