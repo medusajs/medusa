@@ -7,6 +7,8 @@ import {
   toMikroOrmEntities,
   toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
+import { User } from "@medusajs/icons"
+import { DuplicateIdPropertyError } from "../errors"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -546,6 +548,26 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
+    })
+
+    test("should throw on duplicate id definition", () => {
+      const user = model.define("user", {
+        id: model.id().primaryKey(),
+        uuid: model.id(),
+        name: model.text(),
+      })
+
+      let err
+      try {
+        toMikroORMEntity(user)
+      } catch (e) {
+        err = e
+      }
+
+      expect(err).toBeInstanceOf(DuplicateIdPropertyError)
+      expect(err.message).toBe(
+        "The model User can only have one usage of the id() property"
+      )
     })
 
     test("should mark a property as searchable", () => {

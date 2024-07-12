@@ -1,23 +1,16 @@
 import { MetadataStorage, MikroORM } from "@mikro-orm/core"
-import { model } from "../entity-builder"
-import { toMikroOrmEntities } from "../helpers/create-mikro-orm-entity"
+import { model } from "../../entity-builder"
+import { toMikroOrmEntities } from "../../helpers/create-mikro-orm-entity"
 import { createDatabase, dropDatabase } from "pg-god"
-import { mikroOrmSerializer } from "../../dal"
-import { FileSystem } from "../../common"
-import { join } from "path"
+import { CustomTsMigrationGenerator, mikroOrmSerializer } from "../../../dal"
 import { EntityConstructor } from "@medusajs/types"
+import { pgGodCredentials } from "../utils"
+import { FileSystem } from "../../../common"
+import { join } from "path"
 
-const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-const fileSystem = new FileSystem(join(__dirname, "../../migrations"))
+export const fileSystem = new FileSystem(
+  join(__dirname, "../../integration-tests-migrations-many-to-one")
+)
 
 describe("manyToOne - belongTo", () => {
   const dbName = "EntityBuilder-ManyToOne"
@@ -25,21 +18,21 @@ describe("manyToOne - belongTo", () => {
   let orm!: MikroORM
   let Team: EntityConstructor<any>, User: EntityConstructor<any>
 
-  afterAll(() => {
-    fileSystem.cleanup()
+  afterAll(async () => {
+    await fileSystem.cleanup()
   })
 
   beforeEach(async () => {
     MetadataStorage.clear()
 
     const team = model.define("team", {
-      id: model.id(),
+      id: model.id().primaryKey(),
       name: model.text(),
       user: model.belongsTo(() => user, { mappedBy: "teams" }),
     })
 
     const user = model.define("user", {
-      id: model.id(),
+      id: model.id().primaryKey(),
       username: model.text(),
       teams: model.hasMany(() => team, { mappedBy: "user" }),
     })
@@ -52,8 +45,14 @@ describe("manyToOne - belongTo", () => {
       entities: [Team, User],
       tsNode: true,
       dbName,
-      debug: true,
+      password: pgGodCredentials.password,
+      host: pgGodCredentials.host,
+      user: pgGodCredentials.user,
       type: "postgresql",
+      migrations: {
+        generator: CustomTsMigrationGenerator,
+        path: fileSystem.basePath,
+      },
     })
 
     const migrator = orm.getMigrator()
