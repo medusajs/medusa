@@ -31,7 +31,11 @@ import {
 import { asValue } from "awilix"
 import type { Knex } from "knex"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
-import { MedusaModule, RegisterModuleJoinerConfig } from "./medusa-module"
+import {
+  MedusaModule,
+  MigrationOptions,
+  RegisterModuleJoinerConfig,
+} from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
@@ -51,6 +55,7 @@ declare module "@medusajs/types" {
 
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
+export type GenerateMigrations = (moduleNames: string[]) => Promise<void>
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
@@ -225,6 +230,7 @@ export type MedusaAppOutput = {
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
+  generateMigrations: GenerateMigrations
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
   sharedContainer?: MedusaContainer
@@ -354,6 +360,9 @@ async function MedusaApp_({
       revertMigrations: async () => {
         throw new Error("Revert migrations not allowed in loaderOnly mode")
       },
+      generateMigrations: async () => {
+        throw new Error("Generate migrations not allowed in loaderOnly mode")
+      },
     }
   }
 
@@ -406,10 +415,10 @@ async function MedusaApp_({
 
   const applyMigration = async ({
     modulesNames,
-    revert = false,
+    action = "run",
   }: {
     modulesNames: string[]
-    revert?: boolean
+    action?: "run" | "revert" | "generate"
   }) => {
     const moduleResolutions = modulesNames.map((moduleName) => {
       return {
@@ -423,7 +432,6 @@ async function MedusaApp_({
       .map(({ moduleName }) => moduleName)
 
     if (missingModules.length) {
-      const action = revert ? "revert" : "run"
       const error = new MedusaError(
         MedusaError.Types.UNKNOWN_MODULES,
         `Cannot ${action} migrations for unknown module(s) ${missingModules.join(
@@ -443,22 +451,20 @@ async function MedusaApp_({
         }
       }
 
-      if (revert) {
-        await MedusaModule.migrateDown(
-          moduleResolution.definition.key,
-          moduleResolution.resolutionPath as string,
-          sharedContainer,
-          moduleResolution.options,
-          moduleResolution.moduleExports
-        )
+      const migrationOptions: MigrationOptions = {
+        moduleKey: moduleResolution.definition.key,
+        modulePath: moduleResolution.resolutionPath as string,
+        container: sharedContainer,
+        options: moduleResolution.options,
+        moduleExports: moduleResolution.moduleExports,
+      }
+
+      if (action === "revert") {
+        await MedusaModule.migrateDown(migrationOptions)
+      } else if (action === "run") {
+        await MedusaModule.migrateUp(migrationOptions)
       } else {
-        await MedusaModule.migrateUp(
-          moduleResolution.definition.key,
-          moduleResolution.resolutionPath as string,
-          sharedContainer,
-          moduleResolution.options,
-          moduleResolution.moduleExports
-        )
+        await MedusaModule.migrateGenerate(migrationOptions)
       }
     }
   }
@@ -493,7 +499,7 @@ async function MedusaApp_({
   ): Promise<void> => {
     await applyMigration({
       modulesNames,
-      revert: true,
+      action: "revert",
     })
 
     const options: Partial<ModuleServiceInitializeOptions> =
@@ -516,6 +522,15 @@ async function MedusaApp_({
     )
   }
 
+  const generateMigrations: GenerateMigrations = async (
+    modulesNames
+  ): Promise<void> => {
+    await applyMigration({
+      modulesNames,
+      action: "generate",
+    })
+  }
+
   return {
     onApplicationShutdown,
     onApplicationPrepareShutdown,
@@ -526,6 +541,7 @@ async function MedusaApp_({
     notFound,
     runMigrations,
     revertMigrations,
+    generateMigrations,
     sharedContainer: sharedContainer_,
   }
 }

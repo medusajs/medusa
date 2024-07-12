@@ -2,6 +2,7 @@ import {
   Constructor,
   IModuleService,
   InternalModuleDeclaration,
+  LoaderOptions,
   Logger,
   MedusaContainer,
   ModuleExports,
@@ -31,6 +32,11 @@ type ModuleResource = {
   moduleService: Constructor<any>
   normalizedPath: string
 }
+
+type MigrationFunction = (
+  options: LoaderOptions<any>,
+  moduleDeclaration?: InternalModuleDeclaration
+) => Promise<void>
 
 export async function loadInternalModule(
   container: MedusaContainer,
@@ -171,7 +177,11 @@ export async function loadInternalModule(
 export async function loadModuleMigrations(
   resolution: ModuleResolution,
   moduleExports?: ModuleExports
-): Promise<[Function | undefined, Function | undefined]> {
+): Promise<{
+  runMigrations?: MigrationFunction
+  revertMigration?: MigrationFunction
+  generateMigration?: MigrationFunction
+}> {
   let loadedModule: ModuleExports
   try {
     loadedModule =
@@ -179,6 +189,7 @@ export async function loadModuleMigrations(
 
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration
+    let generateMigration = loadedModule.generateMigration
 
     if (!runMigrations || !revertMigration) {
       const moduleResources = await loadResources(
@@ -199,11 +210,15 @@ export async function loadModuleMigrations(
       revertMigration ??= ModulesSdkUtils.buildRevertMigrationScript(
         migrationScriptOptions
       )
+
+      generateMigration ??= ModulesSdkUtils.buildGenerateMigrationScript(
+        migrationScriptOptions
+      )
     }
 
-    return [runMigrations, revertMigration]
+    return { runMigrations, revertMigration, generateMigration }
   } catch {
-    return [undefined, undefined]
+    return {}
   }
 }
 
