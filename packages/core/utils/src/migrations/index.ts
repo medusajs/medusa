@@ -60,7 +60,7 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     const migrator = connection.getMigrator()
 
     try {
-      await this.ensureEmptySnapshot(migrator["snapshotPath"])
+      await this.ensureSnapshot(migrator["snapshotPath"])
       return await migrator.createMigration()
     } finally {
       await connection.close(true)
@@ -147,7 +147,7 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * @param snapshotPath
    * @protected
    */
-  protected async ensureEmptySnapshot(snapshotPath: string): Promise<void> {
+  protected async ensureSnapshot(snapshotPath: string): Promise<void> {
     await mkdir(dirname(snapshotPath), { recursive: true })
 
     const doesFileExists = await access(snapshotPath)

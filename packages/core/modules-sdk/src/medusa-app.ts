@@ -582,3 +582,17 @@ export async function MedusaAppMigrateDown(
 
   await revertMigrations(moduleNames).finally(MedusaModule.clearInstances)
 }
+
+export async function MedusaAppMigrateGenerate(
+  moduleNames: string[],
+  options: MedusaAppOptions = {}
+): Promise<void> {
+  const migrationOnly = true
+
+  const { generateMigrations } = await MedusaApp_({
+    ...options,
+    migrationOnly,
+  })
+
+  await generateMigrations(moduleNames).finally(MedusaModule.clearInstances)
+}

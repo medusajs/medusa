@@ -1,5 +1,5 @@
 import Logger from "../loaders/logger"
-import { migrateMedusaApp, revertMedusaApp } from "../loaders/medusa-app"
+import { runMedusaAppMigrations } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
@@ -57,10 +57,11 @@ const main = async function ({ directory }) {
   if (action === "run") {
     Logger.info("Running migrations...")
 
-    await migrateMedusaApp({
+    await runMedusaAppMigrations({
       configModule,
       linkModules: pluginLinks,
       container,
+      action: "run",
     })
 
     console.log(new Array(TERMINAL_SIZE).join("-"))
@@ -70,11 +71,12 @@ const main = async function ({ directory }) {
     Logger.info("Reverting migrations...")
 
     try {
-      await revertMedusaApp({
-        modulesToRevert: modules,
+      await runMedusaAppMigrations({
+        moduleNames: modules,
         configModule,
         linkModules: pluginLinks,
         container,
+        action: "revert",
       })
       console.log(new Array(TERMINAL_SIZE).join("-"))
       Logger.info("Migrations reverted")
@@ -93,6 +95,19 @@ const main = async function ({ directory }) {
       process.exit(1)
     }
   } else if (action === "generate") {
+    Logger.info("Generating migrations...")
+
+    await runMedusaAppMigrations({
+      moduleNames: modules,
+      configModule,
+      linkModules: pluginLinks,
+      container,
+      action: "generate",
+    })
+
+    console.log(new Array(TERMINAL_SIZE).join("-"))
+    Logger.info("Migrations generated")
+    process.exit()
   } else if (action === "show") {
     Logger.info("Action not supported yet")
     process.exit(0)
