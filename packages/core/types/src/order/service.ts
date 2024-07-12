@@ -75,12 +75,12 @@ import {
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
-  UpdateOrderReturnDTO,
   UpdateOrderReturnReasonDTO,
   UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -1899,12 +1899,12 @@ export interface IOrderModuleService extends IModuleService {
 
   updateReturns(
     selector: Partial<FilterableReturnProps>,
-    data: Partial<UpdateOrderReturnDTO>,
+    data: Partial<UpdateReturnDTO>,
     sharedContext?: Context
   ): Promise<ReturnDTO[]>
   updateReturns(
     id: string,
-    data: Partial<UpdateOrderReturnDTO>,
+    data: Partial<UpdateReturnDTO>,
     sharedContext?: Context
   ): Promise<ReturnDTO>
 

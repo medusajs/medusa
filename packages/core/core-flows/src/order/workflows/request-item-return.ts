@@ -15,10 +15,10 @@ import {
 import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import {
+  throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
   throwIfOrderIsCancelled,
-  throwIfReturnIsCancelled,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
@@ -35,7 +35,7 @@ const validationStep = createStep(
     items: OrderWorkflow.RequestItemReturnWorkflowInput["items"]
   }) {
     throwIfOrderIsCancelled({ order })
-    throwIfReturnIsCancelled({ orderReturn })
+    throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems: items })
   }
@@ -49,7 +49,7 @@ export const requestItemReturnWorkflow = createWorkflow(
   ): WorkflowData<OrderChangeActionDTO[]> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
-      fields: ["id", "status", "refund_amount", "order_id", "items.*"],
+      fields: ["id", "status", "order_id"],
       variables: { id: input.return_id },
       list: false,
       throw_if_key_not_found: true,

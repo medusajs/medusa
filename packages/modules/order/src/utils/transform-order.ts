@@ -97,7 +97,7 @@ function cleanNestedRelations(obj) {
 }
 
 function formatOrderReturn(orderReturn, mainOrder) {
-  orderReturn.items.forEach((orderItem) => {
+  orderReturn.items?.forEach((orderItem) => {
     const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
 
     orderItem.detail = item?.detail

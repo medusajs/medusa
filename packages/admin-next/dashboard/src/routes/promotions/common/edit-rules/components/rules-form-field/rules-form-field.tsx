@@ -213,7 +213,11 @@ export const RulesFormField = ({
                       return (
                         <Form.Item className="basis-1/2">
                           <Form.Control>
-                            <Select {...field} onValueChange={onChange}>
+                            <Select
+                              {...field}
+                              disabled={!fieldRule.attribute}
+                              onValueChange={onChange}
+                            >
                               <Select.Trigger
                                 ref={operatorRef}
                                 className="bg-ui-bg-base"

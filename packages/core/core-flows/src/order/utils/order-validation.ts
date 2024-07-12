@@ -41,15 +41,14 @@ export function throwIfItemsDoesNotExistsInOrder({
   }
 }
 
-export function throwIfReturnIsCancelled({
-  orderReturn,
-}: {
-  orderReturn: ReturnDTO
-}) {
-  if (orderReturn.canceled_at) {
+export function throwIfIsCancelled(
+  obj: unknown & { id: string; canceled_at?: any },
+  type: string
+) {
+  if (obj.canceled_at) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `return with id ${orderReturn.id} has been canceled.`
+      `${type} with id ${obj.id} has been canceled.`
     )
   }
 }
