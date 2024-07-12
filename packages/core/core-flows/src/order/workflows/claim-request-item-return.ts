@@ -26,7 +26,7 @@ import {
 } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "request-item-return-validation",
+  "claim-request-item-return-validation",
   async function ({
     order,
     orderChange,
