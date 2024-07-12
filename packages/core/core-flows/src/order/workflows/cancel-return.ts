@@ -12,7 +12,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { cancelOrderReturnStep } from "../steps"
-import { throwIfReturnIsCancelled } from "../utils/order-validation"
+import { throwIfIsCancelled } from "../utils/order-validation"
 
 const validateOrder = createStep(
   "validate-return",
@@ -27,7 +27,7 @@ const validateOrder = createStep(
       fulfillments: FulfillmentDTO[]
     }
 
-    throwIfReturnIsCancelled({ orderReturn })
+    throwIfIsCancelled(orderReturn, "Return")
 
     const throwErrorIf = (
       arr: unknown[],

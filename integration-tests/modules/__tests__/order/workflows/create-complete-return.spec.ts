@@ -235,7 +235,7 @@ async function createOrderFixture({ container, product }) {
     ModuleRegistrationName.ORDER
   )
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {
@@ -434,7 +434,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             display_id: 1,
-            region_id: "test_region_idclear",
+            region_id: "test_region_id",
             customer_id: "joe",
             version: 2,
             sales_channel_id: "test", // TODO: What about order with a sales channel but a shipping option link to a stock from another channel?

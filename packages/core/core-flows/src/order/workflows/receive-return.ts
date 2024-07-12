@@ -9,8 +9,8 @@ import { useRemoteQueryStep } from "../../common"
 import { ReturnDTO } from "@medusajs/types"
 import { receiveReturnStep } from "../steps/receive-return"
 import {
+  throwIfIsCancelled,
   throwIfItemsDoesNotExistsInReturn,
-  throwIfReturnIsCancelled,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
@@ -25,7 +25,7 @@ const validationStep = createStep(
     },
     context
   ) {
-    throwIfReturnIsCancelled({ orderReturn })
+    throwIfIsCancelled(orderReturn, "Return")
     throwIfItemsDoesNotExistsInReturn({ orderReturn, inputItems: input.items })
   }
 )
