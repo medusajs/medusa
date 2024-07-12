@@ -21,7 +21,7 @@ import {
 } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "creatae-return-shipping-method",
+  "validate-create-return-shipping-method",
   async function ({
     order,
     orderChange,
