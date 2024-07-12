@@ -502,7 +502,9 @@ async function MedusaApp_({
       action: "revert",
     })
 
-    const options: Partial<ModuleServiceInitializeOptions> =
+    // TODO: Temporarely disabling this part until we discussed a more appropriate approach to sync the link
+    // Currently it would revert all link as soon as the revert is run
+    /*const options: Partial<ModuleServiceInitializeOptions> =
       "scope" in linkModuleOrOptions
         ? { ...linkModuleOrOptions.options }
         : {
@@ -519,7 +521,7 @@ async function MedusaApp_({
         injectedDependencies,
       },
       linkModules
-    )
+    )*/
   }
 
   const generateMigrations: GenerateMigrations = async (
