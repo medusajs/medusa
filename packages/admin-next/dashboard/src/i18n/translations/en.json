@@ -578,7 +578,7 @@
     "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit reservation",
-      "orderID": "Order ID",
+      "lineItemId": "Line item ID",
       "description": "Description",
       "location": "Location",
       "inStockAtLocation": "In stock at this location",
@@ -764,6 +764,22 @@
     "reservations": {
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"
+    },
+    "allocateItems": {
+      "action": "Allocate items",
+      "title": "Allocate order items",
+      "locationDescription": "Choose which location you want to allocate from.",
+      "itemsToAllocate": "Items to allocate",
+      "itemsToAllocateDesc": "Select the number of items you wish to allocate",
+      "search": "Search items",
+      "consistsOf": "Consists of {{num}}x inventory items",
+      "requires": "Requires {{num}} per variant",
+      "toast": {
+        "created": "Items successfully allocated"
+      },
+      "error": {
+        "quantityNotAllocated": "There are unallocated items."
+      }
     },
     "shipment": {
       "title": "Mark fulfillment shipped",
@@ -2055,7 +2071,9 @@
   },
   "labels": {
     "productVariant": "Product Variant",
-    "prices": "Prices"
+    "prices": "Prices",
+    "available": "Available",
+    "inStock": "In stock"
   },
   "fields": {
     "amount": "Amount",
@@ -2071,6 +2089,7 @@
     "inventoryItems": "Inventory items",
     "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
+    "qty": "Qty",
     "description": "Description",
     "email": "Email",
     "password": "Password",
