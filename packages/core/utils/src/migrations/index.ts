@@ -6,6 +6,8 @@ import {
 } from "@mikro-orm/migrations"
 import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import { dirname } from "path"
+import { access, mkdir, writeFile } from "fs/promises"
 
 /**
  * Events emitted by the migrations class
@@ -56,7 +58,9 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
   async generate(): Promise<MigrationResult> {
     const connection = await this.#getConnection()
     const migrator = connection.getMigrator()
+
     try {
+      await this.ensureSnapshot(migrator["snapshotPath"])
       return await migrator.createMigration()
     } finally {
       await connection.close(true)
@@ -133,5 +137,36 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
       migrator["umzug"].clearListeners()
       await connection.close(true)
     }
+  }
+
+  /**
+   * Generate a default snapshot file if it does not already exists. This
+   * prevent from creating a database to manage the migrations and instead
+   * rely on the snapshot.
+   *
+   * @param snapshotPath
+   * @protected
+   */
+  protected async ensureSnapshot(snapshotPath: string): Promise<void> {
+    await mkdir(dirname(snapshotPath), { recursive: true })
+
+    const doesFileExists = await access(snapshotPath)
+      .then(() => true)
+      .catch(() => false)
+
+    if (doesFileExists) {
+      return
+    }
+
+    const emptySnapshotContent = JSON.stringify(
+      {
+        tables: [],
+        namespaces: [],
+      },
+      null,
+      2
+    )
+
+    await writeFile(snapshotPath, emptySnapshotContent, "utf-8")
   }
 }

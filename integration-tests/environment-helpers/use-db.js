@@ -11,7 +11,9 @@ const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
-const { migrateMedusaApp } = require("@medusajs/medusa/dist/loaders/medusa-app")
+const {
+  runMedusaAppMigrations,
+} = require("@medusajs/medusa/dist/loaders/medusa-app")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -181,10 +183,7 @@ module.exports = {
 
       instance.setPgConnection(pgConnection)
 
-      await migrateMedusaApp(
-        { configModule, container },
-        { registerInContainer: false }
-      )
+      await runMedusaAppMigrations({ configModule, container })
     }
 
     return dbDataSource

@@ -1,7 +1,6 @@
 import { join } from "path"
 import { setTimeout } from "timers/promises"
 import { MetadataStorage } from "@mikro-orm/core"
-import { createDatabase, dropDatabase } from "pg-god"
 
 import { Migrations } from "../../index"
 import { FileSystem } from "../../../common"
@@ -22,22 +21,12 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-// TODO: Reenable once flakiness is taken care of
-describe.skip("Generate migrations", () => {
+describe("Generate migrations", () => {
   beforeEach(async () => {
-    await dropDatabase(
-      { databaseName: dbName, errorIfNonExist: false },
-      pgGodCredentials
-    )
     await fs.cleanup()
-    await createDatabase({ databaseName: dbName }, pgGodCredentials)
   })
 
   afterEach(async () => {
-    await dropDatabase(
-      { databaseName: dbName, errorIfNonExist: false },
-      pgGodCredentials
-    )
     await fs.cleanup()
     MetadataStorage.clear()
   }, 300 * 1000)
