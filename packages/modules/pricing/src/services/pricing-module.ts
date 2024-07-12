@@ -42,15 +42,15 @@ import {
   Price,
   PriceList,
   PriceListRule,
+  PricePreference,
   PriceRule,
   PriceSet,
-  PricePreference,
 } from "@models"
 
 import { ServiceTypes } from "@types"
 import { eventBuilders, validatePriceListDates } from "@utils"
-import { joinerConfig } from "../joiner-config"
 import { CreatePriceListDTO, UpsertPriceDTO } from "src/types/services"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -338,7 +338,9 @@ export default class PricingModuleService
               calculatedPrice.currency_code!,
               pricingContext.context?.region_id as string
             ),
-            calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
+            calculated_amount:
+              parseFloat((calculatedPrice?.amount as string) || "") || null,
+            raw_calculated_amount: calculatedPrice?.raw_amount || null,
 
             is_original_price_price_list: !!originalPrice?.price_list_id,
             is_original_price_tax_inclusive: originalPrice?.id
@@ -349,7 +351,9 @@ export default class PricingModuleService
                   pricingContext.context?.region_id as string
                 )
               : false,
-            original_amount: parseInt(originalPrice?.amount || "") || null,
+            original_amount:
+              parseFloat((originalPrice?.amount as string) || "") || null,
+            raw_original_amount: originalPrice?.raw_amount || null,
 
             currency_code: calculatedPrice?.currency_code || null,
 
