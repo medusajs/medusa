@@ -1,10 +1,10 @@
 import {
   beginExchangeOrderWorkflow,
   createShippingOptionsWorkflow,
+  orderExchangeRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import {
   FulfillmentWorkflow,
-  IOrderModuleService,
   IRegionModuleService,
   IStockLocationService,
   OrderWorkflow,
@@ -227,18 +227,16 @@ async function prepareDataFixtures({ container }) {
 }
 
 async function createOrderFixture({ container, product }) {
-  const orderService: IOrderModuleService = container.resolve(
-    ModuleRegistrationName.ORDER
-  )
+  const orderService = container.resolve(ModuleRegistrationName.ORDER)
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {
         title: "Custom Item 2",
         variant_sku: product.variants[0].sku,
         variant_title: product.variants[0].title,
-        quantity: 1,
+        quantity: 5,
         unit_price: 50,
         adjustments: [
           {
@@ -250,12 +248,6 @@ async function createOrderFixture({ container, product }) {
           },
         ],
       } as any,
-    ],
-    transactions: [
-      {
-        amount: 50,
-        currency_code: "usd",
-      },
     ],
     sales_channel_id: "test",
     shipping_address: {
@@ -311,7 +303,7 @@ async function createOrderFixture({ container, product }) {
       reference_id: "fulfill_123",
       details: {
         reference_id: order.items![0].id,
-        quantity: 1,
+        quantity: 3,
       },
     },
     {
@@ -356,7 +348,7 @@ medusaIntegrationTestRunner({
         product = fixtures.product
       })
 
-      it("should begin an exchange order", async () => {
+      it("should begin an exchange order, request item return", async () => {
         const order = await createOrderFixture({ container, product })
 
         const createExchangeOrderData: OrderWorkflow.beginOrderExchangeWorkflowInput =
@@ -369,9 +361,9 @@ medusaIntegrationTestRunner({
             },
           }
 
-        await beginExchangeOrderWorkflow(container).run({
+        await beginExchangeOrderWorkflow.run({
+          container,
           input: createExchangeOrderData,
-          throwOnError: true,
         })
 
         const remoteQuery = container.resolve(
@@ -385,15 +377,119 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "metadata"],
         })
 
-        const [returnOrder] = await remoteQuery(remoteQueryObject)
+        const [exchangeOrder] = await remoteQuery(remoteQueryObject)
 
-        expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.metadata).toEqual({
+        expect(exchangeOrder.order_id).toEqual(order.id)
+        expect(exchangeOrder.metadata).toEqual({
           reason: "test",
           extra: "data",
           value: 1234,
         })
-        expect(returnOrder.id).toBeDefined()
+        expect(exchangeOrder.id).toBeDefined()
+
+        // Request itemm to return
+        const { result: preview } =
+          await orderExchangeRequestItemReturnWorkflow.run({
+            throwOnError: true,
+            container,
+            input: {
+              exchange_id: exchangeOrder.id,
+              items: [
+                {
+                  id: order.items![0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+
+        expect(preview.items[0]).toEqual(
+          expect.objectContaining({
+            quantity: 5,
+            id: order.items![0].id,
+            detail: expect.objectContaining({
+              quantity: 5,
+              fulfilled_quantity: 3,
+              return_requested_quantity: 1,
+            }),
+            actions: [
+              expect.objectContaining({
+                order_id: order.id,
+                exchange_id: exchangeOrder.id,
+                version: 2,
+                order_change_id: expect.any(String),
+                reference: "return",
+                reference_id: expect.stringContaining("return_"),
+                action: "RETURN_ITEM",
+                details: expect.objectContaining({
+                  quantity: 1,
+                  return_id: expect.stringContaining("return_"),
+                  exchange_id: exchangeOrder.id,
+                  reference_id: order.items![0].id,
+                }),
+              }),
+            ],
+          })
+        )
+
+        const { errors } = await orderExchangeRequestItemReturnWorkflow.run({
+          throwOnError: false,
+          container,
+          input: {
+            exchange_id: exchangeOrder.id,
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 3,
+              },
+            ],
+          },
+        })
+        expect(errors[0].error.message).toEqual(
+          `Cannot request to return more items than what was fulfilled for item ${
+            order.items![0].id
+          }.`
+        )
+
+        const { result: anotherPreview } =
+          await orderExchangeRequestItemReturnWorkflow.run({
+            container,
+            input: {
+              exchange_id: exchangeOrder.id,
+              items: [
+                {
+                  id: order.items![0].id,
+                  quantity: 2,
+                },
+              ],
+            },
+          })
+
+        expect(anotherPreview.items[0]).toEqual(
+          expect.objectContaining({
+            detail: expect.objectContaining({
+              quantity: 5,
+              fulfilled_quantity: 3,
+              return_requested_quantity: 3,
+            }),
+            actions: [
+              expect.objectContaining({
+                reference_id: preview.items[0].actions[0].reference_id,
+                action: "RETURN_ITEM",
+                details: expect.objectContaining({
+                  quantity: 1,
+                }),
+              }),
+              expect.objectContaining({
+                reference_id: preview.items[0].actions[0].reference_id,
+                action: "RETURN_ITEM",
+                details: expect.objectContaining({
+                  quantity: 2,
+                }),
+              }),
+            ],
+          })
+        )
       })
     })
   },

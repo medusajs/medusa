@@ -326,6 +326,7 @@ export interface CreateOrderChangeActionDTO {
 export interface UpdateOrderChangeActionDTO {
   id: string
   internal_note?: string | null
+  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER TRANSACTION START */
@@ -436,7 +437,8 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   exchange_id?: string
 }
 
-export interface UpdateOrderReturnDTO {
+export interface UpdateReturnDTO {
+  id: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   claim_id?: string
@@ -445,6 +447,7 @@ export interface UpdateOrderReturnDTO {
 }
 
 export interface UpdateOrderClaimDTO {
+  id: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   return_id?: string
@@ -453,6 +456,7 @@ export interface UpdateOrderClaimDTO {
 }
 
 export interface UpdateOrderExchangeDTO {
+  id: string
   difference_due?: BigNumberInput
   no_notification?: boolean
   return_id?: string
@@ -462,7 +466,7 @@ export interface UpdateOrderExchangeDTO {
 
 export interface UpdateOrderReturnWithSelectorDTO {
   selector: Partial<ReturnDTO>
-  data: Partial<UpdateOrderReturnDTO>
+  data: Partial<UpdateReturnDTO>
 }
 
 export interface UpdateOrderClaimWithSelectorDTO {
