@@ -19,7 +19,10 @@ import { InventoryTypes } from "@medusajs/types"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { inventoryItemsQueryKeys } from "./inventory.tsx"
+import {
+  inventoryItemLevelsQueryKeys,
+  inventoryItemsQueryKeys,
+} from "./inventory.tsx"
 
 const RESERVATION_ITEMS_QUERY_KEY = "reservation_items" as const
 export const reservationItemsQueryKeys = queryKeysFactory(
@@ -81,6 +84,9 @@ export const useUpdateReservationItem = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.details(),
       })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemLevelsQueryKeys.details(),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -99,6 +105,9 @@ export const useCreateReservationItem = (
       })
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemLevelsQueryKeys.details(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -121,6 +130,9 @@ export const useDeleteReservationItem = (
       })
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemLevelsQueryKeys.details(),
       })
       options?.onSuccess?.(data, variables, context)
     },
