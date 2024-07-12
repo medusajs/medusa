@@ -190,7 +190,7 @@ export function defineProperty(
     /**
      * Hook to generate entity within the code
      */
-    const generateIdMethodName = `generateId_${field.fieldName}`
+    const generateIdMethodName = `generateId`
     MikroORMEntity.prototype[generateIdMethodName] = function () {
       this[field.fieldName] = generateEntityId(
         this[field.fieldName],
