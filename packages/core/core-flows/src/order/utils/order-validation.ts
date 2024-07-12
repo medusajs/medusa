@@ -1,5 +1,15 @@
-import { OrderDTO, OrderWorkflow, ReturnDTO } from "@medusajs/types"
-import { MedusaError, OrderStatus, arrayDifference } from "@medusajs/utils"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  OrderWorkflow,
+  ReturnDTO,
+} from "@medusajs/types"
+import {
+  MedusaError,
+  OrderStatus,
+  arrayDifference,
+  isPresent,
+} from "@medusajs/utils"
 
 export function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   if (order.status === OrderStatus.CANCELED) {
@@ -18,7 +28,7 @@ export function throwIfItemsDoesNotExistsInOrder({
   inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
 }) {
   const orderItemIds = order.items?.map((i) => i.id) ?? []
-  const inputItemIds = inputItems.map((i) => i.id)
+  const inputItemIds = inputItems?.map((i) => i.id)
   const diff = arrayDifference(inputItemIds, orderItemIds)
 
   if (diff.length) {
@@ -40,6 +50,30 @@ export function throwIfReturnIsCancelled({
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `return with id ${orderReturn.id} has been canceled.`
+    )
+  }
+}
+
+export function throwIfOrderChangeIsNotActive({
+  orderChange,
+}: {
+  orderChange: OrderChangeDTO
+}) {
+  if (!isPresent(orderChange)) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `An active Order Change is required to proceed`
+    )
+  }
+
+  if (
+    orderChange.canceled_at ||
+    orderChange.confirmed_at ||
+    orderChange.declined_at
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order change ${orderChange?.id} is not active to be modified`
     )
   }
 }

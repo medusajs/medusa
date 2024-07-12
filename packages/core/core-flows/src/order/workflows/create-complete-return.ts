@@ -25,7 +25,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createReturnFulfillmentWorkflow } from "../../fulfillment"
-import { createReturnStep } from "../steps/create-return"
+import { createCompleteReturnStep } from "../steps/create-complete-return"
 import { receiveReturnStep } from "../steps/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
@@ -273,6 +273,13 @@ const validationStep = createStep(
     },
     context
   ) {
+    if (!input.items) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Items are required to create a return.`
+      )
+    }
+
     throwIfOrderIsCancelled({ order })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems: input.items })
     await validateReturnReasons(
@@ -359,7 +366,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     )
 
     const [returnCreated] = parallelize(
-      createReturnStep({
+      createCompleteReturnStep({
         order_id: input.order_id,
         items: input.items,
         shipping_method: shippingMethodData,

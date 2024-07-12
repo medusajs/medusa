@@ -1,6 +1,6 @@
 import { BigNumberInput } from "../../totals"
 
-interface CreateReturnItem {
+export interface CreateReturnItem {
   id: string
   quantity: BigNumberInput
   internal_note?: string | null

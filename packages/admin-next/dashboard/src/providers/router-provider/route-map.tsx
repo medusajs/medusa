@@ -114,6 +114,11 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/products/product-create-variant"),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/products/product-metadata"),
+                  },
                 ],
               },
               {
@@ -432,6 +437,11 @@ export const RouteMap: RouteObject[] = [
                         "../../routes/customers/customers-add-customer-group"
                       ),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/customers/customer-metadata"),
+                  },
                 ],
               },
             ],
@@ -478,6 +488,13 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../routes/customer-groups/customer-group-add-customers"
+                      ),
+                  },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/customer-groups/customer-group-metadata"
                       ),
                   },
                 ],

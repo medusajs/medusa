@@ -92,6 +92,7 @@ jobs:
           add-paths: |
             www/apps/resources/references/**
             www/apps/resources/generated/**
+            www/utils/generated/typedoc-json-output
           branch: "docs/generate-reference"
           branch-suffix: "timestamp"
           body: ${{ steps.pr-message.outputs.body }}

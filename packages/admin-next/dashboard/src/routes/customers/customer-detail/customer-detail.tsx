@@ -1,6 +1,7 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
 import { useCustomer } from "../../../hooks/api/customers"
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
@@ -20,7 +21,7 @@ export const CustomerDetail = () => {
   })
 
   if (isLoading || !customer) {
-    return <div>Loading...</div>
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   if (isError) {
@@ -28,28 +29,21 @@ export const CustomerDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={customer} />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        before,
+        after,
+      }}
+      data={customer}
+      hasOutlet
+      showJSON
+      showMetadata
+    >
       <CustomerGeneralSection customer={customer} />
       {/* <CustomerOrderSection customer={customer} />
       // TODO: re-add when order endpoints are added to api-v2
       */}
       <CustomerGroupSection customer={customer} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={customer} />
-          </div>
-        )
-      })}
-      <JsonViewSection data={customer} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

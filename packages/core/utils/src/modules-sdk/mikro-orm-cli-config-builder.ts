@@ -1,6 +1,6 @@
 import { MikroORMOptions } from "@mikro-orm/core/utils/Configuration"
 import { DmlEntity, toMikroOrmEntities } from "../dml"
-import { TSMigrationGenerator } from "../dal"
+import { CustomTsMigrationGenerator } from "../dal"
 import type {
   AnyEntity,
   EntityClass,
@@ -59,7 +59,7 @@ export function defineMikroOrmCliConfig(
     ...options,
     entities,
     migrations: {
-      generator: TSMigrationGenerator,
+      generator: CustomTsMigrationGenerator,
       ...options.migrations,
     },
   }

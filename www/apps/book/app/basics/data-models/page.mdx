@@ -58,12 +58,13 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
   1. Create the file `src/modules/hello/migrations-config.ts` with the following content:
 
-  ```ts highlights={[["7", '"medusa-hello"', "Use any database name relevant for your module."]]}
+  ```ts
   import { defineMikroOrmCliConfig } from "@medusajs/utils"
   import path from "path"
   import MyCustom from "./models/my-custom"
+  import { HELLO_MODULE } from "."
 
-  export default defineMikroOrmCliConfig("hello", {
+  export default defineMikroOrmCliConfig(HELLO_MODULE, {
     entities: [MyCustom] as any[],
     migrations: {
       path: path.join(__dirname, "migrations"),

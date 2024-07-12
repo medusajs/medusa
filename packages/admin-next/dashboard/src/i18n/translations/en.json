@@ -62,6 +62,30 @@
       "description": "View the JSON data for this object."
     }
   },
+  "metadata": {
+    "header": "Metadata",
+    "numberOfKeys_one": "{{count}} key",
+    "numberOfKeys_other": "{{count}} keys",
+    "edit": {
+      "header": "Edit Metadata",
+      "description": "Edit the metadata for this object.",
+      "successToast": "Metadata was successfully updated.",
+      "actions": {
+        "insertRowAbove": "Insert row above",
+        "insertRowBelow": "Insert row below",
+        "deleteRow": "Delete row"
+      },
+      "labels": {
+        "key": "Key",
+        "value": "Value"
+      },
+      "complexRow": {
+        "label": "Some rows are disabled",
+        "description": "This object contains non-primitive metadata, such as arrays or objects, that can't be edited here. To edit the disabled rows, use the API directly.",
+        "tooltip": "This row is disabled because it contains non-primitive data."
+      }
+    }
+  },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
@@ -2202,11 +2226,6 @@
     "endDate": "End date",
     "draft": "Draft",
     "values": "Values"
-  },
-  "metadata": {
-    "warnings": {
-      "ignoredKeys": "This entities metadata contains complex values that we currently don't support editing through the admin UI. Due to this, the following keys are currently not being displayed: {{keys}}. You can still edit these values using the API."
-    }
   },
   "dateTime": {
     "years_one": "Year",
