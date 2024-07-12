@@ -3,41 +3,34 @@ import {
   MetadataStorage,
   MikroORM,
 } from "@mikro-orm/core"
-import { model } from "../entity-builder"
-import { toMikroOrmEntities } from "../helpers/create-mikro-orm-entity"
+import { model } from "../../entity-builder"
+import { toMikroOrmEntities } from "../../helpers/create-mikro-orm-entity"
 import { createDatabase, dropDatabase } from "pg-god"
-import { mikroOrmSerializer } from "../../dal"
-import { FileSystem } from "../../common"
-import { join } from "path"
+import { CustomTsMigrationGenerator, mikroOrmSerializer } from "../../../dal"
 import { EntityConstructor } from "@medusajs/types"
+import { pgGodCredentials } from "../utils"
+import { FileSystem } from "../../../common"
+import { join } from "path"
 
-const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-const fileSystem = new FileSystem(join(__dirname, "../../migrations"))
+export const fileSystem = new FileSystem(
+  join(__dirname, "../../integration-tests-migrations-enum")
+)
 
 describe("EntityBuilder | enum", () => {
   const dbName = "EntityBuilder-enum"
 
   let orm!: MikroORM
-  let Team: EntityConstructor<any>, User: EntityConstructor<any>
+  let User: EntityConstructor<any>
 
-  afterAll(() => {
-    fileSystem.cleanup()
+  afterAll(async () => {
+    await fileSystem.cleanup()
   })
 
   beforeEach(async () => {
     MetadataStorage.clear()
 
     const user = model.define("user", {
-      id: model.id(),
+      id: model.id().primaryKey(),
       username: model.text(),
       role: model.enum(["admin", "moderator", "editor"]),
     })
@@ -52,6 +45,10 @@ describe("EntityBuilder | enum", () => {
       dbName,
       debug: true,
       type: "postgresql",
+      migrations: {
+        generator: CustomTsMigrationGenerator,
+        path: fileSystem.basePath,
+      },
     })
 
     const migrator = orm.getMigrator()
