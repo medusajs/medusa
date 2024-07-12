@@ -1,22 +1,19 @@
 import {
-  IOrderModuleService,
+  BigNumberInput,
   OrderChangeDTO,
   OrderDTO,
   ReturnDTO,
 } from "@medusajs/types"
-import {
-  ChangeActionType,
-  ModuleRegistrationName
-} from "@medusajs/utils"
+import { ChangeActionType } from "@medusajs/utils"
 import {
   createStep,
   createWorkflow,
-  StepResponse,
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
+import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
 import {
   throwIfOrderChangeIsNotActive,
   throwIfOrderIsCancelled,
@@ -40,33 +37,6 @@ const validationStep = createStep(
   }
 )
 
-const createOrderReturnShipping = createStep(
-  "create-order-return-shipping",
-  async (input: { shippingMethods: any[] }, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
-
-    const created = await service.createShippingMethods(input.shippingMethods)
-
-    return new StepResponse(
-      created,
-      created.map((c) => c.id)
-    )
-  },
-  async (createdMethodIds, { container }) => {
-    if (!createdMethodIds) {
-      return
-    }
-
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
-
-    await service.deleteShippingMethods(createdMethodIds)
-  }
-)
-
 export const createReturnShippingMethodWorkflowId =
   "create-return-shipping-method"
 export const createReturnShippingMethodWorkflow = createWorkflow(
@@ -74,6 +44,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
   function (input: {
     returnId: string
     shippingOptionId: string
+    customShippingPrice?: BigNumberInput
   }): WorkflowData {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
@@ -125,8 +96,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       }
     )
 
-    const createdMethods = createOrderReturnShipping({
-      shippingMethods: [shippingMethodInput],
+    const createdMethods = createOrderShippingMethods({
+      shipping_methods: [shippingMethodInput],
     })
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
@@ -144,15 +115,17 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         returnId: orderReturn.id,
         shippingOption: shippingOptions[0],
         methodId: createdMethods[0].id,
+        customPrice: input.customShippingPrice,
       },
-      ({ shippingOption, returnId, orderId, methodId }) => {
-        const methodPrice = shippingOption.calculated_price.calculated_amount
-        
+      ({ shippingOption, returnId, orderId, methodId, customPrice }) => {
+        const methodPrice =
+          customPrice ?? shippingOption.calculated_price.calculated_amount
+
         return {
           action: ChangeActionType.SHIPPING_ADD,
           reference: "order_shipping_method",
           reference_id: methodId,
-          amount: methodPrice.bigNumber,
+          amount: methodPrice,
           details: {
             order_id: orderId,
             return_id: returnId,

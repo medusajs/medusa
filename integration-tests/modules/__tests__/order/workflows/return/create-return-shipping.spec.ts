@@ -2,7 +2,7 @@ import {
   beginReturnOrderWorkflow,
   createReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
-import { IOrderModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
+import { IFulfillmentModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -13,6 +13,8 @@ import { createOrderFixture, prepareDataFixtures } from "../__fixtures__"
 
 jest.setTimeout(50000)
 
+const providerId = "manual_test-provider"
+
 medusaIntegrationTestRunner({
   env: { MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ getContainer }) => {
@@ -22,13 +24,15 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Order change action workflows", () => {
+    describe("Order change: Create return shipping", () => {
       let order: OrderDTO
-      let service: IOrderModuleService
+      let service: IFulfillmentModuleService
+      let fixtures
+
       let returnOrder: ReturnDTO
 
       beforeEach(async () => {
-        const fixtures = await prepareDataFixtures({ container })
+        fixtures = await prepareDataFixtures({ container })
 
         order = await createOrderFixture({
           container,
@@ -52,46 +56,72 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "status", "order_change_id"],
         })
 
-        service = container.resolve(ModuleRegistrationName.ORDER)
+        service = container.resolve(ModuleRegistrationName.FULFILLMENT)
         ;[returnOrder] = await remoteQuery(remoteQueryObject)
       })
 
       describe("createReturnShippingMethodWorkflow", () => {
-        it.only("should successfully add a return item to order change", async () => {
-          const item = order.items![0]
-
-          const shippingMethodData = {
-            name: "Standard Shipping",
-            amount: 1000,
-          }
+        it("should successfully add return shipping to order changes", async () => {
+          const shippingOptionId = fixtures.shippingOption.id
 
           const { result } = await createReturnShippingMethodWorkflow(
             container
           ).run({
             input: {
               returnId: returnOrder.id,
-              shippingMethod: shippingMethodData,
+              shippingOptionId: shippingOptionId,
             },
           })
 
-          console.log("Result: ", result)
+          const orderChange = result?.[0]
 
-          //   expect(returnItem).toEqual(
-          //     expect.objectContaining({
-          //       id: expect.any(String),
-          //       order_id: order.id,
-          //       return_id: returnOrder.id,
-          //       reference: "return",
-          //       reference_id: returnOrder.id,
-          //       details: {
-          //         reference_id: item.id,
-          //         return_id: returnOrder.id,
-          //         quantity: 1,
-          //       },
-          //       internal_note: "test",
-          //       action: "RETURN_ITEM",
-          //     })
-          //   )
+          expect(orderChange).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              reference: "order_shipping_method",
+              reference_id: expect.any(String),
+              details: {
+                order_id: returnOrder.order_id,
+                return_id: returnOrder.id,
+              },
+              raw_amount: { value: "10", precision: 20 },
+              applied: false,
+              action: "SHIPPING_ADD",
+              amount: 10,
+            })
+          )
+        })
+
+        it("should successfully add return shipping with custom price to order changes", async () => {
+          const shippingOptionId = fixtures.shippingOption.id
+
+          const { result } = await createReturnShippingMethodWorkflow(
+            container
+          ).run({
+            input: {
+              returnId: returnOrder.id,
+              shippingOptionId: shippingOptionId,
+              customShippingPrice: 20,
+            },
+          })
+
+          const orderChange = result?.[0]
+
+          expect(orderChange).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              reference: "order_shipping_method",
+              reference_id: expect.any(String),
+              details: {
+                order_id: returnOrder.order_id,
+                return_id: returnOrder.id,
+              },
+              raw_amount: { value: "20", precision: 20 },
+              applied: false,
+              action: "SHIPPING_ADD",
+              amount: 20,
+            })
+          )
         })
       })
     })
