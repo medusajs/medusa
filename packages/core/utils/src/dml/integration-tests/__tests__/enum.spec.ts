@@ -43,7 +43,9 @@ describe("EntityBuilder | enum", () => {
       entities: [User],
       tsNode: true,
       dbName,
-      debug: true,
+      password: pgGodCredentials.password,
+      host: pgGodCredentials.host,
+      user: pgGodCredentials.user,
       type: "postgresql",
       migrations: {
         generator: CustomTsMigrationGenerator,
