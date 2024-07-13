@@ -56,25 +56,29 @@ export function throwIfIsCancelled(
 export function throwIfOrderChangeIsNotActive({
   orderChange,
 }: {
-  orderChange: OrderChangeDTO
+  orderChange: OrderChangeDTO | OrderChangeDTO[]
 }) {
-  if (!isPresent(orderChange)) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `An active Order Change is required to proceed`
-    )
-  }
+  const changes = Array.isArray(orderChange) ? orderChange : [orderChange]
 
-  if (
-    orderChange.canceled_at ||
-    orderChange.confirmed_at ||
-    orderChange.declined_at
-  ) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Order change ${orderChange?.id} is not active to be modified`
-    )
-  }
+  changes.forEach((orderChange) => {
+    if (!isPresent(orderChange)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `An active Order Change is required to proceed`
+      )
+    }
+
+    if (
+      orderChange.canceled_at ||
+      orderChange.confirmed_at ||
+      orderChange.declined_at
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order change ${orderChange?.id} is not active to be modified`
+      )
+    }
+  })
 }
 
 export function throwIfItemsDoesNotExistsInReturn({

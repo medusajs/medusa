@@ -146,6 +146,11 @@ medusaIntegrationTestRunner({
     })
 
     describe("Returns lifecycle", () => {
+      // Simple lifecyle:
+      // 1. Initiate return
+      // 2. Request to return items
+      // 3. Add return shipping
+      // 4. Confirm return
       it("should initiate a return", async () => {
         let result = await api.post(
           "/admin/returns",
@@ -156,19 +161,17 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        // TODO: Endpoint should return Return instead of Order Change
-        const returnId = result.data.return.return_id
+        const returnId = result.data.return.id
 
         expect(result.data.return).toEqual(
           expect.objectContaining({
             id: expect.any(String),
-            return_id: expect.any(String),
-            change_type: "return",
-            actions: [],
-            description: "Test",
-            status: "pending",
             order_id: order.id,
-            version: 2,
+            display_id: 1,
+            order_version: 1,
+            status: "requested",
+            items: [],
+            shipping_methods: [],
           })
         )
 
@@ -192,6 +195,12 @@ medusaIntegrationTestRunner({
           {
             shipping_option_id: returnShippingOption.id,
           },
+          adminHeaders
+        )
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request`,
+          {},
           adminHeaders
         )
       })

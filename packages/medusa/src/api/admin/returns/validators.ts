@@ -121,3 +121,11 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
 export type AdminPostReturnsRequestItemsReqSchemaType = z.infer<
   typeof AdminPostReturnsRequestItemsReqSchema
 >
+
+export const AdminPostReturnsConfirmRequestReqSchema = z.object({
+  no_notification: z.boolean().optional(),
+})
+
+export type AdminPostReturnsConfirmRequestReqSchemaType = z.infer<
+  typeof AdminPostReturnsConfirmRequestReqSchema
+>

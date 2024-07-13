@@ -444,6 +444,13 @@ export interface UpdateReturnDTO {
   claim_id?: string
   exchange_id?: string
   metadata?: Record<string, unknown> | null
+  items?: {
+    quantity: BigNumberInput
+    internal_note?: string | null
+    note?: string | null
+    reason_id?: string | null
+    metadata?: Record<string, unknown> | null
+  }[]
 }
 
 export interface UpdateOrderClaimDTO {
