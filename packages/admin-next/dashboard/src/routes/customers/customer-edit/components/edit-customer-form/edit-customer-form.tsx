@@ -6,17 +6,11 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { ConditionalTooltip } from "../../../../../components/common/conditional-tooltip/index.ts"
 import { Form } from "../../../../../components/common/form/index.ts"
-import { Metadata } from "../../../../../components/forms/metadata/index.ts"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/modals/index.ts"
 import { useUpdateCustomer } from "../../../../../hooks/api/customers.tsx"
-import {
-  formValuesToMetadata,
-  metadataToFormValues,
-} from "../../../../../lib/metadata.ts"
-import { metadataFormSchema } from "../../../../../lib/validation.ts"
 
 type EditCustomerFormProps = {
   customer: HttpTypes.AdminCustomer
@@ -28,7 +22,6 @@ const EditCustomerSchema = zod.object({
   last_name: zod.string().optional(),
   company_name: zod.string().optional(),
   phone: zod.string().optional(),
-  metadata: metadataFormSchema,
 })
 
 export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
@@ -42,7 +35,6 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
       last_name: customer.last_name || "",
       company_name: customer.company_name || "",
       phone: customer.phone || "",
-      metadata: metadataToFormValues(customer.metadata),
     },
     resolver: zodResolver(EditCustomerSchema),
   })
@@ -57,7 +49,6 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
         last_name: data.last_name || null,
         phone: data.phone || null,
         company_name: data.company_name || null,
-        metadata: formValuesToMetadata(data.metadata),
       },
       {
         onSuccess: ({ customer }) => {
@@ -161,7 +152,6 @@ export const EditCustomerForm = ({ customer }: EditCustomerFormProps) => {
                 )
               }}
             />
-            <Metadata form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

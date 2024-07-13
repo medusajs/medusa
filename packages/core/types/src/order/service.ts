@@ -5,6 +5,8 @@ import { Context } from "../shared-context"
 import {
   FilterableOrderAddressProps,
   FilterableOrderChangeActionProps,
+  FilterableOrderClaimProps,
+  FilterableOrderExchangeProps,
   FilterableOrderLineItemAdjustmentProps,
   FilterableOrderLineItemProps,
   FilterableOrderLineItemTaxLineProps,
@@ -14,6 +16,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   FilterableOrderTransactionProps,
+  FilterableReturnProps,
   OrderAddressDTO,
   OrderChangeActionDTO,
   OrderChangeDTO,
@@ -62,7 +65,11 @@ import {
   UpdateOrderAddressDTO,
   UpdateOrderChangeActionDTO,
   UpdateOrderChangeDTO,
+  UpdateOrderClaimDTO,
+  UpdateOrderClaimWithSelectorDTO,
   UpdateOrderDTO,
+  UpdateOrderExchangeDTO,
+  UpdateOrderExchangeWithSelectorDTO,
   UpdateOrderItemDTO,
   UpdateOrderItemWithSelectorDTO,
   UpdateOrderLineItemDTO,
@@ -70,8 +77,10 @@ import {
   UpdateOrderLineItemWithSelectorDTO,
   UpdateOrderReturnReasonDTO,
   UpdateOrderReturnReasonWithSelectorDTO,
+  UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -1865,13 +1874,128 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<void>
 
   softDeleteReturnReasons<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
   restoreReturnReasons<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createReturns(
+    data: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  createReturns(
+    data: CreateOrderReturnDTO[],
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+
+  updateReturns(data: UpdateOrderReturnWithSelectorDTO[]): Promise<ReturnDTO[]>
+
+  updateReturns(
+    selector: Partial<FilterableReturnProps>,
+    data: Partial<UpdateReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+  updateReturns(
+    id: string,
+    data: Partial<UpdateReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  deleteReturns(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteReturns<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreReturns<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createOrderClaims(
+    data: CreateOrderClaimDTO,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
+  createOrderClaims(
+    data: CreateOrderClaimDTO[],
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO[]>
+
+  updateOrderClaims(
+    data: UpdateOrderClaimWithSelectorDTO[]
+  ): Promise<OrderClaimDTO[]>
+
+  updateOrderClaims(
+    selector: Partial<FilterableOrderClaimProps>,
+    data: Partial<UpdateOrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO[]>
+  updateOrderClaims(
+    id: string,
+    data: Partial<UpdateOrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
+  deleteOrderClaims(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteOrderClaims<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderClaims<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createOrderExchanges(
+    data: CreateOrderExchangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  createOrderExchanges(
+    data: CreateOrderExchangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO[]>
+
+  updateOrderExchanges(
+    data: UpdateOrderExchangeWithSelectorDTO[]
+  ): Promise<OrderExchangeDTO[]>
+
+  updateOrderExchanges(
+    selector: Partial<FilterableOrderExchangeProps>,
+    data: Partial<UpdateOrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO[]>
+  updateOrderExchanges(
+    id: string,
+    data: Partial<UpdateOrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  deleteOrderExchanges(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteOrderExchanges<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderExchanges<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>

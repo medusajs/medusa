@@ -5,6 +5,9 @@ import {
   UmzugMigration,
 } from "@mikro-orm/migrations"
 import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
+import { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import { dirname } from "path"
+import { access, mkdir, writeFile } from "fs/promises"
 
 /**
  * Events emitted by the migrations class
@@ -14,17 +17,20 @@ export type MigrationsEvents = {
   migrated: [UmzugMigration]
   reverting: [UmzugMigration]
   reverted: [UmzugMigration]
+  "revert:skipped": [UmzugMigration & { reason: string }]
 }
 
 /**
  * Exposes the API to programmatically manage Mikro ORM migrations
  */
 export class Migrations extends EventEmitter<MigrationsEvents> {
-  #config: Partial<MikroORMOptions>
+  #configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
 
-  constructor(config: Partial<MikroORMOptions>) {
+  constructor(
+    configOrConnection: Partial<MikroORMOptions> | MikroORM<PostgreSqlDriver>
+  ) {
     super()
-    this.#config = config
+    this.#configOrConnection = configOrConnection
   }
 
   /**
@@ -32,10 +38,14 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
    * one
    */
   async #getConnection() {
+    if ("connect" in this.#configOrConnection) {
+      return this.#configOrConnection as MikroORM<PostgreSqlDriver>
+    }
+
     return await MikroORM.init({
-      ...this.#config,
+      ...this.#configOrConnection,
       migrations: {
-        ...this.#config.migrations,
+        ...this.#configOrConnection.migrations,
         silent: true,
       },
     })
@@ -48,7 +58,9 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
   async generate(): Promise<MigrationResult> {
     const connection = await this.#getConnection()
     const migrator = connection.getMigrator()
+
     try {
+      await this.ensureSnapshot(migrator["snapshotPath"])
       return await migrator.createMigration()
     } finally {
       await connection.close(true)
@@ -98,9 +110,63 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
 
     try {
       return await migrator.down(options)
+    } catch (error) {
+      /**
+       * This is a very ugly hack to recover from an exception thrown by
+       * MikrORM when the `down` method is not implemented by the
+       * migration.
+       *
+       * We cannot check if "down" method exists on the migration, because it
+       * always exists (as inherited from the parent class). Also, throwing
+       * an exception is important, so that Mikro ORM does not consider the
+       * given migration as reverted.
+       */
+      if (
+        error?.migration &&
+        error?.cause?.message === "This migration cannot be reverted"
+      ) {
+        this.emit("revert:skipped", {
+          ...error.migration,
+          reason: "Missing down method",
+        })
+        return []
+      }
+
+      throw error
     } finally {
       migrator["umzug"].clearListeners()
       await connection.close(true)
     }
+  }
+
+  /**
+   * Generate a default snapshot file if it does not already exists. This
+   * prevent from creating a database to manage the migrations and instead
+   * rely on the snapshot.
+   *
+   * @param snapshotPath
+   * @protected
+   */
+  protected async ensureSnapshot(snapshotPath: string): Promise<void> {
+    await mkdir(dirname(snapshotPath), { recursive: true })
+
+    const doesFileExists = await access(snapshotPath)
+      .then(() => true)
+      .catch(() => false)
+
+    if (doesFileExists) {
+      return
+    }
+
+    const emptySnapshotContent = JSON.stringify(
+      {
+        tables: [],
+        namespaces: [],
+      },
+      null,
+      2
+    )
+
+    await writeFile(snapshotPath, emptySnapshotContent, "utf-8")
   }
 }

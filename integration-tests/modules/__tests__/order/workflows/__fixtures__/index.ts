@@ -205,7 +205,7 @@ export async function createOrderFixture({
   )
 
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {

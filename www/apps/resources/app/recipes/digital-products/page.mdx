@@ -1126,7 +1126,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
         "digitalProductModuleService"
       )
 
-    const orderId = "data" in data ? data.data.id : data.id
+    const orderId = data.data.id
 
     const order = await orderModuleService.retrieveOrder(orderId, {
       relations: ["items"],

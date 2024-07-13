@@ -192,6 +192,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Workflow Constraints",
             },
             {
+              path: "/advanced-development/workflows/conditions",
+              title: "Conditions in Workflows",
+            },
+            {
               path: "/advanced-development/workflows/compensation-function",
               title: "Compensation Function",
             },

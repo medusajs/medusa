@@ -1,3 +1,5 @@
+import { TypeList } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Event Data Payload`,
 }
@@ -10,14 +12,13 @@ In this chapter, you'll learn how subscribers receive an event's data payload.
 
 When events are emitted, they’re emitted with a data payload. 
 
-The object that the subscriber function receives as a parameter has a `data` property, which is the event's data payload.
+The object that the subscriber function receives as a parameter has a `data` property, which is an object holding the event payload with additional context.
 
 For example:
 
 export const highlights = [
   ["7", "", "The event's data payload."],
   ["8", "{ id: string }", "The type of expected data payloads."],
-  ["9", '"data" in data ? data.data.id : data.id', "The payload data is either in `data.data` or directly in `data`."]
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights} collapsibleLines="1-5" expandButtonLabel="Show Imports"
@@ -29,7 +30,7 @@ import type {
 export default async function productCreateHandler({
   data,
 }: SubscriberArgs<{ id: string }>) {
-  const productId = "data" in data ? data.data.id : data.id
+  const productId = data.data.id
   console.log(`The product ${productId} was created`)
 }
 
@@ -37,6 +38,27 @@ export const config: SubscriberConfig = {
   event: "product.created",
 }
 ```
+
+The `data` object has the following properties:
+
+<TypeList types={[
+  {
+    name: "data",
+    type: "`object`",
+    description: "The data payload of the event. Its properties depend on the event."
+  },
+  {
+    name: "eventName",
+    type: "string",
+    description: "The name of the triggered event."
+  },
+  {
+    name: "metadata",
+    type: "`object`",
+    description: "Additional data and context of the emitted event.",
+    optional: true
+  },
+]} sectionTitle="Access Event's Data Payload" />
 
 This logs the product ID received in the `product.created` event’s data payload to the console.
 

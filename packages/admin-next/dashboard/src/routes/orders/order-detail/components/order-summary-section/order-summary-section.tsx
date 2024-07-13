@@ -3,8 +3,17 @@ import {
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Text,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
+import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -12,18 +21,65 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
+
+  /**
+   * Show Allocation button only if there are unfulfilled items that don't have reservations
+   */
+  const showAllocateButton = useMemo(() => {
+    if (!reservations) {
+      return false
+    }
+
+    const reservationsMap = new Map(
+      reservations.map((r) => [r.line_item_id, r.id])
+    )
+
+    for (const item of order.items) {
+      // Inventory is managed
+      if (item.variant?.manage_inventory) {
+        // There are items that are unfulfilled
+        if (item.quantity - item.detail.fulfilled_quantity > 0) {
+          // Reservation for this item doesn't exist
+          if (!reservationsMap.has(item.id)) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
+  }, [reservations])
+
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} />
       <ItemBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
+
+      {showAllocateButton && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
+          <Button
+            onClick={() => navigate(`./allocate-items`)}
+            variant="secondary"
+          >
+            {t("orders.allocateItems.action")}
+          </Button>
+        </div>
+      )}
     </Container>
   )
 }
@@ -71,6 +127,7 @@ const Item = ({
   reservation?: ReservationItemDTO | null
 }) => {
   const { t } = useTranslation()
+  const isInventoryManaged = item.variant.manage_inventory
 
   return (
     <div
@@ -112,14 +169,16 @@ const Item = ({
             </Text>
           </div>
           <div className="overflow-visible">
-            <StatusBadge
-              color={reservation ? "green" : "orange"}
-              className="text-nowrap"
-            >
-              {reservation
-                ? t("orders.reservations.allocatedLabel")
-                : t("orders.reservations.notAllocatedLabel")}
-            </StatusBadge>
+            {isInventoryManaged && (
+              <StatusBadge
+                color={reservation ? "green" : "orange"}
+                className="text-nowrap"
+              >
+                {reservation
+                  ? t("orders.reservations.allocatedLabel")
+                  : t("orders.reservations.notAllocatedLabel")}
+              </StatusBadge>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-end">
@@ -133,27 +192,23 @@ const Item = ({
 }
 
 const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
-  // const { reservations, isError, error } = useAdminReservations({
-  //   line_item_id: order.items.map((i) => i.id),
-  // })
-
-  // if (isError) {
-  //   throw error
-  // }
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
 
   return (
     <div>
       {order.items.map((item) => {
-        // const reservation = reservations
-        //   ? reservations.find((r) => r.line_item_id === item.id)
-        //   : null
+        const reservation = reservations
+          ? reservations.find((r) => r.line_item_id === item.id)
+          : null
 
         return (
           <Item
             key={item.id}
             item={item}
             currencyCode={order.currency_code}
-            reservation={null /* TODO: fetch reservation for this item */}
+            reservation={reservation}
           />
         )
       })}

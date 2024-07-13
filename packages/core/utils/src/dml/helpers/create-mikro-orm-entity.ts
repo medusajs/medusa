@@ -13,6 +13,8 @@ import { defineProperty } from "./entity-builder/define-property"
 import { defineRelationship } from "./entity-builder/define-relationship"
 import { parseEntityName } from "./entity-builder/parse-entity-name"
 import { applyEntityIndexes, applyIndexes } from "./mikro-orm/apply-indexes"
+import { IdProperty } from "../properties/id"
+import { DuplicateIdPropertyError } from "../errors"
 
 /**
  * Factory function to create the mikro orm entity builder. The return
@@ -62,6 +64,8 @@ export function createMikrORMEntity() {
       MANY_TO_MANY_TRACKED_REALTIONS,
     }
 
+    let hasIdAlreadyDefined = false
+
     /**
      * Processing schema fields
      */
@@ -69,6 +73,13 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
 
       if ("fieldName" in field) {
+        if (IdProperty.isIdProperty(field)) {
+          if (hasIdAlreadyDefined) {
+            throw new DuplicateIdPropertyError(modelName)
+          }
+          hasIdAlreadyDefined = true
+        }
+
         defineProperty(MikroORMEntity, name, property as PropertyType<any>)
         applyIndexes(MikroORMEntity, tableName, field)
         applySearchable(MikroORMEntity, field)
