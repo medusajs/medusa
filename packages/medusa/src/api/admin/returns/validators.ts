@@ -93,3 +93,31 @@ export const AdminPostCancelReturnReqSchema = z.object({
 export type AdminPostCancelReturnReqSchemaType = z.infer<
   typeof AdminPostReceiveReturnsReqSchema
 >
+
+export const AdminPostReturnsShippingReqSchema = z.object({
+  shipping_option_id: z.string(),
+  custom_price: z.number().optional(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
+  metadata: z.record(z.unknown()).optional(),
+})
+
+export type AdminPostReturnsShippingReqSchemaType = z.infer<
+  typeof AdminPostReturnsShippingReqSchema
+>
+
+export const AdminPostReturnsRequestItemsReqSchema = z.object({
+  items: z.array(
+    z.object({
+      id: z.string(),
+      quantity: z.number(),
+      description: z.string().optional(),
+      internal_note: z.string().optional(),
+      metadata: z.record(z.unknown()).optional(),
+    })
+  ),
+})
+
+export type AdminPostReturnsRequestItemsReqSchemaType = z.infer<
+  typeof AdminPostReturnsRequestItemsReqSchema
+>

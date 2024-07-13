@@ -63,8 +63,8 @@ medusaIntegrationTestRunner({
             container
           ).run({
             input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
+              return_id: returnOrder.id,
+              shipping_option_id: shippingOptionId,
             },
           })
 
@@ -94,9 +94,9 @@ medusaIntegrationTestRunner({
             container
           ).run({
             input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
-              customShippingPrice: 20,
+              return_id: returnOrder.id,
+              shipping_option_id: shippingOptionId,
+              custom_price: 20,
             },
           })
 
