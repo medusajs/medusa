@@ -5304,10 +5304,6 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.UpdateOrderLineItemWithSelectorDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderReturnDTO/page.mdx",
-    "pathname": "/references/order/interfaces/order.UpdateOrderReturnDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderReturnReasonDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.UpdateOrderReturnReasonDTO"
   },
@@ -5330,6 +5326,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderTaxLineDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.UpdateOrderTaxLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.UpdateReturnDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpsertOrderAddressDTO/page.mdx",
