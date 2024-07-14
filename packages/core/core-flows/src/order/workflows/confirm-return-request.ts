@@ -1,10 +1,5 @@
-import {
-  OrderChangeActionDTO,
-  OrderChangeDTO,
-  OrderDTO,
-  ReturnDTO,
-} from "@medusajs/types"
-import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
+import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
+import { ChangeActionType } from "@medusajs/utils"
 import {
   createStep,
   createWorkflow,
@@ -12,6 +7,8 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { confirmOrderChanges } from "../steps/confirm-order-changes"
+import { createReturnItems } from "../steps/create-return-items"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -31,40 +28,6 @@ const validationStep = createStep(
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange: orderChanges })
-  }
-)
-
-const createReturnItems = createStep(
-  "create-return-items",
-  async (
-    input: { changes: OrderChangeActionDTO[]; returnId: string },
-    { container }
-  ) => {
-    const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
-
-    const returnItems = input.changes.map((item) => {
-      return {
-        return_id: item.reference_id,
-        item_id: item.details?.reference_id,
-        quantity: item.details?.quantity as number,
-        note: item.internal_note,
-        metadata: (item.details?.metadata as Record<string, unknown>) ?? {},
-      }
-    })
-
-    const createdReturnItems = await orderModuleService.updateReturns([
-      { selector: { id: input.returnId }, data: { items: returnItems } },
-    ])
-  }
-)
-
-const confirmOrderChanges = createStep(
-  "confirm-order-changes",
-  async (input: { changes: OrderChangeDTO[] }, { container }) => {
-    const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
-    await orderModuleService.confirmOrderChange(
-      input.changes.map((action) => action.id)
-    )
   }
 )
 
@@ -121,7 +84,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     createReturnItems({ returnId: orderReturn.id, changes: returnItemActions })
 
-    confirmOrderChanges({ changes: orderChanges })
+    confirmOrderChanges({ changes: orderChanges, orderId: order.id })
 
     // @ts-ignore
     return order.id
