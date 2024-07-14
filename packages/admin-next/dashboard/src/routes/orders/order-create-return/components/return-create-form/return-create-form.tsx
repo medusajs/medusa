@@ -37,7 +37,7 @@ import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { useCreateOrderReturn } from "../../../../../hooks/api/orders"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
-import { currencies } from "../../../../../lib/currencies"
+import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
 
 type ReturnCreateFormProps = {
