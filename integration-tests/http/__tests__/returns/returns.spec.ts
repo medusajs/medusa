@@ -143,6 +143,21 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_option
+
+      const item = order.items[0]
+
+      await api.post(
+        `/admin/orders/${order.id}/fulfillments`,
+        {
+          items: [
+            {
+              id: item.id,
+              quantity: 1,
+            },
+          ],
+        },
+        adminHeaders
+      )
     })
 
     describe("Returns lifecycle", () => {
@@ -168,7 +183,7 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             order_id: order.id,
             display_id: 1,
-            order_version: 1,
+            order_version: 2,
             status: "requested",
             items: [],
             shipping_methods: [],
@@ -190,6 +205,18 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            order_id: order.id,
+            display_id: 1,
+            order_version: 2,
+            status: "requested",
+            items: [],
+            shipping_methods: [],
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/shipping-method`,
           {
@@ -198,10 +225,52 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            order_id: order.id,
+            display_id: 1,
+            order_version: 2,
+            status: "requested",
+            items: [],
+            shipping_methods: [
+              expect.objectContaining({
+                amount: 1000,
+                name: "Return shipping",
+                shipping_option_id: returnShippingOption.id,
+              }),
+            ],
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},
           adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            order_id: order.id,
+            display_id: 1,
+            order_version: 2,
+            status: "requested",
+            items: [
+              expect.objectContaining({
+                quantity: 1,
+                item_id: item.id,
+                received_quantity: 0,
+              }),
+            ],
+            shipping_methods: [
+              expect.objectContaining({
+                amount: 1000,
+                name: "Return shipping",
+                shipping_option_id: returnShippingOption.id,
+              }),
+            ],
+          })
         )
       })
     })

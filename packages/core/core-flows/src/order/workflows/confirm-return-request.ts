@@ -35,18 +35,14 @@ const validationStep = createStep(
 )
 
 const createReturnItems = createStep(
-  "create-return-teism",
+  "create-return-items",
   async (
     input: { changes: OrderChangeActionDTO[]; returnId: string },
     { container }
   ) => {
     const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
 
-    const orderItems = input.changes.filter(
-      (action) => action.action === ChangeActionType.RETURN_ITEM
-    )
-
-    const returnItems = orderItems.map((item) => {
+    const returnItems = input.changes.map((item) => {
       return {
         return_id: item.reference_id,
         item_id: item.details?.reference_id,
@@ -56,19 +52,16 @@ const createReturnItems = createStep(
       }
     })
 
-    // TODO: For some reason, this call is throwing: 'Return with id \"\" not found' even though the return ID is passed
-    const createdReturnItems = await orderModuleService.updateReturns(
-      input.returnId,
-      { items: returnItems }
-    )
+    const createdReturnItems = await orderModuleService.updateReturns([
+      { selector: { id: input.returnId }, data: { items: returnItems } },
+    ])
   }
 )
 
 const confirmOrderChanges = createStep(
   "confirm-order-changes",
-  async (input: { changes: OrderChangeActionDTO[] }, { container }) => {
+  async (input: { changes: OrderChangeDTO[] }, { container }) => {
     const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
-
     await orderModuleService.confirmOrderChange(
       input.changes.map((action) => action.id)
     )
@@ -95,8 +88,6 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
 
-    // TODO: For some reason, this call is only returning a single order change with a single action 'RETURN_ITEM'
-    //  even though there are multiple actions in the order change with the passed (order_id, return_id)
     const orderChanges: OrderChangeDTO[] = useRemoteQueryStep({
       entry_point: "order_change",
       fields: [
@@ -109,24 +100,28 @@ export const confirmReturnRequestWorkflow = createWorkflow(
         "actions.internal_note",
       ],
       variables: {
-        order_id: orderReturn.order_id,
-        return_id: orderReturn.id,
+        filters: {
+          order_id: orderReturn.order_id,
+          return_id: orderReturn.id,
+        },
       },
     }).config({ name: "order-change-query" })
 
-    const changes = transform({ orderChanges }, (data) => {
+    const returnItemActions = transform({ orderChanges }, (data) => {
       return data.orderChanges
         .map((change) => {
-          return change.actions.map((action) => action)
+          return change.actions.filter(
+            (act) => act.action === ChangeActionType.RETURN_ITEM
+          )
         })
         .flat()
     })
 
     validationStep({ order, orderReturn, orderChanges })
 
-    createReturnItems({ returnId: orderReturn.id, changes })
+    createReturnItems({ returnId: orderReturn.id, changes: returnItemActions })
 
-    confirmOrderChanges({ changes })
+    confirmOrderChanges({ changes: orderChanges })
 
     // @ts-ignore
     return order.id
