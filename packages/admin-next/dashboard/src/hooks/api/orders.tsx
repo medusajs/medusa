@@ -9,7 +9,7 @@ import {
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { sdk } from "../../lib/client"
-import { AdminOrderResponse, HttpTypes } from "@medusajs/types"
+import { AdminCreateOrderShipment, AdminOrderResponse, HttpTypes } from "@medusajs/types"
 
 const ORDERS_QUERY_KEY = "orders" as const
 export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -96,6 +96,28 @@ export const useCancelOrderFulfillment = (
   return useMutation({
     mutationFn: (payload: { no_notification?: boolean }) =>
       sdk.admin.order.cancelFulfillment(orderId, fulfillmentId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateOrderShipment = (
+  orderId: string,
+  fulfillmentId: string,
+  options?: UseMutationOptions<
+    { order: HttpTypes.AdminOrder },
+    Error,
+    HttpTypes.AdminCreateOrderShipment
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminCreateOrderShipment) =>
+      sdk.admin.order.createShipment(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

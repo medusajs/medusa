@@ -1,24 +1,17 @@
-import { json, useLoaderData, useParams } from "react-router-dom"
+import { json, useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
-import { FulfillmentSetType } from "../common/constants"
 import { CreateServiceZoneForm } from "./components/create-service-zone-form"
-import { stockLocationLoader } from "./loader"
+import { FulfillmentSetType } from "../common/constants"
 
 export function LocationCreateServiceZone() {
   const { fset_id, location_id } = useParams()
-  const initialData = useLoaderData() as Awaited<
-    ReturnType<typeof stockLocationLoader>
-  >
 
   const { stock_location, isLoading, isError, error } = useStockLocation(
     location_id!,
     {
       fields: "*fulfillment_sets",
-    },
-    {
-      initialData,
     }
   )
 

@@ -2,7 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { StaticCountry } from "../../../../lib/countries"
+import { StaticCountry } from "../../../../lib/data/countries"
 
 const columnHelper = createColumnHelper<StaticCountry>()
 

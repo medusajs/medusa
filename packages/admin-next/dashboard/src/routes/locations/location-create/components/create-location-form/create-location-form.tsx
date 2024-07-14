@@ -56,20 +56,12 @@ export const CreateLocationForm = () => {
       },
       {
         onSuccess: ({ stock_location }) => {
-          toast.success(t("general.success"), {
-            description: t("locations.toast.create"),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("locations.toast.create"))
 
           handleSuccess(`/settings/locations/${stock_location.id}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

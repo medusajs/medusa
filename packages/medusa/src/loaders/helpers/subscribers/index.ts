@@ -1,9 +1,10 @@
 import {
   IEventBusModuleService,
   MedusaContainer,
+  MessageBody,
   Subscriber,
 } from "@medusajs/types"
-import { ModuleRegistrationName, kebabCase } from "@medusajs/utils"
+import { kebabCase, ModuleRegistrationName } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
@@ -131,7 +132,7 @@ export class SubscriberLoader {
             const fullPath = join(dirPath, entry.name)
 
             if (entry.isDirectory()) {
-              return this.createMap(fullPath)
+              return await this.createMap(fullPath)
             }
 
             return await this.createDescriptor(fullPath, entry.name)
@@ -172,7 +173,7 @@ export class SubscriberLoader {
     return kebabCase(idFromFile)
   }
 
-  private createSubscriber<T>({
+  private createSubscriber<T = unknown>({
     fileName,
     config,
     handler,
@@ -192,8 +193,8 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      const subscriber = async (data: T) => {
-        return handler({
+      const subscriber = async (data: MessageBody<T>) => {
+        return await handler({
           eventName: e,
           data,
           container: this.container_,

@@ -1,6 +1,7 @@
 import {
   MedusaApp,
   MedusaAppMigrateDown,
+  MedusaAppMigrateGenerate,
   MedusaAppMigrateUp,
   MedusaAppOptions,
   MedusaAppOutput,
@@ -57,11 +58,21 @@ export function mergeDefaultModules(
   return configModules
 }
 
-async function runMedusaAppMigrations({
+/**
+ * Run, Revert or Generate the migrations for the medusa app.
+ *
+ * @param configModule
+ * @param container
+ * @param moduleNames
+ * @param linkModules
+ * @param action
+ */
+export async function runMedusaAppMigrations({
   configModule,
   container,
-  revert = false,
+  moduleNames,
   linkModules,
+  action = "run",
 }: {
   configModule: {
     modules?: CommonTypes.ConfigModule["modules"]
@@ -69,8 +80,16 @@ async function runMedusaAppMigrations({
   }
   linkModules?: MedusaAppOptions["linkModules"]
   container: MedusaContainer
-  revert?: boolean
-}): Promise<void> {
+} & (
+  | {
+      moduleNames?: never
+      action: "run"
+    }
+  | {
+      moduleNames: string[]
+      action: "revert" | "generate"
+    }
+)): Promise<void> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -92,62 +111,21 @@ async function runMedusaAppMigrations({
   }
   const configModules = mergeDefaultModules(configModule.modules)
 
-  if (revert) {
-    await MedusaAppMigrateDown({
-      modulesConfig: configModules,
-      sharedContainer: container,
-      linkModules,
-      sharedResourcesConfig,
-      injectedDependencies,
-    })
+  const migrationOptions = {
+    modulesConfig: configModules,
+    sharedContainer: container,
+    linkModules,
+    sharedResourcesConfig,
+    injectedDependencies,
+  }
+
+  if (action === "revert") {
+    await MedusaAppMigrateDown(moduleNames!, migrationOptions)
+  } else if (action === "run") {
+    await MedusaAppMigrateUp(migrationOptions)
   } else {
-    await MedusaAppMigrateUp({
-      modulesConfig: configModules,
-      sharedContainer: container,
-      linkModules,
-      sharedResourcesConfig,
-      injectedDependencies,
-    })
+    await MedusaAppMigrateGenerate(moduleNames!, migrationOptions)
   }
-}
-
-export async function migrateMedusaApp({
-  configModule,
-  linkModules,
-  container,
-}: {
-  configModule: {
-    modules?: CommonTypes.ConfigModule["modules"]
-    projectConfig: CommonTypes.ConfigModule["projectConfig"]
-  }
-  container: MedusaContainer
-  linkModules?: MedusaAppOptions["linkModules"]
-}): Promise<void> {
-  await runMedusaAppMigrations({
-    configModule,
-    container,
-    linkModules,
-  })
-}
-
-export async function revertMedusaApp({
-  configModule,
-  linkModules,
-  container,
-}: {
-  configModule: {
-    modules?: CommonTypes.ConfigModule["modules"]
-    projectConfig: CommonTypes.ConfigModule["projectConfig"]
-  }
-  container: MedusaContainer
-  linkModules?: MedusaAppOptions["linkModules"]
-}): Promise<void> {
-  await runMedusaAppMigrations({
-    configModule,
-    container,
-    revert: true,
-    linkModules,
-  })
 }
 
 export const loadMedusaApp = async (

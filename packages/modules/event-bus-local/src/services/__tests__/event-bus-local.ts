@@ -37,6 +37,7 @@ describe("LocalEventBusService", () => {
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
         expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
           data: { hi: "1234" },
+          eventName: "eventName",
         })
       })
 
@@ -51,9 +52,11 @@ describe("LocalEventBusService", () => {
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
         expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
           data: { hi: "1234" },
+          eventName: "event-1",
         })
         expect(eventEmitter.emit).toHaveBeenCalledWith("event-2", {
           data: { hi: "5678" },
+          eventName: "event-2",
         })
       })
 
@@ -144,6 +147,7 @@ describe("LocalEventBusService", () => {
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
         expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
           data: { test: "1" },
+          eventName: "event-1",
         })
 
         expect((eventBus as any).groupedEventsMap_.get("group-1")).toHaveLength(
@@ -155,7 +159,7 @@ describe("LocalEventBusService", () => {
 
         jest.clearAllMocks()
         eventEmitter.emit = jest.fn((data) => data)
-        eventBus.releaseGroupedEvents("group-1")
+        await eventBus.releaseGroupedEvents("group-1")
 
         expect(
           (eventBus as any).groupedEventsMap_.get("group-1")
@@ -167,9 +171,13 @@ describe("LocalEventBusService", () => {
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
         expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
           data: { test: "1" },
+          eventName: "event-1",
+          metadata: { eventGroupId: "group-1" },
         })
         expect(eventEmitter.emit).toHaveBeenCalledWith("event-2", {
           data: { test: "2" },
+          eventName: "event-2",
+          metadata: { eventGroupId: "group-1" },
         })
       })
 

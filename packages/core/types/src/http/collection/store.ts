@@ -1,4 +1,4 @@
-import { BaseCollection, BaseCollectionFilters } from "./common"
+import { BaseCollection, BaseCollectionListParams } from "./common"
 
 export interface StoreCollection extends BaseCollection {}
-export interface StoreCollectionFilters extends BaseCollectionFilters {}
+export interface StoreCollectionFilters extends BaseCollectionListParams {}

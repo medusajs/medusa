@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatDate } from "../../../../../components/common/date"
 import { useDeleteCampaign } from "../../../../../hooks/api/campaigns"
-import { currencies } from "../../../../../lib/currencies"
+import { currencies } from "../../../../../lib/data/currencies"
 import {
   campaignStatus,
   statusColor,
@@ -48,20 +48,16 @@ export const CampaignGeneralSection = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("campaigns.delete.successToast", {
+        toast.success(
+          t("campaigns.delete.successToast", {
             name: campaign.name,
-          }),
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/campaigns", { replace: true })
       },
       onError: (error) => {
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(error.message)
       },
     })
   }

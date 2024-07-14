@@ -1,10 +1,10 @@
 import { Tooltip } from "@medusajs/ui"
-import format from "date-fns/format"
+import { format } from "date-fns/format"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../placeholder-cell"
 
 type DateCellProps = {
-  date: Date | string | null
+  date?: Date | string | null
 }
 
 export const DateCell = ({ date }: DateCellProps) => {

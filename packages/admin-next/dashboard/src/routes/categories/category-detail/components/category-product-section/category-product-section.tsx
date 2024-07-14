@@ -88,22 +88,16 @@ export const CategoryProductSection = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("categories.products.remove.successToast", {
+          toast.success(
+            t("categories.products.remove.successToast", {
               count: selected.length,
-            }),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           setSelection({})
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

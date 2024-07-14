@@ -11,9 +11,8 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { useCreateOrderShipment } from "../../../../../hooks/api/orders"
 import { CreateShipmentSchema } from "./constants"
-import { useCreateShipment } from "../../../../../hooks/api/fulfillment.tsx"
+import { useCreateOrderShipment } from "../../../../../hooks/api"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -28,12 +27,11 @@ export function OrderCreateShipmentForm({
   const { handleSuccess } = useRouteModal()
 
   const { mutateAsync: createShipment, isPending: isMutating } =
-    useCreateShipment(fulfillment.id)
+    useCreateOrderShipment(order.id, fulfillment.id)
 
   const form = useForm<zod.infer<typeof CreateShipmentSchema>>({
     defaultValues: {
-      labels: [{ tracking_number: "" }],
-      send_notification: !order.no_notification, //TODO: not supported in the API
+      send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateShipmentSchema),
   })
@@ -44,8 +42,12 @@ export function OrderCreateShipmentForm({
   })
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      await createShipment({
+    await createShipment(
+      {
+        items: fulfillment.items.map((i) => ({
+          id: i.line_item_id,
+          quantity: i.quantity,
+        })),
         labels: data.labels
           .filter((l) => !!l.tracking_number)
           .map((l) => ({
@@ -53,21 +55,18 @@ export function OrderCreateShipmentForm({
             tracking_url: "#",
             label_url: "#",
           })),
-        // no_notification: !data.send_notification,
-      })
-
-      handleSuccess(`/orders/${order.id}`)
-
-      toast.success(t("general.success"), {
-        description: t("orders.shipment.toastCreated"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+        no_notification: !data.send_notification,
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("orders.shipment.toastCreated"))
+          handleSuccess(`/orders/${order.id}`)
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   })
 
   return (
@@ -99,6 +98,7 @@ export function OrderCreateShipmentForm({
 
                   {labels.map((label, index) => (
                     <Form.Field
+                      key={label.id}
                       control={form.control}
                       name={`labels.${index}.tracking_number`}
                       render={({ field }) => {

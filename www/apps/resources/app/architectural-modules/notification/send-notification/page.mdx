@@ -51,7 +51,7 @@ export default async function productCreateHandler({
     to: "shahednasser@gmail.com",
     channel: "email",
     template: "product-created",
-    data: "data" in data ? data.data : data,
+    data: data.data,
   })
 }
 

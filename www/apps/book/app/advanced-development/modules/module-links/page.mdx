@@ -18,6 +18,18 @@ A module link forms an association between two data models of different modules,
 
 You can then retrieve data across the linked modules, and manage their linked records.
 
+<Note title="Use module links when" type="success">
+
+- You want to create a relation between data models from different modules.
+
+</Note>
+
+<Note title="Don't use module links if" type="error">
+
+- You want to create a relationship between data models in the same module. Use data model relationships instead.
+
+</Note>
+
 ---
 
 ## Prerequisite: isQueryable Configuration
@@ -27,10 +39,13 @@ Before you define a module link, you must enable the `isQueryable` configuration
 For example:
 
 ```js
+import { HELLO_MODULE } from "./src/modules/hello"
+// ...
+
 module.exports = defineConfig({
   // ...
   modules: {
-    helloModuleService: {
+    [HELLO_MODULE]: {
       resolve: "./modules/hello",
       definition: {
         isQueryable: true,
@@ -95,16 +110,16 @@ import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   {
-    model: HelloModule.linkable.myCustom,
+    linkable: HelloModule.linkable.myCustom,
     isList: true
   },
   ProductModule.linkable.product
 )
 ```
 
-In this case, you pass an object of configuration as a parameter rather than the linked model. The object accepts the following properties:
+In this case, you pass an object of configuration as a parameter instead. The object accepts the following properties:
 
-- `model`: The data model to link.
+- `linkable`: The data model's link configuration.
 - `isList`: Whether multiple records can be linked to one record of the other data model.
 
 In this example, a record of `product` can be linked to more than one record of `myCustom`.

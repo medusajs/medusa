@@ -7,9 +7,11 @@ import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Order } from "./order"
 import { PriceList } from "./price-list"
+import { PricePreference } from "./price-preference"
 import { Product } from "./product"
 import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
+import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
@@ -28,6 +30,7 @@ export class Admin {
   public productCollection: ProductCollection
   public productCategory: ProductCategory
   public priceList: PriceList
+  public pricePreference: PricePreference
   public product: Product
   public productType: ProductType
   public upload: Upload
@@ -45,6 +48,7 @@ export class Admin {
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
+  public productTag: ProductTag
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -52,6 +56,7 @@ export class Admin {
     this.productCollection = new ProductCollection(client)
     this.productCategory = new ProductCategory(client)
     this.priceList = new PriceList(client)
+    this.pricePreference = new PricePreference(client)
     this.product = new Product(client)
     this.productType = new ProductType(client)
     this.upload = new Upload(client)
@@ -69,5 +74,6 @@ export class Admin {
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
+    this.productTag = new ProductTag(client)
   }
 }

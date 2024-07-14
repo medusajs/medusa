@@ -153,6 +153,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Relationships",
             },
             {
+              path: "/advanced-development/data-models/manage-relationships",
+              title: "Manage Relationships",
+            },
+            {
               path: "/advanced-development/data-models/index",
               title: "Index",
             },
@@ -185,7 +189,11 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           children: [
             {
               path: "/advanced-development/workflows/constructor-constraints",
-              title: "Constructor Constraints",
+              title: "Workflow Constraints",
+            },
+            {
+              path: "/advanced-development/workflows/conditions",
+              title: "Conditions in Workflows",
             },
             {
               path: "/advanced-development/workflows/compensation-function",

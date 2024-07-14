@@ -17,5 +17,6 @@ export interface AdminTaxRegion {
   deleted_at: string | null
   created_by: string | null
   tax_rates: AdminTaxRate[]
-  parent: AdminTaxRegion
+  parent: AdminTaxRegion | null
+  children: AdminTaxRegion[]
 }

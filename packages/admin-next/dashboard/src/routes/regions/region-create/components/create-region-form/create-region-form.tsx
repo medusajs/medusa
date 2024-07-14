@@ -29,8 +29,8 @@ import {
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCreateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { countries as staticCountries } from "../../../../../lib/countries"
-import { CurrencyInfo } from "../../../../../lib/currencies"
+import { countries as staticCountries } from "../../../../../lib/data/countries"
+import { CurrencyInfo } from "../../../../../lib/data/currencies"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
@@ -45,6 +45,7 @@ const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string().min(2, "Select a currency"),
   automatic_taxes: zod.boolean(),
+  is_tax_inclusive: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
   payment_providers: zod.array(zod.string()).min(1),
 })
@@ -65,6 +66,7 @@ export const CreateRegionForm = ({
       name: "",
       currency_code: "",
       automatic_taxes: true,
+      is_tax_inclusive: false,
       countries: [],
       payment_providers: [],
     },
@@ -79,30 +81,32 @@ export const CreateRegionForm = ({
 
   const { t } = useTranslation()
 
-  const { mutateAsync, isPending } = useCreateRegion()
+  const { mutateAsync: createRegion, isPending: isPendingRegion } =
+    useCreateRegion()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(
+    await createRegion(
       {
         name: values.name,
         countries: values.countries.map((c) => c.code),
         currency_code: values.currency_code,
         payment_providers: values.payment_providers,
         automatic_taxes: values.automatic_taxes,
+        is_tax_inclusive: values.is_tax_inclusive,
       },
       {
-        onSuccess: ({ region }) => {
-          toast.success(t("general.success"), {
-            description: t("regions.toast.create"),
-            dismissLabel: t("actions.close"),
-          })
-          handleSuccess(`../${region.id}`)
-        },
         onError: (e) => {
           toast.error(t("general.error"), {
             description: e.message,
             dismissLabel: t("actions.close"),
           })
+        },
+        onSuccess: ({ region }) => {
+          toast.success(t("regions.toast.create"))
+          handleSuccess(`../${region.id}`)
+        },
+        onError: (e) => {
+          toast.error(e.message)
         },
       }
     )
@@ -206,7 +210,7 @@ export const CreateRegionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
+            <Button size="small" type="submit" isLoading={isPendingRegion}>
               {t("actions.save")}
             </Button>
           </div>
@@ -296,6 +300,35 @@ export const CreateRegionForm = ({
                             </div>
                             <Form.Hint>
                               {t("regions.automaticTaxesHint")}
+                            </Form.Hint>
+                            <Form.ErrorMessage />
+                          </div>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+
+                  <Form.Field
+                    control={form.control}
+                    name="is_tax_inclusive"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <div>
+                            <div className="flex items-start justify-between">
+                              <Form.Label>
+                                {t("fields.taxInclusivePricing")}
+                              </Form.Label>
+                              <Form.Control>
+                                <Switch
+                                  {...field}
+                                  checked={value}
+                                  onCheckedChange={onChange}
+                                />
+                              </Form.Control>
+                            </div>
+                            <Form.Hint>
+                              {t("regions.taxInclusiveHint")}
                             </Form.Hint>
                             <Form.ErrorMessage />
                           </div>

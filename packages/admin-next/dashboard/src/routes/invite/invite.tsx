@@ -1,19 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { UserRoles } from "@medusajs/medusa"
 import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
-import { Trans, useTranslation } from "react-i18next"
-import { Link, useSearchParams } from "react-router-dom"
-import * as z from "zod"
 import i18n from "i18next"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { Trans, useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
+import { Link, useSearchParams } from "react-router-dom"
+import * as z from "zod"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { isAxiosError } from "../../lib/is-axios-error"
-import { useAcceptInvite } from "../../hooks/api/invites"
 import { useCreateAuthUser } from "../../hooks/api/auth"
+import { useAcceptInvite } from "../../hooks/api/invites"
+import { isFetchError } from "../../lib/is-fetch-error"
 
 const CreateAccountSchema = z
   .object({
@@ -33,9 +32,10 @@ const CreateAccountSchema = z
     }
   })
 
+// TODO: Update to V2 format
 type DecodedInvite = {
   id: string
-  jti: UserRoles
+  jti: any
   exp: string
   iat: number
 }
@@ -227,13 +227,12 @@ const CreateView = ({
         ...invitePayload,
         auth_token: authToken,
       })
+
+      toast.success(t("invite.toast.accepted"))
+
       onSuccess()
-      toast.success(t("general.success"), {
-        description: t("invite.toast.accepted"),
-        dismissLabel: t("actions.close"),
-      })
     } catch (error) {
-      if (isAxiosError(error) && error.response?.status === 400) {
+      if (isFetchError(error) && error.status === 400) {
         form.setError("root", {
           type: "manual",
           message: t("invite.invalidInvite"),

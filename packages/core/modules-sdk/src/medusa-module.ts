@@ -12,6 +12,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
   createMedusaContainer,
   promiseAll,
   simpleHash,
@@ -49,6 +50,14 @@ type ModuleAlias = {
   isLink: boolean
   alias?: string
   main?: boolean
+}
+
+export type MigrationOptions = {
+  moduleKey: string
+  modulePath: string
+  container?: MedusaContainer
+  options?: Record<string, any>
+  moduleExports?: ModuleExports
 }
 
 export type ModuleBootstrapOptions = {
@@ -344,7 +353,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -475,7 +486,9 @@ class MedusaModule {
     )
 
     const logger_ =
-      container.resolve("logger", { allowUnregistered: true }) ?? logger
+      container.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
 
     try {
       await moduleLoader({
@@ -531,12 +544,13 @@ class MedusaModule {
     return services
   }
 
-  public static async migrateUp(
-    moduleKey: string,
-    modulePath: string,
-    options?: Record<string, any>,
-    moduleExports?: ModuleExports
-  ): Promise<void> {
+  public static async migrateGenerate({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -544,27 +558,36 @@ class MedusaModule {
       options,
     })
 
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
+
+    container ??= createMedusaContainer()
+
     for (const mod in moduleResolutions) {
-      const [migrateUp] = await loadModuleMigrations(
+      const { generateMigration } = await loadModuleMigrations(
         moduleResolutions[mod],
         moduleExports
       )
 
-      if (typeof migrateUp === "function") {
-        await migrateUp({
+      if (typeof generateMigration === "function") {
+        await generateMigration({
           options,
-          logger,
+          container: container!,
+          logger: logger_,
         })
       }
     }
   }
 
-  public static async migrateDown(
-    moduleKey: string,
-    modulePath: string,
-    options?: Record<string, any>,
-    moduleExports?: ModuleExports
-  ): Promise<void> {
+  public static async migrateUp({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -572,16 +595,61 @@ class MedusaModule {
       options,
     })
 
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
+
+    container ??= createMedusaContainer()
+
     for (const mod in moduleResolutions) {
-      const [, migrateDown] = await loadModuleMigrations(
+      const { runMigrations } = await loadModuleMigrations(
         moduleResolutions[mod],
         moduleExports
       )
 
-      if (typeof migrateDown === "function") {
-        await migrateDown({
+      if (typeof runMigrations === "function") {
+        await runMigrations({
           options,
-          logger,
+          container: container!,
+          logger: logger_,
+        })
+      }
+    }
+  }
+
+  public static async migrateDown({
+    options,
+    container,
+    moduleExports,
+    moduleKey,
+    modulePath,
+  }: MigrationOptions): Promise<void> {
+    const moduleResolutions = registerMedusaModule(moduleKey, {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resolve: modulePath,
+      options,
+    })
+
+    const logger_ =
+      container?.resolve(ContainerRegistrationKeys.LOGGER, {
+        allowUnregistered: true,
+      }) ?? logger
+
+    container ??= createMedusaContainer()
+
+    for (const mod in moduleResolutions) {
+      const { revertMigration } = await loadModuleMigrations(
+        moduleResolutions[mod],
+        moduleExports
+      )
+
+      if (typeof revertMigration === "function") {
+        await revertMigration({
+          options,
+          container: container!,
+          logger: logger_,
         })
       }
     }

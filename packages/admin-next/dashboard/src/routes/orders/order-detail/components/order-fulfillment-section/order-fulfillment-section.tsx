@@ -1,6 +1,7 @@
 import { Buildings, XCircle } from "@medusajs/icons"
 import { AdminOrder, FulfillmentDTO, OrderLineItemDTO } from "@medusajs/types"
 import {
+  Button,
   Container,
   Copy,
   Heading,
@@ -9,7 +10,6 @@ import {
   Tooltip,
   toast,
   usePrompt,
-  Button,
 } from "@medusajs/ui"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
@@ -17,10 +17,10 @@ import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useCancelOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
-import { useCancelOrderFulfillment } from "../../../../../hooks/api/orders"
 
 type OrderFulfillmentSectionProps = {
   order: AdminOrder
@@ -190,10 +190,7 @@ const Fulfillment = ({
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
-      toast.warning(t("general.warning"), {
-        description: t("orders.fulfillment.toast.fulfillmentShipped"),
-        dismissLabel: t("actions.close"),
-      })
+      toast.warning(t("orders.fulfillment.toast.fulfillmentShipped"))
       return
     }
 
@@ -205,19 +202,14 @@ const Fulfillment = ({
     })
 
     if (res) {
-      try {
-        await mutateAsync()
-
-        toast.success(t("general.success"), {
-          description: t("orders.fulfillment.toast.canceled"),
-          dismissLabel: t("actions.close"),
-        })
-      } catch (e) {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        })
-      }
+      await mutateAsync(undefined, {
+        onSuccess: () => {
+          toast.success(t("orders.fulfillment.toast.canceled"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      })
     }
   }
 

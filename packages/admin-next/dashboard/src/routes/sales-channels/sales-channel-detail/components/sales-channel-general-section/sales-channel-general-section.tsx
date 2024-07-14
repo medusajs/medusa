@@ -43,21 +43,15 @@ export const SalesChannelGeneralSection = ({
       return
     }
 
-    try {
-      await mutateAsync()
-
-      navigate("/settings/sales-channels", { replace: true })
-
-      toast.success(t("general.success"), {
-        description: t("salesChannels.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.delete"))
+        navigate("/settings/sales-channels", { replace: true })
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

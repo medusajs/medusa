@@ -3,10 +3,7 @@ import * as zod from "zod"
 
 import { HttpTypes, InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
 import { Button, Input, Text, toast } from "@medusajs/ui"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -69,23 +66,20 @@ export const AdjustInventoryForm = ({
       return handleSuccess()
     }
 
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         stocked_quantity: value.stocked_quantity,
-      })
-
-      toast.success(t("general.success"), {
-        description: t("inventory.toast.updateLevel"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
-
-    return handleSuccess()
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateLevel"))
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   })
 
   return (

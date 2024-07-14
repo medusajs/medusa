@@ -4,6 +4,7 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
+  ChangeActionType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
@@ -11,7 +12,6 @@ import {
 } from "@medusajs/utils"
 import { ExchangeItem, OrderExchange, Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
-import { ChangeActionType } from "../../utils"
 
 function createExchangeAndReturnEntities(em, data, order) {
   const exchangeReference = em.create(OrderExchange, {
@@ -129,7 +129,9 @@ async function processAdditionalItems(
 
   createItems.forEach((item, index) => {
     const addedItem = itemsToAdd[index]
+
     additionalNewItems[index].item_id = item.id
+
     actions.push({
       action: ChangeActionType.ITEM_ADD,
       exchange_id: exchangeReference.id,
@@ -140,6 +142,7 @@ async function processAdditionalItems(
         reference_id: item.id,
         exchange_id: exchangeReference.id,
         quantity: addedItem.quantity,
+        unit_price: item.unit_price,
         metadata: addedItem.metadata,
       },
     })

@@ -347,6 +347,10 @@ post:
             metadata:
               type: object
               description: The region's metadata.
+            is_tax_inclusive:
+              type: boolean
+              title: is_tax_inclusive
+              description: The region's is tax inclusive.
   x-codeSamples:
     - lang: Shell
       label: cURL

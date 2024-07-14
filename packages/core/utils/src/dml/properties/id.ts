@@ -11,7 +11,7 @@ export class IdProperty extends BaseProperty<string> {
   [IsIdProperty] = true
 
   static isIdProperty(value: any): value is IdProperty {
-    return !!value?.[IsIdProperty]
+    return !!value?.[IsIdProperty] || value?.dataType?.name === "id"
   }
 
   protected dataType: {

@@ -92,7 +92,11 @@ async function loadEntrypoints(
     return async () => {}
   }
 
-  const { shutdown } = await expressLoader({ app: expressApp, configModule })
+  const { shutdown } = await expressLoader({
+    app: expressApp,
+    configModule,
+    rootDirectory,
+  })
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     req.scope = container.createScope() as MedusaContainer
     req.requestId = (req.headers["x-request-id"] as string) ?? v4()

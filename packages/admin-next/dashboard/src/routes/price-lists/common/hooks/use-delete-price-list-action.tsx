@@ -32,22 +32,16 @@ export const useDeletePriceListAction = ({
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("priceLists.delete.successToast", {
+        toast.success(
+          t("priceLists.delete.successToast", {
             name: priceList.title,
-          }),
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+          })
+        )
 
         navigate("/price-lists")
       },
       onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       },
     })
   }

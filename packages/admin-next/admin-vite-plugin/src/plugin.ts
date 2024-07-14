@@ -29,15 +29,19 @@ import {
 
 const VALID_FILE_EXTENSIONS = [".tsx", ".jsx"]
 
+function convertToImportPath(file: string) {
+  return path.normalize(file).split(path.sep).join("/")
+}
+
 /**
  * Returns the module type of a given file.
  */
 function getModuleType(file: string) {
-  const normalizedPath = path.normalize(file)
+  const normalizedPath = convertToImportPath(file)
 
-  if (normalizedPath.includes(path.normalize("/admin/widgets/"))) {
+  if (normalizedPath.includes("/admin/widgets/")) {
     return "widget"
-  } else if (normalizedPath.includes(path.normalize("/admin/routes/"))) {
+  } else if (normalizedPath.includes("/admin/routes/")) {
     return "route"
   } else {
     return "none"
@@ -331,7 +335,10 @@ async function generateWidgetEntrypoint(
   }
 
   const importString = validatedWidgets
-    .map((path, index) => `import WidgetExt${index} from "${path}";`)
+    .map(
+      (path, index) =>
+        `import WidgetExt${index} from "${convertToImportPath(path)}";`
+    )
     .join("\n")
 
   const exportString = `export default {
@@ -416,7 +423,9 @@ async function validateRoute(file: string, resolveMenuItem = false) {
 }
 
 function createRoutePath(file: string) {
-  return file
+  const importPath = convertToImportPath(file)
+
+  return importPath
     .replace(/.*\/admin\/(routes|settings)/, "")
     .replace(/\[([^\]]+)\]/g, ":$1")
     .replace(/\/page\.(tsx|jsx)/, "")
@@ -454,8 +463,10 @@ async function generateRouteEntrypoint(
   const importString = validatedRoutes
     .map((path, index) => {
       return type === "page"
-        ? `import RouteExt${index} from "${path}";`
-        : `import { config as routeConfig${index} } from "${path}";`
+        ? `import RouteExt${index} from "${convertToImportPath(path)}";`
+        : `import { config as routeConfig${index} } from "${convertToImportPath(
+            path
+          )}";`
     })
     .join("\n")
 
