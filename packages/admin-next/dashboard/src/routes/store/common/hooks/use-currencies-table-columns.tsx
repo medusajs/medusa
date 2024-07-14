@@ -1,9 +1,9 @@
-import { CurrencyDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-const columnHelper = createColumnHelper<CurrencyDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCurrency>()
 
 export const useCurrenciesTableColumns = () => {
   const { t } = useTranslation()

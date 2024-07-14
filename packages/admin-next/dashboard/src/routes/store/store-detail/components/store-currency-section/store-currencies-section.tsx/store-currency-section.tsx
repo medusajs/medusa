@@ -1,5 +1,5 @@
-import { Plus, Trash } from "@medusajs/icons"
-import { CurrencyDTO, StoreCurrencyDTO } from "@medusajs/types"
+import { CheckCircle, Plus, Trash, XCircle } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import {
   Checkbox,
   CommandBar,
@@ -20,6 +20,8 @@ import { useDataTable } from "../../../../../../hooks/use-data-table"
 import { ExtendedStoreDTO } from "../../../../../../types/api-responses"
 import { useCurrenciesTableColumns } from "../../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../../common/hooks/use-currencies-table-query"
+import { usePricePreferences } from "../../../../../../hooks/api/price-preferences"
+import { StatusCell } from "../../../../../../components/table/table-cells/common/status-cell"
 
 type StoreCurrencySectionProps = {
   store: ExtendedStoreDTO
@@ -32,7 +34,13 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const { currencies, count, isPending, isError, error } = useCurrencies(
+  const {
+    currencies,
+    count,
+    isPending: isCurrenciesPending,
+    isError: isCurrenciesError,
+    error: currenciesError,
+  } = useCurrencies(
     {
       code: store.supported_currencies?.map((c) => c.currency_code),
       ...searchParams,
@@ -43,10 +51,33 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     }
   )
 
+  const {
+    price_preferences: pricePreferences,
+    isPending: isPricePreferencesPending,
+    isError: isPricePreferencesError,
+    error: pricePreferencesError,
+  } = usePricePreferences(
+    {
+      attribute: "currency_code",
+      value: store.supported_currencies?.map((c) => c.currency_code),
+    },
+    {
+      enabled: !!store.supported_currencies?.length,
+    }
+  )
+
   const columns = useColumns()
+  const prefMap = useMemo(() => {
+    return new Map(pricePreferences?.map((pref) => [pref.value!, pref]))
+  }, [pricePreferences])
+
+  const withTaxInclusivity = currencies?.map((c) => ({
+    ...c,
+    is_tax_inclusive: prefMap.get(c.code)?.is_tax_inclusive,
+  }))
 
   const { table } = useDataTable({
-    data: currencies ?? [],
+    data: withTaxInclusivity ?? [],
     columns,
     count: count,
     getRowId: (row) => row.code,
@@ -62,6 +93,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       supportedCurrencies: store.supported_currencies,
       defaultCurrencyCode: store.supported_currencies?.find((c) => c.is_default)
         ?.currency_code,
+      preferencesMap: prefMap,
     },
   })
 
@@ -104,9 +136,15 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     )
   }
 
-  if (isError) {
-    throw error
+  if (isCurrenciesError) {
+    throw currenciesError
   }
+
+  if (isPricePreferencesError) {
+    throw pricePreferencesError
+  }
+
+  const isLoading = isCurrenciesPending || isPricePreferencesPending
 
   return (
     <Container className="divide-y p-0">
@@ -134,7 +172,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         pageSize={PAGE_SIZE}
         columns={columns}
         count={!store.supported_currencies?.length ? 0 : count}
-        isLoading={!store.supported_currencies?.length ? false : isPending}
+        isLoading={!store.supported_currencies?.length ? false : isLoading}
         queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>
@@ -161,14 +199,15 @@ const CurrencyActions = ({
   currency,
   supportedCurrencies,
   defaultCurrencyCode,
+  preferencesMap,
 }: {
   storeId: string
-  currency: CurrencyDTO
-  supportedCurrencies: StoreCurrencyDTO[]
+  currency: HttpTypes.AdminCurrency
+  supportedCurrencies: HttpTypes.AdminStoreCurrency[]
   defaultCurrencyCode: string
+  preferencesMap: Map<string, HttpTypes.AdminPricePreference>
 }) => {
   const { mutateAsync } = useUpdateStore(storeId)
-
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -205,6 +244,31 @@ const CurrencyActions = ({
     )
   }
 
+  const handleToggleTaxInclusivity = async () => {
+    await mutateAsync(
+      {
+        supported_currencies: supportedCurrencies.map((c) => {
+          const pref = preferencesMap.get(c.currency_code)
+          return {
+            ...c,
+            is_tax_inclusive:
+              c.currency_code === currency.code
+                ? !pref?.is_tax_inclusive
+                : undefined,
+          }
+        }),
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.updatedTaxInclusivitySuccessfully"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
+  }
+
   return (
     <ActionMenu
       groups={[
@@ -216,6 +280,17 @@ const CurrencyActions = ({
               onClick: handleRemove,
               disabled: currency.code === defaultCurrencyCode,
             },
+            {
+              icon: preferencesMap.get(currency.code)?.is_tax_inclusive ? (
+                <XCircle />
+              ) : (
+                <CheckCircle />
+              ),
+              label: preferencesMap.get(currency.code)?.is_tax_inclusive
+                ? t("store.disableTaxInclusivePricing")
+                : t("store.enableTaxInclusivePricing"),
+              onClick: handleToggleTaxInclusivity,
+            },
           ],
         },
       ]}
@@ -223,10 +298,13 @@ const CurrencyActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<CurrencyDTO>()
+const columnHelper = createColumnHelper<
+  HttpTypes.AdminCurrency & { is_tax_inclusive?: boolean }
+>()
 
 const useColumns = () => {
   const base = useCurrenciesTableColumns()
+  const { t } = useTranslation()
 
   return useMemo(
     () => [
@@ -259,14 +337,30 @@ const useColumns = () => {
         },
       }),
       ...base,
+      columnHelper.accessor("is_tax_inclusive", {
+        header: t("fields.taxInclusivePricing"),
+        cell: ({ getValue }) => {
+          const isTaxInclusive = getValue()
+          return (
+            <StatusCell color={isTaxInclusive ? "green" : "grey"}>
+              {isTaxInclusive ? t("fields.true") : t("fields.false")}
+            </StatusCell>
+          )
+        },
+      }),
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { supportedCurrencies, storeId, defaultCurrencyCode } = table
-            .options.meta as {
-            supportedCurrencies: StoreCurrencyDTO[]
+          const {
+            supportedCurrencies,
+            storeId,
+            defaultCurrencyCode,
+            preferencesMap,
+          } = table.options.meta as {
+            supportedCurrencies: HttpTypes.AdminStoreCurrency[]
             storeId: string
             defaultCurrencyCode: string
+            preferencesMap: Map<string, HttpTypes.AdminPricePreference>
           }
 
           return (
@@ -275,11 +369,12 @@ const useColumns = () => {
               currency={row.original}
               supportedCurrencies={supportedCurrencies}
               defaultCurrencyCode={defaultCurrencyCode}
+              preferencesMap={preferencesMap}
             />
           )
         },
       }),
     ],
-    [base]
+    [base, t]
   )
 }
