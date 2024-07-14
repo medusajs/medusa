@@ -227,6 +227,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 name: "test",
                 geo_zones: [
                   {
+                    type: GeoZoneType.COUNTRY,
+                    country_code: "fr",
+                  },
+                  {
                     type: GeoZoneType.ZIP,
                     country_code: "fr",
                     province_code: "rhone",
@@ -302,6 +306,42 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           shippingOptions = await service.listShippingOptionsForContext({
             address: {
               country_code: "fr",
+              province_code: "rhone",
+              city: "paris",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              province_code: "rhone",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "fr",
+              postal_expression: "75006",
+            },
+          })
+
+          expect(shippingOptions).toHaveLength(3)
+
+          shippingOptions = await service.listShippingOptionsForContext({
+            address: {
+              country_code: "us",
               province_code: "rhone",
               city: "paris",
               postal_expression: "75001",

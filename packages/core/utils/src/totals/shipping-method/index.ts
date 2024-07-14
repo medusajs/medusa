@@ -34,7 +34,7 @@ export interface GetShippingMethodTotalOutput {
 export function getShippingMethodsTotals(
   shippingMethods: GetShippingMethodTotalInput[],
   context: GetShippingMethodsTotalsContext
-) {
+): Record<string, GetShippingMethodTotalOutput> {
   const { includeTax } = context
 
   const shippingMethodsTotals = {}

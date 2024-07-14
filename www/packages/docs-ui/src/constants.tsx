@@ -1,7 +1,8 @@
 import React from "react"
-import { Badge, NavbarItem } from "@/components"
-import { OptionType } from "./hooks"
+import { Badge, NavbarItem, HelpButton } from "@/components"
+import { OptionType } from "@/hooks"
 import { SidebarItemType } from "types"
+import { NotificationItemType } from "@/providers"
 
 export const GITHUB_ISSUES_PREFIX = `https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml`
 export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/new?labels=documentation`
@@ -259,3 +260,8 @@ export const searchFiltersV1: OptionType[] = [
     label: "UI",
   },
 ]
+
+export const helpButtonNotification: NotificationItemType = {
+  layout: "empty",
+  children: <HelpButton />,
+}

@@ -1,8 +1,7 @@
 import { Context } from "../shared-context"
 
 export type Subscriber<TData = unknown> = (
-  data: TData,
-  eventName: string
+  data: MessageBody<TData>
 ) => Promise<void>
 
 export type SubscriberContext = {
@@ -13,11 +12,6 @@ export type SubscriberDescriptor = {
   id: string
   subscriber: Subscriber
 }
-
-export type EventHandler<TData = unknown> = (
-  data: TData,
-  eventName: string
-) => Promise<void>
 
 export type EventMetadata = Record<string, unknown> & {
   eventGroupId?: string

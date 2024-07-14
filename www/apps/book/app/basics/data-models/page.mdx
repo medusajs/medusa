@@ -39,7 +39,7 @@ export default MyCustom
 
 You define a data model using the `model`'s `define` method. It accepts two parameters:
 
-1. The first one is the name of the data model's table in the database.
+1. The first one is the name of the data model's table in the database. It should be in snake-case form.
 2. The second is an object, which is the data model's schema. The schema's properties are defined using the `model`'s methods.
 
 The example above defines the data model `MyCustom` with the properties `id` and `name`. 
@@ -58,12 +58,13 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
   1. Create the file `src/modules/hello/migrations-config.ts` with the following content:
 
-  ```ts highlights={[["7", '"medusa-hello"', "Use any database name relevant for your module."]]}
+  ```ts
   import { defineMikroOrmCliConfig } from "@medusajs/utils"
   import path from "path"
   import MyCustom from "./models/my-custom"
+  import { HELLO_MODULE } from "."
 
-  export default defineMikroOrmCliConfig("hello", {
+  export default defineMikroOrmCliConfig(HELLO_MODULE, {
     entities: [MyCustom] as any[],
     migrations: {
       path: path.join(__dirname, "migrations"),

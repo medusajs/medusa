@@ -12,7 +12,7 @@ export async function registerShipment(
 ): Promise<void> {
   let shippingMethodId
 
-  const actions: CreateOrderChangeActionDTO[] = data.items.map((item) => {
+  const actions: CreateOrderChangeActionDTO[] = data.items!.map((item) => {
     return {
       action: ChangeActionType.SHIP_ITEM,
       internal_note: item.internal_note,

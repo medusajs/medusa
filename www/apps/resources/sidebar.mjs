@@ -1280,9 +1280,21 @@ export const sidebar = sidebarAttachHrefCommonOptions([
   },
 
   {
+    path: "/recipes",
     title: "Recipes",
     hasTitleStyling: true,
+    isChildSidebar: true,
     children: [
+      {
+        path: "/recipes/marketplace",
+        title: "Marketplace",
+        children: [
+          {
+            path: "/recipes/marketplace/examples/vendors",
+            title: "Example: Vendors",
+          },
+        ],
+      },
       {
         path: "/recipes/b2b",
         title: "B2B",
@@ -1302,10 +1314,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         path: "/recipes/integrate-ecommerce-stack",
         title: "Integrate Ecommerce Stack",
-      },
-      {
-        path: "/recipes/marketplace",
-        title: "Marketplace",
       },
       {
         path: "/recipes/multi-region-store",
@@ -1965,14 +1973,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    title: "Configurations",
+    path: "/references/medusa-config",
+    title: "Medusa Configurations",
     hasTitleStyling: true,
-    children: [
-      {
-        path: "/references/medusa-config",
-        title: "Medusa Application",
-      },
-    ],
   },
   {
     title: "General",
@@ -2067,7 +2070,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
-            title: "Medusa Backend",
+            title: "Medusa Application",
             hasTitleStyling: true,
             children: [
               {

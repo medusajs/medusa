@@ -4,6 +4,9 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableOrderAddressProps,
+  FilterableOrderChangeActionProps,
+  FilterableOrderClaimProps,
+  FilterableOrderExchangeProps,
   FilterableOrderLineItemAdjustmentProps,
   FilterableOrderLineItemProps,
   FilterableOrderLineItemTaxLineProps,
@@ -13,6 +16,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   FilterableOrderTransactionProps,
+  FilterableReturnProps,
   OrderAddressDTO,
   OrderChangeActionDTO,
   OrderChangeDTO,
@@ -59,8 +63,13 @@ import {
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
+  UpdateOrderChangeActionDTO,
   UpdateOrderChangeDTO,
+  UpdateOrderClaimDTO,
+  UpdateOrderClaimWithSelectorDTO,
   UpdateOrderDTO,
+  UpdateOrderExchangeDTO,
+  UpdateOrderExchangeWithSelectorDTO,
   UpdateOrderItemDTO,
   UpdateOrderItemWithSelectorDTO,
   UpdateOrderLineItemDTO,
@@ -68,8 +77,10 @@ import {
   UpdateOrderLineItemWithSelectorDTO,
   UpdateOrderReturnReasonDTO,
   UpdateOrderReturnReasonWithSelectorDTO,
+  UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -1535,6 +1546,99 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderChangeReturn>
 
+  /**
+   * This method retrieves a paginated list of {return type}(s) based on optional filters and configuration.
+   *
+   * @param {FilterableOrderChangeActionProps} filters - The filters to apply on the retrieved order change action.
+   * @param {FindConfig<OrderChangeActionDTO>} config - The configurations determining how the order is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a order.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO[]>} The list of {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const orderChangeActions = await orderModuleService.listOrderChangeActions();
+   * ```
+   *
+   */
+  listOrderChangeActions(
+    filters?: FilterableOrderChangeActionProps,
+    config?: FindConfig<OrderChangeActionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  /**
+   * This method retrieves a {return type} by its ID.
+   *
+   * @param {string} actionId - The order change action's ID.
+   * @param {FindConfig<OrderChangeActionDTO>} config - The configurations determining how the order is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a order.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO>} The retrieved {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.retrieveOrderChangeAction("actionId123");
+   * ```
+   *
+   */
+  retrieveOrderChangeAction(
+    actionId: string,
+    config?: FindConfig<OrderChangeActionDTO>,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeActionDTO[]} data - The order change action to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * // Example call to updateOrderChangeActions
+   *
+   * const updateOrderChangeActionsData: UpdateOrderChangeActionDTO[] = [{
+   *     id: "orderchangeaction123",
+   *     ...
+   * }];
+   *
+   * const result = await orderModuleService.updateOrderChangeActions(updateOrderChangeActionsData);
+   * ```
+   *
+   */
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  /**
+   * This method updates {return type}(s)
+   *
+   * @param {UpdateOrderChangeActionDTO | UpdateOrderChangeActionDTO[]} data - The order change action d t o |  order change to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderChangeActionDTO | OrderChangeActionDTO[]>} The updated {return type}(s).
+   *
+   * @example
+   * ```typescript
+   * const result = await orderModuleService.updateOrderChangeActions({
+   *   id: "orderChangeAction123",
+   *   ...
+   * });
+   * ```
+   *
+   */
+  updateOrderChangeActions(
+    data: UpdateOrderChangeActionDTO | UpdateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO | OrderChangeActionDTO[]>
+
   addOrderAction(
     data: CreateOrderChangeActionDTO,
     sharedContext?: Context
@@ -1579,6 +1683,32 @@ export interface IOrderModuleService extends IModuleService {
     actionId: string,
     sharedContext?: Context
   ): Promise<void>
+
+  /**
+   * This method deletes {return type} by its ID.
+   *
+   * @param {string} orderId - The order action's ID.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * ```typescript
+   * await orderModuleService.softDeleteOrderChangeActions("orderActionId");
+   * ```
+   *
+   */
+
+  softDeleteOrderChangeActions<TReturnableLinkableKeys extends string = string>(
+    actionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  restoreOrderChangeActions<TReturnableLinkableKeys extends string = string>(
+    actionId: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
   softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
     ids: string[],
@@ -1744,13 +1874,128 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<void>
 
   softDeleteReturnReasons<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
   restoreReturnReasons<TReturnableLinkableKeys extends string = string>(
-    storeIds: string[],
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createReturns(
+    data: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  createReturns(
+    data: CreateOrderReturnDTO[],
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+
+  updateReturns(data: UpdateOrderReturnWithSelectorDTO[]): Promise<ReturnDTO[]>
+
+  updateReturns(
+    selector: Partial<FilterableReturnProps>,
+    data: Partial<UpdateReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+  updateReturns(
+    id: string,
+    data: Partial<UpdateReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  deleteReturns(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteReturns<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreReturns<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createOrderClaims(
+    data: CreateOrderClaimDTO,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
+  createOrderClaims(
+    data: CreateOrderClaimDTO[],
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO[]>
+
+  updateOrderClaims(
+    data: UpdateOrderClaimWithSelectorDTO[]
+  ): Promise<OrderClaimDTO[]>
+
+  updateOrderClaims(
+    selector: Partial<FilterableOrderClaimProps>,
+    data: Partial<UpdateOrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO[]>
+  updateOrderClaims(
+    id: string,
+    data: Partial<UpdateOrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
+  deleteOrderClaims(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteOrderClaims<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderClaims<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  createOrderExchanges(
+    data: CreateOrderExchangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  createOrderExchanges(
+    data: CreateOrderExchangeDTO[],
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO[]>
+
+  updateOrderExchanges(
+    data: UpdateOrderExchangeWithSelectorDTO[]
+  ): Promise<OrderExchangeDTO[]>
+
+  updateOrderExchanges(
+    selector: Partial<FilterableOrderExchangeProps>,
+    data: Partial<UpdateOrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO[]>
+  updateOrderExchanges(
+    id: string,
+    data: Partial<UpdateOrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  deleteOrderExchanges(ids: string[], sharedContext?: Context): Promise<void>
+
+  softDeleteOrderExchanges<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restoreOrderExchanges<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>

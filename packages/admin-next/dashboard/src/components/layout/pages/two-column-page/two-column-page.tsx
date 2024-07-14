@@ -2,6 +2,7 @@ import { clx } from "@medusajs/ui"
 import { Children, ComponentPropsWithoutRef } from "react"
 import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
+import { MetadataSection } from "../../../common/metadata-section"
 import { PageProps, WidgetImport, WidgetProps } from "../types"
 
 interface TwoColumnWidgetProps extends WidgetProps {
@@ -20,13 +21,17 @@ const Root = <TData,>({
    */
   widgets,
   /**
-   * Data to be passed to widgets and the JSON view.
+   * Data to be passed to widgets, JSON view, and Metadata view.
    */
   data,
   /**
-   * Whether to show JSON view of the data. Defaults to true.
+   * Whether to show JSON view of the data. Defaults to false.
    */
   showJSON = false,
+  /**
+   * Whether to show metadata view of the data. Defaults to false.
+   */
+  showMetadata = false,
   /**
    * Whether to render an outlet for children routes. Defaults to true.
    */
@@ -45,6 +50,16 @@ const Root = <TData,>({
     showJSON = false
   }
 
+  if (showMetadata && !data) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn(
+        "`showMetadata` is true but no data is provided. To display metadata, provide data prop."
+      )
+    }
+
+    showMetadata = false
+  }
+
   const childrenArray = Children.toArray(children)
 
   if (childrenArray.length !== 2) {
@@ -52,9 +67,10 @@ const Root = <TData,>({
   }
 
   const [main, sidebar] = childrenArray
+  const showExtraData = showJSON || showMetadata
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return <w.Component {...widgetProps} key={i} />
       })}
@@ -64,9 +80,10 @@ const Root = <TData,>({
           {after.widgets.map((w, i) => {
             return <w.Component {...widgetProps} key={i} />
           })}
-          {showJSON && (
-            <div className="hidden xl:block">
-              <JsonViewSection data={data!} root="product" />
+          {showExtraData && (
+            <div className="hidden flex-col gap-y-3 xl:flex">
+              {showMetadata && <MetadataSection data={data!} />}
+              {showJSON && <JsonViewSection data={data!} />}
             </div>
           )}
         </div>
@@ -78,9 +95,10 @@ const Root = <TData,>({
           {sideAfter.widgets.map((w, i) => {
             return <w.Component {...widgetProps} key={i} />
           })}
-          {showJSON && (
-            <div className="xl:hidden">
-              <JsonViewSection data={data!} />
+          {showExtraData && (
+            <div className="flex flex-col gap-y-3 xl:hidden">
+              {showMetadata && <MetadataSection data={data!} />}
+              {showJSON && <JsonViewSection data={data!} />}
             </div>
           )}
         </div>

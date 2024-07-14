@@ -235,6 +235,10 @@ export type ModuleExports<T = Constructor<any>> = {
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+  generateMigration?(
+    options: LoaderOptions<any>,
+    moduleDeclaration?: InternalModuleDeclaration
+  ): Promise<void>
 }
 
 export interface ModuleServiceInitializeOptions {

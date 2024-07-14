@@ -3737,6 +3737,14 @@ components:
       type: object
       description: The parent's collection.
       x-schemaName: AdminCollection
+      required:
+        - id
+        - title
+        - handle
+        - created_at
+        - updated_at
+        - deleted_at
+        - metadata
       properties:
         id:
           type: string
@@ -4730,10 +4738,9 @@ components:
               title: name
               description: The default tax rate's name.
             is_combinable:
-              type: string
-              enum:
-                - 'true'
-                - 'false'
+              type: boolean
+              title: is_combinable
+              description: The default tax rate's is combinable.
             metadata:
               type: object
               description: The default tax rate's metadata.
@@ -5133,7 +5140,6 @@ components:
               - id
               - quantity
               - reason_id
-              - note
             properties:
               id:
                 type: string
@@ -5161,72 +5167,23 @@ components:
       x-schemaName: AdminPostReturnsReqSchema
       required:
         - order_id
-        - items
-        - internal_note
-        - location_id
+        - metadata
       properties:
         order_id:
           type: string
           title: order_id
           description: The return's order id.
-        items:
-          type: array
-          description: The return's items.
-          items:
-            type: object
-            description: The item's items.
-            required:
-              - id
-              - quantity
-              - reason_id
-              - note
-            properties:
-              id:
-                type: string
-                title: id
-                description: The item's ID.
-              quantity:
-                type: number
-                title: quantity
-                description: The item's quantity.
-              reason_id:
-                type: string
-                title: reason_id
-                description: The item's reason id.
-              note:
-                type: string
-                title: note
-                description: The item's note.
-        return_shipping:
-          type: object
-          description: The return's return shipping.
-          required:
-            - option_id
-          properties:
-            option_id:
-              type: string
-              title: option_id
-              description: The return shipping's option id.
-            price:
-              type: number
-              title: price
-              description: The return shipping's price.
+        description:
+          type: string
+          title: description
+          description: The return's description.
         internal_note:
           type: string
           title: internal_note
           description: The return's internal note.
-        receive_now:
-          type: boolean
-          title: receive_now
-          description: The return's receive now.
-        refund_amount:
-          type: number
-          title: refund_amount
-          description: The return's refund amount.
-        location_id:
-          type: string
-          title: location_id
-          description: The return's location id.
+        metadata:
+          type: object
+          description: The return's metadata.
     AdminPrice:
       type: object
       description: The price's prices.
@@ -5318,7 +5275,6 @@ components:
         - is_giftcard
         - collection_id
         - type_id
-        - tags
         - images
         - discountable
         - external_id
@@ -5342,6 +5298,11 @@ components:
             $ref: '#/components/schemas/AdminProductVariant'
         type:
           type: object
+        tags:
+          type: array
+          description: The parent's tags.
+          items:
+            $ref: '#/components/schemas/AdminProductTag'
         title:
           type: string
           title: title
@@ -5440,11 +5401,6 @@ components:
           type: string
           title: type_id
           description: The parent's type id.
-        tags:
-          type: array
-          description: The parent's tags.
-          items:
-            $ref: '#/components/schemas/BaseProductTag'
         images:
           type: array
           description: The parent's images.
@@ -5684,6 +5640,42 @@ components:
       properties:
         product:
           $ref: '#/components/schemas/AdminProduct'
+    AdminProductTag:
+      type: object
+      description: The tag's tags.
+      x-schemaName: AdminProductTag
+      required:
+        - id
+        - value
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The tag's ID.
+        value:
+          type: string
+          title: value
+          description: The tag's value.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The tag's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The tag's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The tag's deleted at.
+        metadata:
+          type: object
+          description: The tag's metadata.
     AdminProductVariant:
       type: object
       description: The updated's details.
@@ -6442,7 +6434,6 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateCustomerGroup
       required:
-        - name
         - metadata
       properties:
         name:
@@ -6892,6 +6883,7 @@ components:
       description: SUMMARY
       x-schemaName: AdminUpdateTaxRate
       required:
+        - code
         - metadata
       properties:
         rate:
@@ -7151,7 +7143,6 @@ components:
         - material
         - collection_id
         - type_id
-        - tags
         - variants
         - options
         - images
@@ -7856,7 +7847,6 @@ components:
         - is_giftcard
         - collection_id
         - type_id
-        - tags
         - images
         - discountable
         - external_id
