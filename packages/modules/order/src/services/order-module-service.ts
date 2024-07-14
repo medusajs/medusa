@@ -2408,8 +2408,6 @@ export default class OrderModuleService<
       )
     }
 
-    // console.log("Order changes: ", orderChanges)
-
     for (const orderChange of orderChanges) {
       const notAllowed: string[] = []
       if (

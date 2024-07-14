@@ -47,8 +47,10 @@ const ItemSchema = z.object({
 
 export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
+  location_id: z.string().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<
