@@ -1710,6 +1710,8 @@
     "inviteLinkTemplate": "Invite link template",
     "currencies": "Currencies",
     "addCurrencies": "Add currencies",
+    "enableTaxInclusivePricing": "Enable tax inclusive pricing",
+    "disableTaxInclusivePricing": "Disable tax inclusive pricing",
     "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
     "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
     "currencyAlreadyAdded": "The currency has already been added to your store.",
@@ -1719,7 +1721,8 @@
     "toast": {
       "update": "Store successfully updated",
       "currenciesUpdated": "Currencies updated successfully",
-      "currenciesRemoved": "Removed currencies from the store successfully"
+      "currenciesRemoved": "Removed currencies from the store successfully",
+      "updatedTaxInclusivitySuccessfully": "Tax inclusive pricing updated successfully"
     }
   },
   "regions": {

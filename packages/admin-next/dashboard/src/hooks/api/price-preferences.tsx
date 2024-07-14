@@ -31,7 +31,7 @@ export const usePricePreference = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.pricePreference.retrieve(id, query),
-    queryKey: pricePreferencesQueryKeys.detail(id),
+    queryKey: pricePreferencesQueryKeys.detail(),
     ...options,
   })
 
@@ -52,7 +52,7 @@ export const usePricePreferences = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.pricePreference.list(query),
-    queryKey: pricePreferencesQueryKeys.list(query),
+    queryKey: pricePreferencesQueryKeys.list(),
     ...options,
   })
 
