@@ -30,9 +30,9 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
       existing = {
         id: action.details.reference_id!,
         order_id: currentOrder.id,
-        return_id: action.details.return_id,
-        claim_id: action.details.claim_id,
-        exchange_id: action.details.exchange_id,
+        return_id: action.return_id,
+        claim_id: action.claim_id,
+        exchange_id: action.exchange_id,
 
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,

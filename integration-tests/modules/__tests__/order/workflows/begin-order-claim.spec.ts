@@ -361,7 +361,7 @@ medusaIntegrationTestRunner({
       it("should begin a claim order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createClaimOrderData: OrderWorkflow.beginOrderClaimWorkflowInput =
+        const createClaimOrderData: OrderWorkflow.BeginOrderClaimWorkflowInput =
           {
             type: ClaimType.REFUND,
             order_id: order.id,

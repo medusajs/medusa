@@ -21,7 +21,7 @@ export const beginClaimOrderWorkflowId = "begin-claim-order"
 export const beginClaimOrderWorkflow = createWorkflow(
   beginClaimOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.beginOrderClaimWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginOrderClaimWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",

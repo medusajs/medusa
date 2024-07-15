@@ -1,4 +1,4 @@
-export interface beginOrderReturnWorkflowInput {
+export interface BeginOrderReturnWorkflowInput {
   order_id: string
   created_by?: string
   internal_note?: string

@@ -33,6 +33,11 @@ export function formatOrder(
     }
 
     mainOrder.items = mainOrder.items?.map((orderItem) => {
+      const isFormatted = isDefined(orderItem.detail?.fulfilled_quantity)
+      if (isFormatted) {
+        return orderItem
+      }
+
       const detail = { ...orderItem }
       delete detail.order
       delete detail.item
@@ -62,6 +67,10 @@ export function formatOrder(
 
     if (order.shipping_methods) {
       order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
+        if (shippingMethod.detail) {
+          return shippingMethod
+        }
+
         const sm = { ...shippingMethod.shipping_method }
 
         delete shippingMethod.shipping_method

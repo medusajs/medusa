@@ -21,7 +21,7 @@ export const beginReturnOrderWorkflowId = "begin-return-order"
 export const beginReturnOrderWorkflow = createWorkflow(
   beginReturnOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.beginOrderReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginOrderReturnWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
