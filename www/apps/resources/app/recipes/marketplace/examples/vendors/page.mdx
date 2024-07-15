@@ -98,34 +98,6 @@ export default VendorAdmin
 
 This creates a `VendorAdmin` data model, which represents an admin of a vendor.
 
-### Generate Migrations
-
-To create tables for the data models in the database, you need to generate migrations for them.
-
-Create the file `src/modules/marketplace/migrations-config.ts` with the following content:
-
-```ts
-import { defineMikroOrmCliConfig } from "@medusajs/utils"
-import path from "path"
-import Vendor from "./models/vendor"
-import VendorAdmin from "./models/vendor-admin"
-
-export default defineMikroOrmCliConfig("marketplace", {
-  entities: [Vendor, VendorAdmin] as any[],
-  migrations: {
-    path: path.join(__dirname, "migrations"),
-  },
-})
-```
-
-Then, run the following command to generate the migration:
-
-```bash
-npx cross-env MIKRO_ORM_CLI=./src/modules/marketplace/migrations-config.ts mikro-orm migration:create
-```
-
-This generates a migration in the `src/modules/marketeplace/migrations` directory.
-
 ### Create Main Module Service
 
 Next, create the main service of the module at `src/modules/marketplace/service.ts` with the following content:
@@ -243,9 +215,17 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ---
 
-## Step 3: Run Migrations
+## Step 3: Generate and Run Migrations
 
-To reflect the module’s data models and the module links in the database, run the following command:
+To create tables for the marketplace data models in the database, start by generating the migrations for the marketplace module with the following command:
+
+```bash
+npx medusa migrations generate
+```
+
+This generates a migration in the `src/modules/marketeplace/migrations` directory.
+
+Then, to reflect the migration and the module links in the database, run the following command:
 
 ```bash
 npx medusa migrations run
