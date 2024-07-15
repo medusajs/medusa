@@ -79,13 +79,13 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     }).config({ name: "fetch-shipping-option" })
 
     const shippingMethodInput = transform(
-      { orderReturn, shippingOptions },
+      { orderReturn, shippingOptions, customPrice: input.custom_price },
       (data) => {
         const option = data.shippingOptions[0]
 
         return {
           shipping_option_id: option.id,
-          amount: option.calculated_price.calculated_amount,
+          amount: data.customPrice ?? option.calculated_price.calculated_amount,
           is_tax_inclusive:
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
@@ -118,14 +118,23 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         shippingOption: shippingOptions[0],
         methodId: createdMethods[0].id,
         customPrice: input.custom_price,
+        orderChange,
       },
-      ({ shippingOption, returnId, orderId, methodId, customPrice }) => {
+      ({
+        shippingOption,
+        returnId,
+        orderId,
+        methodId,
+        customPrice,
+        orderChange,
+      }) => {
         const methodPrice =
           customPrice ?? shippingOption.calculated_price.calculated_amount
 
         return {
           action: ChangeActionType.SHIPPING_ADD,
           reference: "order_shipping_method",
+          order_change_id: orderChange.id,
           reference_id: methodId,
           amount: methodPrice,
           order_id: orderId,

@@ -56,7 +56,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("createReturnShippingMethodWorkflow", () => {
-        it.only("should successfully add return shipping to order changes", async () => {
+        it("should successfully add return shipping to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
           const { result } = await createReturnShippingMethodWorkflow(
@@ -68,20 +68,17 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const orderChange = result?.[0]
+          const shippingMethod = result.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
 
-          expect(orderChange).toEqual(
+          expect(shippingMethod).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              reference: "order_shipping_method",
-              reference_id: expect.any(String),
-              order_id: returnOrder.order_id,
-              return_id: returnOrder.id,
-              details: {},
-              raw_amount: { value: "10", precision: 20 },
-              applied: false,
-              action: "SHIPPING_ADD",
-              amount: 10,
+              name: "Shipping option",
+              order_id: order.id,
+              subtotal: 10,
+              total: 10,
             })
           )
         })
@@ -99,20 +96,17 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const orderChange = result?.[0]
+          const shippingMethod = result.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
 
-          expect(orderChange).toEqual(
+          expect(shippingMethod).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              reference: "order_shipping_method",
-              reference_id: expect.any(String),
-              order_id: returnOrder.order_id,
-              return_id: returnOrder.id,
-              details: {},
-              raw_amount: { value: "20", precision: 20 },
-              applied: false,
-              action: "SHIPPING_ADD",
-              amount: 20,
+              name: "Shipping option",
+              order_id: order.id,
+              subtotal: 20,
+              total: 20,
             })
           )
         })

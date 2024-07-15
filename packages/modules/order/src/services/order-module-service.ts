@@ -1969,15 +1969,11 @@ export default class OrderModuleService<
       }
     })
 
-    console.log("Order: ", order)
-    console.log("Order change: ", orderChange)
-
-    const { itemsToUpsert, calculatedOrders } =
-      applyChangesToOrder(
-        [order],
-        { [order.id]: orderChange.actions },
-        { addActionReferenceToObject: true }
-      )
+    const { itemsToUpsert, calculatedOrders } = applyChangesToOrder(
+      [order],
+      { [order.id]: orderChange.actions },
+      { addActionReferenceToObject: true }
+    )
 
     const calculated = calculatedOrders[order.id]
 
