@@ -14,6 +14,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
+import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
 import { ShippingProfile } from "./shipping-profile"
@@ -45,6 +46,7 @@ export class Admin {
   public shippingProfile: ShippingProfile
   public inventoryItem: InventoryItem
   public order: Order
+  public return: Return
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
@@ -71,6 +73,7 @@ export class Admin {
     this.shippingProfile = new ShippingProfile(client)
     this.inventoryItem = new InventoryItem(client)
     this.order = new Order(client)
+    this.return = new Return(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
