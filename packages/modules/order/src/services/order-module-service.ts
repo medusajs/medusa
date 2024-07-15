@@ -1969,18 +1969,57 @@ export default class OrderModuleService<
       }
     })
 
-    const calculated = calculateOrderChange({
-      order: order as any,
-      actions: orderChange.actions,
-      transactions: order.transactions ?? [],
-      options: {
-        addActionReferenceToObject: true,
-      },
-    })
+    const { itemsToUpsert, shippingMethodsToUpsert, calculatedOrders } =
+      applyChangesToOrder(
+        [order],
+        { [order.id]: orderChange.actions },
+        { addActionReferenceToObject: true }
+      )
 
-    createRawPropertiesFromBigNumber(calculated)
+    const calculated = calculatedOrders[order.id]
 
-    const calcOrder = calculated.order as any
+    const addedItems = {}
+    for (const item of calculated.order.items) {
+      const isExistingItem = item.id === item.detail?.item_id
+
+      if (!isExistingItem) {
+        addedItems[item.id] = item
+      }
+    }
+    if (Object.keys(addedItems).length > 0) {
+      const addedItemDetails = await this.listLineItems(
+        { id: Object.keys(addedItems) },
+        {
+          relations: ["adjustments", "tax_lines"],
+        },
+        sharedContext
+      )
+
+      calculated.order.items.forEach((item, idx) => {
+        if (addedItems[item.id]) {
+          const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
+
+          const actions = item.actions
+          delete item.actions
+
+          const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+          calculated.order.items[idx] = {
+            ...lineItem,
+            actions,
+            quantity: newItem.quantity,
+            detail: {
+              ...newItem,
+              ...item,
+            },
+          }
+        }
+      })
+    }
+
+    // TODO - add new shipping methods
+
+    const calcOrder = calculated.order
+
     decorateCartTotals(calcOrder as DecorateCartLikeInputDTO)
     calcOrder.summary = calculated.summary
 

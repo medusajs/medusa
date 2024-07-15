@@ -1,5 +1,5 @@
-import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
-import { MathBN, MedusaError, isPresent } from "@medusajs/utils"
+import { OrderLineItemDTO, OrderWorkflow } from "@medusajs/types"
+import { MathBN, MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -14,7 +14,7 @@ import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant
 import { validateVariantPricesStep } from "../../definition/cart/steps/validate-variant-prices"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "../../definition/cart/workflows/confirm-variant-inventory"
-import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"
+import { createOrderLineItemsStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
 
@@ -54,37 +54,27 @@ function prepareLineItems(data) {
   return items
 }
 
-function getOrderInput(data) {
-  const shippingAddress = data.input.shipping_address ?? { id: undefined }
-  delete shippingAddress.id
+export const addOrderLineItemsWorkflowId = "order-add-line-items"
+export const addOrderLineItemsWorkflow = createWorkflow(
+  addOrderLineItemsWorkflowId,
+  (
+    input: WorkflowData<OrderWorkflow.OrderAddLineItemWorkflowInput>
+  ): WorkflowData<OrderLineItemDTO[]> => {
+    const order = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: [
+        "id",
+        "sales_channel_id",
+        "region_id",
+        "customer_id",
+        "email",
+        "currency_code",
+      ],
+      variables: { id: input.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "order-query" })
 
-  const billingAddress = data.input.billing_address ?? { id: undefined }
-  delete billingAddress.id
-
-  const data_ = {
-    ...data.input,
-    shipping_address: isPresent(shippingAddress) ? shippingAddress : undefined,
-    billing_address: isPresent(billingAddress) ? billingAddress : undefined,
-    currency_code: data.input.currency_code ?? data.region.currency_code,
-    region_id: data.region.id,
-  }
-
-  if (data.customerData.customer?.id) {
-    data_.customer_id = data.customerData.customer.id
-    data_.email = data.input?.email ?? data.customerData.customer.email
-  }
-
-  if (data.salesChannel?.id) {
-    data_.sales_channel_id = data.salesChannel.id
-  }
-
-  return data_
-}
-
-export const createOrdersWorkflowId = "create-orders"
-export const createOrdersWorkflow = createWorkflow(
-  createOrdersWorkflowId,
-  (input: WorkflowData<CreateOrderDTO>): WorkflowData<OrderDTO> => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? [])
         .map((item) => item.variant_id)
@@ -93,27 +83,26 @@ export const createOrdersWorkflow = createWorkflow(
 
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
-        salesChannelId: input.sales_channel_id,
+        salesChannelId: order.sales_channel_id,
       }),
       findOneOrAnyRegionStep({
-        regionId: input.region_id,
+        regionId: order.region_id,
       }),
       findOrCreateCustomerStep({
-        customerId: input.customer_id,
-        email: input.email,
+        customerId: order.customer_id,
+        email: order.email,
       })
     )
 
-    // TODO: This is on par with the context used in v1.*, but we can be more flexible.
     const pricingContext = transform(
-      { input, region, customerData },
+      { input, region, customerData, order },
       (data) => {
         if (!data.region) {
           throw new MedusaError(MedusaError.Types.NOT_FOUND, "Region not found")
         }
 
         return {
-          currency_code: data.input.currency_code ?? data.region.currency_code,
+          currency_code: data.order.currency_code ?? data.region.currency_code,
           region_id: data.region.id,
           customer_id: data.customerData.customer?.id,
         }
@@ -130,7 +119,7 @@ export const createOrdersWorkflow = createWorkflow(
         },
       },
       throw_if_key_not_found: true,
-    })
+    }).config({ name: "variants-query" })
 
     validateVariantPricesStep({ variants })
 
@@ -147,35 +136,13 @@ export const createOrdersWorkflow = createWorkflow(
       context: pricingContext,
     })
 
-    const orderInput = transform(
-      { input, region, customerData, salesChannel },
-      getOrderInput
-    )
-
     const lineItems = transform(
       { priceSets, input, variants },
       prepareLineItems
     )
 
-    const orderToCreate = transform({ lineItems, orderInput }, (data) => {
-      return {
-        ...data.orderInput,
-        items: data.lineItems,
-      }
+    return createOrderLineItemsStep({
+      items: lineItems,
     })
-
-    const orders = createOrdersStep([orderToCreate])
-    const order = transform({ orders }, (data) => data.orders?.[0])
-
-    /* TODO: Implement Order promotions
-    refreshOrderPromotionsStep({
-      id: order.id,
-      promo_codes: input.promo_codes,
-    })
-    */
-
-    updateOrderTaxLinesStep({ order_id: order.id })
-
-    return order
   }
 )

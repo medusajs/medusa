@@ -50,7 +50,6 @@ import {
   CreateOrderDTO,
   CreateOrderExchangeDTO,
   CreateOrderLineItemDTO,
-  CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
   CreateOrderReturnReasonDTO,
@@ -559,12 +558,8 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
 
-  createLineItems(
-    data: CreateOrderLineItemForOrderDTO
-  ): Promise<OrderLineItemDTO[]>
-  createLineItems(
-    data: CreateOrderLineItemForOrderDTO[]
-  ): Promise<OrderLineItemDTO[]>
+  createLineItems(data: CreateOrderLineItemDTO): Promise<OrderLineItemDTO[]>
+  createLineItems(data: CreateOrderLineItemDTO[]): Promise<OrderLineItemDTO[]>
   createLineItems(
     orderId: string,
     items: CreateOrderLineItemDTO[],

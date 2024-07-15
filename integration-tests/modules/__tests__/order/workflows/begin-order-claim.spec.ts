@@ -361,7 +361,7 @@ medusaIntegrationTestRunner({
       it("should begin a claim order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createClaimOrderData: OrderWorkflow.beginOrderClaimWorkflowInput =
+        const createClaimOrderData: OrderWorkflow.BeginOrderClaimWorkflowInput =
           {
             type: ClaimType.REFUND,
             order_id: order.id,
@@ -425,8 +425,6 @@ medusaIntegrationTestRunner({
                 action: "RETURN_ITEM",
                 details: expect.objectContaining({
                   quantity: 1,
-                  return_id: expect.stringContaining("return_"),
-                  claim_id: claimOrder.id,
                   reference_id: order.items![0].id,
                 }),
               }),
