@@ -35,7 +35,6 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { useCreateOrderReturn } from "../../../../../hooks/api/orders"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
@@ -101,7 +100,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const locationId = form.watch("location_id")
   const shippingOptionId = form.watch("option_id")
 
-  const { mutateAsync, isPending } = useCreateOrderReturn()
+  const { mutateAsync, isPending } = {} // useCreateOrderReturn()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {

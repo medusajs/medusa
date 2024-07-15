@@ -27,21 +27,6 @@ export interface AdminCreateOrderFulfillment {
   metadata?: Record<string, any>
 }
 
-export interface AdminCreateOrderReturn {
-  order_id: string
-  items: {
-    id: string
-    quantity: number
-    reason_id?: string
-    note?: string
-  }[]
-  return_shipping: { option_id: string; price?: number }
-  internal_note?: string
-  receive_now?: boolean
-  refund_amount?: number
-  location_id?: string
-}
-
 export interface AdminCreateOrderShipment {
   items: { id: string; quantity: number }[]
   labels?: {
