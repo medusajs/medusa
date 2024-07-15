@@ -20,6 +20,9 @@ describe("defineMikroOrmCliConfig", () => {
     expect(config).toEqual({
       entities: [{}],
       type: "postgresql",
+      host: "127.0.0.1",
+      user: "postgres",
+      password: "",
       dbName: "medusa-fulfillment",
       migrations: {
         generator: expect.any(Function),
@@ -36,6 +39,9 @@ describe("defineMikroOrmCliConfig", () => {
       entities: [{}],
       type: "postgresql",
       dbName: "medusa-my-test",
+      host: "127.0.0.1",
+      user: "postgres",
+      password: "",
       migrations: {
         generator: expect.any(Function),
       },

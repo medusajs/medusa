@@ -1,6 +1,6 @@
 import { OrderClaimType } from "../../order/mutations"
 
-export interface beginOrderClaimWorkflowInput {
+export interface BeginOrderClaimWorkflowInput {
   type: OrderClaimType
   order_id: string
   created_by?: string

@@ -148,8 +148,6 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
           reference_id: orderReturn.id,
           details: {
             reference_id: item.id,
-            exchange_id: orderExchange.id,
-            return_id: orderReturn.id,
             quantity: item.quantity,
             metadata: item.metadata,
           },
