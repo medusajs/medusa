@@ -38,6 +38,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
+import { useAddReturnItem } from "../../../../../hooks/api/returns.tsx"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -49,14 +50,20 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  /**
+   * STATE
+   */
   const { setIsOpen } = useStackedModal()
-
+  const [isRequestLoading, setIsRequestLoading] = useState(false)
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
   const [customShippingAmount, setCustomShippingAmount] = useState(0)
   const [inventoryMap, setInventoryMap] = useState<
     Record<string, InventoryLevelDTO[]>
   >({})
 
+  /**
+   * HOOKS
+   */
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
   const { shipping_options = [] } = useShippingOptions({
@@ -66,6 +73,18 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
      * TODO: this should accept filter for location_id
      */
   })
+
+  /**
+   * MUTATIONS
+   */
+  const { mutateAsync: confirmReturnRequest } = {} // useAConfirmReturnRequest()
+  const { mutateAsync: addReturnItem } = useAddReturnItem() // TODO: return id
+  // TODO: update return item
+  // TODO: remove return item
+
+  /**
+   * FORM
+   */
 
   const form = useForm<ReturnCreateSchemaType>({
     /**
@@ -100,11 +119,9 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const locationId = form.watch("location_id")
   const shippingOptionId = form.watch("option_id")
 
-  const { mutateAsync, isPending } = {} // useCreateOrderReturn()
-
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await confirmReturnRequest({
         order_id: order.id,
         location_id: data.location_id,
         return_shipping: {
@@ -148,6 +165,9 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
         append({ item_id: id, quantity: 1 })
       }
     })
+
+    // TODO: uncomment
+    // addReturnItem(selectedItems)
 
     setIsOpen("items", false)
   }
@@ -247,26 +267,8 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   return (
     <RouteFocusModal.Form form={form}>
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteFocusModal.Header>
-          <div className="flex w-full items-center justify-end gap-x-4">
-            <div className="flex items-center justify-end gap-x-2">
-              <RouteFocusModal.Close asChild>
-                <Button variant="secondary" size="small">
-                  {t("actions.cancel")}
-                </Button>
-              </RouteFocusModal.Close>
-              <Button
-                key="submit-button"
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isPending}
-              >
-                {t("actions.save")}
-              </Button>
-            </div>
-          </div>
-        </RouteFocusModal.Header>
+        <RouteFocusModal.Header />
+
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
             <Heading level="h1">{t("orders.returns.create")}</Heading>
@@ -279,7 +281,15 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   </a>
                 </StackedFocusModal.Trigger>
                 <StackedFocusModal.Content>
-                  <StackedFocusModal.Header>
+                  <StackedFocusModal.Header />
+
+                  <AddReturnItemsTable
+                    items={order.items!}
+                    selectedItems={items.map((i) => i.item_id)}
+                    currencyCode={order.currency_code}
+                    onSelectionChange={(s) => (selectedItems = s)}
+                  />
+                  <StackedFocusModal.Footer>
                     <div className="flex w-full items-center justify-end gap-x-4">
                       <div className="flex items-center justify-end gap-x-2">
                         <RouteFocusModal.Close
@@ -308,14 +318,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                         </Button>
                       </div>
                     </div>
-                  </StackedFocusModal.Header>
-
-                  <AddReturnItemsTable
-                    items={order.items!}
-                    selectedItems={items.map((i) => i.item_id)}
-                    currencyCode={order.currency_code}
-                    onSelectionChange={(s) => (selectedItems = s)}
-                  />
+                  </StackedFocusModal.Footer>
                 </StackedFocusModal.Content>
               </StackedFocusModal>
             </div>
@@ -597,6 +600,26 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
             </div>
           </div>
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <div className="flex w-full items-center justify-end gap-x-4">
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteFocusModal.Close asChild>
+                <Button variant="secondary" size="small">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteFocusModal.Close>
+              <Button
+                key="submit-button"
+                type="submit"
+                variant="primary"
+                size="small"
+                isLoading={isRequestLoading}
+              >
+                {t("actions.save")}
+              </Button>
+            </div>
+          </div>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )
