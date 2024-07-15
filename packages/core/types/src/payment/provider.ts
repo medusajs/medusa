@@ -40,9 +40,9 @@ export type PaymentProviderContext = {
   email?: string
 
   /**
-   * The ID of the resource the payment is associated with. For example, the ID of the payment session.
+   * The ID of payment session the provider payment is associated with.
    */
-  resource_id?: string
+  session_id?: string
 
   /**
    * The customer associated with this payment.
@@ -180,10 +180,9 @@ export interface PaymentProviderError {
  */
 export type WebhookActionData = {
   /**
-   * The associated resource's ID. For example,
-   * a payment session's ID.
+   * The associated payment session's ID.
    */
-  resource_id: string
+  session_id: string
 
   /**
    * The amount to be captured or authorized (based on the action's type.)

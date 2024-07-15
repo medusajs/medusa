@@ -294,33 +294,44 @@ export default class PaymentModuleService
     input: CreatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
-    let paymentSession: PaymentSession
+    let paymentSession: PaymentSession | undefined
 
     try {
-      const providerSessionSession =
-        await this.paymentProviderService_.createSession(input.provider_id, {
-          context: input.context ?? {},
-          amount: input.amount,
-          currency_code: input.currency_code,
-        })
-
-      input.data = {
-        ...input.data,
-        ...providerSessionSession,
-      }
-
       paymentSession = await this.createPaymentSession_(
         paymentCollectionId,
         input,
         sharedContext
       )
+
+      const providerSessionSession =
+        await this.paymentProviderService_.createSession(input.provider_id, {
+          context: { ...input.context, session_id: paymentSession.id },
+          amount: input.amount,
+          currency_code: input.currency_code,
+        })
+
+      paymentSession = (
+        await this.paymentSessionService_.update(
+          {
+            id: paymentSession.id,
+            data: { ...input.data, ...providerSessionSession },
+          },
+          sharedContext
+        )
+      )[0]
     } catch (error) {
-      // In case the session is created at the provider, but fails to be created in Medusa,
-      // we catch the error and delete the session at the provider and rethrow.
-      await this.paymentProviderService_.deleteSession({
-        provider_id: input.provider_id,
-        data: input.data,
-      })
+      if (paymentSession) {
+        // In case the session is created, but fails to be updated in Medusa,
+        // we catch the error and delete the session and rethrow.
+        await this.paymentProviderService_.deleteSession({
+          provider_id: input.provider_id,
+          data: input.data,
+        })
+        await this.paymentSessionService_.delete(
+          paymentSession.id,
+          sharedContext
+        )
+      }
 
       throw error
     }
@@ -846,21 +857,22 @@ export default class PaymentModuleService
       case PaymentActions.SUCCESSFUL: {
         const [payment] = await this.listPayments(
           {
-            payment_session_id: event.data.resource_id,
+            payment_session_id: event.data.session_id,
           },
           {},
           sharedContext
         )
-
-        await this.capturePayment(
-          { payment_id: payment.id, amount: event.data.amount },
-          sharedContext
-        )
+        if (payment && !payment.captured_at) {
+          await this.capturePayment(
+            { payment_id: payment.id, amount: event.data.amount },
+            sharedContext
+          )
+        }
         break
       }
       case PaymentActions.AUTHORIZED:
         await this.authorizePaymentSession(
-          event.data.resource_id as string,
+          event.data.session_id,
           {},
           sharedContext
         )

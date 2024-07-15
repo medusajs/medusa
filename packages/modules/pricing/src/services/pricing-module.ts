@@ -737,8 +737,9 @@ export default class PricingModuleService
       | PricingTypes.CreatePricePreferenceDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricePreferenceDTO | PricePreferenceDTO[]> {
-    const preferences = await this.pricePreferenceService_.create(
-      data,
+    const normalized = Array.isArray(data) ? data : [data]
+    const preferences = await this.createPricePreferences_(
+      normalized,
       sharedContext
     )
 
@@ -777,14 +778,10 @@ export default class PricingModuleService
     const operations: Promise<PricePreference[]>[] = []
 
     if (forCreate.length) {
-      operations.push(
-        this.pricePreferenceService_.create(forCreate, sharedContext)
-      )
+      operations.push(this.createPricePreferences_(forCreate, sharedContext))
     }
     if (forUpdate.length) {
-      operations.push(
-        this.pricePreferenceService_.update(forUpdate, sharedContext)
-      )
+      operations.push(this.updatePricePreferences_(forUpdate, sharedContext))
     }
 
     const result = (await promiseAll(operations)).flat()
@@ -833,7 +830,7 @@ export default class PricingModuleService
       }))
     }
 
-    const updateResult = await this.pricePreferenceService_.update(
+    const updateResult = await this.updatePricePreferences_(
       normalizedInput,
       sharedContext
     )
@@ -843,6 +840,35 @@ export default class PricingModuleService
     >(updateResult)
 
     return isString(idOrSelector) ? pricePreferences[0] : pricePreferences
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async createPricePreferences_(
+    data: PricingTypes.CreatePricePreferenceDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const preferences = await this.pricePreferenceService_.create(
+      data.map((d) => ({
+        ...d,
+        is_tax_inclusive: d.is_tax_inclusive ?? false,
+      })),
+      sharedContext
+    )
+
+    return preferences
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updatePricePreferences_(
+    data: PricingTypes.UpdatePricePreferenceDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const preferences = await this.pricePreferenceService_.update(
+      data,
+      sharedContext
+    )
+
+    return preferences
   }
 
   @InjectTransactionManager("baseRepository_")
