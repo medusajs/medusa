@@ -51,7 +51,6 @@ export class Admin {
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
-  public return: Return
 
   constructor(client: Client) {
     this.invite = new Invite(client)
