@@ -41,11 +41,25 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const workflow = beginReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({
     input,
   })
 
-  res.status(200).json({ return: result })
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "return",
+    variables: {
+      id: result.return_id,
+      filters: {
+        ...req.filterableFields,
+      },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
+
+  const [orderReturn] = await remoteQuery(queryObject)
+
+  res.status(200).json({ return: orderReturn })
 }
