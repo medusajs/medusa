@@ -139,14 +139,10 @@ export default Module(MARKETPLACE_MODULE, {
 Finally, add the module to the list of modules in `medusa-config.js`:
 
 ```ts title="medusa-config.js"
-import { MARKETPLACE_MODULE } from "./src/modules/marketplace"
-
-// ...
-
 module.exports = defineConfig({
   // ...
   modules: {
-    [MARKETPLACE_MODULE]: {
+    marketplaceModuleService: {
       resolve: "./modules/marketplace",
       definition: {
         isQueryable: true,
