@@ -131,7 +131,7 @@ export default class ScheduledJobsLoader {
 
     for (const job of jobs) {
       try {
-        const { name, data, schedule } = job.config
+        const { name, data, schedule, options } = job.config
 
         const handler = async () => {
           await job.handler({
@@ -143,6 +143,7 @@ export default class ScheduledJobsLoader {
 
         await jobSchedulerService.create(name, data, schedule, handler, {
           keepExisting: false, // For now, we do not support changing this flag
+          ...options,
         })
       } catch (err) {
         logger.error(

@@ -1,4 +1,7 @@
 import { MedusaContainer } from "@medusajs/types"
+import { DefaultJobOptions } from "bullmq"
+
+export type ScheduledJobOptions = DefaultJobOptions
 
 export type ScheduledJobConfig<T = unknown> = {
   /**
@@ -13,6 +16,10 @@ export type ScheduledJobConfig<T = unknown> = {
    * An optional data object to pass to the job handler
    */
   data?: T
+  /**
+   * The options of the job
+   */
+  options: ScheduledJobOptions
 }
 
 export type ScheduledJobArgs<T = unknown> = {
