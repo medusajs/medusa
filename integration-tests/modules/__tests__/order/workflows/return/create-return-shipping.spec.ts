@@ -13,8 +13,6 @@ import { createOrderFixture, prepareDataFixtures } from "../__fixtures__"
 
 jest.setTimeout(50000)
 
-const providerId = "manual_test-provider"
-
 medusaIntegrationTestRunner({
   env: { MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ getContainer }) => {

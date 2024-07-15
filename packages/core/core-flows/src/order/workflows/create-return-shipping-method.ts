@@ -6,18 +6,17 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
 import {
+  throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
-  throwIfReturnIsCancelled,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
@@ -31,8 +30,8 @@ const validationStep = createStep(
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
   }) {
-    throwIfOrderIsCancelled({ order })
-    throwIfReturnIsCancelled({ orderReturn })
+    throwIfIsCancelled(order, "Order")
+    throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )

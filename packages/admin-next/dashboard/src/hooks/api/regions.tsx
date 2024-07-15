@@ -9,6 +9,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { pricePreferencesQueryKeys } from "./price-preferences"
 
 const REGIONS_QUERY_KEY = "regions" as const
 export const regionsQueryKeys = queryKeysFactory(REGIONS_QUERY_KEY)
@@ -67,6 +68,14 @@ export const useCreateRegion = (
     mutationFn: (payload) => sdk.admin.region.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
+
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.list(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.details(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -86,6 +95,13 @@ export const useUpdateRegion = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.detail(id) })
+
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.list(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.details(),
+      })
 
       options?.onSuccess?.(data, variables, context)
     },

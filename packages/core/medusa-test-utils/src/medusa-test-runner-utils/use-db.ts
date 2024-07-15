@@ -39,9 +39,9 @@ export async function initDb({
 
   try {
     const {
-      migrateMedusaApp,
+      runMedusaAppMigrations,
     } = require("@medusajs/medusa/dist/loaders/medusa-app")
-    await migrateMedusaApp({ configModule, container })
+    await runMedusaAppMigrations({ configModule, container })
   } catch (err) {
     console.error("Something went wrong while running the migrations")
     throw err

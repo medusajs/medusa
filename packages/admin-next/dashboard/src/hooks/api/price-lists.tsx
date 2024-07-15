@@ -70,7 +70,7 @@ export const useCreatePriceList = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.create(payload, query),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
@@ -92,9 +92,9 @@ export const useUpdatePriceList = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.update(id, payload, query),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: priceListsQueryKeys.detail(id),
+        queryKey: priceListsQueryKeys.details(),
       })
 
       queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
@@ -116,7 +116,7 @@ export const useDeletePriceList = (
   return useMutation({
     mutationFn: () => sdk.admin.priceList.delete(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },

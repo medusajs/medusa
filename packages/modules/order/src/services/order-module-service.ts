@@ -1932,9 +1932,28 @@ export default class OrderModuleService<
     return await this.orderChangeService_.create(input, sharedContext)
   }
 
-  async previewOrderChange(orderChangeId: string, sharedContext?: Context) {
+  @InjectManager("baseRepository_")
+  async previewOrderChange(orderId: string, sharedContext?: Context) {
+    const order = await this.retrieveOrder(
+      orderId,
+      {
+        select: ["id", "version", "items.detail", "summary", "total"],
+        relations: [
+          "transactions",
+          "items",
+          "items.detail",
+          "shipping_methods",
+        ],
+      },
+      sharedContext
+    )
+
+    if (!order.order_change) {
+      return order
+    }
+
     const orderChange = await super.retrieveOrderChange(
-      orderChangeId,
+      order.order_change.id,
       { relations: ["actions"] },
       sharedContext
     )
@@ -1950,32 +1969,57 @@ export default class OrderModuleService<
       }
     })
 
-    const order = await this.retrieveOrder(
-      orderChange.order_id,
-      {
-        select: ["id", "version", "items.detail", "summary", "total"],
-        relations: [
-          "transactions",
-          "items",
-          "items.detail",
-          "shipping_methods",
-        ],
-      },
-      sharedContext
-    )
+    const { itemsToUpsert, shippingMethodsToUpsert, calculatedOrders } =
+      applyChangesToOrder(
+        [order],
+        { [order.id]: orderChange.actions },
+        { addActionReferenceToObject: true }
+      )
 
-    const calculated = calculateOrderChange({
-      order: order as any,
-      actions: orderChange.actions,
-      transactions: order.transactions ?? [],
-      options: {
-        addActionReferenceToObject: true,
-      },
-    })
+    const calculated = calculatedOrders[order.id]
 
-    createRawPropertiesFromBigNumber(calculated)
+    const addedItems = {}
+    for (const item of calculated.order.items) {
+      const isExistingItem = item.id === item.detail?.item_id
 
-    const calcOrder = calculated.order as any
+      if (!isExistingItem) {
+        addedItems[item.id] = item
+      }
+    }
+    if (Object.keys(addedItems).length > 0) {
+      const addedItemDetails = await this.listLineItems(
+        { id: Object.keys(addedItems) },
+        {
+          relations: ["adjustments", "tax_lines"],
+        },
+        sharedContext
+      )
+
+      calculated.order.items.forEach((item, idx) => {
+        if (addedItems[item.id]) {
+          const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
+
+          const actions = item.actions
+          delete item.actions
+
+          const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+          calculated.order.items[idx] = {
+            ...lineItem,
+            actions,
+            quantity: newItem.quantity,
+            detail: {
+              ...newItem,
+              ...item,
+            },
+          }
+        }
+      })
+    }
+
+    // TODO - add new shipping methods
+
+    const calcOrder = calculated.order
+
     decorateCartTotals(calcOrder as DecorateCartLikeInputDTO)
     calcOrder.summary = calculated.summary
 
