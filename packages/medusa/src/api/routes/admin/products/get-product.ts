@@ -126,7 +126,10 @@ export default async (req, res) => {
   const shouldSetAvailability =
     req.retrieveConfig.relations?.includes("variants")
 
-  if (shouldSetAvailability) {
+  if (
+    shouldSetAvailability &&
+    featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+  ) {
     let salesChannels
 
     if (isMedusaV2FlagOn) {
@@ -137,9 +140,7 @@ export default async (req, res) => {
         },
       }
       salesChannels = await remoteQuery(query)
-    } else if (
-      featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
-    ) {
+    } else {
       const salesChannelService: SalesChannelService = req.scope.resolve(
         "salesChannelService"
       )
