@@ -35,7 +35,7 @@ export function applyChangesToOrder(
 
     calculatedOrders[order.id] = calculated
 
-    const version = actionsMap[order.id][0].version ?? 1
+    const version = actionsMap[order.id]?.[0]?.version ?? order.version
 
     for (const item of calculated.order.items) {
       const isExistingItem = item.id === item.detail?.item_id

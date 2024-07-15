@@ -14,6 +14,7 @@ import {
 import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
+import { previewOrderChangeStep } from "../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -77,10 +78,20 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       },
     }).config({ name: "fetch-shipping-option" })
 
+    const orderChange: OrderChangeDTO = useRemoteQueryStep({
+      entry_point: "order_change",
+      fields: ["id", "status", "version"],
+      variables: { order_id: orderReturn.order_id },
+      list: false,
+    }).config({ name: "order-change-query" })
+
+    validationStep({ order, orderReturn, orderChange })
+
     const shippingMethodInput = transform(
-      { orderReturn, shippingOptions },
+      { orderReturn, shippingOptions, orderChange },
       (data) => {
         const option = data.shippingOptions[0]
+        const orderChange = data.orderChange
 
         return {
           shipping_option_id: option.id,
@@ -89,6 +100,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
           name: option.name,
+          version: orderChange.version,
           order_id: data.orderReturn.order_id,
           return_id: data.orderReturn.id,
         }
@@ -99,40 +111,42 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       shipping_methods: [shippingMethodInput],
     })
 
-    const orderChange: OrderChangeDTO = useRemoteQueryStep({
-      entry_point: "order_change",
-      fields: ["id", "status"],
-      variables: { order_id: orderReturn.order_id },
-      list: false,
-    }).config({ name: "order-change-query" })
-
-    validationStep({ order, orderReturn, orderChange })
-
     const orderChangeActionInput = transform(
       {
-        orderId: order.id,
-        returnId: orderReturn.id,
-        shippingOption: shippingOptions[0],
-        methodId: createdMethods[0].id,
+        order,
+        orderReturn,
+        shippingOptions,
+        createdMethods,
         customPrice: input.customShippingPrice,
+        orderChange,
       },
-      ({ shippingOption, returnId, orderId, methodId, customPrice }) => {
+      ({
+        shippingOptions,
+        orderReturn,
+        order,
+        createdMethods,
+        customPrice,
+        orderChange,
+      }) => {
+        const shippingOption = shippingOptions[0]
+        const createdMethod = createdMethods[0]
         const methodPrice =
           customPrice ?? shippingOption.calculated_price.calculated_amount
 
         return {
           action: ChangeActionType.SHIPPING_ADD,
           reference: "order_shipping_method",
-          reference_id: methodId,
+          reference_id: createdMethod.id,
+          order_change_id: orderChange.id,
           amount: methodPrice,
-          details: {
-            order_id: orderId,
-            return_id: returnId,
-          },
+          order_id: order.id,
+          return_id: orderReturn.id,
         }
       }
     )
 
-    return createOrderChangeActionsStep([orderChangeActionInput])
+    createOrderChangeActionsStep([orderChangeActionInput])
+
+    return previewOrderChangeStep(order.id)
   }
 )
