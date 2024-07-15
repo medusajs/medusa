@@ -6,7 +6,6 @@ import {
   CurrencyInput,
   Heading,
   IconButton,
-  Input,
   Switch,
   Text,
   toast,
@@ -35,10 +34,9 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
+import { useAddReturnItem } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
-import { useAddReturnItem } from "../../../../../hooks/api/returns.tsx"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -64,7 +62,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   /**
    * HOOKS
    */
-  const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
   const { shipping_options = [] } = useShippingOptions({
     limit: 999,
@@ -92,10 +89,8 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
      */
     defaultValues: {
       items: [],
-      note: "",
       option_id: "",
       location_id: "",
-      reason_id: "",
       send_notification: false,
     },
     resolver: zodResolver(ReturnCreateSchema),
@@ -132,7 +127,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
         items: data.items.map((i) => ({
           id: i.item_id,
           quantity: i.quantity,
-          reason_id: data.reason_id || null,
+          reason_id: i.reason_id || null,
         })),
       })
 
@@ -342,68 +337,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
             ))}
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
-                {/*REASON*/}
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <div>
-                    <Form.Label>{t("orders.returns.reason")}</Form.Label>
-                    <Form.Hint className="!mt-1">
-                      {t("orders.returns.reasonHint")}
-                    </Form.Hint>
-                  </div>
-
-                  <Form.Field
-                    control={form.control}
-                    name="reason_id"
-                    render={({ field: { ref, value, onChange, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Control>
-                            <Combobox
-                              value={value}
-                              onChange={(v) => {
-                                onChange(v)
-                              }}
-                              {...field}
-                              options={return_reasons.map((reason) => ({
-                                label: reason.label,
-                                value: reason.id,
-                              }))}
-                            />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-
-                {/*NOTE*/}
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <div>
-                    <Form.Label>{t("orders.returns.note")}</Form.Label>
-                    <Form.Hint className="!mt-1">
-                      {t("orders.returns.noteHint")}
-                    </Form.Hint>
-                  </div>
-
-                  <Form.Field
-                    control={form.control}
-                    name="note"
-                    render={({ field: { ref, onChange, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Control>
-                            <Input onChange={onChange} {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-
-                {/*TODO: WHAT IF ITEM DOSEN'T REQUIRE SHIPPING?*/}
-
                 {/*LOCATION*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
@@ -565,7 +498,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
               </div>
             </div>
 
-            {/*TODO: MISSING AS AN API PARAM*/}
             {/*SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field

@@ -5,13 +5,12 @@ export const ReturnCreateSchema = z.object({
     z.object({
       item_id: z.string(),
       quantity: z.number(),
+      reason_id: z.string().optional(),
+      note: z.string().optional(),
     })
   ),
   location_id: z.string().optional(),
-  reason_id: z.string().optional(),
   option_id: z.string(),
-  note: z.string().optional(),
-  // TODO: MISSING IN AS AN API PARAM
   send_notification: z.boolean().optional(),
   // TODO: implement this
   receive_now: z.boolean().optional(),
