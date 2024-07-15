@@ -233,6 +233,22 @@ medusaIntegrationTestRunner({
           })
         )
 
+        // remove shipping method
+        const action_id = result.data.order.shipping_methods[1].actions[0].id
+        result = await api.delete(
+          `/admin/returns/${returnId}/shipping-method/${action_id}`,
+          adminHeaders
+        )
+
+        // recreate shipping
+        result = await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},

@@ -26,7 +26,7 @@ export * from "./exchange-request-item-return"
 export * from "./get-order-detail"
 export * from "./get-orders-list"
 export * from "./receive-return"
+export * from "./remove-return-shipping-method"
 export * from "./request-item-return"
 export * from "./update-order-change-actions"
 export * from "./update-tax-lines"
-

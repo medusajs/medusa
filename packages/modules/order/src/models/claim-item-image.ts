@@ -1,11 +1,13 @@
 import { DAL } from "@medusajs/types"
 import {
+  DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -30,6 +32,7 @@ const ClaimItemIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_claim_item_image" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ClaimItemImage {
   [OptionalProps]?: OptionalClaimItemImageProps
 

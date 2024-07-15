@@ -1252,6 +1252,66 @@ export default class OrderModuleService<
     return sm.map((s) => s.shipping_method)
   }
 
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async softDeleteShippingMethods<TReturnableLinkableKeys extends string>(
+    ids: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<Record<string, string[]> | void> {
+    const rel = await super.listOrderShippingMethods(
+      {
+        shipping_method_id: ids,
+      },
+      {
+        select: ["id"],
+      },
+      sharedContext
+    )
+    const orderShippingMethodIds = rel.map((r) => r.id)
+
+    const [returned] = await promiseAll([
+      super.softDeleteShippingMethods(ids, config, sharedContext),
+      super.softDeleteOrderShippingMethods(
+        orderShippingMethodIds,
+        config,
+        sharedContext
+      ),
+    ])
+
+    return returned
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async restoreShippingMethods<TReturnableLinkableKeys extends string>(
+    transactionIds: string | object | string[] | object[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<Record<string, string[]> | void> {
+    const rel = await super.listOrderShippingMethods(
+      {
+        shipping_method_id: transactionIds,
+      },
+      {
+        select: ["id"],
+      },
+      sharedContext
+    )
+    const orderShippingMethodIds = rel.map((r) => r.id)
+
+    const [returned] = await promiseAll([
+      super.restoreShippingMethods(transactionIds, config, sharedContext),
+      super.restoreOrderShippingMethods(
+        orderShippingMethodIds,
+        config,
+        sharedContext
+      ),
+    ])
+
+    return returned
+  }
+
   // @ts-ignore
   async createLineItemAdjustments(
     adjustments: OrderTypes.CreateOrderLineItemAdjustmentDTO[]
@@ -2014,6 +2074,7 @@ export default class OrderModuleService<
         delete item.actions
 
         const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+
         calculated.order.items[idx] = {
           ...lineItem,
           actions,
@@ -2028,7 +2089,7 @@ export default class OrderModuleService<
 
     if (Object.keys(addedShippingMethods).length > 0) {
       const addedShippingDetails = await this.listShippingMethods(
-        { id: Object.keys(addedShippingMethods) },
+        { id: Object.keys(addedShippingMethods), deleted_at: null },
         {
           relations: ["adjustments", "tax_lines"],
         },
