@@ -26,27 +26,27 @@ const validationStep = createStep(
   async function ({
     order,
     orderChange,
-    orderExchange,
+    orderClaim,
   }: {
     order: OrderDTO
-    orderExchange: OrderClaimDTO
+    orderClaim: OrderClaimDTO
     orderChange: OrderChangeDTO
   }) {
     throwIfOrderIsCancelled({ order })
-    throwIfIsCancelled(orderExchange, "Exchange")
+    throwIfIsCancelled(orderClaim, "Claim")
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
 
-export const orderExchangeAddNewItemWorkflowId = "claim-add-new-item"
-export const orderExchangeAddNewItemWorkflow = createWorkflow(
-  orderExchangeAddNewItemWorkflowId,
+export const orderClaimAddNewItemWorkflowId = "claim-add-new-item"
+export const orderClaimAddNewItemWorkflow = createWorkflow(
+  orderClaimAddNewItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderClaimAddNewItemWorkflowInput>
   ): WorkflowData<OrderDTO> {
-    const orderExchange = useRemoteQueryStep({
+    const orderClaim = useRemoteQueryStep({
       entry_point: "order_claim",
-      fields: ["id", "order_id", "return_id"],
+      fields: ["id", "order_id"],
       variables: { id: input.claim_id },
       list: false,
       throw_if_key_not_found: true,
@@ -55,7 +55,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "items.*"],
-      variables: { id: orderExchange.order_id },
+      variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -63,13 +63,13 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
       fields: ["id", "status"],
-      variables: { order_id: orderExchange.order_id },
+      variables: { order_id: orderClaim.order_id },
       list: false,
     }).config({ name: "order-change-query" })
 
     validationStep({
       order,
-      orderExchange,
+      orderClaim,
       orderChange,
     })
 
@@ -81,17 +81,17 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
     })
 
     const orderChangeActionInput = transform(
-      { order, orderChange, orderExchange, items: input.items, lineItems },
-      ({ order, orderChange, orderExchange, items, lineItems }) => {
+      { order, orderChange, orderClaim, items: input.items, lineItems },
+      ({ order, orderChange, orderClaim, items, lineItems }) => {
         return items.map((item, index) => ({
           order_change_id: orderChange.id,
           order_id: order.id,
-          claim_id: orderExchange.id,
+          claim_id: orderClaim.id,
           version: orderChange.version,
           action: ChangeActionType.ITEM_ADD,
           internal_note: item.internal_note,
           reference: "order_claim",
-          reference_id: orderExchange.id,
+          reference_id: orderClaim.id,
           details: {
             reference_id: lineItems[index].id,
             quantity: item.quantity,
@@ -104,6 +104,6 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     createOrderChangeActionsStep(orderChangeActionInput)
 
-    return previewOrderChangeStep(orderExchange.order_id)
+    return previewOrderChangeStep(orderClaim.order_id)
   }
 )

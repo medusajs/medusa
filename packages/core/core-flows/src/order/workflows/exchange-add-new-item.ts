@@ -46,7 +46,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
   ): WorkflowData<OrderDTO> {
     const orderExchange = useRemoteQueryStep({
       entry_point: "order_exchange",
-      fields: ["id", "order_id", "return_id"],
+      fields: ["id", "order_id"],
       variables: { id: input.exchange_id },
       list: false,
       throw_if_key_not_found: true,
