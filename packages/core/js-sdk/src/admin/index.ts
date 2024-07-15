@@ -14,6 +14,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
+import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
 import { ShippingProfile } from "./shipping-profile"
@@ -47,6 +48,7 @@ export class Admin {
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
+  public return: Return
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -72,5 +74,6 @@ export class Admin {
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
+    this.return = new Return(client)
   }
 }

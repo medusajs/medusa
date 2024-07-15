@@ -12,21 +12,28 @@ export interface ApplyOrderChangeDTO extends OrderChangeActionDTO {
 
 export function applyChangesToOrder(
   orders: any[],
-  actionsMap: Record<string, any[]>
+  actionsMap: Record<string, any[]>,
+  options?: {
+    addActionReferenceToObject?: boolean
+  }
 ) {
   const itemsToUpsert: OrderItem[] = []
   const shippingMethodsToUpsert: OrderShippingMethod[] = []
   const summariesToUpsert: any[] = []
   const orderToUpdate: any[] = []
 
+  const calculatedOrders = {}
   for (const order of orders) {
     const calculated = calculateOrderChange({
       order: order as any,
       actions: actionsMap[order.id],
       transactions: order.transactions ?? [],
+      options,
     })
 
     createRawPropertiesFromBigNumber(calculated)
+
+    calculatedOrders[order.id] = calculated
 
     const version = actionsMap[order.id][0].version ?? 1
 
@@ -41,11 +48,11 @@ export function applyChangesToOrder(
         order_id: order.id,
         version,
         quantity: orderItem.quantity,
-        fulfilled_quantity: orderItem.fulfilled_quantity,
-        shipped_quantity: orderItem.shipped_quantity,
-        return_requested_quantity: orderItem.return_requested_quantity,
-        return_received_quantity: orderItem.return_received_quantity,
-        return_dismissed_quantity: orderItem.return_dismissed_quantity,
+        fulfilled_quantity: orderItem.fulfilled_quantity ?? 0,
+        shipped_quantity: orderItem.shipped_quantity ?? 0,
+        return_requested_quantity: orderItem.return_requested_quantity ?? 0,
+        return_received_quantity: orderItem.return_received_quantity ?? 0,
+        return_dismissed_quantity: orderItem.return_dismissed_quantity ?? 0,
         written_off_quantity: orderItem.written_off_quantity,
         metadata: orderItem.metadata,
       } as OrderItem)
@@ -90,5 +97,6 @@ export function applyChangesToOrder(
     shippingMethodsToUpsert,
     summariesToUpsert,
     orderToUpdate,
+    calculatedOrders,
   }
 }

@@ -33,10 +33,13 @@ To disable the authentication guard on custom routes under the `/admin` or `/sto
 
 For example:
 
-```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["15"]]} apiTesting testApiUrl="http://localhost:9000/store/customers/me/custom" testApiMethod="GET"
+```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["12"]]} apiTesting testApiUrl="http://localhost:9000/store/customers/me/custom" testApiMethod="GET"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   res.json({
     message: "Hello",
   })
@@ -55,7 +58,7 @@ You can access the logged-in customer’s ID in all API routes starting with `/s
 
 For example:
 
-```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["16", "", "Access the logged-in customer's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["17", "req.auth_context.actor_id", "Access the logged-in customer's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -89,7 +92,7 @@ You can access the logged-in admin user’s ID in all API Routes starting with `
 
 For example:
 
-```ts title="src/api/admin/custom/route.ts" highlights={[["16", "req.user.userId", "Access the logged-in admin user's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+```ts title="src/api/admin/custom/route.ts" highlights={[["17", "req.auth_context.actor_id", "Access the logged-in admin user's ID."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -125,12 +128,12 @@ For example:
 
 export const highlights = [
   [
-    "11",
+    "7",
     "authenticate",
     "Only authenticated admin users can access routes starting with `/custom/admin`",
   ],
   [
-    "17",
+    "11",
     "authenticate",
     "Only authenticated customers can access routes starting with `/custom/customers`",
   ],

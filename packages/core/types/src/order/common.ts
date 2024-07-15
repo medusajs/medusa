@@ -1139,6 +1139,7 @@ export interface OrderDTO {
 type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
 
 export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
+  id: string
   status: ReturnStatus
   refund_amount?: BigNumberValue
   order_id: string

@@ -17,7 +17,7 @@ A data model is a class that represents a table in the database. It's created in
 <Note title="Steps Summary">
 
 1. Create a data model in a module.
-2. Create migration for the data model.
+2. Generate migration for the data model.
 4. Run migration to add the data model's table in the database.
 
 </Note>
@@ -44,53 +44,21 @@ You define a data model using the `model`'s `define` method. It accepts two para
 
 The example above defines the data model `MyCustom` with the properties `id` and `name`. 
 
-### Create a Migration
+### Generate a Migration
 
 A migration defines changes to be made in the database, such as create or update tables.
 
-A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It has two methods:
+To generate a migration for the data models in your module, run the following command:
 
-- The `up` method reflects changes on the database.
-- The `down` method reverts the changes made in the `up` method.
+```bash
+npx medusa migrations generate helloModuleService
+```
 
-<Details summaryContent="Generate Migration">
-  To generate migrations:
+The `migrations generate` command of the Medusa CLI accepts one or more module names (for example, `helloModuleService`) to generate the migration for.
 
-  1. Create the file `src/modules/hello/migrations-config.ts` with the following content:
+The above command creates a migration file at the directory `src/modules/hello/migrations` similar to the following:
 
-  ```ts
-  import { defineMikroOrmCliConfig } from "@medusajs/utils"
-  import path from "path"
-  import MyCustom from "./models/my-custom"
-  import { HELLO_MODULE } from "."
-
-  export default defineMikroOrmCliConfig(HELLO_MODULE, {
-    entities: [MyCustom] as any[],
-    migrations: {
-      path: path.join(__dirname, "migrations"),
-    },
-  })
-  ```
-
-  2. Run the following command in the root directory of your Medusa application:
-
-  ```bash
-  npx cross-env MIKRO_ORM_CLI=./src/modules/hello/migrations-config.ts mikro-orm migration:create
-  ```
-
-  <Note title="Tip">
-
-  Add this command as a script in `package.json` for easy usage in the future. Use this command whenever you want to generate a new migration in your module.
-
-  </Note>
-
-  After running the command, a migration file is generated under the `src/modules/hello/migrations` directory.
-  
-</Details>
-
-For example:
-
-```ts title="src/modules/migrations/Migration20240429090012.ts"
+```ts
 import { Migration } from "@mikro-orm/migrations"
 
 export class Migration20240702105919 extends Migration {
@@ -106,17 +74,11 @@ export class Migration20240702105919 extends Migration {
 }
 ```
 
-In the `up` method, you create the table `my_custom` and define its columns. In the `down` method, you drop the table.
-
-<Note title="Tip">
-
-The queries performed in each of the methods use PostgreSQL syntax.
-
-</Note>
+In the migration class, the `up` method creates the table `my_custom` and defines its columns. The `down` method drops the table.
 
 ### Run Migration
 
-To reflect the changes in the migration, run the `migration` command:
+To reflect the changes in the generated migration file, run the `migration` command:
 
 ```bash
 npx medusa migrations run

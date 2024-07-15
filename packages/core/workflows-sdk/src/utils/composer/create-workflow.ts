@@ -4,7 +4,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { exportWorkflow } from "../../helper"
 import { createStep } from "./create-step"
 import { StepResponse } from "./helpers"
@@ -95,6 +95,7 @@ export function createWorkflow<
         [K in keyof TResult]:
           | WorkflowData<TResult[K]>
           | WorkflowDataProperties<TResult[K]>
+          | TResult[K]
       }
 ): ReturnWorkflow<TData, TResult, THooks> {
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name

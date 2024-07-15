@@ -67,7 +67,7 @@ const Vendor = model.define("vendor", {
   handle: model.text(),
   name: model.text(),
   logo: model.text().nullable(),
-  admins: model.hasMany(() => VendorAdmin)
+  admins: model.hasMany(() => VendorAdmin),
 })
 
 export default Vendor
@@ -89,42 +89,14 @@ const VendorAdmin = model.define("vendor_admin", {
   last_name: model.text().nullable(),
   email: model.text().unique(),
   vendor: model.belongsTo(() => Vendor, {
-    mappedBy: "admins"
-  })
+    mappedBy: "admins",
+  }),
 })
 
 export default VendorAdmin
 ```
 
 This creates a `VendorAdmin` data model, which represents an admin of a vendor.
-
-### Generate Migrations
-
-To create tables for the data models in the database, you need to generate migrations for them.
-
-Create the file `src/modules/marketplace/migrations-config.ts` with the following content:
-
-```ts
-import { defineMikroOrmCliConfig } from "@medusajs/utils"
-import path from "path"
-import Vendor from "./models/vendor"
-import VendorAdmin from "./models/vendor-admin"
-
-export default defineMikroOrmCliConfig("marketplace", {
-  entities: [Vendor, VendorAdmin] as any[],
-  migrations: {
-    path: path.join(__dirname, "migrations"),
-  },
-})
-```
-
-Then, run the following command to generate the migration:
-
-```bash
-npx cross-env MIKRO_ORM_CLI=./src/modules/marketplace/migrations-config.ts mikro-orm migration:create
-```
-
-This generates a migration in the `src/modules/marketeplace/migrations` directory.
 
 ### Create Main Module Service
 
@@ -138,7 +110,7 @@ import { CreateVendorData, VendorData } from "./types"
 
 class MarketplaceModuleService extends MedusaService({
   Vendor,
-  VendorAdmin
+  VendorAdmin,
 }) {
 }
 
@@ -158,7 +130,7 @@ import MarketplaceModuleService from "./service"
 export const MARKETPLACE_MODULE = "marketplaceModuleService"
 
 export default Module(MARKETPLACE_MODULE, {
-  service: MarketplaceModuleService
+  service: MarketplaceModuleService,
 })
 ```
 
@@ -173,10 +145,10 @@ module.exports = defineConfig({
     marketplaceModuleService: {
       resolve: "./modules/marketplace",
       definition: {
-        isQueryable: true
-      }
-    }
-  }
+        isQueryable: true,
+      },
+    },
+  },
 })
 ```
 
@@ -208,7 +180,7 @@ export default defineLink(
   MarketplaceModule.linkable.vendor,
   {
     linkable: ProductModule.linkable.product,
-    isList: true
+    isList: true,
   }
 )
 ```
@@ -226,7 +198,7 @@ export default defineLink(
   MarketplaceModule.linkable.vendor,
   {
     linkable: OrderModule.linkable.order,
-    isList: true
+    isList: true,
   }
 )
 ```
@@ -239,9 +211,17 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ---
 
-## Step 3: Run Migrations
+## Step 3: Generate and Run Migrations
 
-To reflect the module’s data models and the module links in the database, run the following command:
+To create tables for the marketplace data models in the database, start by generating the migrations for the Marketplace Module with the following command:
+
+```bash
+npx medusa migrations generate marketplaceModuleService
+```
+
+This generates a migration in the `src/modules/marketeplace/migrations` directory.
+
+Then, to reflect the migration and the module links in the database, run the following command:
 
 ```bash
 npx medusa migrations run
@@ -368,12 +348,12 @@ export const vendorRouteSchemaHighlights = [
 ```ts title="src/api/vendors/route.ts" highlights={vendorRouteSchemaHighlights}
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
 import { z } from "zod"
-import MarketplaceModuleService from "../../modules/marketplace/service";
-import createVendorAdminWorkflow from "../../workflows/marketplace/create-vendor-admin";
+import MarketplaceModuleService from "../../modules/marketplace/service"
+import createVendorAdminWorkflow from "../../workflows/marketplace/create-vendor-admin"
 
 const schema = z.object({
   name: z.string(),
@@ -382,8 +362,8 @@ const schema = z.object({
   admin: z.object({
     email: z.string(),
     first_name: z.string().optional(),
-    last_name: z.string().optional()
-  }).strict()
+    last_name: z.string().optional(),
+  }).strict(),
 }).strict()
 
 type RequestBody = {
@@ -437,15 +417,15 @@ export const POST = async (
       input: {
         admin: {
           ...admin,
-          vendor_id: vendor[0].id
+          vendor_id: vendor[0].id,
         },
         authIdentityId: req.auth_context.auth_identity_id,
-      }
+      },
     })
 
   // retrieve vendor again with admins
   vendor = await marketplaceModuleService.retrieveVendor(vendor[0].id, {
-    relations: ["admins"]
+    relations: ["admins"],
   })
 
   res.json({
@@ -478,7 +458,7 @@ export const config: MiddlewaresConfig = {
       matcher: "/vendors/*",
       middlewares: [
         authenticate("vendor", ["session", "bearer"]),
-      ]
+      ],
     },
   ],
 }
@@ -567,12 +547,12 @@ export const retrieveProductHighlights = [
 ]
 
 ```ts title="src/api/vendors/products/route.ts" highlights={retrieveProductHighlights}
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import MarketplaceModuleService from "../../../modules/marketplace/service";
-import { MARKETPLACE_MODULE } from "../../../modules/marketplace";
+import MarketplaceModuleService from "../../../modules/marketplace/service"
+import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -585,7 +565,7 @@ export const GET = async (
   const vendorAdmin = await marketplaceModuleService.retrieveVendorAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["vendor"]
+      relations: ["vendor"],
     }
   )
 
@@ -594,15 +574,15 @@ export const GET = async (
     fields: ["products.*"],
     variables: {
       filters: {
-        id: [vendorAdmin.vendor.id]
-      }
-    }
+        id: [vendorAdmin.vendor.id],
+      },
+    },
   })
 
   const result = await remoteQuery(query)
 
   res.json({
-    products: result[0].products
+    products: result[0].products,
   })
 }
 ```
@@ -622,11 +602,11 @@ import { createProductsWorkflow } from "@medusajs/core-flows"
 import { 
   CreateProductWorkflowInputDTO,
   IProductModuleService,
-  ISalesChannelModuleService
+  ISalesChannelModuleService,
 } from "@medusajs/types"
 import { 
   Modules, 
-  ModuleRegistrationName
+  ModuleRegistrationName,
 } from "@medusajs/utils"
 
 // GET method...
@@ -651,7 +631,7 @@ export const POST = async (
   const vendorAdmin = await marketplaceModuleService.retrieveVendorAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["vendor"]
+      relations: ["vendor"],
     }
   )
   
@@ -674,19 +654,19 @@ const { result } = await createProductsWorkflow(req.scope)
     input: {
       products: [{
         ...req.body,
-        sales_channels: salesChannels
-      }]
-    }
+        sales_channels: salesChannels,
+      }],
+    },
   })
 
 // link product to vendor
 await remoteLink.create({
   [MARKETPLACE_MODULE]: {
-    vendor_id: vendorAdmin.vendor.id
+    vendor_id: vendorAdmin.vendor.id,
   },
   [Modules.PRODUCT]: {
-    product_id: result[0].id
-  }
+    product_id: result[0].id,
+  },
 })
 
 // retrieve product again
@@ -695,7 +675,7 @@ const product = await productModuleService.retrieveProduct(
 )
 
 res.json({
-  product
+  product,
 })
 ```
 
@@ -723,8 +703,8 @@ export const config: MiddlewaresConfig = {
       middlewares: [
         authenticate("vendor", ["session", "bearer"]),
         validateAndTransformBody(AdminCreateProduct),
-      ]
-    }
+      ],
+    },
   ],
 }
 ```
@@ -819,11 +799,11 @@ const retrieveCartStep = createStep(
       .resolve(ModuleRegistrationName.CART)
 
     const cart = await cartModuleService.retrieveCart(cart_id, {
-      relations: ["items"]
+      relations: ["items"],
     })
 
     return new StepResponse({
-      cart
+      cart,
     })
   }
 )
@@ -858,12 +838,12 @@ const createParentOrderStep = createStep(
     const { result } = await completeCartWorkflow(container)
       .run({
         input: {
-          id: cart_id
-        }
+          id: cart_id,
+        },
       })
 
     return new StepResponse({
-      order: result
+      order: result,
     })
   }
 )
@@ -902,9 +882,9 @@ const groupVendorItemsStep = createStep(
         fields: ["vendor.*"],
         variables: {
           filters: {
-            id: [item.product_id]
-          }
-        }
+            id: [item.product_id],
+          },
+        },
       })
 
       const result = await remoteQuery(query)
@@ -916,12 +896,12 @@ const groupVendorItemsStep = createStep(
       }
       vendorsItems[vendorId] = [
         ...(vendorsItems[vendorId] || []),
-        item
+        item,
       ]
     }))
 
     return new StepResponse({
-      vendorsItems
+      vendorsItems,
     })
   }
 )
@@ -969,7 +949,7 @@ const createVendorOrdersStep = createStep(
     const vendorIds = Object.keys(vendorsItems)
     if (vendorIds.length === 0) {
       return new StepResponse({
-        orders: []
+        orders: [],
       })
     }
     const remoteLink = container.resolve("remoteLink")
@@ -1001,20 +981,20 @@ if (isOnlyOneVendorOrder) {
   // link the parent order to the vendor instead of creating child orders
   await remoteLink.create({
     [MARKETPLACE_MODULE]: {
-      vendor_id: vendorId
+      vendor_id: vendorId,
     },
     [Modules.ORDER]: {
-      order_id: parentOrder.id
-    }
+      order_id: parentOrder.id,
+    },
   })
 
   return new StepResponse({
     orders: [
       {
         ...parentOrder,
-        vendor
-      }
-    ]
+        vendor,
+      },
+    ],
   })
 }
 
@@ -1046,7 +1026,7 @@ await Promise.all(
         input: {
           items,
           metadata: {
-            parent_order_id: parentOrder.id
+            parent_order_id: parentOrder.id,
           },
           // use info from parent
           region_id: parentOrder.region_id,
@@ -1070,37 +1050,37 @@ await Promise.all(
               rate: taxLine.rate,
               provider_id: taxLine.provider_id,
               tax_rate_id: taxLine.tax_rate_id,
-              description: taxLine.description
+              description: taxLine.description,
             })),
             adjustments: shippingMethod.adjustments.map((adjustment) => ({
               code: adjustment.code,
               amount: adjustment.amount,
               description: adjustment.description,
               promotion_id: adjustment.promotion_id,
-              provider_id: adjustment.provider_id
-            }))
+              provider_id: adjustment.provider_id,
+            })),
           })),
-        }
+        },
       })
 
     await remoteLink.create({
       [MARKETPLACE_MODULE]: {
-        vendor_id: vendorId
+        vendor_id: vendorId,
       },
       [Modules.ORDER]: {
-        order_id: childOrder.id
-      }
+        order_id: childOrder.id,
+      },
     })
 
     createdOrders.push({
       ...childOrder,
-      vendor
+      vendor,
     })
   })
 )
 
 return new StepResponse({
-  orders: createdOrders
+  orders: createdOrders,
 })
 ```
 
@@ -1146,7 +1126,7 @@ const createVendorOrdersWorkflow = createWorkflow<
 
     const { vendorsItems } = groupVendorItemsStep(
       transform({
-        cart
+        cart,
       },
       (data) => data
       )
@@ -1155,12 +1135,12 @@ const createVendorOrdersWorkflow = createWorkflow<
     const { orders } = createVendorOrdersStep(
       transform({
         order,
-        vendorsItems
+        vendorsItems,
       },
       (data) => {
         return {
           parentOrder: data.order,
-          vendorsItems: data.vendorsItems
+          vendorsItems: data.vendorsItems,
         }
       }
       )
@@ -1168,11 +1148,11 @@ const createVendorOrdersWorkflow = createWorkflow<
 
     return transform({
       order,
-      orders
+      orders,
     },
     (data) => ({
       parent_order: data.order,
-      vendor_orders: data.orders
+      vendor_orders: data.orders,
     })
     )
   }
@@ -1192,9 +1172,9 @@ Create the file `src/api/store/carts/[id]/complete/route.ts` with the following 
 ```ts title="src/api/store/carts/[id]/complete/route.ts"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
-import createVendorOrdersWorkflow from "../../../../../workflows/marketplace/create-vendor-orders";
+  MedusaResponse,
+} from "@medusajs/medusa"
+import createVendorOrdersWorkflow from "../../../../../workflows/marketplace/create-vendor-orders"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -1205,13 +1185,13 @@ export const POST = async (
   const { result } = await createVendorOrdersWorkflow(req.scope)
     .run({
       input: {
-        cart_id: cartId
-      }
+        cart_id: cartId,
+      },
     })
 
   res.json({
     type: "order",
-    order: result.parent_order
+    order: result.parent_order,
   })
 }
 ```
@@ -1237,11 +1217,11 @@ export const getOrderHighlights = [
 ]
 
 ```ts title="src/api/vendors/orders/route.ts" highlights={getOrderHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { getOrdersListWorkflow } from "@medusajs/core-flows"
-import MarketplaceModuleService from "../../../modules/marketplace/service";
-import { MARKETPLACE_MODULE } from "../../../modules/marketplace";
+import MarketplaceModuleService from "../../../modules/marketplace/service"
+import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -1254,7 +1234,7 @@ export const GET = async (
   const vendorAdmin = await marketplaceModuleService.retrieveVendorAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["vendor"]
+      relations: ["vendor"],
     }
   )
 
@@ -1263,9 +1243,9 @@ export const GET = async (
     fields: ["orders.*"],
     variables: {
       filters: {
-        id: [vendorAdmin.vendor.id]
-      }
-    }
+        id: [vendorAdmin.vendor.id],
+      },
+    },
   })
 
   const result = await remoteQuery(query)
@@ -1291,14 +1271,14 @@ export const GET = async (
         ],
         variables: {
           filters: {
-            id: result[0].orders.map((order) => order.id)
-          }
-        }
-      }
+            id: result[0].orders.map((order) => order.id),
+          },
+        },
+      },
     })
 
   res.json({
-    orders
+    orders,
   })
 }
 ```
@@ -1339,7 +1319,7 @@ export const config: MiddlewaresConfig = {
         authenticate("vendor", ["session", "bearer"]),
       ],
     },
-  ]
+  ],
 }
 ```
 

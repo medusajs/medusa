@@ -171,7 +171,6 @@ describe("Order Exchange - Actions", function () {
         id: "item_555",
         unit_price: 50,
         quantity: 1,
-        detail: {},
         actions: [
           {
             action: "ITEM_ADD",
@@ -194,7 +193,6 @@ describe("Order Exchange - Actions", function () {
       {
         id: "shipping_345",
         price: 5,
-        detail: {},
         actions: [
           {
             action: "SHIPPING_ADD",
@@ -206,7 +204,6 @@ describe("Order Exchange - Actions", function () {
       {
         id: "return_shipping_345",
         price: 7.5,
-        detail: {},
         actions: [
           {
             action: "SHIPPING_ADD",

@@ -21,7 +21,7 @@ export const beginExchangeOrderWorkflowId = "begin-exchange-order"
 export const beginExchangeOrderWorkflow = createWorkflow(
   beginExchangeOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.beginOrderExchangeWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginOrderExchangeWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",

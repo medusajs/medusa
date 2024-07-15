@@ -1,6 +1,7 @@
 import {
   beginExchangeOrderWorkflow,
   createShippingOptionsWorkflow,
+  orderExchangeAddNewItemWorkflow,
   orderExchangeRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import {
@@ -9,7 +10,10 @@ import {
   IStockLocationService,
   OrderWorkflow,
   ProductDTO,
+  RegionDTO,
+  SalesChannelDTO,
   StockLocationDTO,
+  UserDTO,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -38,6 +42,12 @@ async function prepareDataFixtures({ container }) {
   const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
   const pricingModule = container.resolve(ModuleRegistrationName.PRICING)
   const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+  const customerService = container.resolve(ModuleRegistrationName.CUSTOMER)
+
+  const customer = await customerService.createCustomers({
+    first_name: "joe",
+    email: "joe@gmail.com",
+  })
 
   const shippingProfile = await fulfillmentService.createShippingProfiles({
     name: "test",
@@ -96,17 +106,44 @@ async function prepareDataFixtures({ container }) {
           title: "Test variant",
           sku: "test-variant",
         },
+        {
+          title: "another product variant",
+          sku: "another-variant",
+        },
       ],
     },
   ])
 
-  const inventoryItem = await inventoryModule.createInventoryItems({
-    sku: "inv-1234",
-  })
+  const priceSets = await pricingModule.createPriceSets([
+    {
+      prices: [
+        {
+          amount: 45.987,
+          region_id: region.id,
+          currency_code: "eur",
+        },
+      ],
+    },
+  ])
+
+  const inventoryItems = await inventoryModule.createInventoryItems([
+    {
+      sku: "inv-1234",
+    },
+    {
+      sku: "another-inv-987",
+    },
+  ])
 
   await inventoryModule.createInventoryLevels([
     {
-      inventory_item_id: inventoryItem.id,
+      inventory_item_id: inventoryItems[0].id,
+      location_id: location.id,
+      stocked_quantity: 2,
+      reserved_quantity: 0,
+    },
+    {
+      inventory_item_id: inventoryItems[1].id,
       location_id: location.id,
       stocked_quantity: 2,
       reserved_quantity: 0,
@@ -137,17 +174,28 @@ async function prepareDataFixtures({ container }) {
         variant_id: product.variants[0].id,
       },
       [Modules.INVENTORY]: {
-        inventory_item_id: inventoryItem.id,
+        inventory_item_id: inventoryItems[0].id,
+      },
+    },
+    {
+      [Modules.PRODUCT]: {
+        variant_id: product.variants[1].id,
+      },
+      [Modules.INVENTORY]: {
+        inventory_item_id: inventoryItems[1].id,
+      },
+    },
+    {
+      [Modules.PRODUCT]: {
+        variant_id: product.variants[1].id,
+      },
+      [Modules.PRICING]: {
+        price_set_id: priceSets[0].id,
       },
     },
   ])
 
   await pricingModule.createPricePreferences([
-    {
-      attribute: "currency_code",
-      value: "usd",
-      is_tax_inclusive: true,
-    },
     {
       attribute: "region_id",
       value: region.id,
@@ -223,13 +271,20 @@ async function prepareDataFixtures({ container }) {
     location,
     product,
     fulfillmentSet,
+    customer,
   }
 }
 
-async function createOrderFixture({ container, product }) {
+async function createOrderFixture({
+  container,
+  product,
+  salesChannel,
+  customer,
+  region,
+}) {
   const orderService = container.resolve(ModuleRegistrationName.ORDER)
   let order = await orderService.createOrders({
-    region_id: "test_region_id",
+    region_id: region.id,
     email: "foo@bar.com",
     items: [
       {
@@ -249,7 +304,7 @@ async function createOrderFixture({ container, product }) {
         ],
       } as any,
     ],
-    sales_channel_id: "test",
+    sales_channel_id: salesChannel.id,
     shipping_address: {
       first_name: "Test",
       last_name: "Test",
@@ -290,8 +345,8 @@ async function createOrderFixture({ container, product }) {
         ],
       },
     ],
-    currency_code: "usd",
-    customer_id: "joe",
+    currency_code: "eur",
+    customer_id: customer.id,
   })
 
   await orderService.addOrderAction([
@@ -339,6 +394,9 @@ medusaIntegrationTestRunner({
 
     describe("Begin exchange order workflow", () => {
       let product: ProductDTO
+      let salesChannel: SalesChannelDTO
+      let customer: UserDTO
+      let region: RegionDTO
 
       beforeEach(async () => {
         const fixtures = await prepareDataFixtures({
@@ -346,12 +404,21 @@ medusaIntegrationTestRunner({
         })
 
         product = fixtures.product
+        salesChannel = fixtures.salesChannel
+        customer = fixtures.customer
+        region = fixtures.region
       })
 
       it("should begin an exchange order, request item return", async () => {
-        const order = await createOrderFixture({ container, product })
+        const order = await createOrderFixture({
+          container,
+          product,
+          salesChannel,
+          customer,
+          region,
+        })
 
-        const createExchangeOrderData: OrderWorkflow.beginOrderExchangeWorkflowInput =
+        const createExchangeOrderData: OrderWorkflow.BeginOrderExchangeWorkflowInput =
           {
             order_id: order.id,
             metadata: {
@@ -423,8 +490,6 @@ medusaIntegrationTestRunner({
                 action: "RETURN_ITEM",
                 details: expect.objectContaining({
                   quantity: 1,
-                  return_id: expect.stringContaining("return_"),
-                  exchange_id: exchangeOrder.id,
                   reference_id: order.items![0].id,
                 }),
               }),
@@ -490,6 +555,34 @@ medusaIntegrationTestRunner({
             ],
           })
         )
+
+        const { result: addItemPreview } =
+          await orderExchangeAddNewItemWorkflow.run({
+            container,
+            input: {
+              exchange_id: exchangeOrder.id,
+              items: [
+                {
+                  variant_id: product.variants[1].id,
+                  quantity: 2,
+                  unit_price: 14.786,
+                },
+              ],
+            },
+          })
+
+        expect(addItemPreview.items).toHaveLength(2)
+        expect(addItemPreview.items[1].actions).toEqual([
+          expect.objectContaining({
+            action: "ITEM_ADD",
+            reference: "order_exchange",
+            reference_id: exchangeOrder.id,
+            details: expect.objectContaining({
+              quantity: 2,
+              unit_price: 14.786,
+            }),
+          }),
+        ])
       })
     })
   },

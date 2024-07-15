@@ -359,7 +359,7 @@ medusaIntegrationTestRunner({
       it("should begin a return order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createReturnOrderData: OrderWorkflow.beginOrderReturnWorkflowInput =
+        const createReturnOrderData: OrderWorkflow.BeginOrderReturnWorkflowInput =
           {
             order_id: order.id,
           }
