@@ -18,7 +18,6 @@ import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
@@ -34,7 +33,7 @@ const validationStep = createStep(
     orderChange: OrderChangeDTO
     items: OrderWorkflow.RequestItemReturnWorkflowInput["items"]
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems: items })
@@ -65,8 +64,10 @@ export const requestItemReturnWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
-      variables: { order_id: orderReturn.order_id },
+      fields: ["id", "status", "order_id", "return_id"],
+      variables: {
+        filters: { order_id: orderReturn.order_id, return_id: orderReturn.id },
+      },
       list: false,
     }).config({ name: "order-change-query" })
 
@@ -86,7 +87,6 @@ export const requestItemReturnWorkflow = createWorkflow(
           reference_id: orderReturn.id,
           details: {
             reference_id: item.id,
-            return_id: orderReturn.id,
             quantity: item.quantity,
             metadata: item.metadata,
           },

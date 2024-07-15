@@ -83,7 +83,6 @@ medusaIntegrationTestRunner({
               reference_id: returnOrder.id,
               details: {
                 reference_id: item.id,
-                return_id: returnOrder.id,
                 quantity: 1,
               },
               internal_note: "test",

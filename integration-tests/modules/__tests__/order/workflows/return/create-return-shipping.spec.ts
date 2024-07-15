@@ -63,8 +63,8 @@ medusaIntegrationTestRunner({
             container
           ).run({
             input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
+              return_id: returnOrder.id,
+              shipping_option_id: shippingOptionId,
             },
           })
 
@@ -75,10 +75,9 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
-              details: {
-                order_id: returnOrder.order_id,
-                return_id: returnOrder.id,
-              },
+              order_id: returnOrder.order_id,
+              return_id: returnOrder.id,
+              details: {},
               raw_amount: { value: "10", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
@@ -94,9 +93,9 @@ medusaIntegrationTestRunner({
             container
           ).run({
             input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
-              customShippingPrice: 20,
+              return_id: returnOrder.id,
+              shipping_option_id: shippingOptionId,
+              custom_price: 20,
             },
           })
 
@@ -107,10 +106,9 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
-              details: {
-                order_id: returnOrder.order_id,
-                return_id: returnOrder.id,
-              },
+              order_id: returnOrder.order_id,
+              return_id: returnOrder.id,
+              details: {},
               raw_amount: { value: "20", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
