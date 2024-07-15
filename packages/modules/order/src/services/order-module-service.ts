@@ -28,6 +28,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  OrderChangeStatus,
   OrderStatus,
   promiseAll,
   transformPropertiesToBigNumber,
@@ -60,7 +61,6 @@ import {
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
-  OrderChangeStatus,
   UpdateOrderItemDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
@@ -2626,7 +2626,9 @@ export default class OrderModuleService<
       shippingMethodsToUpsert,
       summariesToUpsert,
       orderToUpdate,
-    } = applyChangesToOrder(orders, actionsMap)
+    } = applyChangesToOrder(orders, actionsMap, {
+      addActionReferenceToObject: true,
+    })
 
     await promiseAll([
       orderToUpdate.length

@@ -6,13 +6,13 @@ import {
 import {
   ChangeActionType,
   ClaimType,
+  OrderChangeType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
   promiseAll,
 } from "@medusajs/utils"
 import { ClaimItem, OrderClaim, Return, ReturnItem } from "@models"
-import { OrderChangeType } from "@types"
 
 function createClaimAndReturnEntities(em, data, order) {
   const claimReference = em.create(OrderClaim, {

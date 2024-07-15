@@ -1,5 +1,9 @@
 import { OrderChangeActionDTO } from "@medusajs/types"
-import { createRawPropertiesFromBigNumber } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  createRawPropertiesFromBigNumber,
+  isDefined,
+} from "@medusajs/utils"
 import { OrderItem, OrderShippingMethod } from "@models"
 import { calculateOrderChange } from "./calculate-order-change"
 
@@ -68,17 +72,36 @@ export function applyChangesToOrder(
 
     if (version > order.version) {
       for (const shippingMethod of calculated.order.shipping_methods ?? []) {
-        if (!shippingMethod) {
+        const shippingMethod_ = shippingMethod as any
+        const isNewShippingMethod = !isDefined(shippingMethod_?.detail)
+        if (!shippingMethod_) {
           continue
         }
 
-        const sm = {
-          ...((shippingMethod as any).detail ?? shippingMethod),
-          version,
+        let associatedMethodId
+        let hasShippingMethod = false
+        if (isNewShippingMethod) {
+          associatedMethodId = shippingMethod_.actions?.find((sm) => {
+            return (
+              sm.action === ChangeActionType.SHIPPING_ADD && sm.reference_id
+            )
+          })
+          hasShippingMethod = !!associatedMethodId
+        } else {
+          associatedMethodId = shippingMethod_?.detail?.shipping_method_id
         }
 
+        const sm = {
+          ...(isNewShippingMethod ? shippingMethod_ : shippingMethod_.detail),
+          version,
+          shipping_method_id: associatedMethodId,
+        } as any
+
         delete sm.id
-        shippingMethodsToUpsert.push(sm)
+
+        if (!hasShippingMethod) {
+          shippingMethodsToUpsert.push(sm)
+        }
       }
 
       orderToUpdate.push({
