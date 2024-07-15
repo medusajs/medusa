@@ -1969,7 +1969,10 @@ export default class OrderModuleService<
       }
     })
 
-    const { itemsToUpsert, shippingMethodsToUpsert, calculatedOrders } =
+    console.log("Order: ", order)
+    console.log("Order change: ", orderChange)
+
+    const { itemsToUpsert, calculatedOrders } =
       applyChangesToOrder(
         [order],
         { [order.id]: orderChange.actions },

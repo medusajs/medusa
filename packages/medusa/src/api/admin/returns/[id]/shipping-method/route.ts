@@ -17,7 +17,7 @@ export const POST = async (
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  await createReturnShippingMethodWorkflow(req.scope).run({
+  const { result } = await createReturnShippingMethodWorkflow(req.scope).run({
     input: { ...req.validatedBody, return_id: id },
   })
 
@@ -35,6 +35,7 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
+    order_preview: result,
     return: orderReturn,
   })
 }

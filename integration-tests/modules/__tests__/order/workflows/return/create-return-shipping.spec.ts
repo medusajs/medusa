@@ -56,7 +56,7 @@ medusaIntegrationTestRunner({
       })
 
       describe("createReturnShippingMethodWorkflow", () => {
-        it("should successfully add return shipping to order changes", async () => {
+        it.only("should successfully add return shipping to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
           const { result } = await createReturnShippingMethodWorkflow(

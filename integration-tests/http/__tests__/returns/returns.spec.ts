@@ -185,8 +185,18 @@ medusaIntegrationTestRunner({
             display_id: 1,
             order_version: 2,
             status: "requested",
-            items: [],
-            shipping_methods: [],
+          })
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            return_id: returnId,
+            change_type: "return",
+            actions: [],
+            description: "Test",
+            status: "pending",
+            order_id: order.id,
           })
         )
 
@@ -205,15 +215,21 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(result.data.return).toEqual(
+        expect(result.data.order_preview).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            order_id: order.id,
-            display_id: 1,
-            order_version: 2,
-            status: "requested",
-            items: [],
-            shipping_methods: [],
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
+                quantity: 1,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
+              }),
+            ]),
           })
         )
 
@@ -225,21 +241,31 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(result.data.return).toEqual(
+        expect(result.data.order_preview).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            order_id: order.id,
-            display_id: 1,
-            order_version: 2,
-            status: "requested",
-            items: [],
-            shipping_methods: [
+            id: order.id,
+            items: expect.arrayContaining([
               expect.objectContaining({
-                amount: 1000,
-                name: "Return shipping",
-                shipping_option_id: returnShippingOption.id,
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
+                quantity: 1,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
               }),
-            ],
+            ]),
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                name: "Return shipping",
+                amount: 1000,
+                order_id: order.id,
+                subtotal: 1000,
+                total: 1000,
+              }),
+            ]),
           })
         )
 
@@ -249,27 +275,31 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(result.data.return).toEqual(
+        expect(result.data.order_preview).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            order_id: order.id,
-            display_id: 1,
-            order_version: 2,
-            status: "requested",
-            items: [
+            id: order.id,
+            items: expect.arrayContaining([
               expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
                 quantity: 1,
-                item_id: item.id,
-                received_quantity: 0,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
               }),
-            ],
-            shipping_methods: [
+            ]),
+            shipping_methods: expect.arrayContaining([
               expect.objectContaining({
-                amount: 1000,
+                id: expect.any(String),
                 name: "Return shipping",
-                shipping_option_id: returnShippingOption.id,
+                amount: 1000,
+                order_id: order.id,
+                subtotal: 1000,
+                total: 1000,
               }),
-            ],
+            ]),
           })
         )
       })

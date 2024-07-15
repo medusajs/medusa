@@ -12,6 +12,7 @@ import {
   WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { previewOrderChangeStep } from "../steps"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
 import {
@@ -44,7 +45,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     return_id: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowData {
+  }): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -133,6 +134,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       }
     )
 
-    return createOrderChangeActionsStep([orderChangeActionInput])
+    createOrderChangeActionsStep([orderChangeActionInput])
+
+    return previewOrderChangeStep(order.id)
   }
 )
