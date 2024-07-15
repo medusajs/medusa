@@ -16,6 +16,7 @@ import {
   AdminOrder,
   AdminOrderLineItem,
   InventoryLevelDTO,
+  ReturnDTO,
 } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 
@@ -40,11 +41,16 @@ import { sdk } from "../../../../../lib/client"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
+  activeReturn: ReturnDTO // TODO: AdminReturn
+  preview: any // TODO
 }
 
 let selectedItems: string[] = []
 
-export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
+export const ReturnCreateForm = ({
+  order,
+  activeReturn,
+}: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -75,7 +81,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
    * MUTATIONS
    */
   const { mutateAsync: confirmReturnRequest } = {} // useAConfirmReturnRequest()
-  const { mutateAsync: addReturnItem } = useAddReturnItem() // TODO: return id
+  const { mutateAsync: addReturnItem } = useAddReturnItem(activeReturn.id)
   // TODO: update return item
   // TODO: remove return item
 

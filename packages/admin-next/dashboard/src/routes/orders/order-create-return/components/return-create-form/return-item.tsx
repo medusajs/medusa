@@ -4,7 +4,7 @@ import React from "react"
 import { IconButton, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { AdminOrderLineItem } from "@medusajs/types"
-import { ChatBubble, DocumentText, XCircle } from "@medusajs/icons"
+import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
@@ -121,7 +121,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
               </Form.Hint>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
               <div className="flex-grow">
                 <Form.Field
                   control={form.control}
@@ -155,7 +155,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
                 variant="transparent"
                 onClick={() => form.setValue(`items.${index}.reason_id`, null)}
               >
-                <XCircle />
+                <XMark className="text-ui-fg-muted" />
               </IconButton>
             </div>
           </div>
@@ -171,7 +171,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
               </Form.Hint>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
               <div className="flex-grow">
                 <Form.Field
                   control={form.control}
@@ -198,7 +198,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
                 variant="transparent"
                 onClick={() => form.setValue(`items.${index}.note`, null)}
               >
-                <XCircle />
+                <XMark className="text-ui-fg-muted" />
               </IconButton>
             </div>
           </div>
