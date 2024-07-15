@@ -116,6 +116,9 @@ export default class Return {
   @Enum({ items: () => ReturnStatus, default: ReturnStatus.REQUESTED })
   status: ReturnStatus = ReturnStatus.REQUESTED
 
+  @Property({ columnType: "text", nullable: true })
+  location_id: string | null = null
+
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
 

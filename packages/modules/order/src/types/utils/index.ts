@@ -47,7 +47,7 @@ export type VirtualOrder = {
       exchange_id?: string
     }
 
-    price: BigNumberInput
+    amount: BigNumberInput
   }[]
 
   total: BigNumberInput

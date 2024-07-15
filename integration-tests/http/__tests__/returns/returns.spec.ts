@@ -225,21 +225,11 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(result.data.return).toEqual(
+        expect(result.data.order.shipping_methods[1]).toEqual(
           expect.objectContaining({
-            id: expect.any(String),
-            order_id: order.id,
-            display_id: 1,
-            order_version: 2,
-            status: "requested",
-            items: [],
-            shipping_methods: [
-              expect.objectContaining({
-                amount: 1000,
-                name: "Return shipping",
-                shipping_option_id: returnShippingOption.id,
-              }),
-            ],
+            amount: 1000,
+            name: "Return shipping",
+            shipping_option_id: returnShippingOption.id,
           })
         )
 
