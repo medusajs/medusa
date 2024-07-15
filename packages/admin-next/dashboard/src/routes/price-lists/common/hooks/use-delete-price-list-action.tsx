@@ -34,7 +34,7 @@ export const useDeletePriceListAction = ({
       onSuccess: () => {
         toast.success(
           t("priceLists.delete.successToast", {
-            name: priceList.title,
+            title: priceList.title,
           })
         )
 

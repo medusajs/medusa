@@ -98,8 +98,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       case "canceled":
         return PaymentSessionStatus.CANCELED
       case "requires_capture":
-      case "succeeded":
         return PaymentSessionStatus.AUTHORIZED
+      case "succeeded":
+        return PaymentSessionStatus.CAPTURED
       default:
         return PaymentSessionStatus.PENDING
     }
@@ -109,7 +110,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     input: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
-    const { email, extra, resource_id, customer } = input.context
+    const { email, extra, session_id, customer } = input.context
     const { currency_code, amount } = input
 
     const description = (extra?.payment_description ??
@@ -119,7 +120,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       description,
       amount: getSmallestUnit(amount, currency_code),
       currency: currency_code,
-      metadata: { resource_id: resource_id ?? "Medusa Payment" },
+      metadata: { session_id: session_id! },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -328,7 +329,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         return {
           action: PaymentActions.AUTHORIZED,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(
               intent.amount_capturable,
               currency
@@ -339,7 +340,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         return {
           action: PaymentActions.SUCCESSFUL,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount_received, currency),
           },
         }
@@ -347,7 +348,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         return {
           action: PaymentActions.FAILED,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),
           },
         }
