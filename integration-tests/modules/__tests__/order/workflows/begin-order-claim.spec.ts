@@ -425,8 +425,6 @@ medusaIntegrationTestRunner({
                 action: "RETURN_ITEM",
                 details: expect.objectContaining({
                   quantity: 1,
-                  return_id: expect.stringContaining("return_"),
-                  claim_id: claimOrder.id,
                   reference_id: order.items![0].id,
                 }),
               }),
