@@ -164,6 +164,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/data-models/searchable-property",
               title: "Searchable Property",
             },
+            {
+              path: "/advanced-development/data-models/write-migration",
+              title: "Write Migration",
+            },
           ],
         },
         {

@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `${pageNumber} Write Migration`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to create a migration and write it manually.
+
+## What is a Migration?
+
+A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It has two methods:
+
+- The `up` method reflects changes on the database.
+- The `down` method reverts the changes made in the `up` method.
+
+---
+
+## How to Write a Migration?
+
+The Medusa CLI tool provides a [migrations generate](!resources!/medusa-cli#migrations-generate) command to generate a migration for the specified modules' data models.
+
+Alternatively, you can manually create a migration file under the `migrations` directory of your module.
+
+For example:
+
+```ts title="src/modules/hello/migrations/Migration20240429.ts"
+import { Migration } from "@mikro-orm/migrations"
+
+export class Migration20240702105919 extends Migration {
+
+  async up(): Promise<void> {
+    this.addSql("create table if not exists \"my_custom\" (\"id\" text not null, \"name\" text not null, \"created_at\" timestamptz not null default now(), \"updated_at\" timestamptz not null default now(), \"deleted_at\" timestamptz null, constraint \"my_custom_pkey\" primary key (\"id\"));")
+  }
+
+  async down(): Promise<void> {
+    this.addSql("drop table if exists \"my_custom\" cascade;")
+  }
+
+}
+```
+
+The migration's file name should be of the format `Migration{YEAR}{MONTH}{DAY}.ts`. The migration class in the file extends the `Migration` class imported from `@mikro-orm/migrations`.
+
+In the `up` and `down` method of the migration class, you use the `addSql` method provided by MikroORM's `Migration` class to run PostgreSQL syntax.
+
+In the example above, the `up` method creates the table `my_custom`, and the `down` method drops the table if the migration is reverted.
+
+---
+
+## Run the Migration
+
+To run your migration, run the following command:
+
+```bash
+npx medusa migrations run
+```
+
+This reflects the changes in the database as implemented in the migration's `up` method.

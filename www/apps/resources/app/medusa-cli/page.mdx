@@ -8,12 +8,6 @@ export const metadata = {
 
 The Medusa CLI tool provides commands that facilitate your development.
 
-<Note type="soon">
-
-Medusa's CLI tool doesn't fully support Medusa v2 yet.
-
-</Note>
-
 <Note type="check">
 
 - [Node.js v16+](https://nodejs.org/en/download)
@@ -23,17 +17,12 @@ Medusa's CLI tool doesn't fully support Medusa v2 yet.
 
 ## Usage
 
-In your Medusa application's directory, you can use the Medusa CLI tool using NPX. For example:
+In your Medusa application's directory, you can use the Medusa CLI tool using NPX.
+
+For example:
 
 ```bash
 npx medusa --help
-```
-
-Alternatively, you can install the CLI tool globally:
-
-```bash npm2yarn
-npm install @medusajs/medusa-cli -g
-medusa --help
 ```
 
 ---
@@ -348,7 +337,7 @@ Run the latest migrations to reflect changes on the database.
 npx medusa migrations run
 ```
 
-### migration revert
+### migrations revert
 
 Revert the last migrations ran on one or more modules.
 
@@ -375,7 +364,46 @@ npx medusa migrations revert <module_names...>
       </Table.Cell>
       <Table.Cell>
 
-      The name of one or more module, separated by spaces. For example, `helloModuleService`.
+      The name of one or more module (separated by spaces) to rever their migrations. For example, `helloModuleService`.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### migrations generate
+
+Generate a migration file for the latest changes in one or more modules.
+
+```bash
+npx medusa migrations generate <module_names...>
+```
+
+#### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `module_names`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of one or more module (separated by spaces) to generate migrations for. For example, `helloModuleService`.
       
       </Table.Cell>
       <Table.Cell>
