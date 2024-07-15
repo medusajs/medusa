@@ -2056,8 +2056,8 @@ export default class OrderModuleService<
           ...shippingMethod,
           actions,
           detail: {
-            ...newItem,
             ...sm,
+            ...newItem,
           },
         }
       })
