@@ -1,11 +1,10 @@
 import {
-  beginReturnOrderWorkflow,
-  createReturnShippingMethodWorkflow,
+  beginExchangeOrderWorkflow,
+  createExchangeReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
-import { IFulfillmentModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
+import { OrderDTO, OrderExchangeDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -22,12 +21,11 @@ medusaIntegrationTestRunner({
       container = getContainer()
     })
 
-    describe("Order change: Create return shipping", () => {
+    describe("Order change: Create exchange return shipping", () => {
       let order: OrderDTO
-      let service: IFulfillmentModuleService
       let fixtures
 
-      let returnOrder: ReturnDTO
+      let exchangeOrder: OrderExchangeDTO
 
       beforeEach(async () => {
         fixtures = await prepareDataFixtures({ container })
@@ -39,7 +37,7 @@ medusaIntegrationTestRunner({
           inventoryItem: fixtures.inventoryItem,
         })
 
-        await beginReturnOrderWorkflow(container).run({
+        await beginExchangeOrderWorkflow(container).run({
           input: { order_id: order.id },
           throwOnError: true,
         })
@@ -49,71 +47,78 @@ medusaIntegrationTestRunner({
         )
 
         const remoteQueryObject = remoteQueryObjectFromString({
-          entryPoint: "return",
+          entryPoint: "order_exchange",
           variables: { order_id: order.id },
-          fields: ["order_id", "id", "status", "order_change_id"],
+          fields: ["order_id", "id", "status", "order_change_id", "return_id"],
         })
 
-        service = container.resolve(ModuleRegistrationName.FULFILLMENT)
-        ;[returnOrder] = await remoteQuery(remoteQueryObject)
+        ;[exchangeOrder] = await remoteQuery(remoteQueryObject)
       })
 
-      describe("createReturnShippingMethodWorkflow", () => {
-        it("should successfully add return shipping to order changes", async () => {
+      describe("createExchangeReturnShippingMethodWorkflow", () => {
+        it("should successfully add exchange return shipping to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
-          const { result: orderChangePreview } =
-            await createReturnShippingMethodWorkflow(container).run({
-              input: {
-                return_id: returnOrder.id,
-                shipping_option_id: shippingOptionId,
-              },
-            })
+          const { result } = await createExchangeReturnShippingMethodWorkflow(
+            container
+          ).run({
+            input: {
+              exchangeId: exchangeOrder.id,
+              shippingOptionId: shippingOptionId,
+            },
+          })
 
-          const shippingMethod = orderChangePreview.shipping_methods?.find(
-            (sm) => sm.shipping_option_id === shippingOptionId
-          )
+          const orderChange = result?.[0]
 
-          expect((shippingMethod as any).actions).toEqual([
+          expect(orderChange).toEqual(
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
+              details: {
+                exchange_id: exchangeOrder.id,
+                order_id: exchangeOrder.order_id,
+                return_id: exchangeOrder.return_id,
+              },
               raw_amount: { value: "10", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
               amount: 10,
-            }),
-          ])
+            })
+          )
         })
 
         it("should successfully add return shipping with custom price to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
-          const { result: orderChangePreview } =
-            await createReturnShippingMethodWorkflow(container).run({
-              input: {
-                return_id: returnOrder.id,
-                shipping_option_id: shippingOptionId,
-                custom_price: 20,
-              },
-            })
+          const { result } = await createExchangeReturnShippingMethodWorkflow(
+            container
+          ).run({
+            input: {
+              exchangeId: exchangeOrder.id,
+              shippingOptionId: shippingOptionId,
+              customShippingPrice: 20,
+            },
+          })
 
-          const shippingMethod = orderChangePreview.shipping_methods?.find(
-            (sm) => sm.shipping_option_id === shippingOptionId
-          )
+          const orderChange = result?.[0]
 
-          expect((shippingMethod as any).actions).toEqual([
+          expect(orderChange).toEqual(
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
+              details: {
+                exchange_id: exchangeOrder.id,
+                order_id: exchangeOrder.order_id,
+                return_id: exchangeOrder.return_id,
+              },
               raw_amount: { value: "20", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
               amount: 20,
-            }),
-          ])
+            })
+          )
         })
       })
     })

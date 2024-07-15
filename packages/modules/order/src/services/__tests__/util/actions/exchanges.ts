@@ -54,7 +54,7 @@ describe("Order Exchange - Actions", function () {
     shipping_methods: [
       {
         id: "ship_123",
-        price: 0,
+        amount: 0,
       },
     ],
     total: 270,
@@ -188,11 +188,11 @@ describe("Order Exchange - Actions", function () {
     expect(changes.order.shipping_methods).toEqual([
       {
         id: "ship_123",
-        price: 0,
+        amount: 0,
       },
       {
         id: "shipping_345",
-        price: 5,
+        amount: 5,
         actions: [
           {
             action: "SHIPPING_ADD",
@@ -203,7 +203,7 @@ describe("Order Exchange - Actions", function () {
       },
       {
         id: "return_shipping_345",
-        price: 7.5,
+        amount: 7.5,
         actions: [
           {
             action: "SHIPPING_ADD",

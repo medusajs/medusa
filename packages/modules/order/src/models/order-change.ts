@@ -2,6 +2,8 @@ import { DAL } from "@medusajs/types"
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
+  OrderChangeStatus,
+  OrderChangeType,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -10,14 +12,14 @@ import {
   Entity,
   Enum,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { OrderChangeStatus, OrderChangeType } from "@types"
+import {} from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"

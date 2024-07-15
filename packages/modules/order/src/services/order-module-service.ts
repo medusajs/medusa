@@ -21,12 +21,14 @@ import {
   deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   isObject,
   isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  OrderChangeStatus,
   OrderStatus,
   promiseAll,
   transformPropertiesToBigNumber,
@@ -59,7 +61,6 @@ import {
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
-  OrderChangeStatus,
   UpdateOrderItemDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
@@ -1193,7 +1194,7 @@ export default class OrderModuleService<
           return_id: dt.return_id,
           claim_id: dt.claim_id,
           exchange_id: dt.exchange_id,
-          version: mapOrderVersion[dt.order_id],
+          version: dt.version ?? mapOrderVersion[dt.order_id],
         }
       })
 
@@ -1969,22 +1970,30 @@ export default class OrderModuleService<
       }
     })
 
-    const { itemsToUpsert, calculatedOrders } = applyChangesToOrder(
-      [order],
-      { [order.id]: orderChange.actions },
-      { addActionReferenceToObject: true }
-    )
+    const { itemsToUpsert, shippingMethodsToUpsert, calculatedOrders } =
+      applyChangesToOrder(
+        [order],
+        { [order.id]: orderChange.actions },
+        { addActionReferenceToObject: true }
+      )
 
     const calculated = calculatedOrders[order.id]
 
     const addedItems = {}
+    const addedShippingMethods = {}
     for (const item of calculated.order.items) {
       const isExistingItem = item.id === item.detail?.item_id
-
       if (!isExistingItem) {
         addedItems[item.id] = item
       }
     }
+
+    for (const sm of calculated.order.shipping_methods) {
+      if (!isDefined(sm.shipping_option_id)) {
+        addedShippingMethods[sm.id] = sm
+      }
+    }
+
     if (Object.keys(addedItems).length > 0) {
       const addedItemDetails = await this.listLineItems(
         { id: Object.keys(addedItems) },
@@ -1995,22 +2004,61 @@ export default class OrderModuleService<
       )
 
       calculated.order.items.forEach((item, idx) => {
-        if (addedItems[item.id]) {
-          const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
+        if (!addedItems[item.id]) {
+          return
+        }
 
-          const actions = item.actions
-          delete item.actions
+        const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
 
-          const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
-          calculated.order.items[idx] = {
-            ...lineItem,
-            actions,
-            quantity: newItem.quantity,
-            detail: {
-              ...newItem,
-              ...item,
-            },
-          }
+        const actions = item.actions
+        delete item.actions
+
+        const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+        calculated.order.items[idx] = {
+          ...lineItem,
+          actions,
+          quantity: newItem.quantity,
+          detail: {
+            ...newItem,
+            ...item,
+          },
+        }
+      })
+    }
+
+    if (Object.keys(addedShippingMethods).length > 0) {
+      const addedShippingDetails = await this.listShippingMethods(
+        { id: Object.keys(addedShippingMethods) },
+        {
+          relations: ["adjustments", "tax_lines"],
+        },
+        sharedContext
+      )
+
+      calculated.order.shipping_methods.forEach((sm, idx) => {
+        if (!addedShippingMethods[sm.id]) {
+          return
+        }
+
+        const shippingMethod = addedShippingDetails.find(
+          (d) => d.id === sm.id
+        ) as any
+
+        const actions = sm.actions
+        delete sm.actions
+
+        const newItem = shippingMethodsToUpsert.find((d) => d.id === sm.id)!
+
+        sm.shipping_method_id = sm.id
+        delete sm.id
+
+        calculated.order.shipping_methods[idx] = {
+          ...shippingMethod,
+          actions,
+          detail: {
+            ...sm,
+            ...newItem,
+          },
         }
       })
     }
@@ -2578,7 +2626,9 @@ export default class OrderModuleService<
       shippingMethodsToUpsert,
       summariesToUpsert,
       orderToUpdate,
-    } = applyChangesToOrder(orders, actionsMap)
+    } = applyChangesToOrder(orders, actionsMap, {
+      addActionReferenceToObject: true,
+    })
 
     await promiseAll([
       orderToUpdate.length

@@ -2,10 +2,10 @@ import { Context, OrderTypes } from "@medusajs/types"
 import {
   ChangeActionType,
   MathBN,
+  OrderChangeType,
   ReturnStatus,
   promiseAll,
 } from "@medusajs/utils"
-import { OrderChangeType } from "@types"
 
 function createReturnItems(data) {
   return data.items.map((item) => ({
