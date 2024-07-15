@@ -75,13 +75,15 @@ export const createExchangeReturnShippingMethodWorkflow = createWorkflow(
     }).config({ name: "fetch-shipping-option" })
 
     const shippingMethodInput = transform(
-      { orderExchange, shippingOptions },
+      { orderExchange, shippingOptions, input },
       (data) => {
         const option = data.shippingOptions[0]
 
         return {
           shipping_option_id: option.id,
-          amount: option.calculated_price.calculated_amount,
+          amount:
+            data.input.customShippingPrice ??
+            option.calculated_price.calculated_amount,
           is_tax_inclusive:
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
