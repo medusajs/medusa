@@ -71,13 +71,10 @@ The last step is to add the module in Medusa’s configurations.
 In `medusa-config.js`, add a `modules` property and pass to it your custom module:
 
 ```js title="medusa-config.js" highlights={[["7", "HELLO_MODULE", "The key of the main service to be registered in the Medusa container."]]}
-import { HELLO_MODULE } from "./src/modules/hello"
-// ...
-
 module.exports = defineConfig({
   // ...
   modules: {
-    [HELLO_MODULE]: {
+    helloModuleSerice: {
       resolve: "./modules/hello",
     },
   },
