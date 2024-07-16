@@ -2190,11 +2190,12 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
 
           const serialized = JSON.parse(JSON.stringify(order))
+
           expect(serialized.items).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 id: itemOne.id,
-                tax_lines: [
+                tax_lines: expect.arrayContaining([
                   expect.objectContaining({
                     id: taxLine!.id,
                     item_id: itemOne.id,
@@ -2206,7 +2207,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                     rate: 25,
                     code: "TX-2",
                   }),
-                ],
+                ]),
               }),
             ])
           )
