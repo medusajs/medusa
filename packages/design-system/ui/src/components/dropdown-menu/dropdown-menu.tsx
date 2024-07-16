@@ -56,7 +56,7 @@ const SubMenuTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRightMini className="ml-auto" />
+    <ChevronRightMini className="ml-auto text-ui-fg-muted" />
   </Primitives.SubTrigger>
 ))
 SubMenuTrigger.displayName = "DropdownMenu.SubMenuTrigger"

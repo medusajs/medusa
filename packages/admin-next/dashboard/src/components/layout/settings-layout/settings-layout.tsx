@@ -1,5 +1,5 @@
 import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
-import { IconButton, Text } from "@medusajs/ui"
+import { IconButton, Text, clx } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -130,20 +130,23 @@ const SettingsSidebar = () => {
   return (
     <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
       <div className="p-3">
-        <div className="flex items-center gap-x-3 px-2 py-1.5">
-          <IconButton size="2xsmall" variant="transparent" asChild>
-            <Link
-              to={from}
-              replace
-              className="flex items-center justify-center"
-            >
-              <ArrowUturnLeft />
-            </Link>
-          </IconButton>
-          <Text leading="compact" weight="plus" size="small">
-            {t("nav.settings")}
-          </Text>
-        </div>
+        <Link
+          to={from}
+          replace
+          className={clx(
+            "bg-ui-bg-subtle transition-fg flex items-center rounded-md outline-none",
+            "hover:bg-ui-bg-subtle-hover"
+          )}
+        >
+          <div className="flex items-center gap-x-2 py-1 pl-0.5 pr-2">
+            <div className="flex size-6 items-center justify-center">
+              <ArrowUturnLeft className="text-ui-fg-subtle" />
+            </div>
+            <Text leading="compact" weight="plus" size="small">
+              {t("nav.settings")}
+            </Text>
+          </div>
+        </Link>
       </div>
       <div className="flex items-center justify-center px-3">
         <Divider variant="dashed" />
@@ -164,9 +167,9 @@ const SettingsSidebar = () => {
           </div>
           <Collapsible.Content>
             <div className="pt-0.5">
-              <nav className="flex flex-col gap-y-1">
+              <nav className="flex flex-col gap-y-0.5">
                 {routes.map((setting) => (
-                  <NavItem key={setting.to} {...setting} />
+                  <NavItem key={setting.to} type="setting" {...setting} />
                 ))}
               </nav>
             </div>
@@ -190,9 +193,9 @@ const SettingsSidebar = () => {
           </div>
           <Collapsible.Content>
             <div className="pt-0.5">
-              <nav className="flex flex-col gap-y-1">
+              <nav className="flex flex-col gap-y-0.5">
                 {developerRoutes.map((setting) => (
-                  <NavItem key={setting.to} {...setting} />
+                  <NavItem key={setting.to} type="setting" {...setting} />
                 ))}
               </nav>
             </div>
@@ -218,7 +221,7 @@ const SettingsSidebar = () => {
               </div>
               <Collapsible.Content>
                 <div className="pt-0.5">
-                  <nav className="flex flex-col gap-y-1">
+                  <nav className="flex flex-col gap-y-0.5">
                     {extensionRoutes.map((setting) => (
                       <NavItem key={setting.to} {...setting} />
                     ))}

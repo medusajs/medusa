@@ -94,7 +94,15 @@
     "general": "General",
     "developer": "Developer",
     "extensions": "Extensions",
-    "settings": "Settings"
+    "settings": "Settings",
+    "logout": "Log out",
+    "storeSettings": "Store settings",
+    "store": "Store",
+    "theme": {
+      "label": "Theme",
+      "dark": "Dark",
+      "light": "Light"
+    }
   },
   "actions": {
     "save": "Save",
@@ -130,6 +138,7 @@
   },
   "app": {
     "search": {
+      "label": "Search",
       "allAreas": "All areas",
       "navigation": "Navigation",
       "openResult": "Open result",
@@ -160,6 +169,27 @@
       "goToPublishableApiKeys": "Go to publishable API keys",
       "goToSecretApiKeys": "Go to secret API keys",
       "goToWorkflows": "Go to workflows"
+    },
+    "menus": {
+      "user": {
+        "documentation": "Documentation",
+        "changelog": "Changelog",
+        "shortcuts": "Shortcuts",
+        "profileSettings": "Profile settings",
+        "theme": {
+          "label": "Theme",
+          "dark": "Dark",
+          "light": "Light",
+          "system": "System"
+        }
+      },
+      "store": {
+        "label": "Store",
+        "storeSettings": "Store settings"
+      },
+      "actions": {
+        "logout": "Log out"
+      }
     }
   },
   "filters": {
