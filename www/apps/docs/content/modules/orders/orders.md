@@ -29,7 +29,6 @@ Some of the attributes of the `Order` entity include:
 - `status`: a string indicating the overall status of the order. Its values can be:
   - `pending`: this is the default status of the order after it has been created.
   - `completed`: the order is marked as completed. A merchant typically marks the order as completed after the order has been fulfilled and paid.
-  - `refunded`: the order has been refunded.
   - `archived`: the order is archived. This status can only be attained after the order has been completed or refunded.
   - `canceled`: the order has been canceled. An order can’t be canceled if it has been refunded or if any of its relations, such as fulfillment or swaps, are not canceled.
 - `display_id`: a string indicating an incremental ID that can be displayed to the customer or internally to merchants.

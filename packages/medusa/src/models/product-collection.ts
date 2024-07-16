@@ -22,6 +22,9 @@ export class ProductCollection extends SoftDeletableEntity {
   @Column({ nullable: true })
   handle: string
 
+  /**
+   * @apiIgnore
+   */
   @OneToMany(() => Product, (product) => product.collection)
   products: Relation<Product>[]
 
@@ -73,6 +76,7 @@ export class ProductCollection extends SoftDeletableEntity {
  *     description: The details of the products that belong to this product collection.
  *     type: array
  *     x-expandable: "products"
+ *     x-ignore: true
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   created_at:

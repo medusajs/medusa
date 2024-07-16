@@ -325,15 +325,15 @@ The `save` method is what actually persists the created record in the database.
 To update a record of an entity, use the `save` method of the repository:
 
 ```ts
-// const data = {
-//   title: ''
-// }
+const data = {
+  title: 'some_title'
+}
 
-// const post = await postRepository.findOne({
-//   where: {
-//     id: '1'
-//   }
-// })
+const post = await postRepository.findOne({
+  where: {
+    id: '1'
+  }
+})
 
 Object.assign(post, data)
 
