@@ -1527,13 +1527,13 @@ const createSubscriptionOrderStep = createStep(
   async ({ 
     subscription, cart, payment_collection,
   }: StepInput, 
-  { container, ...sharedContext }) => {
+  { container, context }) => {
     const linkDefs: LinkDefinition[] = []
 
     const { result: order } = await createOrdersWorkflow(container)
       .run({
         input: getOrderData(cart),
-        context: sharedContext,
+        context,
         container
       })
 
