@@ -764,6 +764,10 @@ export const filesMap = [
     "pathname": "/recipes/pos"
   },
   {
+    "filePath": "/www/apps/resources/app/recipes/subscriptions/examples/standard/page.mdx",
+    "pathname": "/recipes/subscriptions/examples/standard"
+  },
+  {
     "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
     "pathname": "/recipes/subscriptions"
   },
