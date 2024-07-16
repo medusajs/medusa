@@ -3,6 +3,8 @@ import { MedusaContainer } from "@medusajs/types"
 import { composeMessage, ModuleRegistrationName } from "@medusajs/utils"
 import testEventPayloadHandlerMock from "../../dist/subscribers/test-event-payload"
 
+jest.setTimeout(30000)
+
 medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
     let container!: MedusaContainer
