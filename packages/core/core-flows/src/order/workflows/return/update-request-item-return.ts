@@ -1,6 +1,7 @@
 import {
   OrderChangeActionDTO,
   OrderChangeDTO,
+  OrderDTO,
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
@@ -9,31 +10,32 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useRemoteQueryStep } from "../../../common"
 import {
+  previewOrderChangeStep,
   updateOrderChangeActionsStep,
-  updateOrderShippingMethodsStep,
-} from "../steps"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
+} from "../../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "validate-update-return-shipping-method",
+  "update-request-item-return-validation",
   async function ({
+    order,
     orderChange,
     orderReturn,
     input,
   }: {
-    input: { return_id: string; action_id: string }
+    order: OrderDTO
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
+    input: OrderWorkflow.UpdateRequestItemReturnWorkflowInput
   }) {
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
 
@@ -43,23 +45,22 @@ const validationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No shipping method found for return ${input.return_id} in order change ${orderChange.id}`
+        `No request return found for return ${input.return_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.SHIPPING_ADD) {
+    } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
       throw new Error(
-        `Action ${associatedAction.id} is not adding a shipping method`
+        `Action ${associatedAction.id} is not requesting item return`
       )
     }
   }
 )
 
-export const updateReturnShippingMethodWorkflowId =
-  "update-return-shipping-method"
-export const updateReturnShippingMethodWorkflow = createWorkflow(
-  updateReturnShippingMethodWorkflowId,
+export const updateRequestItemReturnWorkflowId = "update-request-item-return"
+export const updateRequestItemReturnWorkflow = createWorkflow(
+  updateRequestItemReturnWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.UpdateReturnShippingMethodWorkflowInput>
-  ): WorkflowData {
+    input: WorkflowData<OrderWorkflow.UpdateRequestItemReturnWorkflowInput>
+  ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -67,6 +68,14 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
       list: false,
       throw_if_key_not_found: true,
     })
+
+    const order: OrderDTO = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: ["id", "status", "items.*"],
+      variables: { id: orderReturn.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "order-query" })
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
@@ -81,7 +90,7 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderReturn, orderChange, input })
+    validationStep({ order, input, orderReturn, orderChange })
 
     const updateData = transform(
       { orderChange, input },
@@ -91,30 +100,18 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
         ) as OrderChangeActionDTO
 
         const data = input.data
-
-        const action = {
-          id: originalAction.id,
-          internal_note: data.internal_note,
-        }
-
-        const shippingMethod = {
-          id: originalAction.reference_id,
-          amount: data.custom_price,
-          metadata: data.metadata,
-        }
-
         return {
-          action,
-          shippingMethod,
+          id: input.action_id,
+          details: {
+            quantity: data.quantity ?? originalAction.details?.quantity,
+          },
+          internal_note: data.internal_note,
         }
       }
     )
 
-    parallelize(
-      updateOrderChangeActionsStep([updateData.action]),
-      updateOrderShippingMethodsStep([updateData.shippingMethod!])
-    )
+    updateOrderChangeActionsStep([updateData])
 
-    return previewOrderChangeStep(orderReturn.order_id)
+    return previewOrderChangeStep(order.id)
   }
 )

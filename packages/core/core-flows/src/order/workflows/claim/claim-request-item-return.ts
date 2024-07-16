@@ -1,7 +1,7 @@
 import {
   OrderChangeDTO,
+  OrderClaimDTO,
   OrderDTO,
-  OrderExchangeDTO,
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
@@ -13,82 +13,81 @@ import {
   transform,
   when,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
-import { createReturnsStep } from "../steps/create-returns"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
-import { updateOrderExchangesStep } from "../steps/update-order-exchanges"
+import { useRemoteQueryStep } from "../../../common"
+import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
+import { createReturnsStep } from "../../steps/create-returns"
+import { previewOrderChangeStep } from "../../steps/preview-order-change"
+import { updateOrderClaimsStep } from "../../steps/update-order-claims"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
   throwIfOrderIsCancelled,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "exchange-request-item-return-validation",
+  "claim-request-item-return-validation",
   async function ({
     order,
     orderChange,
     orderReturn,
-    orderExchange,
+    orderClaim,
     items,
   }: {
     order: OrderDTO
     orderReturn: ReturnDTO
-    orderExchange: OrderExchangeDTO
+    orderClaim: OrderClaimDTO
     orderChange: OrderChangeDTO
-    items: OrderWorkflow.OrderExchangeRequestItemReturnWorkflowInput["items"]
+    items: OrderWorkflow.OrderClaimRequestItemReturnWorkflowInput["items"]
   }) {
     throwIfOrderIsCancelled({ order })
-    throwIfIsCancelled(orderExchange, "Exchange")
+    throwIfIsCancelled(orderClaim, "Claim")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems: items })
   }
 )
 
-export const orderExchangeRequestItemReturnWorkflowId =
-  "exchange-request-item-return"
-export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
-  orderExchangeRequestItemReturnWorkflowId,
+export const orderClaimRequestItemReturnWorkflowId = "claim-request-item-return"
+export const orderClaimRequestItemReturnWorkflow = createWorkflow(
+  orderClaimRequestItemReturnWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.OrderExchangeRequestItemReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.OrderClaimRequestItemReturnWorkflowInput>
   ): WorkflowData<OrderDTO> {
-    const orderExchange = useRemoteQueryStep({
-      entry_point: "order_exchange",
+    const orderClaim = useRemoteQueryStep({
+      entry_point: "order_claim",
       fields: ["id", "order_id", "return_id"],
-      variables: { id: input.exchange_id },
+      variables: { id: input.claim_id },
       list: false,
       throw_if_key_not_found: true,
-    }).config({ name: "exchange-query" })
+    }).config({ name: "claim-query" })
 
-    const existingOrderReturn = when({ orderExchange }, ({ orderExchange }) => {
-      return orderExchange.return_id
+    const existingOrderReturn = when({ orderClaim }, ({ orderClaim }) => {
+      return orderClaim.return_id
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "return",
         fields: ["id", "status", "order_id"],
-        variables: { id: orderExchange.return_id },
+        variables: { id: orderClaim.return_id },
         list: false,
         throw_if_key_not_found: true,
       }).config({ name: "return-query" }) as ReturnDTO
     })
 
-    const createdReturn = when({ orderExchange }, ({ orderExchange }) => {
-      return !orderExchange.return_id
+    const createdReturn = when({ orderClaim }, ({ orderClaim }) => {
+      return !orderClaim.return_id
     }).then(() => {
       return createReturnsStep([
         {
-          order_id: orderExchange.order_id,
-          exchange_id: orderExchange.id,
+          order_id: orderClaim.order_id,
+          claim_id: orderClaim.id,
         },
       ])
     })
 
     const orderReturn: ReturnDTO = transform(
-      { createdReturn, existingOrderReturn, orderExchange },
-      ({ createdReturn, existingOrderReturn, orderExchange }) => {
+      { createdReturn, existingOrderReturn, orderClaim },
+      ({ createdReturn, existingOrderReturn, orderClaim }) => {
         return existingOrderReturn ?? (createdReturn[0] as ReturnDTO)
       }
     )
@@ -96,7 +95,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "items.*"],
-      variables: { id: orderExchange.order_id },
+      variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -104,20 +103,20 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
       fields: ["id", "status"],
-      variables: { order_id: orderExchange.order_id },
+      variables: { order_id: orderClaim.order_id },
       list: false,
     }).config({ name: "order-change-query" })
 
     validationStep({
       order,
       items: input.items,
-      orderExchange,
+      orderClaim,
       orderReturn,
       orderChange,
     })
 
-    when({ orderExchange }, ({ orderExchange }) => {
-      return !orderExchange.return_id
+    when({ orderClaim }, ({ orderClaim }) => {
+      return !orderClaim.return_id
     }).then(() => {
       const createdReturnId = transform(
         { createdReturn },
@@ -125,21 +124,21 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
           return createdReturn[0]!.id
         }
       )
-      updateOrderExchangesStep([
+      updateOrderClaimsStep([
         {
-          id: orderExchange.id,
+          id: orderClaim.id,
           return_id: createdReturnId,
         },
       ])
     })
 
     const orderChangeActionInput = transform(
-      { order, orderChange, orderExchange, orderReturn, items: input.items },
-      ({ order, orderChange, orderExchange, orderReturn, items }) => {
+      { order, orderChange, orderClaim, orderReturn, items: input.items },
+      ({ order, orderChange, orderClaim, orderReturn, items }) => {
         return items.map((item) => ({
           order_change_id: orderChange.id,
           order_id: order.id,
-          exchange_id: orderExchange.id,
+          claim_id: orderClaim.id,
           return_id: orderReturn.id,
           version: orderChange.version,
           action: ChangeActionType.RETURN_ITEM,
@@ -157,6 +156,6 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
 
     createOrderChangeActionsStep(orderChangeActionInput)
 
-    return previewOrderChangeStep(orderExchange.order_id)
+    return previewOrderChangeStep(orderClaim.order_id)
   }
 )

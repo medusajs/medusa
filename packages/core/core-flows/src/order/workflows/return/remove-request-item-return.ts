@@ -11,12 +11,15 @@ import {
   createStep,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { deleteOrderChangeActionsStep, previewOrderChangeStep } from "../steps"
+import { useRemoteQueryStep } from "../../../common"
+import {
+  deleteOrderChangeActionsStep,
+  previewOrderChangeStep,
+} from "../../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "remove-request-item-return-validation",

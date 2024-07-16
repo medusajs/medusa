@@ -6,14 +6,14 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { previewOrderChangeStep } from "../steps"
-import { confirmOrderChanges } from "../steps/confirm-order-changes"
-import { createReturnItems } from "../steps/create-return-items"
+import { useRemoteQueryStep } from "../../../common"
+import { previewOrderChangeStep } from "../../steps"
+import { confirmOrderChanges } from "../../steps/confirm-order-changes"
+import { createReturnItems } from "../../steps/create-return-items"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 type WorkflowInput = {
   return_id: string

@@ -12,14 +12,14 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { deleteOrderShippingMethods } from "../steps"
-import { deleteOrderChangeActionsStep } from "../steps/delete-order-change-actions"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
+import { useRemoteQueryStep } from "../../../common"
+import { deleteOrderShippingMethods } from "../../steps"
+import { deleteOrderChangeActionsStep } from "../../steps/delete-order-change-actions"
+import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "validate-remove-return-shipping-method",
