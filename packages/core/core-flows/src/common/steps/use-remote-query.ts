@@ -1,8 +1,10 @@
-import { remoteQueryObjectFromString } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
-  entry_point: string
   fields: string[]
   variables?: Record<string, any>
   throw_if_key_not_found?: boolean
@@ -10,18 +12,35 @@ interface StepInput {
   list?: boolean
 }
 
+interface EntryStepInput extends StepInput {
+  entry_point: string
+}
+
+interface ServiceStepInput extends StepInput {
+  service: string
+}
+
 export const useRemoteQueryStepId = "use-remote-query"
 export const useRemoteQueryStep = createStep(
   useRemoteQueryStepId,
-  async (data: StepInput, { container }) => {
-    const { list = true, fields, variables, entry_point: entryPoint } = data
-    const query = container.resolve("remoteQuery")
+  async (data: EntryStepInput | ServiceStepInput, { container }) => {
+    const { list = true, fields, variables } = data
 
-    const queryObject = remoteQueryObjectFromString({
-      entryPoint,
+    const query = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+    const queryObjectConfig = {
       fields,
       variables,
-    })
+    } as Parameters<typeof remoteQueryObjectFromString>[0]
+
+    const isEntryPoint = "entry_point" in data
+    if (isEntryPoint) {
+      queryObjectConfig["entry_point"] = data.entry_point
+    } else {
+      queryObjectConfig["service"] = data.service
+    }
+
+    const queryObject = remoteQueryObjectFromString(queryObjectConfig)
 
     const config = {
       throwIfKeyNotFound: !!data.throw_if_key_not_found,
