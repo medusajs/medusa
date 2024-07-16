@@ -130,10 +130,10 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
     import { IUserModuleService } from "@medusajs/types"
 
     export default async function handleCustomerCreate({
-      data,
+      event: { data },
       container,
     }: SubscriberArgs<{ id: string }>) {
-      const userId = data.data.id
+      const userId = data.id
       const userModuleService: IUserModuleService = container.resolve(
         ModuleRegistrationName.USER
       )
