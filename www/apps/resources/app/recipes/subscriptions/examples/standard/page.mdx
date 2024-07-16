@@ -84,7 +84,7 @@ const Subscription = model.define("subscription", {
   last_order_date: model.dateTime(),
   next_order_date: model.dateTime().index().nullable(),
   expiration_date: model.dateTime().index(),
-  metadata: model.json().nullable()
+  metadata: model.json().nullable(),
 })
 
 export default Subscription
@@ -122,10 +122,10 @@ Create the module’s main service in the file `src/modules/subscription/service
 
 ```ts title="src/modules/subscription/service.ts"
 import { MedusaService } from "@medusajs/utils"
-import Subscription from "./models/subscription";
+import Subscription from "./models/subscription"
 
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
 }
 
@@ -145,7 +145,7 @@ import SubscriptionModuleService from "./service"
 export const SUBSCRIPTION_MODULE = "subscriptionModuleService"
 
 export default Module(SUBSCRIPTION_MODULE, {
-  service: SubscriptionModuleService
+  service: SubscriptionModuleService,
 })
 ```
 
@@ -162,10 +162,10 @@ module.exports = defineConfig({
     subscriptionModuleService: {
       resolve: "./modules/subscription",
       definition: {
-        isQueryable: true
-      }
-    }
-  }
+        isQueryable: true,
+      },
+    },
+  },
 })
 ```
 
@@ -216,7 +216,7 @@ import CustomerModule from "@medusajs/customer"
 export default defineLink(
   {
     linkable: SubscriptionModule.linkable.subscription,
-    isList: true
+    isList: true,
   },
   CustomerModule.linkable.customer
 )
@@ -237,7 +237,7 @@ export default defineLink(
   SubscriptionModule.linkable.subscription,
   {
     linkable: OrderModule.linkable.order,
-    isList: true
+    isList: true,
   }
 )
 ```
@@ -297,16 +297,16 @@ import {
   CreateSubscriptionData, 
   SubscriptionData, 
   SubscriptionInterval,
-} from "./types";
+} from "./types"
 
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   getNextOrderDate({
     last_order_date,
     expiration_date,
     interval,
-    period
+    period,
   }: {
     last_order_date: Date
     expiration_date: Date
@@ -337,13 +337,13 @@ In the same file, add the following method to `SubscriptionModuleService`:
 
 ```ts title="src/modules/subscription/service.ts"
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   // ...
   getExpirationDate({
     subscription_date,
     interval,
-    period
+    period,
   }: {
     subscription_date: Date,
     interval: SubscriptionInterval,
@@ -393,7 +393,7 @@ Then, in `src/modules/subscription/service.ts`, add the following to override th
 
 ```ts title="src/modules/subscription/service.ts"
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   // ...
     
@@ -409,7 +409,7 @@ class SubscriptionModuleService extends MedusaService({
         const expirationDate = this.getExpirationDate({
           subscription_date: subscriptionDate,
           interval: subscription.interval,
-          period: subscription.period
+          period: subscription.period,
         })
 
         return await super.createSubscriptions({
@@ -420,9 +420,9 @@ class SubscriptionModuleService extends MedusaService({
             last_order_date: subscriptionDate,
             expiration_date: expirationDate,
             interval: subscription.interval,
-            period: subscription.period
+            period: subscription.period,
           }),
-          expiration_date: expirationDate
+          expiration_date: expirationDate,
         })
       })
     )
@@ -485,7 +485,7 @@ const createSubscriptionStep = createStep(
     cart_id, 
     order_id, 
     customer_id,
-    subscription_data
+    subscription_data,
   }: StepInput, { container }) => {
     const subscriptionModuleService: SubscriptionModuleService = 
       container.resolve(SUBSCRIPTION_MODULE)
@@ -494,17 +494,17 @@ const createSubscriptionStep = createStep(
     const subscription = await subscriptionModuleService.createSubscriptions({
       ...subscription_data,
       metadata: {
-        main_order_id: order_id
-      }
+        main_order_id: order_id,
+      },
     })
 
     // TODO add links
 
     return new StepResponse({
       subscription: subscription[0],
-      linkDefs
+      linkDefs,
     }, {
-      subscription: subscription[0]
+      subscription: subscription[0],
     })
   }, async ({ subscription }, { container }) => {
     // TODO implement compensation
@@ -529,30 +529,30 @@ export const createSubscriptionsLinkHighlights = [
 ```ts title="src/workflows/create-subscription/steps/create-subscription.ts" highlights={createSubscriptionsLinkHighlights}
 linkDefs.push({
   [SUBSCRIPTION_MODULE]: {
-    "subscription_id": subscription[0].id
+    "subscription_id": subscription[0].id,
   },
   [Modules.ORDER]: {
-    "order_id": order_id
-  }
+    "order_id": order_id,
+  },
 })
 
 linkDefs.push({
   [SUBSCRIPTION_MODULE]: {
-    "subscription_id": subscription[0].id
+    "subscription_id": subscription[0].id,
   },
   [Modules.CART]: {
-    "cart_id": cart_id
-  }
+    "cart_id": cart_id,
+  },
 })
 
 if (customer_id) {
   linkDefs.push({
     [SUBSCRIPTION_MODULE]: {
-      "subscription_id": subscription[0].id
+      "subscription_id": subscription[0].id,
     },
     [Modules.CUSTOMER]: {
-      "customer_id": customer_id
-    }
+      "customer_id": customer_id,
+    },
   })
 }
 ```
@@ -590,10 +590,10 @@ import {
 } from "@medusajs/workflows-sdk"
 import { 
   createRemoteLinkStep,
-  completeCartWorkflow
+  completeCartWorkflow,
 } from "@medusajs/core-flows"
 import { 
-  SubscriptionInterval
+  SubscriptionInterval,
 } from "../../modules/subscription/types"
 import createSubscriptionStep from "./steps/create-subscription"
 
@@ -610,22 +610,22 @@ const createSubscriptionWorkflow = createWorkflow(
   (input: WorkflowInput) => {
     const order = completeCartWorkflow.runAsStep({
       input: {
-        id: input.cart_id
-      }
+        id: input.cart_id,
+      },
     })
 
     const { subscription, linkDefs } = createSubscriptionStep({
       cart_id: input.cart_id,
       order_id: order.id,
       customer_id: order.customer_id,
-      subscription_data: input.subscription_data
+      subscription_data: input.subscription_data,
     })
 
     createRemoteLinkStep(linkDefs)
 
     return {
       subscription: subscription,
-      order: order
+      order: order,
     }
   }
 )
@@ -664,11 +664,11 @@ export const completeCartHighlights = [
 ```ts title="src/api/store/carts/[id]/complete/route.ts" highlights={completeCartHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
 import { 
   MedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { 
   remoteQueryObjectFromString,
-  MedusaError
+  MedusaError,
 } from "@medusajs/utils"
 import createSubscriptionWorkflow from "../../../../../workflows/create-subscription"
 
@@ -681,13 +681,13 @@ export const POST = async (
   const query = remoteQueryObjectFromString({
     entryPoint: "cart",
     fields: [
-      "metadata"
+      "metadata",
     ],
     variables: {
       filters: {
-        id: [req.params.id]
-      }
-    }
+        id: [req.params.id],
+      },
+    },
   })
   
   const { metadata } = await remoteQuery(query)
@@ -706,14 +706,14 @@ export const POST = async (
       cart_id: req.params.id,
       subscription_data: {
         interval: metadata.subscription_interval,
-        period: metadata.subscription_period
-      }
-    }
+        period: metadata.subscription_period,
+      },
+    },
   })
 
   res.json({
     type: "order",
-    ...result
+    ...result,
   })
 }
 ```
@@ -730,7 +730,7 @@ In this section, you'll customize the checkout flow in the [Next.js Starter stor
 
 After installation, create the file `src/modules/checkout/components/subscriptions/index.tsx` with the following content:
 
-```ts title="src/modules/checkout/components/subscriptions/index.tsx" badgeLabel="Storefront" badgeColor="orange" collapsibleLines="1-13" expandMoreLabel="Show Imports"
+```tsx title="src/modules/checkout/components/subscriptions/index.tsx" badgeLabel="Storefront" badgeColor="orange" collapsibleLines="1-13" expandMoreLabel="Show Imports"
 "use client"
 
 import { StoreCart } from "@medusajs/types"
@@ -880,7 +880,7 @@ import { SubscriptionInterval } from "../../modules/checkout/components/subscrip
 
 export async function updateSubscriptionData(
   subscription_interval: SubscriptionInterval,
-  subscription_period: number,
+  subscription_period: number
 ) {
   const cartId = getCartId()
   
@@ -891,8 +891,8 @@ export async function updateSubscriptionData(
   await updateCart({
     metadata: {
       subscription_interval,
-      subscription_period
-    }
+      subscription_period,
+    },
   })
   revalidateTag("cart")
 }
@@ -932,14 +932,14 @@ export default async function CheckoutForm({
   // ...
 
   return (
-    {/* ... */}
-
-    {/* After Payment, before Review */}
     <div>
-      <SubscriptionForm />
+      {/* ... */}
+      {/* After Payment, before Review */}
+      <div>
+        <SubscriptionForm />
+      </div>
+      {/* ... */}
     </div>
-
-    {/* ... */}
   )
 }
 ```
@@ -986,8 +986,8 @@ export const listSubscriptionsAdminHighlight = [
 ```ts title="src/api/admin/subscriptions/route.ts" highlights={listSubscriptionsAdminHighlight}
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -1007,15 +1007,15 @@ export const GET = async (
       "*",
       "orders.*",
       "customer.*",
-      ...(req.validatedQuery?.fields.split(",") || [])
+      ...(req.validatedQuery?.fields.split(",") || []),
     ],
     variables: {
       skip: offset,
       take: limit,
       order: {
-        subscription_date: "DESC"
-      }
-    }
+        subscription_date: "DESC",
+      },
+    },
   })
 
   const { 
@@ -1027,7 +1027,7 @@ export const GET = async (
     subscriptions: rows,
     count,
     limit: take,
-    offset: skip
+    offset: skip,
   })
 }
 ```
@@ -1049,8 +1049,8 @@ export const getSubscriptionsAdminHighlight = [
 ```ts title="src/api/admin/subscriptions/[id]/route.ts" highlights={getSubscriptionsAdminHighlight}
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -1065,19 +1065,19 @@ export const GET = async (
       "*",
       "orders.*",
       "customer.*",
-      ...(req.validatedQuery?.fields.split(",") || [])
+      ...(req.validatedQuery?.fields.split(",") || []),
     ],
     variables: {
       filters: {
-        id: [req.params.id]
-      }
-    }
+        id: [req.params.id],
+      },
+    },
   })
 
   const result = await remoteQuery(query)
 
   res.json({
-    subscription: result[0]
+    subscription: result[0],
   })
 }
 ```
@@ -1104,7 +1104,7 @@ Before creating the UI routes, create the file `src/admin/types/index.ts` that h
 ```ts title="src/admin/types/index.ts"
 import { 
   OrderDTO,
-  CustomerDTO
+  CustomerDTO,
 } from "@medusajs/types"
 
 export enum SubscriptionStatus {
@@ -1316,16 +1316,16 @@ const SubscriptionsPage = () => {
    useEffect(() => {
     const query = new URLSearchParams({
       limit: `${pageLimit}`,
-      offset: `${pageLimit * currentPage}`
+      offset: `${pageLimit * currentPage}`,
     })
     
     fetch(`/admin/subscriptions?${query.toString()}`, {
-      credentials: "include"
+      credentials: "include",
     })
     .then((res) => res.json())
     .then(({ 
       subscriptions: data, 
-      count
+      count,
     }) => {
       setSubscriptions(data)
       setCount(count)
@@ -1375,7 +1375,7 @@ To create the UI route or page that shows the details of a single subscription, 
 import { 
   Container,
   Heading,
-  Table
+  Table,
 } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
@@ -1389,7 +1389,7 @@ const SubscriptionPage = () => {
 
   useEffect(() => {
     fetch(`/admin/subscriptions/${id}`, {
-      credentials: "include"
+      credentials: "include",
     })
     .then((res) => res.json())
     .then(({ subscription: data }) => {
@@ -1501,11 +1501,11 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { 
   CartWorkflowDTO,
   PaymentCollectionDTO,
-  IOrderModuleService
+  IOrderModuleService,
 } from "@medusajs/types"
 import { 
   Modules,
-  ModuleRegistrationName
+  ModuleRegistrationName,
 } from "@medusajs/utils"
 import { createOrdersWorkflow } from "@medusajs/core-flows"
 import { LinkDefinition } from "@medusajs/modules-sdk"
@@ -1518,29 +1518,29 @@ type StepInput = {
   payment_collection: PaymentCollectionDTO
 }
 
-function getOrderData (cart: CartWorkflowDTO) {
+function getOrderData(cart: CartWorkflowDTO) {
   // TODO format order's data
 }
 
 const createSubscriptionOrderStep = createStep(
   "create-subscription-order",
   async ({ 
-    subscription, cart, payment_collection
+    subscription, cart, payment_collection,
   }: StepInput, { container }) => {
     const linkDefs: LinkDefinition[] = []
 
     const { result: order } = await createOrdersWorkflow(container)
       .run({
-        input: getOrderData(cart)
+        input: getOrderData(cart),
       })
 
     // TODO add links to linkDefs
 
     return new StepResponse({
       order,
-      linkDefs
+      linkDefs,
     }, {
-      order
+      order,
     })
   },
   async ({ order }, { container }) => {
@@ -1558,7 +1558,7 @@ In this step, you use a `getOrderData` function to format the order’s input da
 Replace the `getOrderData` function definition with the following:
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts"
-function getOrderData (cart: CartWorkflowDTO) {
+function getOrderData(cart: CartWorkflowDTO) {
   return {
     region_id: cart.region_id,
     customer_id: cart.customer_id,
@@ -1567,11 +1567,11 @@ function getOrderData (cart: CartWorkflowDTO) {
     currency_code: cart.currency_code,
     shipping_address: {
       ...cart.shipping_address,
-      id: null
+      id: null,
     },
     billing_address: {
       ...cart.billing_address,
-      id: null
+      id: null,
     },
     items: cart.items,
     shipping_methods: cart.shipping_methods.map((method) => ({
@@ -1585,15 +1585,15 @@ function getOrderData (cart: CartWorkflowDTO) {
         tax_rate_id: taxLine.tax_rate_id,
         code: taxLine.code,
         rate: taxLine.rate,
-        provider_id: taxLine.provider_id
+        provider_id: taxLine.provider_id,
       })),
       adjustments: method.adjustments.map((adjustment) => ({
         code: adjustment.code,
         amount: adjustment.amount,
         description: adjustment.description,
         promotion_id: adjustment.promotion_id,
-        provider_id: adjustment.provider_id
-      }))
+        provider_id: adjustment.provider_id,
+      })),
     })),
   }
 }
@@ -1611,19 +1611,19 @@ export const createSubscriptionOrderStep2Highlights = [
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts" highlights={createSubscriptionOrderStep2Highlights}
 linkDefs.push({
   [Modules.ORDER]: {
-    order_id: order.id
+    order_id: order.id,
   },
   [Modules.PAYMENT]: {
-    payment_collection_id: payment_collection.id
-  }
+    payment_collection_id: payment_collection.id,
+  },
 },
 {
   [SUBSCRIPTION_MODULE]: {
-    subscription_id: subscription.id
+    subscription_id: subscription.id,
   },
   [Modules.ORDER]: {
-    order_id: order.id
-  }
+    order_id: order.id,
+  },
 })
 ```
 
@@ -1645,7 +1645,7 @@ Before creating the seventh step, add in `src/modules/subscription/service.ts` t
 
 ```ts title="src/modules/subscription/service.ts"
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   // ...
   async recordNewSubscriptionOrder(id: string): Promise<SubscriptionData[]> {
@@ -1660,8 +1660,8 @@ class SubscriptionModuleService extends MedusaService({
         last_order_date: orderDate,
         expiration_date: subscription.expiration_date,
         interval: subscription.interval,
-        period: subscription.period
-      })
+        period: subscription.period,
+      }),
     })
   }
 }
@@ -1680,10 +1680,10 @@ export const updateSubscriptionStepHighlights = [
 ```ts title="src/workflows/create-subscription-order/steps/update-subscription.ts" highlights={updateSubscriptionStepHighlights} collapsibleLines="1-9" expandMoreLabel="Show Imports"
 import { 
   createStep, 
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
-  SUBSCRIPTION_MODULE
+  SUBSCRIPTION_MODULE,
 } from "../../../modules/subscription"
 import SubscriptionModuleService from "../../../modules/subscription/service"
 
@@ -1710,13 +1710,13 @@ const updateSubscriptionStep = createStep(
       )
 
     return new StepResponse({
-      subscription
+      subscription,
     }, {
-      prev_data: prevSubscriptionData
+      prev_data: prevSubscriptionData,
     })
   },
   async ({ 
-    prev_data
+    prev_data,
   }, { container }) => {
     // TODO add compensation
   }
@@ -1767,19 +1767,19 @@ import {
   useRemoteQueryStep,
   createPaymentSessionsWorkflow,
   createRemoteLinkStep,
-  capturePaymentStep
+  capturePaymentStep,
 } from "@medusajs/core-flows"
 import { 
-  CartWorkflowDTO
+  CartWorkflowDTO,
 } from "@medusajs/types"
 import { 
-  SubscriptionData
+  SubscriptionData,
 } from "../../modules/subscription/types"
 import { 
-  authorizePaymentSessionStep
+  authorizePaymentSessionStep,
 } from "@medusajs/core-flows/dist/payment/steps/authorize-payment-session"
 import { 
-  createPaymentCollectionsStep
+  createPaymentCollectionsStep,
 } from "@medusajs/core-flows/dist/definition/cart/steps/create-payment-collection"
 import createSubscriptionOrderStep from "./steps/create-subscription-order"
 import updateSubscriptionStep from "./steps/update-subscription"
@@ -1805,12 +1805,12 @@ const createSubscriptionOrderWorkflow = createWorkflow(
         "cart.shipping_methods.tax_lines.*",
         "cart.shipping_methods.adjustments.*",
         "cart.payment_collection.*",
-        "cart.payment_collection.payment_sessions.*"
+        "cart.payment_collection.payment_sessions.*",
       ],
       variables: {
         filters: {
-          id: [input.subscription.id]
-        }
+          id: [input.subscription.id],
+        },
       },
       list: false,
       throw_if_key_not_found: true,
@@ -1822,7 +1822,7 @@ const createSubscriptionOrderWorkflow = createWorkflow(
       region_id: cart.region_id,
       currency_code: cart.currency_code,
       amount: cart.payment_collection.amount,
-      metadata: cart.payment_collection.metadata
+      metadata: cart.payment_collection.metadata,
     }])[0]
 
     const paymentSession = createPaymentSessionsWorkflow.runAsStep({
@@ -1830,34 +1830,34 @@ const createSubscriptionOrderWorkflow = createWorkflow(
         payment_collection_id: payment_collection.id,
         provider_id: cart.payment_collection.payment_sessions[0].provider_id,
         data: cart.payment_collection.payment_sessions[0].data,
-        context: cart.payment_collection.payment_sessions[0].context
-      }
+        context: cart.payment_collection.payment_sessions[0].context,
+      },
     })
 
     const payment = authorizePaymentSessionStep({
       id: paymentSession.id,
-      context: paymentSession.context
+      context: paymentSession.context,
     })
 
     const { order, linkDefs } = createSubscriptionOrderStep({
       subscription: input.subscription,
       cart,
-      payment_collection
+      payment_collection,
     })
 
     createRemoteLinkStep(linkDefs)
 
     capturePaymentStep({
       payment_id: payment.id,
-      amount: payment.amount
+      amount: payment.amount,
     })
 
     updateSubscriptionStep({
-      subscription_id: input.subscription.id
+      subscription_id: input.subscription.id,
     })
 
     return {
-      order
+      order,
     }
   }
 )
@@ -1901,12 +1901,12 @@ export const createSubscriptionOrdersJob1Highlights = [
 ]
 
 ```ts title="src/jobs/create-subscription-orders.ts" highlights={createSubscriptionOrdersJob1Highlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
-import { MedusaContainer } from "@medusajs/types";
-import SubscriptionModuleService from "../modules/subscription/service";
-import { SUBSCRIPTION_MODULE } from "../modules/subscription";
-import moment from "moment";
-import createSubscriptionOrderWorkflow from "../workflows/create-subscription-order";
-import { SubscriptionStatus } from "../modules/subscription/types";
+import { MedusaContainer } from "@medusajs/types"
+import SubscriptionModuleService from "../modules/subscription/service"
+import { SUBSCRIPTION_MODULE } from "../modules/subscription"
+import moment from "moment"
+import createSubscriptionOrderWorkflow from "../workflows/create-subscription-order"
+import { SubscriptionStatus } from "../modules/subscription/types"
 
 export default async function createSubscriptionOrdersJob(
   container: MedusaContainer
@@ -1916,7 +1916,7 @@ export default async function createSubscriptionOrdersJob(
   const logger = container.resolve("logger")
 
   let page = 0
-  let limit = 20
+  const limit = 20
   let pagesCount = 0
 
   do {
@@ -1937,12 +1937,12 @@ export default async function createSubscriptionOrdersJob(
       .listAndCountSubscriptions({
         next_order_date: {
           $gte: beginningToday,
-          $lte: endToday
+          $lte: endToday,
         },
-        status: SubscriptionStatus.ACTIVE
+        status: SubscriptionStatus.ACTIVE,
       }, {
         skip: page * limit,
-        take: limit
+        take: limit,
       })    
 
       // TODO create orders for subscriptions
@@ -1958,7 +1958,7 @@ export default async function createSubscriptionOrdersJob(
 export const config = {
   name: "create-subscription-orders",
   schedule: "0 0 * * *", // Every day at midnight
-};
+}
 ```
 
 This creates a scheduled job that runs once a day.
@@ -1974,8 +1974,8 @@ await Promise.all(
       const  { result } = await createSubscriptionOrderWorkflow(container)
         .run({
           input: {
-            subscription
-          }
+            subscription,
+          },
         })
 
       logger.info(`Created new order ${
@@ -2007,7 +2007,7 @@ Before creating the scheduled job, add in `src/modules/subscription/service.ts` 
 
 ```ts title="src/modules/subscription/service.ts"
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   // ...
   async expireSubscription(id: string | string[]): Promise<SubscriptionData[]> {
@@ -2015,12 +2015,12 @@ class SubscriptionModuleService extends MedusaService({
 
     return await this.updateSubscriptions({
       selector: {
-        id: input
+        id: input,
       },
       data: {
         next_order_date: null,
-        status: SubscriptionStatus.EXPIRED
-      }
+        status: SubscriptionStatus.EXPIRED,
+      },
     })
   }
 }
@@ -2045,11 +2045,11 @@ export const expireSubscriptionOrdersJobHighlights = [
 ]
 
 ```ts title="src/jobs/expire-subscription-orders.ts" highlights={expireSubscriptionOrdersJobHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { MedusaContainer } from "@medusajs/types";
-import SubscriptionModuleService from "../modules/subscription/service";
-import { SUBSCRIPTION_MODULE } from "../modules/subscription";
-import moment from "moment";
-import { SubscriptionStatus } from "../modules/subscription/types";
+import { MedusaContainer } from "@medusajs/types"
+import SubscriptionModuleService from "../modules/subscription/service"
+import { SUBSCRIPTION_MODULE } from "../modules/subscription"
+import moment from "moment"
+import { SubscriptionStatus } from "../modules/subscription/types"
 
 export default async function expireSubscriptionOrdersJob(
   container: MedusaContainer
@@ -2059,7 +2059,7 @@ export default async function expireSubscriptionOrdersJob(
   const logger = container.resolve("logger")
 
   let page = 0
-  let limit = 20
+  const limit = 20
   let pagesCount = 0
 
   do {
@@ -2080,12 +2080,12 @@ export default async function expireSubscriptionOrdersJob(
       .listAndCountSubscriptions({
         expiration_date: {
           $gte: beginningToday,
-          $lte: endToday
+          $lte: endToday,
         },
-        status: SubscriptionStatus.ACTIVE
+        status: SubscriptionStatus.ACTIVE,
       }, {
         skip: page * limit,
-        take: limit
+        take: limit,
       })    
 
     const subscriptionIds = subscriptions.map((subscription) => subscription.id)
@@ -2105,7 +2105,7 @@ export default async function expireSubscriptionOrdersJob(
 export const config = {
   name: "expire-subscriptions",
   schedule: "0 0 * * *", // Every day at midnight
-};
+}
 ```
 
 This scheduled job runs once a day.
@@ -2130,8 +2130,8 @@ Create the file `src/api/store/customers/me/subscriptions/route.ts` with the fol
 ```ts title="src/api/store/customers/me/subscriptions/route.ts"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
@@ -2143,19 +2143,19 @@ export const GET = async (
   const query = remoteQueryObjectFromString({
     entryPoint: "customer",
     fields: [
-      "subscriptions.*"
+      "subscriptions.*",
     ],
     variables: {
       filters: {
-        id: [req.auth_context.actor_id]
-      }
-    }
+        id: [req.auth_context.actor_id],
+      },
+    },
   })
 
   const result = await remoteQuery(query)
 
   res.json({
-    subscriptions: result[0].subscriptions
+    subscriptions: result[0].subscriptions,
   })
 }
 ```
@@ -2170,7 +2170,7 @@ Before creating this API route, add in `src/modules/subscription/service.ts` the
 
 ```ts title="src/modules/subscription/service.ts"
 class SubscriptionModuleService extends MedusaService({
-  Subscription
+  Subscription,
 }) {
   // ...
     
@@ -2180,12 +2180,12 @@ class SubscriptionModuleService extends MedusaService({
 
     return await this.updateSubscriptions({
       selector: {
-        id: input
+        id: input,
       },
       data: {
         next_order_date: null,
-        status: SubscriptionStatus.CANCELED
-      }
+        status: SubscriptionStatus.CANCELED,
+      },
     })
   }
 }
@@ -2198,12 +2198,12 @@ Then, create the file `src/api/store/customers/me/subscriptions/[id]/route.ts` w
 ```ts title="src/api/store/customers/me/subscriptions/[id]/route.ts"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
-import SubscriptionModuleService from "../../../../../../modules/subscription/service";
+  MedusaResponse,
+} from "@medusajs/medusa"
+import SubscriptionModuleService from "../../../../../../modules/subscription/service"
 import { 
-  SUBSCRIPTION_MODULE
-} from "../../../../../../modules/subscription";
+  SUBSCRIPTION_MODULE,
+} from "../../../../../../modules/subscription"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -2217,7 +2217,7 @@ export const POST = async (
   )
 
   res.json({
-    subscription
+    subscription,
   })
 }
 ```
