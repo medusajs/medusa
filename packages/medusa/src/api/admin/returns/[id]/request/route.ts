@@ -17,9 +17,11 @@ export const POST = async (
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  await confirmReturnRequestWorkflow(req.scope).run({
+  const { result } = await confirmReturnRequestWorkflow(req.scope).run({
     input: { return_id: id },
   })
+
+  console.log("RESULT: ", result)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "return",
@@ -35,6 +37,7 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
+    order_preview: result,
     return: orderReturn,
   })
 }

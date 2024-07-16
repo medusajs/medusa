@@ -70,7 +70,11 @@ medusaIntegrationTestRunner({
               },
             })
 
-          expect(orderChangePreview.shipping_methods[1].actions).toEqual([
+          const shippingMethod = orderChangePreview.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
+
+          expect((shippingMethod as any).actions).toEqual([
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
@@ -95,7 +99,11 @@ medusaIntegrationTestRunner({
               },
             })
 
-          expect(orderChangePreview.shipping_methods[1].actions).toEqual([
+          const shippingMethod = orderChangePreview.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
+
+          expect((shippingMethod as any).actions).toEqual([
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
