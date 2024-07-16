@@ -5024,10 +5024,6 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CreateOrderLineItemDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderLineItemForOrderDTO/page.mdx",
-    "pathname": "/references/order/interfaces/order.CreateOrderLineItemForOrderDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderLineItemTaxLineDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderLineItemTaxLineDTO"
   },
@@ -8964,6 +8960,18 @@ export const filesMap = [
     "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.S3FileServiceOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnItem/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnItems/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnItems"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnShipping/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnShipping"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchPriceListPrice/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchPriceListPrice"
   },
@@ -8998,6 +9006,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminConfirmReturnRequest/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminConfirmReturnRequest"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCampaign/page.mdx",
@@ -9110,6 +9122,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGeoZone/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitiateReturnRequest/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInitiateReturnRequest"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItem/page.mdx",
@@ -9238,6 +9254,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReservationResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReservationResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReturnResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReturnResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx",
@@ -9450,6 +9470,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateTaxRate/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateTaxRate"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.BaseReturnItem/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.BaseReturnItem"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.CampaignResponse/page.mdx",

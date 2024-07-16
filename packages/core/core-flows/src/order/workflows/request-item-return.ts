@@ -1,5 +1,4 @@
 import {
-  OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
   OrderWorkflow,
@@ -13,6 +12,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { previewOrderChangeStep } from "../steps"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import {
   throwIfIsCancelled,
@@ -45,7 +45,7 @@ export const requestItemReturnWorkflow = createWorkflow(
   requestItemReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.RequestItemReturnWorkflowInput>
-  ): WorkflowData<OrderChangeActionDTO[]> {
+  ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -94,6 +94,8 @@ export const requestItemReturnWorkflow = createWorkflow(
       }
     )
 
-    return createOrderChangeActionsStep(orderChangeActionInput)
+    createOrderChangeActionsStep(orderChangeActionInput)
+
+    return previewOrderChangeStep(order.id)
   }
 )

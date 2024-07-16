@@ -25,7 +25,8 @@ medusaIntegrationTestRunner({
           })
           .filter(Boolean)[0]
 
-        expect(link.serviceName).toEqual("currencyCurrencyRegionRegionLink")
+        expect(link.serviceName).toEqual(linkDefinition.serviceName)
+        expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
           serviceName: "currencyCurrencyRegionRegionLink",
           isLink: true,
@@ -112,7 +113,8 @@ medusaIntegrationTestRunner({
           })
           .filter(Boolean)[0]
 
-        expect(link.serviceName).toEqual("currencyCurrencyRegionRegionLink")
+        expect(link.serviceName).toEqual(linkDefinition.serviceName)
+        expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
           serviceName: "currencyCurrencyRegionRegionLink",
           isLink: true,

@@ -9,8 +9,6 @@ export const defaultAdminReturnFields = [
   "refund_amount",
   "created_at",
   "updated_at",
-  "*items",
-  "*shipping_methods",
 ]
 
 export const retrieveTransformQueryConfig = {

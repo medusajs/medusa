@@ -4226,6 +4226,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4331,6 +4332,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4372,6 +4374,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4988,6 +4991,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5010,6 +5014,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5033,6 +5038,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": 1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5055,7 +5061,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
-    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5077,6 +5083,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
@@ -5120,6 +5127,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5293,6 +5301,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.15
     "@medusajs/utils": ^1.11.8
     "@mikro-orm/cli": 5.9.7
@@ -5343,6 +5352,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
