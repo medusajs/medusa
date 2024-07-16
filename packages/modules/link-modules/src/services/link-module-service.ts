@@ -207,7 +207,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (data as { id: unknown }[]).map(({ id }) => ({
-        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
+        name: this.entityName_ + "." + CommonEvents.ATTACHED,
         metadata: {
           source: this.serviceName_,
           action: CommonEvents.ATTACHED,
@@ -258,7 +258,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     const allData = Array.isArray(data) ? data : [data]
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       allData.map(({ id }) => ({
-        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
+        name: this.entityName_ + "." + CommonEvents.DETACHED,
         metadata: {
           source: this.serviceName_,
           action: CommonEvents.DETACHED,
@@ -307,7 +307,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (deletedEntities as { id: string }[]).map(({ id }) => ({
-        eventName: this.entityName_ + "." + CommonEvents.DETACHED,
+        name: this.entityName_ + "." + CommonEvents.DETACHED,
         metadata: {
           source: this.serviceName_,
           action: CommonEvents.DETACHED,
@@ -365,7 +365,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (restoredEntities as { id: string }[]).map(({ id }) => ({
-        eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
+        name: this.entityName_ + "." + CommonEvents.ATTACHED,
         metadata: {
           source: this.serviceName_,
           action: CommonEvents.ATTACHED,

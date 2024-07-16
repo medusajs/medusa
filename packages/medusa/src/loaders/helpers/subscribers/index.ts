@@ -1,7 +1,6 @@
 import {
   IEventBusModuleService,
   MedusaContainer,
-  MessageBody,
   Subscriber,
 } from "@medusajs/types"
 import { kebabCase, ModuleRegistrationName } from "@medusajs/utils"
@@ -193,10 +192,12 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      const subscriber = async (data: MessageBody<T>) => {
+      const subscriber = async (data: T) => {
         return await handler({
-          eventName: e,
-          data,
+          event: {
+            name: e,
+            data: data,
+          },
           container: this.container_,
           pluginOptions: this.pluginOptions_,
         })

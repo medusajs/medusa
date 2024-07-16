@@ -261,7 +261,7 @@ export function MedusaService<
 
           await this.eventBusModuleService_?.emit(
             primaryKeyValues_.map((primaryKeyValue) => ({
-              eventName: `${kebabCase(modelName)}.deleted`,
+              name: `${kebabCase(modelName)}.deleted`,
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
@@ -294,7 +294,7 @@ export function MedusaService<
 
           await this.eventBusModuleService_?.emit(
             softDeletedModels.map(({ id }) => ({
-              eventName: `${kebabCase(modelName)}.deleted`,
+              name: `${kebabCase(modelName)}.deleted`,
               metadata: { source: "", action: "", object: "" },
               data: { id },
             }))

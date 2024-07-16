@@ -3,7 +3,7 @@ import {
   EventBusTypes,
   Logger,
   Message,
-  MessageBody,
+  Event,
   Subscriber,
 } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
@@ -45,11 +45,11 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
     for (const eventData of normalizedEventsData) {
       const eventListenersCount = this.eventEmitter_.listenerCount(
-        eventData.eventName
+        eventData.name
       )
 
       this.logger_?.info(
-        `Processing ${eventData.eventName} which has ${eventListenersCount} subscribers`
+        `Processing ${eventData.name} which has ${eventListenersCount} subscribers`
       )
 
       if (eventListenersCount === 0) {
@@ -73,7 +73,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       await this.groupEvent(eventGroupId, eventData)
     } else {
       const { options, ...eventBody } = eventData
-      this.eventEmitter_.emit(eventData.eventName, eventBody)
+      this.eventEmitter_.emit(eventData.name, eventBody)
     }
   }
 
@@ -95,7 +95,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     for (const event of groupedEvents) {
       const { options, ...eventBody } = event
 
-      this.eventEmitter_.emit(event.eventName, eventBody)
+      this.eventEmitter_.emit(event.name, eventBody)
     }
 
     this.clearGroupedEvents(eventGroupId)
@@ -108,7 +108,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   subscribe(event: string | symbol, subscriber: Subscriber): this {
     const randId = ulid()
     this.storeSubscribers({ event, subscriberId: randId, subscriber })
-    this.eventEmitter_.on(event, async (data: MessageBody) => {
+    this.eventEmitter_.on(event, async (data: Event) => {
       try {
         await subscriber(data)
       } catch (e) {
