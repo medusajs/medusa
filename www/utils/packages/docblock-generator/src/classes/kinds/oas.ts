@@ -975,9 +975,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         })
       }
 
-      const requestTypeArguments = this.checker.getTypeArguments(requestType)
+      const requestTypeArguments =
+        requestType.typeArguments || requestType.aliasTypeArguments
 
-      if (requestTypeArguments.length === 1) {
+      if (requestTypeArguments?.length === 1) {
         const zodObjectTypeName = getCorrectZodTypeName({
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
