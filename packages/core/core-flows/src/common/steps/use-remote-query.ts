@@ -28,17 +28,14 @@ export const useRemoteQueryStep = createStep(
 
     const query = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
+    const isUsingEntryPoint = "entry_point" in data
+
     const queryObjectConfig = {
       fields,
       variables,
+      entryPoint: isUsingEntryPoint ? data.entry_point : undefined,
+      service: !isUsingEntryPoint ? data.service : undefined,
     } as Parameters<typeof remoteQueryObjectFromString>[0]
-
-    const isEntryPoint = "entry_point" in data
-    if (isEntryPoint) {
-      queryObjectConfig["entry_point"] = data.entry_point
-    } else {
-      queryObjectConfig["service"] = data.service
-    }
 
     const queryObject = remoteQueryObjectFromString(queryObjectConfig)
 
