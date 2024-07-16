@@ -6,7 +6,7 @@ interface StepInput {
   items: CreateOrderLineItemDTO[]
 }
 
-export const createOrderLineItemsStepId = "create-line-items-step"
+export const createOrderLineItemsStepId = "create-order-line-items-step"
 export const createOrderLineItemsStep = createStep(
   createOrderLineItemsStepId,
   async (input: StepInput, { container }) => {
