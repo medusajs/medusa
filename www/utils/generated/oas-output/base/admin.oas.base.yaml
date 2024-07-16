@@ -51,10 +51,13 @@ tags:
   - name: Orders
   - name: Payments
   - name: Price Lists
+  - name: Price Preferences
   - name: Product Categories
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductCategory"
   - name: Product Tags
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductTag"
   - name: Product Types
   - name: Products
     x-associatedSchema:

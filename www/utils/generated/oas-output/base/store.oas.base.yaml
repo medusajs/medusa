@@ -27,9 +27,6 @@ tags:
   - name: Product Categories
     x-associatedSchema:
       $ref: "#/components/schemas/StoreProductCategory"
-  - name: Products
-    x-associatedSchema:
-      $ref: "#/components/schemas/StoreProduct"
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce

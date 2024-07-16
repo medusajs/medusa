@@ -5161,6 +5161,15 @@ components:
           type: string
           title: internal_note
           description: The return's internal note.
+    AdminPostReturnsConfirmRequestReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsConfirmRequestReqSchema
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
     AdminPostReturnsReqSchema:
       type: object
       description: SUMMARY
@@ -5173,6 +5182,74 @@ components:
           type: string
           title: order_id
           description: The return's order id.
+        location_id:
+          type: string
+          title: location_id
+          description: The return's location id.
+        description:
+          type: string
+          title: description
+          description: The return's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
+        metadata:
+          type: object
+          description: The return's metadata.
+    AdminPostReturnsRequestItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsRequestItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The return's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - id
+              - quantity
+            properties:
+              id:
+                type: string
+                title: id
+                description: The item's ID.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              description:
+                type: string
+                title: description
+                description: The item's description.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostReturnsShippingReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsShippingReqSchema
+      required:
+        - shipping_option_id
+      properties:
+        shipping_option_id:
+          type: string
+          title: shipping_option_id
+          description: The return's shipping option id.
+        custom_price:
+          type: number
+          title: custom_price
+          description: The return's custom price.
         description:
           type: string
           title: description

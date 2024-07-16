@@ -292,6 +292,12 @@ paths:
     $ref: paths/admin_returns_{id}_cancel.yaml
   /admin/returns/{id}/receive:
     $ref: paths/admin_returns_{id}_receive.yaml
+  /admin/returns/{id}/request:
+    $ref: paths/admin_returns_{id}_request.yaml
+  /admin/returns/{id}/request-items:
+    $ref: paths/admin_returns_{id}_request-items.yaml
+  /admin/returns/{id}/shipping-method:
+    $ref: paths/admin_returns_{id}_shipping-method.yaml
   /admin/sales-channels:
     $ref: paths/admin_sales-channels.yaml
   /admin/sales-channels/{id}:
