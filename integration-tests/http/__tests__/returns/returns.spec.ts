@@ -233,6 +233,38 @@ medusaIntegrationTestRunner({
           })
         )
 
+        const orderPreview = await api.get(
+          `/admin/orders/${order.id}/preview`,
+          adminHeaders
+        )
+
+        expect(orderPreview.data.order).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
+                quantity: 1,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
+              }),
+            ]),
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                name: "Return shipping",
+                amount: 1000,
+                subtotal: 1000,
+                total: 1000,
+              }),
+            ]),
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},
