@@ -193,9 +193,9 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      const subscriber = async (event: Event<T>) => {
+      const subscriber = async (data: T) => {
         return await handler({
-          event,
+          event: { name: e, ...data } as unknown as Event<T>,
           container: this.container_,
           pluginOptions: this.pluginOptions_,
         })
