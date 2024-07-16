@@ -1,4 +1,4 @@
-import { Job, Queue, Worker } from "bullmq"
+import { BaseJobOptions, Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 import { promiseAll } from "@medusajs/utils"
@@ -106,7 +106,8 @@ export default class JobSchedulerService {
    * @param data - the data to be sent with the event
    * @param schedule - the schedule expression
    * @param handler - the handler to call on the job
-   * @return void
+   * @param options - the create job options
+   * @return added job
    */
   async create<T>(
     eventName: string,
@@ -122,10 +123,22 @@ export default class JobSchedulerService {
       eventName,
       data,
     }
-    const repeatOpts = { repeat: { pattern: schedule } }
+
+    const baseJobOptions: BaseJobOptions = {
+      repeat: { pattern: schedule },
+      removeOnComplete: {
+        // keep completed jobs not older than 24 hours
+        age: 60 * 60 * 24,
+      },
+      removeOnFail: {
+        // keep failed jobs not older than 1 week and not more than 5000
+        count: 5000,
+        age: 60 * 60 * 24 * 7,
+      },
+    }
 
     if (options?.keepExisting) {
-      return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+      return await this.queue_.add(eventName, jobToCreate, baseJobOptions)
     }
 
     const existingJobs = (await this.queue_.getRepeatableJobs()) ?? []
@@ -136,6 +149,6 @@ export default class JobSchedulerService {
       await this.queue_.removeRepeatableByKey(existingJob.key)
     }
 
-    return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+    return await this.queue_.add(eventName, jobToCreate, baseJobOptions)
   }
 }
