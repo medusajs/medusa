@@ -11,8 +11,14 @@ export const defaultAdminReturnFields = [
   "updated_at",
 ]
 
+export const defaultAdminDetailsReturnFields = [
+  ...defaultAdminReturnFields,
+  "items.*",
+  "items.reason.*",
+]
+
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminReturnFields,
+  defaultFields: defaultAdminDetailsReturnFields,
   isList: false,
 }
 

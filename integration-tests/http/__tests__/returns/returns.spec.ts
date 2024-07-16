@@ -13,10 +13,23 @@ medusaIntegrationTestRunner({
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
+    let returnReason
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      returnReason = (
+        await api.post(
+          "/admin/return-reasons",
+          {
+            value: "return-reason-test",
+            label: "Test return reason",
+            description: "This is the reason description!!!",
+          },
+          adminHeaders
+        )
+      ).data.return_reason
 
       const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
@@ -209,6 +222,7 @@ medusaIntegrationTestRunner({
               {
                 id: item.id,
                 quantity: 2,
+                reason_id: returnReason.id,
               },
             ],
           },
@@ -293,6 +307,7 @@ medusaIntegrationTestRunner({
           {
             quantity: 2,
             internal_note: "Test internal note",
+            reason_id: returnReason.id,
           },
           adminHeaders
         )
@@ -439,6 +454,21 @@ medusaIntegrationTestRunner({
           `/admin/returns/${returnId}/request`,
           {},
           adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            items: [
+              expect.objectContaining({
+                reason: expect.objectContaining({
+                  id: returnReason.id,
+                  value: "return-reason-test",
+                  label: "Test return reason",
+                  description: "This is the reason description!!!",
+                }),
+              }),
+            ],
+          })
         )
 
         expect(result.data.order_preview).toEqual(
