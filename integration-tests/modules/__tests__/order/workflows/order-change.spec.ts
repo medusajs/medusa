@@ -184,7 +184,7 @@ medusaIntegrationTestRunner({
 
         it("should successfully delete an order change", async () => {
           await deleteOrderChangeWorkflow(container).run({
-            input: { id: orderChange.id },
+            input: { ids: orderChange.id },
           })
 
           const orderChange2 = await service.retrieveOrderChange(

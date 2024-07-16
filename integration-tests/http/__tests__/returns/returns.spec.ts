@@ -268,6 +268,26 @@ medusaIntegrationTestRunner({
           })
         )
 
+        expect(result.data.order.shipping_methods).toHaveLength(2)
+
+        // remove shipping method
+        const action_id = result.data.order.shipping_methods[1].actions[0].id
+        result = await api.delete(
+          `/admin/returns/${returnId}/shipping-method/${action_id}`,
+          adminHeaders
+        )
+
+        expect(result.data.order_preview.shipping_methods).toHaveLength(1)
+
+        // recreate shipping
+        result = await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},

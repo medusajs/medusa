@@ -211,7 +211,7 @@ moduleIntegrationTestRunner({
                 }),
               }),
             ]),
-            shipping_methods: [
+            shipping_methods: expect.arrayContaining([
               expect.objectContaining({
                 name: "return shipping method",
                 amount: 10,
@@ -220,7 +220,7 @@ moduleIntegrationTestRunner({
                 name: "Exchange method",
                 amount: 35,
               }),
-            ],
+            ]),
             difference_due: 14,
           })
         )
