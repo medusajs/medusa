@@ -30,7 +30,10 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { useAddReturnItem } from "../../../../../hooks/api/returns"
+import {
+  useAddReturnItem,
+  useAddReturnShipping,
+} from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
 
@@ -77,6 +80,9 @@ export const ReturnCreateForm = ({
    * MUTATIONS
    */
   const { mutateAsync: confirmReturnRequest } = {} // useAConfirmReturnRequest()
+  const { mutateAsync: addReturnShipping } = useAddReturnShipping(
+    activeReturn.id
+  )
   const { mutateAsync: addReturnItem } = useAddReturnItem(
     activeReturn.id,
     order.id
@@ -144,6 +150,11 @@ export const ReturnCreateForm = ({
       }
     })
   }, [preview.items])
+
+  useEffect(() => {
+    const activeShippingOption = preview.shipping_methods[0]?.shipping_option_id
+    form.setValue("option_id", activeShippingOption)
+  }, [preview.shipping_methods])
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
@@ -407,6 +418,7 @@ export const ReturnCreateForm = ({
                               value={value}
                               onChange={(v) => {
                                 onChange(v)
+                                addReturnShipping({ shipping_option_id: v })
                               }}
                               {...field}
                               options={(shipping_options ?? [])
