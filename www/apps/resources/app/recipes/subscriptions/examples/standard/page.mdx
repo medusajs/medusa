@@ -1491,9 +1491,9 @@ Create the file `src/workflows/create-subscription-order/steps/create-subscripti
 
 export const createSubscriptionOrderStep1Highlights = [
   ["22", "getOrderData", "Format the order's input data from the cart."],
-  ["31", "linkDefs", "An array of links to be created."],
-  ["33", "createOrdersWorkflow", "Use Medusa's workflow to create the order."],
-  ["44", "order", "Pass the order to the compensation function."]
+  ["32", "linkDefs", "An array of links to be created."],
+  ["34", "createOrdersWorkflow", "Use Medusa's workflow to create the order."],
+  ["57", "order", "Pass the order to the compensation function."]
 ]
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts" highlights={createSubscriptionOrderStep1Highlights} collapsibleLines="1-15" expandMoreLabel="Show Imports"
@@ -1526,12 +1526,15 @@ const createSubscriptionOrderStep = createStep(
   "create-subscription-order",
   async ({ 
     subscription, cart, payment_collection,
-  }: StepInput, { container }) => {
+  }: StepInput, 
+  { container, ...sharedContext }) => {
     const linkDefs: LinkDefinition[] = []
 
     const { result: order } = await createOrdersWorkflow(container)
       .run({
         input: getOrderData(cart),
+        context: sharedContext,
+        container
       })
 
     // TODO add links to linkDefs
