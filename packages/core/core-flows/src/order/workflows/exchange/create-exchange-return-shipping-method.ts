@@ -6,18 +6,18 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
-import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
+import { useRemoteQueryStep } from "../../../common"
+import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
+import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"
 import {
   throwIfOrderChangeIsNotActive,
   throwIfOrderIsCancelled,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "validate-create-exchange-return-shipping-method",

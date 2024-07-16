@@ -26,8 +26,8 @@ medusaIntegrationTestRunner({
         items: [
           {
             title: "Custom Item 2",
-            quantity: 1,
-            unit_price: 50,
+            quantity: 2,
+            unit_price: 25,
           },
         ],
         sales_channel_id: "test",
@@ -152,7 +152,7 @@ medusaIntegrationTestRunner({
           items: [
             {
               id: item.id,
-              quantity: 1,
+              quantity: 2,
             },
           ],
         },
@@ -208,7 +208,7 @@ medusaIntegrationTestRunner({
             items: [
               {
                 id: item.id,
-                quantity: 1,
+                quantity: 2,
               },
             ],
           },
@@ -222,14 +222,15 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
                 return_requested_total: 50,
                 detail: expect.objectContaining({
-                  return_requested_quantity: 1,
+                  quantity: 2,
+                  return_requested_quantity: 2,
                 }),
               }),
             ]),
@@ -284,6 +285,32 @@ medusaIntegrationTestRunner({
           })
         )
 
+        // updated the requested quantitty
+        const updateReturnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items/${updateReturnItemActionId}`,
+          {
+            quantity: 2,
+            internal_note: "Test internal note",
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                detail: expect.objectContaining({
+                  quantity: 2,
+                  return_requested_quantity: 2,
+                }),
+              }),
+            ]),
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/shipping-method`,
           {
@@ -299,12 +326,20 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
                 return_requested_total: 50,
+                actions: expect.arrayContaining([
+                  expect.objectContaining({
+                    details: expect.objectContaining({
+                      quantity: 2,
+                    }),
+                    internal_note: "Test internal note",
+                  }),
+                ]),
               }),
             ]),
             shipping_methods: expect.arrayContaining([
@@ -331,8 +366,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -372,6 +407,34 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        // updates the shipping method price
+        const updateShippingActionId =
+          result.data.order_preview.shipping_methods[1].actions[0].id
+        result = await api.post(
+          `/admin/returns/${returnId}/shipping-method/${updateShippingActionId}`,
+          {
+            custom_price: 1002,
+            internal_note: "cx agent note",
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview.shipping_methods).toHaveLength(2)
+        expect(result.data.order_preview.shipping_methods[1]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            name: "Return shipping",
+            amount: 1002,
+            subtotal: 1002,
+            total: 1002,
+            actions: [
+              expect.objectContaining({
+                internal_note: "cx agent note",
+              }),
+            ],
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},
@@ -385,8 +448,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -397,9 +460,9 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 name: "Return shipping",
-                amount: 1000,
-                subtotal: 1000,
-                total: 1000,
+                amount: 1002,
+                subtotal: 1002,
+                total: 1002,
               }),
             ]),
           })
@@ -418,8 +481,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -430,9 +493,9 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 name: "Return shipping",
-                amount: 1000,
-                subtotal: 1000,
-                total: 1000,
+                amount: 1002,
+                subtotal: 1002,
+                total: 1002,
               }),
             ]),
           })

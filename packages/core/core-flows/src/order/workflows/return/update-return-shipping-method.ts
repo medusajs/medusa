@@ -1,6 +1,7 @@
 import {
   OrderChangeActionDTO,
   OrderChangeDTO,
+  OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -11,17 +12,19 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { deleteOrderShippingMethods } from "../steps"
-import { deleteOrderChangeActionsStep } from "../steps/delete-order-change-actions"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
+import { useRemoteQueryStep } from "../../../common"
+import {
+  updateOrderChangeActionsStep,
+  updateOrderShippingMethodsStep,
+} from "../../steps"
+import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "validate-remove-return-shipping-method",
+  "validate-update-return-shipping-method",
   async function ({
     orderChange,
     orderReturn,
@@ -34,7 +37,7 @@ const validationStep = createStep(
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
 
-    const associatedAction = orderChange.actions?.find(
+    const associatedAction = (orderChange.actions ?? []).find(
       (a) => a.id === input.action_id
     ) as OrderChangeActionDTO
 
@@ -50,11 +53,13 @@ const validationStep = createStep(
   }
 )
 
-export const removeReturnShippingMethodWorkflowId =
-  "remove-return-shipping-method"
-export const removeReturnShippingMethodWorkflow = createWorkflow(
-  removeReturnShippingMethodWorkflowId,
-  function (input: { return_id: string; action_id: string }): WorkflowData {
+export const updateReturnShippingMethodWorkflowId =
+  "update-return-shipping-method"
+export const updateReturnShippingMethodWorkflow = createWorkflow(
+  updateReturnShippingMethodWorkflowId,
+  function (
+    input: WorkflowData<OrderWorkflow.UpdateReturnShippingMethodWorkflowInput>
+  ): WorkflowData {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -78,23 +83,36 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
 
     validationStep({ orderReturn, orderChange, input })
 
-    const dataToRemove = transform(
+    const updateData = transform(
       { orderChange, input },
-      ({ orderChange, input }) => {
-        const associatedAction = orderChange.actions?.find(
+      ({ input, orderChange }) => {
+        const originalAction = (orderChange.actions ?? []).find(
           (a) => a.id === input.action_id
         ) as OrderChangeActionDTO
 
+        const data = input.data
+
+        const action = {
+          id: originalAction.id,
+          internal_note: data.internal_note,
+        }
+
+        const shippingMethod = {
+          id: originalAction.reference_id,
+          amount: data.custom_price,
+          metadata: data.metadata,
+        }
+
         return {
-          actionId: associatedAction.id,
-          shippingMethodId: associatedAction.reference_id,
+          action,
+          shippingMethod,
         }
       }
     )
 
     parallelize(
-      deleteOrderChangeActionsStep({ ids: [dataToRemove.actionId] }),
-      deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
+      updateOrderChangeActionsStep([updateData.action]),
+      updateOrderShippingMethodsStep([updateData.shippingMethod!])
     )
 
     return previewOrderChangeStep(orderReturn.order_id)

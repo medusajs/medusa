@@ -326,7 +326,6 @@ export interface CreateOrderChangeActionDTO {
 export interface UpdateOrderChangeActionDTO {
   id: string
   internal_note?: string | null
-  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER TRANSACTION START */
