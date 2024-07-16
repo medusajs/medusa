@@ -67,7 +67,7 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["DELETE"],
-    matcher: "/admin/returns/:id/shipping-method/:action_od",
+    matcher: "/admin/returns/:id/shipping-method/:action_id",
     middlewares: [
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
