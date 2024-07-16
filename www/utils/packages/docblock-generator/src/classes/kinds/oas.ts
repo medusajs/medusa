@@ -49,6 +49,12 @@ class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
+  readonly REQUEST_TYPE_NAMES = [
+    "MedusaRequest",
+    "RequestWithContext",
+    "AuthenticatedMedusaRequest",
+  ]
+  readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -82,7 +88,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
   /**
    * Check whether the generator can be used for the specified node. The node must be a function that has
-   * two parameters of types `MedusaRequest` and `MedusaResponse` respectively.
+   * two parameters of types in {@link REQUEST_TYPE_NAMES} and {@link RESPONSE_TYPE_NAMES}
    *
    * @param node - The node to check.
    * @returns Whether the generator can be used for the specified node.
@@ -100,25 +106,18 @@ class OasKindGenerator extends FunctionKindGenerator {
       ? node
       : this.extractFunctionNode(node as VariableNode)
 
-    if (!functionNode) {
+    if (!functionNode || functionNode.parameters.length !== 2) {
       return false
     }
 
-    // function must have 2 parameters, first parameter of type `MedusaRequest`
-    // and the second of type `MedusaResponse`
-    return (
-      (functionNode.parameters.length === 2 &&
-        (functionNode.parameters[0].type
-          ?.getText()
-          .startsWith("MedusaRequest") ||
-          functionNode.parameters[0].type
-            ?.getText()
-            .startsWith("AuthenticatedMedusaRequest")) &&
-        functionNode.parameters[1].type
-          ?.getText()
-          .startsWith("MedusaResponse")) ||
-      false
+    const hasCorrectRequestType = this.REQUEST_TYPE_NAMES.some(
+      (name) => functionNode.parameters[0].type?.getText().startsWith(name)
     )
+    const hasCorrectResponseType = this.RESPONSE_TYPE_NAMES.some(
+      (name) => functionNode.parameters[1].type?.getText().startsWith(name)
+    )
+
+    return hasCorrectRequestType && hasCorrectResponseType
   }
 
   /**
