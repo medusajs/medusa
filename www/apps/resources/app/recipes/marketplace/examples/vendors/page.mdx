@@ -236,11 +236,15 @@ In this step, you’ll create the workflow used to create a vendor admin.
 The workflow’s steps are:
 
 1. Create the vendor admin using the Marketplace Module’s main service.
-2. Create a `vendor` [actor type](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) to authenticate the vendor admin using the Auth Module.
+2. Create a `vendor` [actor type](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) to authenticate the vendor admin using the Auth Module. Medusa provides a step to perform this.
 
 First, create the file `src/workflows/marketplace/create-vendor-admin/steps/create-vendor-admin.ts` with the following content:
 
-```ts title="src/workflows/marketplace/create-vendor-admin/steps/create-vendor-admin.ts"
+export const createVendorAdminStepHighlights = [
+  ["24", "vendorAdmin", "Pass the created vendor admin to the compensation function."]
+]
+
+```ts title="src/workflows/marketplace/create-vendor-admin/steps/create-vendor-admin.ts" highlights={createVendorAdminStepHighlights} collapsibleLines="1-8" expandMoreLabel="Show Imports"
 import { 
   createStep,
   StepResponse,
@@ -262,7 +266,16 @@ const createVendorAdminStep = createStep(
       adminData
     )
 
-    return new StepResponse(vendorAdmin)
+    return new StepResponse(
+      vendorAdmin,
+      vendorAdmin
+    )
+  },
+  async (vendorAdmin, { container }) => {
+    const marketplaceModuleService: MarketplaceModuleService = 
+      container.resolve(MARKETPLACE_MODULE)
+
+    marketplaceModuleService.deleteVendorAdmins(vendorAdmin.id)
   }
 )
 
@@ -271,10 +284,13 @@ export default createVendorAdminStep
 
 This is the first step that creates the vendor admin and returns it.
 
+In the compensation function, which runs if an error occurs in the workflow, it removes the admin.
+
 Then, create the workflow at `src/workflows/marketplace/create-vendor-admin/index.ts` with the following content:
 
 export const vendorAdminWorkflowHighlights = [
-  ["33", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
+  ["29", "createVendorAdminStep", "Create the vendor admin."],
+  ["33", "setAuthAppMetadataStep", "Create the `vendor` actor type."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-admin/index.ts" highlights={vendorAdminWorkflowHighlights}
@@ -323,15 +339,19 @@ const createVendorAdminWorkflow = createWorkflow<
 export default createVendorAdminWorkflow
 ```
 
-This runs the `createVendorAdminStep`, then the `setAuthAppMetadataStep` imported from `@medusajs/core-flows`, which creates the `vendor` actor type.
+In this workflow, you run the following steps:
 
-The workflow returns the created vendor admin.
+1. `createVendorAdminStep` to create the vendor admin.
+2. `setAuthAppMetadataStep` to create the `vendor` actor type. This step is provided by Medusa in the `@medusajs/core-flows` package.
+
+You return the created vendor admin.
 
 ### Further Read
 
 - [How to Create a Workflow](!docs!/basics/workflows)
 - [What is an Actor Type](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx)
 - [How to Create an Actor Type](../../../../commerce-modules/auth/create-actor-type/page.mdx)
+- [What is a Compensation Function](!docs!/advanced-development/workflows/compensation-function)
 
 ---
 
@@ -766,96 +786,23 @@ In this step, you’ll create a workflow that’s executed when the customer pla
 
 ```mermaid
 graph TD
-  retrieveCartStep --> createParentOrderStep
-  createParentOrderStep --> groupVendorItemsStep
+  retrieveCartStep["Retrieve Cart (useRemoteQueryStep from Medusa)"] --> completeCartWorkflow["completeCartWorkflow (Medusa)"]
+  completeCartWorkflow["completeCartWorkflow (Medusa)"] --> groupVendorItemsStep
   groupVendorItemsStep --> createVendorOrdersStep
+  createVendorOrdersStep --> createRemoteLinkStep["Create Links (createRemoteLinkStep from Medusa)"]
 ```
 
-1. Retrieve the customer’s cart using its ID.
-2. Create a parent order for the cart and its items.
+1. Retrieve the cart using its ID. Medusa provides a `useRemoteQueryStep` in the `@medusajs/core-flows` package that you can use.
+2. Create a parent order for the cart and its items. Medusa also has a `completeCartWorkflow` in the `@medusajs/core-flows` package that you can use as a step.
 3. Group the cart items by their product’s associated vendor.
-4. For each vendor, create a child order with the cart items of their products.
+4. For each vendor, create a child order with the cart items of their products, and return the orders with the links to be created.
+5. Create the links created by the previous step. Medusa provides a `createRemoteLinkStep` in the `@medusajs/core-flows` package that you can use.
 
-### retrieveCartStep
-
-Start by creating the first step in the file `src/workflows/marketplace/create-vendor-orders/steps/retrieve-cart.ts`:
-
-```ts title="src/workflows/marketplace/create-vendor-orders/steps/retrieve-cart.ts"
-import { 
-  createStep,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/utils"
-import { ICartModuleService } from "@medusajs/types"
-
-type StepInput = {
-  cart_id: string
-}
-
-const retrieveCartStep = createStep(
-  "retrieve-cart",
-  async ({ cart_id }: StepInput, { container }) => {
-    const cartModuleService: ICartModuleService = container
-      .resolve(ModuleRegistrationName.CART)
-
-    const cart = await cartModuleService.retrieveCart(cart_id, {
-      relations: ["items"],
-    })
-
-    return new StepResponse({
-      cart,
-    })
-  }
-)
-
-export default retrieveCartStep 
-```
-
-This step retrieves the cart by its ID using the Cart Module’s main service and returns it.
-
-### createParentOrderStep
-
-Then, create the second step in the file `src/workflows/marketplace/create-vendor-orders/steps/create-parent-order.ts`:
-
-export const parentOrderHighlights = [
-  ["14", "completeCartWorkflow", "Use Medusa's workflow to complete the cart and create an order."]
-]
-
-```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-parent-order.ts" highlights={parentOrderHighlights}
-import { 
-  createStep,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
-import { completeCartWorkflow } from "@medusajs/core-flows"
-
-type StepInput = {
-  cart_id: string
-}
-
-const createParentOrderStep = createStep(
-  "create-parent-order",
-  async ({ cart_id }: StepInput, { container }) => {
-    const { result } = await completeCartWorkflow(container)
-      .run({
-        input: {
-          id: cart_id,
-        },
-      })
-
-    return new StepResponse({
-      order: result,
-    })
-  }
-)
-
-export default createParentOrderStep
-```
-
-This step uses the `completeCartWorkflow` implemented by Medusa to create a parent order and return it.
+You'll implement the third and fourth steps.
 
 ### groupVendorItemsStep
 
-Next, create the third step in the file `src/workflows/marketplace/create-vendor-orders/steps/group-vendor-items.ts`:
+Create the third step in the file `src/workflows/marketplace/create-vendor-orders/steps/group-vendor-items.ts`:
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/group-vendor-items.ts"
 import { 
@@ -913,13 +860,14 @@ This step groups the items by the vendor associated with the product into an obj
 
 ### createVendorOrdersStep
 
-Lastly, create the fourth step in the file `src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts`:
+Next, create the fourth step in the file `src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts`:
 
 export const vendorOrder1Highlights = [
-  ["28", "", "If the `vendorItems` object is empty, return."],
+  ["41", "linkDefs", "An array of links to be created."],
+  ["58", "created_orders", "Pass the created orders to the compensation function."]
 ]
 
-```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" collapsibleLines="1-15" expandMoreLabel="Show Imports" highlights={vendorOrder1Highlights}
+```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder1Highlights} collapsibleLines="1-18" expandMoreLabel="Show Imports"
 import { 
   createStep,
   StepResponse,
@@ -929,7 +877,11 @@ import {
   OrderDTO,
 } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
-import { createOrdersWorkflow } from "@medusajs/core-flows"
+import { 
+  createOrdersWorkflow,
+  cancelOrderWorkflow,
+} from "@medusajs/core-flows"
+import { LinkDefinition } from "@medusajs/modules-sdk"
 import MarketplaceModuleService from "../../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../../modules/marketplace"
 import { VendorData } from "../../../../modules/marketplace/types"
@@ -943,150 +895,201 @@ type StepInput = {
   vendorsItems: Record<string, CartLineItemDTO[]>
 }
 
+function prepareOrderData(
+  items: CartLineItemDTO[], 
+  parentOrder: OrderDTO
+) {
+  // TODO format order data
+}
+
 const createVendorOrdersStep = createStep(
   "create-vendor-orders",
-  async ({ vendorsItems, parentOrder }: StepInput, { container }) => {
+  async (
+    { vendorsItems, parentOrder }: StepInput, 
+    { container, context }
+  ) => {
+    const linkDefs: LinkDefinition[] = []
+    const createdOrders: VendorOrder[] = []
     const vendorIds = Object.keys(vendorsItems)
-    if (vendorIds.length === 0) {
-      return new StepResponse({
-        orders: [],
-      })
-    }
-    const remoteLink = container.resolve("remoteLink")
-    const marketplaceModuleService: MarketplaceModuleService = 
-      container.resolve(MARKETPLACE_MODULE)
-    const isOnlyOneVendorOrder = vendorIds.length === 1
+    
+    const marketplaceModuleService =
+      container.resolve<MarketplaceModuleService>(MARKETPLACE_MODULE)
 
-    // TODO handle creating child orders
+    const vendors = await marketplaceModuleService.listVendors({
+      id: vendorIds,
+    })
+
+    // TODO create child orders
+
+    return new StepResponse({ 
+      orders: createdOrders, 
+      linkDefs,
+    }, {
+      created_orders: createdOrders,
+    })
+  },
+  async ({ created_orders }, { container, context }) => {  
+    // TODO add compensation function
   }
 )
 
 export default createVendorOrdersStep
 ```
 
-This creates a step that receives the grouped vendor items and the parent order. For now, it only checks if there are any items in `vendorItems` before returning.
+This creates a step that receives the grouped vendor items and the parent order. For now, it initializes variables and retrieves vendors by their IDs.
 
-Replace the `TODO` with the following:
+The step returns the created orders and the links to be created. It also passes the created orders to the compensation function
+
+Replace the `TODO` in the step with the following:
 
 export const vendorOrder2Highlights = [
-  ["1", "isOnlyOneVendorOrder", "If the order has items for one vendor only, the parent order is linked to the vendor."],
+  ["1", "", "If the order has items for one vendor only, the parent order is linked to the vendor."],
+  ["20", "created_orders", "Since the order isn't a child order, it's not passed to the compensation function for cancelation."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder2Highlights}
-if (isOnlyOneVendorOrder) {
-  const vendorId = vendorIds[0]
-  const vendor = await marketplaceModuleService.retrieveVendor(
-    vendorId
-  )
-  // link the parent order to the vendor instead of creating child orders
-  await remoteLink.create({
+if (vendorIds.length === 1) {
+  linkDefs.push({
     [MARKETPLACE_MODULE]: {
-      vendor_id: vendorId,
+      vendor_id: vendors[0].id,
     },
     [Modules.ORDER]: {
       order_id: parentOrder.id,
     },
   })
 
+  createdOrders.push({
+    ...parentOrder,
+    vendor: vendors[0],
+  })
+  
   return new StepResponse({
-    orders: [
-      {
-        ...parentOrder,
-        vendor,
-      },
-    ],
+    orders:  createdOrders,
+    linkDefs,
+  }, {
+    created_orders: [],
   })
 }
 
 // TODO create multiple child orders
 ```
 
-In the above snippet, if there's only one vendor in the group, the parent order is returned instead of creating child orders.
+In the above snippet, if there's only one vendor in the group, the parent order is added to the `linkDefs` array and it's returned in the response.
 
-Replace the new `TODO` with the following snippet:
+<Note title="Tip">
+
+Since the parent order isn't a child order, it's not passed to the compensation function as it should only handle child orders.
+
+</Note>
+
+Next, replace the new `TODO` with the following snippet:
 
 export const vendorOrder3Highlights = [
-  ["4", "map", "Loop over the vendor IDs and create a child order with only their items."],
-  ["15", "parent_order_id", "Set the ID of the parent order in the `metadata` property of the child order."],
-  ["52", "create", "Create a link between the vendor and the child order."]
+  ["3", "map", "Loop over the vendor IDs and create a child order with only their items."],
+  ["9", "prepareOrderData", "Format the order data and pass it as the workflow's input."],
+  ["17", "push", "Add a link between the vendor and the order to be created later."],
+  ["29", "cancelOrderWorkflow", "Cancel all created workflows if an error occurs while creating any of them."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder3Highlights}
-const createdOrders: VendorOrder[] = []
+try {
+  await Promise.all(
+    vendorIds.map(async (vendorId) => {
+      const items = vendorsItems[vendorId]
+      const vendor = vendors.find((v) => v.id === vendorId)!
 
-await Promise.all(
-  vendorIds.map(async (vendorId) => {
-    const items = vendorsItems[vendorId]
-    const vendor = await marketplaceModuleService.retrieveVendor(
-      vendorId
-    )
-    // create an child order
-    const { result: childOrder } = await createOrdersWorkflow(container)
-      .run({
-        input: {
-          items,
-          metadata: {
-            parent_order_id: parentOrder.id,
-          },
-          // use info from parent
-          region_id: parentOrder.region_id,
-          customer_id: parentOrder.customer_id,
-          sales_channel_id: parentOrder.sales_channel_id,
-          email: parentOrder.email,
-          currency_code: parentOrder.currency_code,
-          shipping_address_id: parentOrder.shipping_address?.id,
-          billing_address_id: parentOrder.billing_address?.id,
-          // A better solution would be to have shipping methods for each
-          // item/vendor. This requires changes in the storefront to commodate that
-          // and passing the item/vendor ID in the `data` property, for example.
-          // For simplicity here we just use the same shipping method.
-          shipping_methods: parentOrder.shipping_methods.map((shippingMethod) => ({
-            name: shippingMethod.name,
-            amount: shippingMethod.amount,
-            shipping_option_id: shippingMethod.shipping_option_id,
-            data: shippingMethod.data,
-            tax_lines: shippingMethod.tax_lines.map((taxLine) => ({
-              code: taxLine.code,
-              rate: taxLine.rate,
-              provider_id: taxLine.provider_id,
-              tax_rate_id: taxLine.tax_rate_id,
-              description: taxLine.description,
-            })),
-            adjustments: shippingMethod.adjustments.map((adjustment) => ({
-              code: adjustment.code,
-              amount: adjustment.amount,
-              description: adjustment.description,
-              promotion_id: adjustment.promotion_id,
-              provider_id: adjustment.provider_id,
-            })),
-          })),
+      const { result: childOrder } = await createOrdersWorkflow
+        .run({
+          input: prepareOrderData(items, parentOrder),
+          context,
+          container,
+        }) as unknown as { result: VendorOrder }
+
+      childOrder.vendor = vendor
+      createdOrders.push(childOrder)
+      
+      linkDefs.push({
+        [MARKETPLACE_MODULE]: {
+          vendor_id: vendor.id,
+        },
+        [Modules.ORDER]: {
+          order_id: childOrder.id,
         },
       })
-
-    await remoteLink.create({
-      [MARKETPLACE_MODULE]: {
-        vendor_id: vendorId,
-      },
-      [Modules.ORDER]: {
-        order_id: childOrder.id,
-      },
     })
-
-    createdOrders.push({
-      ...childOrder,
-      vendor,
+  )
+} catch (e) {
+  await Promise.all(createdOrders.map((createdOrder) => {
+    return cancelOrderWorkflow.run({
+      input: {
+        order_id: createdOrder.id,
+      },
+      context,
+      container,
     })
-  })
-)
+  }))
 
-return new StepResponse({
-  orders: createdOrders,
-})
+  throw e
+}
 ```
 
 In this snippet, you create multiple child orders for each vendor and link the orders to the vendors.
 
-The created orders are returned in the response.
+If an error occurs, the created orders in the `createdOrders` array are canceled using Medusa's `cancelOrderWorkflow` from the `@medusajs/core-flows` package.
+
+The order's data is formatted using the `prepareOrderData` function. Replace its definition with the following:
+
+export const vendorOrder4Highlights = [
+  ["8", "parent_order_id", "Set the ID of the parent order in the `metadata` property of the child order."],
+]
+
+```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts"
+function prepareOrderData(
+  items: CartLineItemDTO[], 
+  parentOrder: OrderDTO
+) {
+  return  {
+    items,
+    metadata: {
+      parent_order_id: parentOrder.id,
+    },
+    // use info from parent
+    region_id: parentOrder.region_id,
+    customer_id: parentOrder.customer_id,
+    sales_channel_id: parentOrder.sales_channel_id,
+    email: parentOrder.email,
+    currency_code: parentOrder.currency_code,
+    shipping_address_id: parentOrder.shipping_address?.id,
+    billing_address_id: parentOrder.billing_address?.id,
+    // A better solution would be to have shipping methods for each
+    // item/vendor. This requires changes in the storefront to commodate that
+    // and passing the item/vendor ID in the `data` property, for example.
+    // For simplicity here we just use the same shipping method.
+    shipping_methods: parentOrder.shipping_methods.map((shippingMethod) => ({
+      name: shippingMethod.name,
+      amount: shippingMethod.amount,
+      shipping_option_id: shippingMethod.shipping_option_id,
+      data: shippingMethod.data,
+      tax_lines: shippingMethod.tax_lines.map((taxLine) => ({
+        code: taxLine.code,
+        rate: taxLine.rate,
+        provider_id: taxLine.provider_id,
+        tax_rate_id: taxLine.tax_rate_id,
+        description: taxLine.description,
+      })),
+      adjustments: shippingMethod.adjustments.map((adjustment) => ({
+        code: adjustment.code,
+        amount: adjustment.amount,
+        description: adjustment.description,
+        promotion_id: adjustment.promotion_id,
+        provider_id: adjustment.provider_id,
+      })),
+    })),
+  }
+}
+```
+
+This formats the order's data using the items and parent order's details.
 
 <Note>
 
@@ -1094,74 +1097,99 @@ When creating the child orders, the shipping method of the parent is used as-is 
 
 </Note>
 
+Finally, replace the `TODO` in the compensation function with the following:
+
+```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts"
+await Promise.all(created_orders.map((createdOrder) => {
+  return cancelOrderWorkflow.run({
+    input: {
+      order_id: createdOrder.id,
+    },
+    context,
+    container,
+  })
+}))
+```
+
+The compensation function cancels all child orders received from the step. It uses the `cancelOrderWorkflow` that Medusa provides in the `@medusajs/core-flows` package.
+
 ### Create Workflow
 
 Finally, create the workflow at the file `src/workflows/marketplace/create-vendor-orders/index.ts`:
 
-```ts title="src/workflows/marketplace/create-vendor-orders/index.ts" collapsibleLines="1-7" expandMoreLabel="Show Imports"
-import { createWorkflow, transform } from "@medusajs/workflows-sdk"
-import { OrderDTO } from "@medusajs/types"
-import retrieveCartStep from "./steps/retrieve-cart"
+export const createVendorOrdersWorkflowHighlights = [
+  ["18", "useRemoteQueryStep", "Retrieve the cart's details."],
+  ["26", "completeCartWorkflow", "Create the parent order from the cart."],
+  ["32", "groupVendorItemsStep", "Group the items by their vendor."],
+  ["39", "createVendorOrdersStep", "Create child orders for each vendor"],
+  ["44", "createRemoteLinkStep", "Create the links returned by the previous step."]
+]
+
+```ts title="src/workflows/marketplace/create-vendor-orders/index.ts" collapsibleLines="1-10" expandMoreLabel="Show Imports"
+import { createWorkflow } from "@medusajs/workflows-sdk"
+import { 
+  useRemoteQueryStep,
+  createRemoteLinkStep,
+  completeCartWorkflow,
+} from "@medusajs/core-flows"
+import { CartDTO } from "@medusajs/types"
 import groupVendorItemsStep from "./steps/group-vendor-items"
-import createParentOrderStep from "./steps/create-parent-order"
-import createVendorOrdersStep, { VendorOrder } from "./steps/create-vendor-orders"
+import createVendorOrdersStep from "./steps/create-vendor-orders"
 
 type WorkflowInput = {
   cart_id: string
 }
 
-type WorkflowOutput = {
-  parent_order: OrderDTO
-  vendor_orders: VendorOrder[]
-}
-
-const createVendorOrdersWorkflow = createWorkflow<
-  WorkflowInput, WorkflowOutput
->(
+const createVendorOrdersWorkflow = createWorkflow(
   "create-vendor-order",
-  (input) => {
-    const { cart } = retrieveCartStep(input)
+  (input: WorkflowInput) => {
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: ["items.*"],
+      variables: { id: input.cart_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }) as CartDTO
 
-    const { order } = createParentOrderStep(input)
-
-    const { vendorsItems } = groupVendorItemsStep(
-      transform({
-        cart,
+    const order = completeCartWorkflow.runAsStep({
+      input: {
+        id: cart.id,
       },
-      (data) => data
-      )
-    )
-
-    const { orders } = createVendorOrdersStep(
-      transform({
-        order,
-        vendorsItems,
-      },
-      (data) => {
-        return {
-          parentOrder: data.order,
-          vendorsItems: data.vendorsItems,
-        }
-      }
-      )
-    )
-
-    return transform({
-      order,
-      orders,
-    },
-    (data) => ({
-      parent_order: data.order,
-      vendor_orders: data.orders,
     })
-    )
+
+    const { vendorsItems } = groupVendorItemsStep({
+      cart,
+    })
+
+    const { 
+      orders: vendorOrders, 
+      linkDefs,
+    } = createVendorOrdersStep({
+      parentOrder: order,
+      vendorsItems,
+    })
+
+    createRemoteLinkStep(linkDefs)
+
+    return {
+      parent_order: order,
+      vendor_orders: vendorOrders,
+    }
   }
 )
 
 export default createVendorOrdersWorkflow
 ```
 
-This workflow runs the steps and returns the parent and vendor orders.
+In the workflow, you run the following steps:
+
+1. `useRemoteQueryStep` to retrieve the cart's details.
+2. `completeCartWorkflow` to complete the cart and create a parent order.
+3. `groupVendorItemsStep` to group the order's items by their vendor.
+4. `createVendorOrdersStep` to create child orders for each vendor's items.
+5. `createRemoteLinkStep` to create the links returned by the previous step.
+
+You return the parent and vendor orders.
 
 ### Create API Route Executing the Workflow
 
