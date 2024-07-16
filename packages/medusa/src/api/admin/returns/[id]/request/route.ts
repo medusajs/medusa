@@ -21,8 +21,6 @@ export const POST = async (
     input: { return_id: id },
   })
 
-  console.log("RESULT: ", result)
-
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "return",
     variables: {
