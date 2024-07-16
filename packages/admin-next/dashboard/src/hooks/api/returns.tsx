@@ -6,6 +6,7 @@ import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
 
 export const useInitiateReturn = (
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
@@ -22,6 +23,9 @@ export const useInitiateReturn = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
       })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -30,6 +34,7 @@ export const useInitiateReturn = (
 
 export const useAddReturnItem = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
@@ -45,6 +50,9 @@ export const useAddReturnItem = (
       })
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },

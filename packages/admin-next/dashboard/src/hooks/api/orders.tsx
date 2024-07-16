@@ -9,14 +9,16 @@ import {
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { sdk } from "../../lib/client"
-import {
-  AdminCreateOrderShipment,
-  AdminOrderResponse,
-  HttpTypes,
-} from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 const ORDERS_QUERY_KEY = "orders" as const
-export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
+const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY)
+
+_orderKeys.preview = function (id: string) {
+  return [this.detail(id), "preview"]
+}
+
+export const ordersQueryKeys = _orderKeys
 
 export const useOrder = (
   id: string,
@@ -29,6 +31,22 @@ export const useOrder = (
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.retrieve(id, query),
     queryKey: ordersQueryKeys.detail(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useOrderPreview = (
+  id: string,
+  options?: Omit<
+    UseQueryOptions<any, Error, any, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.order.retrievePreview(id),
+    queryKey: ordersQueryKeys.preview(id),
     ...options,
   })
 

@@ -12,12 +12,7 @@ import {
 } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import {
-  AdminOrder,
-  AdminOrderLineItem,
-  InventoryLevelDTO,
-  ReturnDTO,
-} from "@medusajs/types"
+import { AdminOrder, InventoryLevelDTO, ReturnDTO } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 
 import {
@@ -82,7 +77,10 @@ export const ReturnCreateForm = ({
    * MUTATIONS
    */
   const { mutateAsync: confirmReturnRequest } = {} // useAConfirmReturnRequest()
-  const { mutateAsync: addReturnItem } = useAddReturnItem(activeReturn.id)
+  const { mutateAsync: addReturnItem } = useAddReturnItem(
+    activeReturn.id,
+    order.id
+  )
   // TODO: update return item
   // TODO: remove return item
 

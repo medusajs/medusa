@@ -23,6 +23,15 @@ export class Order {
     )
   }
 
+  async retrievePreview(id: string, headers?: ClientHeaders) {
+    return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
+      `/admin/orders/${id}/preview`,
+      {
+        headers,
+      }
+    )
+  }
+
   async list(
     queryParams?: FindParams & HttpTypes.AdminOrderFilters,
     headers?: ClientHeaders
