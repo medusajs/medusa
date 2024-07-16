@@ -4,7 +4,7 @@ import {
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -75,7 +75,11 @@ export const requestItemReturnWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: ["id", "status", "order_id", "return_id"],
       variables: {
-        filters: { order_id: orderReturn.order_id, return_id: orderReturn.id },
+        filters: {
+          order_id: orderReturn.order_id,
+          return_id: orderReturn.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
       },
       list: false,
     }).config({ name: "order-change-query" })

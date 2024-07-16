@@ -531,6 +531,53 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("should cancel a return request", async () => {
+        let result = await api.post(
+          "/admin/returns",
+          {
+            order_id: order.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const returnId = result.data.return.id
+
+        const item = order.items[0]
+        await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 2,
+                reason_id: returnReason.id,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
+        await api.delete(`/admin/returns/${returnId}/request`, adminHeaders)
+
+        result = await api
+          .post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(result.response.status).toEqual(404)
+        expect(result.response.data.message).toEqual(
+          `Return id not found: ${returnId}`
+        )
+      })
     })
   },
 })

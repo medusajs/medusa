@@ -4,7 +4,7 @@ import {
   OrderDTO,
   OrderWorkflow,
 } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -63,7 +63,13 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
       fields: ["id", "status"],
-      variables: { order_id: orderClaim.order_id },
+      variables: {
+        filters: {
+          order_id: orderClaim.order_id,
+          claim_id: orderClaim.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
+      },
       list: false,
     }).config({ name: "order-change-query" })
 

@@ -120,4 +120,9 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/returns/:id/request",
+    middlewares: [],
+  },
 ]
