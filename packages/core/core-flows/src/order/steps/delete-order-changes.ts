@@ -2,20 +2,20 @@ import { IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-export const deleteOrderChangeStepId = "delete-order-change"
-export const deleteOrderChangeStep = createStep(
-  deleteOrderChangeStepId,
-  async (data: { id: string }, { container }) => {
+export const deleteOrderChangesStepId = "delete-order-change"
+export const deleteOrderChangesStep = createStep(
+  deleteOrderChangesStepId,
+  async (data: { ids: string[] }, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )
 
-    const deleted = await service.softDeleteOrderChanges(data.id)
+    const deleted = await service.softDeleteOrderChanges(data.ids)
 
-    return new StepResponse(deleted, data.id)
+    return new StepResponse(deleted, data.ids)
   },
-  async (id, { container }) => {
-    if (!id) {
+  async (ids, { container }) => {
+    if (!ids) {
       return
     }
 
@@ -23,6 +23,6 @@ export const deleteOrderChangeStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.restoreOrderChanges(id)
+    await service.restoreOrderChanges(ids)
   }
 )

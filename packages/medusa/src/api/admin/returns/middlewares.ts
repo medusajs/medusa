@@ -66,6 +66,16 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/returns/:id/shipping-method/:action_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/returns/:id/request",
     middlewares: [
