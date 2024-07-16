@@ -12,9 +12,9 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
+import { previewOrderChangeStep } from "../steps"
 import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -45,7 +45,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     return_id: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowData {
+  }): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -93,14 +93,19 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     validationStep({ order, orderReturn, orderChange })
 
     const shippingMethodInput = transform(
-      { orderReturn, shippingOptions, orderChange },
+      {
+        orderReturn,
+        shippingOptions,
+        customPrice: input.custom_price,
+        orderChange,
+      },
       (data) => {
         const option = data.shippingOptions[0]
         const orderChange = data.orderChange
 
         return {
           shipping_option_id: option.id,
-          amount: option.calculated_price.calculated_amount,
+          amount: data.customPrice ?? option.calculated_price.calculated_amount,
           is_tax_inclusive:
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
@@ -141,8 +146,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         return {
           action: ChangeActionType.SHIPPING_ADD,
           reference: "order_shipping_method",
-          reference_id: createdMethod.id,
           order_change_id: orderChange.id,
+          reference_id: createdMethod.id,
           amount: methodPrice,
           order_id: order.id,
           return_id: orderReturn.id,
