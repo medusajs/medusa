@@ -18,10 +18,18 @@ type OrderEditItemProps = {
   currencyCode: string
   index: number
 
+  onRemove: () => void
+
   form: UseFormReturn<any>
 }
 
-function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
+function ReturnItem({
+  item,
+  currencyCode,
+  form,
+  onRemove,
+  index,
+}: OrderEditItemProps) {
   const { t } = useTranslation()
 
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
@@ -101,7 +109,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
                   },
                   {
                     label: t("actions.remove"),
-                    onClick: undefined, // TODO
+                    onClick: onRemove,
                     icon: <XCircle />,
                   },
                 ].filter(Boolean),

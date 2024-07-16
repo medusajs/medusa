@@ -60,6 +60,34 @@ export const useAddReturnItem = (
   })
 }
 
+export const useRemoveReturnItem = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminAddReturnItems
+  >
+) => {
+  return useMutation({
+    mutationFn: (actionId: string) =>
+      sdk.admin.return.removeReturnItem(id, actionId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useAddReturnShipping = (
   id: string,
   options?: UseMutationOptions<

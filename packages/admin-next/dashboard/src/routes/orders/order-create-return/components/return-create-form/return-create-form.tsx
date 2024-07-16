@@ -33,6 +33,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
   useAddReturnItem,
   useAddReturnShipping,
+  useRemoveReturnItem,
 } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
@@ -87,8 +88,11 @@ export const ReturnCreateForm = ({
     activeReturn.id,
     order.id
   )
+  const { mutateAsync: removeReturnItem } = useRemoveReturnItem(
+    activeReturn.id,
+    order.id
+  )
   // TODO: update return item
-  // TODO: remove return item
 
   /**
    * FORM
@@ -130,6 +134,13 @@ export const ReturnCreateForm = ({
 
     preview.items.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
+
+      /**
+       * THESE ITEMS ARE REMOVED FROM RETURN REQUEST
+       */
+      if (!i.detail.return_requested_quantity) {
+        return
+      }
 
       existingItemsMap[i.id] = true
 
@@ -354,6 +365,15 @@ export const ReturnCreateForm = ({
                 item={itemsMap.get(item.item_id)!}
                 currencyCode={order.currency_code}
                 form={form}
+                onRemove={() => {
+                  const actionId = preview.items
+                    .find((i) => i.id === item.item_id)
+                    ?.actions.find((a) => a.action === "RETURN_ITEM")?.id
+
+                  if (actionId) {
+                    removeReturnItem(actionId)
+                  }
+                }}
                 index={index}
               />
             ))}
