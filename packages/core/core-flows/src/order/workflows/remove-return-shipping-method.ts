@@ -69,6 +69,7 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       variables: {
         filters: {
           order_id: orderReturn.order_id,
+          return_id: orderReturn.id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },

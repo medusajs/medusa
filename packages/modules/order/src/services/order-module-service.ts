@@ -2089,7 +2089,7 @@ export default class OrderModuleService<
 
     if (Object.keys(addedShippingMethods).length > 0) {
       const addedShippingDetails = await this.listShippingMethods(
-        { id: Object.keys(addedShippingMethods), deleted_at: null },
+        { id: Object.keys(addedShippingMethods) },
         {
           relations: ["adjustments", "tax_lines"],
         },
