@@ -10,16 +10,17 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { deleteOrderChangeActionsStep, previewOrderChangeStep } from "../steps"
+import { previewOrderChangeStep, updateOrderChangeActionsStep } from "../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "remove-request-item-return-validation",
+  "update-request-item-return-validation",
   async function ({
     order,
     orderChange,
@@ -29,7 +30,7 @@ const validationStep = createStep(
     order: OrderDTO
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
-    input: OrderWorkflow.DeleteRequestItemReturnWorkflowInput
+    input: OrderWorkflow.UpdateRequestItemReturnWorkflowInput
   }) {
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
@@ -51,11 +52,11 @@ const validationStep = createStep(
   }
 )
 
-export const removeRequestItemReturnWorkflowId = "remove-request-item-return"
-export const removeRequestItemReturnWorkflow = createWorkflow(
-  removeRequestItemReturnWorkflowId,
+export const updateRequestItemReturnWorkflowId = "update-request-item-return"
+export const updateRequestItemReturnWorkflow = createWorkflow(
+  updateRequestItemReturnWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.DeleteRequestItemReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.UpdateRequestItemReturnWorkflowInput>
   ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
@@ -88,7 +89,25 @@ export const removeRequestItemReturnWorkflow = createWorkflow(
 
     validationStep({ order, input, orderReturn, orderChange })
 
-    deleteOrderChangeActionsStep({ ids: [input.action_id] })
+    const updateData = transform(
+      { orderChange, input },
+      ({ input, orderChange }) => {
+        const originalAction = (orderChange.actions ?? []).find(
+          (a) => a.id === input.action_id
+        ) as OrderChangeActionDTO
+
+        const data = input.data
+        return {
+          id: input.action_id,
+          details: {
+            quantity: data.quantity ?? originalAction.details?.quantity,
+          },
+          internal_note: data.internal_note,
+        }
+      }
+    )
+
+    updateOrderChangeActionsStep([updateData])
 
     return previewOrderChangeStep(order.id)
   }

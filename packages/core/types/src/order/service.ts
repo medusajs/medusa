@@ -78,6 +78,7 @@ import {
   UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
+  UpdateOrderShippingMethodDTO,
   UpdateOrderShippingMethodTaxLineDTO,
   UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
@@ -763,6 +764,16 @@ export interface IOrderModuleService extends IModuleService {
     methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
+
+  updateShippingMethods(
+    data: UpdateOrderShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<OrderShippingMethodDTO[]>
+
+  updateShippingMethods(
+    data: UpdateOrderShippingMethodDTO,
+    sharedContext?: Context
+  ): Promise<OrderShippingMethodDTO>
 
   deleteShippingMethods(
     methodIds: string[],

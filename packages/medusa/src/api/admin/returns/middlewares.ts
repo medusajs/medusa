@@ -7,7 +7,9 @@ import {
   AdminGetOrdersParams,
   AdminPostReturnsConfirmRequestReqSchema,
   AdminPostReturnsReqSchema,
+  AdminPostReturnsRequestItemsActionReqSchema,
   AdminPostReturnsRequestItemsReqSchema,
+  AdminPostReturnsShippingActionReqSchema,
   AdminPostReturnsShippingReqSchema,
 } from "./validators"
 
@@ -55,6 +57,17 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/request-items/:action_id",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsRequestItemsActionReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["DELETE"],
     matcher: "/admin/returns/:id/request-items/:action_id",
     middlewares: [
@@ -69,6 +82,17 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/returns/:id/shipping-method",
     middlewares: [
       validateAndTransformBody(AdminPostReturnsShippingReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/shipping-method/:action_id",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsShippingActionReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

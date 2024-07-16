@@ -1,3 +1,4 @@
+import { BigNumberInput } from "../../totals"
 import { CreateReturnItem } from "./create-return-order"
 
 export interface RequestItemReturnWorkflowInput {
@@ -7,6 +8,15 @@ export interface RequestItemReturnWorkflowInput {
 export interface DeleteRequestItemReturnWorkflowInput {
   return_id: string
   action_id: string
+}
+
+export interface UpdateRequestItemReturnWorkflowInput {
+  return_id: string
+  action_id: string
+  data: {
+    quantity?: BigNumberInput
+    internal_note?: string | null
+  }
 }
 
 export interface OrderExchangeRequestItemReturnWorkflowInput {

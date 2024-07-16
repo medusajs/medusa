@@ -108,6 +108,16 @@ export type AdminPostReturnsShippingReqSchemaType = z.infer<
   typeof AdminPostReturnsShippingReqSchema
 >
 
+export const AdminPostReturnsShippingActionReqSchema = z.object({
+  custom_price: z.number().optional(),
+  internal_note: z.string().nullish().optional(),
+  metadata: z.record(z.unknown()).nullish().optional(),
+})
+
+export type AdminPostReturnsShippingActionReqSchemaType = z.infer<
+  typeof AdminPostReturnsShippingActionReqSchema
+>
+
 export const AdminPostReturnsRequestItemsReqSchema = z.object({
   items: z.array(
     z.object({
@@ -122,6 +132,15 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
 
 export type AdminPostReturnsRequestItemsReqSchemaType = z.infer<
   typeof AdminPostReturnsRequestItemsReqSchema
+>
+
+export const AdminPostReturnsRequestItemsActionReqSchema = z.object({
+  quantity: z.number().optional(),
+  internal_note: z.string().nullish().optional(),
+})
+
+export type AdminPostReturnsRequestItemsActionReqSchemaType = z.infer<
+  typeof AdminPostReturnsRequestItemsActionReqSchema
 >
 
 export const AdminPostReturnsConfirmRequestReqSchema = z.object({
