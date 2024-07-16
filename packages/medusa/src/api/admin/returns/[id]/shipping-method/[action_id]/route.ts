@@ -1,4 +1,7 @@
-import { removeReturnShippingMethodWorkflow } from "@medusajs/core-flows"
+import {
+  removeReturnShippingMethodWorkflow,
+  updateReturnShippingMethodWorkflow,
+} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
