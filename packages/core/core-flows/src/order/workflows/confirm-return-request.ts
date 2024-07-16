@@ -1,13 +1,12 @@
 import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
 import { ChangeActionType } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { previewOrderChangeStep } from "../steps"
 import { confirmOrderChanges } from "../steps/confirm-order-changes"
 import { createReturnItems } from "../steps/create-return-items"
 import {
@@ -39,7 +38,7 @@ const validationStep = createStep(
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+  function (input: WorkflowInput): WorkflowData<void> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -87,7 +86,5 @@ export const confirmReturnRequestWorkflow = createWorkflow(
     createReturnItems({ returnId: orderReturn.id, changes: returnItemActions })
 
     confirmOrderChanges({ changes: [orderChange], orderId: order.id })
-
-    return previewOrderChangeStep(order.id)
   }
 )

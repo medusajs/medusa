@@ -17,7 +17,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
         return_id: action.return_id,
         claim_id: action.claim_id,
         exchange_id: action.exchange_id,
-        price: action.amount as number,
+        amount: action.amount as number,
       }
       shipping.push(existing)
     }
