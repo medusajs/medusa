@@ -21,7 +21,7 @@ curl -X POST '{backend_url}/admin/fulfillments' \
     {
       "title": "{value}",
       "sku": "{value}",
-      "quantity": 1667318922870784,
+      "quantity": 4971752394326016,
       "barcode": "{value}",
       "line_item_id": "{value}",
       "inventory_item_id": "{value}"
@@ -38,9 +38,9 @@ curl -X POST '{backend_url}/admin/fulfillments' \
   "order_id": "{value}",
   "shipping_option_id": "{value}",
   "data": {},
-  "packed_at": "2024-11-12T18:37:37.122Z",
-  "shipped_at": "2025-04-13T12:39:42.432Z",
-  "delivered_at": "2025-01-29T19:05:57.056Z",
-  "canceled_at": "2025-02-16T02:12:11.763Z",
+  "packed_at": "2024-08-02T08:08:57.631Z",
+  "shipped_at": "2024-10-09T23:47:14.965Z",
+  "delivered_at": "2024-12-24T20:37:31.054Z",
+  "canceled_at": "2025-04-03T16:10:05.988Z",
   "metadata": {}
 }'

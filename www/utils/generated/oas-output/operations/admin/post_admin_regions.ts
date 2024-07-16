@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -89,6 +89,10 @@
  *             type: boolean
  *             title: automatic_taxes
  *             description: The region's automatic taxes.
+ *           is_tax_inclusive:
+ *             type: boolean
+ *             title: is_tax_inclusive
+ *             description: The region's is tax inclusive.
  *           payment_providers:
  *             type: array
  *             description: The region's payment providers.
@@ -99,10 +103,6 @@
  *           metadata:
  *             type: object
  *             description: The region's metadata.
- *           is_tax_inclusive:
- *             type: boolean
- *             title: is_tax_inclusive
- *             description: The region's is tax inclusive.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -111,13 +111,15 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Heloise",
+ *         "name": "Spencer",
  *         "currency_code": "{value}",
  *         "metadata": {}
  *       }'
  * tags:
  *   - Regions
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

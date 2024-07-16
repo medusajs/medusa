@@ -4,5 +4,5 @@ curl -X POST '{backend_url}/store/payment-collections' \
   "cart_id": "{value}",
   "region_id": "{value}",
   "currency_code": "{value}",
-  "amount": 8468325826822144
+  "amount": 6267967885017088
 }'

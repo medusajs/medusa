@@ -91,8 +91,8 @@
  *       --data-raw '{
  *         "items": [
  *           {
- *             "id": "id_jYdUhHULUEvgS8",
- *             "quantity": 4087386992541696
+ *             "id": "id_yshD0qMjaJdlljiT",
+ *             "quantity": 5801458085658624
  *           }
  *         ],
  *         "metadata": {}

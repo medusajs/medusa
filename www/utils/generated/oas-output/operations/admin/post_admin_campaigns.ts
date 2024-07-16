@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -137,15 +137,22 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Gunner",
+ *         "name": "Josiane",
  *         "campaign_identifier": "{value}",
  *         "description": "{value}",
- *         "starts_at": "2024-08-24T00:19:14.144Z",
- *         "ends_at": "2024-10-01T06:47:50.133Z"
+ *         "budget": {
+ *           "type": "{value}",
+ *           "limit": 4363120921280512,
+ *           "currency_code": "{value}"
+ *         },
+ *         "starts_at": "2024-12-11T05:49:36.479Z",
+ *         "ends_at": "2025-01-17T06:09:10.778Z"
  *       }'
  * tags:
  *   - Campaigns
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

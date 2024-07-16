@@ -3,7 +3,7 @@ curl -X POST '{backend_url}/admin/draft-orders' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "sales_channel_id": "{value}",
-  "email": "Bartholome.Goodwin90@yahoo.com",
+  "email": "August.McDermott@gmail.com",
   "customer_id": "{value}",
   "region_id": "{value}",
   "currency_code": "{value}",
@@ -11,7 +11,7 @@ curl -X POST '{backend_url}/admin/draft-orders' \
     {
       "shipping_method_id": "{value}",
       "order_id": "{value}",
-      "name": "Cheyanne",
+      "name": "Elyssa",
       "option_id": "{value}"
     }
   ],

@@ -4,15 +4,15 @@ curl -X POST '{backend_url}/store/return' \
   "order_id": "{value}",
   "items": [
     {
-      "id": "id_XbfptxUVo2io9EI",
-      "quantity": 7916429753974784,
+      "id": "id_rvx2OyGDmWBRNqIB",
+      "quantity": 3115300224499712,
       "reason_id": "{value}",
       "note": "{value}"
     }
   ],
   "return_shipping": {
     "option_id": "{value}",
-    "price": 1068364080349184
+    "price": 6573576243118080
   },
   "note": "{value}",
   "location_id": "{value}"

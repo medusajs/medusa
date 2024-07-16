@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -73,24 +73,13 @@
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "order_id": "{value}",
- *         "items": [
- *           {
- *             "id": "id_7DO5H2LbSN3p7IzB",
- *             "quantity": 1357590174892032,
- *             "reason_id": "{value}",
- *             "note": "{value}"
- *           }
- *         ],
- *         "return_shipping": {
- *           "option_id": "{value}",
- *           "price": 5112171463704576
- *         },
- *         "internal_note": "{value}",
- *         "location_id": "{value}"
+ *         "metadata": {}
  *       }'
  * tags:
  *   - Returns
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -5,10 +5,9 @@ curl -X POST '{backend_url}/admin/returns/{id}/receive' \
   "return_id": "{value}",
   "items": [
     {
-      "id": "id_qfy3t6cU7m8O5cJ5zs",
-      "quantity": 6429460591017984,
-      "reason_id": "{value}",
-      "note": "{value}"
+      "id": "id_znhTGdV0pxJtj",
+      "quantity": 759459062218752,
+      "reason_id": "{value}"
     }
   ],
   "internal_note": "{value}"

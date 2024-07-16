@@ -5,7 +5,7 @@ curl -X POST '{backend_url}/admin/reservations' \
   "line_item_id": "{value}",
   "location_id": "{value}",
   "inventory_item_id": "{value}",
-  "quantity": 3268935814217728,
+  "quantity": 1182065915592704,
   "description": "{value}",
   "metadata": {}
 }'

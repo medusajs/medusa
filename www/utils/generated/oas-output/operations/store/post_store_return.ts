@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -70,15 +70,15 @@
  *         "order_id": "{value}",
  *         "items": [
  *           {
- *             "id": "id_XbfptxUVo2io9EI",
- *             "quantity": 7916429753974784,
+ *             "id": "id_rvx2OyGDmWBRNqIB",
+ *             "quantity": 3115300224499712,
  *             "reason_id": "{value}",
  *             "note": "{value}"
  *           }
  *         ],
  *         "return_shipping": {
  *           "option_id": "{value}",
- *           "price": 1068364080349184
+ *           "price": 6573576243118080
  *         },
  *         "note": "{value}",
  *         "location_id": "{value}"
@@ -86,6 +86,8 @@
  * tags:
  *   - Return
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

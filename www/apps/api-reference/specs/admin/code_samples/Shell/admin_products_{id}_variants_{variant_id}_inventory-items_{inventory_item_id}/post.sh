@@ -2,5 +2,5 @@ curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}/inventory-
 -H 'x-medusa-access-token: {api_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
-  "required_quantity": 5324804697620480
+  "required_quantity": 4918409240248320
 }'

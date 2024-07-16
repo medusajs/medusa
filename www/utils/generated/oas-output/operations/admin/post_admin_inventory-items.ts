@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -166,10 +166,10 @@
  *       --data-raw '{
  *         "sku": "{value}",
  *         "hs_code": "{value}",
- *         "weight": 2857134683324416,
- *         "length": 2322256963305472,
- *         "height": 8391220613087232,
- *         "width": 1297863250280448,
+ *         "weight": 4900108260868096,
+ *         "length": 1848296115011584,
+ *         "height": 628972834521088,
+ *         "width": 7780141935624192,
  *         "origin_country": "{value}",
  *         "mid_code": "{value}",
  *         "material": "{value}",
@@ -181,6 +181,8 @@
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

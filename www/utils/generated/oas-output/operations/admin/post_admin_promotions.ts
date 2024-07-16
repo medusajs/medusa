@@ -15,18 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -344,21 +344,23 @@
  *         "campaign_id": "{value}",
  *         "application_method": {
  *           "description": "{value}",
- *           "value": 1841223411171328,
+ *           "value": 8278663852195840,
  *           "currency_code": "{value}",
- *           "max_quantity": 2960098049654784,
+ *           "max_quantity": 1476637898047488,
  *           "type": "{value}",
  *           "target_type": "{value}",
  *           "allocation": "{value}",
  *           "target_rules": [],
  *           "buy_rules": [],
- *           "apply_to_quantity": 708643867590656,
- *           "buy_rules_min_quantity": 3167972149428224
+ *           "apply_to_quantity": 4631179250630656,
+ *           "buy_rules_min_quantity": 2821352643887104
  *         }
  *       }'
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
