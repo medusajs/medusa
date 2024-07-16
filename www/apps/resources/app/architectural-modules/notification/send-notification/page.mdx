@@ -14,19 +14,19 @@ In your resource, such as a subscriber, resolve the Notification Module's main s
 
 export const highlights = [
   ["12", "notificationModuleService", "Resolve the Notification Module."],
-  ["17", "create", "Create the notification to be sent."],
+  ["15", "create", "Create the notification to be sent."],
   [
-    "19",
+    "17",
     '"email"',
     "Use the module provider defined for the `email` channel to send an email.",
   ],
   [
-    "20",
+    "18",
     '"product-created"',
     "The ID of the template defined in the third-party service, such as SendGrid.",
   ],
   [
-    "21",
+    "19",
     "data",
     "The data to pass to the template defined in the third-party service.",
   ],
@@ -41,7 +41,7 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
-  data,
+  event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
@@ -51,7 +51,7 @@ export default async function productCreateHandler({
     to: "shahednasser@gmail.com",
     channel: "email",
     template: "product-created",
-    data: data.data,
+    data,
   })
 }
 
