@@ -268,10 +268,42 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(result.data.order.shipping_methods).toHaveLength(2)
+        let orderPreview = await api.get(
+          `/admin/orders/${order.id}/preview`,
+          adminHeaders
+        )
 
+        expect(orderPreview.data.order).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
+                quantity: 1,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
+              }),
+            ]),
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                name: "Return shipping",
+                amount: 1000,
+                subtotal: 1000,
+                total: 1000,
+              }),
+            ]),
+          })
+        )
+
+
+        expect(result.data.order_preview.shipping_methods).toHaveLength(2)
         // remove shipping method
-        const action_id = result.data.order.shipping_methods[1].actions[0].id
+        const action_id = result.data.order_preview.shipping_methods[1].actions[0].id
         result = await api.delete(
           `/admin/returns/${returnId}/shipping-method/${action_id}`,
           adminHeaders
@@ -295,6 +327,39 @@ medusaIntegrationTestRunner({
         )
 
         expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 50,
+                quantity: 1,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
+              }),
+            ]),
+            shipping_methods: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                name: "Return shipping",
+                amount: 1000,
+                subtotal: 1000,
+                total: 1000,
+              }),
+            ]),
+          })
+        )
+
+        // The order preview endpoint should still return the order in case the change has been completed
+        orderPreview = await api.get(
+          `/admin/orders/${order.id}/preview`,
+          adminHeaders
+        )
+
+        expect(orderPreview.data.order).toEqual(
           expect.objectContaining({
             id: order.id,
             items: expect.arrayContaining([
