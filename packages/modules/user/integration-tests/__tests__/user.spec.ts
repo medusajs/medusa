@@ -220,7 +220,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.USER_UPDATED,
+              name: UserEvents.USER_UPDATED,
             }),
           ])
         })
@@ -250,11 +250,11 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.USER_CREATED,
+              name: UserEvents.USER_CREATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.USER_CREATED,
+              name: UserEvents.USER_CREATED,
             }),
           ])
         })
