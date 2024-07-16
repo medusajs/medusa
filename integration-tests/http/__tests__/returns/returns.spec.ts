@@ -228,6 +228,57 @@ medusaIntegrationTestRunner({
                 total: 50,
                 fulfilled_total: 50,
                 return_requested_total: 50,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 1,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        // Remove item return requesta
+        const returnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+        result = await api.delete(
+          `/admin/returns/${returnId}/request-items/${returnItemActionId}`,
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        // Add item return request again
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                detail: expect.objectContaining({
+                  return_requested_quantity: 1,
+                }),
               }),
             ]),
           })
@@ -300,12 +351,13 @@ medusaIntegrationTestRunner({
           })
         )
 
-
         expect(result.data.order_preview.shipping_methods).toHaveLength(2)
+
         // remove shipping method
-        const action_id = result.data.order_preview.shipping_methods[1].actions[0].id
+        const shippingActionId =
+          result.data.order_preview.shipping_methods[1].actions[0].id
         result = await api.delete(
-          `/admin/returns/${returnId}/shipping-method/${action_id}`,
+          `/admin/returns/${returnId}/shipping-method/${shippingActionId}`,
           adminHeaders
         )
 

@@ -2124,8 +2124,6 @@ export default class OrderModuleService<
       })
     }
 
-    // TODO - add new shipping methods
-
     const calcOrder = calculated.order
 
     decorateCartTotals(calcOrder as DecorateCartLikeInputDTO)

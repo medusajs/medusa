@@ -205,8 +205,9 @@ medusaIntegrationTestRunner({
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
+              deleted_at: null,
               tax_lines: [],
-              adjustments: [
+              adjustments: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "VIP discount",
@@ -219,6 +220,7 @@ medusaIntegrationTestRunner({
                   provider_id: expect.any(String),
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   item_id: expect.any(String),
                   amount: 5e-18,
                   subtotal: 5e-18,
@@ -232,7 +234,7 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
+              ]),
               compare_at_unit_price: null,
               unit_price: 50,
               quantity: 1,
@@ -412,7 +414,7 @@ medusaIntegrationTestRunner({
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              tax_lines: [
+              tax_lines: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "shipping Tax 1",
@@ -425,6 +427,7 @@ medusaIntegrationTestRunner({
                   provider_id: null,
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   shipping_method_id: expect.any(String),
                   rate: 10,
                   total: 0.9,
@@ -438,8 +441,8 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
-              adjustments: [
+              ]),
+              adjustments: expect.arrayContaining([
                 {
                   id: expect.any(String),
                   description: "VIP discount",
@@ -452,6 +455,7 @@ medusaIntegrationTestRunner({
                   provider_id: null,
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
+                  deleted_at: null,
                   shipping_method_id: expect.any(String),
                   amount: 1,
                   subtotal: 1,
@@ -465,7 +469,7 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                 },
-              ],
+              ]),
               amount: 10,
               subtotal: 10,
               total: 9.9,

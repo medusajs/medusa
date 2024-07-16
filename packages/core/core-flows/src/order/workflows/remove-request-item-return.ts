@@ -1,6 +1,8 @@
 import {
   OrderChangeActionDTO,
   OrderChangeDTO,
+  OrderDTO,
+  OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -8,29 +10,28 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
-  parallelize,
-  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { deleteOrderShippingMethods } from "../steps"
-import { deleteOrderChangeActionsStep } from "../steps/delete-order-change-actions"
-import { previewOrderChangeStep } from "../steps/preview-order-change"
+import { deleteOrderChangeActionsStep, previewOrderChangeStep } from "../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../utils/order-validation"
 
 const validationStep = createStep(
-  "validate-remove-return-shipping-method",
+  "remove-request-item-return-validation",
   async function ({
+    order,
     orderChange,
     orderReturn,
     input,
   }: {
-    input: { return_id: string; action_id: string }
+    order: OrderDTO
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
+    input: OrderWorkflow.DeleteRequestItemReturnWorkflowInput
   }) {
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
 
@@ -40,21 +41,22 @@ const validationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No shipping method found for return ${input.return_id} in order change ${orderChange.id}`
+        `No request return found for return ${input.return_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.SHIPPING_ADD) {
+    } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
       throw new Error(
-        `Action ${associatedAction.id} is not adding a shipping method`
+        `Action ${associatedAction.id} is not requesting item return`
       )
     }
   }
 )
 
-export const removeReturnShippingMethodWorkflowId =
-  "remove-return-shipping-method"
-export const removeReturnShippingMethodWorkflow = createWorkflow(
-  removeReturnShippingMethodWorkflowId,
-  function (input: { return_id: string; action_id: string }): WorkflowData {
+export const removeRequestItemReturnWorkflowId = "remove-request-item-return"
+export const removeRequestItemReturnWorkflow = createWorkflow(
+  removeRequestItemReturnWorkflowId,
+  function (
+    input: WorkflowData<OrderWorkflow.DeleteRequestItemReturnWorkflowInput>
+  ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id"],
@@ -62,6 +64,14 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       list: false,
       throw_if_key_not_found: true,
     })
+
+    const order: OrderDTO = useRemoteQueryStep({
+      entry_point: "orders",
+      fields: ["id", "status", "items.*"],
+      variables: { id: orderReturn.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "order-query" })
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
@@ -76,27 +86,10 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderReturn, orderChange, input })
+    validationStep({ order, input, orderReturn, orderChange })
 
-    const dataToRemove = transform(
-      { orderChange, input },
-      ({ orderChange, input }) => {
-        const associatedAction = orderChange.actions?.find(
-          (a) => a.id === input.action_id
-        ) as OrderChangeActionDTO
+    deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
-        return {
-          actionId: associatedAction.id,
-          shippingMethodId: associatedAction.reference_id,
-        }
-      }
-    )
-
-    parallelize(
-      deleteOrderChangeActionsStep({ ids: [dataToRemove.actionId] }),
-      deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
-    )
-
-    return previewOrderChangeStep(orderReturn.order_id)
+    return previewOrderChangeStep(order.id)
   }
 )
