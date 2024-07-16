@@ -10,6 +10,7 @@ export const GET = async (
 ) => {
   const { id } = req.params
 
+  // NOTE: Consider replacing with remoteQuery when possible
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const order = await orderModuleService.previewOrderChange(id)
