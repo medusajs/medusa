@@ -15,7 +15,7 @@ export default async function paymentWebhookhandler({
     ModuleRegistrationName.PAYMENT
   )
 
-  const input = "data" in event ? event.data : event
+  const input = event.data
 
   if (
     (input.payload.rawData as unknown as SerializedBuffer).type === "Buffer"

@@ -1,4 +1,5 @@
 import {
+  Event,
   IEventBusModuleService,
   MedusaContainer,
   Subscriber,
@@ -192,12 +193,9 @@ export class SubscriberLoader {
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
-      const subscriber = async (data: T) => {
+      const subscriber = async (event: Event<T>) => {
         return await handler({
-          event: {
-            name: e,
-            data: data,
-          },
+          event,
           container: this.container_,
           pluginOptions: this.pluginOptions_,
         })
