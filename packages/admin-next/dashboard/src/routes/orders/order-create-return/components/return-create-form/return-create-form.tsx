@@ -49,6 +49,7 @@ let selectedItems: string[] = []
 
 export const ReturnCreateForm = ({
   order,
+  preview,
   activeReturn,
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
@@ -94,7 +95,10 @@ export const ReturnCreateForm = ({
      * TODO: reason selection once Return reason settings are added
      */
     defaultValues: {
-      items: [],
+      items: preview.items.map((i) => ({
+        item_id: i.id,
+        quantity: i.detail.return_requested_quantity,
+      })),
       option_id: "",
       location_id: "",
       send_notification: false,
@@ -111,10 +115,37 @@ export const ReturnCreateForm = ({
     fields: items,
     append,
     remove,
+    update,
   } = useFieldArray({
     name: "items",
     control: form.control,
   })
+
+  useEffect(() => {
+    const existingItemsMap = {}
+
+    preview.items.forEach((i) => {
+      const ind = items.findIndex((field) => field.item_id === i.id)
+
+      existingItemsMap[i.id] = true
+
+      if (ind > -1) {
+        if (items[ind].quantity !== i.detail.return_requested_quantity) {
+          update(ind, {
+            quantity: i.detail.return_requested_quantity,
+          })
+        }
+      } else {
+        append({ item_id: i.id, quantity: i.detail.return_requested_quantity })
+      }
+    })
+
+    items.forEach((i, ind) => {
+      if (!(i.item_id in existingItemsMap)) {
+        remove(ind)
+      }
+    })
+  }, [preview.items])
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
@@ -147,28 +178,12 @@ export const ReturnCreateForm = ({
   })
 
   const onItemsSelected = () => {
-    const selected = Object.fromEntries(selectedItems.map((i) => [i, true]))
-
-    const toRemove = []
-    const existingItems = {}
-    items.forEach((item, ind) => {
-      if (!(item.id in selected)) {
-        toRemove.push(ind)
-      }
-
-      existingItems[item.id]
+    addReturnItem({
+      items: selectedItems.map((id) => ({
+        id,
+        quantity: 1,
+      })),
     })
-
-    remove(toRemove)
-
-    selectedItems.forEach((id) => {
-      if (!(id in existingItems)) {
-        append({ item_id: id, quantity: 1 })
-      }
-    })
-
-    // TODO: uncomment
-    // addReturnItem(selectedItems)
 
     setIsOpen("items", false)
   }
@@ -248,20 +263,12 @@ export const ReturnCreateForm = ({
     })
   }, [items])
 
-  const returnTotal = useMemo(() => {
-    return items
-      .map((i) => itemsMap.get(i.item_id))
-      .reduce((acc: number, curr: AdminOrderLineItem, index): number => {
-        return acc + items[index].quantity * curr.refundable_total_per_unit
-      }, 0)
-  }, [items])
+  /**
+   * TODO: which difference we show?
+   */
+  const returnTotal = preview.summary.temporary_difference
 
-  const shippingTotal = useMemo(() => {
-    /**
-     * TODO: we should infer shipping price from shipping option but for now we use a value that the user provides
-     */
-    return typeof customShippingAmount === "number" ? customShippingAmount : 0
-  }, [items, customShippingAmount])
+  const shippingTotal = preview.shipping_total
 
   const refundAmount = returnTotal - shippingTotal
 
