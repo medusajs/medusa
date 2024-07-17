@@ -125,6 +125,7 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
       quantity: z.number(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
+      reason_id: z.string().optional(),
       metadata: z.record(z.unknown()).optional(),
     })
   ),
@@ -137,6 +138,8 @@ export type AdminPostReturnsRequestItemsReqSchemaType = z.infer<
 export const AdminPostReturnsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
+  reason_id: z.string().nullish().optional(),
+  metadata: z.record(z.unknown()).nullish().optional(),
 })
 
 export type AdminPostReturnsRequestItemsActionReqSchemaType = z.infer<

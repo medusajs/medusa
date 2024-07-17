@@ -6,8 +6,10 @@ import {
 } from "@medusajs/workflows-sdk"
 
 export const createScheduled = (name: string, schedule?: SchedulerOptions) => {
-  const workflowScheduledStepInvoke = jest.fn((input, context) => {
-    return new StepResponse({})
+  const workflowScheduledStepInvoke = jest.fn((input, { container }) => {
+    return new StepResponse({
+      testValue: container.resolve("test-value"),
+    })
   })
 
   const step = createStep("step_1", workflowScheduledStepInvoke)

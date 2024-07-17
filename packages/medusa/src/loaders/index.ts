@@ -153,14 +153,17 @@ export default async ({
 
   const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
   const pluginLinks = await resolvePluginsLinks(plugins, container)
+
+  const {
+    onApplicationStart,
+    onApplicationShutdown,
+    onApplicationPrepareShutdown,
+  } = await loadMedusaApp({
+    container,
+    linkModules: pluginLinks,
+  })
+
   await registerWorkflows(plugins)
-
-  const { onApplicationShutdown, onApplicationPrepareShutdown } =
-    await loadMedusaApp({
-      container,
-      linkModules: pluginLinks,
-    })
-
   const entrypointsShutdown = await loadEntrypoints(
     plugins,
     container,
@@ -168,6 +171,7 @@ export default async ({
     rootDirectory
   )
   await createDefaultsWorkflow(container).run()
+  await onApplicationStart()
 
   const shutdown = async () => {
     const pgConnection = container.resolve(

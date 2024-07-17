@@ -1,5 +1,5 @@
 import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -71,6 +71,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
         filters: {
           order_id: orderReturn.order_id,
           return_id: orderReturn.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
       list: false,

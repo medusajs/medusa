@@ -1,6 +1,6 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -15,15 +15,17 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           description: "description test",
         })
 
-        expect(reason).toEqual({
-          id: expect.any(String),
-          value: "test",
-          label: "label test",
-          description: "description test",
-          return_reason_children: [],
-          metadata: null,
-          deleted_at: null,
-        })
+        expect(reason).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            value: "test",
+            label: "label test",
+            description: "description test",
+            return_reason_children: [],
+            metadata: null,
+            deleted_at: null,
+          })
+        )
       })
 
       it("should create return reasons with parent", async function () {

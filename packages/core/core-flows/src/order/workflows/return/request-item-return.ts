@@ -4,7 +4,7 @@ import {
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -19,24 +19,33 @@ import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { validateReturnReasons } from "../../utils/validate-return-reason"
 
 const validationStep = createStep(
   "request-item-return-validation",
-  async function ({
-    order,
-    orderChange,
-    orderReturn,
-    items,
-  }: {
-    order: Pick<OrderDTO, "id" | "items">
-    orderReturn: ReturnDTO
-    orderChange: OrderChangeDTO
-    items: OrderWorkflow.RequestItemReturnWorkflowInput["items"]
-  }) {
+  async function (
+    {
+      order,
+      orderChange,
+      orderReturn,
+      items,
+    }: {
+      order: Pick<OrderDTO, "id" | "items">
+      orderReturn: ReturnDTO
+      orderChange: OrderChangeDTO
+      items: OrderWorkflow.RequestItemReturnWorkflowInput["items"]
+    },
+    context
+  ) {
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems: items })
+
+    await validateReturnReasons(
+      { orderId: order.id, inputItems: items },
+      context
+    )
   }
 )
 
@@ -66,7 +75,11 @@ export const requestItemReturnWorkflow = createWorkflow(
       entry_point: "order_change",
       fields: ["id", "status", "order_id", "return_id"],
       variables: {
-        filters: { order_id: orderReturn.order_id, return_id: orderReturn.id },
+        filters: {
+          order_id: orderReturn.order_id,
+          return_id: orderReturn.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
       },
       list: false,
     }).config({ name: "order-change-query" })
@@ -87,6 +100,7 @@ export const requestItemReturnWorkflow = createWorkflow(
           reference_id: orderReturn.id,
           details: {
             reference_id: item.id,
+            reason_id: item.reason_id,
             quantity: item.quantity,
             metadata: item.metadata,
           },
