@@ -1,4 +1,4 @@
-import { ContainerLike, FindConfig } from "../common"
+import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -17,7 +17,6 @@ type FlowRunOptions<TData = unknown> = {
 export interface WorkflowOrchestratorRunDTO<T = unknown>
   extends FlowRunOptions<T> {
   transactionId?: string
-  container?: ContainerLike
 }
 
 export type IdempotencyKeyParts = {
