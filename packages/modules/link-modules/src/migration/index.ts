@@ -313,6 +313,10 @@ export class MigrationsExecutionPlanner {
           return
         }
 
+        /**
+         * A notify action being provided for execution is equivalent
+         * to an update that has been accepted to be run
+         */
         if (["create", "update", "notify"].includes(action.action)) {
           await orm.em.getDriver().getConnection().execute(action.sql)
 
