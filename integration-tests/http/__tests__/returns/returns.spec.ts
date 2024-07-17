@@ -695,6 +695,22 @@ medusaIntegrationTestRunner({
               ]),
             })
           )
+
+          result = await api.post(
+            `/admin/returns/${returnId}/receive/confirm`,
+            {},
+            adminHeaders
+          )
+
+          expect(result.data.return).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  received_quantity: 2,
+                }),
+              ],
+            })
+          )
         })
       })
     })

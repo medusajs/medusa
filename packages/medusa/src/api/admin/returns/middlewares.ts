@@ -81,70 +81,6 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/returns/:id/receive-items",
-    middlewares: [
-      validateAndTransformBody(AdminPostReceiveReturnItemsReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/returns/:id/receive-items/:action_id",
-    middlewares: [
-      validateAndTransformBody(AdminPostReturnsRequestItemsActionReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/returns/:id/receive-items/:action_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/returns/:id/dismiss-items",
-    middlewares: [
-      validateAndTransformBody(AdminPostReceiveReturnItemsReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/returns/:id/dismiss-items/:action_id",
-    middlewares: [
-      validateAndTransformBody(AdminPostReturnsRequestItemsActionReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/returns/:id/dismiss-items/:action_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
     matcher: "/admin/returns/:id/shipping-method",
     middlewares: [
       validateAndTransformBody(AdminPostReturnsShippingReqSchema),
@@ -206,5 +142,80 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/returns/:id/receive",
     middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/receive/confirm",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsConfirmRequestReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/receive-items",
+    middlewares: [
+      validateAndTransformBody(AdminPostReceiveReturnItemsReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/receive-items/:action_id",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsRequestItemsActionReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/returns/:id/receive-items/:action_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/dismiss-items",
+    middlewares: [
+      validateAndTransformBody(AdminPostReceiveReturnItemsReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/dismiss-items/:action_id",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsRequestItemsActionReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/returns/:id/dismiss-items/:action_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]
