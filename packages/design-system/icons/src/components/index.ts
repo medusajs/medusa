@@ -1,9 +1,9 @@
 // This file is generated automatically.
-export { default as AIAssistant } from "./AI-ASSISTANT"
 export { default as AcademicCapSolid } from "./academic-cap-solid"
 export { default as AcademicCap } from "./academic-cap"
 export { default as AdjustmentsDone } from "./adjustments-done"
 export { default as Adjustments } from "./adjustments"
+export { default as AiAssistent } from "./ai-assistent"
 export { default as Apple } from "./apple"
 export { default as ArchiveBox } from "./archive-box"
 export { default as ArrowDownCircle } from "./arrow-down-circle"
