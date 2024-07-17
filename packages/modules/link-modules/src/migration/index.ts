@@ -6,11 +6,11 @@ import {
 import { generateEntity } from "../utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
 import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import {, promiseAll
+import {
   arrayDifference,
   DALUtils,
   ModulesSdkUtils,
-  promiseAll
+  promiseAll,
 } from "@medusajs/utils"
 
 /**
@@ -274,26 +274,28 @@ export class MigrationsExecutionPlanner {
   async executeActionPlan(actionPlan: PlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
-    await promiseAll(actionPlan.map(async action => {
-      if (action.action === "noop") {
-        return
-      }
+    await promiseAll(
+      actionPlan.map(async (action) => {
+        if (action.action === "noop") {
+          return
+        }
 
-      if (action.action === "delete") {
-        await orm.em.getDriver().getConnection().execute(`
+        if (action.action === "delete") {
+          await orm.em.getDriver().getConnection().execute(`
           DROP TABLE IF EXISTS "${action.tableName}"
         `)
-        await this.trackLinkMigrationsTable(orm, action.tableName, "delete")
-        return
-      }
-
-      if (['create', 'update'].includes(action.action)) {
-        await orm.em.getDriver().getConnection().execute(action.sql)
-
-        if (action.action === "create") {
-          await this.trackLinkMigrationsTable(orm, action.tableName, "insert")
+          await this.trackLinkMigrationsTable(orm, action.tableName, "delete")
+          return
         }
-      }
-    }))
+
+        if (["create", "update"].includes(action.action)) {
+          await orm.em.getDriver().getConnection().execute(action.sql)
+
+          if (action.action === "create") {
+            await this.trackLinkMigrationsTable(orm, action.tableName, "insert")
+          }
+        }
+      })
+    )
   }
 }

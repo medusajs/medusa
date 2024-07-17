@@ -36,7 +36,8 @@ const main = async function ({ directory }) {
       action: "run",
     })
 
-    console.log(planner)
+    const actionPlan = await planner.createPlan()
+    await planner.executeActionPlan(actionPlan)
 
     console.log(new Array(TERMINAL_SIZE).join("-"))
     Logger.info("Links sync completed")
