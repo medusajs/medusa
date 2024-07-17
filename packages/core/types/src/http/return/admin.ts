@@ -9,7 +9,7 @@ export interface BaseReturnItem {
   metadata?: Record<string, unknown>
 }
 
-export interface AdminReturnResponse {
+export interface AdminReturn {
   id: string
   order_id: string
   status?: string
@@ -20,6 +20,10 @@ export interface AdminReturnResponse {
   no_notification?: boolean
   refund_amount?: number
   items: BaseReturnItem[]
+}
+
+export interface AdminReturnResponse {
+  return: AdminReturn
 }
 
 export interface AdminInitiateReturnRequest {

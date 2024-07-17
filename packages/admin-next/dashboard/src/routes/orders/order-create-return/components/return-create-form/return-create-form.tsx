@@ -306,7 +306,6 @@ export const ReturnCreateForm = ({
   const returnTotal = preview.summary.temporary_difference
 
   const shippingTotal = preview.shipping_total
-
   const refundAmount = returnTotal - shippingTotal
 
   return (

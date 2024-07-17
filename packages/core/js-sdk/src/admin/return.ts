@@ -1,4 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
+
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -6,6 +7,16 @@ export class Return {
   private client: Client
   constructor(client: Client) {
     this.client = client
+  }
+
+  async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}`,
+      {
+        query,
+        headers,
+      }
+    )
   }
 
   async initiateRequest(

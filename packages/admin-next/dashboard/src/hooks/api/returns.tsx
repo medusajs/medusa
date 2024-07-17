@@ -1,9 +1,36 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
+import {
+  QueryKey,
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query"
 import { HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
+import { queryKeysFactory } from "../../lib/query-key-factory"
+
+const RETURNS_QUERY_KEY = "returns" as const
+export const returnsQueryKeys = queryKeysFactory(RETURNS_QUERY_KEY)
+
+export const useReturn = (
+  id: string,
+  query?: Record<string, any>,
+  options?: Omit<
+    UseQueryOptions<any, Error, any, QueryKey>,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.return.retrieve(id, query),
+    queryKey: returnsQueryKeys.detail(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
 
 export const useInitiateReturn = (
   orderId: string,
