@@ -6,7 +6,12 @@ import {
 import { generateEntity } from "../utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
 import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import { arrayDifference, DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import {, promiseAll
+  arrayDifference,
+  DALUtils,
+  ModulesSdkUtils,
+  promiseAll
+} from "@medusajs/utils"
 
 /**
  * A list of actions prepared and executed
@@ -101,6 +106,30 @@ export class MigrationsExecutionPlanner {
   }
 
   /**
+   * Insert or delete tuple from the migrations table
+   *
+   * @param orm
+   * @param tableName
+   * @param action
+   * @protected
+   */
+  protected async trackLinkMigrationsTable(
+    orm: MikroORM<PostgreSqlDriver>,
+    tableName: string,
+    action: "insert" | "delete"
+  ) {
+    if (action === "insert") {
+      await orm.em.getDriver().getConnection().execute(`
+        INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}')
+      `)
+    } else if (action === "delete") {
+      await orm.em.getDriver().getConnection().execute(`
+        DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}')
+      `)
+    }
+  }
+
+  /**
    * Returns an array of table names that have been tracked during
    * the last run. In short, these tables were created by the
    * link modules migrations runner.
@@ -146,9 +175,7 @@ export class MigrationsExecutionPlanner {
         action: "create",
         tableName,
         entity,
-        sql: await generator.getCreateSchemaSQL({
-          schema: schemaName,
-        }),
+        sql: await generator.getCreateSchemaSQL(),
       }
     }
 
@@ -238,5 +265,35 @@ export class MigrationsExecutionPlanner {
     })
 
     return executionActions
+  }
+
+  /**
+   * From a given planner action, execute the actions
+   * @param actionPlan
+   */
+  async executeActionPlan(actionPlan: PlannerAction[]): Promise<void> {
+    const orm = await this.createORM()
+
+    await promiseAll(actionPlan.map(async action => {
+      if (action.action === "noop") {
+        return
+      }
+
+      if (action.action === "delete") {
+        await orm.em.getDriver().getConnection().execute(`
+          DROP TABLE IF EXISTS "${action.tableName}"
+        `)
+        await this.trackLinkMigrationsTable(orm, action.tableName, "delete")
+        return
+      }
+
+      if (['create', 'update'].includes(action.action)) {
+        await orm.em.getDriver().getConnection().execute(action.sql)
+
+        if (action.action === "create") {
+          await this.trackLinkMigrationsTable(orm, action.tableName, "insert")
+        }
+      }
+    }))
   }
 }
