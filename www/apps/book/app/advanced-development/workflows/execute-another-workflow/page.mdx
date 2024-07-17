@@ -8,13 +8,12 @@ In this chapter, you'll learn how to execute a workflow in another.
 
 ## Execute in a Step
 
-Workflows are executed in a step similar to how you execute them in any other resource. However, you must pass the step's context and container to the workflow.
+Workflows are executed in a step similar to how you execute them in any other resource. However, you must pass the step's context to the workflow.
 
 For example:
 
 export const stepHighlights = [
   ["10", "context", "A step function accepts a context object in the properties of its second parameter."],
-  ["18", "container", "Pass the container of the step."],
   ["19", "context", "Pass the context of the step."]
 ]
 
@@ -36,7 +35,6 @@ const step1 = createStep(
             // ...
           ]
         },
-        container,
         context
       })
 
@@ -47,7 +45,7 @@ const step1 = createStep(
 
 A step function receives a `context` property in its second parameter. This object contains the execution details of the workflow the step is part of.
 
-When running another workflow in the step, pass the context and the container in the object parameter of the `run` method.
+When running another workflow in the step, pass the context in the object parameter of the `run` method.
 
 ---
 
