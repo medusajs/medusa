@@ -67,6 +67,7 @@ export const cancelReturnWorkflow = createWorkflow(
         entry_point: "return",
         fields: [
           "id",
+          "canceled_at",
           "items.id",
           "items.received_quantity",
           "fulfillments.canceled_at",

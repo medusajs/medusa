@@ -1,26 +1,19 @@
 import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import { OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
-  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { previewOrderChangeStep } from "../../steps"
-import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItems } from "../../steps/create-return-items"
+import { deleteOrderChangesStep } from "../../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
-  return_id: string
-}
-
 const validationStep = createStep(
-  "validate-create-return-shipping-method",
+  "validate-cancel-return-shipping-method",
   async function ({
     order,
     orderChange,
@@ -36,10 +29,10 @@ const validationStep = createStep(
   }
 )
 
-export const confirmReturnRequestWorkflowId = "confirm-return-request"
-export const confirmReturnRequestWorkflow = createWorkflow(
-  confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+export const cancelReturnReceiveWorkflowId = "cancel-receive-return"
+export const cancelReturnReceiveWorkflow = createWorkflow(
+  cancelReturnReceiveWorkflowId,
+  function (input: { return_id: string }): WorkflowData<void> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -58,15 +51,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: [
-        "id",
-        "actions.id",
-        "actions.action",
-        "actions.details",
-        "actions.reference",
-        "actions.reference_id",
-        "actions.internal_note",
-      ],
+      fields: ["id", "status", "version"],
       variables: {
         filters: {
           order_id: orderReturn.order_id,
@@ -77,18 +62,8 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    const returnItemActions = transform({ orderChange }, (data) => {
-      return data.orderChange.actions.filter(
-        (act) => act.action === ChangeActionType.RETURN_ITEM
-      )
-    })
-
     validationStep({ order, orderReturn, orderChange })
 
-    createReturnItems({ returnId: orderReturn.id, changes: returnItemActions })
-
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
-
-    return previewOrderChangeStep(order.id)
+    deleteOrderChangesStep({ ids: [orderChange.id] })
   }
 )

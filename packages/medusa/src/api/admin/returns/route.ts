@@ -62,7 +62,7 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_change: result,
     return: orderReturn,
   })
 }

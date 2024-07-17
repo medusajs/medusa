@@ -201,7 +201,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(result.data.order_preview).toEqual(
+        expect(result.data.order_change).toEqual(
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
@@ -577,6 +577,64 @@ medusaIntegrationTestRunner({
         expect(result.response.data.message).toEqual(
           `Return id not found: ${returnId}`
         )
+      })
+
+      describe("should request a return and receive if", () => {
+        let returnId
+        beforeEach(async () => {
+          let result = await api.post(
+            "/admin/returns",
+            {
+              order_id: order.id,
+              description: "Test",
+            },
+            adminHeaders
+          )
+
+          returnId = result.data.return.id
+          const item = order.items[0]
+          await api.post(
+            `/admin/returns/${returnId}/request-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                  reason_id: returnReason.id,
+                },
+              ],
+            },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/returns/${returnId}/shipping-method`,
+            {
+              shipping_option_id: returnShippingOption.id,
+            },
+            adminHeaders
+          )
+          await api.post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
+        })
+
+        it("should receive the return", async () => {
+          let result = await api.post(
+            `/admin/returns/${returnId}/receive`,
+            {
+              internal_note: "Test internal note",
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order_change).toEqual(
+            expect.objectContaining({
+              return_id: returnId,
+              change_type: "return",
+              actions: [],
+              status: "pending",
+              internal_note: "Test internal note",
+            })
+          )
+        })
       })
     })
   },
