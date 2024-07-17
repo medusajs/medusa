@@ -23,11 +23,7 @@ import {
   toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
-import {
-  getExecutionPlan,
-  getMigration,
-  getRevertMigration,
-} from "../migration"
+import { getExecutionPlan } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import {
   composeLinkName,
@@ -190,13 +186,21 @@ export const initialize = async (
   return allLinks
 }
 
-async function applyMigrationUpOrDown(
+/**
+ * Prepare an execution plan and run the migrations accordingly.
+ * It includes creating, updating, deleting the tables according to the execution plan.
+ * If any unsafe sql is identified then we will notify the user to act manually.
+ *
+ * @param options
+ * @param logger
+ * @param modulesDefinition
+ */
+export async function runMigrations(
   {
     options,
     logger,
   }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[],
-  revert = false
+  modulesDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
@@ -241,12 +245,6 @@ async function applyMigrationUpOrDown(
     ) {
       continue
     }
-
-    const migrate = revert
-      ? getRevertMigration(definition, serviceKey, primary, foreign)
-      : getMigration(definition, serviceKey, primary, foreign)
-
-    await migrate({ options, logger })
   }
 
   const plan = await getExecutionPlan({
@@ -254,20 +252,26 @@ async function applyMigrationUpOrDown(
     options,
   })
 
-  console.log(plan)
+  if (plan.toNotify.length) {
+  }
+
+  if (plan.toCreate.length) {
+  }
+
+  if (plan.toUpdate.length) {
+  }
+
+  if (plan.toDelete.length) {
+  }
+
+  /*const migrate = revert
+    ? getRevertMigration(definition, serviceKey, primary, foreign)
+    : getMigration(definition, serviceKey, primary, foreign)
+
+  await migrate({ options, logger })*/
 }
 
-export async function runMigrations(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
-) {
-  await applyMigrationUpOrDown({ options, logger }, modulesDefinition)
-}
-
-export async function revertMigrations(
+/*export async function revertMigrations(
   {
     options,
     logger,
@@ -275,4 +279,4 @@ export async function revertMigrations(
   modulesDefinition?: ModuleJoinerConfig[]
 ) {
   await applyMigrationUpOrDown({ options, logger }, modulesDefinition, true)
-}
+}*/
