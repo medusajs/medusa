@@ -224,6 +224,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Long-Running Workflow",
             },
             {
+              path: "/advanced-development/workflows/execute-another-workflow",
+              title: "Execute Another Workflow",
+            },
+            {
               path: "/advanced-development/workflows/advanced-example",
               title: "Example: Advanced Workflow",
             },

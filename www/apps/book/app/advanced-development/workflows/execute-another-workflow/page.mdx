@@ -1,0 +1,89 @@
+export const metadata = {
+  title: `${pageNumber} Execute Another Workflow`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to execute a workflow in another.
+
+## Execute in a Step
+
+Workflows are executed in a step similar to how you execute them in any other resource. However, you must pass the step's context and container to the workflow.
+
+For example:
+
+export const stepHighlights = [
+  ["10", "context", "A step function accepts a context object in the properties of its second parameter."],
+  ["18", "container", "Pass the container of the step."],
+  ["19", "context", "Pass the context of the step."]
+]
+
+```ts highlights={stepHighlights} collapsibleLines="1-7" expandMoreButton="Show Imports"
+import {
+  createStep
+} from "@medusajs/workflows-sdk"
+import { 
+  createProductsWorkflow
+} from "@medusajs/core-flows"
+
+const step1 = createStep(
+  "step-1",
+  async (input, { container, context }) => {
+    const products = await createProductsWorkflow(container)
+      .run({
+        input: {
+          products: [
+            // ...
+          ]
+        },
+        container,
+        context
+      })
+
+    // ...
+  }
+)
+```
+
+A step function receives a `context` property in its second parameter. This object contains the execution details of the workflow the step is part of.
+
+When running another workflow in the step, pass the context and the container in the object parameter of the `run` method.
+
+---
+
+## Execute in a Workflow
+
+To execute another workflow in a workflow, use the `runAsStep` method that every workflow has.
+
+For example:
+
+export const workflowsHighlights = [
+  ["11", "runAsStep", "Use the `runAsStep` method to run the workflow as a step."],
+  ["12", "input", "Pass the input as you did in the `run` method before."]
+]
+
+```ts highlights={workflowsHighlights} collapsibleLines="1-7" expandMoreButton="Show Imports"
+import {
+  createWorkflow
+} from "@medusajs/workflows-sdk"
+import { 
+  createProductsWorkflow
+} from "@medusajs/core-flows"
+
+const workflow = createWorkflow(
+  "hello-world",
+  async (input) => {
+    const products = await createProductsWorkflow.runAsStep({
+      input: {
+        products: [
+          // ...
+        ]
+      },
+    })
+
+    // ...
+  }
+)
+```
+
+Instead of invoking the workflow, passing it the container, you instead use its `runAsStep` method and pass it an object as a parameter. The object has an `input` property to pass input to the workflow.
