@@ -87,6 +87,8 @@ export type ModuleDefinition = {
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   dependencies?: string[]
+  // Only to be used in exceptional cases - relying on the shared container will break the isolation of the module
+  passSharedContainer?: boolean
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration

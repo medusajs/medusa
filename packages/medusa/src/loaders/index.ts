@@ -153,7 +153,6 @@ export default async ({
 
   const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
   const pluginLinks = await resolvePluginsLinks(plugins, container)
-  await registerWorkflows(plugins)
 
   const { onApplicationShutdown, onApplicationPrepareShutdown } =
     await loadMedusaApp({
@@ -161,6 +160,7 @@ export default async ({
       linkModules: pluginLinks,
     })
 
+  await registerWorkflows(plugins)
   const entrypointsShutdown = await loadEntrypoints(
     plugins,
     container,

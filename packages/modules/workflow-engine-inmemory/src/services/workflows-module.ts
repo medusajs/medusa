@@ -2,6 +2,7 @@ import {
   Context,
   DAL,
   InternalModuleDeclaration,
+  MedusaContainer,
   ModulesSdkTypes,
   WorkflowsSdkTypes,
 } from "@medusajs/types"
@@ -31,6 +32,7 @@ export class WorkflowsModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<TWorkflowExecution>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
+  protected container_: MedusaContainer
 
   constructor(
     {

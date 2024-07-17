@@ -83,6 +83,7 @@ export class WorkflowOrchestratorService {
   private instanceId = ulid()
   protected redisPublisher: Redis
   protected redisSubscriber: Redis
+  protected container_: MedusaContainer
   private subscribers: Subscribers = new Map()
   private activeStepsCount: number = 0
   private logger: Logger
@@ -95,6 +96,7 @@ export class WorkflowOrchestratorService {
     redisPublisher,
     redisSubscriber,
     logger,
+    sharedContainer,
   }: {
     dataLoaderOnly: boolean
     redisDistributedTransactionStorage: RedisDistributedTransactionStorage
@@ -102,7 +104,9 @@ export class WorkflowOrchestratorService {
     redisPublisher: Redis
     redisSubscriber: Redis
     logger: Logger
+    sharedContainer: MedusaContainer
   }) {
+    this.container_ = sharedContainer
     this.redisPublisher = redisPublisher
     this.redisSubscriber = redisSubscriber
     this.logger = logger
@@ -175,7 +179,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const ret = await flow.run({
       input,
@@ -230,7 +236,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const transaction = await flow.getRunningTransaction(transactionId, context)
 
@@ -266,7 +274,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
@@ -326,7 +336,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
