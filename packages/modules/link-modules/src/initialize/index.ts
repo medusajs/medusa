@@ -23,7 +23,11 @@ import {
   toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
-import { getMigration, getRevertMigration } from "../migration"
+import {
+  getExecutionPlan,
+  getMigration,
+  getRevertMigration,
+} from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import {
   composeLinkName,
@@ -241,8 +245,16 @@ async function applyMigrationUpOrDown(
     const migrate = revert
       ? getRevertMigration(definition, serviceKey, primary, foreign)
       : getMigration(definition, serviceKey, primary, foreign)
+
     await migrate({ options, logger })
   }
+
+  const plan = await getExecutionPlan({
+    linkJoinerConfigs: allLinksToLoad,
+    options,
+  })
+
+  console.log(plan)
 }
 
 export async function runMigrations(

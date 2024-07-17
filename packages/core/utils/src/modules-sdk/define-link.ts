@@ -34,7 +34,7 @@ type ExtraOptions = {
     [key: string]: string
   }
   database?: {
-    table: string
+    table?: string
     idPrefix?: string
     extraColumns?: LinkModulesExtraFields
   }

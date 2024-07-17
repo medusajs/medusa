@@ -7,7 +7,158 @@ import {
 } from "@medusajs/types"
 import { generateEntity } from "../utils"
 
-import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import { arrayDifference, DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import { EntitySchema, MikroORM } from "@mikro-orm/core"
+import { DatabaseSchema, Table } from "@mikro-orm/postgresql"
+
+const linkMigrationTableName = "link_module_migrations"
+
+export async function ensureLinkMigrationTable(orm: MikroORM<any>) {
+  await orm.em.getDriver().getConnection().execute(`
+    CREATE TABLE IF NOT EXISTS "${linkMigrationTableName}" (
+      id SERIAL PRIMARY KEY,
+      table_name VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `)
+}
+
+export async function addLinkTableToMigrationTable(
+  orm: MikroORM<any>,
+  tableName: string
+) {
+  await orm.em.getDriver().getConnection().execute(`
+    INSERT INTO "${linkMigrationTableName}" (table_name) VALUES ('${tableName}')
+  `)
+}
+
+export async function removeLinkTableToMigrationTable(
+  orm: MikroORM<any>,
+  tableName: string
+) {
+  await orm.em.getDriver().getConnection().execute(`
+    DELETE FROM "${linkMigrationTableName}" WHERE table_name = '${tableName}'
+  `)
+}
+
+export async function getExecutionPlan({
+  linkJoinerConfigs,
+  options,
+}: {
+  linkJoinerConfigs: ModuleJoinerConfig[]
+  options?: ModuleServiceInitializeOptions
+}) {
+  const linkEntities = linkJoinerConfigs
+    .map((config) => {
+      if (config.isReadOnlyLink) {
+        return
+      }
+      const [primary, foreign] = config.relationships ?? []
+      return generateEntity(config, primary, foreign)
+    })
+    .filter((entity): entity is EntitySchema => !!entity)
+
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
+  const mainOrm = await DALUtils.mikroOrmCreateConnection(dbData, [], "")
+
+  await ensureLinkMigrationTable(mainOrm)
+
+  const summary: {
+    toCreate: { tableName: string; entity: EntitySchema }[]
+    toUpdate: { tableName: string; entity: EntitySchema }[]
+    toNotify: { tableName: string; entity: EntitySchema; hintSql: string }[]
+    toDelete: { tableName: string }[]
+  } = {
+    toCreate: [],
+    toUpdate: [],
+    toDelete: [],
+    toNotify: [],
+  }
+
+  const allMigratedTables = (
+    await mainOrm.em.getDriver().getConnection().execute(`
+    SELECT table_name from "${linkMigrationTableName}"
+  `)
+  ).map((tuple) => tuple.table_name as string)
+
+  const currentEntitiesTableName = linkEntities.map(
+    (entity) => entity.meta.collection
+  )
+
+  for (const entity of linkEntities) {
+    const tableName = entity.meta.collection
+
+    const doesAlreadyExists = allMigratedTables.includes(tableName)
+
+    if (!doesAlreadyExists) {
+      summary.toCreate.push({
+        entity,
+        tableName,
+      })
+      continue
+    }
+
+    const entityOrm = await DALUtils.mikroOrmCreateConnection(
+      dbData,
+      [entity],
+      ""
+    )
+
+    try {
+      const generator = entityOrm.getSchemaGenerator()
+      const platform = entityOrm.em.getPlatform()
+      const connection = entityOrm.em.getConnection()
+      const schemaName = dbData.schema || "public"
+      const schema = new DatabaseSchema(platform, schemaName)
+      const table: Table = {
+        table_name: tableName,
+        schema_name: schemaName,
+      }
+      await entityOrm.em
+        .getPlatform()
+        ?.getSchemaHelper?.()
+        ?.loadInformationSchema(schema, connection, [table])
+
+      const updateSql = await generator.getUpdateSchemaSQL({
+        fromSchema: schema,
+      })
+
+      if (!!updateSql.length) {
+        const unsafeSqlList = ["alter column", "drop column"]
+
+        const isAutoUpdateSafe = !unsafeSqlList.some((fragment) => {
+          return updateSql.match(new RegExp(`^.*${fragment}.*$`, "ig"))
+        })
+
+        if (!isAutoUpdateSafe) {
+          summary.toNotify.push({
+            entity,
+            tableName,
+            hintSql: updateSql,
+          })
+        } else {
+          summary.toUpdate.push({
+            entity,
+            tableName,
+          })
+        }
+      }
+    } finally {
+      await entityOrm.close()
+    }
+  }
+
+  const tableToRemove = arrayDifference(
+    allMigratedTables,
+    currentEntitiesTableName
+  )
+
+  if (tableToRemove.length) {
+    summary.toDelete.push(...tableToRemove.map((tableName) => ({ tableName })))
+  }
+
+  return summary
+}
 
 export function getMigration(
   joinerConfig: ModuleJoinerConfig,
@@ -35,6 +186,8 @@ export function getMigration(
       [entity],
       pathToMigrations
     )
+
+    await ensureLinkMigrationTable(orm)
 
     const tableName = entity.meta.collection
 
@@ -75,6 +228,7 @@ export function getMigration(
     } else {
       try {
         await generator.createSchema()
+        await addLinkTableToMigrationTable(orm, tableName)
 
         logger.info(`Link module('${serviceName}'): Migration executed`)
       } catch (error) {
@@ -116,6 +270,8 @@ export function getRevertMigration(
       [entity],
       pathToMigrations
     )
+
+    await ensureLinkMigrationTable(orm)
 
     try {
       const migrator = orm.getMigrator()
