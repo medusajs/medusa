@@ -81,6 +81,28 @@ export const useCancelReturn = (
   })
 }
 
+export const useRequestReturn = (
+  id: string,
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.return.request(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useAddReturnItem = (
   id: string,
   orderId: string,

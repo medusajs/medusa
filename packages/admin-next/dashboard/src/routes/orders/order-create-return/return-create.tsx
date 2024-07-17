@@ -27,10 +27,6 @@ export const ReturnCreate = () => {
     enabled: !!activeReturnId,
   })
 
-  /**
-   * TODO: get active return here ??
-   */
-
   useEffect(() => {
     async function run() {
       if (IS_REQUEST_RUNNING || !order || !preview) {

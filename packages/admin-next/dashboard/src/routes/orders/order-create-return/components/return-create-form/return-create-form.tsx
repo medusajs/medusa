@@ -35,6 +35,7 @@ import {
   useAddReturnShipping,
   useCancelReturn,
   useRemoveReturnItem,
+  useRequestReturn,
   useUpdateReturnItem,
 } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
@@ -81,9 +82,10 @@ export const ReturnCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } = {} // useConfirmReturnRequest()
+  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } =
+    useRequestReturn(activeReturn.id)
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
-    useCancelReturn()
+    useCancelReturn(activeReturn.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id)
@@ -190,20 +192,7 @@ export const ReturnCreateForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await confirmReturnRequest({
-        order_id: order.id,
-        location_id: data.location_id,
-        return_shipping: {
-          option_id: data.option_id,
-          price: customShippingAmount, // TODO: conditionally send this
-        },
-        internal_note: data.note,
-        items: data.items.map((i) => ({
-          id: i.item_id,
-          quantity: i.quantity,
-          reason_id: i.reason_id || null,
-        })),
-      })
+      await confirmReturnRequest()
 
       handleSuccess()
     } catch (e) {
