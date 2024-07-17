@@ -595,7 +595,7 @@ export const ReturnCreateForm = ({
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
                 <Button
-                  onClick={() => cancelReturnRequest()}
+                  // onClick={() => cancelReturnRequest()}
                   variant="secondary"
                   size="small"
                 >
