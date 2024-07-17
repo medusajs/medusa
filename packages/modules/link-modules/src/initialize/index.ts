@@ -38,7 +38,7 @@ export const initialize = async (
     | ModuleServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
-  modulesDefinition?: ModuleJoinerConfig[],
+  pluginLinksDefinitions?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<{ [link: string]: ILinkModule }> => {
   const allLinks = {}
@@ -47,7 +47,7 @@ export const initialize = async (
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinitions ?? []
   )
 
   for (const linkDefinition of allLinksToLoad) {
@@ -193,21 +193,21 @@ export const initialize = async (
  *
  * @param options
  * @param logger
- * @param modulesDefinition
+ * @param pluginLinksDefinition
  */
-export async function runMigrations(
+export async function getMigrationPlanner(
   {
     options,
     logger,
   }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
+  pluginLinksDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinition ?? []
   )
 
   const allLinks = new Set<string>()
@@ -247,10 +247,7 @@ export async function runMigrations(
     }
   }
 
-  const plan = await new MigrationsExecutionPlanner(
-    allLinksToLoad,
-    options
-  ).createPlan()
+  const planner = new MigrationsExecutionPlanner(allLinksToLoad, options)
 
-  console.log(plan)
+  return planner
 }

@@ -1,4 +1,5 @@
 export * from "./initialize"
+export * from "./migration"
 export * from "./types"
 export * from "./loaders"
 export * from "./services"

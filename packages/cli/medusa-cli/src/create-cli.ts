@@ -191,6 +191,23 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: `links [action]`,
+      desc: `Manage migrations for the links from the core, your project and packages`,
+      builder: {
+        action: {
+          demand: true,
+          description: "The action to perform on links",
+          choices: ["sync"],
+        },
+      },
+      handler: handlerP(
+        getCommandHandler(`links`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
