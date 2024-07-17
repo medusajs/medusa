@@ -21,27 +21,40 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
     context,
   })
 
+  const input = container.input
+
   const currency = currencies[code.toUpperCase()]
 
   return (
     <Controller
       control={control}
       name={field}
-      render={({ field: { value, onChange, ...field } }) => {
+      render={({ field: { value, onChange, onBlur, ...field } }) => {
         return (
           <DataGridCellContainer {...container}>
-            <div className="flex size-full items-center gap-2 px-4 py-2.5">
-              <span className="txt-compact-small text-ui-fg-muted" aria-hidden>
+            <div className="relative flex size-full items-center">
+              <span
+                className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-4 w-fit min-w-4"
+                aria-hidden
+              >
                 {currency.symbol_native}
               </span>
               <CurrencyInput
                 {...field}
                 {...attributes}
-                className="txt-compact-small w-full flex-1 appearance-none bg-transparent text-right outline-none"
+                onFocus={(e) => {
+                  e.target.select()
+                  input.onFocus()
+                }}
+                onBlur={() => {
+                  onBlur()
+                  input.onBlur()
+                }}
+                className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
                 value={value}
-                onValueChange={(_value, _name, values) =>
+                onValueChange={(_value, _name, values) => {
                   onChange(values?.value)
-                }
+                }}
                 decimalScale={currency.decimal_digits}
                 decimalsLimit={currency.decimal_digits}
               />

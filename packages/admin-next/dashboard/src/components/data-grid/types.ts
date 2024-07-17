@@ -32,11 +32,16 @@ export interface DataGridCellContainerProps {
   isAnchor: boolean
   placeholder?: ReactNode
   wrapper: {
-    onMouseDown: (e: MouseEvent<HTMLElement>) => void
     onMouseOver: ((e: MouseEvent<HTMLElement>) => void) | undefined
   }
   overlay: {
-    onClick: () => void
+    onMouseDown: (e: MouseEvent<HTMLElement>) => void
+  }
+  input: {
+    onMouseDown: (e: MouseEvent<HTMLElement>) => void
+    onChange: (next: any, prev: any) => void
+    onBlur: () => void
+    onFocus: () => void
   }
 }
 

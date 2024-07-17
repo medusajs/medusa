@@ -46,9 +46,12 @@ export const useDataGridCell = <TData, TValue>({
     anchor,
     onRegisterCell,
     onUnregisterCell,
-    getMouseOverHandler,
-    getMouseDownHandler,
-    getOnChangeHandler,
+    getInputMouseDownHandler,
+    getInputChangeHandler,
+    onInputBlur,
+    onInputFocus,
+    getOverlayMouseDownHandler,
+    getWrapperMouseOverHandler,
   } = useDataGridContext()
 
   useEffect(() => {
@@ -62,11 +65,16 @@ export const useDataGridCell = <TData, TValue>({
   const container: DataGridCellContainerProps = {
     isAnchor: anchor ? isCellMatch(coords, anchor) : false,
     wrapper: {
-      onMouseDown: getMouseDownHandler(coords),
-      onMouseOver: getMouseOverHandler(coords),
+      onMouseOver: getWrapperMouseOverHandler(coords),
     },
     overlay: {
-      onClick: () => {},
+      onMouseDown: getOverlayMouseDownHandler(coords),
+    },
+    input: {
+      onMouseDown: getInputMouseDownHandler(coords),
+      onChange: getInputChangeHandler(field),
+      onBlur: onInputBlur,
+      onFocus: onInputFocus,
     },
   }
 
@@ -83,6 +91,5 @@ export const useDataGridCell = <TData, TValue>({
     control,
     attributes,
     container,
-    onChange: getOnChangeHandler(field),
   }
 }

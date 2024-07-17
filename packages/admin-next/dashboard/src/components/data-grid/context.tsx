@@ -8,13 +8,21 @@ type DataGridContextType<TForm extends FieldValues> = {
   control: Control<TForm>
   onRegisterCell: (coordinates: CellCoords) => void
   onUnregisterCell: (coordinates: CellCoords) => void
-  getMouseDownHandler: (
+  // Input handlers
+  getInputMouseDownHandler: (
     coordinates: CellCoords
   ) => (e: MouseEvent<HTMLElement>) => void
-  getMouseOverHandler: (
+  onInputFocus: () => void
+  onInputBlur: () => void
+  getInputChangeHandler: (field: Path<TForm>) => (next: any, prev: any) => void
+  // Overlay handlers
+  getOverlayMouseDownHandler: (
+    coordinates: CellCoords
+  ) => (e: MouseEvent<HTMLElement>) => void
+  // Wrapper handlers
+  getWrapperMouseOverHandler: (
     coordinates: CellCoords
   ) => ((e: MouseEvent<HTMLElement>) => void) | undefined
-  getOnChangeHandler: (field: Path<TForm>) => (next: any, prev: any) => void
 }
 
 export const DataGridContext = createContext<DataGridContextType<any> | null>(

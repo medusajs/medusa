@@ -1,3 +1,4 @@
+import { clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 import { DataGridCellContainerProps } from "../types"
 
@@ -7,30 +8,44 @@ export const DataGridCellContainer = ({
   isAnchor,
   placeholder,
   overlay,
+  input,
   wrapper,
   children,
 }: ContainerProps) => {
   return (
-    <div className="static size-full">
-      <div className="flex size-full items-start outline-none" tabIndex={-1}>
-        <div {...wrapper} className="relative size-full min-w-0 flex-1">
-          <div className="relative z-[1] flex size-full items-center justify-center">
-            <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
-              {children}
-            </RenderChildren>
-          </div>
-          {!isAnchor && (
+    <div className="static size-full" {...wrapper}>
+      <div
+        className={clx({
+          "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
+        })}
+      >
+        <div
+          className="relative flex size-full items-start outline-none"
+          tabIndex={-1}
+        >
+          <div className="relative size-full min-w-0 flex-1">
             <div
-              {...overlay}
-              tabIndex={-1}
-              className="absolute inset-0 z-[2] size-full"
-            />
-          )}
+              className="relative z-[1] flex size-full items-center justify-center"
+              onMouseDown={input.onMouseDown}
+            >
+              <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
+                {children}
+              </RenderChildren>
+            </div>
+            {!isAnchor && (
+              <div
+                {...overlay}
+                data-cell-overlay="true"
+                tabIndex={-1}
+                className="absolute inset-0 z-[2] size-full"
+              />
+            )}
+          </div>
         </div>
-      </div>
-      {/* {showDragHandle && (
+        {/* {showDragHandle && (
         <div className="bg-ui-bg-interactive absolute -bottom-[1.5px] -right-[1.5px] size-[3px]" />
       )} */}
+      </div>
     </div>
   )
 }

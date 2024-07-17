@@ -286,6 +286,14 @@ export const DataGridRoot = <
    */
   const handleKeyboardNavigation = useCallback(
     (e: KeyboardEvent) => {
+      /**
+       * If the user is currently editing a cell, we don't want to
+       * handle the keyboard navigation.
+       */
+      if (isEditing) {
+        return
+      }
+
       const direction = VERTICAL_KEYS.includes(e.key)
         ? "vertical"
         : "horizontal"
@@ -359,14 +367,14 @@ export const DataGridRoot = <
       }
     },
     [
+      isEditing,
       anchor,
       rangeEnd,
-      cols,
-      rows,
       columnVirtualizer,
       rowVirtualizer,
+      cols,
+      rows,
       setSingleRange,
-      setRangeEnd,
     ]
   )
 
@@ -384,17 +392,225 @@ export const DataGridRoot = <
     [redo, undo]
   )
 
+  const handleSpaceKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor || isEditing) {
+        return
+      }
+
+      e.preventDefault()
+
+      const id = generateCellId(anchor)
+      const container = containerRef.current
+
+      if (!container) {
+        return
+      }
+
+      const input = container.querySelector(
+        `[data-cell-id="${id}"]`
+      ) as HTMLElement
+
+      if (!input) {
+        return
+      }
+
+      const field = input.getAttribute("data-field")
+
+      if (!field) {
+        return
+      }
+
+      setValue(
+        field as Path<TFieldValues>,
+        "" as PathValue<TFieldValues, Path<TFieldValues>>,
+        {
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      )
+
+      input.focus()
+    },
+    [anchor, isEditing, setValue]
+  )
+
+  const handleEnterKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor) {
+        return
+      }
+
+      e.preventDefault()
+
+      const id = generateCellId(anchor)
+      const container = containerRef.current
+
+      if (isEditing) {
+        if (e.shiftKey) {
+          const prevRow = rows.getPrev(anchor.row)
+
+          if (prevRow) {
+            const prev = { row: prevRow, col: anchor.col }
+            setSingleRange(prev)
+            return
+          }
+
+          const prevCol = cols.getPrev(anchor.col)
+          const lastRow = rows.getLast()
+
+          if (prevCol === null || lastRow === null) {
+            return
+          }
+
+          const prev = { row: lastRow, col: prevCol }
+          setSingleRange(prev)
+
+          return
+        }
+
+        const nextRow = rows.getNext(anchor.row)
+
+        if (nextRow) {
+          const next = { row: nextRow, col: anchor.col }
+          setSingleRange(next)
+          return
+        }
+
+        const nextCol = cols.getNext(anchor.col)
+        const firstRow = rows.getFirst()
+
+        if (nextCol === null || firstRow === null) {
+          return
+        }
+
+        const next = { row: firstRow, col: nextCol }
+        setSingleRange(next)
+
+        return
+      }
+
+      if (!container) {
+        return
+      }
+
+      const input = container.querySelector(
+        `[data-cell-id="${id}"]`
+      ) as HTMLElement
+
+      if (!input) {
+        return
+      }
+
+      const field = input.getAttribute("data-field")
+
+      if (!field) {
+        return
+      }
+
+      input.focus()
+    },
+    [anchor, cols, isEditing, rows, setSingleRange]
+  )
+
+  const handleTabKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor) {
+        return
+      }
+
+      e.preventDefault()
+
+      const id = generateCellId(anchor)
+      const container = containerRef.current
+
+      if (!container) {
+        return
+      }
+
+      const input = container.querySelector(
+        `[data-cell-id="${id}"]`
+      ) as HTMLElement
+
+      if (!input) {
+        return
+      }
+
+      const field = input.getAttribute("data-field")
+
+      if (!field) {
+        return
+      }
+
+      const nextCol = cols.getNext(anchor.col)
+
+      if (nextCol === null) {
+        return
+      }
+
+      const next = { row: anchor.row, col: nextCol }
+      setSingleRange(next)
+    },
+    [anchor, cols, setSingleRange]
+  )
+
+  const handleCatchAllKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor || isEditing) {
+        return
+      }
+
+      const container = containerRef.current
+      const id = generateCellId(anchor)
+
+      if (!container) {
+        return
+      }
+
+      const input = container.querySelector(
+        `[data-cell-id="${id}"]`
+      ) as HTMLElement
+
+      if (!input) {
+        return
+      }
+
+      console.log(e.target)
+    },
+    [anchor, isEditing]
+  )
+
   const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
       if (ARROW_KEYS.includes(e.key)) {
         handleKeyboardNavigation(e)
+        return
       }
 
       if (e.key === "z" && (e.metaKey || e.ctrlKey)) {
         handleUndo(e)
+        return
       }
+
+      if (e.key === " ") {
+        handleSpaceKey(e)
+        return
+      }
+
+      if (e.key === "Enter") {
+        handleEnterKey(e)
+        return
+      }
+
+      handleCatchAllKey(e)
     },
-    [handleKeyboardNavigation, handleUndo]
+    [
+      handleKeyboardNavigation,
+      handleUndo,
+      handleSpaceKey,
+      handleEnterKey,
+      handleCatchAllKey,
+    ]
   )
 
   const handleDragEnd = useCallback(() => {
@@ -507,9 +723,12 @@ export const DataGridRoot = <
     handlePasteEvent,
   ])
 
-  const getMouseDownHandler = useCallback(
+  const getOverlayMouseDownHandler = useCallback(
     (coords: CellCoords) => {
       return (e: MouseEvent<HTMLElement>) => {
+        e.stopPropagation()
+        e.preventDefault()
+
         if (e.shiftKey) {
           setRangeEnd(coords)
           return
@@ -523,7 +742,30 @@ export const DataGridRoot = <
     [clearRange]
   )
 
-  const getMouseOverHandler = useCallback(
+  const getInputMouseDownHandler = useCallback((coords: CellCoords) => {
+    return (e: MouseEvent<HTMLElement>) => {
+      e.stopPropagation()
+      e.preventDefault()
+
+      if (e.detail !== 2) {
+        return
+      }
+
+      const container = e.target as HTMLElement
+      const id = generateCellId(coords)
+
+      // checkt if the container has the attribute data-cell-id
+      if (container.hasAttribute("data-cell-id")) {
+        container.focus()
+        return
+      }
+
+      const cell = container.querySelector(`[data-cell-id="${id}"]`)
+      console.log("found", cell)
+    }
+  }, [])
+
+  const getWrapperMouseOverHandler = useCallback(
     (coords: CellCoords) => {
       if (!isDragging && !isSelecting) {
         return
@@ -556,11 +798,7 @@ export const DataGridRoot = <
     setIsEditing(false)
   }, [])
 
-  const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
-    setIsDragging(true)
-  }, [])
-
-  const getOnChangeHandler = useCallback(
+  const getInputChangeHandler = useCallback(
     // Using `any` here as the generic type of Path<TFieldValues> will
     // not be inferred correctly.
     (field: any) => {
@@ -578,6 +816,10 @@ export const DataGridRoot = <
     },
     [setValue, execute]
   )
+
+  const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
+    setIsDragging(true)
+  }, [])
 
   /** Effects */
 
@@ -646,9 +888,12 @@ export const DataGridRoot = <
         anchor,
         onRegisterCell,
         onUnregisterCell,
-        getMouseDownHandler,
-        getMouseOverHandler,
-        getOnChangeHandler,
+        getOverlayMouseDownHandler,
+        getInputMouseDownHandler,
+        getInputChangeHandler,
+        onInputFocus,
+        onInputBlur,
+        getWrapperMouseOverHandler,
       }}
     >
       <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
@@ -779,9 +1024,7 @@ export const DataGridRoot = <
                           data-column-index={columnIndex}
                           className={clx(
                             "bg-ui-bg-base relative flex items-center border-b border-r p-0 outline-none",
-                            "after:transition-fg after:border-ui-fg-interactive after:pointer-events-none after:invisible after:absolute after:-bottom-px after:-left-px after:-right-px after:-top-px after:box-border after:border-[2px] after:content-['']",
                             {
-                              "after:visible": isAnchor,
                               "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
                                 isSelected || isAnchor,
                               "bg-ui-bg-subtle": isDragSelected && !isAnchor,
