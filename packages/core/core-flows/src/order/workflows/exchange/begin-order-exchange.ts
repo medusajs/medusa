@@ -5,23 +5,23 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { createOrderClaimsStep } from "../steps/create-claims"
-import { createOrderChangeStep } from "../steps/create-order-change"
-import { throwIfOrderIsCancelled } from "../utils/order-validation"
+import { useRemoteQueryStep } from "../../../common"
+import { createOrderExchangesStep } from "../../steps/create-exchanges"
+import { createOrderChangeStep } from "../../steps/create-order-change"
+import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "begin-claim-order-validation",
+  "begin-exchange-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
   }
 )
 
-export const beginClaimOrderWorkflowId = "begin-claim-order"
-export const beginClaimOrderWorkflow = createWorkflow(
-  beginClaimOrderWorkflowId,
+export const beginExchangeOrderWorkflowId = "begin-exchange-order"
+export const beginExchangeOrderWorkflow = createWorkflow(
+  beginExchangeOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.BeginOrderClaimWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginOrderExchangeWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -33,9 +33,8 @@ export const beginClaimOrderWorkflow = createWorkflow(
 
     validationStep({ order })
 
-    const created = createOrderClaimsStep([
+    const created = createOrderExchangesStep([
       {
-        type: input.type,
         order_id: input.order_id,
         metadata: input.metadata,
       },
@@ -45,9 +44,9 @@ export const beginClaimOrderWorkflow = createWorkflow(
       { created, input },
       ({ created, input }) => {
         return {
-          change_type: "claim" as const,
+          change_type: "exchange" as const,
           order_id: input.order_id,
-          claim_id: created[0].id,
+          exchange_id: created[0].id,
           created_by: input.created_by,
           description: input.description,
           internal_note: input.internal_note,

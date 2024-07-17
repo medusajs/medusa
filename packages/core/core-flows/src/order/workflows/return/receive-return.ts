@@ -4,14 +4,14 @@ import {
   createStep,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useRemoteQueryStep } from "../../../common"
 
 import { ReturnDTO } from "@medusajs/types"
-import { receiveReturnStep } from "../steps/receive-return"
+import { receiveReturnStep } from "../../steps/receive-return"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInReturn,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "receive-return-order-validation",

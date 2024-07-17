@@ -5,23 +5,23 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { createOrderExchangesStep } from "../steps/create-exchanges"
-import { createOrderChangeStep } from "../steps/create-order-change"
-import { throwIfOrderIsCancelled } from "../utils/order-validation"
+import { useRemoteQueryStep } from "../../../common"
+import { createOrderClaimsStep } from "../../steps/create-claims"
+import { createOrderChangeStep } from "../../steps/create-order-change"
+import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "begin-exchange-order-validation",
+  "begin-claim-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
   }
 )
 
-export const beginExchangeOrderWorkflowId = "begin-exchange-order"
-export const beginExchangeOrderWorkflow = createWorkflow(
-  beginExchangeOrderWorkflowId,
+export const beginClaimOrderWorkflowId = "begin-claim-order"
+export const beginClaimOrderWorkflow = createWorkflow(
+  beginClaimOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.BeginOrderExchangeWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginOrderClaimWorkflowInput>
   ): WorkflowData<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -33,8 +33,9 @@ export const beginExchangeOrderWorkflow = createWorkflow(
 
     validationStep({ order })
 
-    const created = createOrderExchangesStep([
+    const created = createOrderClaimsStep([
       {
+        type: input.type,
         order_id: input.order_id,
         metadata: input.metadata,
       },
@@ -44,9 +45,9 @@ export const beginExchangeOrderWorkflow = createWorkflow(
       { created, input },
       ({ created, input }) => {
         return {
-          change_type: "exchange" as const,
+          change_type: "claim" as const,
           order_id: input.order_id,
-          exchange_id: created[0].id,
+          claim_id: created[0].id,
           created_by: input.created_by,
           description: input.description,
           internal_note: input.internal_note,

@@ -10,9 +10,9 @@ import {
   createStep,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { cancelOrderReturnStep } from "../steps"
-import { throwIfIsCancelled } from "../utils/order-validation"
+import { useRemoteQueryStep } from "../../../common"
+import { cancelOrderReturnStep } from "../../steps"
+import { throwIfIsCancelled } from "../../utils/order-validation"
 
 const validateOrder = createStep(
   "validate-return",

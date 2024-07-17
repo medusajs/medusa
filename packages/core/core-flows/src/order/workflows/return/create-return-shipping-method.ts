@@ -11,14 +11,14 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { previewOrderChangeStep } from "../steps"
-import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
-import { createOrderShippingMethods } from "../steps/create-order-shipping-methods"
+import { useRemoteQueryStep } from "../../../common"
+import { previewOrderChangeStep } from "../../steps"
+import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
+import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "validate-create-return-shipping-method",

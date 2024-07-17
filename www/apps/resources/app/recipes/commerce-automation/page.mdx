@@ -795,10 +795,10 @@ The `order.placed` event is currently not emitted.
   } from "@medusajs/types"
 
   export default async function orderCreatedHandler({
-    data,
+    event: { data },
     container,
   }: SubscriberArgs<{ id: string }>) {
-    const orderId = data.data.id
+    const orderId = data.id
 
     const orderModuleService: IOrderModuleService = container
       .resolve(ModuleRegistrationName.ORDER)
@@ -886,15 +886,15 @@ You can also create a scheduled job that checks whether the number of new produc
   For example, create the file `src/subscribers/send-products-newsletter.ts` with the following content:
 
 export const newsletterHighlights = [
-  ["33", "store", "Retrieve the first store in the application."],
-  ["35", "products", "Retrieve the products created since the last newsletter send date."],
-  ["41", "", "Check whether more than 10 products have been created before proceeding."],
-  ["45", "customers", "Retrieve all customers, assuming they're considered subscribed."],
-  ["47", "createNotifications", "Send a notification (newsletter) to each customer using the Notification Module."],
-  ["50", '"email"', "Send the notification through the email channel."],
-  ["51", '"newsletter_template"', "Specify the template name in the third-party service (for example, SendGrid)."],
-  ["53", "products", "Pass the created products to the template."],
-  ["58", "updateStores", "Update the store's `last_newsletter_send_date` property with the current date."]
+  ["32", "store", "Retrieve the first store in the application."],
+  ["34", "products", "Retrieve the products created since the last newsletter send date."],
+  ["40", "", "Check whether more than 10 products have been created before proceeding."],
+  ["44", "customers", "Retrieve all customers, assuming they're considered subscribed."],
+  ["46", "createNotifications", "Send a notification (newsletter) to each customer using the Notification Module."],
+  ["49", '"email"', "Send the notification through the email channel."],
+  ["50", '"newsletter_template"', "Specify the template name in the third-party service (for example, SendGrid)."],
+  ["52", "products", "Pass the created products to the template."],
+  ["57", "updateStores", "Update the store's `last_newsletter_send_date` property with the current date."]
 ]
 
   ```ts title="src/subscribers/send-products-newsletter.ts" highlights={newsletterHighlights} collapsibleLines="1-14" expandButtonLabel="Show Imports"
@@ -913,7 +913,6 @@ export const newsletterHighlights = [
   } from "@medusajs/types"
 
   export default async function productCreateHandler({
-    data,
     container,
   }: SubscriberArgs<{ id: string }>) {
     const productModuleService: IProductModuleService = 
@@ -926,7 +925,7 @@ export const newsletterHighlights = [
       container.resolve(ModuleRegistrationName.CUSTOMER)
 
     const notificationModuleService:
-    INotificationModuleService = container.resolve(
+      INotificationModuleService = container.resolve(
         ModuleRegistrationName.NOTIFICATION
       )
 

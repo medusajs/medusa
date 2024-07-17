@@ -12,12 +12,12 @@ In this chapter, you'll learn how subscribers receive an event's data payload.
 
 When events are emitted, they’re emitted with a data payload. 
 
-The object that the subscriber function receives as a parameter has a `data` property, which is an object holding the event payload with additional context.
+The object that the subscriber function receives as a parameter has an `event` property, which is an object holding the event payload in a `data` property with additional context.
 
 For example:
 
 export const highlights = [
-  ["7", "", "The event's data payload."],
+  ["7", "event", "The event details."],
   ["8", "{ id: string }", "The type of expected data payloads."],
 ]
 
@@ -28,9 +28,9 @@ import type {
 } from "@medusajs/medusa"
 
 export default async function productCreateHandler({
-  data,
+  event,
 }: SubscriberArgs<{ id: string }>) {
-  const productId = data.data.id
+  const productId = event.data.id
   console.log(`The product ${productId} was created`)
 }
 
@@ -39,16 +39,16 @@ export const config: SubscriberConfig = {
 }
 ```
 
-The `data` object has the following properties:
+The `event` object has the following properties:
 
 <TypeList types={[
   {
     name: "data",
     type: "`object`",
-    description: "The data payload of the event. Its properties depend on the event."
+    description: "The data payload of the event. Its properties are different for each event."
   },
   {
-    name: "eventName",
+    name: "name",
     type: "string",
     description: "The name of the triggered event."
   },

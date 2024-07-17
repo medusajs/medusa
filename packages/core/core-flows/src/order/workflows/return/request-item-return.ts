@@ -11,14 +11,14 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import { previewOrderChangeStep } from "../steps"
-import { createOrderChangeActionsStep } from "../steps/create-order-change-actions"
+import { useRemoteQueryStep } from "../../../common"
+import { previewOrderChangeStep } from "../../steps"
+import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
-} from "../utils/order-validation"
+} from "../../utils/order-validation"
 
 const validationStep = createStep(
   "request-item-return-validation",
@@ -28,7 +28,7 @@ const validationStep = createStep(
     orderReturn,
     items,
   }: {
-    order: OrderDTO
+    order: Pick<OrderDTO, "id" | "items">
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
     items: OrderWorkflow.RequestItemReturnWorkflowInput["items"]
