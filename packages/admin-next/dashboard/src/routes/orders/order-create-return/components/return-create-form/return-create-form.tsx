@@ -154,6 +154,7 @@ export const ReturnCreateForm = ({
       if (ind > -1) {
         if (items[ind].quantity !== i.detail.return_requested_quantity) {
           update(ind, {
+            ...items[ind],
             quantity: i.detail.return_requested_quantity,
           })
         }
