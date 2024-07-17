@@ -986,9 +986,9 @@ Next, replace the new `TODO` with the following snippet:
 
 export const vendorOrder3Highlights = [
   ["3", "map", "Loop over the vendor IDs and create a child order with only their items."],
-  ["9", "prepareOrderData", "Format the order data and pass it as the workflow's input."],
-  ["17", "push", "Add a link between the vendor and the order to be created later."],
-  ["29", "cancelOrderWorkflow", "Cancel all created workflows if an error occurs while creating any of them."]
+  ["11", "prepareOrderData", "Format the order data and pass it as the workflow's input."],
+  ["18", "push", "Add a link between the vendor and the order to be created later."],
+  ["30", "cancelOrderWorkflow", "Cancel all created workflows if an error occurs while creating any of them."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder3Highlights}
@@ -998,12 +998,13 @@ try {
       const items = vendorsItems[vendorId]
       const vendor = vendors.find((v) => v.id === vendorId)!
 
-      const { result: childOrder } = await createOrdersWorkflow
-        .run({
-          input: prepareOrderData(items, parentOrder),
-          context,
-          container,
-        }) as unknown as { result: VendorOrder }
+      const {result: childOrder} = await createOrdersWorkflow(
+        container
+      )
+      .run({
+        input: prepareOrderData(items, parentOrder),
+        context,
+      }) as unknown as { result: VendorOrder }
 
       childOrder.vendor = vendor
       createdOrders.push(childOrder)
@@ -1020,7 +1021,7 @@ try {
   )
 } catch (e) {
   await Promise.all(createdOrders.map((createdOrder) => {
-    return cancelOrderWorkflow.run({
+    return cancelOrderWorkflow(container).run({
       input: {
         order_id: createdOrder.id,
       },
@@ -1101,7 +1102,7 @@ Finally, replace the `TODO` in the compensation function with the following:
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts"
 await Promise.all(created_orders.map((createdOrder) => {
-  return cancelOrderWorkflow.run({
+  return cancelOrderWorkflow(container).run({
     input: {
       order_id: createdOrder.id,
     },
