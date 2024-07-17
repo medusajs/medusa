@@ -27,7 +27,6 @@ export const colors = {
     "--tag-neutral-border": "rgba(255, 255, 255, 0.06)",
     "--tag-blue-border": "rgba(30, 58, 138, 1)",
     "--tag-neutral-text": "rgba(212, 212, 216, 1)",
-    "--fg-muted": "rgba(161, 161, 170, 1)",
     "--tag-purple-border": "rgba(91, 33, 182, 1)",
     "--tag-green-text": "rgba(52, 211, 153, 1)",
     "--button-inverted-hover": "rgba(113, 113, 122, 1)",
@@ -87,7 +86,8 @@ export const colors = {
     "--contrast-bg-base-hover": "rgba(63, 63, 70, 1)",
     "--bg-field-component-hover": "rgba(39, 39, 42, 1)",
     "--bg-subtle-pressed": "rgba(39, 39, 42, 1)",
-    "--button-transparent-pressed": "rgba(255, 255, 255, 0.12)"
+    "--button-transparent-pressed": "rgba(255, 255, 255, 0.12)",
+    "--fg-muted": "rgba(113, 113, 122, 1)"
   },
   "light": {
     "--tag-neutral-border": "rgba(228, 228, 231, 1)",

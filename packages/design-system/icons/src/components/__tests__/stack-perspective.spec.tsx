@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import CheckCircle from "../check-circle"
+  import StackPerspective from "../stack-perspective"
 
-  describe("CheckCircle", () => {
+  describe("StackPerspective", () => {
     it("should render the icon without errors", async () => {
-      render(<CheckCircle data-testid="icon" />)
+      render(<StackPerspective data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

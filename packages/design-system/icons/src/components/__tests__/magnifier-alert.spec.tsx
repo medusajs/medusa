@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import CheckCircle from "../check-circle"
+  import MagnifierAlert from "../magnifier-alert"
 
-  describe("CheckCircle", () => {
+  describe("MagnifierAlert", () => {
     it("should render the icon without errors", async () => {
-      render(<CheckCircle data-testid="icon" />)
+      render(<MagnifierAlert data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

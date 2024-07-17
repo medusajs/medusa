@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import CheckCircle from "../check-circle"
+  import History from "../history"
 
-  describe("CheckCircle", () => {
+  describe("History", () => {
     it("should render the icon without errors", async () => {
-      render(<CheckCircle data-testid="icon" />)
+      render(<History data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { IconProps } from "../types"
-const CheckCircle = React.forwardRef<SVGSVGElement, IconProps>(
+const Book = React.forwardRef<SVGSVGElement, IconProps>(
   ({ color = "currentColor", ...props }, ref) => {
     return (
       <svg
@@ -16,18 +16,18 @@ const CheckCircle = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M7.5 13.945a6.444 6.444 0 1 0 0-12.89 6.444 6.444 0 0 0 0 12.89"
+          d="M4.611 1.056v9.777M1.944 12.389V2.833c0-.982.796-1.777 1.778-1.777h9.334v9.777"
         />
         <path
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="m4.611 7.722 2 2.223 3.778-4.89"
+          d="M4.167 13.945H3.5a1.556 1.556 0 1 1 0-3.111h9.556c-.57.75-.653 2.264 0 3.11zM7.278 4.167h3.11M7.278 6.834h3.11"
         />
       </svg>
     )
   }
 )
-CheckCircle.displayName = "CheckCircle"
-export default CheckCircle
+Book.displayName = "Book"
+export default Book
