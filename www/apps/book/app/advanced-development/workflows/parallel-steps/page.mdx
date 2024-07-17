@@ -15,8 +15,8 @@ The workflow waits until all steps passed to the `parallelize` function finish e
 For example:
 
 export const highlights = [
-  ["23", "[prices, productSalesChannel]", "The result of the steps. `prices` is the result of `createPricesStep`, and `productSalesChannel` is the result of `attachProductToSalesChannelStep`."],
-  ["23", "parallelize", "Run the steps passed as parameters in parallel."],
+  ["21", "[prices, productSalesChannel]", "The result of the steps. `prices` is the result of `createPricesStep`, and `productSalesChannel` is the result of `attachProductToSalesChannelStep`."],
+  ["21", "parallelize", "Run the steps passed as parameters in parallel."],
 ]
 
 ```ts highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
@@ -24,7 +24,6 @@ import {
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
-import { ProductDTO } from "@medusajs/types"
 import {
   createProductStep,
   getProductStep,
@@ -36,10 +35,9 @@ interface WorkflowInput {
   title: string
 }
 
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  ProductDTO
->("my-workflow", (input) => {
+const myWorkflow = createWorkflow(
+  "my-workflow", 
+  (input: WorkflowInput) => {
    const product = createProductStep(input)
 
    const [prices, productSalesChannel] = parallelize(

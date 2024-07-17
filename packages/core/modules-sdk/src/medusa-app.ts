@@ -234,6 +234,7 @@ export type MedusaAppOutput = {
   linkMigrationExecutionPlanner: GetLinkExecutionPlanner
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
+  onApplicationStart: () => Promise<void>
   sharedContainer?: MedusaContainer
 }
 
@@ -283,6 +284,10 @@ async function MedusaApp_({
 
   const onApplicationPrepareShutdown = async () => {
     await promiseAll([MedusaModule.onApplicationPrepareShutdown()])
+  }
+
+  const onApplicationStart = async () => {
+    await MedusaModule.onApplicationStart()
   }
 
   const modules: MedusaModuleConfig =
@@ -350,6 +355,7 @@ async function MedusaApp_({
     return {
       onApplicationShutdown,
       onApplicationPrepareShutdown,
+      onApplicationStart,
       modules: allModules,
       link: undefined,
       query: async () => {
@@ -511,6 +517,7 @@ async function MedusaApp_({
   return {
     onApplicationShutdown,
     onApplicationPrepareShutdown,
+    onApplicationStart,
     modules: allModules,
     link: remoteLink,
     query,
@@ -527,11 +534,7 @@ async function MedusaApp_({
 export async function MedusaApp(
   options: MedusaAppOptions = {}
 ): Promise<MedusaAppOutput> {
-  try {
-    return await MedusaApp_(options)
-  } finally {
-    MedusaModule.onApplicationStart(options.onApplicationStartCb)
-  }
+  return await MedusaApp_(options)
 }
 
 export async function MedusaAppMigrateUp(

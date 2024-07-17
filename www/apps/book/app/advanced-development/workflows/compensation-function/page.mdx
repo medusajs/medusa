@@ -62,14 +62,9 @@ import {
 
 // ...
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input) {
   const str1 = step1()
   step2()
 

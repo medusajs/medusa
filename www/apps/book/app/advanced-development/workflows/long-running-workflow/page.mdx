@@ -47,14 +47,9 @@ const step3 = createStep("step-3", async () => {
   return new StepResponse("Finished three steps")
 })
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->("hello-world", function () {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function () {
   step1()
   step2()
   const message = step3()

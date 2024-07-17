@@ -139,6 +139,15 @@ export async function loadInternalModule(
     )
   }
 
+  if (resolution.definition.__passSharedContainer) {
+    localContainer.register(
+      "sharedContainer",
+      asFunction(() => {
+        return container
+      })
+    )
+  }
+
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
   const error = await runLoaders(loaders, {
     container,
