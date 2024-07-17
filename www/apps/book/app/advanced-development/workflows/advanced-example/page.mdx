@@ -205,23 +205,17 @@ With the steps ready, you'll create the workflow that runs these steps to update
 
 Change the content of `src/workflows/update-product-erp/index.ts` to the following:
 
-```ts title="src/workflows/update-product-erp/index.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+```ts title="src/workflows/update-product-erp/index.ts" collapsibleLines="1-5" expandButtonLabel="Show Imports"
 import { createWorkflow } from "@medusajs/workflows-sdk"
-import { UpsertProductDTO, ProductDTO } from "@medusajs/types"
+import { UpsertProductDTO } from "@medusajs/types"
 import updateProduct from "./steps/update-product"
 import updateErp from "./steps/update-erp"
 
 export type UpdateProductAndErpWorkflowInput = UpsertProductDTO
 
-type WorkflowOutput = {
-  product: ProductDTO
-  erpData: Record<string, unknown>
-}
-
-const updateProductAndErpWorkflow = createWorkflow<
-  UpdateProductAndErpWorkflowInput,
-  WorkflowOutput
->("update-product-and-erp", function (input) {
+const updateProductAndErpWorkflow = createWorkflow(
+  "update-product-and-erp", 
+  function (input: UpdateProductAndErpWorkflowInput) {
   const product = updateProduct(input)
   const erpData = updateErp(input)
 
