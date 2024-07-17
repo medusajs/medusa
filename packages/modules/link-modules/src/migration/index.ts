@@ -1,290 +1,247 @@
 import {
-  JoinerRelationship,
-  LoaderOptions,
-  Logger,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
+
 import { generateEntity } from "../utils"
-
-import { arrayDifference, DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
-import { DatabaseSchema, Table } from "@mikro-orm/postgresql"
+import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
+import { arrayDifference, DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 
-const linkMigrationTableName = "link_module_migrations"
-
-export async function ensureLinkMigrationTable(orm: MikroORM<any>) {
-  await orm.em.getDriver().getConnection().execute(`
-    CREATE TABLE IF NOT EXISTS "${linkMigrationTableName}" (
-      id SERIAL PRIMARY KEY,
-      table_name VARCHAR(255) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `)
-}
-
-export async function addLinkTableToMigrationTable(
-  orm: MikroORM<any>,
-  tableName: string
-) {
-  await orm.em.getDriver().getConnection().execute(`
-    INSERT INTO "${linkMigrationTableName}" (table_name) VALUES ('${tableName}')
-  `)
-}
-
-export async function removeLinkTableToMigrationTable(
-  orm: MikroORM<any>,
-  tableName: string
-) {
-  await orm.em.getDriver().getConnection().execute(`
-    DELETE FROM "${linkMigrationTableName}" WHERE table_name = '${tableName}'
-  `)
-}
-
-export async function getExecutionPlan({
-  linkJoinerConfigs,
-  options,
-}: {
-  linkJoinerConfigs: ModuleJoinerConfig[]
-  options?: ModuleServiceInitializeOptions
-}) {
-  const linkEntities = linkJoinerConfigs
-    .map((config) => {
-      if (config.isReadOnlyLink) {
-        return
-      }
-      const [primary, foreign] = config.relationships ?? []
-      return generateEntity(config, primary, foreign)
-    })
-    .filter((entity): entity is EntitySchema => !!entity)
-
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
-  const mainOrm = await DALUtils.mikroOrmCreateConnection(dbData, [], "")
-
-  await ensureLinkMigrationTable(mainOrm)
-
-  const summary: {
-    toCreate: { tableName: string; entity: EntitySchema }[]
-    toUpdate: { tableName: string; entity: EntitySchema }[]
-    toNotify: { tableName: string; entity: EntitySchema; hintSql: string }[]
-    toDelete: { tableName: string }[]
-  } = {
-    toCreate: [],
-    toUpdate: [],
-    toDelete: [],
-    toNotify: [],
-  }
-
-  const allMigratedTables = (
-    await mainOrm.em.getDriver().getConnection().execute(`
-    SELECT table_name from "${linkMigrationTableName}"
-  `)
-  ).map((tuple) => tuple.table_name as string)
-
-  const currentEntitiesTableName = linkEntities.map(
-    (entity) => entity.meta.collection
-  )
-
-  for (const entity of linkEntities) {
-    const tableName = entity.meta.collection
-
-    const doesAlreadyExists = allMigratedTables.includes(tableName)
-
-    if (!doesAlreadyExists) {
-      summary.toCreate.push({
-        entity,
-        tableName,
-      })
-      continue
+/**
+ * A list of actions prepared and executed
+ * by the "MigrationsExecutionPlanner".
+ */
+export type PlannerAction =
+  | {
+      action: "create" | "update" | "notify"
+      sql: string
+      tableName: string
+      entity: EntitySchema
+    }
+  | {
+      action: "noop"
+      tableName: string
+      entity: EntitySchema
+    }
+  | {
+      action: "delete"
+      tableName: string
     }
 
-    const entityOrm = await DALUtils.mikroOrmCreateConnection(
-      dbData,
-      [entity],
-      ""
-    )
+/**
+ * The migrations execution planner creates a plan of SQL queries
+ * to be executed to keep link modules database state in sync
+ * with the links defined inside the user application.
+ */
+export class MigrationsExecutionPlanner {
+  /**
+   * Database options for the module service
+   */
+  #dbConfig: ReturnType<typeof ModulesSdkUtils.loadDatabaseConfig>
 
-    try {
-      const generator = entityOrm.getSchemaGenerator()
-      const platform = entityOrm.em.getPlatform()
-      const connection = entityOrm.em.getConnection()
-      const schemaName = dbData.schema || "public"
-      const schema = new DatabaseSchema(platform, schemaName)
-      const table: Table = {
-        table_name: tableName,
-        schema_name: schemaName,
-      }
-      await entityOrm.em
-        .getPlatform()
-        ?.getSchemaHelper?.()
-        ?.loadInformationSchema(schema, connection, [table])
+  /**
+   * The set of commands that are unsafe to execute automatically when
+   * performing "alter table"
+   */
+  #unsafeSQLCommands = ["alter column", "drop column"]
 
-      const updateSql = await generator.getUpdateSchemaSQL({
-        fromSchema: schema,
-      })
+  /**
+   * On-the-fly computed set of entities for the user provided
+   * joinerConfig
+   */
+  #linksEntities: EntitySchema[]
 
-      if (!!updateSql.length) {
-        const unsafeSqlList = ["alter column", "drop column"]
+  /**
+   * An array of table names computed from the "#linksEntities" property
+   */
+  #linksTableNames: string[]
 
-        const isAutoUpdateSafe = !unsafeSqlList.some((fragment) => {
-          return updateSql.match(new RegExp(`^.*${fragment}.*$`, "ig"))
-        })
+  /**
+   * The table that keeps a track of tables generated by the link
+   * module.
+   */
+  protected tableName = "link_module_migrations"
 
-        if (!isAutoUpdateSafe) {
-          summary.toNotify.push({
-            entity,
-            tableName,
-            hintSql: updateSql,
-          })
-        } else {
-          summary.toUpdate.push({
-            entity,
-            tableName,
-          })
-        }
-      }
-    } finally {
-      await entityOrm.close()
-    }
-  }
-
-  const tableToRemove = arrayDifference(
-    allMigratedTables,
-    currentEntitiesTableName
-  )
-
-  if (tableToRemove.length) {
-    summary.toDelete.push(...tableToRemove.map((tableName) => ({ tableName })))
-  }
-
-  return summary
-}
-
-export function getMigration(
-  joinerConfig: ModuleJoinerConfig,
-  serviceName: string,
-  primary: JoinerRelationship,
-  foreign: JoinerRelationship
-) {
-  return async function runMigrations(
-    {
-      options,
-      logger,
-    }: Pick<
-      LoaderOptions<ModuleServiceInitializeOptions>,
-      "options" | "logger"
-    > = {} as any
+  constructor(
+    joinerConfig: ModuleJoinerConfig[],
+    options?: ModuleServiceInitializeOptions
   ) {
-    logger ??= console as unknown as Logger
-
-    const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
-    const entity = generateEntity(joinerConfig, primary, foreign)
-    const pathToMigrations = __dirname + "/../migrations"
-
-    const orm = await DALUtils.mikroOrmCreateConnection(
-      dbData,
-      [entity],
-      pathToMigrations
+    this.#dbConfig = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
+    this.#linksEntities = joinerConfig
+      .map((config) => {
+        if (config.isReadOnlyLink) {
+          return
+        }
+        const [primary, foreign] = config.relationships ?? []
+        return generateEntity(config, primary, foreign)
+      })
+      .filter((entity): entity is EntitySchema => !!entity)
+    this.#linksTableNames = this.#linksEntities.map(
+      (entity) => entity.meta.tableName
     )
+  }
 
-    await ensureLinkMigrationTable(orm)
+  /**
+   * Initializes the ORM using the normalized dbConfig and set
+   * of provided entities
+   */
+  protected async createORM(entities: EntitySchema[] = []) {
+    return await DALUtils.mikroOrmCreateConnection(this.#dbConfig, entities, "")
+  }
 
-    const tableName = entity.meta.collection
+  /**
+   * Ensure the table to track link modules migrations
+   * exists.
+   *
+   * @param orm MikroORM
+   */
+  protected async ensureMigrationsTable(
+    orm: MikroORM<PostgreSqlDriver>
+  ): Promise<void> {
+    await orm.em.getDriver().getConnection().execute(`
+      CREATE TABLE IF NOT EXISTS "${this.tableName}" (
+        id SERIAL PRIMARY KEY,
+        table_name VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+  }
 
-    let hasTable = false
-    try {
-      await orm.em
-        .getConnection()
-        .execute(`SELECT 1 FROM "${tableName}" LIMIT 0`)
-      hasTable = true
-    } catch {}
+  /**
+   * Returns an array of table names that have been tracked during
+   * the last run. In short, these tables were created by the
+   * link modules migrations runner.
+   *
+   * @param orm MikroORM
+   */
+  protected async getTrackedLinksTables(
+    orm: MikroORM<PostgreSqlDriver>
+  ): Promise<string[]> {
+    const results = await orm.em.getDriver().getConnection().execute<
+      {
+        table_name: string
+      }[]
+    >(`
+      SELECT table_name from "${this.tableName}"
+    `)
+
+    return results.map((tuple) => tuple.table_name)
+  }
+
+  /**
+   * Returns the migration plan for a specific link entity.
+   */
+  protected async getEntityMigrationPlan(
+    entity: EntitySchema,
+    trackedLinksTables: string[]
+  ): Promise<PlannerAction> {
+    const tableName = entity.meta.tableName
+    const orm = await this.createORM([entity])
 
     const generator = orm.getSchemaGenerator()
-    if (hasTable) {
-      /* const updateSql = await generator.getUpdateSchemaSQL()
-      const entityUpdates = updateSql
-        .split(";")
-        .map((sql) => sql.trim())
-        .filter((sql) =>
-          sql.toLowerCase().includes(`alter table "${tableName.toLowerCase()}"`)
-        )
+    const platform = orm.em.getPlatform()
+    const connection = orm.em.getConnection()
+    const schemaName = this.#dbConfig.schema || "public"
 
-      if (entityUpdates.length > 0) {
-        try {
-          await generator.execute(entityUpdates.join(";"))
-          logger.info(`Link module "${serviceName}" migration executed`)
-        } catch (error) {
-          logger.error(
-            `Link module "${serviceName}" migration failed to run - Error: ${error.errros ?? error}`
-          )
-        }
-      } else {
-        logger.info(`Skipping "${tableName}" migration.`)
-      }*/
-      // Note: Temporarily skipping this for handling no logs on the CI. Bring this back if necessary.
-      // logger.info(
-      //   `Link module('${serviceName}'): Table already exists. Write your own migration if needed.`
-      // )
-    } else {
-      try {
-        await generator.createSchema()
-        await addLinkTableToMigrationTable(orm, tableName)
-
-        logger.info(`Link module('${serviceName}'): Migration executed`)
-      } catch (error) {
-        logger.error(
-          `Link module('${serviceName}'): Migration failed - Error: ${
-            error.errros ?? error
-          }`
-        )
+    /**
+     * If the table name for the entity has not been
+     * managed by us earlier, then we should create
+     * it.
+     */
+    if (trackedLinksTables.includes(tableName)) {
+      return {
+        action: "create",
+        tableName,
+        entity,
+        sql: await generator.getCreateSchemaSQL({
+          schema: schemaName,
+        }),
       }
     }
 
-    await orm.close()
+    /**
+     * Pre-fetching information schema from the database and using that
+     * as the way to compute the update diff.
+     *
+     * @note
+     * The "loadInformationSchema" mutates the "dbSchema" argument provided
+     * to it as the first argument.
+     */
+    const dbSchema = new DatabaseSchema(platform, schemaName)
+    await platform
+      .getSchemaHelper?.()
+      ?.loadInformationSchema(dbSchema, connection, [
+        {
+          table_name: tableName,
+          schema_name: schemaName,
+        },
+      ])
+
+    const updateSQL = await generator.getUpdateSchemaSQL({
+      fromSchema: dbSchema,
+      schema: schemaName,
+    })
+
+    /**
+     * Entity is upto-date and hence we do not have to perform
+     * any updates on it.
+     */
+    if (!updateSQL.length) {
+      return {
+        action: "noop",
+        tableName,
+        entity,
+      }
+    }
+
+    const usesUnsafeCommands = this.#unsafeSQLCommands.some((fragment) => {
+      return updateSQL.match(new RegExp(`^.*${fragment}.*$`, "ig"))
+    })
+
+    return {
+      action: usesUnsafeCommands ? "notify" : "update",
+      tableName,
+      entity,
+      sql: updateSQL,
+    }
   }
-}
 
-export function getRevertMigration(
-  joinerConfig: ModuleJoinerConfig,
-  serviceName: string,
-  primary: JoinerRelationship,
-  foreign: JoinerRelationship
-) {
-  return async function revertMigrations(
-    {
-      options,
-      logger,
-    }: Pick<
-      LoaderOptions<ModuleServiceInitializeOptions>,
-      "options" | "logger"
-    > = {} as any
-  ) {
-    logger ??= console as unknown as Logger
+  /**
+   * Creates a plan to executed in order to keep the database state in
+   * sync with the user-defined links.
+   *
+   * This method only creates a plan and does not change the database
+   * state. You must call the "executePlan" method for that.
+   */
+  async createPlan() {
+    const orm = await this.createORM()
+    await this.ensureMigrationsTable(orm)
 
-    const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
-    const entity = generateEntity(joinerConfig, primary, foreign)
-    const pathToMigrations = __dirname + "/../migrations"
+    const executionActions: PlannerAction[] = []
+    const trackedTables = await this.getTrackedLinksTables(orm)
 
-    const orm = await DALUtils.mikroOrmCreateConnection(
-      dbData,
-      [entity],
-      pathToMigrations
-    )
-
-    await ensureLinkMigrationTable(orm)
-
-    try {
-      const migrator = orm.getMigrator()
-      await migrator.down()
-      logger.info(`Link module "${serviceName}" migration executed`)
-    } catch (error) {
-      logger.error(
-        `Link module "${serviceName}" migration failed to run - Error: ${
-          error.errros ?? error
-        }`
+    /**
+     * Looping through the new set of entities and generating
+     * execution plan for them
+     */
+    for (let entity of this.#linksEntities) {
+      executionActions.push(
+        await this.getEntityMigrationPlan(entity, trackedTables)
       )
     }
 
-    await orm.close()
+    /**
+     * Finding the tables to be removed
+     */
+    const tablesToRemove = arrayDifference(trackedTables, this.#linksTableNames)
+    tablesToRemove.forEach((tableToRemove) => {
+      executionActions.push({
+        action: "delete",
+        tableName: tableToRemove,
+      })
+    })
+
+    return executionActions
   }
 }

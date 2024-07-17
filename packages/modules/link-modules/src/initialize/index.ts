@@ -23,7 +23,7 @@ import {
   toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
-import { getExecutionPlan } from "../migration"
+import { MigrationsExecutionPlanner } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import {
   composeLinkName,
@@ -247,36 +247,10 @@ export async function runMigrations(
     }
   }
 
-  const plan = await getExecutionPlan({
-    linkJoinerConfigs: allLinksToLoad,
-    options,
-  })
+  const plan = await new MigrationsExecutionPlanner(
+    allLinksToLoad,
+    options
+  ).createPlan()
 
-  if (plan.toNotify.length) {
-  }
-
-  if (plan.toCreate.length) {
-  }
-
-  if (plan.toUpdate.length) {
-  }
-
-  if (plan.toDelete.length) {
-  }
-
-  /*const migrate = revert
-    ? getRevertMigration(definition, serviceKey, primary, foreign)
-    : getMigration(definition, serviceKey, primary, foreign)
-
-  await migrate({ options, logger })*/
+  console.log(plan)
 }
-
-/*export async function revertMigrations(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
-) {
-  await applyMigrationUpOrDown({ options, logger }, modulesDefinition, true)
-}*/
