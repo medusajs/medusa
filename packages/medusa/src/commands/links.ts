@@ -8,6 +8,7 @@ import {
   PlannerAction,
   PlannerActionLinkDescriptor,
 } from "@medusajs/link-modules"
+import checkbox from "@inquirer/checkbox"
 
 const TERMINAL_SIZE = process.stdout.columns
 
@@ -60,6 +61,44 @@ function showMessage(
   })
 }
 
+async function askForLinksToDelete(actions: PlannerAction[]) {
+  console.log("\n")
+  const answer = await checkbox({
+    message:
+      "Please confirm the following links to be deleted (does not belong to your project anymore)",
+    choices: [
+      ...actions.map((action) => {
+        return {
+          name: action.tableName,
+          value: action.tableName,
+          checked: true,
+        }
+      }),
+      {
+        name: "none",
+        value: "none",
+        checked: false,
+      },
+    ],
+    validate: (answer) => {
+      if (answer.length === 0) {
+        return "Please select at least one choice"
+      }
+
+      if (
+        answer.length > 1 &&
+        answer.some((choice) => "value" in choice && choice.value === "none")
+      ) {
+        return "'none' cannot be selected with other selected choices"
+      }
+
+      return true
+    },
+  })
+
+  return answer.filter((a) => a !== "none")
+}
+
 const main = async function ({ directory }) {
   const args = process.argv
   args.shift()
@@ -101,13 +140,13 @@ const main = async function ({ directory }) {
 
   const toUpdate = groupActionPlan.update ?? []
   if (toUpdate.length) {
-    showMessage("Links to be update", toUpdate)
+    showMessage("Links to be updated", toUpdate)
   }
 
   const toDelete = groupActionPlan.delete ?? []
   if (toDelete.length) {
-    const content = toDelete.map((action) => "- " + action.tableName).join("\n")
-    showMessage("Links to be deleted", content)
+    const answer = askForLinksToDelete(toDelete)
+    console.log(answer)
   }
 
   const toNotify = groupActionPlan.notify ?? []
