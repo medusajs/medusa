@@ -2558,7 +2558,7 @@
 		},
 		{
 			"id": 4895,
-			"name": "MessageBody",
+			"name": "Event",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
@@ -2586,7 +2586,7 @@
 					"children": [
 						{
 							"id": 4897,
-							"name": "eventName",
+							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
@@ -2672,7 +2672,7 @@
 								"refersToTypeParameter": true
 							}
 						],
-						"name": "MessageBody",
+						"name": "Event",
 						"package": "@medusajs/types"
 					},
 					{
@@ -16872,7 +16872,7 @@
 		},
 		"4895": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "MessageBody"
+			"qualifiedName": "Event"
 		},
 		"4896": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
@@ -16880,7 +16880,7 @@
 		},
 		"4897": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.eventName"
+			"qualifiedName": "__type.name"
 		},
 		"4898": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
