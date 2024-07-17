@@ -126,6 +126,11 @@ export const ReturnCreateForm = ({
     [order.items]
   )
 
+  const previewItemsMap = useMemo(
+    () => new Map(preview.items.map((i) => [i.id, i])),
+    [preview.items]
+  )
+
   const {
     fields: items,
     append,
@@ -371,6 +376,7 @@ export const ReturnCreateForm = ({
               <ReturnItem
                 key={item.id}
                 item={itemsMap.get(item.item_id)!}
+                previewItem={previewItemsMap.get(item.item_id)!}
                 currencyCode={order.currency_code}
                 form={form}
                 onRemove={() => {

@@ -15,6 +15,7 @@ import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 
 type OrderEditItemProps = {
   item: AdminOrderLineItem
+  previewItem: AdminOrderLineItem
   currencyCode: string
   index: number
 
@@ -26,6 +27,7 @@ type OrderEditItemProps = {
 
 function ReturnItem({
   item,
+  previewItem,
   currencyCode,
   form,
   onRemove,
@@ -98,7 +100,10 @@ function ReturnItem({
           </div>
 
           <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
-            <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
+            <MoneyAmountCell
+              currencyCode={currencyCode}
+              amount={previewItem.return_requested_total}
+            />
           </div>
 
           <ActionMenu
