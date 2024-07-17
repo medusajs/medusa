@@ -258,7 +258,7 @@ export class MigrationsExecutionPlanner {
     }
 
     const linksTableNames = this.#linksEntities.map(
-      (entity) => entity.meta.collection
+      ({ entity }) => entity.meta.collection
     )
 
     /**
