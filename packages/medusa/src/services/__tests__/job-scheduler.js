@@ -74,6 +74,13 @@ describe("JobSchedulerService", () => {
         },
         {
           repeat: { pattern: "* * * * *" },
+          removeOnComplete: {
+            age: 86400,
+          },
+          removeOnFail: {
+            age: 604800,
+            count: 5000,
+          },
         }
       )
     })
