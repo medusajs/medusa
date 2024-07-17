@@ -33,6 +33,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
   useAddReturnItem,
   useAddReturnShipping,
+  useCancelReturn,
   useRemoveReturnItem,
   useUpdateReturnItem,
 } from "../../../../../hooks/api/returns"
@@ -80,7 +81,9 @@ export const ReturnCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } = {} // useAConfirmReturnRequest()
+  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } = {} // useConfirmReturnRequest()
+  const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
+    useCancelReturn()
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id)
@@ -96,6 +99,7 @@ export const ReturnCreateForm = ({
 
   const isRequestLoading =
     isConfirming ||
+    isCanceling ||
     isAddingReturnShipping ||
     isAddingReturnItem ||
     isRemovingReturnItem ||
@@ -602,7 +606,11 @@ export const ReturnCreateForm = ({
           <div className="flex w-full items-center justify-end gap-x-4">
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
-                <Button variant="secondary" size="small">
+                <Button
+                  onClick={() => cancelReturnRequest()}
+                  variant="secondary"
+                  size="small"
+                >
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
