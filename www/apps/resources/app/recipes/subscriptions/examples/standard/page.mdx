@@ -784,7 +784,7 @@ const SubscriptionForm = () => {
     updateSubscriptionData(interval, period)
     .then(() => {
       setIsLoading(false)
-      router.push(pathname + "?step=review", { scroll: false })
+      router.push(pathname + "?step=delivery", { scroll: false })
     })
   }
 
@@ -900,23 +900,18 @@ export async function updateSubscriptionData(
 
 This updates the cart's `metadata` with the subscription details.
 
-Next, change the `handleSubmit` of the payment step in the file `src/modules/checkout/components/payment/index.tsx` to change to the subscription form as the next step in checkout:
+Next, change the last line of the `setAddresses` function in `src/lib/data/cart.ts` to redirect to the subscription step once the customer enters their address:
 
-```ts title="src/modules/checkout/components/payment/index.tsx" badgeLabel="Storefront" badgeColor="orange"
-const handleSubmit = async () => {
+```ts title="src/lib/data/cart.ts" badgeLabel="Storefront" badgeColor="orange"
+export async function setAddresses(currentState: unknown, formData: FormData) {
   // ...
-  return router.push(
-    // was: pathname + "?" + createQueryString("step", "review"),
-    pathname + "?" + createQueryString("step", "subscription"),
-    {
-      scroll: false,
-    }
-  )  
-  // ...
+  redirect(
+    `/${formData.get("shipping_address.country_code")}/checkout?step=subscription`
+  )
 }
 ```
 
-Finally, add the `SubscriptionForm` in `src/modules/checkout/templates/checkout-form/index.tsx` as the last step:
+Finally, add the `SubscriptionForm` in `src/modules/checkout/templates/checkout-form/index.tsx` after the `Addresses` wrapper component:
 
 ```tsx title="src/modules/checkout/templates/checkout-form/index.tsx" badgeLabel="Storefront" badgeColor="orange"
 // other imports...
@@ -934,7 +929,7 @@ export default async function CheckoutForm({
   return (
     <div>
       {/* ... */}
-      {/* After Payment, before Review */}
+      {/* After Addresses, before Shipping */}
       <div>
         <SubscriptionForm />
       </div>
