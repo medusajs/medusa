@@ -128,7 +128,7 @@ export class MigrationsExecutionPlanner {
     entity: EntitySchema,
     trackedLinksTables: string[]
   ): Promise<PlannerAction> {
-    const tableName = entity.meta.tableName
+    const tableName = entity.meta.collection
     const orm = await this.createORM([entity])
 
     const generator = orm.getSchemaGenerator()
@@ -172,7 +172,6 @@ export class MigrationsExecutionPlanner {
 
     const updateSQL = await generator.getUpdateSchemaSQL({
       fromSchema: dbSchema,
-      schema: schemaName,
     })
 
     /**
@@ -224,7 +223,7 @@ export class MigrationsExecutionPlanner {
     }
 
     const linksTableNames = this.#linksEntities.map(
-      (entity) => entity.meta.tableName
+      (entity) => entity.meta.collection
     )
 
     /**
