@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import React from "react"
 import { IconButton, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-import { AdminOrderLineItem } from "@medusajs/types"
+import { HttpTypes, AdminOrderLineItem } from "@medusajs/types"
 import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -19,6 +19,7 @@ type OrderEditItemProps = {
   index: number
 
   onRemove: () => void
+  onUpdate: (payload: HttpTypes.AdminUpdateReturnItems) => void
 
   form: UseFormReturn<any>
 }
@@ -28,6 +29,7 @@ function ReturnItem({
   currencyCode,
   form,
   onRemove,
+  onUpdate,
   index,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
@@ -74,7 +76,14 @@ function ReturnItem({
                         {...field}
                         onChange={(e) => {
                           const val = e.target.value
-                          field.onChange(val === "" ? null : Number(val))
+                          const payload = val === "" ? null : Number(val)
+
+                          field.onChange(payload)
+
+                          if (payload) {
+                            // todo: move on blur
+                            onUpdate({ quantity: payload })
+                          }
                         }}
                       />
                     </Form.Control>

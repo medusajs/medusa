@@ -34,6 +34,7 @@ import {
   useAddReturnItem,
   useAddReturnShipping,
   useRemoveReturnItem,
+  useUpdateReturnItem,
 } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
@@ -58,7 +59,6 @@ export const ReturnCreateForm = ({
    * STATE
    */
   const { setIsOpen } = useStackedModal()
-  const [isRequestLoading, setIsRequestLoading] = useState(false)
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
   const [customShippingAmount, setCustomShippingAmount] = useState(0)
   const [inventoryMap, setInventoryMap] = useState<
@@ -80,19 +80,26 @@ export const ReturnCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmReturnRequest } = {} // useAConfirmReturnRequest()
-  const { mutateAsync: addReturnShipping } = useAddReturnShipping(
-    activeReturn.id
-  )
-  const { mutateAsync: addReturnItem } = useAddReturnItem(
-    activeReturn.id,
-    order.id
-  )
-  const { mutateAsync: removeReturnItem } = useRemoveReturnItem(
-    activeReturn.id,
-    order.id
-  )
-  // TODO: update return item
+  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } = {} // useAConfirmReturnRequest()
+
+  const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
+    useAddReturnShipping(activeReturn.id)
+
+  const { mutateAsync: addReturnItem, isPending: isAddingReturnItem } =
+    useAddReturnItem(activeReturn.id, order.id)
+
+  const { mutateAsync: removeReturnItem, isPending: isRemovingReturnItem } =
+    useRemoveReturnItem(activeReturn.id, order.id)
+
+  const { mutateAsync: updateReturnItem, isPending: isUpdatingReturnItem } =
+    useUpdateReturnItem(activeReturn.id, order.id)
+
+  const isRequestLoading =
+    isConfirming ||
+    isAddingReturnShipping ||
+    isAddingReturnItem ||
+    isRemovingReturnItem ||
+    isUpdatingReturnItem
 
   /**
    * FORM
@@ -372,6 +379,15 @@ export const ReturnCreateForm = ({
 
                   if (actionId) {
                     removeReturnItem(actionId)
+                  }
+                }}
+                onUpdate={(payload) => {
+                  const actionId = preview.items
+                    .find((i) => i.id === item.item_id)
+                    ?.actions.find((a) => a.action === "RETURN_ITEM")?.id
+
+                  if (actionId) {
+                    updateReturnItem({ ...payload, actionId })
                   }
                 }}
                 index={index}

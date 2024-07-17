@@ -42,6 +42,12 @@ export interface AdminAddReturnItem {
 export interface AdminAddReturnItems {
   items: AdminAddReturnItem[]
 }
+
+export interface AdminUpdateReturnItems {
+  quantity?: number
+  internal_note?: string
+}
+
 export interface AdminAddReturnShipping {
   shipping_option_id: string
   custom_price?: number

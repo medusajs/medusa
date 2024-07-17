@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
+import { AdminUpdateReturnItems, HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
@@ -44,6 +44,38 @@ export const useAddReturnItem = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminAddReturnItems) =>
       sdk.admin.return.addReturnItem(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateReturnItem = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminUpdateReturnItems & { actionId: string }
+  >
+) => {
+  return useMutation({
+    mutationFn: ({
+      actionId,
+      ...payload
+    }: HttpTypes.AdminUpdateReturnItems & { actionId: string }) => {
+      return sdk.admin.return.updateReturnItem(id, actionId, payload)
+    },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

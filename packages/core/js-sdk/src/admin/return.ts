@@ -41,6 +41,24 @@ export class Return {
     )
   }
 
+  async updateReturnItem(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminUpdateReturnItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/request-items/${actionId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async removeReturnItem(
     id: string,
     actionId: string,
