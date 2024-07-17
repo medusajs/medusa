@@ -32,14 +32,9 @@ const step1 = createStep(
   }
 )
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->("hello-world", function () {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function () {
   const str1 = step1()
 
   return {

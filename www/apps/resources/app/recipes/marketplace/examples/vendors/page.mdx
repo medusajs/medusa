@@ -274,7 +274,7 @@ This is the first step that creates the vendor admin and returns it.
 Then, create the workflow at `src/workflows/marketplace/create-vendor-admin/index.ts` with the following content:
 
 export const vendorAdminWorkflowHighlights = [
-  ["33", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
+  ["24", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-admin/index.ts" highlights={vendorAdminWorkflowHighlights}
@@ -294,18 +294,9 @@ export type CreateVendorAdminWorkflowInput = {
   authIdentityId: string
 }
 
-type CreateVendorAdminWorkflowOutput = {
-  id: string
-  first_name: string
-  last_name: string
-  email: string
-}
-
-const createVendorAdminWorkflow = createWorkflow<
-  CreateVendorAdminWorkflowInput, CreateVendorAdminWorkflowOutput
->(
+const createVendorAdminWorkflow = createWorkflow(
   "create-vendor-admin",
-  function (input) {
+  function (input: CreateVendorAdminWorkflowInput) {
     const vendorAdmin = createVendorAdminStep({
       admin: input.admin,
     })
@@ -1100,26 +1091,18 @@ Finally, create the workflow at the file `src/workflows/marketplace/create-vendo
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/index.ts" collapsibleLines="1-7" expandMoreLabel="Show Imports"
 import { createWorkflow, transform } from "@medusajs/workflows-sdk"
-import { OrderDTO } from "@medusajs/types"
 import retrieveCartStep from "./steps/retrieve-cart"
 import groupVendorItemsStep from "./steps/group-vendor-items"
 import createParentOrderStep from "./steps/create-parent-order"
-import createVendorOrdersStep, { VendorOrder } from "./steps/create-vendor-orders"
+import createVendorOrdersStep from "./steps/create-vendor-orders"
 
 type WorkflowInput = {
   cart_id: string
 }
 
-type WorkflowOutput = {
-  parent_order: OrderDTO
-  vendor_orders: VendorOrder[]
-}
-
-const createVendorOrdersWorkflow = createWorkflow<
-  WorkflowInput, WorkflowOutput
->(
+const createVendorOrdersWorkflow = createWorkflow(
   "create-vendor-order",
-  (input) => {
+  (input: WorkflowInput) => {
     const { cart } = retrieveCartStep(input)
 
     const { order } = createParentOrderStep(input)
