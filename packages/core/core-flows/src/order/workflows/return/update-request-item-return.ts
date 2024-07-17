@@ -21,20 +21,24 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { validateReturnReasons } from "../../utils/validate-return-reason"
 
 const validationStep = createStep(
   "update-request-item-return-validation",
-  async function ({
-    order,
-    orderChange,
-    orderReturn,
-    input,
-  }: {
-    order: OrderDTO
-    orderReturn: ReturnDTO
-    orderChange: OrderChangeDTO
-    input: OrderWorkflow.UpdateRequestItemReturnWorkflowInput
-  }) {
+  async function (
+    {
+      order,
+      orderChange,
+      orderReturn,
+      input,
+    }: {
+      order: OrderDTO
+      orderReturn: ReturnDTO
+      orderChange: OrderChangeDTO
+      input: OrderWorkflow.UpdateRequestItemReturnWorkflowInput
+    },
+    context
+  ) {
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
@@ -50,6 +54,16 @@ const validationStep = createStep(
     } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
       throw new Error(
         `Action ${associatedAction.id} is not requesting item return`
+      )
+    }
+
+    if (input.data.reason_id) {
+      await validateReturnReasons(
+        {
+          orderId: order.id,
+          inputItems: [{ reason_id: input.data.reason_id }],
+        },
+        context
       )
     }
   }
@@ -104,6 +118,8 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
           id: input.action_id,
           details: {
             quantity: data.quantity ?? originalAction.details?.quantity,
+            reason_id: data.reason_id ?? originalAction.details?.reason_id,
+            metadata: data.metadata ?? originalAction.details?.metadata,
           },
           internal_note: data.internal_note,
         }
