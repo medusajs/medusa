@@ -2635,6 +2635,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturns/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods",
+    "newSlug": "/references/order/updateShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods/page.mdx"
+  },
+  {
     "origSlug": "/references/order/interfaces/order.IOrderModuleService",
     "newSlug": "/references/order",
     "filePath": "/www/apps/resources/references/order/interfaces/order.IOrderModuleService/page.mdx"

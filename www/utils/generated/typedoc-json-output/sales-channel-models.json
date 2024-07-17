@@ -1,33 +1,33 @@
 {
-	"id": 11762,
+	"id": 11782,
 	"name": "sales-channel-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 11763,
+			"id": 11783,
 			"name": "SalesChannel",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 11764,
+					"id": 11784,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11765,
+							"id": 11785,
 							"name": "new SalesChannel",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 11763,
+								"target": 11783,
 								"name": "SalesChannel",
 								"package": "@medusajs/sales-channel",
 								"qualifiedName": "default"
@@ -36,7 +36,7 @@
 					]
 				},
 				{
-					"id": 11778,
+					"id": 11798,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -54,7 +54,7 @@
 					}
 				},
 				{
-					"id": 11766,
+					"id": 11786,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -65,7 +65,7 @@
 					}
 				},
 				{
-					"id": 11767,
+					"id": 11787,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -76,7 +76,7 @@
 					}
 				},
 				{
-					"id": 11768,
+					"id": 11788,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -97,7 +97,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11769,
+					"id": 11789,
 					"name": "is_disabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -109,7 +109,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 11770,
+					"id": 11790,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -125,7 +125,7 @@
 					}
 				},
 				{
-					"id": 11771,
+					"id": 11791,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -161,7 +161,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11772,
+					"id": 11792,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -177,7 +177,7 @@
 					}
 				},
 				{
-					"id": 11773,
+					"id": 11793,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -203,14 +203,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11774,
+					"id": 11794,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11775,
+							"id": 11795,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -223,14 +223,14 @@
 					]
 				},
 				{
-					"id": 11776,
+					"id": 11796,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11777,
+							"id": 11797,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -247,28 +247,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						11764
+						11784
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						11778,
-						11766,
-						11767,
-						11768,
-						11769,
-						11770,
-						11771,
-						11772,
-						11773
+						11798,
+						11786,
+						11787,
+						11788,
+						11789,
+						11790,
+						11791,
+						11792,
+						11793
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						11774,
-						11776
+						11794,
+						11796
 					]
 				}
 			]
@@ -278,69 +278,69 @@
 		{
 			"title": "Classes",
 			"children": [
-				11763
+				11783
 			]
 		}
 	],
 	"packageName": "@medusajs/sales-channel",
 	"symbolIdMap": {
-		"11762": {
+		"11782": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"11763": {
+		"11783": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default"
 		},
-		"11766": {
+		"11786": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.id"
 		},
-		"11767": {
+		"11787": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.name"
 		},
-		"11768": {
+		"11788": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.description"
 		},
-		"11769": {
+		"11789": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.is_disabled"
 		},
-		"11770": {
+		"11790": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"11771": {
+		"11791": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"11772": {
+		"11792": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"11773": {
+		"11793": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"11774": {
+		"11794": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"11775": {
+		"11795": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"11776": {
+		"11796": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"11777": {
+		"11797": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"11778": {
+		"11798": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -350,7 +350,7 @@
 			"1": "../../../../packages/modules/sales-channel/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 11762
+			"1": 11782
 		}
 	}
 }
