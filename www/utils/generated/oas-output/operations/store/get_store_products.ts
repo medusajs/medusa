@@ -16,18 +16,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: >-
- *       Comma-separated fields that should be included in the returned data.
- *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *        * without prefix it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: >-
- *         Comma-separated fields that should be included in the returned data.
- *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *          * without prefix it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -56,14 +56,6 @@
  *       description: The field to sort the data by. By default, the sort order is
  *         ascending. To change the order to descending, prefix the field name with
  *         `-`.
- *   - name: currency_code
- *     in: query
- *     description: The product's currency code.
- *     required: false
- *     schema:
- *       type: string
- *       title: currency_code
- *       description: The product's currency code.
  *   - name: region_id
  *     in: query
  *     description: The product's region id.
@@ -315,6 +307,30 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *   - name: country_code
+ *     in: query
+ *     description: The product's country code.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: country_code
+ *       description: The product's country code.
+ *   - name: province
+ *     in: query
+ *     description: The product's province.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: province
+ *       description: The product's province.
+ *   - name: cart_id
+ *     in: query
+ *     description: The product's cart id.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: cart_id
+ *       description: The product's cart id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -322,8 +338,6 @@
  * tags:
  *   - Products
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -13,10 +13,23 @@ medusaIntegrationTestRunner({
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
+    let returnReason
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      returnReason = (
+        await api.post(
+          "/admin/return-reasons",
+          {
+            value: "return-reason-test",
+            label: "Test return reason",
+            description: "This is the reason description!!!",
+          },
+          adminHeaders
+        )
+      ).data.return_reason
 
       const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
@@ -209,6 +222,7 @@ medusaIntegrationTestRunner({
               {
                 id: item.id,
                 quantity: 2,
+                reason_id: returnReason.id,
               },
             ],
           },
@@ -293,6 +307,7 @@ medusaIntegrationTestRunner({
           {
             quantity: 2,
             internal_note: "Test internal note",
+            reason_id: returnReason.id,
           },
           adminHeaders
         )
@@ -441,6 +456,21 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            items: [
+              expect.objectContaining({
+                reason: expect.objectContaining({
+                  id: returnReason.id,
+                  value: "return-reason-test",
+                  label: "Test return reason",
+                  description: "This is the reason description!!!",
+                }),
+              }),
+            ],
+          })
+        )
+
         expect(result.data.order_preview).toEqual(
           expect.objectContaining({
             id: order.id,
@@ -499,6 +529,53 @@ medusaIntegrationTestRunner({
               }),
             ]),
           })
+        )
+      })
+
+      it("should cancel a return request", async () => {
+        let result = await api.post(
+          "/admin/returns",
+          {
+            order_id: order.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const returnId = result.data.return.id
+
+        const item = order.items[0]
+        await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 2,
+                reason_id: returnReason.id,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
+        await api.delete(`/admin/returns/${returnId}/request`, adminHeaders)
+
+        result = await api
+          .post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(result.response.status).toEqual(404)
+        expect(result.response.data.message).toEqual(
+          `Return id not found: ${returnId}`
         )
       })
     })

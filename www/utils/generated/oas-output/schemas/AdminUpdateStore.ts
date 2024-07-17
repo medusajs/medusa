@@ -4,7 +4,6 @@
  * description: SUMMARY
  * x-schemaName: AdminUpdateStore
  * required:
- *   - name
  *   - default_sales_channel_id
  *   - default_region_id
  *   - default_location_id
@@ -31,6 +30,10 @@
  *           type: boolean
  *           title: is_default
  *           description: The supported currency's is default.
+ *         is_tax_inclusive:
+ *           type: boolean
+ *           title: is_tax_inclusive
+ *           description: The supported currency's is tax inclusive.
  *   default_sales_channel_id:
  *     type: string
  *     title: default_sales_channel_id

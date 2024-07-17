@@ -445,7 +445,6 @@ export interface UpdateReturnDTO {
   metadata?: Record<string, unknown> | null
   items?: {
     quantity: BigNumberInput
-    internal_note?: string | null
     note?: string | null
     reason_id?: string | null
     metadata?: Record<string, unknown> | null

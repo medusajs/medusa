@@ -74,7 +74,6 @@ export default class OrderExchange {
   @OneToOne({
     entity: () => Return,
     mappedBy: (ret) => ret.exchange,
-    cascade: ["soft-remove"] as any,
     fieldName: "return_id",
     nullable: true,
     owner: true,
