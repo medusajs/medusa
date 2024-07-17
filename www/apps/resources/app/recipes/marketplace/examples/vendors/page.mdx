@@ -710,9 +710,16 @@ In the route handler, you add the product to the default sales channel. You can,
 Finally, in `src/api/middlewares.ts`, apply a middleware on the create products route to validate the request body before executing the route handler:
 
 ```ts title="src/api/middlewares.ts"
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
-import { validateAndTransformBody } from "@medusajs/medusa/dist/api/utils/validate-body"
-import { AdminCreateProduct } from "@medusajs/medusa/dist/api/admin/products/validators"
+import { 
+  MiddlewaresConfig, 
+  authenticate
+} from "@medusajs/medusa"
+import { 
+  validateAndTransformBody
+} from "@medusajs/medusa/dist/api/utils/validate-body"
+import { 
+  AdminCreateProduct
+} from "@medusajs/medusa/dist/api/admin/products/validators"
 
 export const config: MiddlewaresConfig = {
   routes: [
