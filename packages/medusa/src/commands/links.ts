@@ -65,7 +65,7 @@ async function askForLinksToDelete(actions: PlannerAction[]) {
   console.log("\n")
   const answer = await checkbox({
     message:
-      "Please confirm the following links to be deleted (does not belong to your project anymore)",
+      "Select the link tables you want to delete, this means that those links are not defined anymore and will be removed from the database.",
     choices: [
       ...actions.map((action) => {
         return {
