@@ -56,6 +56,8 @@ export async function initModules({
     injectedDependencies,
   })
 
+  await medusaApp.onApplicationStart()
+
   async function shutdown() {
     if (shouldDestroyConnectionAutomatically) {
       await medusaApp.onApplicationPrepareShutdown()
