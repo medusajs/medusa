@@ -54,6 +54,7 @@ describe("Workflow Orchestrator module", function () {
       query: remoteQuery,
       modules,
       sharedContainer,
+      onApplicationStart,
     } = await MedusaApp({
       sharedContainer: container,
       sharedResourcesConfig: {
@@ -72,6 +73,8 @@ describe("Workflow Orchestrator module", function () {
         },
       },
     })
+
+    await onApplicationStart()
 
     query = remoteQuery
     sharedContainer_ = sharedContainer!

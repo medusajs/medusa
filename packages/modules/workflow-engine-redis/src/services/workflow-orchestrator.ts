@@ -141,6 +141,10 @@ export class WorkflowOrchestratorService {
     }
   }
 
+  async onApplicationStart() {
+    await this.redisDistributedTransactionStorage_.onApplicationStart()
+  }
+
   @InjectSharedContext()
   async run<T = unknown>(
     workflowIdOrWorkflow: string | ReturnWorkflow<any, any, any>,

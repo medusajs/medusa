@@ -139,7 +139,7 @@ export async function loadInternalModule(
     )
   }
 
-  if (resolution.definition.passSharedContainer) {
+  if (resolution.definition.__passSharedContainer) {
     localContainer.register(
       "sharedContainer",
       asFunction(() => {

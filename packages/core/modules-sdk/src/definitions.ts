@@ -145,7 +145,7 @@ export const ModulesDefinition: {
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
-    passSharedContainer: true,
+    __passSharedContainer: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
