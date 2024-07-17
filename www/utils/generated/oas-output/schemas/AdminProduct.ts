@@ -27,7 +27,6 @@
  *   - is_giftcard
  *   - collection_id
  *   - type_id
- *   - tags
  *   - images
  *   - discountable
  *   - external_id
@@ -51,6 +50,11 @@
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   type:
  *     $ref: "#/components/schemas/AdminProduct"
+ *   tags:
+ *     type: array
+ *     description: The parent's tags.
+ *     items:
+ *       $ref: "#/components/schemas/AdminProductTag"
  *   title:
  *     type: string
  *     title: title
@@ -149,11 +153,6 @@
  *     type: string
  *     title: type_id
  *     description: The parent's type id.
- *   tags:
- *     type: array
- *     description: The parent's tags.
- *     items:
- *       $ref: "#/components/schemas/BaseProductTag"
  *   images:
  *     type: array
  *     description: The parent's images.
