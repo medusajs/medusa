@@ -634,6 +634,65 @@ medusaIntegrationTestRunner({
               internal_note: "Test internal note",
             })
           )
+
+          const item = order.items[0]
+          result = await api.post(
+            `/admin/returns/${returnId}/receive-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order_preview).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  detail: expect.objectContaining({
+                    quantity: 2,
+                    return_requested_quantity: 1,
+                    return_received_quantity: 1,
+                    return_dismissed_quantity: 0,
+                  }),
+                }),
+              ]),
+            })
+          )
+
+          result = await api.post(
+            `/admin/returns/${returnId}/dismiss-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order_preview).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  detail: expect.objectContaining({
+                    quantity: 2,
+                    return_requested_quantity: 0,
+                    return_received_quantity: 1,
+                    return_dismissed_quantity: 1,
+                  }),
+                }),
+              ]),
+            })
+          )
         })
       })
     })
