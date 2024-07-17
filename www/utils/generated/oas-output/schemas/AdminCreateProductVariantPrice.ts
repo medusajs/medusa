@@ -23,6 +23,9 @@
  *     type: number
  *     title: max_quantity
  *     description: The price's max quantity.
+ *   rules:
+ *     type: object
+ *     description: The price's rules.
  * 
 */
 

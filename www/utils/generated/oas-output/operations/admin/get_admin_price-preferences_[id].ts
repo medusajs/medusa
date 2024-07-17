@@ -1,19 +1,14 @@
 /**
- * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/shipment
- * operationId: PostOrdersIdFulfillmentsFulfillment_idShipment
- * summary: Add Shipments to Order
- * description: Add a list of shipments to a order.
+ * @oas [get] /admin/price-preferences/{id}
+ * operationId: GetPricePreferencesId
+ * summary: Get a Price Preference
+ * description: Retrieve a price preference by its ID. You can expand the price
+ *   preference's relations or select the fields that should be returned.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The order's ID.
- *     required: true
- *     schema:
- *       type: string
- *   - name: fulfillment_id
- *     in: path
- *     description: The order's fulfillment id.
+ *     description: The price preference's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -71,33 +66,14 @@
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/AdminOrderCreateShipment"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X POST
- *       '{backend_url}/admin/orders/{id}/fulfillments/{fulfillment_id}/shipment' \
- * 
- *       -H 'x-medusa-access-token: {api_token}' \
- * 
- *       -H 'Content-Type: application/json' \
- * 
- *       --data-raw '{
- *         "items": [
- *           {
- *             "id": "id_eyih2debIPWMK4kaHGPZ",
- *             "quantity": 7476297089417216
- *           }
- *         ],
- *         "metadata": {}
- *       }'
+ *     source: |-
+ *       curl '{backend_url}/admin/price-preferences/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * tags:
- *   - Orders
+ *   - Price Preferences
  * responses:
  *   "200":
  *     description: OK
