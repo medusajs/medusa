@@ -4,7 +4,6 @@ import {
   isObject,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { getLinksExecutionPlanner } from "@medusajs/medusa/dist/loaders/medusa-app"
 
 export async function initDb({
   cwd,
