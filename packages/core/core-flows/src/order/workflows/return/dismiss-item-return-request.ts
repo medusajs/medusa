@@ -21,7 +21,7 @@ import {
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "dismiss-return-request-validation",
+  "dismiss-item-return-request-validation",
   async function (
     {
       order,
@@ -43,7 +43,7 @@ const validationStep = createStep(
   }
 )
 
-export const dismissItemReturnRequestWorkflowId = "dismiss-return-request"
+export const dismissItemReturnRequestWorkflowId = "dismiss-item-return-request"
 export const dismissItemReturnRequestWorkflow = createWorkflow(
   dismissItemReturnRequestWorkflowId,
   function (

@@ -21,7 +21,7 @@ import {
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "receive-return-request-validation",
+  "receive-item-return-request-validation",
   async function (
     {
       order,
@@ -43,7 +43,7 @@ const validationStep = createStep(
   }
 )
 
-export const receiveItemReturnRequestWorkflowId = "receive-return-request"
+export const receiveItemReturnRequestWorkflowId = "receive-item-return-request"
 export const receiveItemReturnRequestWorkflow = createWorkflow(
   receiveItemReturnRequestWorkflowId,
   function (
