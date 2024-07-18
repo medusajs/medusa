@@ -26,7 +26,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
     "test": "jest --passWithNoTests --runInBand --bail --forceExit -- src",
-    "test:integration": "jest --passWithNoTests"
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
