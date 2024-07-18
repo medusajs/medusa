@@ -160,7 +160,7 @@ medusaIntegrationTestRunner({
           shipping_subtotal: 10,
           shipping_tax_total: 0.9,
           original_shipping_tax_total: 1,
-          original_shipping_tax_subtotal: 10,
+          original_shipping_subtotal: 10,
           original_shipping_total: 11,
           created_at: expect.any(String),
           updated_at: expect.any(String),
