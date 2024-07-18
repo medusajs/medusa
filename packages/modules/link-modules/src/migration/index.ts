@@ -10,10 +10,10 @@ import { generateEntity } from "../utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
 import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import {
-  DALUtils,
-  promiseAll,
-  ModulesSdkUtils,
   arrayDifference,
+  DALUtils,
+  ModulesSdkUtils,
+  promiseAll,
 } from "@medusajs/utils"
 
 /**
@@ -101,19 +101,21 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   }
 
   /**
-   * Insert or delete tuple from the migrations table
+   * Insert tuple to the migrations table and create the link table
    *
    * @param orm
    * @param tableName
-   * @param action
+   * @param sql
    * @protected
    */
-  protected async trackLinkTable(
+  protected async createLinkTable(
     orm: MikroORM<PostgreSqlDriver>,
-    tableName: string
+    tableName: string,
+    sql: string
   ) {
     await orm.em.getDriver().getConnection().execute(`
-      INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}')
+      INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}');
+      ${sql}
     `)
   }
 
@@ -126,10 +128,8 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     tableName: string
   ) {
     await orm.em.getDriver().getConnection().execute(`
-      DROP TABLE IF EXISTS "${tableName}"
-    `)
-    await orm.em.getDriver().getConnection().execute(`
-      DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}')
+      DROP TABLE IF EXISTS "${tableName}";
+      DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}');
     `)
   }
 
@@ -283,18 +283,14 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     await promiseAll(
       actionPlan.map(async (action) => {
         switch (action.action) {
-          case "noop":
-          case "notify":
-            return
           case "delete":
-            await this.dropLinkTable(orm, action.tableName)
-            return
+            return await this.dropLinkTable(orm, action.tableName)
           case "create":
-            await orm.em.getDriver().getConnection().execute(action.sql)
-            await this.trackLinkTable(orm, action.tableName)
-            return
+            return await this.createLinkTable(orm, action.tableName, action.sql)
           case "update":
-            await orm.em.getDriver().getConnection().execute(action.sql)
+            return await orm.em.getDriver().getConnection().execute(action.sql)
+          default:
+            return
         }
       })
     )
