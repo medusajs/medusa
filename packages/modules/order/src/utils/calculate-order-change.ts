@@ -146,6 +146,11 @@ export class OrderChangeProcessing {
       ...this.transactions.map((tr) => tr.amount)
     )
 
+    summary.temporary_difference = MathBN.sub(
+      summary.difference_sum,
+      summary.temporary_difference
+    )
+
     summary.pending_difference = MathBN.sub(
       summary.current_order_total,
       summary.transaction_total

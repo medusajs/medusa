@@ -103,7 +103,7 @@ describe("Order Exchange - Actions", function () {
       transaction_total: 0,
       original_order_total: 270,
       current_order_total: 312.5,
-      temporary_difference: -20,
+      temporary_difference: 62.5,
       pending_difference: 312.5,
       difference_sum: 42.5,
       paid_total: 0,
