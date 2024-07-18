@@ -264,12 +264,13 @@ export const workflowHighlights = [
     import createProductWorkflow from "../workflows/create-product"
 
     export default async function handleProductUpdate({ 
-      data, container 
+      event: { data }, 
+      container 
     }: SubscriberArgs<{id: string}>) {
       createProductWorkflow(container)
         .run({
           input: {
-            productId: data.data.id
+            productId: data.id
           }
         })
         .then(() => {

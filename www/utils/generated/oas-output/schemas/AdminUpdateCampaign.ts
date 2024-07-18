@@ -23,6 +23,8 @@
  *   budget:
  *     type: object
  *     description: The campaign's budget.
+ *     required:
+ *       - limit
  *     properties:
  *       limit:
  *         type: number

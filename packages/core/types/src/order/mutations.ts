@@ -326,7 +326,6 @@ export interface CreateOrderChangeActionDTO {
 export interface UpdateOrderChangeActionDTO {
   id: string
   internal_note?: string | null
-  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER TRANSACTION START */
@@ -444,6 +443,12 @@ export interface UpdateReturnDTO {
   claim_id?: string
   exchange_id?: string
   metadata?: Record<string, unknown> | null
+  items?: {
+    quantity: BigNumberInput
+    note?: string | null
+    reason_id?: string | null
+    metadata?: Record<string, unknown> | null
+  }[]
 }
 
 export interface UpdateOrderClaimDTO {

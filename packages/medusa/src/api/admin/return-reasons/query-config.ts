@@ -1,12 +1,12 @@
 export const defaultAdminReturnReasonFields = [
   "id",
-  "display_id",
-  "status",
-  "version",
-  "summary",
-  "metadata",
+  "value",
+  "label",
+  "parent_return_reason_id",
+  "description",
   "created_at",
   "updated_at",
+  "deleted_at",
 ]
 
 export const defaultAdminRetrieveReturnReasonFields = [
@@ -18,8 +18,8 @@ export const defaultAdminRetrieveReturnReasonFields = [
   "created_at",
   "updated_at",
   "deleted_at",
-  "*.parent_return_reason",
-  "*.return_reason_children",
+  "parent_return_reason.*",
+  "return_reason_children.*",
 ]
 
 export const retrieveTransformQueryConfig = {

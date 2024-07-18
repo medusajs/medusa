@@ -17,7 +17,7 @@ import {
   TransactionHandlerType,
   TransactionStepState,
 } from "@medusajs/utils"
-import { asValue } from "awilix"
+import { asFunction, asValue } from "awilix"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
@@ -54,6 +54,7 @@ describe("Workflow Orchestrator module", function () {
       query: remoteQuery,
       modules,
       sharedContainer,
+      onApplicationStart,
     } = await MedusaApp({
       sharedContainer: container,
       sharedResourcesConfig: {
@@ -77,6 +78,7 @@ describe("Workflow Orchestrator module", function () {
     sharedContainer_ = sharedContainer!
 
     await runMigrations()
+    await onApplicationStart()
 
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
   })
@@ -379,6 +381,22 @@ describe("Workflow Orchestrator module", function () {
       expect(spy).toHaveBeenCalledTimes(1)
       expect(logSpy).toHaveBeenCalledWith(
         "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
+    })
+
+    it("the scheduled workflow should have access to the shared container", async () => {
+      sharedContainer_.register(
+        "test-value",
+        asFunction(() => "test")
+      )
+
+      const spy = await createScheduled("shared-container-job", {
+        cron: "* * * * * *",
+      })
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(spy).toHaveReturnedWith(
+        expect.objectContaining({ output: { testValue: "test" } })
       )
     })
   })

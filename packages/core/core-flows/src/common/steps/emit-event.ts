@@ -28,7 +28,7 @@ export const emitEventStep = createStep(
     const data_ =
       typeof input.data === "function" ? await input.data(context) : input.data
 
-    const metadata: EventBusTypes.MessageBody["metadata"] = {
+    const metadata: EventBusTypes.Event["metadata"] = {
       ...input.metadata,
     }
 
@@ -36,8 +36,8 @@ export const emitEventStep = createStep(
       metadata.eventGroupId = context.eventGroupId
     }
 
-    const message = {
-      eventName: input.eventName,
+    const message: EventBusTypes.Message = {
+      name: input.eventName,
       data: data_,
       options: input.options,
       metadata,

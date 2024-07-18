@@ -7,6 +7,7 @@ export const DefineLinkSymbol = Symbol.for("DefineLink")
 export interface DefineLinkExport {
   [DefineLinkSymbol]: boolean
   serviceName: string
+  entryPoint: string
 }
 
 type InputSource = {
@@ -65,71 +66,63 @@ function isToJSON(input: any): input is InputToJson {
   return isObject(input) && input?.["toJSON"]
 }
 
+function prepareServiceConfig(input: DefineLinkInputSource) {
+  let serviceConfig = {} as ModuleLinkableKeyConfig
+
+  if (isInputSource(input)) {
+    const source = isToJSON(input) ? input.toJSON() : input
+
+    serviceConfig = {
+      key: source.linkable,
+      alias: camelToSnakeCase(source.field),
+      primaryKey: source.primaryKey,
+      isList: false,
+      deleteCascade: false,
+      module: source.serviceName,
+    }
+  } else if (isInputOptions(input)) {
+    const source = isToJSON(input.linkable)
+      ? input.linkable.toJSON()
+      : input.linkable
+
+    serviceConfig = {
+      key: source.linkable,
+      alias: camelToSnakeCase(source.field),
+      primaryKey: source.primaryKey,
+      isList: input.isList ?? false,
+      deleteCascade: input.deleteCascade ?? false,
+      module: source.serviceName,
+    }
+  } else {
+    throw new Error(
+      `Invalid linkable passed for the argument\n${JSON.stringify(
+        input,
+        null,
+        2
+      )}`
+    )
+  }
+
+  return serviceConfig
+}
+
+/**
+ * Generate a ModuleJoinerConfig for the link definition on the fly.
+ * All naming, aliases etc are following our conventional naming.
+ *
+ * @param leftService
+ * @param rightService
+ * @param linkServiceOptions
+ */
 export function defineLink(
   leftService: DefineLinkInputSource,
   rightService: DefineLinkInputSource,
   linkServiceOptions?: ExtraOptions
 ): DefineLinkExport {
-  let serviceAObj = {} as ModuleLinkableKeyConfig
-  let serviceBObj = {} as ModuleLinkableKeyConfig
+  const serviceAObj = prepareServiceConfig(leftService)
+  const serviceBObj = prepareServiceConfig(rightService)
 
-  if (isInputSource(leftService)) {
-    const source = isToJSON(leftService) ? leftService.toJSON() : leftService
-
-    serviceAObj = {
-      key: source.linkable,
-      alias: source.field,
-      primaryKey: source.primaryKey,
-      isList: false,
-      deleteCascade: false,
-      module: source.serviceName,
-    }
-  } else if (isInputOptions(leftService)) {
-    const source = isToJSON(leftService.linkable)
-      ? leftService.linkable.toJSON()
-      : leftService.linkable
-
-    serviceAObj = {
-      key: source.linkable,
-      alias: source.field,
-      primaryKey: source.primaryKey,
-      isList: leftService.isList ?? false,
-      deleteCascade: leftService.deleteCascade ?? false,
-      module: source.serviceName,
-    }
-  } else {
-    throw new Error("Invalid linkable passed for the first argument")
-  }
-
-  if (isInputSource(rightService)) {
-    const source = isToJSON(rightService) ? rightService.toJSON() : rightService
-
-    serviceBObj = {
-      key: source.linkable,
-      alias: camelToSnakeCase(source.field),
-      primaryKey: source.primaryKey,
-      isList: false,
-      deleteCascade: false,
-      module: source.serviceName,
-    }
-  } else if (isInputOptions(rightService)) {
-    const source = isToJSON(rightService.linkable)
-      ? rightService.linkable.toJSON()
-      : rightService.linkable
-
-    serviceBObj = {
-      key: source.linkable,
-      alias: camelToSnakeCase(source.field),
-      primaryKey: source.primaryKey,
-      isList: rightService.isList ?? false,
-      deleteCascade: rightService.deleteCascade ?? false,
-      module: source.serviceName,
-    }
-  } else {
-    throw new Error(`Invalid linkable passed for the second argument`)
-  }
-
-  const output = { [DefineLinkSymbol]: true, serviceName: "" }
+  const output = { [DefineLinkSymbol]: true, serviceName: "", entryPoint: "" }
 
   const register = function (
     modules: ModuleJoinerConfig[]
@@ -272,12 +265,14 @@ ${serviceBObj.module}: {
       aliasB
     )
 
+    output.entryPoint = aliasA + "_" + aliasB
+
     const linkDefinition: ModuleJoinerConfig = {
       serviceName: output.serviceName,
       isLink: true,
       alias: [
         {
-          name: [aliasA + "_" + aliasB],
+          name: [output.entryPoint],
           args: {
             entity: toPascalCase(
               [

@@ -27,7 +27,6 @@
  *   - is_giftcard
  *   - collection_id
  *   - type_id
- *   - tags
  *   - images
  *   - discountable
  *   - external_id

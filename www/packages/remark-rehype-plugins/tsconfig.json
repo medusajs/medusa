@@ -8,6 +8,7 @@
     "lib": ["es2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "target": "ESNext",
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,

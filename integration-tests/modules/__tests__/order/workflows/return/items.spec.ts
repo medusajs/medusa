@@ -1,5 +1,6 @@
 import {
   beginReturnOrderWorkflow,
+  createOrderFulfillmentWorkflow,
   requestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import { IOrderModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
@@ -37,6 +38,18 @@ medusaIntegrationTestRunner({
           inventoryItem: fixtures.inventoryItem,
         })
 
+        await createOrderFulfillmentWorkflow(container).run({
+          input: {
+            order_id: order.id,
+            items: [
+              {
+                quantity: 1,
+                id: order.items![0].id,
+              },
+            ],
+          },
+        })
+
         await beginReturnOrderWorkflow(container).run({
           input: { order_id: order.id },
           throwOnError: true,
@@ -59,9 +72,7 @@ medusaIntegrationTestRunner({
       describe("requestItemReturnWorkflow", () => {
         it("should successfully add a return item to order change", async () => {
           const item = order.items![0]
-          const {
-            result: [returnItem],
-          } = await requestItemReturnWorkflow(container).run({
+          const { result } = await requestItemReturnWorkflow(container).run({
             input: {
               return_id: returnOrder.id,
               items: [
@@ -74,20 +85,18 @@ medusaIntegrationTestRunner({
             },
           })
 
+          const returnItem = result.items?.[0]
+
           expect(returnItem).toEqual(
             expect.objectContaining({
               id: expect.any(String),
-              order_id: order.id,
-              return_id: returnOrder.id,
-              reference: "return",
-              reference_id: returnOrder.id,
-              details: {
-                reference_id: item.id,
-                return_id: returnOrder.id,
-                quantity: 1,
-              },
-              internal_note: "test",
-              action: "RETURN_ITEM",
+              title: "Custom Item 2",
+              unit_price: 50,
+              quantity: 1,
+              subtotal: 50,
+              total: 50,
+              fulfilled_total: 50,
+              return_requested_total: 50,
             })
           )
         })
@@ -111,7 +120,7 @@ medusaIntegrationTestRunner({
           })
 
           expect(error.error.message).toEqual(
-            "order id not found: does-not-exist"
+            "Return id not found: does-not-exist"
           )
         })
 
@@ -136,14 +145,14 @@ medusaIntegrationTestRunner({
             throwOnError: false,
           })
 
-          expect(error.error.message).toEqual(`order id not found: ${order.id}`)
+          expect(error.error.message).toEqual(`Order id not found: ${order.id}`)
         })
 
         it("should throw an error if order change does not exist", async () => {
           const item = order.items![0]
 
           const [orderChange] = await service.listOrderChanges(
-            { order_id: order.id },
+            { order_id: order.id, return_id: returnOrder.id },
             {}
           )
 
@@ -174,7 +183,7 @@ medusaIntegrationTestRunner({
           const item = order.items![0]
 
           const [orderChange] = await service.listOrderChanges(
-            { order_id: order.id },
+            { order_id: order.id, return_id: returnOrder.id },
             {}
           )
 
@@ -197,7 +206,7 @@ medusaIntegrationTestRunner({
           })
 
           expect(error.error.message).toEqual(
-            `Order Change cannot be modified: ${orderChange.id}.`
+            `An active Order Change is required to proceed`
           )
         })
 

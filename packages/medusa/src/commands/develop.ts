@@ -94,6 +94,7 @@ export default async function ({ port, directory }) {
           "node_modules",
           "dist",
           "static",
+          "private",
           "src/admin/**/*",
         ],
       })

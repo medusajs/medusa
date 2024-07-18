@@ -27,7 +27,6 @@ const CreateProductVariantSchema = z.object({
   ean: z.string().optional(),
   upc: z.string().optional(),
   barcode: z.string().optional(),
-  inventory_quantity: optionalInt,
   manage_inventory: z.boolean(),
   allow_backorder: z.boolean(),
   weight: optionalInt,
@@ -49,7 +48,6 @@ export const CreateProductVariantForm = ({
 
   const form = useForm<z.infer<typeof CreateProductVariantSchema>>({
     defaultValues: {
-      inventory_quantity: 0,
       manage_inventory: true,
       allow_backorder: false,
       options: {},
@@ -79,7 +77,6 @@ export const CreateProductVariantForm = ({
       height,
       width,
       length,
-      inventory_quantity,
       allow_backorder,
       manage_inventory,
       sku,
@@ -100,7 +97,6 @@ export const CreateProductVariantForm = ({
           ean,
           upc,
           barcode,
-          inventory_quantity: parseNumber(inventory_quantity),
           allow_backorder,
           manage_inventory,
         }
@@ -241,23 +237,6 @@ export const CreateProductVariantForm = ({
                           </Form.Label>
                           <Form.Control>
                             <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="inventory_quantity"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("fields.inventoryQuantity")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input type="number" {...field} />
                           </Form.Control>
                           <Form.ErrorMessage />
                         </Form.Item>

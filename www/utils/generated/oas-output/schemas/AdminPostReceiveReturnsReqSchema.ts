@@ -22,7 +22,6 @@
  *         - id
  *         - quantity
  *         - reason_id
- *         - note
  *       properties:
  *         id:
  *           type: string

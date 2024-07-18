@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
@@ -8,6 +9,7 @@ import {
 import {
   BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OptionalProps,
@@ -71,6 +73,7 @@ const OrderIdVersionIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_transaction" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 @OrderIdVersionIndex.MikroORMIndex()
 export default class Transaction {
   [OptionalProps]?: OptionalLineItemProps

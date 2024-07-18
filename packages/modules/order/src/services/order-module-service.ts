@@ -11,7 +11,6 @@ import {
   RestoreReturn,
   SoftDeleteReturn,
   UpdateOrderItemWithSelectorDTO,
-  UpdateOrderReturnReasonDTO,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -21,12 +20,14 @@ import {
   deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   isObject,
   isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  OrderChangeStatus,
   OrderStatus,
   promiseAll,
   transformPropertiesToBigNumber,
@@ -59,7 +60,6 @@ import {
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
-  OrderChangeStatus,
   UpdateOrderItemDTO,
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
@@ -1193,7 +1193,7 @@ export default class OrderModuleService<
           return_id: dt.return_id,
           claim_id: dt.claim_id,
           exchange_id: dt.exchange_id,
-          version: mapOrderVersion[dt.order_id],
+          version: dt.version ?? mapOrderVersion[dt.order_id],
         }
       })
 
@@ -1249,6 +1249,66 @@ export default class OrderModuleService<
     )
 
     return sm.map((s) => s.shipping_method)
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async softDeleteShippingMethods<TReturnableLinkableKeys extends string>(
+    ids: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<Record<string, string[]> | void> {
+    const rel = await super.listOrderShippingMethods(
+      {
+        shipping_method_id: ids,
+      },
+      {
+        select: ["id"],
+      },
+      sharedContext
+    )
+    const orderShippingMethodIds = rel.map((r) => r.id)
+
+    const [returned] = await promiseAll([
+      super.softDeleteShippingMethods(ids, config, sharedContext),
+      super.softDeleteOrderShippingMethods(
+        orderShippingMethodIds,
+        config,
+        sharedContext
+      ),
+    ])
+
+    return returned
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async restoreShippingMethods<TReturnableLinkableKeys extends string>(
+    transactionIds: string | object | string[] | object[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<Record<string, string[]> | void> {
+    const rel = await super.listOrderShippingMethods(
+      {
+        shipping_method_id: transactionIds,
+      },
+      {
+        select: ["id"],
+      },
+      sharedContext
+    )
+    const orderShippingMethodIds = rel.map((r) => r.id)
+
+    const [returned] = await promiseAll([
+      super.restoreShippingMethods(transactionIds, config, sharedContext),
+      super.restoreOrderShippingMethods(
+        orderShippingMethodIds,
+        config,
+        sharedContext
+      ),
+    ])
+
+    return returned
   }
 
   // @ts-ignore
@@ -1979,13 +2039,20 @@ export default class OrderModuleService<
     const calculated = calculatedOrders[order.id]
 
     const addedItems = {}
+    const addedShippingMethods = {}
     for (const item of calculated.order.items) {
       const isExistingItem = item.id === item.detail?.item_id
-
       if (!isExistingItem) {
         addedItems[item.id] = item
       }
     }
+
+    for (const sm of calculated.order.shipping_methods) {
+      if (!isDefined(sm.shipping_option_id)) {
+        addedShippingMethods[sm.id] = sm
+      }
+    }
+
     if (Object.keys(addedItems).length > 0) {
       const addedItemDetails = await this.listLineItems(
         { id: Object.keys(addedItems) },
@@ -1996,27 +2063,65 @@ export default class OrderModuleService<
       )
 
       calculated.order.items.forEach((item, idx) => {
-        if (addedItems[item.id]) {
-          const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
+        if (!addedItems[item.id]) {
+          return
+        }
 
-          const actions = item.actions
-          delete item.actions
+        const lineItem = addedItemDetails.find((d) => d.id === item.id) as any
 
-          const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
-          calculated.order.items[idx] = {
-            ...lineItem,
-            actions,
-            quantity: newItem.quantity,
-            detail: {
-              ...newItem,
-              ...item,
-            },
-          }
+        const actions = item.actions
+        delete item.actions
+
+        const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+
+        calculated.order.items[idx] = {
+          ...lineItem,
+          actions,
+          quantity: newItem.quantity,
+          detail: {
+            ...newItem,
+            ...item,
+          },
         }
       })
     }
 
-    // TODO - add new shipping methods
+    if (Object.keys(addedShippingMethods).length > 0) {
+      const addedShippingDetails = await this.listShippingMethods(
+        { id: Object.keys(addedShippingMethods) },
+        {
+          relations: ["adjustments", "tax_lines"],
+        },
+        sharedContext
+      )
+
+      calculated.order.shipping_methods.forEach((sm, idx) => {
+        if (!addedShippingMethods[sm.id]) {
+          return
+        }
+
+        const shippingMethod = addedShippingDetails.find(
+          (d) => d.id === sm.id
+        ) as any
+
+        const actions = sm.actions
+        delete sm.actions
+
+        const newItem = shippingMethodsToUpsert.find((d) => d.id === sm.id)!
+
+        sm.shipping_method_id = sm.id
+        delete sm.id
+
+        calculated.order.shipping_methods[idx] = {
+          ...shippingMethod,
+          actions,
+          detail: {
+            ...sm,
+            ...newItem,
+          },
+        }
+      })
+    }
 
     const calcOrder = calculated.order
 
@@ -2579,7 +2684,9 @@ export default class OrderModuleService<
       shippingMethodsToUpsert,
       summariesToUpsert,
       orderToUpdate,
-    } = applyChangesToOrder(orders, actionsMap)
+    } = applyChangesToOrder(orders, actionsMap, {
+      addActionReferenceToObject: true,
+    })
 
     await promiseAll([
       orderToUpdate.length
@@ -2800,146 +2907,6 @@ export default class OrderModuleService<
     createRawPropertiesFromBigNumber(summaries)
 
     await this.orderSummaryService_.update(summaries, sharedContext)
-  }
-
-  // @ts-ignore
-  async createReturnReasons(
-    transactionData: OrderTypes.CreateOrderReturnReasonDTO,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO>
-
-  async createReturnReasons(
-    transactionData: OrderTypes.CreateOrderReturnReasonDTO[],
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  @InjectTransactionManager("baseRepository_")
-  async createReturnReasons(
-    returnReasonData:
-      | OrderTypes.CreateOrderReturnReasonDTO
-      | OrderTypes.CreateOrderReturnReasonDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<
-    OrderTypes.OrderReturnReasonDTO | OrderTypes.OrderReturnReasonDTO[]
-  > {
-    const data = Array.isArray(returnReasonData)
-      ? returnReasonData
-      : [returnReasonData]
-
-    const created = await this.returnReasonService_.create(data, sharedContext)
-
-    return await this.baseRepository_.serialize<OrderTypes.OrderReturnReasonDTO>(
-      !Array.isArray(returnReasonData) ? created[0] : created,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  // @ts-ignore
-  updateReturnReasons(
-    data: OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[]
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  updateReturnReasons(
-    selector: Partial<OrderTypes.FilterableOrderReturnReasonProps>,
-    data: OrderTypes.UpdateOrderReturnReasonDTO,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  updateReturnReasons(
-    id: string,
-    data: Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO>
-
-  @InjectManager("baseRepository_")
-  async updateReturnReasons(
-    idOrDataOrSelector:
-      | string
-      | OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[]
-      | Partial<OrderTypes.FilterableOrderReturnReasonProps>,
-    data?:
-      | OrderTypes.UpdateOrderReturnReasonDTO
-      | Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    OrderTypes.OrderReturnReasonDTO[] | OrderTypes.OrderReturnReasonDTO
-  > {
-    let reasons: ReturnReason[] = []
-    if (isString(idOrDataOrSelector)) {
-      const reason = await this.updateReturnReason_(
-        idOrDataOrSelector,
-        data as Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-        sharedContext
-      )
-
-      return await this.baseRepository_.serialize<OrderTypes.OrderReturnReasonDTO>(
-        reason,
-        {
-          populate: true,
-        }
-      )
-    }
-
-    const toUpdate = Array.isArray(idOrDataOrSelector)
-      ? idOrDataOrSelector
-      : [
-          {
-            selector: idOrDataOrSelector,
-            data: data,
-          } as OrderTypes.UpdateOrderReturnReasonWithSelectorDTO,
-        ]
-
-    reasons = await this.updateReturnReasonsWithSelector_(
-      toUpdate,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      OrderTypes.OrderReturnReasonDTO[]
-    >(reasons, {
-      populate: true,
-    })
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateReturnReason_(
-    reasonId: string,
-    data: Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ReturnReason> {
-    const [reason] = await this.returnReasonService_.update(
-      [{ id: reasonId, ...data }],
-      sharedContext
-    )
-
-    return reason
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateReturnReasonsWithSelector_(
-    updates: OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ReturnReason[]> {
-    let toUpdate: UpdateOrderReturnReasonDTO[] = []
-
-    for (const { selector, data } of updates) {
-      const reasons = await super.listReturnReasons(
-        { ...selector },
-        {},
-        sharedContext
-      )
-
-      reasons.forEach((reason) => {
-        toUpdate.push({
-          ...data,
-          id: reason.id,
-        })
-      })
-    }
-
-    return await this.returnReasonService_.update(toUpdate, sharedContext)
   }
 
   async archive(

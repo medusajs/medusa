@@ -2,9 +2,10 @@ import {
   beginReturnOrderWorkflow,
   createReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
-import { OrderDTO, ReturnDTO } from "@medusajs/types"
+import { IFulfillmentModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -23,6 +24,7 @@ medusaIntegrationTestRunner({
 
     describe("Order change: Create return shipping", () => {
       let order: OrderDTO
+      let service: IFulfillmentModuleService
       let fixtures
 
       let returnOrder: ReturnDTO
@@ -52,6 +54,7 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "status", "order_change_id"],
         })
 
+        service = container.resolve(ModuleRegistrationName.FULFILLMENT)
         ;[returnOrder] = await remoteQuery(remoteQueryObject)
       })
 
@@ -59,64 +62,58 @@ medusaIntegrationTestRunner({
         it("should successfully add return shipping to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
-          const { result } = await createReturnShippingMethodWorkflow(
-            container
-          ).run({
-            input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
-            },
-          })
+          const { result: orderChangePreview } =
+            await createReturnShippingMethodWorkflow(container).run({
+              input: {
+                return_id: returnOrder.id,
+                shipping_option_id: shippingOptionId,
+              },
+            })
 
-          const orderChange = result?.[0]
+          const shippingMethod = orderChangePreview.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
 
-          expect(orderChange).toEqual(
+          expect((shippingMethod as any).actions).toEqual([
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
-              details: {
-                order_id: returnOrder.order_id,
-                return_id: returnOrder.id,
-              },
               raw_amount: { value: "10", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
               amount: 10,
-            })
-          )
+            }),
+          ])
         })
 
         it("should successfully add return shipping with custom price to order changes", async () => {
           const shippingOptionId = fixtures.shippingOption.id
 
-          const { result } = await createReturnShippingMethodWorkflow(
-            container
-          ).run({
-            input: {
-              returnId: returnOrder.id,
-              shippingOptionId: shippingOptionId,
-              customShippingPrice: 20,
-            },
-          })
+          const { result: orderChangePreview } =
+            await createReturnShippingMethodWorkflow(container).run({
+              input: {
+                return_id: returnOrder.id,
+                shipping_option_id: shippingOptionId,
+                custom_price: 20,
+              },
+            })
 
-          const orderChange = result?.[0]
+          const shippingMethod = orderChangePreview.shipping_methods?.find(
+            (sm) => sm.shipping_option_id === shippingOptionId
+          )
 
-          expect(orderChange).toEqual(
+          expect((shippingMethod as any).actions).toEqual([
             expect.objectContaining({
               id: expect.any(String),
               reference: "order_shipping_method",
               reference_id: expect.any(String),
-              details: {
-                order_id: returnOrder.order_id,
-                return_id: returnOrder.id,
-              },
               raw_amount: { value: "20", precision: 20 },
               applied: false,
               action: "SHIPPING_ADD",
               amount: 20,
-            })
-          )
+            }),
+          ])
         })
       })
     })

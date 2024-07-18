@@ -80,13 +80,17 @@ const AnySubscriber = "any"
 
 export class WorkflowOrchestratorService {
   private subscribers: Subscribers = new Map()
+  private container_: MedusaContainer
 
   constructor({
     inMemoryDistributedTransactionStorage,
+    sharedContainer,
   }: {
     inMemoryDistributedTransactionStorage: InMemoryDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
+    sharedContainer: MedusaContainer
   }) {
+    this.container_ = sharedContainer
     inMemoryDistributedTransactionStorage.setWorkflowOrchestratorService(this)
     DistributedTransaction.setStorage(inMemoryDistributedTransactionStorage)
     WorkflowScheduler.setStorage(inMemoryDistributedTransactionStorage)
@@ -136,7 +140,9 @@ export class WorkflowOrchestratorService {
       )
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const ret = await flow.run({
       input,
@@ -191,7 +197,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const transaction = await flow.getRunningTransaction(transactionId, context)
 
@@ -227,7 +235,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
@@ -287,7 +297,9 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(container as MedusaContainer)
+    const flow = exportedWorkflow(
+      (container as MedusaContainer) ?? this.container_
+    )
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,

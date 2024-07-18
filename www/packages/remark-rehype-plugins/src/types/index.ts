@@ -115,6 +115,7 @@ export declare type CrossProjectLinksOptions = {
       path?: string
     }
   }
+  useBaseUrl?: boolean
 }
 
 export declare type TypeListLinkFixerOptions = {

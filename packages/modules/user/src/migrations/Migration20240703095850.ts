@@ -8,7 +8,7 @@ export class Migration20240703095850 extends Migration {
       'CREATE UNIQUE INDEX "IDX_user_email" ON "user" (email) WHERE deleted_at IS NULL;'
     )
     // Adding this log here as the point of failure is not in this function, but bundled up when running all pending migration
-    console.warn(
+    console.info(
       `Note: If the index "IDX_user_email" fails to create, then delete any existing users with duplicate emails before retrying the migration.`
     )
   }

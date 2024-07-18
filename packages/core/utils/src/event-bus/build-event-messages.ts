@@ -33,7 +33,7 @@ export function composeMessage(
     throw new Error("Action is required if eventName is not a CommonEvent")
   }
 
-  const metadata: EventBusTypes.MessageBody["metadata"] = {
+  const metadata: EventBusTypes.Event["metadata"] = {
     source,
     object,
     action: act!,
@@ -44,7 +44,7 @@ export function composeMessage(
   }
 
   return {
-    eventName,
+    name: eventName,
     metadata,
     data,
     options,

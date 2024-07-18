@@ -5,13 +5,13 @@ import {
 } from "@medusajs/types"
 import {
   ChangeActionType,
+  OrderChangeType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
   promiseAll,
 } from "@medusajs/utils"
 import { ExchangeItem, OrderExchange, Return, ReturnItem } from "@models"
-import { OrderChangeType } from "@types"
 
 function createExchangeAndReturnEntities(em, data, order) {
   const exchangeReference = em.create(OrderExchange, {

@@ -1,7 +1,10 @@
 import { DAL } from "@medusajs/types"
 import {
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
+  OrderChangeStatus,
+  OrderChangeType,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -9,15 +12,16 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { OrderChangeStatus, OrderChangeType } from "@types"
+import {} from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"
@@ -75,6 +79,7 @@ const VersionIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_change" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 @VersionIndex.MikroORMIndex()
 export default class OrderChange {
   [OptionalProps]?: OptionalLineItemProps

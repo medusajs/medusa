@@ -434,11 +434,14 @@ export class RemoteJoiner {
     })
 
     if (notFound.size > 0) {
-      // TODO: This should say "entryPoint" resource not found and not "serviceName" resource not found
+      const entityName =
+        expand.serviceConfig.args?.entity ??
+        expand.serviceConfig.args?.methodSuffix ??
+        expand.serviceConfig.serviceName
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `${expand.serviceConfig.serviceName} ${pkField} not found: ` +
-          Array.from(notFound).join(", ")
+        `${entityName} ${pkField} not found: ` + Array.from(notFound).join(", ")
       )
     }
   }
