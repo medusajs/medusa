@@ -90,20 +90,6 @@
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
   },
-  "nav": {
-    "general": "General",
-    "developer": "Developer",
-    "extensions": "Extensions",
-    "settings": "Settings",
-    "logout": "Log out",
-    "storeSettings": "Store settings",
-    "store": "Store",
-    "theme": {
-      "label": "Theme",
-      "dark": "Dark",
-      "light": "Light"
-    }
-  },
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
@@ -148,27 +134,34 @@
       "pageShortcut": "Jump to",
       "settingShortcut": "Settings",
       "commandShortcut": "Commands",
-      "goToOrders": "Go to orders",
-      "goToProducts": "Go to products",
-      "goToCollections": "Go to collections",
-      "goToCategories": "Go to categories",
-      "goToCustomers": "Go to customers",
-      "goToCustomerGroups": "Go to customer groups",
-      "goToInventory": "Go to inventory",
-      "goToReservations": "Go to reservations",
-      "goToPriceLists": "Go to price lists",
-      "goToPromotions": "Go to promotions",
-      "goToCampaigns": "Go to campaigns",
-      "goToStore": "Go to store",
-      "goToUsers": "Go to users",
-      "goToRegions": "Go to regions",
-      "goToTaxRegions": "Go to tax region",
-      "goToSalesChannels": "Go to sales channels",
-      "goToProductTypes": "Go to product types",
-      "goToLocations": "Go to locations",
-      "goToPublishableApiKeys": "Go to publishable API keys",
-      "goToSecretApiKeys": "Go to secret API keys",
-      "goToWorkflows": "Go to workflows"
+      "then": "then",
+      "navigation": {
+        "goToOrders": "Orders",
+        "goToProducts": "Products",
+        "goToCollections": "Collections",
+        "goToCategories": "Categories",
+        "goToCustomers": "Customers",
+        "goToCustomerGroups": "Customer Groups",
+        "goToInventory": "Inventory",
+        "goToReservations": "Reservations",
+        "goToPriceLists": "Price Lists",
+        "goToPromotions": "Promotions",
+        "goToCampaigns": "Campaigns"
+      },
+      "settings": {
+        "goToSettings": "Settings",
+        "goToStore": "Store",
+        "goToUsers": "Users",
+        "goToRegions": "Regions",
+        "goToTaxRegions": "Tax Regions",
+        "goToSalesChannels": "Sales Channels",
+        "goToProductTypes": "Product Types",
+        "goToLocations": "Locations",
+        "goToPublishableApiKeys": "Publishable API Keys",
+        "goToSecretApiKeys": "Secret API Keys",
+        "goToWorkflows": "Workflows",
+        "goToProfile": "Profile"
+      }
     },
     "menus": {
       "user": {
@@ -189,6 +182,25 @@
       },
       "actions": {
         "logout": "Log out"
+      }
+    },
+    "nav": {
+      "accessibility": {
+        "title": "Navigation",
+        "description": "Navigation menu for the dashboard."
+      },
+      "common": {
+        "extensions": "Extensions"
+      },
+      "main": {
+        "store": "Store",
+        "storeSettings": "Store settings"
+      },
+      "settings": {
+        "header": "Settings",
+        "general": "General",
+        "developer": "Developer",
+        "myAccount": "My Account"
       }
     }
   },

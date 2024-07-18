@@ -10,6 +10,7 @@ import { IconButton, clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 import { Link, Outlet, UIMatch, useMatches } from "react-router-dom"
 
+import { useTranslation } from "react-i18next"
 import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
@@ -135,6 +136,7 @@ const ToggleSidebar = () => {
         className="hidden max-lg:flex"
         variant="transparent"
         onClick={() => toggle("mobile")}
+        size="small"
       >
         <SidebarLeft className="text-ui-fg-muted" />
       </IconButton>
@@ -171,6 +173,7 @@ const DesktopSidebarContainer = ({ children }: PropsWithChildren) => {
 }
 
 const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation()
   const { mobile, toggle } = useSidebar()
 
   return (
@@ -198,9 +201,11 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
                 <XMark />
               </IconButton>
             </Dialog.Close>
-            <Dialog.Title className="sr-only">Navigation</Dialog.Title>
+            <Dialog.Title className="sr-only">
+              {t("app.nav.accessibility.title")}
+            </Dialog.Title>
             <Dialog.Description className="sr-only">
-              Sidebar navigation for the application
+              {t("app.nav.accessibility.description")}
             </Dialog.Description>
           </div>
           {children}

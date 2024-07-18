@@ -1,18 +1,19 @@
 import { Tooltip } from "@medusajs/ui"
-import { PropsWithChildren, ReactNode } from "react"
+import { ComponentPropsWithoutRef, PropsWithChildren } from "react"
 
-type ConditionalTooltipProps = PropsWithChildren<{
-  content: ReactNode
-  showTooltip?: boolean
-}>
+type ConditionalTooltipProps = PropsWithChildren<
+  ComponentPropsWithoutRef<typeof Tooltip> & {
+    showTooltip?: boolean
+  }
+>
 
 export const ConditionalTooltip = ({
   children,
-  content,
   showTooltip = false,
+  ...props
 }: ConditionalTooltipProps) => {
   if (showTooltip) {
-    return <Tooltip content={content}>{children}</Tooltip>
+    return <Tooltip {...props}>{children}</Tooltip>
   }
 
   return children

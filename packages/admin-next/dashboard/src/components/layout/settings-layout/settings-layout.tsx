@@ -11,6 +11,7 @@ import { NavItem, NavItemProps } from "../nav-item"
 import { Shell } from "../shell"
 
 import routes from "virtual:medusa/routes/links"
+import { UserMenu } from "../user-menu"
 
 export const SettingsLayout = () => {
   return (
@@ -25,10 +26,6 @@ const useSettingRoutes = (): NavItemProps[] => {
 
   return useMemo(
     () => [
-      {
-        label: t("profile.domain"),
-        to: "/settings/profile",
-      },
       {
         label: t("store.domain"),
         to: "/settings/store",
@@ -84,6 +81,20 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   )
 }
 
+const useMyAccountRoutes = (): NavItemProps[] => {
+  const { t } = useTranslation()
+
+  return useMemo(
+    () => [
+      {
+        label: t("profile.domain"),
+        to: "/settings/profile",
+      },
+    ],
+    [t]
+  )
+}
+
 const useExtensionRoutes = (): NavItemProps[] => {
   const links = routes.links
 
@@ -115,11 +126,63 @@ const SettingsSidebar = () => {
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
   const extensionRoutes = useExtensionRoutes()
+  const myAccountRoutes = useMyAccountRoutes()
 
   const { t } = useTranslation()
 
-  const location = useLocation()
+  return (
+    <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
+      <div className="flex flex-1 flex-col">
+        <div className="bg-ui-bg-subtle sticky top-0 z-[1]">
+          <Header />
+          <div className="flex items-center justify-center px-3">
+            <Divider variant="dashed" />
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col overflow-y-auto">
+          <CollapsibleSection
+            label={t("app.nav.settings.general")}
+            items={routes}
+          />
+          <div className="flex items-center justify-center px-3">
+            <Divider variant="dashed" />
+          </div>
+          <CollapsibleSection
+            label={t("app.nav.settings.developer")}
+            items={developerRoutes}
+          />
+          <div className="flex items-center justify-center px-3">
+            <Divider variant="dashed" />
+          </div>
+          <CollapsibleSection
+            label={t("app.nav.settings.myAccount")}
+            items={myAccountRoutes}
+          />
+          {extensionRoutes.length > 0 && (
+            <Fragment>
+              <div className="flex items-center justify-center px-3">
+                <Divider variant="dashed" />
+              </div>
+              <CollapsibleSection
+                label={t("app.nav.common.extensions")}
+                items={extensionRoutes}
+              />
+            </Fragment>
+          )}
+        </div>
+        <div className="bg-ui-bg-subtle sticky bottom-0">
+          <UserSection />
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+const Header = () => {
   const [from, setFrom] = useState("/orders")
+
+  const { t } = useTranslation()
+  const location = useLocation()
 
   useEffect(() => {
     if (location.state?.from) {
@@ -128,110 +191,70 @@ const SettingsSidebar = () => {
   }, [location])
 
   return (
-    <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
-      <div className="p-3">
-        <Link
-          to={from}
-          replace
-          className={clx(
-            "bg-ui-bg-subtle transition-fg flex items-center rounded-md outline-none",
-            "hover:bg-ui-bg-subtle-hover"
-          )}
-        >
-          <div className="flex items-center gap-x-2 py-1 pl-0.5 pr-2">
-            <div className="flex size-6 items-center justify-center">
-              <ArrowUturnLeft className="text-ui-fg-subtle" />
-            </div>
-            <Text leading="compact" weight="plus" size="small">
-              {t("nav.settings")}
-            </Text>
+    <div className="bg-ui-bg-subtle p-3">
+      <Link
+        to={from}
+        replace
+        className={clx(
+          "bg-ui-bg-subtle transition-fg flex items-center rounded-md outline-none",
+          "hover:bg-ui-bg-subtle-hover",
+          "focus-visible:shadow-borders-focus"
+        )}
+      >
+        <div className="flex items-center gap-x-2.5 px-2 py-1">
+          <div className="flex items-center justify-center">
+            <ArrowUturnLeft className="text-ui-fg-subtle" />
           </div>
-        </Link>
+          <Text leading="compact" weight="plus" size="small">
+            {t("app.nav.settings.header")}
+          </Text>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
+const CollapsibleSection = ({
+  label,
+  items,
+}: {
+  label: string
+  items: NavItemProps[]
+}) => {
+  return (
+    <Collapsible.Root defaultOpen className="py-3">
+      <div className="px-3">
+        <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+          <Text size="small" leading="compact">
+            {label}
+          </Text>
+          <Collapsible.Trigger asChild>
+            <IconButton size="2xsmall" variant="transparent">
+              <MinusMini className="text-ui-fg-muted" />
+            </IconButton>
+          </Collapsible.Trigger>
+        </div>
       </div>
-      <div className="flex items-center justify-center px-3">
+      <Collapsible.Content>
+        <div className="pt-0.5">
+          <nav className="flex flex-col gap-y-0.5">
+            {items.map((setting) => (
+              <NavItem key={setting.to} type="setting" {...setting} />
+            ))}
+          </nav>
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
+  )
+}
+
+const UserSection = () => {
+  return (
+    <div>
+      <div className="px-3">
         <Divider variant="dashed" />
       </div>
-      <div className="flex flex-1 flex-col overflow-y-auto">
-        <Collapsible.Root defaultOpen className="py-3">
-          <div className="px-3">
-            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
-              <Text size="small" leading="compact">
-                {t("nav.general")}
-              </Text>
-              <Collapsible.Trigger asChild>
-                <IconButton size="2xsmall" variant="transparent">
-                  <MinusMini className="text-ui-fg-muted" />
-                </IconButton>
-              </Collapsible.Trigger>
-            </div>
-          </div>
-          <Collapsible.Content>
-            <div className="pt-0.5">
-              <nav className="flex flex-col gap-y-0.5">
-                {routes.map((setting) => (
-                  <NavItem key={setting.to} type="setting" {...setting} />
-                ))}
-              </nav>
-            </div>
-          </Collapsible.Content>
-        </Collapsible.Root>
-        <div className="flex items-center justify-center px-3">
-          <Divider variant="dashed" />
-        </div>
-        <Collapsible.Root defaultOpen className="py-3">
-          <div className="px-3">
-            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
-              <Text size="small" leading="compact">
-                {t("nav.developer")}
-              </Text>
-              <Collapsible.Trigger asChild>
-                <IconButton size="2xsmall" variant="transparent">
-                  <MinusMini className="text-ui-fg-muted" />
-                </IconButton>
-              </Collapsible.Trigger>
-            </div>
-          </div>
-          <Collapsible.Content>
-            <div className="pt-0.5">
-              <nav className="flex flex-col gap-y-0.5">
-                {developerRoutes.map((setting) => (
-                  <NavItem key={setting.to} type="setting" {...setting} />
-                ))}
-              </nav>
-            </div>
-          </Collapsible.Content>
-        </Collapsible.Root>
-        {extensionRoutes.length > 0 && (
-          <Fragment>
-            <div className="flex items-center justify-center px-3">
-              <Divider variant="dashed" />
-            </div>
-            <Collapsible.Root defaultOpen className="py-3">
-              <div className="px-3">
-                <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
-                  <Text size="small" leading="compact">
-                    {t("nav.extensions")}
-                  </Text>
-                  <Collapsible.Trigger asChild>
-                    <IconButton size="2xsmall" variant="transparent">
-                      <MinusMini className="text-ui-fg-muted" />
-                    </IconButton>
-                  </Collapsible.Trigger>
-                </div>
-              </div>
-              <Collapsible.Content>
-                <div className="pt-0.5">
-                  <nav className="flex flex-col gap-y-0.5">
-                    {extensionRoutes.map((setting) => (
-                      <NavItem key={setting.to} {...setting} />
-                    ))}
-                  </nav>
-                </div>
-              </Collapsible.Content>
-            </Collapsible.Root>
-          </Fragment>
-        )}
-      </div>
-    </aside>
+      <UserMenu />
+    </div>
   )
 }
