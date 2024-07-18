@@ -201,12 +201,11 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(result.data.order_change).toEqual(
+        expect(result.data.order.order_change).toEqual(
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
             change_type: "return",
-            actions: [],
             description: "Test",
             status: "pending",
             order_id: order.id,
@@ -625,11 +624,10 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          expect(result.data.order_change).toEqual(
+          expect(result.data.order.order_change).toEqual(
             expect.objectContaining({
               return_id: returnId,
               change_type: "return",
-              actions: [],
               status: "pending",
               internal_note: "Test internal note",
             })

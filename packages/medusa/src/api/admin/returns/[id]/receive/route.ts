@@ -4,6 +4,8 @@ import {
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -17,6 +19,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const { id } = req.params
 
@@ -39,11 +42,14 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderReturn] = await remoteQuery(queryObject)
+  const [order, orderReturn] = await promiseAll([
+    orderModuleService.retrieveOrder(result.order_id),
+    remoteQuery(queryObject),
+  ])
 
   res.json({
-    order_change: result,
-    return: orderReturn,
+    order,
+    return: orderReturn[0],
   })
 }
 
