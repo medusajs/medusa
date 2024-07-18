@@ -94,10 +94,50 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     await orm.em.getDriver().getConnection().execute(`
       CREATE TABLE IF NOT EXISTS "${this.tableName}" (
         id SERIAL PRIMARY KEY,
-        table_name VARCHAR(255) NOT NULL,
+        table_name VARCHAR(255) NOT NULL UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `)
+  }
+
+  /**
+   * Ensure the migrations table is in sync
+   *
+   * @param orm
+   * @param linksTableNames
+   * @protected
+   */
+  protected async ensureMigrationsTableUpToDate(
+    orm: MikroORM<PostgreSqlDriver>,
+    linksTableNames: string[]
+  ) {
+    const existingTables: string[] = (
+      await orm.em
+        .getDriver()
+        .getConnection()
+        .execute<
+          {
+            table_name: string
+          }[]
+        >(
+          `
+        SELECT table_name
+        FROM information_schema.tables;
+    `
+        )
+    )
+      .map(({ table_name }) => table_name)
+      .filter((tableName) => linksTableNames.includes(tableName))
+
+    await orm.em
+      .getDriver()
+      .getConnection()
+      .execute(
+        `
+        INSERT INTO ${this.tableName} (table_name) VALUES (?) ON CONFLICT DO NOTHING;
+    `,
+        [existingTables]
+      )
   }
 
   /**
@@ -110,11 +150,17 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    */
   protected async createLinkTable(
     orm: MikroORM<PostgreSqlDriver>,
-    tableName: string,
-    sql: string
+    tableName: string | string[],
+    sql: string = ""
   ) {
+    const normalizedTableName = Array.isArray(tableName)
+      ? tableName
+      : [tableName]
+
     await orm.em.getDriver().getConnection().execute(`
-      INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}');
+      INSERT INTO "${this.tableName}" (table_name) VALUES (${normalizedTableName
+      .map((name) => `'${name}'`)
+      .join(",")});
       ${sql}
     `)
   }
@@ -242,7 +288,14 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     await this.ensureMigrationsTable(orm)
 
     const executionActions: LinkMigrationsPlannerAction[] = []
+
     const trackedTables = await this.getTrackedLinksTables(orm)
+
+    const linksTableNames = this.#linksEntities.map(
+      ({ entity }) => entity.meta.collection
+    )
+
+    await this.ensureMigrationsTableUpToDate(orm, linksTableNames)
 
     /**
      * Looping through the new set of entities and generating
@@ -253,10 +306,6 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
         await this.getEntityMigrationPlan(linkDescriptor, entity, trackedTables)
       )
     }
-
-    const linksTableNames = this.#linksEntities.map(
-      ({ entity }) => entity.meta.collection
-    )
 
     /**
      * Finding the tables to be removed
