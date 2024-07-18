@@ -11,7 +11,7 @@ const SquarePurpleSolid = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <rect width={8} height={8} x={3.5} y={3.5} fill="#8B5CF6" rx={2} />
+        <rect width={8} height={8} x={3.5} y={3.5} fill="#A78BFA" rx={2} />
         <rect
           width={7}
           height={7}
