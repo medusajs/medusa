@@ -106,6 +106,14 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
   return serviceConfig
 }
 
+/**
+ * Generate a ModuleJoinerConfig for the link definition on the fly.
+ * All naming, aliases etc are following our conventional naming.
+ *
+ * @param leftService
+ * @param rightService
+ * @param linkServiceOptions
+ */
 export function defineLink(
   leftService: DefineLinkInputSource,
   rightService: DefineLinkInputSource,
