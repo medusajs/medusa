@@ -12,7 +12,7 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
 import { FulfillmentSetType } from "../../../common/constants"
@@ -63,24 +63,16 @@ export function CreateServiceZoneForm({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.serviceZones.create.successToast", {
+          toast.success(
+            t("stockLocations.serviceZones.create.successToast", {
               name: data.name,
-            }),
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
 
           handleSuccess(`/settings/locations/${location.id}`)
         },
         onError: (e) => {
-          console.error(e)
-
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

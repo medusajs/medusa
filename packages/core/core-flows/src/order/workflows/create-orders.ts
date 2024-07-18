@@ -28,6 +28,7 @@ function prepareLineItems(data) {
           ...item,
         },
         unitPrice: MathBN.max(0, item.unit_price),
+        isTaxInclusive: item.is_tax_inclusive,
         quantity: item.quantity as number,
         metadata: item?.metadata ?? {},
       })
@@ -37,8 +38,12 @@ function prepareLineItems(data) {
       variant: variant,
       unitPrice: MathBN.max(
         0,
-        item.unit_price ?? data.priceSets[item.variant_id!]?.calculated_amount
+        item.unit_price ??
+          data.priceSets[item.variant_id!]?.raw_calculated_amount
       ),
+      isTaxInclusive:
+        item.is_tax_inclusive ??
+        data.priceSets[item.variant_id!]?.is_calculated_price_tax_inclusive,
       quantity: item.quantity as number,
       metadata: item?.metadata ?? {},
       taxLines: item.tax_lines || [],

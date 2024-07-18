@@ -5,7 +5,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
+  createPgConnection,
   promiseAll,
 } from "@medusajs/utils"
 
@@ -41,7 +41,7 @@ export async function initModules({
 
   let shouldDestroyConnectionAutomatically = !sharedPgConnection
   if (!sharedPgConnection) {
-    sharedPgConnection = ModulesSdkUtils.createPgConnection({
+    sharedPgConnection = createPgConnection({
       clientUrl: databaseConfig.clientUrl,
       schema: databaseConfig.schema,
     })
@@ -55,6 +55,8 @@ export async function initModules({
     servicesConfig: joinerConfig,
     injectedDependencies,
   })
+
+  await medusaApp.onApplicationStart()
 
   async function shutdown() {
     if (shouldDestroyConnectionAutomatically) {

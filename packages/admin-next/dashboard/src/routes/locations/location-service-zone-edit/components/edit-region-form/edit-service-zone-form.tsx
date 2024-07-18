@@ -6,10 +6,7 @@ import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { InlineTip } from "../../../../../components/common/inline-tip"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 
 type EditServiceZoneFormProps = {
@@ -46,19 +43,15 @@ export const EditServiceZoneForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.serviceZones.edit.successToast", {
+          toast.success(
+            t("stockLocations.serviceZones.edit.successToast", {
               name: values.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

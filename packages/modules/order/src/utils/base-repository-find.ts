@@ -31,14 +31,23 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     const isRelatedEntity = entity !== Order
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
+    config.options ??= {}
+    config.options.populate ??= []
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
+      if (!config.options.populate.includes("order.items")) {
+        config.options.populate.unshift("order.items")
+      }
+
       // first relation is always order if the entity is not Order
+      const index = config.options.populate.findIndex((p) => p === "order")
+      if (index > -1) {
+        config.options.populate.splice(index, 1)
+      }
+
       config.options.populate.unshift("order")
       orderAlias = "o1"
-
-      config.options.populate.unshift("order.items")
     }
 
     let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
@@ -62,6 +71,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (isRelatedEntity) {
       popWhere.order ??= {}
+
+      popWhere.shipping_methods ??= {}
+      popWhere.shipping_methods.version = version
+      popWhere.shipping_methods.deleted_at ??= null
+
+      popWhere.shipping_methods.shipping_method ??= {}
+      popWhere.shipping_methods.shipping_method.deleted_at ??= null
     }
 
     const orderWhere = isRelatedEntity ? popWhere.order : popWhere
@@ -71,13 +87,21 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     orderWhere.items ??= {}
     orderWhere.items.version = version
+    orderWhere.items.deleted_at ??= null
 
-    popWhere.shipping_methods ??= {}
-    popWhere.shipping_methods.version = version
+    orderWhere.shipping_methods ??= {}
+    orderWhere.shipping_methods.version = version
+    orderWhere.shipping_methods.deleted_at ??= null
+
+    orderWhere.shipping_methods.shipping_method ??= {}
+    orderWhere.shipping_methods.shipping_method.deleted_at ??= null
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
     }
+
+    config.where ??= {}
+    config.where.deleted_at ??= null
 
     return await manager.find(entity, config.where, config.options)
   }
@@ -105,7 +129,12 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
-      // first relation is always order if entity is not Order
+      // first relation is always order if the entity is not Order
+      const index = config.options.populate.findIndex((p) => p === "order")
+      if (index > -1) {
+        config.options.populate.splice(index, 1)
+      }
+
       config.options.populate.unshift("order")
       orderAlias = "o1"
     }
@@ -140,9 +169,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     orderWhere.items ??= {}
     orderWhere.items.version = version
+    orderWhere.items.deleted_at ??= null
 
     popWhere.shipping_methods ??= {}
     popWhere.shipping_methods.version = version
+    popWhere.shipping_methods.deleted_at ??= null
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }

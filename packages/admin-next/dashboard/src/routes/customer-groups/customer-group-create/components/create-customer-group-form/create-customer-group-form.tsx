@@ -8,7 +8,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 export const CreateCustomerGroupSchema = zod.object({
@@ -35,20 +35,16 @@ export const CreateCustomerGroupForm = () => {
       },
       {
         onSuccess: ({ customer_group }) => {
-          toast.success(t("general.success"), {
-            description: t("customerGroups.create.successToast", {
+          toast.success(
+            t("customerGroups.create.successToast", {
               name: customer_group.name,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess(`/customer-groups/${customer_group.id}`)
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

@@ -6,6 +6,7 @@ import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
 import { useShippingOptionPriceColumns } from "../../../common/hooks/use-shipping-option-price-columns"
 import { CreateShippingOptionSchema } from "./schema"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 type PricingPricesFormProps = {
   form: UseFormReturn<CreateShippingOptionSchema>
@@ -22,7 +23,7 @@ export const CreateShippingOptionsPricesForm = ({
   } = useStore()
 
   const currencies = useMemo(
-    () => store?.supported_currency_codes || [],
+    () => store?.supported_currencies?.map((c) => c.currency_code) || [],
     [store]
   )
 
@@ -36,9 +37,12 @@ export const CreateShippingOptionsPricesForm = ({
     limit: 999,
   })
 
+  const { price_preferences: pricePreferences } = usePricePreferences({})
+
   const columns = useShippingOptionPriceColumns({
     currencies,
     regions,
+    pricePreferences,
   })
 
   const initializing = isStoreLoading || !store || isRegionsLoading || !regions

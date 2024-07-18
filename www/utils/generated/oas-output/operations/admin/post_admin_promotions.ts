@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -57,12 +67,9 @@
  *         description: SUMMARY
  *         required:
  *           - code
- *           - is_automatic
  *           - type
  *           - campaign_id
- *           - campaign
  *           - application_method
- *           - rules
  *         properties:
  *           code:
  *             type: string
@@ -88,11 +95,9 @@
  *               - name
  *               - campaign_identifier
  *               - description
- *               - currency
  *               - budget
  *               - starts_at
  *               - ends_at
- *               - promotions
  *             properties:
  *               name:
  *                 type: string
@@ -106,16 +111,13 @@
  *                 type: string
  *                 title: description
  *                 description: The campaign's description.
- *               currency:
- *                 type: string
- *                 title: currency
- *                 description: The campaign's currency.
  *               budget:
  *                 type: object
  *                 description: The campaign's budget.
  *                 required:
  *                   - type
  *                   - limit
+ *                   - currency_code
  *                 properties:
  *                   type:
  *                     type: string
@@ -126,6 +128,10 @@
  *                     type: number
  *                     title: limit
  *                     description: The budget's limit.
+ *                   currency_code:
+ *                     type: string
+ *                     title: currency_code
+ *                     description: The budget's currency code.
  *               starts_at:
  *                 type: string
  *                 title: starts_at
@@ -155,12 +161,10 @@
  *             required:
  *               - description
  *               - value
+ *               - currency_code
  *               - max_quantity
  *               - type
  *               - target_type
- *               - allocation
- *               - target_rules
- *               - buy_rules
  *               - apply_to_quantity
  *               - buy_rules_min_quantity
  *             properties:
@@ -172,6 +176,10 @@
  *                 type: number
  *                 title: value
  *                 description: The application method's value.
+ *               currency_code:
+ *                 type: string
+ *                 title: currency_code
+ *                 description: The application method's currency code.
  *               max_quantity:
  *                 type: number
  *                 title: max_quantity
@@ -223,12 +231,16 @@
  *                       title: attribute
  *                       description: The target rule's attribute.
  *                     values:
- *                       type: array
- *                       description: The target rule's values.
- *                       items:
- *                         type: string
- *                         title: values
- *                         description: The value's values.
+ *                       oneOf:
+ *                         - type: string
+ *                           title: values
+ *                           description: The target rule's values.
+ *                         - type: array
+ *                           description: The target rule's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
  *               buy_rules:
  *                 type: array
  *                 description: The application method's buy rules.
@@ -260,12 +272,16 @@
  *                       title: attribute
  *                       description: The buy rule's attribute.
  *                     values:
- *                       type: array
- *                       description: The buy rule's values.
- *                       items:
- *                         type: string
- *                         title: values
- *                         description: The value's values.
+ *                       oneOf:
+ *                         - type: string
+ *                           title: values
+ *                           description: The buy rule's values.
+ *                         - type: array
+ *                           description: The buy rule's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
  *               apply_to_quantity:
  *                 type: number
  *                 title: apply_to_quantity
@@ -305,12 +321,16 @@
  *                   title: attribute
  *                   description: The rule's attribute.
  *                 values:
- *                   type: array
- *                   description: The rule's values.
- *                   items:
- *                     type: string
- *                     title: values
- *                     description: The value's values.
+ *                   oneOf:
+ *                     - type: string
+ *                       title: values
+ *                       description: The rule's values.
+ *                     - type: array
+ *                       description: The rule's values.
+ *                       items:
+ *                         type: string
+ *                         title: values
+ *                         description: The value's values.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -320,44 +340,21 @@
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "code": "{value}",
- *         "is_automatic": false,
  *         "type": "{value}",
  *         "campaign_id": "{value}",
- *         "campaign": {
- *           "name": "Helene",
- *           "campaign_identifier": "{value}",
- *           "description": "{value}",
- *           "currency": "MVR",
- *           "budget": {
- *             "type": "{value}",
- *             "limit": 7501249997963264
- *           },
- *           "starts_at": "2024-08-12T10:26:20.012Z",
- *           "ends_at": "2024-05-13T10:19:49.899Z",
- *           "promotions": []
- *         },
  *         "application_method": {
  *           "description": "{value}",
- *           "value": 8358287623847936,
- *           "max_quantity": 2469068038733824,
+ *           "value": 1841223411171328,
+ *           "currency_code": "{value}",
+ *           "max_quantity": 2960098049654784,
  *           "type": "{value}",
  *           "target_type": "{value}",
  *           "allocation": "{value}",
  *           "target_rules": [],
  *           "buy_rules": [],
- *           "apply_to_quantity": 5904452787634176,
- *           "buy_rules_min_quantity": 7660936294825984
- *         },
- *         "rules": [
- *           {
- *             "operator": "{value}",
- *             "description": "{value}",
- *             "attribute": "{value}",
- *             "values": [
- *               "{value}"
- *             ]
- *           }
- *         ]
+ *           "apply_to_quantity": 708643867590656,
+ *           "buy_rules_min_quantity": 3167972149428224
+ *         }
  *       }'
  * tags:
  *   - Promotions

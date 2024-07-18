@@ -13,7 +13,7 @@ const Navbar = () => {
     () =>
       getNavbarItems({
         basePath: config.baseUrl,
-        activePath: basePathUrl(""),
+        activePath: basePathUrl(),
         version: "v2",
       }),
     []
@@ -31,6 +31,7 @@ const Navbar = () => {
         mobileSidebarOpen,
       }}
       isLoading={false}
+      showSearchOpener
     />
   )
 }

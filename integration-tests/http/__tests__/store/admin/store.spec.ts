@@ -30,8 +30,10 @@ medusaIntegrationTestRunner({
 
         store = await storeModule.createStores({
           name: "New store",
-          supported_currency_codes: ["usd", "dkk"],
-          default_currency_code: "usd",
+          supported_currencies: [
+            { currency_code: "usd", is_default: true },
+            { currency_code: "dkk" },
+          ],
           default_sales_channel_id: "sc_12345",
         })
       })
@@ -48,9 +50,14 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: expect.any(String),
               name: "New store",
-              default_currency_code: "usd",
               default_sales_channel_id: expect.any(String),
-              supported_currency_codes: ["usd", "dkk"],
+              supported_currencies: [
+                expect.objectContaining({
+                  currency_code: "usd",
+                  is_default: true,
+                }),
+                expect.objectContaining({ currency_code: "dkk" }),
+              ],
               created_at: expect.any(String),
               updated_at: expect.any(String),
             })
@@ -59,12 +66,12 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/stores", () => {
-        it("fails to update default currency if not in store currencies", async () => {
+        it("fails to update default currencies if there is no default one", async () => {
           const err = await api
             .post(
               `/admin/stores/${store.id}`,
               {
-                default_currency_code: "eur",
+                supported_currencies: [{ currency_code: "eur" }],
               },
               adminHeaders
             )
@@ -74,17 +81,19 @@ medusaIntegrationTestRunner({
           expect(err.response.data).toEqual(
             expect.objectContaining({
               type: "invalid_data",
-              message: "Store does not have currency: eur",
+              message: "There should be a default currency set for the store",
             })
           )
         })
 
-        // BREAKING: `currencies` was renamed to `supported_currency_codes`
+        // BREAKING: `currencies` was renamed to `supported_currencies`
         it("fails to remove default currency from currencies without replacing it", async () => {
           const err = await api
             .post(
               `/admin/stores/${store.id}`,
-              { supported_currency_codes: ["dkk"] },
+              {
+                supported_currencies: [{ currency_code: "dkk" }],
+              },
               adminHeaders
             )
             .catch((e) => e)
@@ -93,41 +102,19 @@ medusaIntegrationTestRunner({
           expect(err.response.data).toEqual(
             expect.objectContaining({
               type: "invalid_data",
-              message:
-                "You are not allowed to remove default currency from store currencies without replacing it as well",
+              message: "There should be a default currency set for the store",
             })
           )
         })
 
-        it("successfully updates default currency code", async () => {
-          const response = await api
-            .post(
-              `/admin/stores/${store.id}`,
-              {
-                default_currency_code: "dkk",
-              },
-              adminHeaders
-            )
-            .catch((err) => console.log(err))
-
-          expect(response.status).toEqual(200)
-          expect(response.data.store).toEqual(
-            expect.objectContaining({
-              id: expect.any(String),
-              name: "New store",
-              default_currency_code: "dkk",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            })
-          )
-        })
-
-        it("successfully updates default currency and store currencies", async () => {
+        it("successfully updates currencies and default currency", async () => {
           const response = await api.post(
             `/admin/stores/${store.id}`,
             {
-              default_currency_code: "jpy",
-              supported_currency_codes: ["jpy", "usd"],
+              supported_currencies: [
+                { currency_code: "usd" },
+                { currency_code: "dkk", is_default: true },
+              ],
             },
             adminHeaders
           )
@@ -137,9 +124,15 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: expect.any(String),
               name: "New store",
-              default_sales_channel_id: expect.any(String),
-              supported_currency_codes: ["jpy", "usd"],
-              default_currency_code: "jpy",
+              supported_currencies: [
+                expect.objectContaining({
+                  currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  currency_code: "dkk",
+                  is_default: true,
+                }),
+              ],
               created_at: expect.any(String),
               updated_at: expect.any(String),
             })
@@ -150,7 +143,10 @@ medusaIntegrationTestRunner({
           const response = await api.post(
             `/admin/stores/${store.id}`,
             {
-              supported_currency_codes: ["jpy", "usd"],
+              supported_currencies: [
+                { currency_code: "jpy", is_default: true },
+                { currency_code: "usd" },
+              ],
             },
             adminHeaders
           )
@@ -161,8 +157,15 @@ medusaIntegrationTestRunner({
               id: expect.any(String),
               default_sales_channel_id: expect.any(String),
               name: "New store",
-              supported_currency_codes: ["jpy", "usd"],
-              default_currency_code: "usd",
+              supported_currencies: [
+                expect.objectContaining({
+                  currency_code: "jpy",
+                  is_default: true,
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                }),
+              ],
               created_at: expect.any(String),
               updated_at: expect.any(String),
             })

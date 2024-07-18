@@ -15,7 +15,7 @@ The Store Module is the `@medusajs/store` NPM package that provides store-relate
 A store holds the main configurations of your commerce store, such as supported currencies, default region and sales channel, and more.
 
 ```ts
-const store = await storeModuleService.create({
+const store = await storeModuleService.createStores({
   name: "My Store",
   supported_currency_codes: ["usd"],
 })
@@ -26,7 +26,7 @@ const store = await storeModuleService.create({
 You can create multiple stores, each having its own configurations.
 
 ```ts
-const stores = await storeModuleService.create([
+const stores = await storeModuleService.createStores([
   {
     name: "USA Store",
     supported_currency_codes: ["usd"],
@@ -52,20 +52,21 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    res.json({
-      stores: await storeModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    stores: await storeModuleService.listStores(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -73,17 +74,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const storeModuleService: IStoreModuleService =
-      container.resolve(ModuleRegistrationName.STORE)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const storeModuleService: IStoreModuleService = container.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    const stores = await storeModuleService.list()
-  }
-  ```
+  const stores = await storeModuleService.listStores()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -91,19 +91,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const storeModuleService: IStoreModuleService =
-      container.resolve(
-        ModuleRegistrationName.STORE
-      )
-    
-    const stores = await storeModuleService.list()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const storeModuleService: IStoreModuleService = container.resolve(
+    ModuleRegistrationName.STORE
+  )
+
+  const stores = await storeModuleService.listStores()
+})
+```
 
   </CodeTab>
 </CodeTabs>

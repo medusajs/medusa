@@ -1,6 +1,6 @@
-import { buildQuery } from "../../modules-sdk"
 import { EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { buildQuery } from "../../modules-sdk"
 
 function detectCircularDependency(
   manager: SqlEntityManager,
@@ -15,8 +15,9 @@ function detectCircularDependency(
   visited.add(entityMetadata.className)
 
   const relations = entityMetadata.relations
+
   const relationsToCascade = relations.filter((relation) =>
-    relation.cascade.includes("soft-remove" as any)
+    relation.cascade?.includes("soft-remove" as any)
   )
 
   for (const relation of relationsToCascade) {
@@ -63,7 +64,7 @@ async function performCascadingSoftDeletion<T>(
   const relations = manager.getDriver().getMetadata().get(entityName).relations
 
   const relationsToCascade = relations.filter((relation) =>
-    relation.cascade.includes("soft-remove" as any)
+    relation.cascade?.includes("soft-remove" as any)
   )
 
   for (const relation of relationsToCascade) {

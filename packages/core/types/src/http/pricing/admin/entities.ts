@@ -1,5 +1,3 @@
-import { PriceListStatus, PriceListType } from "../../../pricing"
-
 /**
  * TODO: Not sure how to type this properly, as it's unclear to me what is returned
  * by our API. As an example we return `price_list: null` but `price_list_id` is missing.
@@ -32,16 +30,12 @@ export interface AdminPrice {
   deleted_at: string | null
 }
 
-export interface AdminPriceList {
+export interface AdminPricePreference {
   id: string
-  title: string
-  description: string
-  rules: Record<string, any>
-  starts_at: string | null
-  ends_at: string | null
-  status: PriceListStatus
-  type: PriceListType
-  prices: AdminPrice[]
+  attribute: string | null
+  value: string | null
+  is_tax_inclusive: boolean
   created_at: string
   updated_at: string
+  deleted_at: null | string
 }

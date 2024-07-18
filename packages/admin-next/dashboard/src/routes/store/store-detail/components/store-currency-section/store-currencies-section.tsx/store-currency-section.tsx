@@ -1,5 +1,5 @@
-import { Plus, Trash } from "@medusajs/icons"
-import { CurrencyDTO } from "@medusajs/types"
+import { CheckCircle, Plus, Trash, XCircle } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import {
   Checkbox,
   CommandBar,
@@ -20,6 +20,8 @@ import { useDataTable } from "../../../../../../hooks/use-data-table"
 import { ExtendedStoreDTO } from "../../../../../../types/api-responses"
 import { useCurrenciesTableColumns } from "../../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../../common/hooks/use-currencies-table-query"
+import { usePricePreferences } from "../../../../../../hooks/api/price-preferences"
+import { StatusCell } from "../../../../../../components/table/table-cells/common/status-cell"
 
 type StoreCurrencySectionProps = {
   store: ExtendedStoreDTO
@@ -35,23 +37,47 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
   const {
     currencies,
     count,
-    isPending: isLoading,
-    isError,
-    error,
+    isPending: isCurrenciesPending,
+    isError: isCurrenciesError,
+    error: currenciesError,
   } = useCurrencies(
     {
-      code: store.supported_currency_codes,
+      code: store.supported_currencies?.map((c) => c.currency_code),
       ...searchParams,
     },
     {
       placeholderData: keepPreviousData,
+      enabled: !!store.supported_currencies?.length,
+    }
+  )
+
+  const {
+    price_preferences: pricePreferences,
+    isPending: isPricePreferencesPending,
+    isError: isPricePreferencesError,
+    error: pricePreferencesError,
+  } = usePricePreferences(
+    {
+      attribute: "currency_code",
+      value: store.supported_currencies?.map((c) => c.currency_code),
+    },
+    {
+      enabled: !!store.supported_currencies?.length,
     }
   )
 
   const columns = useColumns()
+  const prefMap = useMemo(() => {
+    return new Map(pricePreferences?.map((pref) => [pref.value!, pref]))
+  }, [pricePreferences])
+
+  const withTaxInclusivity = currencies?.map((c) => ({
+    ...c,
+    is_tax_inclusive: prefMap.get(c.code)?.is_tax_inclusive,
+  }))
 
   const { table } = useDataTable({
-    data: currencies ?? [],
+    data: withTaxInclusivity ?? [],
     columns,
     count: count,
     getRowId: (row) => row.code,
@@ -64,8 +90,10 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     pageSize: PAGE_SIZE,
     meta: {
       storeId: store.id,
-      currencyCodes: store.supported_currency_codes,
-      defaultCurrencyCode: store.default_currency_code,
+      supportedCurrencies: store.supported_currencies,
+      defaultCurrencyCode: store.supported_currencies?.find((c) => c.is_default)
+        ?.currency_code,
+      preferencesMap: prefMap,
     },
   })
 
@@ -89,29 +117,34 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       return
     }
 
-    try {
-      await mutateAsync({
-        supported_currency_codes: store.supported_currency_codes.filter(
-          (c) => !ids.includes(c)
-        ),
-      })
-      setRowSelection({})
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(
+      {
+        supported_currencies:
+          store.supported_currencies?.filter(
+            (c) => !ids.includes(c.currency_code)
+          ) ?? [],
+      },
+      {
+        onSuccess: () => {
+          setRowSelection({})
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
-  if (isError) {
-    throw error
+  if (isCurrenciesError) {
+    throw currenciesError
   }
+
+  if (isPricePreferencesError) {
+    throw pricePreferencesError
+  }
+
+  const isLoading = isCurrenciesPending || isPricePreferencesPending
 
   return (
     <Container className="divide-y p-0">
@@ -138,8 +171,8 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         table={table}
         pageSize={PAGE_SIZE}
         columns={columns}
-        count={count}
-        isLoading={isLoading}
+        count={!store.supported_currencies?.length ? 0 : count}
+        isLoading={!store.supported_currencies?.length ? false : isLoading}
         queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>
@@ -164,16 +197,17 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 const CurrencyActions = ({
   storeId,
   currency,
-  currencyCodes,
+  supportedCurrencies,
   defaultCurrencyCode,
+  preferencesMap,
 }: {
   storeId: string
-  currency: CurrencyDTO
-  currencyCodes: string[]
+  currency: HttpTypes.AdminCurrency
+  supportedCurrencies: HttpTypes.AdminStoreCurrency[]
   defaultCurrencyCode: string
+  preferencesMap: Map<string, HttpTypes.AdminPricePreference>
 }) => {
   const { mutateAsync } = useUpdateStore(storeId)
-
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -193,23 +227,46 @@ const CurrencyActions = ({
       return
     }
 
-    try {
-      await mutateAsync({
-        supported_currency_codes: currencyCodes.filter(
-          (c) => c !== currency.code
+    await mutateAsync(
+      {
+        supported_currencies: supportedCurrencies.filter(
+          (c) => c.currency_code !== currency.code
         ),
-      })
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.currenciesRemoved"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
+  }
 
-      toast.success(t("general.success"), {
-        description: t("store.toast.currenciesRemoved"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+  const handleToggleTaxInclusivity = async () => {
+    await mutateAsync(
+      {
+        supported_currencies: supportedCurrencies.map((c) => {
+          const pref = preferencesMap.get(c.currency_code)
+          return {
+            ...c,
+            is_tax_inclusive:
+              c.currency_code === currency.code
+                ? !pref?.is_tax_inclusive
+                : undefined,
+          }
+        }),
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("store.toast.updatedTaxInclusivitySuccessfully"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (
@@ -223,6 +280,17 @@ const CurrencyActions = ({
               onClick: handleRemove,
               disabled: currency.code === defaultCurrencyCode,
             },
+            {
+              icon: preferencesMap.get(currency.code)?.is_tax_inclusive ? (
+                <XCircle />
+              ) : (
+                <CheckCircle />
+              ),
+              label: preferencesMap.get(currency.code)?.is_tax_inclusive
+                ? t("store.disableTaxInclusivePricing")
+                : t("store.enableTaxInclusivePricing"),
+              onClick: handleToggleTaxInclusivity,
+            },
           ],
         },
       ]}
@@ -230,10 +298,13 @@ const CurrencyActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<CurrencyDTO>()
+const columnHelper = createColumnHelper<
+  HttpTypes.AdminCurrency & { is_tax_inclusive?: boolean }
+>()
 
 const useColumns = () => {
   const base = useCurrenciesTableColumns()
+  const { t } = useTranslation()
 
   return useMemo(
     () => [
@@ -266,27 +337,44 @@ const useColumns = () => {
         },
       }),
       ...base,
+      columnHelper.accessor("is_tax_inclusive", {
+        header: t("fields.taxInclusivePricing"),
+        cell: ({ getValue }) => {
+          const isTaxInclusive = getValue()
+          return (
+            <StatusCell color={isTaxInclusive ? "green" : "grey"}>
+              {isTaxInclusive ? t("fields.true") : t("fields.false")}
+            </StatusCell>
+          )
+        },
+      }),
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { currencyCodes, storeId, defaultCurrencyCode } = table.options
-            .meta as {
-            currencyCodes: string[]
+          const {
+            supportedCurrencies,
+            storeId,
+            defaultCurrencyCode,
+            preferencesMap,
+          } = table.options.meta as {
+            supportedCurrencies: HttpTypes.AdminStoreCurrency[]
             storeId: string
             defaultCurrencyCode: string
+            preferencesMap: Map<string, HttpTypes.AdminPricePreference>
           }
 
           return (
             <CurrencyActions
               storeId={storeId}
               currency={row.original}
-              currencyCodes={currencyCodes}
+              supportedCurrencies={supportedCurrencies}
               defaultCurrencyCode={defaultCurrencyCode}
+              preferencesMap={preferencesMap}
             />
           )
         },
       }),
     ],
-    [base]
+    [base, t]
   )
 }

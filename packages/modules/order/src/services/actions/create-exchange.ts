@@ -4,14 +4,14 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
+  ChangeActionType,
+  OrderChangeType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
   promiseAll,
 } from "@medusajs/utils"
 import { ExchangeItem, OrderExchange, Return, ReturnItem } from "@models"
-import { OrderChangeType } from "@types"
-import { ChangeActionType } from "../../utils"
 
 function createExchangeAndReturnEntities(em, data, order) {
   const exchangeReference = em.create(OrderExchange, {
@@ -129,7 +129,9 @@ async function processAdditionalItems(
 
   createItems.forEach((item, index) => {
     const addedItem = itemsToAdd[index]
+
     additionalNewItems[index].item_id = item.id
+
     actions.push({
       action: ChangeActionType.ITEM_ADD,
       exchange_id: exchangeReference.id,
@@ -140,6 +142,7 @@ async function processAdditionalItems(
         reference_id: item.id,
         exchange_id: exchangeReference.id,
         quantity: addedItem.quantity,
+        unit_price: item.unit_price,
         metadata: addedItem.metadata,
       },
     })
@@ -162,9 +165,9 @@ async function processShippingMethods(
       const methods = await service.createShippingMethods(
         [
           {
+            ...shippingMethod,
             order_id: data.order_id,
             exchange_id: exchangeReference.id,
-            ...shippingMethod,
           },
         ],
         sharedContext
@@ -208,10 +211,10 @@ async function processReturnShipping(
     const methods = await service.createShippingMethods(
       [
         {
+          ...data.return_shipping,
           order_id: data.order_id,
           exchange_id: exchangeReference.id,
           return_id: returnReference.id,
-          ...data.return_shipping,
         },
       ],
       sharedContext
@@ -294,7 +297,7 @@ export async function createExchange(
       order_id: data.order_id,
       exchange_id: exchangeReference.id,
       return_id: returnReference.id,
-      change_type: OrderChangeType.CLAIM,
+      change_type: OrderChangeType.EXCHANGE,
       reference: "exchange",
       reference_id: exchangeReference.id,
       description: data.description,

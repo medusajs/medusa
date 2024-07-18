@@ -22,6 +22,7 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/default",
+        id: "default",
         options: {},
       },
     ]
@@ -47,6 +48,7 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/default",
+        id: "default",
         options: {},
       },
     ]
@@ -66,6 +68,7 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/no-service",
+        id: "default",
         options: {},
       },
     ]
@@ -83,6 +86,7 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/no-default",
+        id: "default",
         options: {},
       },
     ]

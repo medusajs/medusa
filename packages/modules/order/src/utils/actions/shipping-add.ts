@@ -1,23 +1,28 @@
-import { MedusaError, isDefined } from "@medusajs/utils"
-import { ChangeActionType } from "../action-key"
+import { ChangeActionType, MedusaError, isDefined } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
-  operation({ action, currentOrder }) {
+  operation({ action, currentOrder, options }) {
     const shipping = Array.isArray(currentOrder.shipping_methods)
       ? currentOrder.shipping_methods
       : [currentOrder.shipping_methods]
 
-    shipping.push({
-      shipping_method_id: action.reference_id!,
-      order_id: currentOrder.id,
-      return_id: action.return_id,
-      claim_id: action.claim_id,
-      exchange_id: action.exchange_id,
+    let existing = shipping.find((sh) => sh.id === action.reference_id)
 
-      price: action.amount as number,
-    })
+    if (!existing) {
+      existing = {
+        id: action.reference_id!,
+        order_id: currentOrder.id,
+        return_id: action.return_id,
+        claim_id: action.claim_id,
+        exchange_id: action.exchange_id,
+        amount: action.amount as number,
+      }
+      shipping.push(existing)
+    }
 
+    setActionReference(existing, action, options)
     currentOrder.shipping_methods = shipping
   },
   revert({ action, currentOrder }) {
@@ -26,7 +31,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
       : [currentOrder.shipping_methods]
 
     const existingIndex = shipping.findIndex(
-      (item) => item.shipping_method_id === action.reference_id
+      (item) => item.id === action.reference_id
     )
 
     if (existingIndex > -1) {

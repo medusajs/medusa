@@ -13,7 +13,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
   customerGroupsQueryKeys,
@@ -130,10 +130,7 @@ export const AddCustomerGroupsForm = ({
 
       handleSuccess(`/customers/${customerId}`)
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     } finally {
       setIsPending(false)
     }
@@ -183,6 +180,9 @@ export const AddCustomerGroupsForm = ({
             layout="fill"
             search
             queryObject={raw}
+            noRecords={{
+              message: t("customers.groups.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

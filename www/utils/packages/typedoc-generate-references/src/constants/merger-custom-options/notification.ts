@@ -4,7 +4,6 @@ const notificationOptions: FormattingOptionsType = {
   "^notification/.*AbstractNotificationProviderService": {
     reflectionGroups: {
       Properties: false,
-      Constructors: false,
     },
     reflectionDescription: `In this document, you’ll learn how to create a notification provider module and the methods you must implement in it.`,
     frontmatterData: {
@@ -44,10 +43,11 @@ Create the file \`src/modules/my-notification/index.ts\` with the following cont
 
 \`\`\`ts title="src/modules/my-notification/index.ts"
 import MyNotificationProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-notification", {
   service: MyNotificationProviderService,
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the main service of the module.`,
@@ -62,7 +62,7 @@ The Notification Module accepts one provider per channel.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -75,13 +75,10 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-notification",
+            id: "my-notification",
             options: {
-              config: {
-                "my-notification": {
-                  channels: ["email"],
-                  // provider options...
-                },
-              },
+              channels: ["email"],
+              // provider options...
             },
           },
         ],

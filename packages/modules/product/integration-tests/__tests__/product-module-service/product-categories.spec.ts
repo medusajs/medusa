@@ -1,7 +1,7 @@
 import { IProductModuleService } from "@medusajs/types"
 import {
-  Modules,
   CommonEvents,
+  Modules,
   ProductEvents,
   ProductStatus,
   composeMessage,
@@ -132,6 +132,118 @@ moduleIntegrationTestRunner<IProductModuleService>({
               ],
             }),
           ])
+        })
+
+        describe("with tree inclusion", () => {
+          let root, child1, child2, child1a, child2a, child2a1
+
+          beforeEach(async () => {
+            root = await service.createProductCategories({
+              name: "Root",
+            })
+
+            child1 = await service.createProductCategories({
+              name: "Child 1",
+              parent_category_id: root.id,
+            })
+
+            child1a = await service.createProductCategories({
+              name: "Child 1 a",
+              parent_category_id: child1.id,
+            })
+
+            child2 = await service.createProductCategories({
+              name: "Child 2",
+              parent_category_id: root.id,
+            })
+
+            child2a = await service.createProductCategories({
+              name: "Child 2 a",
+              parent_category_id: child2.id,
+              is_internal: true,
+            })
+
+            child2a1 = await service.createProductCategories({
+              name: "Child 2 a 1",
+              parent_category_id: child2a.id,
+            })
+          })
+
+          it("should return all descendants of a category", async () => {
+            const results = await service.listProductCategories(
+              {
+                id: root.id,
+                include_descendants_tree: true,
+                is_internal: false,
+              },
+              {
+                select: ["id"],
+                take: 1,
+              }
+            )
+
+            expect(results).toEqual([
+              expect.objectContaining({
+                id: root.id,
+                category_children: [
+                  expect.objectContaining({
+                    id: child1.id,
+                    category_children: [
+                      expect.objectContaining({ id: child1a.id }),
+                    ],
+                  }),
+                  expect.objectContaining({
+                    id: child2.id,
+                    // child2a & child2a1 should not show up as we're scoping by internal
+                    category_children: [],
+                  }),
+                ],
+              }),
+            ])
+          })
+
+          it("should return all ancestors of a category", async () => {
+            const results = await service.listProductCategories(
+              {
+                id: child1a.id,
+                include_ancestors_tree: true,
+                is_internal: false,
+              },
+              {
+                select: ["id"],
+                take: 1,
+              }
+            )
+
+            expect(results).toEqual([
+              expect.objectContaining({
+                id: child1a.id,
+                parent_category: expect.objectContaining({
+                  id: child1.id,
+                  parent_category: expect.objectContaining({ id: root.id }),
+                }),
+              }),
+            ])
+
+            const results2 = await service.listProductCategories(
+              {
+                id: child2a1.id,
+                include_ancestors_tree: true,
+                is_internal: false,
+              },
+              {
+                select: ["id"],
+                take: 1,
+              }
+            )
+            // If the where query includes scoped categories, we hide from the tree
+            expect(results2).toEqual([
+              expect.objectContaining({
+                id: child2a1.id,
+                parent_category: undefined,
+              }),
+            ])
+          })
         })
       })
 
@@ -569,7 +681,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: productCategoryOne.id },
-              eventName: "product-category.deleted",
+              name: "product-category.deleted",
+              metadata: {
+                action: "",
+                object: "",
+                source: "",
+              },
             }),
           ])
         })

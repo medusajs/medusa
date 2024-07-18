@@ -1,19 +1,19 @@
 {
-	"id": 0,
+	"id": 13422,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 13423,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 2,
+					"id": 13424,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -26,7 +26,7 @@
 					}
 				},
 				{
-					"id": 3,
+					"id": 13425,
 					"name": "_isFulfillmentService",
 					"variant": "declaration",
 					"kind": 1024,
@@ -40,7 +40,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 4,
+					"id": 13426,
 					"name": "isFulfillmentService",
 					"variant": "declaration",
 					"kind": 2048,
@@ -49,14 +49,14 @@
 					},
 					"signatures": [
 						{
-							"id": 5,
+							"id": 13427,
 							"name": "isFulfillmentService",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 6,
+									"id": 13428,
 									"name": "obj",
 									"variant": "param",
 									"kind": 32768,
@@ -75,839 +75,46 @@
 					]
 				},
 				{
-					"id": 7,
+					"id": 13429,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8,
+							"id": 13430,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 1,
+								"target": 13423,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
 						}
 					]
-				},
-				{
-					"id": 9,
-					"name": "getIdentifier",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10,
-							"name": "getIdentifier",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "any"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.getIdentifier"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.getIdentifier"
-					}
-				},
-				{
-					"id": 11,
-					"name": "getFulfillmentOptions",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 12,
-							"name": "getFulfillmentOptions",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "reference",
-											"target": {
-												"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-												"qualifiedName": "Record"
-											},
-											"typeArguments": [
-												{
-													"type": "intrinsic",
-													"name": "string"
-												},
-												{
-													"type": "intrinsic",
-													"name": "unknown"
-												}
-											],
-											"name": "Record",
-											"package": "typescript"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.getFulfillmentOptions"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.getFulfillmentOptions"
-					}
-				},
-				{
-					"id": 13,
-					"name": "validateFulfillmentData",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 14,
-							"name": "validateFulfillmentData",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 15,
-									"name": "optionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 16,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 17,
-									"name": "context",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "any"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.validateFulfillmentData"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.validateFulfillmentData"
-					}
-				},
-				{
-					"id": 18,
-					"name": "validateOption",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 19,
-							"name": "validateOption",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 20,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "boolean"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.validateOption"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.validateOption"
-					}
-				},
-				{
-					"id": 21,
-					"name": "canCalculate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 22,
-							"name": "canCalculate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 23,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "void"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.canCalculate"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.canCalculate"
-					}
-				},
-				{
-					"id": 24,
-					"name": "calculatePrice",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 25,
-							"name": "calculatePrice",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 26,
-									"name": "optionData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 27,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 28,
-									"name": "cart",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "void"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.calculatePrice"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.calculatePrice"
-					}
-				},
-				{
-					"id": 29,
-					"name": "createFulfillment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 30,
-							"name": "createFulfillment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 31,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 32,
-									"name": "items",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 33,
-									"name": "order",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 34,
-									"name": "fulfillment",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "any"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.createFulfillment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.createFulfillment"
-					}
-				},
-				{
-					"id": 35,
-					"name": "cancelFulfillment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 36,
-							"name": "cancelFulfillment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 37,
-									"name": "fulfillment",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "any"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.cancelFulfillment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.cancelFulfillment"
-					}
-				},
-				{
-					"id": 38,
-					"name": "getFulfillmentDocuments",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 39,
-							"name": "getFulfillmentDocuments",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 40,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "intrinsic",
-											"name": "never"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.getFulfillmentDocuments"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.getFulfillmentDocuments"
-					}
-				},
-				{
-					"id": 41,
-					"name": "createReturnFulfillment",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 42,
-							"name": "createReturnFulfillment",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 43,
-									"name": "fromData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "any"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.createReturnFulfillment"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.createReturnFulfillment"
-					}
-				},
-				{
-					"id": 44,
-					"name": "getReturnDocuments",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 45,
-							"name": "getReturnDocuments",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 46,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "intrinsic",
-											"name": "never"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.getReturnDocuments"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.getReturnDocuments"
-					}
-				},
-				{
-					"id": 47,
-					"name": "getShipmentDocuments",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 48,
-							"name": "getShipmentDocuments",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 49,
-									"name": "data",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "array",
-										"elementType": {
-											"type": "intrinsic",
-											"name": "never"
-										}
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.getShipmentDocuments"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.getShipmentDocuments"
-					}
-				},
-				{
-					"id": 50,
-					"name": "retrieveDocuments",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 51,
-							"name": "retrieveDocuments",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 52,
-									"name": "fulfillmentData",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								},
-								{
-									"id": 53,
-									"name": "documentType",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "intrinsic",
-										"name": "any"
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Promise"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "void"
-									}
-								],
-								"name": "Promise",
-								"package": "typescript"
-							},
-							"implementationOf": {
-								"type": "reference",
-								"target": -1,
-								"name": "IFulfillmentProvider.retrieveDocuments"
-							}
-						}
-					],
-					"implementationOf": {
-						"type": "reference",
-						"target": -1,
-						"name": "IFulfillmentProvider.retrieveDocuments"
-					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Constructors",
 					"children": [
-						7
+						13429
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						2,
-						3
+						13424,
+						13425
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4,
-						9,
-						11,
-						13,
-						18,
-						21,
-						24,
-						29,
-						35,
-						38,
-						41,
-						44,
-						47,
-						50
+						13426
 					]
 				}
 			],
@@ -928,219 +135,47 @@
 		{
 			"title": "Classes",
 			"children": [
-				1
+				13423
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"0": {
+		"13422": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"13423": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"2": {
+		"13424": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"3": {
+		"13425": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService._isFulfillmentService"
 		},
-		"4": {
+		"13426": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"5": {
+		"13427": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"6": {
+		"13428": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "obj"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
-		"9": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getIdentifier"
-		},
-		"10": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getIdentifier"
-		},
-		"11": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
-		},
-		"12": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
-		},
-		"13": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
-		},
-		"14": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
-		},
-		"15": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "optionData"
-		},
-		"16": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"17": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "context"
-		},
-		"18": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
-		},
-		"19": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
-		},
-		"20": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"21": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
-		},
-		"22": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
-		},
-		"23": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"24": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
-		},
-		"25": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
-		},
-		"26": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "optionData"
-		},
-		"27": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"28": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "cart"
-		},
-		"29": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
-		},
-		"30": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
-		},
-		"31": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"32": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "items"
-		},
-		"33": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "order"
-		},
-		"34": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "fulfillment"
-		},
-		"35": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
-		},
-		"36": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
-		},
-		"37": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "fulfillment"
-		},
-		"38": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
-		},
-		"39": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
-		},
-		"40": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"41": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
-		},
-		"42": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
-		},
-		"43": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "fromData"
-		},
-		"44": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
-		},
-		"45": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
-		},
-		"46": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"47": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
-		},
-		"48": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
-		},
-		"49": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "data"
-		},
-		"50": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
-		},
-		"51": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
-		},
-		"52": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "fulfillmentData"
-		},
-		"53": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "documentType"
+		"reflections": {
+			"1": 13422
 		}
 	}
 }

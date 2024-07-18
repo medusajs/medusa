@@ -3,6 +3,7 @@ import { createWorkflow } from "../create-workflow"
 import { StepResponse } from "../helpers"
 import { transform } from "../transform"
 import { WorkflowData } from "../type"
+import { when } from "../when"
 
 let count = 1
 const getNewWorkflowId = () => `workflow-${count++}`
@@ -38,6 +39,98 @@ describe("Workflow composer", () => {
       const { result } = await workflow.run({ input: {} })
 
       expect(result).toEqual({ result: "hi from outside" })
+    })
+
+    it("should skip step if condition is false", async function () {
+      const step1 = createStep("step1", async (_, context) => {
+        return new StepResponse({ result: "step1" })
+      })
+      const step2 = createStep("step2", async (input: string, context) => {
+        return new StepResponse({ result: input })
+      })
+      const step3 = createStep(
+        "step3",
+        async (input: string | undefined, context) => {
+          return new StepResponse({ result: input ?? "default response" })
+        }
+      )
+
+      const subWorkflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: WorkflowData<string>) {
+          step1()
+          return step2(input)
+        }
+      )
+
+      const workflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: { callSubFlow: boolean }) {
+          const subWorkflowRes = when({ input }, ({ input }) => {
+            return input.callSubFlow
+          }).then(() => {
+            return subWorkflow.runAsStep({
+              input: "hi from outside",
+            })
+          })
+
+          return step3(subWorkflowRes.result)
+        }
+      )
+
+      const { result } = await workflow.run({ input: { callSubFlow: false } })
+
+      expect(result).toEqual({ result: "default response" })
+    })
+
+    it("should not skip step if condition is true", async function () {
+      const step1 = createStep("step1", async (_, context) => {
+        return new StepResponse({ result: "step1" })
+      })
+      const step2 = createStep("step2", async (input: string, context) => {
+        return new StepResponse({ result: input })
+      })
+      const step3 = createStep(
+        "step3",
+        async (input: string | undefined, context) => {
+          return new StepResponse({ result: input ?? "default response" })
+        }
+      )
+
+      const subWorkflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: WorkflowData<string>) {
+          step1()
+          return step2(input)
+        }
+      )
+
+      const workflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: { callSubFlow: boolean }) {
+          const subWorkflowRes = when({ input }, ({ input }) => {
+            return input.callSubFlow
+          }).then(() => {
+            return subWorkflow.runAsStep({
+              input: "hi from outside",
+            })
+          })
+
+          return step3(subWorkflowRes.result)
+        }
+      )
+
+      const { result } = await workflow.run({
+        input: { callSubFlow: true },
+      })
+
+      expect(result).toEqual({ result: "hi from outside" })
+
+      const { result: res2 } = await workflow.run({
+        input: { callSubFlow: false },
+      })
+
+      expect(res2).toEqual({ result: "default response" })
     })
 
     it("should revert the workflow and sub workflow on failure", async function () {

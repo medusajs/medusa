@@ -50,8 +50,6 @@
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
     "@mikro-orm/postgresql": "5.9.7",
-    "awilix": "^8.0.0",
-    "dotenv": "^16.4.5",
-    "knex": "2.4.2"
+    "awilix": "^8.0.0"
   }
 }

@@ -1,6 +1,6 @@
 import { ConfigModule } from "@medusajs/types"
-import { transformFile } from "@swc/core"
 import { getConfigFile } from "@medusajs/utils"
+import { transformFile } from "@swc/core"
 import { existsSync } from "node:fs"
 import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises"
 import path from "path"
@@ -36,7 +36,8 @@ async function findFiles(dir: string): Promise<string[]> {
     )
     return paths.flat()
   } catch (e) {
-    console.log(`Failed to read directory ${dir}`)
+    console.error(`Failed to read directory ${dir}`)
+    console.error(e)
     throw e
   }
 }
@@ -55,7 +56,7 @@ const getOutputPath = (file: string, config: FileConfig) => {
     outputPath = outputPath.replace(currentExtension, targetExtension)
   }
 
-  return outputPath
+  return outputPath.replaceAll(path.sep, "/")
 }
 
 const writeToOut = async (
@@ -71,9 +72,8 @@ const writeToOut = async (
 
 async function copyToOut(file: string, config: FileConfig) {
   const outputPath = getOutputPath(file, config)
-  const dirNameRegex = new RegExp("\\" + path.sep + "([^\\" + path.sep + "]+)$")
 
-  await mkdir(outputPath.replace(dirNameRegex, ""), { recursive: true })
+  await mkdir(outputPath.replace(/\/[^/]+$/, ""), { recursive: true })
   await copyFile(file, outputPath)
 }
 
@@ -121,7 +121,8 @@ export default async function ({ directory }: BuildArgs) {
   )
 
   if (error) {
-    console.log(`Failed to load medusa-config.js`)
+    console.error(`Failed to load medusa-config.js`)
+    console.error(error)
     process.exit(1)
   }
 
@@ -158,7 +159,8 @@ export default async function ({ directory }: BuildArgs) {
 
       await buildProductionBuild(adminOptions)
     } catch (error) {
-      console.log("Failed to build admin")
+      console.error("Failed to build admin")
+      console.error(error)
     }
   }
 

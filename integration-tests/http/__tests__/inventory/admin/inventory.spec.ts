@@ -581,6 +581,79 @@ medusaIntegrationTestRunner({
             })
           )
         })
+        
+        it("should retrieve the inventory item with correct stocked quantity given location levels have been deleted", async () => {
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            {
+              location_id: stockLocation1.id,
+              stocked_quantity: 10,
+              incoming_quantity: 0,
+            },
+            adminHeaders
+          )
+
+          const item = (
+            await api.post(
+              `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+              {
+                location_id: stockLocation2.id,
+                stocked_quantity: 10,
+                incoming_quantity: 0,
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/reservations`,
+            {
+              line_item_id: "line-item-id-1",
+              inventory_item_id: inventoryItem1.id,
+              location_id: stockLocation2.id,
+              description: "test description",
+              quantity: 1,
+            },
+            adminHeaders
+          )
+
+          const reservation = (
+            await api.post(
+              `/admin/reservations`,
+              {
+                line_item_id: "line-item-id-2",
+                inventory_item_id: inventoryItem1.id,
+                location_id: stockLocation2.id,
+                description: "test description 2",
+                quantity: 1,
+              },
+              adminHeaders
+            )
+          ).data.reservation
+
+          await api.delete(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels/${item.location_levels[0].id}`,
+            adminHeaders
+          )
+
+          await api.delete(
+            `/admin/reservations/${reservation.id}`,
+            adminHeaders
+          )
+
+          const response = await api.get(
+            `/admin/inventory-items/${inventoryItem1.id}`,
+            adminHeaders
+          )
+
+          expect(response.data.inventory_item).toEqual(
+            expect.objectContaining({
+              id: inventoryItem1.id,
+              stocked_quantity: 10,
+              reserved_quantity: 1,
+            })
+          )
+        })
 
         it("should throw if inventory item doesn't exist", async () => {
           const error = await api

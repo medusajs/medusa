@@ -87,6 +87,8 @@ export type ModuleDefinition = {
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   dependencies?: string[]
+  /** @internal only used in exceptional cases - relying on the shared contrainer breaks encapsulation */
+  __passSharedContainer?: boolean
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
@@ -224,14 +226,18 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
   deleteCascade?: boolean
 }
 
-export type ModuleExports = {
-  service: Constructor<any>
+export type ModuleExports<T = Constructor<any>> = {
+  service: T
   loaders?: ModuleLoaderFunction[]
   runMigrations?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
   revertMigration?(
+    options: LoaderOptions<any>,
+    moduleDeclaration?: InternalModuleDeclaration
+  ): Promise<void>
+  generateMigration?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>

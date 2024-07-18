@@ -6,10 +6,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../lib/client"
@@ -87,19 +84,15 @@ export const ProductOrganizationForm = ({
       },
       {
         onSuccess: ({ product }) => {
-          toast.success(t("general.success"), {
-            description: t("products.organization.edit.toasts.success", {
+          toast.success(
+            t("products.organization.edit.toasts.success", {
               title: product.title,
-            }),
-          })
+            })
+          )
           handleSuccess()
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )

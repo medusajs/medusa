@@ -7,27 +7,27 @@ import {
   FindConfig,
   ICurrencyModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
 
-import { Currency } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { MedusaService } from "@medusajs/utils"
+import { Currency } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  currencyService: ModulesSdkTypes.IMedusaInternalService<any>
+  currencyService: ModulesSdkTypes.IMedusaInternalService<typeof Currency>
 }
 
 export default class CurrencyModuleService
   extends MedusaService<{
-    Currency: { dto: CurrencyTypes.CurrencyDTO }
-  }>({ Currency }, entityNameToLinkableKeysMap)
+    Currency: { dto: CurrencyTypes.CurrencyDTO; model: typeof Currency }
+  }>({ Currency })
   implements ICurrencyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly currencyService_: ModulesSdkTypes.IMedusaInternalService<Currency>
+  protected readonly currencyService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Currency
+  >
 
   constructor(
     { baseRepository, currencyService }: InjectedDependencies,
@@ -37,10 +37,6 @@ export default class CurrencyModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.currencyService_ = currencyService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

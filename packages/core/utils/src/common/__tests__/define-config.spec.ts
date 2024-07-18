@@ -21,11 +21,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -36,11 +32,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -48,6 +40,17 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "id": "local",
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -108,11 +111,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -123,11 +122,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -138,6 +133,17 @@ describe("defineConfig", function () {
             "resolve": "./modules/github",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "id": "local",
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -198,11 +204,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -213,11 +215,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -225,6 +223,17 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "id": "local",
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -287,11 +296,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -302,11 +307,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -314,6 +315,17 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "id": "local",
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,

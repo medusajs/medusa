@@ -1,70 +1,47 @@
 export const metadata = {
-  title: `${pageNumber} Constraints on Workflow Constructor Function`,
+  title: `${pageNumber} Workflow Constraints`,
 }
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining Workflow constructor functions.
+This chapter lists some constraints to keep in mind when defining a workflow or its steps.
 
-## No Arrow Functions
+## Workflow Constraints
 
-The function passed to the `createWorkflow` function can’t be an arrow function:
-
-```ts highlights={[["5", "=>", "Function can't be an arrow function"], ["13", "", "Correct way of defining the function."]]}
-// Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", (input) => {
-  // ...
-})
-
-// Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
-  // ...
-})
-```
-
-## No Async Functions
+### No Async Functions
 
 The function passed to the `createWorkflow` can’t be an async function:
 
-```ts highlights={[["5", "async", "Function can't be async."], ["13", "", "Correct way of defining the function."]]}
+```ts highlights={[["4", "async", "Function can't be async."], ["11", "", "Correct way of defining the function."]]}
 // Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", async function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  async function (input: WorkflowInput) {
   // ...
 })
 
 // Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   // ...
 })
 ```
 
-## No Direct Data Manipulation
+### No Direct Data Manipulation
 
 Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. Instead, use the `transform` function:
 
 export const highlights = [
-  ["10", "", "Don't manipulate data directly."],
-  ["22", "transform", "Use the `transform` function to manipulate data."]
+  ["9", "", "Don't manipulate data directly."],
+  ["20", "transform", "Use the `transform` function to manipulate data."]
 ]
 
 ```ts  highlights={highlights}
 // Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   const str1 = step1(input)
   const str2 = step2(input)
 
@@ -74,10 +51,9 @@ const myWorkflow = createWorkflow<
 })
 
 // Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
   const str1 = step1(input)
   const str2 = step2(input)
 
@@ -93,4 +69,79 @@ const myWorkflow = createWorkflow<
 
   return result
 })
+```
+
+### No If Conditions
+
+You can't use if-conditions in a workflow. Instead, use the when-then utility function explained in the next chapter:
+
+```ts
+// Don't
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+  if (input.is_active) {
+    // perform an action
+  }
+})
+
+// Do (explained in the next chapter)
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input: WorkflowInput) {
+  when(input, (input) => {
+    return input.is_active
+  })
+  .then(() => {
+    // perform an action
+  })
+})
+```
+
+---
+
+## Step Constraints
+
+### Returned Values
+
+A step must only return [primitive values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values) or an object. Values of other types, such as Maps, aren't allowed.
+
+```ts
+// Don't
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myMap = new Map()
+
+    // ...
+
+    return new StepResponse({
+      myMap,
+    })
+  }
+)
+
+// Do
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myObj: Record<string, unknown> = {}
+
+    // ...
+
+    return new StepResponse({
+      myObj,
+    })
+  }
+)
 ```

@@ -280,8 +280,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
-              eventName: "product-collection.deleted",
+              name: "product-collection.deleted",
               data: { id: collectionId },
+              metadata: {
+                action: "",
+                object: "",
+                source: "",
+              },
             },
           ])
         })
@@ -304,7 +309,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               data: { id: collectionId },
-              eventName: "product-collection.updated",
+              name: "product-collection.updated",
             },
           ])
         })
@@ -500,7 +505,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               data: { id: collections[0].id },
-              eventName: "product-collection.created",
+              name: "product-collection.created",
             },
           ])
         })

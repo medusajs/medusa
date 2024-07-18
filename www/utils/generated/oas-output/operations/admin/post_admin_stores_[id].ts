@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,22 +51,39 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminUpdateStore"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/stores/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "name": "Melvina",
+ *         "default_sales_channel_id": "{value}",
+ *         "default_region_id": "{value}",
+ *         "default_location_id": "{value}",
+ *         "metadata": {}
+ *       }'
  * tags:
  *   - Stores
  * responses:
@@ -76,51 +99,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - name
- *           - supported_currency_codes
- *           - default_currency_code
- *           - default_sales_channel_id
- *           - default_region_id
- *           - default_location_id
- *           - metadata
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The store's name.
- *           supported_currency_codes:
- *             type: array
- *             description: The store's supported currency codes.
- *             items:
- *               type: string
- *               title: supported_currency_codes
- *               description: The supported currency code's supported currency codes.
- *           default_currency_code:
- *             type: string
- *             title: default_currency_code
- *             description: The store's default currency code.
- *           default_sales_channel_id:
- *             type: string
- *             title: default_sales_channel_id
- *             description: The store's default sales channel id.
- *           default_region_id:
- *             type: string
- *             title: default_region_id
- *             description: The store's default region id.
- *           default_location_id:
- *             type: string
- *             title: default_location_id
- *             description: The store's default location id.
- *           metadata:
- *             type: object
- *             description: The store's metadata.
- *             properties: {}
  * 
 */
 

@@ -22,7 +22,6 @@ import {
   StockLocationDTO,
   StoreDTO,
   UserDTO,
-  HttpTypes,
 } from "@medusajs/types"
 
 import { WorkflowExecutionDTO } from "../routes/workflow-executions/types"
@@ -57,9 +56,7 @@ export type UserListRes = { users: UserDTO[] } & ListRes
 export type UserDeleteRes = DeleteRes
 
 // Stores
-export type ExtendedStoreDTO = StoreDTO & {
-  default_currency: CurrencyDTO | null
-}
+export type ExtendedStoreDTO = StoreDTO
 
 export type StoreRes = { store: ExtendedStoreDTO }
 export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes

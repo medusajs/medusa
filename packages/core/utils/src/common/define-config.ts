@@ -1,5 +1,5 @@
 import { ConfigModule } from "@medusajs/types"
-import { Modules } from "../modules-sdk"
+import { Modules } from "../modules-sdk/definition"
 
 const DEFAULT_SECRET = "supersecret"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"
@@ -90,11 +90,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         providers: [
           {
             resolve: "@medusajs/file-local-next",
-            options: {
-              config: {
-                local: {},
-              },
-            },
+            id: "local",
           },
         ],
       },
@@ -105,11 +101,18 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         providers: [
           {
             resolve: "@medusajs/fulfillment-manual",
-            options: {
-              config: {
-                manual: {},
-              },
-            },
+            id: "manual",
+          },
+        ],
+      },
+    },
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            id: "local",
           },
         ],
       },

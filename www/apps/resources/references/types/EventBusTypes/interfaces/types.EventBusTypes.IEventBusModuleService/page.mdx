@@ -6,43 +6,13 @@ import { TypeList } from "docs-ui"
 
 ### emit
 
-`**emit**<TypeParameter T>(eventName, data, options?): Promise&#60;void&#62;`
-
 #### Type Parameters
 
 <TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
 
 #### Parameters
 
-<TypeList types={[{"name":"eventName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
-
-`**emit**<TypeParameter T>(data): Promise&#60;void&#62;`
-
-#### Type Parameters
-
-<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"[EmitData](../../types/types.EventBusTypes.EmitData/page.mdx)&#60;T&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"eventName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="emit"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
-
-`**emit**<TypeParameter T>(data): Promise&#60;void&#62;`
-
-#### Type Parameters
-
-<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"[Message](../../types/types.EventBusTypes.Message/page.mdx)&#60;T&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"eventName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[MessageBody](../../types/types.EventBusTypes.MessageBody/page.mdx)&#60;T&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"metadata","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="emit"/>
+<TypeList types={[{"name":"data","type":"[Message](../../types/types.EventBusTypes.Message/page.mdx)&#60;T&#62; \\| [Message](../../types/types.EventBusTypes.Message/page.mdx)&#60;T&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"TData","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[EventMetadata](../../types/types.EventBusTypes.EventMetadata/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"eventGroupId","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="emit"/>
 
 #### Returns
 
@@ -67,3 +37,23 @@ import { TypeList } from "docs-ui"
 #### Returns
 
 <TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="unsubscribe"/>
+
+### releaseGroupedEvents
+
+#### Parameters
+
+<TypeList types={[{"name":"eventGroupId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="releaseGroupedEvents"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="releaseGroupedEvents"/>
+
+### clearGroupedEvents
+
+#### Parameters
+
+<TypeList types={[{"name":"eventGroupId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="clearGroupedEvents"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="clearGroupedEvents"/>

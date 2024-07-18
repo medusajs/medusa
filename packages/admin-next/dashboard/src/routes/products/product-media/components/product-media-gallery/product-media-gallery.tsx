@@ -10,9 +10,9 @@ import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../../../components/route-modal"
-import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { HttpTypes } from "@medusajs/types"
+import { RouteFocusModal } from "../../../../../components/modals"
+import { useUpdateProduct } from "../../../../../hooks/api/products"
 
 type ProductMediaGalleryProps = {
   product: HttpTypes.AdminProduct

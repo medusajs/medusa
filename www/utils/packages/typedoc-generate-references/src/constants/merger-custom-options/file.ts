@@ -4,7 +4,6 @@ const fileOptions: FormattingOptionsType = {
   "^file/.*AbstractFileProviderService": {
     reflectionGroups: {
       Properties: false,
-      Constructors: false,
     },
     reflectionDescription: `In this document, you’ll learn how to create a file provider module and the methods you must implement in its main service.`,
     frontmatterData: {
@@ -40,10 +39,11 @@ Create the file \`src/modules/my-file/index.ts\` with the following content:
 
 \`\`\`ts title="src/modules/my-file/index.ts"
 import MyFileProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-file", {
   service: MyFileProviderService,
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyFileProviderService\` is the main service of the module.`,
@@ -58,7 +58,7 @@ The File Module accepts one provider only.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -71,12 +71,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-file",
+            id: "my-file",
             options: {
-              config: {
-                "my-file": {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],

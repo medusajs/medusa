@@ -10,10 +10,11 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useAddCustomersToGroup } from "../../../../../hooks/api/customer-groups"
 import { useCustomers } from "../../../../../hooks/api/customers"
@@ -21,7 +22,6 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 type AddCustomersFormProps = {
   customerGroupId: string
@@ -109,14 +109,16 @@ export const AddCustomersForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("customerGroups.customers.add.successToast", {
+          toast.success(
+            t("customerGroups.customers.add.successToast", {
               count: data.customer_ids.length,
-            }),
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess(`/customer-groups/${customerGroupId}`)
+        },
+        onError: (error) => {
+          toast.error(error.message)
         },
       }
     )
@@ -173,6 +175,9 @@ export const AddCustomersForm = ({
             layout="fill"
             search
             queryObject={raw}
+            noRecords={{
+              message: t("customerGroups.customers.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

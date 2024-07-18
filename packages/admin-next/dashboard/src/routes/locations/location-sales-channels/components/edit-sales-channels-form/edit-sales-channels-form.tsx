@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useUpdateStockLocationSalesChannels } from "../../../../../hooks/api/stock-locations"
@@ -107,19 +107,11 @@ export const LocationEditSalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("stockLocations.salesChannels.successToast"),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("stockLocations.salesChannels.successToast"))
           handleSuccess(`/settings/locations/${location.id}`)
         },
         onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(e.message)
         },
       }
     )

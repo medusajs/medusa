@@ -1,17 +1,17 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { EntitySchema } from "@mikro-orm/core"
-import { upperCaseFirst } from "../../common"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { loadDatabaseConfig } from "../load-module-database-config"
+import { Migrations } from "../../migrations"
+
+const TERMINAL_SIZE = process.stdout.columns
 
 /**
  * Utility function to build a migration script that will run the migrations.
  * Only used in mikro orm based modules.
  * @param moduleName
- * @param models
  * @param pathToMigrations
  */
-export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
+export function buildMigrationScript({ moduleName, pathToMigrations }) {
   /**
    * This script is only valid for mikro orm managers. If a user provide a custom manager
    * he is in charge of running the migrations.
@@ -28,40 +28,30 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
   > = {}) {
     logger ??= console as unknown as Logger
 
-    const dbData = loadDatabaseConfig(moduleName, options)!
-    const entities = Object.values(models) as unknown as EntitySchema[]
+    console.log(new Array(TERMINAL_SIZE).join("-"))
+    console.log("")
+    logger.info(`MODULE: ${moduleName}`)
 
-    const orm = await mikroOrmCreateConnection(
-      dbData,
-      entities,
-      pathToMigrations
-    )
+    const dbData = loadDatabaseConfig(moduleName, options)!
+    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const migrations = new Migrations(orm)
+
+    migrations.on("migrating", (migration) => {
+      logger.info(`  ● Migrating ${migration.name}`)
+    })
+    migrations.on("migrated", (migration) => {
+      logger.info(`  ✔ Migrated ${migration.name}`)
+    })
 
     try {
-      const migrator = orm.getMigrator()
-
-      const pendingMigrations = await migrator.getPendingMigrations()
-      logger.info(
-        `Running pending migrations: ${JSON.stringify(
-          pendingMigrations,
-          null,
-          2
-        )}`
-      )
-
-      await migrator.up({
-        migrations: pendingMigrations.map((m) => m.name),
-      })
-
-      logger.info(`${upperCaseFirst(moduleName)} module migration executed`)
+      const result = await migrations.run()
+      if (result.length) {
+        logger.info("Completed successfully")
+      } else {
+        logger.info(`Skipped. Database is up-to-date for module.`)
+      }
     } catch (error) {
-      logger.error(
-        `${upperCaseFirst(
-          moduleName
-        )} module migration failed to run - Error: ${error}`
-      )
+      logger.error(`Failed with error ${error.message}`, error)
     }
-
-    await orm.close()
   }
 }

@@ -15,11 +15,9 @@ The Stock Location Module is the `@medusajs/stock-location-next` NPM package tha
 Store and manage stock locations. Stock locations are associated with data models of other modules that require a location, such as the [Inventory Module's InventoryLevel](../inventory/concepts/page.mdx#inventory-level).
 
 ```ts
-const stockLocation = await stockLocationModuleService.create(
-  {
-    name: "Warehouse 1",
-  }
-)
+const stockLocation = await stockLocationModuleService.createStockLocations({
+  name: "Warehouse 1",
+})
 ```
 
 ### Address Management
@@ -27,17 +25,15 @@ const stockLocation = await stockLocationModuleService.create(
 Manage the address of each stock location.
 
 ```ts
-const stockLocation = await stockLocationModuleService.update(
-  {
-    id: "sloc_123",
-    address: {
-      country_code: "us",
-      city: "New York City",
-      address_1: "52 Stone St",
-      postal_code: "10004",
-    },
-  }
-)
+const stockLocation = await stockLocationModuleService.updateStockLocations({
+  id: "sloc_123",
+  address: {
+    country_code: "us",
+    city: "New York City",
+    address_1: "52 Stone St",
+    postal_code: "10004",
+  },
+})
 ```
 
 ---
@@ -54,20 +50,20 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const stockLocationModuleService: IStockLocationService =
-      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const stockLocationModuleService: IStockLocationService =
+    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    res.json({
-      stock_locations: await stockLocationModuleService.list({}),
-    })
-  }
-  ```
+  res.json({
+    stock_locations: await stockLocationModuleService.listStockLocations({}),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -75,19 +71,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const stockLocationModuleService: IStockLocationService =
-      container.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const stockLocationModuleService: IStockLocationService = container.resolve(
+    ModuleRegistrationName.STOCK_LOCATION
+  )
 
-    const stockLocations = await stockLocationModuleService.list(
-      {}
-    )
-  }
-  ```
+  const stockLocations = await stockLocationModuleService.listStockLocations({})
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -95,21 +88,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const stockLocationModuleService: IStockLocationService =
-      container.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
+const step1 = createStep("step-1", async (_, { container }) => {
+  const stockLocationModuleService: IStockLocationService = container.resolve(
+    ModuleRegistrationName.STOCK_LOCATION
+  )
 
-    const stockLocations = await stockLocationModuleService.list(
-      {}
-    )
-  })
-  ```
+  const stockLocations = await stockLocationModuleService.listStockLocations({})
+})
+```
 
   </CodeTab>
 </CodeTabs>

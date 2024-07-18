@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,12 +51,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,23 +69,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - title
- *           - values
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The product's title.
- *           values:
- *             type: array
- *             description: The product's values.
- *             items:
- *               type: string
- *               title: values
- *               description: The value's values.
+ *         $ref: "#/components/schemas/AdminCreateProductOption"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -92,6 +86,12 @@
  * tags:
  *   - Products
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminProductResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

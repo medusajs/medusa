@@ -7,20 +7,10 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client, sdk } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AddPriceListPricesReq,
-  CreatePriceListReq,
-  DeletePriceListPricesReq,
-  UpdatePriceListReq,
-} from "../../types/api-payloads"
-import {
-  PriceListDeleteRes,
-  PriceListListRes,
-  PriceListRes,
-} from "../../types/api-responses"
+import { customerGroupsQueryKeys } from "./customer-groups"
 import { productsQueryKeys } from "./products"
 
 const PRICE_LISTS_QUERY_KEY = "price-lists" as const
@@ -28,14 +18,19 @@ export const priceListsQueryKeys = queryKeysFactory(PRICE_LISTS_QUERY_KEY)
 
 export const usePriceList = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminPriceListListParams,
   options?: Omit<
-    UseQueryOptions<PriceListRes, Error, PriceListRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminPriceListResponse,
+      FetchError,
+      HttpTypes.AdminPriceListResponse,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.priceLists.retrieve(id, query),
+    queryFn: () => sdk.admin.priceList.retrieve(id, query),
     queryKey: priceListsQueryKeys.detail(id),
     ...options,
   })
@@ -44,14 +39,19 @@ export const usePriceList = (
 }
 
 export const usePriceLists = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminPriceListListParams,
   options?: Omit<
-    UseQueryOptions<PriceListListRes, Error, PriceListListRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminPriceListListResponse,
+      FetchError,
+      HttpTypes.AdminPriceListListResponse,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.priceLists.list(query),
+    queryFn: () => sdk.admin.priceList.list(query),
     queryKey: priceListsQueryKeys.list(query),
     ...options,
   })
@@ -60,12 +60,19 @@ export const usePriceLists = (
 }
 
 export const useCreatePriceList = (
-  options?: UseMutationOptions<PriceListRes, Error, CreatePriceListReq>
+  query?: HttpTypes.AdminPriceListParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPriceListResponse,
+    FetchError,
+    HttpTypes.AdminCreatePriceList
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.priceLists.create(payload),
+    mutationFn: (payload) => sdk.admin.priceList.create(payload, query),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
+
+      queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -75,15 +82,22 @@ export const useCreatePriceList = (
 
 export const useUpdatePriceList = (
   id: string,
-  options?: UseMutationOptions<PriceListRes, Error, UpdatePriceListReq>
+  query?: HttpTypes.AdminPriceListParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPriceListResponse,
+    FetchError,
+    HttpTypes.AdminUpdatePriceList
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.priceLists.update(id, payload),
+    mutationFn: (payload) => sdk.admin.priceList.update(id, payload, query),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: priceListsQueryKeys.detail(id),
+        queryKey: priceListsQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -93,12 +107,16 @@ export const useUpdatePriceList = (
 
 export const useDeletePriceList = (
   id: string,
-  options?: UseMutationOptions<PriceListDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminPriceListDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.priceLists.delete(id),
+    mutationFn: () => sdk.admin.priceList.delete(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -106,36 +124,23 @@ export const useDeletePriceList = (
   })
 }
 
-export const usePriceListAddPrices = (
+export const useBatchPriceListPrices = (
   id: string,
-  options?: UseMutationOptions<PriceListRes, Error, AddPriceListPricesReq>
+  query?: HttpTypes.AdminPriceListParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPriceListResponse,
+    FetchError,
+    HttpTypes.AdminBatchPriceListPrice
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.priceLists.addPrices(id, payload),
+    mutationFn: (payload) =>
+      sdk.admin.priceList.batchPrices(id, payload, query),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.detail(id),
       })
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
-
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const usePriceListRemovePrices = (
-  id: string,
-  options?: UseMutationOptions<PriceListRes, Error, DeletePriceListPricesReq>
-) => {
-  return useMutation({
-    mutationFn: (payload) => client.priceLists.removePrices(id, payload),
-    onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: priceListsQueryKeys.detail(id),
-      })
-      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },

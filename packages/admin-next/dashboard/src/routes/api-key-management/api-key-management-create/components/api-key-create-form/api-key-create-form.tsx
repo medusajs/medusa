@@ -11,7 +11,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
 import { ApiKeyType } from "../../../common/constants"
 
@@ -59,10 +59,7 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
       { title: values.title, type: keyType },
       {
         onSuccess: ({ api_key }) => {
-          toast.success(t("general.success"), {
-            description: t("apiKeyManagement.create.successToast"),
-            dismissLabel: t("general.close"),
-          })
+          toast.success(t("apiKeyManagement.create.successToast"))
 
           switch (keyType) {
             case ApiKeyType.PUBLISHABLE:
@@ -74,10 +71,7 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
           }
         },
         onError: (err) => {
-          toast.error(t("general.error"), {
-            description: err.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(err.message)
         },
       }
     )
@@ -85,17 +79,11 @@ export const ApiKeyCreateForm = ({ keyType }: ApiKeyCreateFormProps) => {
 
   const handleCopyToken = () => {
     if (!createdKey) {
-      toast.error(t("general.error"), {
-        dismissLabel: t("general.close"),
-        description: t("apiKeyManagement.create.copySecretTokenFailure"),
-      })
+      toast.error(t("apiKeyManagement.create.copySecretTokenFailure"))
     }
 
     navigator.clipboard.writeText(createdKey?.token ?? "")
-    toast.success(t("general.success"), {
-      description: t("apiKeyManagement.create.copySecretTokenSuccess"),
-      dismissLabel: t("general.close"),
-    })
+    toast.success(t("apiKeyManagement.create.copySecretTokenSuccess"))
   }
 
   const handleGoToSecretKey = () => {

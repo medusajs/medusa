@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,16 +51,32 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StoreAddCartLineItem"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/store/carts/{id}/line-items'
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "variant_id": "{value}",
+ *         "quantity": 3360689747918848,
+ *         "metadata": {}
+ *       }'
  * tags:
  *   - Carts
  * responses:
@@ -70,28 +92,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - variant_id
- *           - quantity
- *           - metadata
- *         properties:
- *           variant_id:
- *             type: string
- *             title: variant_id
- *             description: The cart's variant id.
- *           quantity:
- *             type: number
- *             title: quantity
- *             description: The cart's quantity.
- *           metadata:
- *             type: object
- *             description: The cart's metadata.
- *             properties: {}
  * 
 */
 

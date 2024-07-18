@@ -1,6 +1,6 @@
 import { AddressDTO } from "@medusajs/types"
 
-import { countries } from "./countries"
+import { countries } from "./data/countries"
 
 export const isSameAddress = (a: AddressDTO | null, b: AddressDTO | null) => {
   if (!a || !b) {

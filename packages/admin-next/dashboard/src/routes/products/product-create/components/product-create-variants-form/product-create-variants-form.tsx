@@ -1,4 +1,4 @@
-import { HttpTypes, RegionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -8,9 +8,10 @@ import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root
 import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
-import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
 import { useRegions } from "../../../../../hooks/api/regions"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
+import { getPriceColumns } from "../../../../../components/data-grid/data-grid-columns/price-columns"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -21,9 +22,14 @@ export const ProductCreateVariantsForm = ({
 }: ProductCreateVariantsFormProps) => {
   const { regions } = useRegions({ limit: 9999 })
 
-  const { store, isPending, isError, error } = useStore({
-    fields: "supported_currency_codes",
-  })
+  const { store, isPending, isError, error } = useStore()
+
+  const { price_preferences: pricePreferences } = usePricePreferences({})
+
+  const currencyCodes = useMemo(
+    () => store?.supported_currencies?.map((c) => c.currency_code) || [],
+    [store]
+  )
 
   const variants = useWatch({
     control: form.control,
@@ -37,10 +43,14 @@ export const ProductCreateVariantsForm = ({
     defaultValue: [],
   })
 
+  /**
+   * NOTE: anything that goes to the datagrid component needs to be memoised otherwise DataGrid will rerender and inputs will loose focus
+   */
   const columns = useColumns({
     options,
-    currencies: store?.supported_currency_codes,
+    currencies: currencyCodes,
     regions,
+    pricePreferences,
   })
 
   const variantData = useMemo(
@@ -69,10 +79,12 @@ const useColumns = ({
   options,
   currencies = [],
   regions = [],
+  pricePreferences = [],
 }: {
   options: any // CreateProductOptionSchemaType[]
   currencies?: string[]
-  regions: RegionDTO[]
+  regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
   const { t } = useTranslation()
 
@@ -168,40 +180,19 @@ const useColumns = ({
         type: "boolean",
       }),
 
-      ...currencies.map((currency) => {
-        return columnHelper.column({
-          id: `price_${currency}`,
-          name: `Price ${currency.toUpperCase()}`,
-          header: `Price ${currency.toUpperCase()}`,
-          cell: (context) => {
-            return (
-              <DataGridCurrencyCell
-                code={currency}
-                context={context}
-                field={`variants.${context.row.index}.prices.${currency}`}
-              />
-            )
-          },
-        })
-      }),
-
-      ...regions.map((region) => {
-        return columnHelper.column({
-          id: `price_${region.id}`,
-          name: `Price ${region.name}`,
-          header: `Price ${region.name}`,
-          cell: (context) => {
-            return (
-              <DataGridCurrencyCell
-                code={region.currency_code}
-                context={context}
-                field={`variants.${context.row.index}.prices.${region.id}`}
-              />
-            )
-          },
-        })
+      ...getPriceColumns({
+        currencies,
+        regions,
+        pricePreferences,
+        getFieldName: (context, value) => {
+          if (context.column.id.startsWith("currency_prices")) {
+            return `variants.${context.row.index}.prices.${value}`
+          }
+          return `variants.${context.row.index}.prices.${value}`
+        },
+        t,
       }),
     ],
-    [currencies, regions, options, t]
+    [currencies, regions, options, pricePreferences, t]
   )
 }

@@ -5,9 +5,12 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import { join } from "path"
 
-import { isObject, isString } from "@medusajs/utils"
+import {
+  isObject,
+  isString,
+  normalizeImportPathWithSource,
+} from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "../types"
@@ -58,30 +61,11 @@ export const registerMedusaModule = (
   return moduleResolutions
 }
 
-function normalizePath(path: string | undefined): string {
-  let normalizePath = path
-
-  /**
-   * If the project is running on ts-node all relative module resolution
-   * will target the src directory and otherwise the dist directory.
-   * If the path is not relative, then we can safely import from it and let the resolution
-   * happen under the hood.
-   */
-  if (normalizePath?.startsWith("./")) {
-    const sourceDir = process[Symbol.for("ts-node.register.instance")]
-      ? "src"
-      : "dist"
-    normalizePath = join(process.cwd(), sourceDir, normalizePath)
-  }
-
-  return normalizePath ?? ""
-}
-
 function getCustomModuleResolution(
   key: string,
   moduleConfig: InternalModuleDeclaration | string
 ): ModuleResolution {
-  const originalPath = normalizePath(
+  const originalPath = normalizeImportPathWithSource(
     (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
   )
   const resolutionPath = resolveCwd(originalPath)
@@ -157,7 +141,7 @@ function getInternalModuleResolution(
   // If user added a module and it's overridable, we resolve that instead
   const isStr = isString(moduleConfig)
   if (isStr || (isObj && moduleConfig.resolve)) {
-    const originalPath = normalizePath(
+    const originalPath = normalizeImportPathWithSource(
       (isString(moduleConfig) ? moduleConfig : moduleConfig.resolve) as string
     )
     resolutionPath = resolveCwd(originalPath)

@@ -14,7 +14,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useBatchAddSalesChannelsToApiKey } from "../../../../../hooks/api/api-keys"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
@@ -102,20 +102,16 @@ export const ApiKeySalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("apiKeyManagement.salesChannels.successToast", {
+          toast.success(
+            t("apiKeyManagement.salesChannels.successToast", {
               count: values.sales_channel_ids.length,
-            }),
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
 
           handleSuccess()
         },
         onError: (err) => {
-          toast.error(t("general.error"), {
-            description: err.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(err.message)
         },
       }
     )
@@ -156,6 +152,11 @@ export const ApiKeySalesChannelsForm = ({
             queryObject={raw}
             orderBy={["name", "created_at", "updated_at"]}
             layout="fill"
+            noRecords={{
+              message: t(
+                "apiKeyManagement.addSalesChannels.list.noRecordsMessage"
+              ),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

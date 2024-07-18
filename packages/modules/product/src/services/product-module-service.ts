@@ -51,7 +51,7 @@ import {
   UpdateTypeInput,
 } from "../types"
 import { eventBuilders } from "../utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -90,18 +90,15 @@ export default class ProductModuleService
     ProductVariant: {
       dto: ProductTypes.ProductVariantDTO
     }
-  }>(
-    {
-      Product,
-      ProductCategory,
-      ProductCollection,
-      ProductOption,
-      ProductTag,
-      ProductType,
-      ProductVariant,
-    },
-    entityNameToLinkableKeysMap
-  )
+  }>({
+    Product,
+    ProductCategory,
+    ProductCollection,
+    ProductOption,
+    ProductTag,
+    ProductType,
+    ProductVariant,
+  })
   implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -876,7 +873,7 @@ export default class ProductModuleService
 
     await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       collections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_CREATED,
+        name: ProductCollectionEvents.COLLECTION_CREATED,
         data: { id },
       }))
     )
@@ -949,7 +946,7 @@ export default class ProductModuleService
     if (created.length) {
       await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
         created.map(({ id }) => ({
-          eventName: ProductCollectionEvents.COLLECTION_CREATED,
+          name: ProductCollectionEvents.COLLECTION_CREATED,
           data: { id },
         }))
       )
@@ -958,7 +955,7 @@ export default class ProductModuleService
     if (updated.length) {
       await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
         updated.map(({ id }) => ({
-          eventName: ProductCollectionEvents.COLLECTION_UPDATED,
+          name: ProductCollectionEvents.COLLECTION_UPDATED,
           data: { id },
         }))
       )
@@ -1019,7 +1016,7 @@ export default class ProductModuleService
 
     await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       updatedCollections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_UPDATED,
+        name: ProductCollectionEvents.COLLECTION_UPDATED,
         data: { id },
       }))
     )
@@ -1282,7 +1279,7 @@ export default class ProductModuleService
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_CREATED,
+        name: ProductEvents.PRODUCT_CREATED,
         data: { id },
       }))
     )
@@ -1330,7 +1327,7 @@ export default class ProductModuleService
     if (created.length) {
       await this.eventBusModuleService_?.emit<ProductEventData>(
         created.map(({ id }) => ({
-          eventName: ProductEvents.PRODUCT_CREATED,
+          name: ProductEvents.PRODUCT_CREATED,
           data: { id },
         }))
       )
@@ -1339,7 +1336,7 @@ export default class ProductModuleService
     if (updated.length) {
       await this.eventBusModuleService_?.emit<ProductEventData>(
         updated.map(({ id }) => ({
-          eventName: ProductEvents.PRODUCT_UPDATED,
+          name: ProductEvents.PRODUCT_UPDATED,
           data: { id },
         }))
       )
@@ -1393,7 +1390,7 @@ export default class ProductModuleService
 
     await this.eventBusModuleService_?.emit<ProductEventData>(
       updatedProducts.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_UPDATED,
+        name: ProductEvents.PRODUCT_UPDATED,
         data: { id },
       }))
     )

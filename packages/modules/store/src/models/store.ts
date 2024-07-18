@@ -15,9 +15,13 @@ import {
   Property,
   Filter,
   OptionalProps,
+  OneToMany,
+  Collection,
+  Cascade,
 } from "@mikro-orm/core"
+import StoreCurrency from "./currency"
 
-type StoreOptionalProps = DAL.SoftDeletableEntityDateColumns
+type StoreOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const StoreDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "store",
@@ -37,11 +41,10 @@ export default class Store {
   @Property({ columnType: "text", default: "Medusa Store" })
   name: string
 
-  @Property({ type: "array", default: "{}" })
-  supported_currency_codes: string[] = []
-
-  @Property({ columnType: "text", nullable: true })
-  default_currency_code: string | null = null
+  @OneToMany(() => StoreCurrency, (o) => o.store, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+  })
+  supported_currencies = new Collection<StoreCurrency>(this)
 
   @Property({ columnType: "text", nullable: true })
   default_sales_channel_id: string | null = null

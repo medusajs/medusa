@@ -1,7 +1,10 @@
 import { DAL } from "@medusajs/types"
 import {
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
+  OrderChangeStatus,
+  OrderChangeType,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -9,22 +12,23 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { OrderChangeStatus, OrderChangeType } from "@types"
+import {} from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"
 import OrderChangeAction from "./order-change-action"
 import Return from "./return"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
@@ -75,6 +79,7 @@ const VersionIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_change" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 @VersionIndex.MikroORMIndex()
 export default class OrderChange {
   [OptionalProps]?: OptionalLineItemProps
@@ -211,7 +216,7 @@ export default class OrderChange {
     columnType: "timestamptz",
     nullable: true,
   })
-  canceled_at?: Date
+  canceled_at?: Date | null = null
 
   @Property({
     onCreate: () => new Date(),

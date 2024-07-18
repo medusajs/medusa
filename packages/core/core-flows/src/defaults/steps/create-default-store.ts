@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateStoreDTO, IStoreModuleService, StoreDTO } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { createStoresWorkflow } from "../../store"
 
 type CreateDefaultStoreStepInput = {
@@ -28,8 +28,9 @@ export const createDefaultStoreStep = createStep(
             {
               // TODO: Revisit for a more sophisticated approach
               ...data.store,
-              supported_currency_codes: ["eur"],
-              default_currency_code: "eur",
+              supported_currencies: [
+                { currency_code: "eur", is_default: true },
+              ],
             },
           ],
         },

@@ -3,7 +3,7 @@ import { clx } from "@medusajs/ui"
 import { ComponentPropsWithoutRef, forwardRef, memo } from "react"
 import { Controller } from "react-hook-form"
 
-import { countries } from "../../../lib/countries"
+import { countries } from "../../../lib/data/countries"
 import { useDataGridCell } from "../hooks"
 import { DataGridCellProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"

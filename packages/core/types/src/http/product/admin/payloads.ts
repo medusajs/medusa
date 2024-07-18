@@ -3,10 +3,18 @@ import { ProductStatus } from "../common"
 
 export interface AdminBatchProductRequest
   extends BatchMethodRequest<AdminCreateProduct, AdminUpdateProduct> {}
+
 export interface AdminBatchProductVariantRequest
   extends BatchMethodRequest<
     AdminCreateProductVariant,
     AdminUpdateProductVariant
+  > {}
+
+export interface AdminBatchProductVariantInventoryItemRequest
+  extends BatchMethodRequest<
+    AdminCreateProductVariantInventoryItem,
+    AdminUpdateProductVariantInventoryItem,
+    AdminDeleteProductVariantInventoryItem
   > {}
 
 export interface AdminCreateProductVariantPrice {
@@ -14,6 +22,8 @@ export interface AdminCreateProductVariantPrice {
   amount: number
   min_quantity?: number | null
   max_quantity?: number | null
+  // Note: Although the BE is generic, we only use region_id for price rules for now, so it's better to keep the typings stricter.
+  rules?: { region_id: string } | null
 }
 
 export interface AdminCreateProductVariant {
@@ -124,4 +134,21 @@ export interface AdminCreateProductOption {
 export interface AdminUpdateProductOption {
   title?: string
   values?: string[]
+}
+
+interface AdminCreateProductVariantInventoryItem {
+  required_quantity: number
+  inventory_item_id: string
+  variant_id: string
+}
+
+interface AdminUpdateProductVariantInventoryItem {
+  required_quantity: number
+  inventory_item_id: string
+  variant_id: string
+}
+
+interface AdminDeleteProductVariantInventoryItem {
+  inventory_item_id: string
+  variant_id: string
 }

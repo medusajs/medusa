@@ -1,15 +1,22 @@
-import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  MathBN,
+  MedusaError,
+  isDefined,
+} from "@medusajs/utils"
 import { EVENT_STATUS } from "@types"
-import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import { setActionReference } from "../set-action-reference"
+import {
+  setActionReference,
+  unsetActionReference,
+} from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(
   ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM,
   {
     isDeduction: true,
     commitsAction: "return_item",
-    operation({ action, currentOrder, previousEvents }) {
+    operation({ action, currentOrder, previousEvents, options }) {
       const existing = currentOrder.items.find(
         (item) => item.id === action.details.reference_id
       )!
@@ -28,7 +35,7 @@ OrderChangeProcessing.registerActionType(
         toReturn
       )
 
-      setActionReference(existing, action)
+      setActionReference(existing, action, options)
 
       if (previousEvents) {
         for (const previousEvent of previousEvents) {
@@ -62,6 +69,8 @@ OrderChangeProcessing.registerActionType(
         existing.detail.return_requested_quantity,
         action.details.quantity
       )
+
+      unsetActionReference(existing, action)
 
       if (previousEvents) {
         for (const previousEvent of previousEvents) {

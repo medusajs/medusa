@@ -2,24 +2,12 @@ import { buildEventNamesFromEntityName } from "../event-bus"
 import { Modules } from "../modules-sdk"
 
 const eventBaseNames: [
-  "priceListRuleValue",
   "priceListRule",
   "priceList",
   "priceRule",
-  "priceSetRuleType",
   "priceSet",
-  "price",
-  "ruleType"
-] = [
-  "priceListRuleValue",
-  "priceListRule",
-  "priceList",
-  "priceRule",
-  "priceSetRuleType",
-  "priceSet",
-  "price",
-  "ruleType",
-]
+  "price"
+] = ["priceListRule", "priceList", "priceRule", "priceSet", "price"]
 
 export const PricingEvents = buildEventNamesFromEntityName(
   eventBaseNames,

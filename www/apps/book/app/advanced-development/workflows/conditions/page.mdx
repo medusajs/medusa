@@ -1,0 +1,62 @@
+export const metadata = {
+  title: `${pageNumber} Conditions in Workflow with When-Then`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to execute an action based on a condition in a workflow using the when-then utility.
+
+## What is the When-Then Utility?
+
+The when-then utility executes an action if a condition is satisfied.
+
+Since if-conditions aren't allowed in the workflow constructor function, use the when-then utility if you want to execute a step based on a condition.
+
+---
+
+## How to Use the When-Then Utility?
+
+For example:
+
+export const highlights = [
+  ["15", "input", "The data to pass as a parameter to the function in the second parameter"],
+  ["17", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
+  ["19", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
+]
+
+```ts highlights={highlights}
+import { 
+  createWorkflow,
+  when,
+} from "@medusajs/workflows-sdk"
+// step imports...
+
+type WorkflowInput = {
+  is_active: boolean
+}
+
+const workflow = createWorkflow(
+  "workflow", 
+  function (input: WorkflowInput) {
+    const result = when(
+      input, 
+      (input) => {
+        return input.is_active
+      }
+    ).then(() => {
+      const stepResult = isActiveStep()
+      return stepResult
+    })
+
+    // executed without condition
+    return anotherStep(result)
+  }
+)
+```
+
+Then `when` utility is a function imported from `@medusajs/workflows-sdk`. It accepts the following parameters:
+
+1. An object or the workflow's input. This data is passed as a parameter to the function in `when`'s second parameter.
+2. A function that returns a boolean indicating whether to execute the action.
+
+To specify the action to perform if the condition is satisfied, chain a `then` function to `when` and pass it a callback function. The callback function is only executed if `when`'s second parameter function returns a `true` value.

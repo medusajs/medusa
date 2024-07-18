@@ -64,6 +64,8 @@ import ifShowSeparatorForTitleLevelHelper from "./resources/helpers/if-show-sepa
 import shouldExpandPropertiesHelper from "./resources/helpers/should-expand-properties"
 import shouldExpandDeclarationChildrenHelper from "./resources/helpers/should-expand-declaration-children"
 import startSectionsHelper from "./resources/helpers/start-sections"
+import ifDmlEntityHelper from "./resources/helpers/if-dml-entity"
+import dmlPropertiesHelper from "./resources/helpers/dml-properties"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -94,7 +96,7 @@ export function registerPartials() {
 
 export function registerHelpers(theme: MarkdownTheme) {
   breadcrumbsHelper(theme)
-  commentHelper(theme)
+  commentHelper()
   commentsHelper()
   declarationTitleHelper(theme)
   escapeHelper()
@@ -156,4 +158,6 @@ export function registerHelpers(theme: MarkdownTheme) {
   shouldExpandPropertiesHelper(theme)
   shouldExpandDeclarationChildrenHelper(theme)
   startSectionsHelper(theme)
+  ifDmlEntityHelper()
+  dmlPropertiesHelper()
 }

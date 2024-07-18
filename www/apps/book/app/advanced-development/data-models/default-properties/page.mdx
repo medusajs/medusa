@@ -1,0 +1,13 @@
+export const metadata = {
+  title: `${pageNumber} Data Model Default Properties`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the properties available by default in your data model.
+
+When you create a data model, the following properties are created for you by Medusa:
+
+- `created_at`: A `dateTime` property that stores when a record of the data model was created.
+- `updated_at`: A `dateTime` property that stores when a record of the data model was updated.
+- `deleted_at`: A `dateTime` property that stores when a record of the data model was deleted. When you delete a record, Medusa soft-deletes it by setting the `deleted_at` property to the current date.

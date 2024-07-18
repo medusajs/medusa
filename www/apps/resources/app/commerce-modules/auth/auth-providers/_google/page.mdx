@@ -1,22 +1,22 @@
 import { Table } from "docs-ui"
 
 export const metadata = {
-  title: `Google Auth Provider Module`,
+  title: `Google Auth Module Provider`,
 }
 
 # {metadata.title}
 
-In this document, you’ll learn about the Google auth provider module and how to install and use it in the Auth Module.
+In this document, you’ll learn about the Google auth module provider and how to install and use it in the Auth Module.
 
 ## Features
 
-The Google auth provider module handles authenticating users with their Google accounts.
+The Google auth module provider handles authenticating users with their Google accounts.
 
 By integrating the Google auth provider, you provide your users and customers with the ability to login with their Google account.
 
 ---
 
-## Install the Google Auth Provider Module
+## Install the Google Auth Module Provider
 
 <Note type="check">
 
@@ -28,7 +28,7 @@ By integrating the Google auth provider, you provide your users and customers wi
 
 </Note>
 
-To install the Google auth provider module, run the following command in the directory of your Medusa application:
+To install the Google auth module provider, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
 npm install @medusajs/auth-google
@@ -37,7 +37,7 @@ npm install @medusajs/auth-google
 Next, add the module to the array of providers passed to the Auth Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -49,16 +49,13 @@ const modules = {
       providers: [
         {
           resolve: "@medusajs/auth-google",
+          id: "google",
           options: {
-            config: {
-              google: {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: process.env.GOOGLE_CALLBACK_URL,
-                successRedirectUrl:
-                  process.env.GOOGLE_SUCCESS_REDIRECT_URL,
-              },
-            },
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+            successRedirectUrl:
+              process.env.GOOGLE_SUCCESS_REDIRECT_URL,
           },
         },
       ],

@@ -1,22 +1,17 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-
-import { EntitySchema } from "@mikro-orm/core"
-import { upperCaseFirst } from "../../common"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { loadDatabaseConfig } from "../load-module-database-config"
+import { Migrations } from "../../migrations"
+
+const TERMINAL_SIZE = process.stdout.columns
 
 /**
  * Utility function to build a migration script that will revert the migrations.
  * Only used in mikro orm based modules.
  * @param moduleName
- * @param models
  * @param pathToMigrations
  */
-export function buildRevertMigrationScript({
-  moduleName,
-  models,
-  pathToMigrations,
-}) {
+export function buildRevertMigrationScript({ moduleName, pathToMigrations }) {
   /**
    * This script is only valid for mikro orm managers. If a user provide a custom manager
    * he is in charge of reverting the migrations.
@@ -33,28 +28,33 @@ export function buildRevertMigrationScript({
   > = {}) {
     logger ??= console as unknown as Logger
 
-    const dbData = loadDatabaseConfig(moduleName, options)!
-    const entities = Object.values(models) as unknown as EntitySchema[]
+    console.log(new Array(TERMINAL_SIZE).join("-"))
+    console.log("")
+    logger.info(`MODULE: ${moduleName}`)
 
-    const orm = await mikroOrmCreateConnection(
-      dbData,
-      entities,
-      pathToMigrations
-    )
+    const dbData = loadDatabaseConfig(moduleName, options)!
+    const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
+    const migrations = new Migrations(orm)
+
+    migrations.on("reverting", (migration) => {
+      logger.info(`  ● Reverting ${migration.name}`)
+    })
+    migrations.on("reverted", (migration) => {
+      logger.info(`  ✔ Reverted ${migration.name}`)
+    })
+    migrations.on("revert:skipped", (migration) => {
+      logger.info(`  ✔ Skipped ${migration.name}. ${migration.reason}`)
+    })
 
     try {
-      const migrator = orm.getMigrator()
-      await migrator.down()
-
-      logger?.info(`${upperCaseFirst(moduleName)} module migration executed`)
+      const result = await migrations.revert()
+      if (result.length) {
+        logger.info("Reverted successfully")
+      } else {
+        logger.info("Skipped. Nothing to revert")
+      }
     } catch (error) {
-      logger?.error(
-        `${upperCaseFirst(
-          moduleName
-        )} module migration failed to run - Error: ${error}`
-      )
+      logger.error(`Failed with error ${error.message}`, error)
     }
-
-    await orm.close()
   }
 }

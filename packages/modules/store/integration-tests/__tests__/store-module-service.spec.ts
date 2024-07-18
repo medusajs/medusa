@@ -1,7 +1,8 @@
 import { IStoreModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createStoreFixture } from "../__fixtures__"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { StoreModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -9,6 +10,37 @@ moduleIntegrationTestRunner<IStoreModuleService>({
   moduleName: Modules.STORE,
   testSuite: ({ service }) => {
     describe("Store Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.STORE, {
+          service: StoreModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["storeCurrency", "store"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          storeCurrency: {
+            id: {
+              linkable: "store_currency_id",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "storeCurrency",
+            },
+          },
+          store: {
+            id: {
+              linkable: "store_id",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "store",
+            },
+          },
+        })
+      })
+
       describe("creating a store", () => {
         it("should get created successfully", async function () {
           const store = await service.createStores(createStoreFixture)
@@ -16,7 +48,10 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           expect(store).toEqual(
             expect.objectContaining({
               name: "Test store",
-              supported_currency_codes: expect.arrayContaining(["eur", "usd"]),
+              supported_currencies: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "eur" }),
+                expect.objectContaining({ currency_code: "usd" }),
+              ]),
               default_sales_channel_id: "test-sales-channel",
               default_region_id: "test-region",
               metadata: {
@@ -25,14 +60,19 @@ moduleIntegrationTestRunner<IStoreModuleService>({
             })
           )
         })
-      })
 
-      it("should fail to get created if default currency code is not in list of supported currency codes", async function () {
-        const err = await service
-          .createStores({ ...createStoreFixture, default_currency_code: "jpy" })
-          .catch((err) => err.message)
+        it("should fail to get created if there is no default currency", async function () {
+          const err = await service
+            .createStores({
+              ...createStoreFixture,
+              supported_currencies: [{ currency_code: "usd" }],
+            })
+            .catch((err) => err.message)
 
-        expect(err).toEqual("Store does not have currency: jpy")
+          expect(err).toEqual(
+            "There should be a default currency set for the store"
+          )
+        })
       })
 
       describe("upserting a store", () => {
@@ -75,43 +115,45 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           expect(updatedStore.name).toEqual("Updated store")
         })
 
-        it("should fail updating default currency code to an unsupported one", async function () {
+        it("should fail updating currencies without a default one", async function () {
           const createdStore = await service.createStores(createStoreFixture)
           const updateErr = await service
             .updateStores(createdStore.id, {
-              default_currency_code: "jpy",
-            })
-            .catch((err) => err.message)
-
-          expect(updateErr).toEqual("Store does not have currency: jpy")
-        })
-
-        it("should fail updating default currency code to an unsupported one if the supported currencies are also updated", async function () {
-          const createdStore = await service.createStores(createStoreFixture)
-          const updateErr = await service
-            .updateStores(createdStore.id, {
-              supported_currency_codes: ["mkd"],
-              default_currency_code: "jpy",
-            })
-            .catch((err) => err.message)
-
-          expect(updateErr).toEqual("Store does not have currency: jpy")
-        })
-
-        it("should fail updating supported currencies if one of them is used as a default one", async function () {
-          const createdStore = await service.createStores({
-            ...createStoreFixture,
-            default_currency_code: "eur",
-          })
-          const updateErr = await service
-            .updateStores(createdStore.id, {
-              supported_currency_codes: ["jpy"],
+              supported_currencies: [{ currency_code: "usd" }],
             })
             .catch((err) => err.message)
 
           expect(updateErr).toEqual(
-            "You are not allowed to remove default currency from store currencies without replacing it as well"
+            "There should be a default currency set for the store"
           )
+        })
+
+        it("should fail updating currencies where a duplicate currency code exists", async function () {
+          const createdStore = await service.createStores(createStoreFixture)
+          const updateErr = await service
+            .updateStores(createdStore.id, {
+              supported_currencies: [
+                { currency_code: "usd" },
+                { currency_code: "usd" },
+              ],
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual("Duplicate currency codes: usd")
+        })
+
+        it("should fail updating currencies where there is more than 1 default currency", async function () {
+          const createdStore = await service.createStores(createStoreFixture)
+          const updateErr = await service
+            .updateStores(createdStore.id, {
+              supported_currencies: [
+                { currency_code: "usd", is_default: true },
+                { currency_code: "eur", is_default: true },
+              ],
+            })
+            .catch((err) => err.message)
+
+          expect(updateErr).toEqual("Only one default currency is allowed")
         })
       })
 

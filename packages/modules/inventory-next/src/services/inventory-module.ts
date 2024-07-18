@@ -6,7 +6,10 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ReservationItemDTO,
+  RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
+import { IInventoryService } from "@medusajs/types/dist/inventory"
 import {
   arrayDifference,
   CommonEvents,
@@ -23,9 +26,8 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import InventoryLevelService from "./inventory-level"
-import { IInventoryService } from "@medusajs/types/dist/inventory"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -45,14 +47,11 @@ export default class InventoryModuleService
     ReservationItem: {
       dto: InventoryTypes.ReservationItemDTO
     }
-  }>(
-    {
-      InventoryItem,
-      InventoryLevel,
-      ReservationItem,
-    },
-    entityNameToLinkableKeysMap
-  )
+  }>({
+    InventoryItem,
+    InventoryLevel,
+    ReservationItem,
+  })
   implements IInventoryService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -772,6 +771,48 @@ export default class InventoryModuleService
     await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
 
     return result
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  // @ts-expect-error
+  async softDeleteReservationItems(
+    ids: string | string[],
+    config?: SoftDeleteReturn<string>,
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    const reservations: InventoryTypes.ReservationItemDTO[] =
+      await super.listReservationItems({ id: ids }, {}, context)
+
+    const result = await super.softDeleteReservationItems(
+      { id: ids },
+      config,
+      context
+    )
+
+    await this.adjustInventoryLevelsForReservationsDeletion(
+      reservations,
+      context
+    )
+
+    result
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  // @ts-expect-error
+  async restoreReservationItems(
+    ids: string | string[],
+    config?: RestoreReturn<string>,
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    const reservations: InventoryTypes.ReservationItemDTO[] =
+      await super.listReservationItems({ id: ids }, {}, context)
+
+    await super.restoreReservationItems({ id: ids }, config, context)
+
+    await this.adjustInventoryLevelsForReservationsRestore(
+      reservations,
+      context
+    )
   }
 
   @InjectTransactionManager("baseRepository_")

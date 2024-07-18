@@ -14,11 +14,11 @@
     "clean": "rimraf dist"
   },
   "peerDependencies": {
-    "typedoc": "0.25.x"
+    "typedoc": "0.26.x"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "dependencies": {
     "octokit": "^3.1.2",

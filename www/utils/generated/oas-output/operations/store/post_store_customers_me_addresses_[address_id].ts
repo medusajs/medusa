@@ -3,7 +3,7 @@
  * operationId: PostCustomersMeAddressesAddress_id
  * summary: Add Addresses to Customer
  * description: Add a list of addresses to a customer.
- * x-authenticated: false
+ * x-authenticated: true
  * parameters:
  *   - name: address_id
  *     in: path
@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,12 +51,19 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * requestBody:
  *   content:
  *     application/json:
@@ -70,13 +83,10 @@
  *           - province
  *           - postal_code
  *           - address_name
- *           - is_default_shipping
- *           - is_default_billing
  *         properties:
  *           metadata:
  *             type: object
  *             description: The customer's metadata.
- *             properties: {}
  *           first_name:
  *             type: string
  *             title: first_name
@@ -134,6 +144,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/store/customers/me/addresses/{address_id}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "metadata": {},
@@ -147,9 +158,7 @@
  *         "country_code": "{value}",
  *         "province": "{value}",
  *         "postal_code": "{value}",
- *         "address_name": "{value}",
- *         "is_default_shipping": true,
- *         "is_default_billing": false
+ *         "address_name": "{value}"
  *       }'
  * tags:
  *   - Customers

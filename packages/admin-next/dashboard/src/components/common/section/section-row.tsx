@@ -24,7 +24,11 @@ export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
       </Text>
 
       {isValueString ? (
-        <Text size="small" leading="compact" className="text-pretty">
+        <Text
+          size="small"
+          leading="compact"
+          className="whitespace-pre-line text-pretty"
+        >
           {value ?? "-"}
         </Text>
       ) : (

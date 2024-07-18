@@ -4,15 +4,15 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { parseOptionalFormData } from "../../../../../lib/form-helpers"
-import { HttpTypes } from "@medusajs/types"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct

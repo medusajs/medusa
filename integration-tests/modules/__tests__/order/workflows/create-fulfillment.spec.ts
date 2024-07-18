@@ -3,7 +3,6 @@ import {
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
@@ -17,10 +16,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(500000)
 
@@ -217,7 +217,7 @@ async function createOrderFixture({ container, product, location }) {
     ModuleRegistrationName.ORDER
   )
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {

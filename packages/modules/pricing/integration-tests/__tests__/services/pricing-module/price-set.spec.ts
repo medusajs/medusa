@@ -1,38 +1,17 @@
-import {
-  CreatePriceSetDTO,
-  CreatePriceSetRuleTypeDTO,
-  IPricingModuleService,
-} from "@medusajs/types"
+import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
 import {
   CommonEvents,
   composeMessage,
   Modules,
   PricingEvents,
 } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
-import { PriceSetRuleType } from "../../../../src/models"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
-
-async function createPriceSetPriceRules(
-  manager: SqlEntityManager,
-  priceSetRulesData: CreatePriceSetRuleTypeDTO[]
-): Promise<void> {
-  const priceSetRules: PriceSetRuleType[] = []
-
-  for (let priceSetRuleData of priceSetRulesData) {
-    const priceRule = manager.create(PriceSetRuleType, priceSetRuleData as any)
-
-    priceSetRules.push(priceRule)
-  }
-
-  await manager.persistAndFlush(priceSetRules)
-}
 
 moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
@@ -51,16 +30,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
       beforeEach(async () => {
         const testManager = await MikroOrmWrapper.forkManager()
         await seedPriceData(testManager)
-        await createPriceSetPriceRules(testManager, [
-          {
-            price_set_id: "price-set-1",
-            rule_type_id: "rule-type-1",
-          },
-          {
-            price_set_id: "price-set-2",
-            rule_type_id: "rule-type-2",
-          },
-        ])
       })
 
       describe("list", () => {
@@ -115,6 +84,52 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 }),
               ],
             },
+          ])
+        })
+
+        it("list priceSets should return only prices from a price set (and not the ones from a price list)", async () => {
+          const [priceList] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                  rules: {
+                    region_id: "DE",
+                  },
+                },
+                {
+                  amount: 600,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                },
+              ],
+            },
+          ])
+
+          const priceSetsResult = await service.listPriceSets(
+            {
+              id: ["price-set-1"],
+            },
+            {
+              relations: ["prices"],
+            }
+          )
+
+          expect(priceSetsResult).toHaveLength(1)
+          expect(priceSetsResult).toEqual([
+            expect.objectContaining({
+              id: "price-set-1",
+              prices: [
+                expect.objectContaining({
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
+                }),
+              ],
+            }),
           ])
         })
       })
@@ -261,6 +276,46 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             id,
           })
         })
+
+        it("should return priceSet with only its own prices", async () => {
+          const [priceList] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: id,
+                  rules: {
+                    region_id: "DE",
+                  },
+                },
+                {
+                  amount: 600,
+                  currency_code: "EUR",
+                  price_set_id: id,
+                },
+              ],
+            },
+          ])
+
+          const priceSetResult = await service.retrievePriceSet(id, {
+            relations: ["prices"],
+          })
+
+          expect(priceSetResult).toEqual(
+            expect.objectContaining({
+              id: "price-set-1",
+              prices: [
+                expect.objectContaining({
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
+                }),
+              ],
+            })
+          )
+        })
       })
 
       describe("delete", () => {
@@ -343,35 +398,43 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           )
         })
+
+        it("should upsert the later price when setting a price set with existing equivalent rules", async () => {
+          await service.updatePriceSets(id, {
+            prices: [
+              {
+                amount: 100,
+                currency_code: "USD",
+                rules: { region_id: "1234" },
+              },
+              {
+                amount: 200,
+                currency_code: "USD",
+                rules: { region_id: "1234" },
+              },
+            ],
+          })
+
+          const priceSet = await service.retrievePriceSet(id, {
+            relations: ["prices", "prices.price_rules"],
+          })
+
+          expect(priceSet.prices).toEqual([
+            expect.objectContaining({
+              amount: 200,
+              currency_code: "USD",
+              price_rules: [
+                expect.objectContaining({
+                  attribute: "region_id",
+                  value: "1234",
+                }),
+              ],
+            }),
+          ])
+        })
       })
 
       describe("create", () => {
-        it("should fail to create a price set with rule types and money amounts with rule types that don't exits", async () => {
-          let error
-
-          try {
-            await service.createPriceSets([
-              {
-                rules: [{ rule_attribute: "region_id" }],
-                prices: [
-                  {
-                    amount: 100,
-                    currency_code: "USD",
-                    rules: {
-                      city: "Berlin",
-                    },
-                  },
-                ],
-              },
-            ])
-          } catch (e) {
-            error = e
-          }
-          expect(error.message).toEqual(
-            "Rule types don't exist for prices with rule attribute: city"
-          )
-        })
-
         it("should create a price set with rule types and money amounts", async () => {
           const [priceSet] = await service.createPriceSets([
             {
@@ -399,10 +462,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
 
-          const [priceRules] = await service.listPriceRules({
-            price_set_id: [priceSet.id],
-          })
-
           const events = eventBusEmitSpy.mock.calls[0][0]
           expect(events).toHaveLength(3)
           expect(events[0]).toEqual(
@@ -429,7 +488,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               action: CommonEvents.CREATED,
               object: "price_rule",
               data: {
-                id: priceRules.id,
+                id: (priceSet as any).prices![0].price_rules[0].id,
               },
             })
           )
@@ -487,6 +546,43 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
         })
+
+        it("should take the later price when passing two prices with equivalent rules", async () => {
+          await service.createPriceSets([
+            {
+              id: "price-set-new",
+              prices: [
+                {
+                  amount: 100,
+                  currency_code: "USD",
+                  rules: { region_id: "1234" },
+                },
+                {
+                  amount: 200,
+                  currency_code: "USD",
+                  rules: { region_id: "1234" },
+                },
+              ],
+            } as unknown as CreatePriceSetDTO,
+          ])
+
+          const priceSet = await service.retrievePriceSet("price-set-new", {
+            relations: ["prices", "prices.price_rules"],
+          })
+
+          expect(priceSet.prices).toEqual([
+            expect.objectContaining({
+              amount: 200,
+              currency_code: "USD",
+              price_rules: [
+                expect.objectContaining({
+                  attribute: "region_id",
+                  value: "1234",
+                }),
+              ],
+            }),
+          ])
+        })
       })
 
       describe("addPrices", () => {
@@ -498,7 +594,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 {
                   amount: 100,
                   currency_code: "USD",
-                  rules: { currency_code: "USD" },
+                  rules: { region_id: "1234" },
                 },
               ],
             },
@@ -549,7 +645,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 {
                   amount: 100,
                   currency_code: "USD",
-                  rules: { currency_code: "USD" },
+                  rules: { region_id: "region-1" },
                 },
               ],
             },
@@ -592,24 +688,55 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           ])
         })
 
-        it("should fail with an appropriate error when trying to add a price with rule that doesn't exist", async () => {
-          let error
-          try {
-            await service.addPrices({
+        it("should do an update if a price exists with the equivalent rules", async () => {
+          await service.addPrices([
+            {
               priceSetId: "price-set-1",
               prices: [
                 {
                   amount: 100,
                   currency_code: "USD",
-                  rules: { city: "Paris" },
+                  rules: { region_id: "123" },
                 },
               ],
-            })
-          } catch (e) {
-            error = e
-          }
+            },
+          ])
 
-          expect(error.message).toEqual("Rule types don't exist for: city")
+          await service.addPrices([
+            {
+              priceSetId: "price-set-1",
+              prices: [
+                {
+                  amount: 200,
+                  currency_code: "USD",
+                  rules: { region_id: "123" },
+                },
+              ],
+            },
+          ])
+
+          const priceSet = await service.retrievePriceSet("price-set-1", {
+            relations: ["prices", "prices.price_rules"],
+          })
+
+          expect(
+            priceSet.prices?.sort((a: any, b: any) => a.amount - b.amount)
+          ).toEqual([
+            expect.objectContaining({
+              amount: 200,
+              currency_code: "USD",
+              price_rules: [
+                expect.objectContaining({
+                  attribute: "region_id",
+                  value: "123",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              amount: 500,
+              currency_code: "USD",
+            }),
+          ])
         })
       })
     })

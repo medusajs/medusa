@@ -2,10 +2,13 @@ import {
   capturePaymentWorkflow,
   refundPaymentWorkflow,
 } from "@medusajs/core-flows"
-import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import { Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+} from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -24,7 +27,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)
         paymentService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-        remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
+        remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       })
 
       // TODO: Test should move to `integration-tests/api`

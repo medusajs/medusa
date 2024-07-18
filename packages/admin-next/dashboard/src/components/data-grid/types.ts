@@ -22,6 +22,10 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
    * The index of the column in the grid.
    */
   columnIndex: number
+  /**
+   * The index of the row in the grid.
+   */
+  rowIndex: number
 }
 
 export interface DataGridCellContainerProps {

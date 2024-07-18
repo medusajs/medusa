@@ -7,7 +7,7 @@ import { useState } from "react"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProductCategory } from "../../../../../hooks/api/categories"
 import { CreateCategoryDetails } from "./create-category-details"
 import { CreateCategoryNesting } from "./create-category-nesting"
@@ -92,23 +92,16 @@ export const CreateCategoryForm = ({
       },
       {
         onSuccess: ({ product_category }) => {
-          toast.success(t("general.success"), {
-            description: t("categories.create.successToast", {
+          toast.success(
+            t("categories.create.successToast", {
               name: product_category.name,
-            }),
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
+            })
+          )
 
           handleSuccess(`/categories/${product_category.id}`)
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissable: true,
-            dismissLabel: t("actions.close"),
-          })
-
+          toast.error(error.message)
           setShouldFreeze(false)
         },
       }

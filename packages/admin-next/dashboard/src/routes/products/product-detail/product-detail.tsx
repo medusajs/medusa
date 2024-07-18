@@ -1,6 +1,6 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
+import { TwoColumnPage } from "../../../components/layout/pages"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
 import { ProductGeneralSection } from "./components/product-general-section"
@@ -16,6 +16,7 @@ import after from "virtual:medusa/widgets/product/details/after"
 import before from "virtual:medusa/widgets/product/details/before"
 import sideAfter from "virtual:medusa/widgets/product/details/side/after"
 import sideBefore from "virtual:medusa/widgets/product/details/side/before"
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -32,7 +33,14 @@ export const ProductDetail = () => {
   )
 
   if (isLoading || !product) {
-    return <div>Loading...</div>
+    return (
+      <TwoColumnPageSkeleton
+        mainSections={4}
+        sidebarSections={3}
+        showJSON
+        showMetadata
+      />
+    )
   }
 
   if (isError) {
@@ -40,55 +48,28 @@ export const ProductDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={product} />
-          </div>
-        )
-      })}
-      <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-3">
-          <ProductGeneralSection product={product} />
-          <ProductMediaSection product={product} />
-          <ProductOptionSection product={product} />
-          <ProductVariantSection product={product} />
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={product} />
-              </div>
-            )
-          })}
-          <div className="hidden xl:block">
-            <JsonViewSection data={product} root="product" />
-          </div>
-        </div>
-        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
-          {sideBefore.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={product} />
-              </div>
-            )
-          })}
-          <ProductSalesChannelSection product={product} />
-          <ProductOrganizationSection product={product} />
-          <ProductAttributeSection product={product} />
-          {sideAfter.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={product} />
-              </div>
-            )
-          })}
-          <div className="xl:hidden">
-            <JsonViewSection data={product} />
-          </div>
-        </div>
-      </div>
-      <Outlet />
-    </div>
+    <TwoColumnPage
+      widgets={{
+        after,
+        before,
+        sideAfter,
+        sideBefore,
+      }}
+      showJSON
+      showMetadata
+      data={product}
+    >
+      <TwoColumnPage.Main>
+        <ProductGeneralSection product={product} />
+        <ProductMediaSection product={product} />
+        <ProductOptionSection product={product} />
+        <ProductVariantSection product={product} />
+      </TwoColumnPage.Main>
+      <TwoColumnPage.Sidebar>
+        <ProductSalesChannelSection product={product} />
+        <ProductOrganizationSection product={product} />
+        <ProductAttributeSection product={product} />
+      </TwoColumnPage.Sidebar>
+    </TwoColumnPage>
   )
 }

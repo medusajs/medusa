@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { Logger, Message, MessageBody } from "@medusajs/types"
+import { Logger, Message, Event } from "@medusajs/types"
 import {
   AbstractEventBusModuleService,
   isPresent,
@@ -14,9 +14,7 @@ type InjectedDependencies = {
   eventBusRedisConnection: Redis
 }
 
-type IORedisEventType<T = unknown> = {
-  name: string
-  data: MessageBody<T>
+type IORedisEventType<T = unknown> = Event<T> & {
   opts: BulkJobOptions
 }
 
@@ -98,8 +96,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       const { options, ...eventBody } = eventData
 
       return {
-        name: eventData.eventName,
-        data: eventBody,
+        ...eventBody,
         opts: {
           // options for event group
           ...opts,
@@ -112,8 +109,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   /**
    * Emit a single or number of events
-   * @param {Message} data - the data to send to the subscriber.
-   * @param {BulkJobOptions} data - the options to add to bull mq
+   * @param eventsData
+   * @param options
    */
   async emit<T = unknown>(
     eventsData: Message<T> | Message<T>[],
@@ -136,10 +133,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     for (const event of eventsToGroup) {
       const groupId = event.metadata?.eventGroupId!
-      const array = groupEventsMap.get(groupId) ?? []
+      const groupEvents = groupEventsMap.get(groupId) ?? []
 
-      array.push(event)
-      groupEventsMap.set(groupId, array)
+      groupEvents.push(event)
+      groupEventsMap.set(groupId, groupEvents)
     }
 
     const promises: Promise<unknown>[] = []
@@ -258,7 +255,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
-        return await subscriber(data, eventName)
+        return await subscriber(data)
           .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)

@@ -7,12 +7,23 @@ import {
   Calendar,
   CircleHalfSolid,
   CogSixTooth,
+  Keyboard,
   MagnifyingGlass,
   SidebarLeft,
+  TriangleRightMini,
   User as UserIcon,
 } from "@medusajs/icons"
-import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import { PropsWithChildren } from "react"
+import {
+  Avatar,
+  Button,
+  DropdownMenu,
+  Heading,
+  IconButton,
+  Kbd,
+  Text,
+  clx,
+} from "@medusajs/ui"
+import { PropsWithChildren, useState } from "react"
 import {
   Link,
   Outlet,
@@ -22,31 +33,37 @@ import {
   useNavigate,
 } from "react-router-dom"
 
-import { Skeleton } from "../../common/skeleton"
-
+import { useTranslation } from "react-i18next"
 import { useLogout } from "../../../hooks/api/auth"
 import { useMe } from "../../../hooks/api/users"
 import { queryClient } from "../../../lib/query-client"
+import { KeybindProvider } from "../../../providers/keybind-provider"
+import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
+import { Skeleton } from "../../common/skeleton"
 
 export const Shell = ({ children }: PropsWithChildren) => {
+  const globalShortcuts = useGlobalShortcuts()
+
   return (
-    <div className="flex h-screen flex-col items-start overflow-hidden lg:flex-row">
-      <div>
-        <MobileSidebarContainer>{children}</MobileSidebarContainer>
-        <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+    <KeybindProvider shortcuts={globalShortcuts}>
+      <div className="flex h-screen flex-col items-start overflow-hidden lg:flex-row">
+        <div>
+          <MobileSidebarContainer>{children}</MobileSidebarContainer>
+          <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+        </div>
+        <div className="flex h-screen w-full flex-col overflow-auto">
+          <Topbar />
+          <main className="flex h-full w-full flex-col items-center overflow-y-auto">
+            <Gutter>
+              <Outlet />
+            </Gutter>
+          </main>
+        </div>
       </div>
-      <div className="flex h-screen w-full flex-col overflow-auto">
-        <Topbar />
-        <main className="flex h-full w-full flex-col items-center overflow-y-auto">
-          <Gutter>
-            <Outlet />
-          </Gutter>
-        </main>
-      </div>
-    </div>
+    </KeybindProvider>
   )
 }
 
@@ -76,18 +93,17 @@ const Breadcrumbs = () => {
     })
 
   return (
-    <ol className={clx("text-ui-fg-muted flex select-none items-center")}>
+    <ol
+      className={clx(
+        "text-ui-fg-muted txt-compact-small-plus flex select-none items-center"
+      )}
+    >
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
         const isSingle = crumbs.length === 1
 
         return (
-          <li
-            key={index}
-            className={clx("txt-compact-small-plus flex items-center", {
-              "text-ui-fg-subtle": isLast,
-            })}
-          >
+          <li key={index} className={clx("flex items-center")}>
             {!isLast ? (
               <Link
                 className="transition-fg hover:text-ui-fg-subtle"
@@ -108,7 +124,11 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {!isLast && <span className="mx-2 -mt-0.5">›</span>}
+            {!isLast && (
+              <span className="mx-2">
+                <TriangleRightMini />
+              </span>
+            )}
           </li>
         )
       })}
@@ -206,7 +226,7 @@ const Logout = () => {
   const navigate = useNavigate()
   const { mutateAsync: logoutMutation } = useLogout()
 
-  const handleLayout = async () => {
+  const handleLogout = async () => {
     await logoutMutation(undefined, {
       onSuccess: () => {
         /**
@@ -219,7 +239,7 @@ const Logout = () => {
   }
 
   return (
-    <DropdownMenu.Item onClick={handleLayout}>
+    <DropdownMenu.Item onClick={handleLogout}>
       <div className="flex items-center gap-x-2">
         <ArrowRightOnRectangle className="text-ui-fg-subtle" />
         <span>Logout</span>
@@ -241,35 +261,91 @@ const Profile = () => {
   )
 }
 
-const LoggedInUser = () => {
+const GlobalKeybindsModal = (props: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}) => {
+  const { t } = useTranslation()
+  const globalShortcuts = useGlobalShortcuts()
+
   return (
-    <DropdownMenu>
-      <UserBadge />
-      <DropdownMenu.Content align="center">
-        <Profile />
-        <DropdownMenu.Separator />
-        <Link
-          // TODO change link once docs are public
-          to="https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app/"
-          target="_blank"
-        >
-          <DropdownMenu.Item>
-            <BookOpen className="text-ui-fg-subtle mr-2" />
-            Documentation
+    <Dialog.Root {...props}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
+        <Dialog.Content className="bg-ui-bg-subtle shadow-elevation-modal fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg">
+          <div className="px-6 py-4">
+            <Dialog.Title asChild>
+              <Heading>Keyboard Shortcuts</Heading>
+            </Dialog.Title>
+          </div>
+          <div className="flex flex-col divide-y overflow-y-auto">
+            {globalShortcuts.map((shortcut, index) => {
+              return (
+                <div
+                  key={index}
+                  className="text-ui-fg-subtle flex items-center justify-between px-6 py-3"
+                >
+                  <Text size="small">{shortcut.label}</Text>
+                  <div className="flex items-center gap-x-1.5">
+                    {shortcut.keys.Mac?.map((key, index) => {
+                      return <Kbd key={index}>{key}</Kbd>
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <div className="flex items-center justify-end border-b px-6 py-4">
+            <Dialog.Close asChild>
+              <Button size="small">{t("actions.close")}</Button>
+            </Dialog.Close>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
+}
+
+const LoggedInUser = () => {
+  const [openMenu, setOpenMenu] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+
+  const toggleModal = () => {
+    setOpenMenu(false)
+    setOpenModal(!openModal)
+  }
+
+  return (
+    <div>
+      <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
+        <UserBadge />
+        <DropdownMenu.Content align="center">
+          <Profile />
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item asChild>
+            <Link to="https://docs.medusajs.com/v2" target="_blank">
+              <BookOpen className="text-ui-fg-subtle mr-2" />
+              Documentation
+            </Link>
           </DropdownMenu.Item>
-        </Link>
-        <Link to="https://medusajs.com/changelog/" target="_blank">
-          <DropdownMenu.Item>
-            <Calendar className="text-ui-fg-subtle mr-2" />
-            Changelog
+          <DropdownMenu.Item asChild>
+            <Link to="https://medusajs.com/changelog/" target="_blank">
+              <Calendar className="text-ui-fg-subtle mr-2" />
+              Changelog
+            </Link>
           </DropdownMenu.Item>
-        </Link>
-        <DropdownMenu.Separator />
-        <ThemeToggle />
-        <DropdownMenu.Separator />
-        <Logout />
-      </DropdownMenu.Content>
-    </DropdownMenu>
+          <DropdownMenu.Item onClick={toggleModal}>
+            <Keyboard className="text-ui-fg-subtle mr-2" />
+            Keyboard shortcuts
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
+          <ThemeToggle />
+          <DropdownMenu.Separator />
+          <Logout />
+        </DropdownMenu.Content>
+      </DropdownMenu>
+      <GlobalKeybindsModal open={openModal} onOpenChange={setOpenModal} />
+    </div>
   )
 }
 
@@ -306,6 +382,7 @@ const ToggleNotifications = () => {
 }
 
 const Searchbar = () => {
+  const { t } = useTranslation()
   const { toggleSearch } = useSearch()
 
   return (
@@ -316,7 +393,7 @@ const Searchbar = () => {
       <MagnifyingGlass />
       <div className="flex-1 text-left">
         <Text size="small" leading="compact">
-          Jump to or search
+          {t("app.search.placeholder")}
         </Text>
       </div>
       <Kbd className="rounded-full">⌘K</Kbd>

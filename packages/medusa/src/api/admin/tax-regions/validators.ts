@@ -48,9 +48,7 @@ export const AdminCreateTaxRegion = z.object({
       rate: z.number().optional(),
       code: z.string().optional(),
       name: z.string(),
-      is_combinable: z
-        .union([z.literal("true"), z.literal("false")])
-        .optional(),
+      is_combinable: z.boolean().optional(),
       metadata: z.record(z.unknown()).nullish(),
     })
     .optional(),

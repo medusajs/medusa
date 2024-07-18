@@ -17,12 +17,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -41,12 +47,219 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ *   - name: q
+ *     in: query
+ *     description: The product category's q.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: The product category's q.
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: The product category's ID.
+ *         - type: array
+ *           description: The product category's ID.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The id's ID.
+ *   - name: description
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: description
+ *           description: The product category's description.
+ *         - type: array
+ *           description: The product category's description.
+ *           items:
+ *             type: string
+ *             title: description
+ *             description: The description's details.
+ *   - name: handle
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: handle
+ *           description: The product category's handle.
+ *         - type: array
+ *           description: The product category's handle.
+ *           items:
+ *             type: string
+ *             title: handle
+ *             description: The handle's details.
+ *   - name: parent_category_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: parent_category_id
+ *           description: The product category's parent category id.
+ *         - type: array
+ *           description: The product category's parent category id.
+ *           items:
+ *             type: string
+ *             title: parent_category_id
+ *             description: The parent category id's details.
+ *   - name: include_ancestors_tree
+ *     in: query
+ *     description: The product category's include ancestors tree.
+ *     required: true
+ *     schema:
+ *       type: boolean
+ *       title: include_ancestors_tree
+ *       description: The product category's include ancestors tree.
+ *   - name: include_descendants_tree
+ *     in: query
+ *     description: The product category's include descendants tree.
+ *     required: true
+ *     schema:
+ *       type: boolean
+ *       title: include_descendants_tree
+ *       description: The product category's include descendants tree.
+ *   - name: is_internal
+ *     in: query
+ *     description: The product category's is internal.
+ *     required: true
+ *     schema:
+ *       type: boolean
+ *       title: is_internal
+ *       description: The product category's is internal.
+ *   - name: is_active
+ *     in: query
+ *     description: The product category's is active.
+ *     required: true
+ *     schema:
+ *       type: boolean
+ *       title: is_active
+ *       description: The product category's is active.
+ *   - name: created_at
+ *     in: query
+ *     description: The product category's created at.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: The product category's created at.
+ *       required:
+ *         - $eq
+ *         - $ne
+ *         - $in
+ *         - $nin
+ *         - $like
+ *         - $ilike
+ *         - $re
+ *         - $contains
+ *         - $gt
+ *         - $gte
+ *         - $lt
+ *         - $lte
+ *       properties:
+ *         $eq: {}
+ *         $ne: {}
+ *         $in: {}
+ *         $nin: {}
+ *         $like: {}
+ *         $ilike: {}
+ *         $re: {}
+ *         $contains: {}
+ *         $gt: {}
+ *         $gte: {}
+ *         $lt: {}
+ *         $lte: {}
+ *   - name: updated_at
+ *     in: query
+ *     description: The product category's updated at.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: The product category's updated at.
+ *       required:
+ *         - $eq
+ *         - $ne
+ *         - $in
+ *         - $nin
+ *         - $like
+ *         - $ilike
+ *         - $re
+ *         - $contains
+ *         - $gt
+ *         - $gte
+ *         - $lt
+ *         - $lte
+ *       properties:
+ *         $eq: {}
+ *         $ne: {}
+ *         $in: {}
+ *         $nin: {}
+ *         $like: {}
+ *         $ilike: {}
+ *         $re: {}
+ *         $contains: {}
+ *         $gt: {}
+ *         $gte: {}
+ *         $lt: {}
+ *         $lte: {}
+ *   - name: deleted_at
+ *     in: query
+ *     description: The product category's deleted at.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: The product category's deleted at.
+ *       required:
+ *         - $eq
+ *         - $ne
+ *         - $in
+ *         - $nin
+ *         - $like
+ *         - $ilike
+ *         - $re
+ *         - $contains
+ *         - $gt
+ *         - $gte
+ *         - $lt
+ *         - $lte
+ *       properties:
+ *         $eq: {}
+ *         $ne: {}
+ *         $in: {}
+ *         $nin: {}
+ *         $like: {}
+ *         $ilike: {}
+ *         $re: {}
+ *         $contains: {}
+ *         $gt: {}
+ *         $gte: {}
+ *         $lt: {}
+ *         $lte: {}
+ *   - name: $and
+ *     in: query
+ *     required: false
+ *     schema: {}
+ *   - name: $or
+ *     in: query
+ *     required: false
+ *     schema: {}
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -78,10 +291,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

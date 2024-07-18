@@ -1,10 +1,6 @@
-import { ModuleExports } from "@medusajs/types"
 import { CartModuleService } from "./services"
+import { Module, Modules } from "@medusajs/utils"
 
-const service = CartModuleService
-
-export const moduleDefinition: ModuleExports = {
-  service,
-}
-
-export default moduleDefinition
+export default Module(Modules.CART, {
+  service: CartModuleService,
+})

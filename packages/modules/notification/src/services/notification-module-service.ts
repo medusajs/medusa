@@ -1,9 +1,9 @@
 import {
   Context,
   DAL,
+  InferEntityType,
   INotificationModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   NotificationTypes,
 } from "@medusajs/types"
@@ -16,23 +16,26 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { Notification } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import NotificationProviderService from "./notification-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  notificationService: ModulesSdkTypes.IMedusaInternalService<any>
+  notificationService: ModulesSdkTypes.IMedusaInternalService<
+    typeof Notification
+  >
   notificationProviderService: NotificationProviderService
 }
 
 export default class NotificationModuleService
   extends MedusaService<{
     Notification: { dto: NotificationTypes.NotificationDTO }
-  }>({ Notification }, entityNameToLinkableKeysMap)
+  }>({ Notification })
   implements INotificationModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<Notification>
+  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Notification
+  >
   protected readonly notificationProviderService_: NotificationProviderService
 
   constructor(
@@ -48,10 +51,6 @@ export default class NotificationModuleService
     this.baseRepository_ = baseRepository
     this.notificationService_ = notificationService
     this.notificationProviderService_ = notificationProviderService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error
@@ -91,7 +90,7 @@ export default class NotificationModuleService
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Notification[]> {
+  ): Promise<InferEntityType<typeof Notification>[]> {
     if (!data.length) {
       return []
     }
@@ -108,12 +107,13 @@ export default class NotificationModuleService
       { take: null },
       sharedContext
     )
+
     const existsMap = new Map(
-      alreadySentNotifications.map((n) => [n.idempotency_key, true])
+      alreadySentNotifications.map((n) => [n.idempotency_key as string, true])
     )
 
     const notificationsToProcess = data.filter(
-      (entry) => !existsMap.has(entry.idempotency_key)
+      (entry) => !entry.idempotency_key || !existsMap.has(entry.idempotency_key)
     )
 
     const notificationsToCreate = await promiseAll(

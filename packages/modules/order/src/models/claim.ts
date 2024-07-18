@@ -27,7 +27,7 @@ import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
 import Transaction from "./transaction"
 
-type OptionalOrderClaimProps = DAL.EntityDateColumns
+type OptionalOrderClaimProps = DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim",
@@ -77,7 +77,6 @@ export default class OrderClaim {
   @OneToOne({
     entity: () => Return,
     mappedBy: (ret) => ret.claim,
-    cascade: ["soft-remove"] as any,
     fieldName: "return_id",
     nullable: true,
     owner: true,

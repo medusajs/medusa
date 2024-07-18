@@ -5,13 +5,10 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 import { ExtendedStoreDTO } from "../../../../../types/api-responses"
-import { useRegions } from "../../../../../hooks/api/regions"
 
 type EditStoreFormProps = {
   store: ExtendedStoreDTO
@@ -32,7 +29,9 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
     defaultValues: {
       name: store.name,
       default_region_id: store.default_region_id || undefined,
-      default_currency_code: store.default_currency_code || undefined,
+      default_currency_code:
+        store.supported_currencies?.find((c) => c.is_default)?.currency_code ||
+        undefined,
     },
     resolver: zodResolver(EditStoreSchema),
   })
@@ -42,21 +41,23 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const { regions, isPending: isRegionsLoading } = useRegions({ limit: 999 })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      await mutateAsync(values)
-
-      handleSuccess()
-
-      toast.success(t("general.success"), {
-        description: t("store.toast.update"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+    const normalizedMutation = {
+      ...values,
+      default_currency_code: undefined,
+      supported_currencies: store.supported_currencies?.map((c) => ({
+        ...c,
+        is_default: c.currency_code === values.default_currency_code,
+      })),
     }
+    await mutateAsync(normalizedMutation, {
+      onSuccess: () => {
+        toast.success(t("store.toast.update"))
+        handleSuccess()
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
   })
 
   return (
@@ -91,9 +92,12 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {store.supported_currency_codes.map((code) => (
-                            <Select.Item key={code} value={code}>
-                              {code.toUpperCase()}
+                          {store.supported_currencies?.map((currency) => (
+                            <Select.Item
+                              key={currency.currency_code}
+                              value={currency.currency_code}
+                            >
+                              {currency.currency_code.toUpperCase()}
                             </Select.Item>
                           ))}
                         </Select.Content>

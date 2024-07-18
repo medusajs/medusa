@@ -24,7 +24,6 @@ export interface RegionDTO {
    * Setting to indicate whether taxes need to be applied automatically
    */
   automatic_taxes: boolean
-
   /**
    * The countries of the region.
    */

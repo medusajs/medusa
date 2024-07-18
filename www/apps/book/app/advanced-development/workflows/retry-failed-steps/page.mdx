@@ -10,12 +10,13 @@ In this chapter, you’ll learn how to configure steps to allow retrial on failu
 
 By default, when an error occurs in a step, the step and the workflow fail, and the execution stops.
 
-You can configure the step to retry on failure. The `createStep` function can accept a configuration object instead of the step’s name as a first parameter:
+You can configure the step to retry on failure. The `createStep` function can accept a configuration object instead of the step’s name as a first parameter.
 
-```ts title="src/workflows/hello-world.ts" highlights={[["10"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+For example:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["9"]]} collapsibleLines="1-5" expandButtonLabel="Show Imports"
 import { 
   createStep, 
-  StepResponse, 
   createWorkflow,
 } from "@medusajs/workflows-sdk"
 
@@ -31,14 +32,9 @@ const step1 = createStep(
   }
 )
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->("hello-world", function () {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function () {
   const str1 = step1()
 
   return {

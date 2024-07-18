@@ -1,22 +1,22 @@
 import {
   DistributedTransaction,
-  DistributedTransactionStorage,
   IDistributedSchedulerStorage,
   IDistributedTransactionStorage,
   SchedulerOptions,
   TransactionCheckpoint,
+  TransactionOptions,
   TransactionStep,
 } from "@medusajs/orchestration"
-import { ModulesSdkTypes } from "@medusajs/types"
+import { Logger, ModulesSdkTypes } from "@medusajs/types"
 import { MedusaError, TransactionState } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { CronExpression, parseExpression } from "cron-parser"
 
-// eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage
   implements IDistributedTransactionStorage, IDistributedSchedulerStorage
 {
   private workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
+  private logger_: Logger
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private storage: Map<string, TransactionCheckpoint> = new Map()
@@ -34,10 +34,13 @@ export class InMemoryDistributedTransactionStorage
 
   constructor({
     workflowExecutionService,
+    logger,
   }: {
     workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
+    logger: Logger
   }) {
     this.workflowExecutionService_ = workflowExecutionService
+    this.logger_ = logger
   }
 
   setWorkflowOrchestratorService(workflowOrchestratorService) {
@@ -68,24 +71,43 @@ export class InMemoryDistributedTransactionStorage
     ])
   }
 
-  /*private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
+  async get(
+    key: string,
+    options?: TransactionOptions
+  ): Promise<TransactionCheckpoint | undefined> {
+    const data = this.storage.get(key)
+
+    if (data) {
+      return data
     }
 
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
+    const { idempotent } = options ?? {}
+    if (!idempotent) {
+      return
     }
 
-    return value
-  }*/
+    const [_, workflowId, transactionId] = key.split(":")
+    const trx = await this.workflowExecutionService_
+      .retrieve(
+        {
+          workflow_id: workflowId,
+          transaction_id: transactionId,
+        },
+        {
+          select: ["execution", "context"],
+        }
+      )
+      .catch(() => undefined)
 
-  async get(key: string): Promise<TransactionCheckpoint | undefined> {
-    return this.storage.get(key)
+    if (trx) {
+      return {
+        flow: trx.execution,
+        context: trx.context.data,
+        errors: trx.context.errors,
+      }
+    }
+
+    return
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -95,11 +117,10 @@ export class InMemoryDistributedTransactionStorage
   async save(
     key: string,
     data: TransactionCheckpoint,
-    ttl?: number
+    ttl?: number,
+    options?: TransactionOptions
   ): Promise<void> {
     this.storage.set(key, data)
-
-    let retentionTime
 
     /**
      * Store the retention time only if the transaction is done, failed or reverted.
@@ -111,8 +132,9 @@ export class InMemoryDistributedTransactionStorage
       TransactionState.REVERTED,
     ].includes(data.flow.state)
 
+    const { retentionTime, idempotent } = options ?? {}
+
     if (hasFinished) {
-      retentionTime = data.flow.options?.retentionTime
       Object.assign(data, {
         retention_time: retentionTime,
       })
@@ -121,7 +143,7 @@ export class InMemoryDistributedTransactionStorage
     const stringifiedData = JSON.stringify(data)
     const parsedData = JSON.parse(stringifiedData)
 
-    if (hasFinished && !retentionTime) {
+    if (hasFinished && !retentionTime && !idempotent) {
       await this.deleteFromDb(parsedData)
     } else {
       await this.saveToDb(parsedData)
@@ -304,7 +326,7 @@ export class InMemoryDistributedTransactionStorage
       })
     } catch (e) {
       if (e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND) {
-        console.warn(
+        this.logger_?.warn(
           `Tried to execute a scheduled workflow with ID ${jobId} that does not exist, removing it from the scheduler.`
         )
 

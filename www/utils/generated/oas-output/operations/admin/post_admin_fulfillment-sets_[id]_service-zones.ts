@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,12 +51,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -63,7 +73,6 @@
  *         description: SUMMARY
  *         required:
  *           - name
- *           - geo_zones
  *         properties:
  *           name:
  *             type: string
@@ -84,7 +93,6 @@
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
- *                       properties: {}
  *                     country_code:
  *                       type: string
  *                       title: country_code
@@ -104,7 +112,6 @@
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
- *                       properties: {}
  *                     country_code:
  *                       type: string
  *                       title: country_code
@@ -129,7 +136,6 @@
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
- *                       properties: {}
  *                     country_code:
  *                       type: string
  *                       title: country_code
@@ -159,7 +165,6 @@
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
- *                       properties: {}
  *                     country_code:
  *                       type: string
  *                       title: country_code
@@ -179,7 +184,6 @@
  *                     postal_expression:
  *                       type: object
  *                       description: The geo zone's postal expression.
- *                       properties: {}
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -188,8 +192,7 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Milan",
- *         "geo_zones": []
+ *         "name": "Layla"
  *       }'
  * tags:
  *   - Fulfillment Sets

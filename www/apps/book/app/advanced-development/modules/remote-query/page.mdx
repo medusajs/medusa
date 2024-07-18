@@ -10,21 +10,27 @@ In this chapter, you’ll learn about the remote query and how to use it to fetc
 
 ## What is the Remote Query?
 
-The remote query fetches data across modules and their relationships having their `isQueryable` configuration enabled. It’s a function registered in the Medusa container under the `remoteQuery` key.
+The remote query fetches data across modules. It’s a function registered in the Medusa container under the `remoteQuery` key.
 
 In your resources, such as API routes or workflows, you can resolve the remote query to fetch data across custom modules and Medusa’s commerce modules.
 
+<Note type="check">
+
+- [Enable the isQueryable configuration of the module](../module-links/page.mdx#prerequisite-isqueryable-configuration)
+
+</Note>
+
 ---
 
-## Example: Query Hello Module
+## Remote Query Example
 
 For example, create the route `src/api/store/query/route.ts` with the following content:
 
 export const exampleHighlights = [
   ["18", "", "Resolve the remote query from the Medusa container."],
   ["21", "remoteQueryObjectFromString", "Utility function to build the query."],
-  ["22", "entryPoint", "The alias name of the model you’re querying."],
-  ["23", "fields", "An array of the data model’s field names to retrieve in the result."],
+  ["22", "entryPoint", "The name of the data model you're querying."],
+  ["23", "fields", "An array of the data model’s properties to retrieve in the result."],
   ["27", "remoteQuery", "Run the query using the remote query."]
 ]
 
@@ -50,12 +56,12 @@ export async function GET(
   )
 
   const query = remoteQueryObjectFromString({
-    entryPoint: "custom_product_data",
-    fields: ["id", "custom_field", "product.title"],
+    entryPoint: "my_custom",
+    fields: ["id", "name"],
   })
 
   res.json({
-    custom_product_data: await remoteQuery(query),
+    my_customs: await remoteQuery(query),
   })
 }
 ```
@@ -64,10 +70,52 @@ In the above example, you resolve `remoteQuery` from the Medusa container.
 
 Then, you create a query using the `remoteQueryObjectFromString` utility function imported from `@medusajs/utils`. This function accepts as a parameter an object with the following required properties:
 
-- `entryPoint`: The alias name of the model you’re querying. You defined the alias name in the `__joinerConfig` method of your main service.
-- `fields`: An array of the data model’s field names to retrieve in the result. You can also specify fields of a relationship using dot notation.
+- `entryPoint`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
+- `fields`: An array of the data model’s properties to retrieve in the result.
 
 You then pass the query to the `remoteQuery` function to retrieve the results.
+
+---
+
+## Retrieve Linked Records
+
+Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "product.*",
+  ],
+})
+```
+
+<Note title="Tip">
+
+`.*` means that all of data model's properties should be retrieved. To retrieve a specific property, replace the `*` with the property's name. For example, `product.title`.
+
+</Note>
+
+### Retrieve List Link Records
+
+If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "products.*",
+  ],
+})
+```
 
 ---
 
@@ -75,17 +123,17 @@ You then pass the query to the `remoteQuery` function to retrieve the results.
 
 ```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
 const query = remoteQueryObjectFromString({
-  entryPoint: "custom_product_data",
-    fields: ["id", "custom_field", "product.title"],
+  entryPoint: "my_custom",
+  fields: ["id", "name"],
   variables: {
     filters: {
       id: [
-        "cpd_01HWSVWR4D2XVPQ06DQ8X9K7AX",
-        "cpd_01HWSVWK3KYHKQEE6QGS2JC3FX",
+        "mc_01HWSVWR4D2XVPQ06DQ8X9K7AX",
+        "mc_01HWSVWK3KYHKQEE6QGS2JC3FX",
       ],
     },
   },
-}) 
+})
 
 const result = await remoteQuery(query)
 ```
@@ -102,7 +150,7 @@ The `remoteQueryObjectFromString` function accepts a `variables` property. You c
         {
           name: "filters",
           type: "`object`",
-          description: "The filters to apply on any of the data model's fields."
+          description: "The filters to apply on any of the data model's properties."
         }
       ]
     },
@@ -116,8 +164,8 @@ The `remoteQueryObjectFromString` function accepts a `variables` property. You c
 
 ```ts highlights={[["5"], ["6"], ["7"]]}
 const query = remoteQueryObjectFromString({
-  entryPoint: "custom_product_data",
-  fields: ["id", "custom_field", "product.title"],
+  entryPoint: "my_custom",
+  fields: ["id", "name"],
   variables: {
     order: {
       name: "DESC",
@@ -128,12 +176,12 @@ const query = remoteQueryObjectFromString({
 const result = await remoteQuery(query)
 ```
 
-To sort returned records, pass an `order` property to the `variables` property's value.
+To sort returned records, pass an `order` property to `variables`.
 
-The `order` property is an object whose keys are field names, and values are either:
+The `order` property is an object whose keys are property names, and values are either:
 
-- `ASC` to sort records by that field in ascending order.
-- `DESC` to sort records by that field in descending order.
+- `ASC` to sort records by that property in ascending order.
+- `DESC` to sort records by that property in descending order.
 
 ---
 
@@ -141,8 +189,8 @@ The `order` property is an object whose keys are field names, and values are eit
 
 ```ts highlights={[["5", "skip", "The number of records to skip before fetching the results."], ["6", "take", "The number of records to fetch."]]}
 const query = remoteQueryObjectFromString({
-  entryPoint: "custom_product_data",
-  fields: ["id", "custom_field", "product.title"],
+  entryPoint: "my_custom",
+  fields: ["id", "name"],
   variables: {
     skip: 0,
     take: 10,
@@ -155,7 +203,7 @@ const {
 } = await remoteQuery(query)
 ```
 
-To paginate the returned records, pass the following properties to the `variables` property's value:
+To paginate the returned records, pass the following properties to `variables`:
 
 - `skip`: (required to apply pagination) The number of records to skip before fetching the results.
 - `take`: The number of records to fetch.
@@ -215,7 +263,6 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
       MedusaRequest, 
       MedusaResponse,
     } from "@medusajs/medusa"
-    import { remoteQueryObjectFromString } from "@medusajs/utils"
     import { ContainerRegistrationKeys } from "@medusajs/utils"
     import type { 
       RemoteQueryFunction,
@@ -231,12 +278,9 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
 
       const query = `
         query {
-          custom_product_data {
+          my_custom {
             id
-            custom_field
-            product {
-              title
-            }
+            name
           }
         }
       `
@@ -244,7 +288,7 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
       const result = await remoteQuery(query)
 
       res.json({
-        custom_product_data: result,
+        my_customs: result,
       })
     }
     ```
@@ -256,15 +300,12 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
 
     The `remoteQuery` function accepts as a second parameter an object of variables to reference in the GraphQL query.
 
-    ```ts highlights={[["2"], ["3"], ["16"], ["17"], ["18"], ["19"]]}
+    ```ts highlights={[["2"], ["3"], ["13"], ["14"], ["15"], ["16"]]}
     const query = `
       query($id: ID) {
-        custom_product_data(id: $id) {
+        my_custom(id: $id) {
           id
-          custom_field
-          product {
-            title
-          }
+          name
         }
       }
     `
@@ -273,8 +314,8 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
       query,
       {
         id: [
-          "cpd_01HWSVWR4D2XVPQ06DQ8X9K7AX",
-          "cpd_01HWSVWK3KYHKQEE6QGS2JC3FX",
+          "mc_01HWSVWR4D2XVPQ06DQ8X9K7AX",
+          "mc_01HWSVWK3KYHKQEE6QGS2JC3FX",
         ]
       }
     )
@@ -285,22 +326,19 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
 
     ### Sort Records with GraphQL
 
-    To sort the records by a field, pass in the query an `order` argument whose value is an object. The object’s key is the field’s name, and the value is either:
+    To sort the records by a property, pass in the query an `order` argument whose value is an object. The object’s key is the property’s name, and the value is either:
 
-    - `ASC` to sort items by that field in ascending order.
-    - `DESC` to sort items by that field in descending order.
+    - `ASC` to sort items by that property in ascending order.
+    - `DESC` to sort items by that property in descending order.
 
     For example:
 
     ```ts highlights={[["3"]]}
     const query = `
       query {
-        custom_product_data(order: {custom_field: DESC}) {
+        my_custom(order: {name: DESC}) {
           id
-          custom_field
-          product {
-            title
-          }
+          name
         }
       }
     `
@@ -320,12 +358,9 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
     ```ts highlights={[["2"], ["3"]]}
     const query = `
       query($skip: Int, $take: Int) {
-        custom_product_data(skip: $skip, take: $take) {
+        my_custom(skip: $skip, take: $take) {
           id
-          custom_field
-          product {
-            title
-          }
+          name
         }
       }
     `

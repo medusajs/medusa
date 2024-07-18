@@ -1,5 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICurrencyModuleService, IStoreModuleService } from "@medusajs/types"
+import {
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -27,24 +30,29 @@ medusaIntegrationTestRunner({
       it("should query store and default currency with remote query", async () => {
         const store = await storeModuleService.createStores({
           name: "Store",
-          default_currency_code: "usd",
-          supported_currency_codes: ["usd"],
+          supported_currencies: [{ currency_code: "usd", is_default: true }],
         })
 
-        const stores = await remoteQuery({
-          store: {
-            fields: ["id"],
-            default_currency: {
-              fields: ["code"],
-            },
-          },
+        const query = remoteQueryObjectFromString({
+          entryPoint: "store",
+          fields: [
+            "id",
+            "supported_currencies.*",
+            "supported_currencies.currency.*",
+          ],
         })
+        const stores = await remoteQuery(query)
 
         expect(stores).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
               id: store.id,
-              default_currency: expect.objectContaining({ code: "usd" }),
+              supported_currencies: expect.arrayContaining([
+                expect.objectContaining({
+                  currency: expect.objectContaining({ code: "usd" }),
+                  currency_code: "usd",
+                }),
+              ]),
             }),
           ])
         )

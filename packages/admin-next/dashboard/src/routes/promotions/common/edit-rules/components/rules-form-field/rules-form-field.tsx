@@ -78,39 +78,30 @@ export const RulesFormField = ({
     }
 
     if (ruleType === "rules" && !fields.length) {
+      form.resetField("rules")
+
       replace(generateRuleAttributes(rules) as any)
     }
 
-    if (ruleType === "rules" && promotionType === "standard") {
+    if (ruleType === "buy-rules" && !fields.length) {
       form.resetField("application_method.buy_rules")
-      form.resetField("application_method.target_rules")
-    }
-
-    if (
-      ["buy-rules", "target-rules"].includes(ruleType) &&
-      promotionType === "standard"
-    ) {
-      form.resetField(scope)
-      replace([])
-    }
-
-    if (
-      ["buy-rules", "target-rules"].includes(ruleType) &&
-      promotionType === "buyget"
-    ) {
-      form.resetField(scope)
-      const rulesToAppend = promotion?.id
-        ? rules
-        : [...rules, requiredProductRule]
+      const rulesToAppend =
+        promotion?.id || promotionType === "standard"
+          ? rules
+          : [...rules, requiredProductRule]
 
       replace(generateRuleAttributes(rulesToAppend) as any)
-
-      return
     }
 
-    form.resetField(scope)
+    if (ruleType === "target-rules" && !fields.length) {
+      form.resetField("application_method.target_rules")
+      const rulesToAppend =
+        promotion?.id || promotionType === "standard"
+          ? rules
+          : [...rules, requiredProductRule]
 
-    replace(generateRuleAttributes(rules) as any)
+      replace(generateRuleAttributes(rulesToAppend) as any)
+    }
   }, [promotionType, isLoading])
 
   return (
@@ -119,7 +110,7 @@ export const RulesFormField = ({
         {t(`promotions.fields.conditions.${ruleType}.title`)}
       </Heading>
 
-      <Text className="text-ui-fg-subtle txt-small mb-10">
+      <Text className="text-ui-fg-subtle txt-small mb-6">
         {t(`promotions.fields.conditions.${ruleType}.description`)}
       </Text>
 
@@ -222,7 +213,11 @@ export const RulesFormField = ({
                       return (
                         <Form.Item className="basis-1/2">
                           <Form.Control>
-                            <Select {...field} onValueChange={onChange}>
+                            <Select
+                              {...field}
+                              disabled={!fieldRule.attribute}
+                              onValueChange={onChange}
+                            >
                               <Select.Trigger
                                 ref={operatorRef}
                                 className="bg-ui-bg-base"
@@ -296,7 +291,7 @@ export const RulesFormField = ({
         )
       })}
 
-      <div className="mt-8">
+      <div className={!!fields.length ? "mt-6" : ""}>
         <Button
           type="button"
           variant="secondary"
@@ -313,22 +308,24 @@ export const RulesFormField = ({
           {t("promotions.fields.addCondition")}
         </Button>
 
-        <Button
-          type="button"
-          variant="transparent"
-          className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
-          onClick={() => {
-            const indicesToRemove = fields
-              .map((field: any, index) => (field.required ? null : index))
-              .filter((f) => f !== null)
+        {!!fields.length && (
+          <Button
+            type="button"
+            variant="transparent"
+            className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
+            onClick={() => {
+              const indicesToRemove = fields
+                .map((field: any, index) => (field.required ? null : index))
+                .filter((f) => f !== null)
 
-            setRulesToRemove &&
-              setRulesToRemove(fields.filter((field: any) => !field.required))
-            remove(indicesToRemove)
-          }}
-        >
-          {t("promotions.fields.clearAll")}
-        </Button>
+              setRulesToRemove &&
+                setRulesToRemove(fields.filter((field: any) => !field.required))
+              remove(indicesToRemove)
+            }}
+          >
+            {t("promotions.fields.clearAll")}
+          </Button>
+        )}
       </div>
     </div>
   )

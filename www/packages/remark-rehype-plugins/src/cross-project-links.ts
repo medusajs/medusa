@@ -18,7 +18,7 @@ const PROJECT_REGEX = /^!(?<area>[\w-]+)!/
 
 function matchAndFixLinks(
   link: string,
-  { baseUrl, projectUrls }: CrossProjectLinksOptions
+  { baseUrl, projectUrls, useBaseUrl = false }: CrossProjectLinksOptions
 ): string {
   const projectArea = PROJECT_REGEX.exec(link)
 
@@ -29,6 +29,7 @@ function matchAndFixLinks(
   const actualUrl = link.replace(PROJECT_REGEX, "")
 
   const base =
+    !useBaseUrl &&
     projectUrls &&
     Object.hasOwn(projectUrls, projectArea.groups.area) &&
     projectUrls[projectArea.groups.area]?.url

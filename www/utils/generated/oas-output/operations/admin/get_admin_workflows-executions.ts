@@ -17,12 +17,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -41,12 +47,44 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ *   - name: transaction_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: transaction_id
+ *           description: The workflows execution's transaction id.
+ *         - type: array
+ *           description: The workflows execution's transaction id.
+ *           items:
+ *             type: string
+ *             title: transaction_id
+ *             description: The transaction id's details.
+ *   - name: workflow_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: workflow_id
+ *           description: The workflows execution's workflow id.
+ *         - type: array
+ *           description: The workflows execution's workflow id.
+ *           items:
+ *             type: string
+ *             title: workflow_id
+ *             description: The workflow id's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -72,57 +110,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - limit
- *           - fields
- *           - order
- *           - offset
- *           - transaction_id
- *           - workflow_id
- *         properties:
- *           limit:
- *             type: number
- *             title: limit
- *             description: The workflows execution's limit.
- *           fields:
- *             type: string
- *             title: fields
- *             description: The workflows execution's fields.
- *           order:
- *             type: string
- *             title: order
- *             description: The workflows execution's order.
- *           offset:
- *             type: number
- *             title: offset
- *             description: The workflows execution's offset.
- *           transaction_id:
- *             oneOf:
- *               - type: string
- *                 title: transaction_id
- *                 description: The workflows execution's transaction id.
- *               - type: array
- *                 description: The workflows execution's transaction id.
- *                 items:
- *                   type: string
- *                   title: transaction_id
- *                   description: The transaction id's details.
- *           workflow_id:
- *             oneOf:
- *               - type: string
- *                 title: workflow_id
- *                 description: The workflows execution's workflow id.
- *               - type: array
- *                 description: The workflows execution's workflow id.
- *                 items:
- *                   type: string
- *                   title: workflow_id
- *                   description: The workflow id's details.
  * 
 */
 

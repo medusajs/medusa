@@ -1,3 +1,3 @@
-export * from "./create-pricing-rule-types"
-export * from "./delete-pricing-rule-types"
-export * from "./update-pricing-rule-types"
+export * from "./create-price-preferences"
+export * from "./update-price-preferences"
+export * from "./delete-price-preferences"

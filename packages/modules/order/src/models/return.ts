@@ -25,10 +25,9 @@ import { ReturnItem, Transaction } from "@models"
 import Claim from "./claim"
 import Exchange from "./exchange"
 import Order from "./order"
-import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
 
-type OptionalReturnProps = DAL.EntityDateColumns
+type OptionalReturnProps = DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "return",
@@ -83,7 +82,6 @@ export default class Return {
 
   @OneToOne({
     entity: () => Exchange,
-    cascade: ["soft-remove"] as any,
     fieldName: "exchange_id",
     nullable: true,
   })
@@ -95,7 +93,6 @@ export default class Return {
 
   @OneToOne({
     entity: () => Claim,
-    cascade: ["soft-remove"] as any,
     fieldName: "claim_id",
     nullable: true,
   })
@@ -117,6 +114,9 @@ export default class Return {
   @Enum({ items: () => ReturnStatus, default: ReturnStatus.REQUESTED })
   status: ReturnStatus = ReturnStatus.REQUESTED
 
+  @Property({ columnType: "text", nullable: true })
+  location_id: string | null = null
+
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
 
@@ -131,7 +131,7 @@ export default class Return {
   @OneToMany(() => ReturnItem, (itemDetail) => itemDetail.return, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<Rel<OrderItem>>(this)
+  items = new Collection<Rel<ReturnItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,

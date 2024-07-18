@@ -2,6 +2,7 @@ import {
   Constructor,
   IModuleService,
   InternalModuleDeclaration,
+  LoaderOptions,
   Logger,
   MedusaContainer,
   ModuleExports,
@@ -11,11 +12,11 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  createMikrORMEntity,
   defineJoinerConfig,
   DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
+  toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
@@ -31,6 +32,11 @@ type ModuleResource = {
   moduleService: Constructor<any>
   normalizedPath: string
 }
+
+type MigrationFunction = (
+  options: LoaderOptions<any>,
+  moduleDeclaration?: InternalModuleDeclaration
+) => Promise<void>
 
 export async function loadInternalModule(
   container: MedusaContainer,
@@ -133,6 +139,15 @@ export async function loadInternalModule(
     )
   }
 
+  if (resolution.definition.__passSharedContainer) {
+    localContainer.register(
+      "sharedContainer",
+      asFunction(() => {
+        return container
+      })
+    )
+  }
+
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
   const error = await runLoaders(loaders, {
     container,
@@ -171,7 +186,11 @@ export async function loadInternalModule(
 export async function loadModuleMigrations(
   resolution: ModuleResolution,
   moduleExports?: ModuleExports
-): Promise<[Function | undefined, Function | undefined]> {
+): Promise<{
+  runMigrations?: MigrationFunction
+  revertMigration?: MigrationFunction
+  generateMigration?: MigrationFunction
+}> {
   let loadedModule: ModuleExports
   try {
     loadedModule =
@@ -179,8 +198,8 @@ export async function loadModuleMigrations(
 
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration
+    let generateMigration = loadedModule.generateMigration
 
-    // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
       const moduleResources = await loadResources(
         resolution,
@@ -191,7 +210,7 @@ export async function loadModuleMigrations(
       const migrationScriptOptions = {
         moduleName: resolution.definition.key,
         models: moduleResources.models,
-        pathToMigrations: moduleResources.normalizedPath + "/migrations",
+        pathToMigrations: join(moduleResources.normalizedPath, "migrations"),
       }
 
       runMigrations ??= ModulesSdkUtils.buildMigrationScript(
@@ -201,11 +220,15 @@ export async function loadModuleMigrations(
       revertMigration ??= ModulesSdkUtils.buildRevertMigrationScript(
         migrationScriptOptions
       )
+
+      generateMigration ??= ModulesSdkUtils.buildGenerateMigrationScript(
+        migrationScriptOptions
+      )
     }
 
-    return [runMigrations, revertMigration]
+    return { runMigrations, revertMigration, generateMigration }
   } catch {
-    return [undefined, undefined]
+    return {}
   }
 }
 
@@ -270,12 +293,11 @@ export async function loadResources(
       ),
     ])
 
-    const entityBuilder = createMikrORMEntity()
     const cleanupResources = (resources) => {
       return Object.values(resources)
         .map((resource) => {
           if (DmlEntity.isDmlEntity(resource)) {
-            return entityBuilder(resource as DmlEntity<any>)
+            return resource
           }
 
           if (typeof resource === "function") {
@@ -289,11 +311,12 @@ export async function loadResources(
 
     const potentialServices = [...new Set(cleanupResources(services))]
     const potentialModels = [...new Set(cleanupResources(models))]
+    const mikroOrmModels = toMikroOrmEntities(potentialModels)
     const potentialRepositories = [...new Set(cleanupResources(repositories))]
 
     const finalLoaders = prepareLoaders({
       loadedModuleLoaders,
-      models: potentialModels,
+      models: mikroOrmModels,
       repositories: potentialRepositories,
       services: potentialServices,
       moduleResolution,
@@ -308,7 +331,7 @@ export async function loadResources(
 
     return {
       services: potentialServices,
-      models: potentialModels,
+      models: mikroOrmModels,
       repositories: potentialRepositories,
       loaders: finalLoaders,
       moduleService,
@@ -433,15 +456,20 @@ function generateJoinerConfigIfNecessary({
 }: {
   moduleResolution: ModuleResolution
   service: Constructor<IModuleService>
-  models: Function[]
+  models: (Function | DmlEntity<any, any>)[]
 }) {
-  if (service.prototype.__joinerConfig) {
-    return
-  }
+  const originalJoinerConfigFn = service.prototype.__joinerConfig
 
   service.prototype.__joinerConfig = function () {
+    if (originalJoinerConfigFn) {
+      return {
+        serviceName: moduleResolution.definition.key,
+        ...originalJoinerConfigFn(),
+      }
+    }
+
     return defineJoinerConfig(moduleResolution.definition.key, {
-      entityQueryingConfig: models,
+      models,
     })
   }
 }

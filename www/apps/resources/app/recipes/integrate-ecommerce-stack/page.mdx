@@ -102,7 +102,7 @@ export const serviceHighlights = [
 
   <Note title="Tip">
 
-  You can store the product's ID in the external system using the `metadata` field of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
+  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
 
   </Note>
 
@@ -110,10 +110,11 @@ export const serviceHighlights = [
 
   ```ts title="src/modules/erp/index.ts"
   import ErpModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("erp", {
     service: ErpModuleService,
-  }
+  })
   ```
 
   Finally, add the module to the `modules` object in `medusa-config.js`:
@@ -182,7 +183,7 @@ export const workflowHighlights = [
       createWorkflow
     } from "@medusajs/workflows-sdk"
     import { IProductModuleService } from "@medusajs/types"
-    import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+    import { ModuleRegistrationName } from "@medusajs/utils"
     import ErpModuleService from "../modules/erp/service"
 
     type WorkflowInput = {
@@ -203,13 +204,13 @@ export const workflowHighlights = [
         .resolve(ModuleRegistrationName.PRODUCT)
       
       const createdProductData = await productModuleService
-        .retrieve(productId)
+        .retrieveProduct(productId)
 
       const erpProduct = await erpModuleService.createProduct(
         createdProductData
       )
 
-      await productModuleService.update(productId, {
+      await productModuleService.updateProducts(productId, {
         metadata: {
           erp_id: erpProduct.id
         }
@@ -229,7 +230,7 @@ export const workflowHighlights = [
         .resolve(ModuleRegistrationName.PRODUCT)
 
       await erpModuleService.deleteProduct(erpId)
-      await productModuleService.update(productId, {
+      await productModuleService.updateProducts(productId, {
         metadata: {}
       })
     })
@@ -249,7 +250,7 @@ export const workflowHighlights = [
 
     - Retrieves the product's data using the Product Module's main service.
     - Create the product in the ERP system using the ERP Module's main service.
-    - Updates the product in Medusa by setting the ID of the ERP product in the product's `metadata` field.
+    - Updates the product in Medusa by setting the ID of the ERP product in the product's `metadata` property.
     
     The step also has a compensation function that rolls back changes when an error occurs. It deletes the product in the ERP system and removes the ID of the ERP product in the Medusa product.
     
@@ -263,12 +264,13 @@ export const workflowHighlights = [
     import createProductWorkflow from "../workflows/create-product"
 
     export default async function handleProductUpdate({ 
-      data, container 
+      event: { data }, 
+      container 
     }: SubscriberArgs<{id: string}>) {
       createProductWorkflow(container)
         .run({
           input: {
-            productId: "data" in data ? data.data.id : data.id
+            productId: data.id
           }
         })
         .then(() => {
@@ -334,7 +336,7 @@ For example, suppose an administrator changes the product data in the ERP system
           ModuleRegistrationName.PRODUCT
         )
 
-      await productService.update(id, updatedData)
+      await productService.updateProducts(id, updatedData)
 
       res.status(200)
     }

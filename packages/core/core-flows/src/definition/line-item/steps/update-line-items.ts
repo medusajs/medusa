@@ -1,9 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/types"
 import {
+  ModuleRegistrationName,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
   removeUndefined,

@@ -1,6 +1,11 @@
 import { MedusaContainer, ModuleProvider } from "@medusajs/types"
-import { isString, lowerCaseFirst, promiseAll } from "@medusajs/utils"
-import { Lifetime, asFunction } from "awilix"
+import {
+  isString,
+  lowerCaseFirst,
+  normalizeImportPathWithSource,
+  promiseAll,
+} from "@medusajs/utils"
+import { asFunction, Lifetime } from "awilix"
 
 export async function moduleProviderLoader({
   container,
@@ -32,14 +37,14 @@ export async function loadModuleProvider(
   registerServiceFn?: (klass, container, moduleDetails) => Promise<void>
 ) {
   let loadedProvider: any
-
-  const moduleName = provider.resolve ?? provider.provider_name ?? ""
+  const moduleName = provider.resolve ?? ""
 
   try {
     loadedProvider = provider.resolve
 
     if (isString(provider.resolve)) {
-      loadedProvider = await import(provider.resolve)
+      const normalizedPath = normalizeImportPathWithSource(provider.resolve)
+      loadedProvider = await import(normalizedPath)
     }
   } catch (error) {
     throw new Error(
@@ -60,7 +65,10 @@ export async function loadModuleProvider(
       const name = lowerCaseFirst(service.name)
       if (registerServiceFn) {
         // Used to register the specific type of service in the provider
-        await registerServiceFn(service, container, provider.options)
+        await registerServiceFn(service, container, {
+          id: provider.id,
+          options: provider.options,
+        })
       } else {
         container.register({
           [name]: asFunction(

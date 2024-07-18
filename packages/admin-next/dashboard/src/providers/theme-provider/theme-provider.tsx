@@ -1,26 +1,26 @@
-import { PropsWithChildren, useEffect, useState } from "react";
-import { Theme, ThemeContext } from "./theme-context";
+import { PropsWithChildren, useEffect, useState } from "react"
+import { Theme, ThemeContext } from "./theme-context"
 
-const THEME_KEY = "medusa_admin_theme";
+const THEME_KEY = "medusa_admin_theme"
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<Theme>(
     (localStorage?.getItem(THEME_KEY) as Theme) || "light"
-  );
+  )
 
   const setTheme = (theme: Theme) => {
-    localStorage.setItem(THEME_KEY, theme);
-    setState(theme);
-  };
+    localStorage.setItem(THEME_KEY, theme)
+    setState(theme)
+  }
 
   useEffect(() => {
-    const html = document.querySelector("html");
+    const html = document.querySelector("html")
     if (html) {
       /**
        * Temporarily disable transitions to prevent
        * the theme change from flashing.
        */
-      const css = document.createElement("style");
+      const css = document.createElement("style")
       css.appendChild(
         document.createTextNode(
           `* {
@@ -31,24 +31,24 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
             transition: none !important;
           }`
         )
-      );
-      document.head.appendChild(css);
+      )
+      document.head.appendChild(css)
 
-      html.classList.remove(state === "light" ? "dark" : "light");
-      html.classList.add(state);
+      html.classList.remove(state === "light" ? "dark" : "light")
+      html.classList.add(state)
 
       /**
        * Re-enable transitions after the theme has been set,
        * and force the browser to repaint.
        */
-      window.getComputedStyle(css).opacity;
-      document.head.removeChild(css);
+      window.getComputedStyle(css).opacity
+      document.head.removeChild(css)
     }
-  }, [state]);
+  }, [state])
 
   return (
     <ThemeContext.Provider value={{ theme: state, setTheme }}>
       {children}
     </ThemeContext.Provider>
-  );
-};
+  )
+}

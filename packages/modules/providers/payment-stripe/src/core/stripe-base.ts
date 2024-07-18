@@ -23,7 +23,6 @@ import {
   ErrorCodes,
   ErrorIntentStatus,
   PaymentIntentOptions,
-  StripeCredentials,
   StripeOptions,
 } from "../types"
 import {
@@ -31,7 +30,7 @@ import {
   getSmallestUnit,
 } from "../utils/get-smallest-unit"
 
-abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
+abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
   protected container_: MedusaContainer
@@ -54,7 +53,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
-  private validateOptions(options: StripeCredentials): void {
+  private validateOptions(options: StripeOptions): void {
     if (!isDefined(options.apiKey)) {
       throw new Error("Required option `apiKey` is missing in Stripe plugin")
     }
@@ -99,8 +98,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       case "canceled":
         return PaymentSessionStatus.CANCELED
       case "requires_capture":
-      case "succeeded":
         return PaymentSessionStatus.AUTHORIZED
+      case "succeeded":
+        return PaymentSessionStatus.CAPTURED
       default:
         return PaymentSessionStatus.PENDING
     }
@@ -110,22 +110,22 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     input: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
-    const { email, extra, resource_id, customer } = input.context
+    const { email, extra, session_id, customer } = input.context
     const { currency_code, amount } = input
 
     const description = (extra?.payment_description ??
-      this.options_?.payment_description) as string
+      this.options_?.paymentDescription) as string
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
       amount: getSmallestUnit(amount, currency_code),
       currency: currency_code,
-      metadata: { resource_id: resource_id ?? "Medusa Payment" },
+      metadata: { session_id: session_id! },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
 
-    if (this.options_?.automatic_payment_methods) {
+    if (this.options_?.automaticPaymentMethods) {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
@@ -329,7 +329,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
         return {
           action: PaymentActions.AUTHORIZED,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(
               intent.amount_capturable,
               currency
@@ -340,7 +340,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
         return {
           action: PaymentActions.SUCCESSFUL,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount_received, currency),
           },
         }
@@ -348,7 +348,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
         return {
           action: PaymentActions.FAILED,
           data: {
-            resource_id: intent.metadata.resource_id,
+            session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),
           },
         }

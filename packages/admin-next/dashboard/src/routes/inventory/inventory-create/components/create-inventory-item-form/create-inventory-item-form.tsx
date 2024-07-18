@@ -6,30 +6,30 @@ import * as zod from "zod"
 import {
   Button,
   Heading,
+  Input,
   ProgressStatus,
   ProgressTabs,
-  clx,
-  Input,
-  Textarea,
   Switch,
+  Textarea,
+  clx,
   toast,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import { Form } from "../../../../../components/common/form"
+import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
-import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
-import { CountrySelect } from "../../../../../components/inputs/country-select"
-import { Form } from "../../../../../components/common/form"
+} from "../../../../../components/modals"
 import {
   inventoryItemsQueryKeys,
   useCreateInventoryItem,
 } from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
-import { optionalInt } from "../../../../../lib/validation"
 import { queryClient } from "../../../../../lib/query-client"
+import { optionalInt } from "../../../../../lib/validation"
+import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
 
 enum Tab {
   DETAILS = "details",
@@ -89,7 +89,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
     useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    let { locations, ...payload } = data
+    const { locations, ...payload } = data
 
     for (const k in payload) {
       if (payload[k] === "") {
@@ -119,18 +119,12 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
           queryKey: inventoryItemsQueryKeys.lists(),
         })
       } catch (e) {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissLabel: t("actions.close"),
-        })
+        toast.error(e.message)
       }
 
       handleSuccess()
     } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
+      toast.error(e.message)
     }
   })
 
@@ -344,7 +338,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                       />
                     </div>
 
-                    {/*<Form.Field*/}
+                    {/* <Form.Field*/}
                     {/*  className="col-span-1"*/}
                     {/*  control={form.control}*/}
                     {/*  name="location_ids"*/}
@@ -370,7 +364,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
                     {/*      </Form.Item>*/}
                     {/*    )*/}
                     {/*  }}*/}
-                    {/*/>*/}
+                    {/* />*/}
                   </div>
 
                   <Heading level="h3" className="my-6">

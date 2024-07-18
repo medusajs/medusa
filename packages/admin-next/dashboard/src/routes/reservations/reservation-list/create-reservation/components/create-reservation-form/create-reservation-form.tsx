@@ -4,7 +4,7 @@ import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"
@@ -44,7 +44,7 @@ const AttributeGridRow = ({
   )
 }
 
-export const CreateReservationForm = () => {
+export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [inventorySearch, setInventorySearch] = React.useState<string | null>(
@@ -53,7 +53,7 @@ export const CreateReservationForm = () => {
 
   const form = useForm<zod.infer<typeof CreateReservationSchema>>({
     defaultValues: {
-      inventory_item_id: "",
+      inventory_item_id: props.inventoryItemId || "",
       location_id: "",
       quantity: 0,
       description: "",
@@ -94,11 +94,15 @@ export const CreateReservationForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ reservation }) => {
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("inventory.reservation.successToast"),
-        })
-        handleSuccess(`/reservations/${reservation.id}`)
+        toast.success(t("inventory.reservation.successToast"))
+        handleSuccess(
+          props.inventoryItemId
+            ? `/inventory/${props.inventoryItemId}`
+            : `/reservations/${reservation.id}`
+        )
+      },
+      onError: (e) => {
+        toast.error(e.message)
       },
     })
   })
@@ -147,6 +151,7 @@ export const CreateReservationForm = () => {
                             onChange(v)
                           }}
                           {...field}
+                          disabled={!!props.inventoryItemId}
                           options={(inventory_items ?? []).map(
                             (inventoryItem) => ({
                               label: inventoryItem.title ?? inventoryItem.sku!,

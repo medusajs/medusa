@@ -5,7 +5,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { glob } from "glob"
 import logger from "../logger"
-import { MedusaError } from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 
 export const registerJobs = async (plugins) => {
   await Promise.all(
@@ -45,18 +45,27 @@ export const registerJobs = async (plugins) => {
 }
 
 const createJob = async ({ config, handler }) => {
+  const workflowName = `job-${config.name}`
   const step = createStep(
     `${config.name}-as-step`,
     async (stepInput, stepContext) => {
       const { container } = stepContext
-      const res = await handler(container)
-      return new StepResponse(res, res)
+      const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+      try {
+        const res = await handler(container)
+        return new StepResponse(res, res)
+      } catch (error) {
+        logger.error(
+          `Scheduled job ${config.name} failed with error: ${error.message}`
+        )
+        throw error
+      }
     }
   )
 
   createWorkflow(
     {
-      name: config.name,
+      name: workflowName,
       schedule: {
         cron: config.schedule,
         numberOfExecutions: config.numberOfExecutions,

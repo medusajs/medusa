@@ -1,5 +1,6 @@
 import { DAL } from "@medusajs/types"
 import {
+  DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -7,6 +8,7 @@ import {
   BeforeCreate,
   Cascade,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -34,9 +36,10 @@ const ParentIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-type OptionalOrderProps = "parent_return_reason" | DAL.EntityDateColumns
+type OptionalOrderProps = "parent_return_reason" | DAL.ModelDateColumns
 
 @Entity({ tableName: "return_reason" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ReturnReason {
   [OptionalProps]?: OptionalOrderProps
 

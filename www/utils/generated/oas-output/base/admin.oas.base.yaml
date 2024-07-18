@@ -9,6 +9,8 @@ tags:
   - name: Api Keys
   - name: Campaigns
   - name: Collections
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCollection"
   - name: Currencies
     description: >
       A store can use unlimited currencies, and each region must be associated
@@ -19,6 +21,8 @@ tags:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
   - name: Customer Groups
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCustomerGroup"
   - name: Customers
     description: >
       Customers can either be created when they register through the Store APIs,
@@ -26,9 +30,15 @@ tags:
     externalDocs:
       description: How to manage customers
       url: https://docs.medusajs.com/modules/customers/admin/manage-customers
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCustomer"
   - name: Draft Orders
   - name: Fulfillment Providers
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillmentProvider"
   - name: Fulfillment Sets
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillmentSet"
   - name: Fulfillments
   - name: Inventory Items
   - name: Invites
@@ -41,13 +51,18 @@ tags:
   - name: Orders
   - name: Payments
   - name: Price Lists
-  - name: Pricing
+  - name: Price Preferences
   - name: Product Categories
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductCategory"
+  - name: Product Tags
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductTag"
   - name: Product Types
   - name: Products
-  - name: Promotions
     x-associatedSchema:
-      $ref: "#/components/schemas/Promotion"
+      $ref: "#/components/schemas/AdminProduct"
+  - name: Promotions
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -58,6 +73,8 @@ tags:
       description: How to manage regions
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
   - name: Reservations
+  - name: Return Reasons
+  - name: Returns
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
@@ -67,8 +84,14 @@ tags:
     externalDocs:
       description: How to manage sales channels
       url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminSalesChannel"
   - name: Shipping Options
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminShippingOption"
   - name: Shipping Profiles
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminShippingProfile"
   - name: Stock Locations
   - name: Stores
   - name: Tax Rates

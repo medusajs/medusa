@@ -3,9 +3,9 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-import { LinkMethodRequest } from "@medusajs/types/src"
-import { refetchSalesChannel } from "../../helpers"
 import { linkProductsToSalesChannelWorkflow } from "@medusajs/core-flows"
+import { LinkMethodRequest } from "@medusajs/types"
+import { refetchSalesChannel } from "../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,

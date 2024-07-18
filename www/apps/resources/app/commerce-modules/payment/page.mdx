@@ -18,12 +18,11 @@ The Payment Module provides payment functionalities that allow you to process pa
 All payment processing starts with creating a payment collection.
 
 ```ts
-const paymentCollection =
-  await paymentModuleService.createPaymentCollections({
-    region_id: "reg_123",
-    currency_code: "usd",
-    amount: 5000,
-  })
+const paymentCollection = await paymentModuleService.createPaymentCollections({
+  region_id: "reg_123",
+  currency_code: "usd",
+  amount: 5000,
+})
 ```
 
 ### Authorize, Capture, and Refund Payment
@@ -41,18 +40,14 @@ await paymentModuleService.capturePayment({
 Use payment providers like Stripe to handle and process payments.
 
 ```ts
-const payment =
-  await paymentModuleService.createPaymentSession(
-    "pay_col_1",
-    {
-      provider_id: "stripe",
-      amount: 1000,
-      currency_code: "usd",
-      data: {
-        // necessary data for the payment provider
-      },
-    }
-  )
+const payment = await paymentModuleService.createPaymentSession("pay_col_1", {
+  provider_id: "stripe",
+  amount: 1000,
+  currency_code: "usd",
+  data: {
+    // necessary data for the payment provider
+  },
+})
 ```
 
 ### Handle Webhook Events
@@ -88,21 +83,21 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const paymentModuleService: IPaymentModuleService =
-      req.scope.resolve(ModuleRegistrationName.PAYMENT)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const paymentModuleService: IPaymentModuleService = req.scope.resolve(
+    ModuleRegistrationName.PAYMENT
+  )
 
-    res.json({
-      payment_collections:
-        await paymentModuleService.listPaymentCollections(),
-    })
-  }
-  ```
+  res.json({
+    payment_collections: await paymentModuleService.listPaymentCollections(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -110,18 +105,17 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const paymentModuleService: IPaymentModuleService =
-      container.resolve(ModuleRegistrationName.PAYMENT)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const paymentModuleService: IPaymentModuleService = container.resolve(
+    ModuleRegistrationName.PAYMENT
+  )
 
-    const payment_collections =
-      await paymentModuleService.listPaymentCollections()
-  }
-  ```
+  const payment_collections =
+    await paymentModuleService.listPaymentCollections()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -129,20 +123,17 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const paymentModuleService: IPaymentModuleService =
-      container.resolve(
-        ModuleRegistrationName.PAYMENT
-      )
+const step1 = createStep("step-1", async (_, { container }) => {
+  const paymentModuleService: IPaymentModuleService = container.resolve(
+    ModuleRegistrationName.PAYMENT
+  )
 
-    const payment_collections =
-      await paymentModuleService.listPaymentCollections()
-  })
-  ```
+  const payment_collections =
+    await paymentModuleService.listPaymentCollections()
+})
+```
 
   </CodeTab>
 </CodeTabs>

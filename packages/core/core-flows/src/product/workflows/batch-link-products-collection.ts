@@ -1,5 +1,5 @@
+import { LinkWorkflowInput } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { LinkWorkflowInput } from "@medusajs/types/src"
 import { batchLinkProductsToCollectionStep } from "../steps/batch-link-products-collection"
 
 export const batchLinkProductsToCollectionWorkflowId =

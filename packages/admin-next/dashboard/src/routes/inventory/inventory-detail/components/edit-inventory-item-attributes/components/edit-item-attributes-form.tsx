@@ -1,16 +1,14 @@
 import * as zod from "zod"
 
 import { Button, Input, toast } from "@medusajs/ui"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
+
 import { Form } from "../../../../../../components/common/form"
 import { CountrySelect } from "../../../../../../components/inputs/country-select"
 import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
@@ -57,17 +55,10 @@ export const EditInventoryItemAttributesForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(values, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("inventory.toast.update"),
-          dismissLabel: t("actions.close"),
-        })
+        toast.success(t("inventory.toast.updateItem"))
         handleSuccess()
       },
-      onError: (error) =>
-        toast.error(t("general.error"), {
-          description: error.message,
-          dismissLabel: t("actions.close"),
-        }),
+      onError: (error) => toast.error(error.message),
     })
   })
 

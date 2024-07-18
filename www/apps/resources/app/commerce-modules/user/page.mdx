@@ -15,7 +15,7 @@ The User Module is the `@medusajs/user` NPM package that provides user-related f
 Manage and store your users through Create, Read, Update, and Delete (CRUD) operations:
 
 ```ts
-const user = await userModuleService.create({
+const user = await userModuleService.createUsers({
   email: "user@example.com",
   first_name: "John",
   last_name: "Smith",
@@ -55,20 +55,21 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    res.json({
-      users: await userModuleService.list(),
-    })
-  }
-  ```
+  res.json({
+    users: await userModuleService.listUsers(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -76,17 +77,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const userModuleService: IUserModuleService =
-      container.resolve(ModuleRegistrationName.USER)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const userModuleService: IUserModuleService = container.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const users = await userModuleService.list()
-  }
-  ```
+  const users = await userModuleService.listUsers()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -94,19 +94,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const userModuleService: IUserModuleService =
-      container.resolve(
-        ModuleRegistrationName.USER
-      )
-      
-    const users = await userModuleService.list()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const userModuleService: IUserModuleService = container.resolve(
+    ModuleRegistrationName.USER
+  )
+
+  const users = await userModuleService.listUsers()
+})
+```
 
   </CodeTab>
 </CodeTabs>

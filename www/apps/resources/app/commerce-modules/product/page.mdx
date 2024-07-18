@@ -15,7 +15,7 @@ The Product Module is the `@medusajs/product` NPM package that provides product-
 Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
 
 ```ts
-const products = await productService.create([
+const products = await productService.createProducts([
   {
     title: "Medusa Shirt",
     options: [
@@ -42,11 +42,11 @@ const products = await productService.create([
 The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
 
 ```ts
-const category = await productService.createCategory({
+const category = await productService.createProductCategories({
   name: "Shirts",
 })
 
-const products = await productService.update([
+const products = await productService.updateProducts([
   {
     id: product.id,
     categories: [
@@ -72,18 +72,18 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    res.json({ products: await productModuleService.list() })
-  }
-  ```
+  res.json({
+    products: await productModuleService.listProducts(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -91,17 +91,16 @@ For example:
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const productModuleService: IProductModuleService =
-      container.resolve(ModuleRegistrationName.PRODUCT)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.list()
-  }
-  ```
+  const products = await productModuleService.listProducts()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -109,17 +108,16 @@ For example:
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const productModuleService: IProductModuleService =
-      container.resolve(ModuleRegistrationName.PRODUCT)
+const step1 = createStep("step-1", async (_, { container }) => {
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.list()
-  })
-  ```
+  const products = await productModuleService.listProducts()
+})
+```
 
   </CodeTab>
 </CodeTabs>

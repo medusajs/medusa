@@ -2,7 +2,7 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/utils"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalAdjustmentLineProps = DAL.EntityDateColumns
+type OptionalAdjustmentLineProps = DAL.ModelDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition
@@ -49,4 +49,7 @@ export default abstract class AdjustmentLine {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 }

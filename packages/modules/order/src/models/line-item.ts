@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
@@ -10,6 +11,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Filter,
   OnInit,
   OneToMany,
   OptionalProps,
@@ -20,19 +22,28 @@ import {
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_line_item",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 const ProductIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "product_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const VariantIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
   columns: "variant_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_line_item" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -144,6 +155,10 @@ export default class LineItem {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

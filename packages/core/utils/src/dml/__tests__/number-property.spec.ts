@@ -10,6 +10,7 @@ describe("Number property", () => {
       fieldName: "age",
       dataType: {
         name: "number",
+        options: {},
       },
       nullable: false,
       indexes: [],

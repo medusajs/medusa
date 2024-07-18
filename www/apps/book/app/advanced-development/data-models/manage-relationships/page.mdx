@@ -1,0 +1,71 @@
+export const metadata = {
+  title: `${pageNumber} Manage Relationships`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to manage relationships between data models when creating or updating their records using the module's main service.
+
+<Note type="soon" title="Important">
+
+Data model relationships are in active development and may change.
+
+</Note>
+
+## Manage One-to-One and One-to-Many Relationship
+
+When you create a record of a data model that belongs to another, pass the ID of the other data model's record in the `{relation_name}_id` property.
+
+For example, assuming you have the [User and Email data models from the previous chapter](../relationships/page.mdx#one-to-one-relationship):
+
+export const belongsHighlights = [
+  ["4", "user_id", "The ID of the user the email belongs to."],
+  ["11", "user_id", "The ID of the user the email belongs to."]
+]
+
+```ts highlights={belongsHighlights}
+// when creating an email
+const email = await helloModuleService.createEmail({
+  // other properties...
+  user_id: "123",
+})
+
+// when updating an email
+const email = await helloModuleService.updateEmail({
+  id: "321",
+  // other properties...
+  user_id: "123",
+})
+```
+
+In the example above, you pass the `user_id` property when creating or updating an email to specify the user it belongs to.
+
+---
+
+## Manage Many-to-Many Relationship
+
+When you create or update a record of a data model that has a many-to-many relationship to another data model, pass an array of IDs of the other data model's records in the `{relation_name}_ids` property.
+
+For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship):
+
+export const manyHighlights = [
+  ["4", "order_ids", "The IDs of the orders associated with the product."],
+  ["11", "product_ids", "The IDs of the products associated with the order."]
+]
+
+```ts highlights={manyHighlights}
+// when creating a product
+const product = await helloModuleService.createProduct({
+  // other properties...
+  order_ids: ["123", "321"],
+})
+
+// when updating an order
+const order = await helloModuleService.updateOrder({
+  id: "321",
+  // other properties...
+  product_ids: ["123", "321"],
+})
+```
+
+In the example above, you pass the `order_ids` property when you create (or update) a product, and you pass the `product_ids` property when you update (or create) an order.

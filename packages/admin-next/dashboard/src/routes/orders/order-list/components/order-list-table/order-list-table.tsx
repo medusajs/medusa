@@ -61,6 +61,9 @@ export const OrderListTable = () => {
         pageSize={PAGE_SIZE}
         orderBy={["display_id", "created_at", "updated_at"]}
         queryObject={raw}
+        noRecords={{
+          message: t("orders.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

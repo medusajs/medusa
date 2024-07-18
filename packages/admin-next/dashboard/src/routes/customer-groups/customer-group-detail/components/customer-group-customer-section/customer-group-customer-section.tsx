@@ -126,6 +126,9 @@ export const CustomerGroupCustomerSection = ({
             shortcut: "r",
           },
         ]}
+        noRecords={{
+          message: t("customerGroups.customers.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

@@ -65,10 +65,7 @@ export const DateFilter = ({
   const customStartValue = getDateFromComparison(currentDateComparison, "$gte")
   const customEndValue = getDateFromComparison(currentDateComparison, "$lte")
 
-  const handleCustomDateChange = (
-    value: Date | undefined,
-    pos: "start" | "end"
-  ) => {
+  const handleCustomDateChange = (value: Date | null, pos: "start" | "end") => {
     const key = pos === "start" ? "$gte" : "$lte"
     const dateValue = value ? value.toISOString() : undefined
 
@@ -201,8 +198,7 @@ export const DateFilter = ({
                 </div>
                 <div className="px-2 py-1">
                   <DatePicker
-                    // placeholder="MM/DD/YYYY" TODO: Fix DatePicker component not working with placeholder
-                    toDate={customEndValue}
+                    maxValue={customEndValue}
                     value={customStartValue}
                     onChange={(d) => handleCustomDateChange(d, "start")}
                   />
@@ -216,8 +212,7 @@ export const DateFilter = ({
                 </div>
                 <div className="px-2 py-1">
                   <DatePicker
-                    // placeholder="MM/DD/YYYY"
-                    fromDate={customStartValue}
+                    minValue={customStartValue}
                     value={customEndValue || undefined}
                     onChange={(d) => {
                       handleCustomDateChange(d, "end")

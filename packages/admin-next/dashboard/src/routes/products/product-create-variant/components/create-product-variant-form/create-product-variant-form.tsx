@@ -4,19 +4,16 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Fragment } from "react"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/route-modal"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
-import { HttpTypes } from "@medusajs/types"
 
 type CreateProductVariantFormProps = {
   product: HttpTypes.AdminProduct
@@ -30,7 +27,6 @@ const CreateProductVariantSchema = z.object({
   ean: z.string().optional(),
   upc: z.string().optional(),
   barcode: z.string().optional(),
-  inventory_quantity: optionalInt,
   manage_inventory: z.boolean(),
   allow_backorder: z.boolean(),
   weight: optionalInt,
@@ -52,7 +48,6 @@ export const CreateProductVariantForm = ({
 
   const form = useForm<z.infer<typeof CreateProductVariantSchema>>({
     defaultValues: {
-      inventory_quantity: 0,
       manage_inventory: true,
       allow_backorder: false,
       options: {},
@@ -82,7 +77,6 @@ export const CreateProductVariantForm = ({
       height,
       width,
       length,
-      inventory_quantity,
       allow_backorder,
       manage_inventory,
       sku,
@@ -103,7 +97,6 @@ export const CreateProductVariantForm = ({
           ean,
           upc,
           barcode,
-          inventory_quantity: parseNumber(inventory_quantity),
           allow_backorder,
           manage_inventory,
         }
@@ -142,21 +135,6 @@ export const CreateProductVariantForm = ({
                 return (
                   <Form.Item>
                     <Form.Label>{t("fields.title")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="material"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.material")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -265,23 +243,6 @@ export const CreateProductVariantForm = ({
                       )
                     }}
                   />
-                  <Form.Field
-                    control={form.control}
-                    name="inventory_quantity"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("fields.inventoryQuantity")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input type="number" {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
                 </div>
                 <Form.Field
                   control={form.control}
@@ -357,6 +318,21 @@ export const CreateProductVariantForm = ({
           )}
           <div className="flex flex-col gap-y-4">
             <Heading level="h2">{t("products.attributes")}</Heading>
+            <Form.Field
+              control={form.control}
+              name="material"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label optional>{t("fields.material")}</Form.Label>
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
             <Form.Field
               control={form.control}
               name="weight"

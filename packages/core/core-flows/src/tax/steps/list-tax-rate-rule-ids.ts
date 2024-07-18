@@ -1,6 +1,6 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { FilterableTaxRateRuleProps, ITaxModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type StepInput = {
   selector: FilterableTaxRateRuleProps

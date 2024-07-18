@@ -29,15 +29,19 @@ import {
 
 const VALID_FILE_EXTENSIONS = [".tsx", ".jsx"]
 
+function convertToImportPath(file: string) {
+  return path.normalize(file).split(path.sep).join("/")
+}
+
 /**
  * Returns the module type of a given file.
  */
 function getModuleType(file: string) {
-  const normalizedPath = path.normalize(file)
+  const normalizedPath = convertToImportPath(file)
 
-  if (normalizedPath.includes(path.normalize("/admin/widgets/"))) {
+  if (normalizedPath.includes("/admin/widgets/")) {
     return "widget"
-  } else if (normalizedPath.includes(path.normalize("/admin/routes/"))) {
+  } else if (normalizedPath.includes("/admin/routes/")) {
     return "route"
   } else {
     return "none"
@@ -331,7 +335,10 @@ async function generateWidgetEntrypoint(
   }
 
   const importString = validatedWidgets
-    .map((path, index) => `import WidgetExt${index} from "${path}";`)
+    .map(
+      (path, index) =>
+        `import WidgetExt${index} from "${convertToImportPath(path)}";`
+    )
     .join("\n")
 
   const exportString = `export default {
@@ -416,7 +423,9 @@ async function validateRoute(file: string, resolveMenuItem = false) {
 }
 
 function createRoutePath(file: string) {
-  return file
+  const importPath = convertToImportPath(file)
+
+  return importPath
     .replace(/.*\/admin\/(routes|settings)/, "")
     .replace(/\[([^\]]+)\]/g, ":$1")
     .replace(/\/page\.(tsx|jsx)/, "")
@@ -454,8 +463,10 @@ async function generateRouteEntrypoint(
   const importString = validatedRoutes
     .map((path, index) => {
       return type === "page"
-        ? `import RouteExt${index} from "${path}";`
-        : `import { config as routeConfig${index} } from "${path}";`
+        ? `import RouteExt${index} from "${convertToImportPath(path)}";`
+        : `import { config as routeConfig${index} } from "${convertToImportPath(
+            path
+          )}";`
     })
     .join("\n")
 
@@ -695,28 +706,17 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
        * We also need to reload all modules that import the route.
        */
       if (!_extensionGraph.has(file)) {
-        const moduleId = getVirtualId(file)
-        const resolvedModuleId = resolveVirtualId(moduleId)
-        const module = server?.moduleGraph.getModuleById(resolvedModuleId)
-        if (module) {
-          await server?.reloadModule(module)
-        }
-      }
+        const imports = new Set<string>()
 
-      if (_extensionGraph.has(file)) {
-        const modules = _extensionGraph.get(file)
-
-        if (!modules) {
-          return
-        }
-
-        for (const moduleId of modules) {
-          const module = server?.moduleGraph.getModuleById(moduleId)
-
+        for (const resolvedModuleId of RESOLVED_ROUTE_MODULES) {
+          const module = server?.moduleGraph.getModuleById(resolvedModuleId)
           if (module) {
+            imports.add(resolvedModuleId)
             await server?.reloadModule(module)
           }
         }
+
+        _extensionGraph.set(file, imports)
       }
     }
 
@@ -813,7 +813,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     async load(id) {
       if (RESOLVED_WIDGET_MODULES.includes(id)) {
         const zone = getWidgetZone(id)
-
         return register(id, { type: "widget", get: zone })
       }
 

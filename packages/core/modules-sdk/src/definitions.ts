@@ -1,37 +1,10 @@
 import { ModuleDefinition } from "@medusajs/types"
-import { Modules, upperCaseFirst } from "@medusajs/utils"
+import {
+  ModuleRegistrationName,
+  Modules,
+  upperCaseFirst,
+} from "@medusajs/utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
-
-export enum LinkModuleUtils {
-  REMOTE_QUERY = "remoteQuery",
-  REMOTE_LINK = "remoteLink",
-}
-
-export enum ModuleRegistrationName {
-  AUTH = "authModuleService",
-  CACHE = "cacheService",
-  CART = "cartModuleService",
-  CUSTOMER = "customerModuleService",
-  EVENT_BUS = "eventBusModuleService",
-  INVENTORY = "inventoryService",
-  PAYMENT = "paymentModuleService",
-  PRICING = "pricingModuleService",
-  PRODUCT = "productModuleService",
-  PROMOTION = "promotionModuleService",
-  SALES_CHANNEL = "salesChannelModuleService",
-  FULFILLMENT = "fulfillmentModuleService",
-  STOCK_LOCATION = "stockLocationService",
-  TAX = "taxModuleService",
-  USER = "userModuleService",
-  WORKFLOW_ENGINE = "workflowsModuleService",
-  REGION = "regionModuleService",
-  ORDER = "orderModuleService",
-  API_KEY = "apiKeyModuleService",
-  STORE = "storeModuleService",
-  CURRENCY = "currencyModuleService",
-  FILE = "fileModuleService",
-  NOTIFICATION = "notificationModuleService",
-}
 
 export const MODULE_PACKAGE_NAMES = {
   [Modules.AUTH]: "@medusajs/auth",
@@ -172,6 +145,7 @@ export const ModulesDefinition: {
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
+    __passSharedContainer: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

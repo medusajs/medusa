@@ -70,7 +70,6 @@
  *   variant_option_values:
  *     type: object
  *     description: The item's variant option values.
- *     properties: {}
  *   requires_shipping:
  *     type: boolean
  *     title: requires_shipping
@@ -98,7 +97,6 @@
  *   metadata:
  *     type: object
  *     description: The item's metadata.
- *     properties: {}
  * 
 */
 

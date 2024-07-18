@@ -5,6 +5,7 @@ import {
   DOCBLOCK_END_LINE,
   DOCBLOCK_START,
   DOCBLOCK_DOUBLE_LINES,
+  SUMMARY_PLACEHOLDER,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 import AiGenerator from "../helpers/ai-generator.js"
@@ -327,7 +328,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
 
     // add returns
     const possibleReturnSummary = !this.hasReturnData(returnTypeStr)
-      ? `Resolves when ${this.defaultSummary}`
+      ? `Resolves when ${SUMMARY_PLACEHOLDER}`
       : this.getNodeSummary({
           node: actualNode,
           nodeType,

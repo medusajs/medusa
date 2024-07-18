@@ -11,6 +11,13 @@ import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
 /**
+ * Prettify complex types to a flat object structure
+ */
+export type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+/**
  * Utility type used to remove some optional attributes (coming from K) from a type T
  */
 export type WithRequiredProperty<T, K extends keyof T> = T & {
@@ -346,6 +353,18 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
       | `${infer R}z`
       | `${infer R}o`
   ? `${Singular}es`
+  : Singular extends `${infer R}fe`
+  ? `${R}ves`
+  : Singular extends `${infer R}ex` | `${infer R}ix`
+  ? `${R}ices`
+  : Singular extends `${infer R}eau`
+  ? `${R}eaux`
+  : Singular extends `${infer R}ieu`
+  ? `${R}ieux`
+  : Singular extends `${infer R}sis`
+  ? `${R}ses`
+  : Singular extends `${infer R}is`
+  ? `${R}ises`
   : `${Singular}s`
 
 export type SnakeCase<S extends string> =
@@ -363,3 +382,8 @@ export type KebabCase<S extends string> =
     : S
 
 export type MetadataType = Record<string, unknown> | null
+
+export type RawRounding = {
+  value: string
+  precision: number
+}

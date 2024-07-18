@@ -30,14 +30,43 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   declare $dataType: T
 
   /**
-   * Apply nullable modifier on the schema
+   * This method indicates that a property's value can be `null`.
+   * 
+   * @example
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   price: model.bigNumber().nullable(),
+   *   // ...
+   * })
+   * 
+   * export default MyCustom
+   * 
+   * @customNamespace Property Configuration Methods
    */
   nullable() {
     return new NullableModifier<T, this>(this)
   }
 
   /**
-   * Define an index on the property
+   * This method defines an index on a property.
+   * 
+   * @param {string} name - The index's name. If not provided,
+   * Medusa generates the name.
+   * 
+   * @example
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   name: model.text().index(
+   *     "IDX_MY_CUSTOM_NAME"
+   *   ),
+   * })
+   * 
+   * export default MyCustom
+   * 
+   * @customNamespace Property Configuration Methods
    */
   index(name?: string) {
     this.#indexes.push({ name, type: "index" })
@@ -45,7 +74,23 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   }
 
   /**
-   * Define a unique index on the property
+   * This method indicates that a property's value must be unique in the database.
+   * A unique index is created on the property.
+   * 
+   * @param {string} name - The unique index's name. If not provided,
+   * Medusa generates the name.
+   * 
+   * @example
+   * import { model } from "@medusajs/utils"
+   * 
+   * const User = model.define("user", {
+   *   email: model.text().unique(),
+   *   // ...
+   * })
+   * 
+   * export default User
+   * 
+   * @customNamespace Property Configuration Methods
    */
   unique(name?: string) {
     this.#indexes.push({ name, type: "unique" })
@@ -53,7 +98,26 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   }
 
   /**
-   * Define default value for the property
+   * This method defines the default value of a property.
+   * 
+   * @param {T} value - The default value.
+   * 
+   * @example
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   color: model
+   *     .enum(["black", "white"])
+   *     .default("black"),
+   *   age: model
+   *     .number()
+   *     .default(0),
+   *   // ...
+   * })
+   * 
+   * export default MyCustom
+   * 
+   * @customNamespace Property Configuration Methods
    */
   default(value: T) {
     this.#defaultValue = value

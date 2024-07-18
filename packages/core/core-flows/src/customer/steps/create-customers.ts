@@ -1,6 +1,6 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { CreateCustomerDTO, ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCustomersStepId = "create-customers"
 export const createCustomersStep = createStep(

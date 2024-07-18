@@ -13,24 +13,24 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import copy from "copy-to-clipboard"
 import { format } from "date-fns"
 import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Form } from "../../../../../components/common/form"
-import { RouteFocusModal } from "../../../../../components/route-modal"
-import copy from "copy-to-clipboard"
+import { RouteFocusModal } from "../../../../../components/modals/index.ts"
+import { DataTable } from "../../../../../components/table/data-table"
 import {
   useCreateInvite,
   useDeleteInvite,
   useInvites,
   useResendInvite,
 } from "../../../../../hooks/api/invites"
-import { DataTable } from "../../../../../components/table/data-table"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 import { backendUrl } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error.ts"
 

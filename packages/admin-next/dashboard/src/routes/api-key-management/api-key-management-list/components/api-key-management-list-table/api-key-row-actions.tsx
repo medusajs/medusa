@@ -35,18 +35,14 @@ export const ApiKeyRowActions = ({
 
     await deleteAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("apiKeyManagement.delete.successToast", {
+        toast.success(
+          t("apiKeyManagement.delete.successToast", {
             title: apiKey.title,
-          }),
-          dismissLabel: t("general.close"),
-        })
+          })
+        )
       },
       onError: (err) => {
-        toast.error(t("general.error"), {
-          description: err.message,
-          dismissLabel: t("general.close"),
-        })
+        toast.error(err.message)
       },
     })
   }
@@ -67,28 +63,21 @@ export const ApiKeyRowActions = ({
 
     await revokeAsync(undefined, {
       onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("apiKeyManagement.revoke.successToast", {
+        toast.success(
+          t("apiKeyManagement.revoke.successToast", {
             title: apiKey.title,
-          }),
-          dismissLabel: t("general.close"),
-        })
+          })
+        )
       },
       onError: (err) => {
-        toast.error(t("general.error"), {
-          description: err.message,
-          dismissLabel: t("general.close"),
-        })
+        toast.error(err.message)
       },
     })
   }
 
   const handleCopyToken = () => {
     navigator.clipboard.writeText(apiKey.token)
-    toast.success(t("general.success"), {
-      description: t("apiKeyManagement.actions.copySuccessToast"),
-      dismissLabel: t("general.close"),
-    })
+    toast.success(t("apiKeyManagement.actions.copySuccessToast"))
   }
 
   return (

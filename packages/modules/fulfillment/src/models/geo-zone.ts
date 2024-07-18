@@ -20,7 +20,7 @@ import {
 } from "@mikro-orm/core"
 import ServiceZone from "./service-zone"
 
-type GeoZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
+type GeoZoneOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "geo_zone",

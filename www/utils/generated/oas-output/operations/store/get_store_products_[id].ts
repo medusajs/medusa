@@ -22,12 +22,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -46,12 +52,48 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ *   - name: region_id
+ *     in: query
+ *     description: The product's region id.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: region_id
+ *       description: The product's region id.
+ *   - name: country_code
+ *     in: query
+ *     description: The product's country code.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: country_code
+ *       description: The product's country code.
+ *   - name: province
+ *     in: query
+ *     description: The product's province.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: province
+ *       description: The product's province.
+ *   - name: cart_id
+ *     in: query
+ *     description: The product's cart id.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: cart_id
+ *       description: The product's cart id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -71,10 +113,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

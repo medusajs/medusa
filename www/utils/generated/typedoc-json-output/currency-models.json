@@ -1,245 +1,448 @@
 {
-	"id": 2044,
+	"id": 1856,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 2045,
+			"id": 1857,
 			"name": "Currency",
 			"variant": "declaration",
-			"kind": 128,
+			"kind": 32,
 			"flags": {},
-			"children": [
-				{
-					"id": 2046,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2047,
-							"name": "new Currency",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 2045,
-								"name": "Currency",
-								"package": "@medusajs/currency"
-							}
-						}
-					]
+			"type": {
+				"type": "reference",
+				"target": {
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
 				},
-				{
-					"id": 2048,
-					"name": "code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2049,
-					"name": "symbol",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2050,
-					"name": "symbol_native",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2051,
-					"name": "name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2052,
-					"name": "decimal_digits",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 2053,
-					"name": "rounding",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
+				"typeArguments": [
+					{
+						"type": "intersection",
 						"types": [
 							{
-								"type": "intrinsic",
-								"name": "number"
+								"type": "reflection",
+								"declaration": {
+									"id": 1858,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 1859,
+											"name": "code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"qualifiedName": "PrimaryKeyModifier"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+															"qualifiedName": "TextProperty"
+														},
+														"name": "TextProperty",
+														"package": "@medusajs/utils"
+													}
+												],
+												"name": "PrimaryKeyModifier",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1860,
+											"name": "symbol",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1861,
+											"name": "symbol_native",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1862,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1863,
+											"name": "decimal_digits",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
+													"qualifiedName": "NumberProperty"
+												},
+												"name": "NumberProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1864,
+											"name": "rounding",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
+													"qualifiedName": "BigNumberProperty"
+												},
+												"name": "BigNumberProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												1859,
+												1860,
+												1861,
+												1862,
+												1863,
+												1864
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 1865,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 1866,
+											"name": "code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"qualifiedName": "PrimaryKeyModifier"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+															"qualifiedName": "TextProperty"
+														},
+														"name": "TextProperty",
+														"package": "@medusajs/utils"
+													}
+												],
+												"name": "PrimaryKeyModifier",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1867,
+											"name": "symbol",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1868,
+											"name": "symbol_native",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1869,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1870,
+											"name": "decimal_digits",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
+													"qualifiedName": "NumberProperty"
+												},
+												"name": "NumberProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 1871,
+											"name": "rounding",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
+													"qualifiedName": "BigNumberProperty"
+												},
+												"name": "BigNumberProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												1866,
+												1867,
+												1868,
+												1869,
+												1870,
+												1871
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 1872,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 1873,
+											"name": "raw_rounding",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												1873
+											]
+										}
+									]
+								}
 							},
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
-									"qualifiedName": "BigNumber"
+									"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
+									"qualifiedName": "DMLSchemaDefaults"
 								},
-								"name": "BigNumber",
+								"name": "DMLSchemaDefaults",
 								"package": "@medusajs/utils"
 							}
 						]
+					},
+					{
+						"type": "literal",
+						"value": "currency"
 					}
-				},
-				{
-					"id": 2054,
-					"name": "raw_rounding",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/types/src/totals/big-number.ts",
-							"qualifiedName": "BigNumberRawValue"
-						},
-						"name": "BigNumberRawValue",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 2055,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2056,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						2046
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						2048,
-						2049,
-						2050,
-						2051,
-						2052,
-						2053,
-						2054,
-						2055,
-						2056
-					]
-				}
-			]
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			}
 		}
 	],
 	"groups": [
 		{
-			"title": "Classes",
+			"title": "Variables",
 			"children": [
-				2045
+				1857
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"2044": {
-			"sourceFileName": "../../../packages/currency/src/models/index.ts",
+		"1856": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"2045": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency"
+		"1857": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "default"
 		},
-		"2048": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.code"
+		"1858": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object"
 		},
-		"2049": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.symbol"
+		"1859": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.code"
 		},
-		"2050": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.symbol_native"
+		"1860": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.symbol"
 		},
-		"2051": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.name"
+		"1861": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.symbol_native"
 		},
-		"2052": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.decimal_digits"
+		"1862": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.name"
 		},
-		"2053": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.rounding"
+		"1863": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.decimal_digits"
 		},
-		"2054": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.raw_rounding"
+		"1864": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "__object.rounding"
 		},
-		"2055": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.created_at"
+		"1865": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
 		},
-		"2056": {
-			"sourceFileName": "../../../packages/currency/src/models/currency.ts",
-			"qualifiedName": "Currency.updated_at"
+		"1866": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "code"
+		},
+		"1867": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "symbol"
+		},
+		"1868": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "symbol_native"
+		},
+		"1869": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "name"
+		},
+		"1870": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "decimal_digits"
+		},
+		"1871": {
+			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"qualifiedName": "rounding"
+		},
+		"1872": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"1873": {
+			"sourceFileName": "",
+			"qualifiedName": "raw_rounding"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/currency/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 1856
 		}
 	}
 }

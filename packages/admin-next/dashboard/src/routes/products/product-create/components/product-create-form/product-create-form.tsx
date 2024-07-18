@@ -1,14 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { SalesChannelDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProduct } from "../../../../../hooks/api/products"
+import { useRegions } from "../../../../../hooks/api/regions"
+import { sdk } from "../../../../../lib/client"
+import { isFetchError } from "../../../../../lib/is-fetch-error"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -16,11 +19,9 @@ import {
 import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
-import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
+import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
-import { isFetchError } from "../../../../../lib/is-fetch-error"
-import { sdk } from "../../../../../lib/client"
 
 enum Tab {
   DETAILS = "details",
@@ -62,10 +63,22 @@ export const ProductCreateForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
+  const { regions } = useRegions({ limit: 9999 })
+
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
+    }
+
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {})
+  }, regions)
 
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
-   * which is suboptimal when rereners are caused by bulk editor changes
+   * which is suboptimal when rerenders are caused by bulk editor changes
    */
 
   const watchedVariants = useWatch({
@@ -78,84 +91,69 @@ export const ProductCreateForm = ({
     [watchedVariants]
   )
 
-  const handleSubmit = form.handleSubmit(
-    async (values, e) => {
-      if (!(e?.nativeEvent instanceof SubmitEvent)) {
-        return
-      }
+  const handleSubmit = form.handleSubmit(async (values, e) => {
+    let isDraftSubmission = false
+    if (e?.nativeEvent instanceof SubmitEvent) {
       const submitter = e?.nativeEvent?.submitter as HTMLButtonElement
-
-      if (!(submitter instanceof HTMLButtonElement)) {
-        return
-      }
-
-      const isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
-
-      const media = values.media || []
-      const payload = { ...values, media: undefined }
-
-      let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
-      try {
-        if (media.length) {
-          const thumbnailReq = media.find((m) => m.isThumbnail)
-          const otherMediaReq = media.filter((m) => !m.isThumbnail)
-
-          const fileReqs = []
-          if (thumbnailReq) {
-            fileReqs.push(
-              sdk.admin.upload
-                .create({ files: [thumbnailReq.file] })
-                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
-            )
-          }
-          if (otherMediaReq?.length) {
-            fileReqs.push(
-              sdk.admin.upload
-                .create({
-                  files: otherMediaReq.map((m) => m.file),
-                })
-                .then((r) => r.files.map((f) => ({ ...f, isThumbnail: false })))
-            )
-          }
-
-          uploadedMedia = (await Promise.all(fileReqs)).flat()
-        }
-
-        const { product } = await mutateAsync(
-          normalizeProductFormValues({
-            // TODO: workflow should handle inventory creation
-            ...payload,
-            media: uploadedMedia,
-            status: (isDraftSubmission ? "draft" : "published") as any,
-          })
-        )
-
-        toast.success(t("general.success"), {
-          dismissLabel: t("actions.close"),
-          description: t("products.create.successToast", {
-            title: product.title,
-          }),
-        })
-
-        handleSuccess(`../${product.id}`)
-      } catch (error) {
-        if (isFetchError(error) && error.status === 400) {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("general.close"),
-          })
-        } else {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("general.close"),
-          })
-        }
-      }
-    },
-    (err) => {
-      console.log(err)
+      isDraftSubmission = submitter.dataset.name === SAVE_DRAFT_BUTTON
     }
-  )
+
+    const media = values.media || []
+    const payload = { ...values, media: undefined }
+
+    let uploadedMedia: (HttpTypes.AdminFile & { isThumbnail: boolean })[] = []
+    try {
+      if (media.length) {
+        const thumbnailReq = media.find((m) => m.isThumbnail)
+        const otherMediaReq = media.filter((m) => !m.isThumbnail)
+
+        const fileReqs = []
+        if (thumbnailReq) {
+          fileReqs.push(
+            sdk.admin.upload
+              .create({ files: [thumbnailReq.file] })
+              .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
+          )
+        }
+        if (otherMediaReq?.length) {
+          fileReqs.push(
+            sdk.admin.upload
+              .create({
+                files: otherMediaReq.map((m) => m.file),
+              })
+              .then((r) => r.files.map((f) => ({ ...f, isThumbnail: false })))
+          )
+        }
+
+        uploadedMedia = (await Promise.all(fileReqs)).flat()
+      }
+
+      const { product } = await mutateAsync(
+        normalizeProductFormValues({
+          ...payload,
+          media: uploadedMedia,
+          status: (isDraftSubmission ? "draft" : "published") as any,
+          regionsCurrencyMap,
+        })
+      )
+
+      toast.success(
+        t("products.create.successToast", {
+          title: product.title,
+        })
+      )
+
+      handleSuccess(`../${product.id}`)
+    } catch (error) {
+      if (isFetchError(error) && error.status === 400) {
+        toast.error(error.message)
+      } else {
+        toast.error(t("general.error"), {
+          description: error.message,
+        })
+      }
+    }
+  })
 
   const onNext = async (currentTab: Tab) => {
     const valid = await form.trigger()
@@ -206,7 +204,24 @@ export const ProductCreateForm = ({
   return (
     <RouteFocusModal>
       <RouteFocusModal.Form form={form}>
-        <form onSubmit={handleSubmit} className="flex h-full flex-col">
+        <form
+          onKeyDown={(e) => {
+            // We want to continue to the next tab on enter instead of saving as draft immediately
+            if (e.key === "Enter") {
+              if (tab !== Tab.VARIANTS) {
+                e.preventDefault()
+                e.stopPropagation()
+                onNext(tab)
+              } else {
+                e.preventDefault()
+                e.stopPropagation()
+                handleSubmit(e)
+              }
+            }
+          }}
+          onSubmit={handleSubmit}
+          className="flex h-full flex-col"
+        >
           <ProgressTabs
             value={tab}
             onValueChange={async (tab) => {

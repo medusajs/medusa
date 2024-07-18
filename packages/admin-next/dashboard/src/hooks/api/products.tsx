@@ -185,6 +185,27 @@ export const useUpdateProductVariantsBatch = (
   })
 }
 
+export const useProductVariantsInventoryItemsBatch = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (
+      payload: HttpTypes.AdminBatchProductVariantInventoryItemRequest
+    ) => sdk.admin.product.batchVariantInventoryItems(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.details() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeleteVariant = (
   productId: string,
   variantId: string,
@@ -247,15 +268,14 @@ export const useProducts = (
 
 export const useCreateProduct = (
   options?: UseMutationOptions<
-    { product: HttpTypes.AdminProduct },
-    Error,
+    HttpTypes.AdminProductResponse,
+    FetchError,
     HttpTypes.AdminCreateProduct
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminCreateProduct) =>
-      sdk.admin.product.create(payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    mutationFn: (payload) => sdk.admin.product.create(payload),
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       // if `manage_inventory` is true on created variants that will create inventory items automatically
       queryClient.invalidateQueries({
@@ -269,12 +289,15 @@ export const useCreateProduct = (
 
 export const useUpdateProduct = (
   id: string,
-  options?: UseMutationOptions<HttpTypes.AdminProductResponse, Error, any>
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductResponse,
+    FetchError,
+    HttpTypes.AdminUpdateProduct
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminUpdateProduct) =>
-      sdk.admin.product.update(id, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    mutationFn: (payload) => sdk.admin.product.update(id, payload),
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })
 
@@ -288,7 +311,7 @@ export const useDeleteProduct = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminProductDeleteResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {

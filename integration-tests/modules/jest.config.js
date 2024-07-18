@@ -12,10 +12,19 @@ module.exports = {
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,
+    "__fixtures__",
   ],
   transformIgnorePatterns: ["/dist", "/node_modules/"],
   transform: {
-    "^.+\\.[jt]s$": ["@swc/jest"],
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
+      },
+    ],
   },
   setupFiles: ["../setup-env.js"],
   /*setupFilesAfterEnv: ["../setup.js"],

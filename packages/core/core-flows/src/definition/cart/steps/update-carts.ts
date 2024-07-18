@@ -1,11 +1,13 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   UpdateCartDTO,
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  ModuleRegistrationName,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateCartsStepId = "update-carts"
 export const updateCartsStep = createStep(

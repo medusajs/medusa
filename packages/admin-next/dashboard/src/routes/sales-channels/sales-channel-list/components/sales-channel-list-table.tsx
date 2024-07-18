@@ -1,6 +1,13 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { SalesChannelDTO } from "@medusajs/types"
-import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Heading,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -52,7 +59,12 @@ export const SalesChannelListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("salesChannels.domain")}</Heading>
+        <div>
+          <Heading level="h2">{t("salesChannels.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("salesChannels.subtitle")}
+          </Text>
+        </div>
         <Link to="/settings/sales-channels/create">
           <Button size="small" variant="secondary">
             {t("actions.create")}
@@ -100,18 +112,14 @@ const SalesChannelActions = ({
       return
     }
 
-    try {
-      await mutateAsync()
-      toast.success(t("general.success"), {
-        description: t("salesChannels.toast.delete"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.delete"))
+      },
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

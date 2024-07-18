@@ -39,6 +39,6 @@
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "jest --runInBand --bail --forceExit",
-    "test:run": "../../node_modules/.bin/ts-node ./src/utils/_playground.ts"
+    "test:run": "../../../node_modules/.bin/ts-node ./src/utils/_playground.ts"
   }
 }

@@ -8,7 +8,9 @@ In this chapter, you'll learn about Medusa's commerce modules.
 
 ## What is a Commerce Module?
 
-Medusa provides all its commerce features as separate modules, such as the Product Module, Cart Module, or Order Module. These modules and your custom modules are interchangeable in the Medusa application, making Medusa’s architecture more flexible.
+Medusa provides all its commerce features as separate modules, such as the Product or Order modules.
+
+These modules and your custom modules are interchangeable in the Medusa application, making Medusa’s architecture more flexible.
 
 Refer to [this reference](!resources!/commerce-modules) for a full list of commerce modules in Medusa.
 
@@ -16,26 +18,25 @@ Refer to [this reference](!resources!/commerce-modules) for a full list of comme
 
 ## Resolve Commerce Module Services
 
-Similarly to your custom module, a commerce module's main service is registered in the Medusa container. So, you can resolve it in your resources, such as API route, to use its functionality.
+Similarly to your custom module, a commerce module's main service is registered in the Medusa container. So, you can resolve it in your resources, such as API routes, to use its functionality.
 
 For example, you saw this code snippet in the [Medusa container chapter](../medusa-container/page.mdx):
 
-```ts highlights={[["13"]]}
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+```ts highlights={[["10"]]}
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const productModuleService: IProductModuleService =
-    req.scope.resolve(ModuleRegistrationName.PRODUCT)
+  const productModuleService: IProductModuleService = req.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,
@@ -47,6 +48,6 @@ When you resolve the `ModuleRegistrationName.PRODUCT` (or `productModuleService`
 
 <Note title="Tip">
 
-To resolve the main service of any commerce module, use the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk` to refer to its registration name in the Medusa container.
+To resolve the main service of any commerce module, use the registration name defined in the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk`.
 
 </Note>

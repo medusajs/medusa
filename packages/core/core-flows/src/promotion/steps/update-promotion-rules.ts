@@ -1,8 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPromotionModuleService,
   UpdatePromotionRulesWorkflowDTO,
 } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updatePromotionRulesStepId = "update-promotion-rules"

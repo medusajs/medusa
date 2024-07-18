@@ -19,7 +19,7 @@ import TaxRate from "./tax-rate"
 
 const TABLE_NAME = "tax_rate_rule"
 
-type OptionalRuleProps = DAL.SoftDeletableEntityDateColumns
+type OptionalRuleProps = DAL.SoftDeletableModelDateColumns
 
 const taxRateIdIndexName = "IDX_tax_rate_rule_tax_rate_id"
 const taxRateIdIndexStatement = createPsqlIndexStatementHelper({

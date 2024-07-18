@@ -82,22 +82,15 @@ export const ApiKeySalesChannelSection = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t(
-              "apiKeyManagement.removeSalesChannel.successToastBatch",
-              {
-                count: keys.length,
-              }
-            ),
-            dismissLabel: t("general.close"),
-          })
+          toast.success(
+            t("apiKeyManagement.removeSalesChannel.successToastBatch", {
+              count: keys.length,
+            })
+          )
           setRowSelection({})
         },
         onError: (err) => {
-          toast.error(t("general.error"), {
-            description: err.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(err.message)
         },
       }
     )
@@ -140,6 +133,9 @@ export const ApiKeySalesChannelSection = ({
         pageSize={PAGE_SIZE}
         pagination
         search
+        noRecords={{
+          message: t("apiKeyManagement.salesChannels.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
@@ -177,18 +173,14 @@ const SalesChannelActions = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("apiKeyManagement.removeSalesChannel.successToast", {
+          toast.success(
+            t("apiKeyManagement.removeSalesChannel.successToast", {
               count: 1,
-            }),
-            dismissLabel: t("general.close"),
-          })
+            })
+          )
         },
         onError: (err) => {
-          toast.error(t("general.error"), {
-            description: err.message,
-            dismissLabel: t("general.close"),
-          })
+          toast.error(err.message)
         },
       }
     )

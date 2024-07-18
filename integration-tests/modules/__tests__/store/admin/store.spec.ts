@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IStoreModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -29,13 +29,18 @@ medusaIntegrationTestRunner({
       it("should correctly implement the entire lifecycle of a store", async () => {
         const createdStore = await service.createStores({
           name: "Test store",
-          supported_currency_codes: ["usd"],
+          supported_currencies: [{ currency_code: "usd", is_default: true }],
         })
 
         expect(createdStore).toEqual(
           expect.objectContaining({
             id: createdStore.id,
-            supported_currency_codes: ["usd"],
+            supported_currencies: [
+              expect.objectContaining({
+                currency_code: "usd",
+                is_default: true,
+              }),
+            ],
             name: "Test store",
           })
         )

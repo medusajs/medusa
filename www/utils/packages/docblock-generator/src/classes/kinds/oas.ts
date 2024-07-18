@@ -1,11 +1,10 @@
 import { readFileSync, writeFileSync } from "fs"
 import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
-import pluralize from "pluralize"
 import ts, { SyntaxKind } from "typescript"
-import { capitalize, kebabToTitle, wordsToKebab } from "utils"
+import { capitalize, kebabToTitle } from "utils"
 import { parse, stringify } from "yaml"
-import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
+import { DEFAULT_OAS_RESPONSES, SUMMARY_PLACEHOLDER } from "../../constants.js"
 import {
   OpenApiDocument,
   OpenApiOperation,
@@ -18,7 +17,7 @@ import isZodObject from "../../utils/is-zod-object.js"
 import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 import OasExamplesGenerator from "../examples/oas.js"
 import { GeneratorEvent } from "../helpers/generator-event-manager.js"
-import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
+import OasSchemaHelper from "../helpers/oas-schema.js"
 import SchemaFactory from "../helpers/schema-factory.js"
 import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
 import FunctionKindGenerator, {
@@ -26,8 +25,8 @@ import FunctionKindGenerator, {
   FunctionOrVariableNode,
   VariableNode,
 } from "./function.js"
+import { API_ROUTE_PARAM_REGEX } from "../helpers/../../constants.js"
 
-export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
 type SchemaDescriptionOptions = {
@@ -50,11 +49,12 @@ class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
-  // we can't use `{summary}` because it causes an MDX error
-  // when we finally render the summary. We can alternatively
-  // use `\{summary\}` but it wouldn't look pretty in the OAS,
-  // so doing this for now.
-  protected defaultSummary = "SUMMARY"
+  readonly REQUEST_TYPE_NAMES = [
+    "MedusaRequest",
+    "RequestWithContext",
+    "AuthenticatedMedusaRequest",
+  ]
+  readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -88,7 +88,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
   /**
    * Check whether the generator can be used for the specified node. The node must be a function that has
-   * two parameters of types `MedusaRequest` and `MedusaResponse` respectively.
+   * two parameters of types in {@link REQUEST_TYPE_NAMES} and {@link RESPONSE_TYPE_NAMES}
    *
    * @param node - The node to check.
    * @returns Whether the generator can be used for the specified node.
@@ -106,25 +106,18 @@ class OasKindGenerator extends FunctionKindGenerator {
       ? node
       : this.extractFunctionNode(node as VariableNode)
 
-    if (!functionNode) {
+    if (!functionNode || functionNode.parameters.length !== 2) {
       return false
     }
 
-    // function must have 2 parameters, first parameter of type `MedusaRequest`
-    // and the second of type `MedusaResponse`
-    return (
-      (functionNode.parameters.length === 2 &&
-        (functionNode.parameters[0].type
-          ?.getText()
-          .startsWith("MedusaRequest") ||
-          functionNode.parameters[0].type
-            ?.getText()
-            .startsWith("AuthenticatedMedusaRequest")) &&
-        functionNode.parameters[1].type
-          ?.getText()
-          .startsWith("MedusaResponse")) ||
-      false
+    const hasCorrectRequestType = this.REQUEST_TYPE_NAMES.some(
+      (name) => functionNode.parameters[0].type?.getText().startsWith(name)
     )
+    const hasCorrectResponseType = this.RESPONSE_TYPE_NAMES.some(
+      (name) => functionNode.parameters[1].type?.getText().startsWith(name)
+    )
+
+    return hasCorrectRequestType && hasCorrectResponseType
   }
 
   /**
@@ -228,11 +221,12 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { isAdminAuthenticated, isStoreAuthenticated, isAuthenticated } =
       this.getAuthenticationDetails(node, oasPath)
     const tagName = this.getTagName(splitOasPath)
-    const { summary, description } = this.getSummaryAndDescription({
-      oasPath,
-      httpMethod: methodName,
-      tag: tagName || "",
-    })
+    const { summary, description } =
+      this.knowledgeBaseFactory.tryToGetOasMethodSummaryAndDescription({
+        oasPath,
+        httpMethod: methodName,
+        tag: tagName || "",
+      })
 
     // construct oas
     const oas: OpenApiOperation = {
@@ -405,15 +399,16 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     // update summary and description either if they're empty or default summary
     const shouldUpdateSummary =
-      !oas.summary || oas.summary === this.defaultSummary
+      !oas.summary || oas.summary === SUMMARY_PLACEHOLDER
     const shouldUpdateDescription =
-      !oas.description || oas.description === this.defaultSummary
+      !oas.description || oas.description === SUMMARY_PLACEHOLDER
     if (shouldUpdateSummary || shouldUpdateDescription) {
-      const { summary, description } = this.getSummaryAndDescription({
-        oasPath,
-        httpMethod: methodName,
-        tag: tagName || "",
-      })
+      const { summary, description } =
+        this.knowledgeBaseFactory.tryToGetOasMethodSummaryAndDescription({
+          oasPath,
+          httpMethod: methodName,
+          tag: tagName || "",
+        })
 
       if (shouldUpdateSummary) {
         oas.summary = summary
@@ -776,126 +771,6 @@ class OasKindGenerator extends FunctionKindGenerator {
   }
 
   /**
-   * Retrieve the summary and description of the OAS.
-   *
-   * @param param0 - The OAS operation's details.
-   * @returns The summary and description.
-   */
-  getSummaryAndDescription({
-    oasPath,
-    httpMethod,
-    tag,
-  }: {
-    /**
-     * The OAS path.
-     */
-    oasPath: string
-    /**
-     * The HTTP method name.
-     */
-    httpMethod: string
-    /**
-     * The OAS tag name.
-     */
-    tag: string
-  }): {
-    /**
-     * The OAS's summary
-     */
-    summary: string
-    /**
-     * The OAS's description.
-     */
-    description: string
-  } {
-    // reset regex manually
-    API_ROUTE_PARAM_REGEX.lastIndex = 0
-    const result = {
-      summary: this.defaultSummary,
-      description: this.defaultSummary,
-    }
-    // retrieve different variations of the tag to include in the summary/description
-    const lowerTag = tag.toLowerCase()
-    const singularLowerTag = pluralize.singular(lowerTag)
-    const singularTag = pluralize.singular(tag)
-
-    // check if the OAS operation is performed on a single entity or
-    // general entities. If the operation has a path parameter, then it's
-    // considered for a single entity.
-    const isForSingleEntity = API_ROUTE_PARAM_REGEX.test(oasPath)
-
-    if (isForSingleEntity) {
-      // Check whether the OAS operation is applied on a different entity.
-      // If the OAS path ends with /batch or a different entity
-      // name than the tag name, then it's performed on an entity other than the
-      // main entity (the one indicated by the tag), so the summary/description vary
-      // slightly.
-      const splitOasPath = oasPath
-        .replaceAll(API_ROUTE_PARAM_REGEX, "")
-        .replace(/\/(batch)*$/, "")
-        .split("/")
-      const isBulk = oasPath.endsWith("/batch")
-      const isOperationOnDifferentEntity =
-        wordsToKebab(tag) !== splitOasPath[splitOasPath.length - 1]
-
-      if (isBulk || isOperationOnDifferentEntity) {
-        // if the operation is a bulk operation and it ends with a path parameter (after removing the `/batch` part)
-        // then the tag name is the targeted entity. Else, it's the last part of the OAS path (after removing the `/batch` part).
-        const endingEntityName =
-          isBulk &&
-          API_ROUTE_PARAM_REGEX.test(splitOasPath[splitOasPath.length - 1])
-            ? tag
-            : kebabToTitle(splitOasPath[splitOasPath.length - 1])
-        // retrieve different formatted versions of the entity name for the summary/description
-        const pluralEndingEntityName = pluralize.plural(endingEntityName)
-        const lowerEndingEntityName = pluralEndingEntityName.toLowerCase()
-        const singularLowerEndingEntityName =
-          pluralize.singular(endingEntityName)
-
-        // set the summary/description based on the HTTP method
-        if (httpMethod === "get") {
-          result.summary = `List ${pluralEndingEntityName}`
-          result.description = `Retrieve a list of ${lowerEndingEntityName} in a ${singularLowerTag}. The ${lowerEndingEntityName} can be filtered by fields like FILTER FIELDS. The ${lowerEndingEntityName} can also be paginated.`
-        } else if (httpMethod === "post") {
-          result.summary = `Add ${pluralEndingEntityName} to ${singularTag}`
-          result.description = `Add a list of ${lowerEndingEntityName} to a ${singularLowerTag}.`
-        } else {
-          result.summary = `Remove ${pluralEndingEntityName} from ${singularTag}`
-          result.description = `Remove a list of ${lowerEndingEntityName} from a ${singularLowerTag}. This doesn't delete the ${singularLowerEndingEntityName}, only the association between the ${singularLowerEndingEntityName} and the ${singularLowerTag}.`
-        }
-      } else {
-        // the OAS operation is applied on a single entity that is the main entity (denoted by the tag).
-        // retrieve the summary/description based on the HTTP method.
-        if (httpMethod === "get") {
-          result.summary = `Get a ${singularTag}`
-          result.description = `Retrieve a ${singularLowerTag} by its ID. You can expand the ${singularLowerTag}'s relations or select the fields that should be returned.`
-        } else if (httpMethod === "post") {
-          result.summary = `Update a ${singularTag}`
-          result.description = `Update a ${singularLowerTag}'s details.`
-        } else {
-          result.summary = `Delete a ${singularTag}`
-          result.description = `Delete a ${singularLowerTag}.`
-        }
-      }
-    } else {
-      // the OAS operation is applied on all entities of the tag in general.
-      // retrieve the summary/description based on the HTTP method.
-      if (httpMethod === "get") {
-        result.summary = `List ${tag}`
-        result.description = `Retrieve a list of ${lowerTag}. The ${lowerTag} can be filtered by fields such as \`id\`. The ${lowerTag} can also be sorted or paginated.`
-      } else if (httpMethod === "post") {
-        result.summary = `Create ${singularTag}`
-        result.description = `Create a ${singularLowerTag}.`
-      } else {
-        result.summary = `Delete ${tag}`
-        result.description = `Delete ${tag}`
-      }
-    }
-
-    return result
-  }
-
-  /**
    * Retrieve the security details of an OAS operation.
    *
    * @param param0 - The authentication details.
@@ -1100,9 +975,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         })
       }
 
-      const requestTypeArguments = this.checker.getTypeArguments(requestType)
+      const requestTypeArguments =
+        requestType.typeArguments || requestType.aliasTypeArguments
 
-      if (requestTypeArguments.length === 1) {
+      if (requestTypeArguments?.length === 1) {
         const zodObjectTypeName = getCorrectZodTypeName({
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
@@ -1284,7 +1160,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         )
       : title
         ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-        : this.defaultSummary
+        : SUMMARY_PLACEHOLDER
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1493,6 +1369,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         const properties: Record<string, OpenApiSchema> = {}
         const requiredProperties: string[] = []
 
+        const baseType = itemType.getBaseTypes()?.[0]
+        const isDeleteResponse =
+          baseType?.aliasSymbol?.getEscapedName() === "DeleteResponse"
+
         if (level + 1 <= this.MAX_LEVEL) {
           itemType.getProperties().forEach((property) => {
             if (
@@ -1514,6 +1394,15 @@ class OasKindGenerator extends FunctionKindGenerator {
                 parentName: title || descriptionOptions?.parentName,
               },
             })
+
+            if (isDeleteResponse && property.name === "object") {
+              // try to retrieve default from `DeleteResponse`'s type argument
+              const deleteTypeArg = baseType.aliasTypeArguments?.[0]
+              properties[property.name].default =
+                deleteTypeArg && "value" in deleteTypeArg
+                  ? (deleteTypeArg.value as string)
+                  : properties[property.name].default
+            }
           })
         }
 
@@ -1565,12 +1454,12 @@ class OasKindGenerator extends FunctionKindGenerator {
       // either retrieve the description from the knowledge base or use
       // the default summary
       return (
-        this.knowledgeBaseFactory.tryToGetOasDescription({
+        this.knowledgeBaseFactory.tryToGetOasSchemaDescription({
           str: typeStr,
           templateOptions: {
             parentName,
           },
-        }) || this.defaultSummary
+        }) || SUMMARY_PLACEHOLDER
       )
     }
 
@@ -1592,7 +1481,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       description = this.getSymbolDocBlock(symbol)
     }
 
-    return description.length ? description : this.defaultSummary
+    return description.length ? description : SUMMARY_PLACEHOLDER
   }
 
   /**
@@ -1745,7 +1634,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
       if (
         updatedParameter.description !== parameter.description &&
-        parameter.description === this.defaultSummary
+        parameter.description === SUMMARY_PLACEHOLDER
       ) {
         parameter.description = updatedParameter.description
       }
@@ -1775,7 +1664,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       if (
         (updatedParameter.schema as OpenApiSchema).description !==
           (parameter.schema as OpenApiSchema).description &&
-        (parameter.schema as OpenApiSchema).description === this.defaultSummary
+        (parameter.schema as OpenApiSchema).description === SUMMARY_PLACEHOLDER
       ) {
         ;(parameter.schema as OpenApiSchema).description = (
           updatedParameter.schema as OpenApiSchema
@@ -1856,10 +1745,10 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (
       oldSchemaObj!.description !== newSchemaObj?.description &&
-      oldSchemaObj!.description === this.defaultSummary
+      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
     ) {
       oldSchemaObj!.description =
-        newSchemaObj?.description || this.defaultSummary
+        newSchemaObj?.description || SUMMARY_PLACEHOLDER
     }
 
     oldSchemaObj!.required = newSchemaObj?.required
@@ -1971,15 +1860,8 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     this.tags.get(area)?.forEach((tag) => {
       const existingTag = areaYaml.tags!.find((baseTag) => baseTag.name === tag)
-      // try to retrieve associated schema
-      let schema: ParsedSchema | undefined
-      this.oasSchemaHelper.tagNameToSchemaName(tag, area).some((schemaName) => {
-        schema = this.oasSchemaHelper.getSchemaByName(schemaName)
-
-        if (schema) {
-          return true
-        }
-      })
+      const schemaName = this.oasSchemaHelper.tagNameToSchemaName(tag, area)
+      const schema = this.oasSchemaHelper.getSchemaByName(schemaName, false)
       const associatedSchema = schema?.schema?.["x-schemaName"]
         ? {
             $ref: this.oasSchemaHelper.constructSchemaReference(

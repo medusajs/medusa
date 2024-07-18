@@ -12,12 +12,6 @@ export const eventBuilders = {
     object: "price_set",
     eventsEnum: PricingEvents,
   }),
-  createdPriceSetRuleType: eventBuilderFactory({
-    source: Modules.PRICING,
-    action: CommonEvents.CREATED,
-    object: "price_set_rule_type",
-    eventsEnum: PricingEvents,
-  }),
   createdPrice: eventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
@@ -46,6 +40,30 @@ export const eventBuilders = {
     source: Modules.PRICING,
     action: CommonEvents.ATTACHED,
     object: "price_list_rule",
+    eventsEnum: PricingEvents,
+  }),
+  updatedPrice: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.UPDATED,
+    object: "price",
+    eventsEnum: PricingEvents,
+  }),
+  updatedPriceRule: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.UPDATED,
+    object: "price_rule",
+    eventsEnum: PricingEvents,
+  }),
+  deletedPrice: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.DELETED,
+    object: "price",
+    eventsEnum: PricingEvents,
+  }),
+  deletedPriceRule: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.DELETED,
+    object: "price_rule",
     eventsEnum: PricingEvents,
   }),
 }

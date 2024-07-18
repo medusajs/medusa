@@ -15,31 +15,32 @@ You use the Medusa container to resolve resources, such as services.
 For example, in a custom API route you can resolve any service registered in the Medusa application using the `scope.resolve` method of the `MedusaRequest` parameter:
 
 export const highlights = [
-  ["13", "resolve", "Resolve the `IProductModuleService`"],
-  ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["9", "resolve", "Resolve the Product Module's main service."],
+  [
+    "10",
+    "ModuleRegistrationName.PRODUCT",
+    "The resource registration name imported from `@medusajs/modules-sdk`.",
+  ],
 ]
 
 ```ts highlights={highlights}
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const productModuleService: IProductModuleService =
-    req.scope.resolve(ModuleRegistrationName.PRODUCT)
+  const productModuleService: IProductModuleService = req.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,
   })
 }
 ```
-
-You resolve the `IProductModuleService` and uses it to return the full count of products in the Medusa application.

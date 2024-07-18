@@ -22,14 +22,15 @@ A workflow is considered long-running if at least one step has its `async` confi
 
 For example, consider the following workflow and steps:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["13"]]} collapsibleLines="1-10" expandButtonLabel="Show More"
+```ts title="src/workflows/hello-world.ts" highlights={[["14"]]} collapsibleLines="1-10" expandButtonLabel="Show More"
 import { 
   createStep,  
   createWorkflow,
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 
 const step1 = createStep("step-1", async () => {
-  // ...
+  return new StepResponse({})
 })
 
 const step2 = createStep(
@@ -38,34 +39,36 @@ const step2 = createStep(
     async: true,
   },
   async () => {
-    // ...
+  return new StepResponse({})
   }
 )
 
 const step3 = createStep("step-3", async () => {
-  // ...
+  return new StepResponse("Finished three steps")
 })
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->({
-  name: "hello-world",
-}, function () {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function () {
   step1()
   step2()
-  step3()
+  const message = step3()
+
+  return {
+    message,
+  }
 })
 
 export default myWorkflow
-
 ```
 
 The second step has in its configuration object `async` set to true. This indicates that this step is an asynchronous step.
+
+<Note title="Important">
+
+An asynchronous step must return for the execution to continue.
+
+</Note>
 
 So, when you execute the `hello-world` workflow, it continues its execution in the background once it reaches the second step.
 
@@ -73,51 +76,48 @@ So, when you execute the `hello-world` workflow, it continues its execution in t
 
 ## Access Long-Running Workflow Status and Result
 
-<Note type="check">
-
-- [A workflow engine module installed](!resources!/architectural-modules/workflow-engine/in-memory).
-
-</Note>
-
 To access the status and result of a long-running workflow, use the workflow engine registered in the Medusa Container. The workflow engine provides methods to access and subscribe to workflow executions.
 
 For example:
 
 export const highlights = [
-  ["18", "", "Resolve the workflow engine from the Medusa container."],
-  ["24", "subscribe", "Subscribe to status changes of the workflow execution."],
+  ["18", "resolve", "Resolve the workflow engine from the Medusa container."],
+  ["30", "subscribe", "Subscribe to status changes of the workflow execution."],
 ]
 
 ```ts title="src/api/store/workflows/route.ts" highlights={highlights} collapsibleLines="1-11" expandButtonLabel="Show Imports"
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import myWorkflow from "../../../workflows/hello-world"
 import { 
   IWorkflowEngineService,
-} from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+} from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-export async function GET(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const { transaction, result } = await myWorkflow(req.scope)
-    .run()
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const { transaction, result } = await myWorkflow(req.scope).run()
 
-  const workflowEngine = req.scope.resolve<
+  const workflowEngineModuleService = req.scope.resolve<
     IWorkflowEngineService
   >(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
-  await workflowEngine.subscribe({
+  const subscriptionOptions = {
     workflowId: "hello-world",
     transactionId: transaction.transactionId,
-    subscriber: (data) => {
+    subscriberId: "hello-world-subscriber",
+  }
+
+  await workflowEngineModuleService.subscribe({
+    ...subscriptionOptions,
+    subscriber: async (data) => {
       if (data.eventType === "onFinish") {
         console.log("Finished execution", data.result)
+        // unsubscribe
+        await workflowEngineModuleService.unsubscribe({
+          ...subscriptionOptions,
+          subscriberOrId: subscriptionOptions.subscriberId,
+        })
       } else if (data.eventType === "onStepFailure") {
         console.log("Workflow failed", data.step)
       }
@@ -137,20 +137,24 @@ The `subscribe` method accepts an object having three properties:
     {
       name: "workflowId",
       type: "`string`",
-      description: "The name of the workflow."
+      description: "The name of the workflow.",
     },
     {
       name: "transactionId",
       type: "`string`",
-      description: "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution."
+      description:
+        "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution.",
     },
     {
       name: "subscriber",
       type: "`string`",
-      description: "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution."
-    }
+      description:
+        "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution.",
+    },
   ]}
   sectionTitle="Access Long-Running Workflow Status and Result"
 />
 
 Once the workflow execution finishes, the subscriber function is executed with the `eventType` of the received parameter set to `onFinish`. The workflow’s output is set in the `result` property of the parameter.
+
+You can unsubscribe from the workflow using the workflow engine's `unsubscribe` method, which requires the same object parameter as the `subscribe` method.

@@ -12,7 +12,7 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { SalesChannelDTO } from "@medusajs/types"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -22,7 +22,6 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 10
 
@@ -100,17 +99,11 @@ export const SalesChannelProductSection = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("salesChannels.toast.update"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("salesChannels.toast.update"))
           setRowSelection({})
         },
         onError: (error) => {
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          })
+          toast.error(error.message)
         },
       }
     )
@@ -149,6 +142,9 @@ export const SalesChannelProductSection = ({
         isLoading={isLoading}
         orderBy={["title", "variants", "status", "created_at", "updated_at"]}
         queryObject={raw}
+        noRecords={{
+          message: t("salesChannels.products.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
@@ -222,20 +218,19 @@ const ProductListCellActions = ({
   const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
 
   const onRemove = async () => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         product_ids: [productId],
-      })
-      toast.success(t("general.success"), {
-        description: t("salesChannels.toast.update"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("salesChannels.toast.update"))
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
+    )
   }
 
   return (

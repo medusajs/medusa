@@ -4,8 +4,7 @@ import { Spinner } from "@medusajs/icons"
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
-import { t } from "i18next"
-import { RouteFocusModal } from "../../../../../components/route-modal"
+import { RouteFocusModal } from "../../../../../components/modals"
 import {
   categoriesQueryKeys,
   useProductCategories,
@@ -71,11 +70,7 @@ export const OrganizeCategoryForm = () => {
         context?.previousValue
       )
 
-      toast.error(t("general.error"), {
-        description: error.message,
-        dismissLabel: t("general.close"),
-        dismissable: true,
-      })
+      toast.error(error.message)
     },
     onSettled: async (_data, _error, variables) => {
       await queryClient.invalidateQueries({

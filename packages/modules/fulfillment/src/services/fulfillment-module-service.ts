@@ -47,7 +47,7 @@ import {
   isContextValid,
   validateAndNormalizeRules,
 } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { UpdateShippingOptionsInput } from "../types/service"
 import { buildCreatedShippingOptionEvents } from "../utils/events"
 import FulfillmentProviderService from "./fulfillment-provider"
@@ -87,7 +87,7 @@ export default class FulfillmentModuleService
     ShippingOptionRule: { dto: FulfillmentTypes.ShippingOptionRuleDTO }
     ShippingOptionType: { dto: FulfillmentTypes.ShippingOptionTypeDTO }
     FulfillmentProvider: { dto: FulfillmentTypes.FulfillmentProviderDTO }
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -2189,37 +2189,18 @@ export default class FulfillmentModuleService
     }
 
     /**
-     * Validate that the address has the required properties for the geo zones
-     * constraints to build after. We are going from the narrowest to the broadest
+     * The following changes assume that the lowest level check (e.g postal expression) can't exist multiple times in the higher level (e.g country)
+     * In case we encounter situations where it is possible to have multiple postal expressions for the same country we need to change the logic back
+     * to this pr https://github.com/medusajs/medusa/pull/8066
      */
-    Object.entries(geoZoneRequirePropertyHierarchy).forEach(
-      ([prop, requiredProps]) => {
-        if (address![prop]) {
-          for (const requiredProp of requiredProps) {
-            if (!address![requiredProp]) {
-              throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `Missing required property ${requiredProp} for address when property ${prop} is set`
-              )
-            }
-          }
-        }
-      }
-    )
 
     const geoZoneConstraints = Object.entries(geoZoneRequirePropertyHierarchy)
       .map(([prop, requiredProps]) => {
         if (address![prop]) {
           return requiredProps.reduce((geoZoneConstraint, prop) => {
-            geoZoneConstraint.type =
-              prop === "postal_expression"
-                ? "zip"
-                : prop === "city"
-                ? "city"
-                : prop === "province_code"
-                ? "province"
-                : "country"
-            geoZoneConstraint[prop] = address![prop]
+            if (isPresent(address![prop])) {
+              geoZoneConstraint[prop] = address![prop]
+            }
             return geoZoneConstraint
           }, {} as Record<string, string | undefined>)
         }

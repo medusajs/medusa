@@ -1,18 +1,18 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateNotificationDTO,
   IEventBusModuleService,
   INotificationModuleService,
   Logger,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { medusaIntegrationTestRunner, TestEventUtils } from "medusa-test-utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
+import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
-const env = { MEDUSA_FF_MEDUSA_V2: true }
 medusaIntegrationTestRunner({
-  env,
   testSuite: ({ getContainer }) => {
     describe("Notifications", () => {
       let service: INotificationModuleService
@@ -173,7 +173,7 @@ medusaIntegrationTestRunner({
           const logSpy = jest.spyOn(logger, "info")
 
           await eventBus.emit({
-            eventName: "order.created",
+            name: "order.created",
             data: {
               order: {
                 id: "1234",

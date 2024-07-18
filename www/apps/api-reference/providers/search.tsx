@@ -48,7 +48,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}${basePathUrl("/api/(admin|store)")}`
+          `^${config.baseUrl}${basePathUrl(`/(admin|store)`)}`
         ),
         filterOptions: searchFiltersV2,
       }}

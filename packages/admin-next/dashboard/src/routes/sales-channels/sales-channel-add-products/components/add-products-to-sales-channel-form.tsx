@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SalesChannelDTO } from "@medusajs/types"
-import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -11,10 +11,7 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../components/route-modal"
+import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useProducts } from "../../../../hooks/api/products"
 import { useSalesChannelAddProducts } from "../../../../hooks/api/sales-channels"
@@ -22,7 +19,6 @@ import { useProductTableColumns } from "../../../../hooks/table/columns/use-prod
 import { useProductTableFilters } from "../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 type AddProductsToSalesChannelFormProps = {
   salesChannel: SalesChannelDTO
@@ -114,17 +110,10 @@ export const AddProductsToSalesChannelForm = ({
       },
       {
         onSuccess: () => {
-          toast.success(t("general.success"), {
-            description: t("salesChannels.toast.update"),
-            dismissLabel: t("actions.close"),
-          })
+          toast.success(t("salesChannels.toast.update"))
           handleSuccess()
         },
-        onError: (error) =>
-          toast.error(t("general.error"), {
-            description: error.message,
-            dismissLabel: t("actions.close"),
-          }),
+        onError: (error) => toast.error(error.message),
       }
     )
   })
@@ -169,6 +158,9 @@ export const AddProductsToSalesChannelForm = ({
             layout="fill"
             pagination
             search
+            noRecords={{
+              message: t("salesChannels.products.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>
