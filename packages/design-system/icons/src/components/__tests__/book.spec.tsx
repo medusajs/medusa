@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import CheckCircle from "../check-circle"
+  import Book from "../book"
 
-  describe("CheckCircle", () => {
+  describe("Book", () => {
     it("should render the icon without errors", async () => {
-      render(<CheckCircle data-testid="icon" />)
+      render(<Book data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")

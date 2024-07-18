@@ -377,7 +377,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
             asFunction(() => "test")
           )
 
-          const spy = await createScheduled("remove-scheduled", {
+          const spy = await createScheduled("shared-container-job", {
             cron: "* * * * * *",
           })
           await jest.runOnlyPendingTimersAsync()
