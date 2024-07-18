@@ -1,45 +1,65 @@
-import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
+import {
+  OrderChangeActionDTO,
+  OrderChangeDTO,
+  OrderDTO,
+  OrderWorkflow,
+  ReturnDTO,
+} from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
-  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { previewOrderChangeStep } from "../../steps"
-import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsStep } from "../../steps/create-return-items"
+import {
+  deleteOrderChangeActionsStep,
+  previewOrderChangeStep,
+} from "../../steps"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
-  return_id: string
-}
-
 const validationStep = createStep(
-  "validate-confirm-return-request",
+  "remove-item-return-action-validation",
   async function ({
     order,
     orderChange,
     orderReturn,
+    input,
   }: {
     order: OrderDTO
     orderReturn: ReturnDTO
     orderChange: OrderChangeDTO
+    input: OrderWorkflow.DeleteRequestItemReturnWorkflowInput
   }) {
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
+
+    const associatedAction = (orderChange.actions ?? []).find(
+      (a) => a.id === input.action_id
+    ) as OrderChangeActionDTO
+
+    if (!associatedAction) {
+      throw new Error(
+        `No request return found for return ${input.return_id} in order change ${orderChange.id}`
+      )
+    } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
+      throw new Error(
+        `Action ${associatedAction.id} is not requesting item return`
+      )
+    }
   }
 )
 
-export const confirmReturnRequestWorkflowId = "confirm-return-request"
-export const confirmReturnRequestWorkflow = createWorkflow(
-  confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+export const removeItemReturnActionWorkflowId = "remove-item-return-action"
+export const removeItemReturnActionWorkflow = createWorkflow(
+  removeItemReturnActionWorkflowId,
+  function (
+    input: WorkflowData<OrderWorkflow.DeleteRequestItemReturnWorkflowInput>
+  ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -50,7 +70,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "version", "canceled_at"],
+      fields: ["id", "status", "canceled_at", "items.*"],
       variables: { id: orderReturn.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -58,15 +78,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: [
-        "id",
-        "actions.id",
-        "actions.action",
-        "actions.details",
-        "actions.reference",
-        "actions.reference_id",
-        "actions.internal_note",
-      ],
+      fields: ["id", "status", "version", "actions.*"],
       variables: {
         filters: {
           order_id: orderReturn.order_id,
@@ -77,20 +89,9 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    const returnItemActions = transform({ orderChange }, (data) => {
-      return data.orderChange.actions.filter(
-        (act) => act.action === ChangeActionType.RETURN_ITEM
-      )
-    })
+    validationStep({ order, input, orderReturn, orderChange })
 
-    validationStep({ order, orderReturn, orderChange })
-
-    createReturnItemsStep({
-      returnId: orderReturn.id,
-      changes: returnItemActions,
-    })
-
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
     return previewOrderChangeStep(order.id)
   }

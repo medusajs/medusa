@@ -1,6 +1,6 @@
 import {
   removeItemReturnActionWorkflow,
-  updateRequestItemReturnWorkflow,
+  updateReceiveItemReturnRequestWorkflow,
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
@@ -10,17 +10,19 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../validators"
+import { AdminPostReturnsDismissItemsActionReqSchemaType } from "../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostReturnsRequestItemsActionReqSchemaType>,
+  req: AuthenticatedMedusaRequest<AdminPostReturnsDismissItemsActionReqSchemaType>,
   res: MedusaResponse
 ) => {
   const { id, action_id } = req.params
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const { result } = await updateRequestItemReturnWorkflow(req.scope).run({
+  const { result } = await updateReceiveItemReturnRequestWorkflow(
+    req.scope
+  ).run({
     input: {
       data: { ...req.validatedBody },
       return_id: id,
