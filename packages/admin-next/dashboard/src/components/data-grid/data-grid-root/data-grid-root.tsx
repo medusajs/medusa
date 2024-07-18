@@ -421,18 +421,24 @@ export const DataGridRoot = <
         return
       }
 
-      setValue(
-        field as Path<TFieldValues>,
-        "" as PathValue<TFieldValues, Path<TFieldValues>>,
-        {
-          shouldDirty: true,
-          shouldTouch: true,
-        }
-      )
+      const current = getValues(field as Path<TFieldValues>)
+      const next = "" as PathValue<TFieldValues, Path<TFieldValues>>
 
+      const command = new UpdateCommand({
+        next,
+        prev: current,
+        setter: (value) => {
+          setValue(field as Path<TFieldValues>, value, {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
+        },
+      })
+
+      execute(command)
       input.focus()
     },
-    [anchor, isEditing, setValue]
+    [anchor, isEditing, setValue, getValues, execute]
   )
 
   const handleEnterKey = useCallback(
@@ -521,6 +527,56 @@ export const DataGridRoot = <
 
       e.preventDefault()
 
+      if (e.shiftKey) {
+        const prevCol = cols.getPrev(anchor.col)
+
+        if (prevCol === null) {
+          const prevRow = rows.getPrev(anchor.row)
+          const lastCol = cols.getLast()
+
+          if (prevRow === null || lastCol === null) {
+            return
+          }
+
+          const prev = { row: prevRow, col: lastCol }
+          setSingleRange(prev)
+          return
+        }
+
+        const prev = { row: anchor.row, col: prevCol }
+        setSingleRange(prev)
+        return
+      }
+
+      const nextCol = cols.getNext(anchor.col)
+
+      if (nextCol === null) {
+        const nextRow = rows.getNext(anchor.row)
+        const firstCol = cols.getFirst()
+
+        if (nextRow === null || firstCol === null) {
+          return
+        }
+
+        const next = { row: nextRow, col: firstCol }
+        setSingleRange(next)
+        return
+      }
+
+      const next = { row: anchor.row, col: nextCol }
+      setSingleRange(next)
+    },
+    [anchor, cols, rows, setSingleRange]
+  )
+
+  const handleDeleteKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor || isEditing) {
+        return
+      }
+
+      e.preventDefault()
+
       const id = generateCellId(anchor)
       const container = containerRef.current
 
@@ -542,16 +598,23 @@ export const DataGridRoot = <
         return
       }
 
-      const nextCol = cols.getNext(anchor.col)
+      const current = getValues(field as Path<TFieldValues>)
+      const next = "" as PathValue<TFieldValues, Path<TFieldValues>>
 
-      if (nextCol === null) {
-        return
-      }
+      const command = new UpdateCommand({
+        next,
+        prev: current,
+        setter: (value) => {
+          setValue(field as Path<TFieldValues>, value, {
+            shouldDirty: true,
+            shouldTouch: true,
+          })
+        },
+      })
 
-      const next = { row: anchor.row, col: nextCol }
-      setSingleRange(next)
+      execute(command)
     },
-    [anchor, cols, setSingleRange]
+    [anchor, execute, getValues, isEditing, setValue]
   )
 
   const handleCatchAllKey = useCallback(
@@ -597,6 +660,16 @@ export const DataGridRoot = <
         return
       }
 
+      if (e.key === "Tab") {
+        handleTabKey(e)
+        return
+      }
+
+      if (e.key === "Delete" || e.key === "Backspace") {
+        handleDeleteKey(e)
+        return
+      }
+
       if (e.key === "Enter") {
         handleEnterKey(e)
         return
@@ -609,6 +682,8 @@ export const DataGridRoot = <
       handleUndo,
       handleSpaceKey,
       handleEnterKey,
+      handleTabKey,
+      handleDeleteKey,
       handleCatchAllKey,
     ]
   )
