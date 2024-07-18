@@ -46,7 +46,7 @@ import { sdk } from "../../../../../lib/client"
 type ReturnCreateFormProps = {
   order: AdminOrder
   activeReturn: ReturnDTO // TODO: AdminReturn
-  preview: any // TODO
+  preview: AdminOrder // TODO
 }
 
 let selectedItems: string[] = []
@@ -130,17 +130,24 @@ export const ReturnCreateForm = ({
     /**
      * TODO: reason selection once Return reason settings are added
      */
-    defaultValues: {
-      items: preview.items.map((i) => ({
-        item_id: i.id,
-        quantity: i.detail.return_requested_quantity,
-        note: i.actions?.find((a) => a.action === "RETURN_ITEM")?.internal_note,
-        reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
-          ?.reason_id,
-      })),
-      option_id: "",
-      location_id: "",
-      send_notification: false,
+    defaultValues: () => {
+      const method = preview.shipping_methods.find(
+        (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
+      )
+
+      return Promise.resolve({
+        items: preview.items.map((i) => ({
+          item_id: i.id,
+          quantity: i.detail.return_requested_quantity,
+          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
+            ?.internal_note,
+          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
+            ?.reason_id,
+        })),
+        option_id: method ? method.shipping_option_id : "",
+        location_id: "",
+        send_notification: false,
+      })
     },
     resolver: zodResolver(ReturnCreateSchema),
   })
@@ -206,8 +213,13 @@ export const ReturnCreateForm = ({
   }, [preview.items])
 
   useEffect(() => {
-    const activeShippingOption = preview.shipping_methods[0]?.shipping_option_id
-    form.setValue("option_id", activeShippingOption)
+    const method = preview.shipping_methods.find(
+      (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
+    )
+
+    if (method) {
+      form.setValue("option_id", method.shipping_option_id)
+    }
   }, [preview.shipping_methods])
 
   const showPlaceholder = !items.length
@@ -494,8 +506,10 @@ export const ReturnCreateForm = ({
                               options={(shipping_options ?? [])
                                 .filter(
                                   (so) =>
-                                    so.service_zone.fulfillment_set!.location
-                                      .id === locationId &&
+                                    (locationId
+                                      ? so.service_zone.fulfillment_set!
+                                          .location.id === locationId
+                                      : true) &&
                                     !!so.rules.find(
                                       (r) =>
                                         r.attribute === "is_return" &&
