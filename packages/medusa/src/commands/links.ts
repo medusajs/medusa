@@ -5,23 +5,23 @@ import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
 import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
 import { getLinksExecutionPlanner } from "../loaders/medusa-app"
 import {
-  PlannerAction,
+  LinkMigrationsPlannerAction,
   PlannerActionLinkDescriptor,
-} from "@medusajs/link-modules"
+} from "@medusajs/types"
 import checkbox from "@inquirer/checkbox"
 
 const TERMINAL_SIZE = process.stdout.columns
 
 type Action = "sync"
 
-function groupByActionPlan(actionPlan: PlannerAction[]) {
+function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
   return actionPlan.reduce((acc, action) => {
     acc[action.action] ??= []
 
     acc[action.action].push(action)
 
     return acc
-  }, {} as Record<"noop" | "notify" | "create" | "update" | "delete", PlannerAction[]>)
+  }, {} as Record<"noop" | "notify" | "create" | "update" | "delete", LinkMigrationsPlannerAction[]>)
 }
 
 function displaySection({
@@ -42,7 +42,7 @@ function buildLinkDescription(linkDescriptor: PlannerActionLinkDescriptor) {
 
 function showMessage(
   title: string,
-  actionsOrContext: string | PlannerAction[]
+  actionsOrContext: string | LinkMigrationsPlannerAction[]
 ) {
   const toCreateDescription = isString(actionsOrContext)
     ? actionsOrContext
@@ -61,7 +61,7 @@ function showMessage(
   })
 }
 
-async function askForLinksToDelete(actions: PlannerAction[]) {
+async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
   console.log("\n")
   const answer = await checkbox({
     message:

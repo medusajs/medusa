@@ -11,6 +11,7 @@ import {
 import {
   CommonTypes,
   ConfigModule,
+  ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
@@ -23,7 +24,6 @@ import {
 } from "@medusajs/utils"
 
 import { asValue } from "awilix"
-import { MigrationsExecutionPlanner } from "@medusajs/link-modules"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -161,7 +161,7 @@ export async function getLinksExecutionPlanner({
       moduleNames: string[]
       action: "revert" | "generate"
     }
-)): Promise<MigrationsExecutionPlanner> {
+)): Promise<ILinkMigrationsPlanner> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION

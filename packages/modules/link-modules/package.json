@@ -36,7 +36,7 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",
-    "typescript": "^5.1.6"
+    "typescript": "^5.5.0"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",

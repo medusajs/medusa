@@ -1,53 +1,27 @@
 import {
+  ILinkMigrationsPlanner,
+  LinkMigrationsPlannerAction,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
+  PlannerActionLinkDescriptor,
 } from "@medusajs/types"
 
 import { generateEntity } from "../utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
 import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import {
-  arrayDifference,
   DALUtils,
-  ModulesSdkUtils,
   promiseAll,
+  ModulesSdkUtils,
+  arrayDifference,
 } from "@medusajs/utils"
-
-export type PlannerActionLinkDescriptor = {
-  fromModule: string
-  toModule: string
-  fromModel: string
-  toModel: string
-}
-/**
- * A list of actions prepared and executed
- * by the "MigrationsExecutionPlanner".
- */
-export type PlannerAction =
-  | {
-      action: "create" | "update" | "notify"
-      linkDescriptor: PlannerActionLinkDescriptor
-      sql: string
-      tableName: string
-      entity: EntitySchema
-    }
-  | {
-      action: "noop"
-      tableName: string
-      linkDescriptor: PlannerActionLinkDescriptor
-      entity: EntitySchema
-    }
-  | {
-      action: "delete"
-      tableName: string
-    }
 
 /**
  * The migrations execution planner creates a plan of SQL queries
  * to be executed to keep link modules database state in sync
  * with the links defined inside the user application.
  */
-export class MigrationsExecutionPlanner {
+export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   /**
    * Database options for the module service
    */
@@ -187,7 +161,7 @@ export class MigrationsExecutionPlanner {
     linkDescriptor: PlannerActionLinkDescriptor,
     entity: EntitySchema,
     trackedLinksTables: string[]
-  ): Promise<PlannerAction> {
+  ): Promise<LinkMigrationsPlannerAction> {
     const tableName = entity.meta.collection
     const orm = await this.createORM([entity])
 
@@ -206,7 +180,6 @@ export class MigrationsExecutionPlanner {
         action: "create",
         linkDescriptor,
         tableName,
-        entity,
         sql: await generator.getCreateSchemaSQL(),
       }
     }
@@ -242,7 +215,6 @@ export class MigrationsExecutionPlanner {
         action: "noop",
         linkDescriptor,
         tableName,
-        entity,
       }
     }
 
@@ -254,7 +226,6 @@ export class MigrationsExecutionPlanner {
       action: usesUnsafeCommands ? "notify" : "update",
       linkDescriptor,
       tableName,
-      entity,
       sql: updateSQL,
     }
   }
@@ -270,7 +241,7 @@ export class MigrationsExecutionPlanner {
     const orm = await this.createORM()
     await this.ensureMigrationsTable(orm)
 
-    const executionActions: PlannerAction[] = []
+    const executionActions: LinkMigrationsPlannerAction[] = []
     const trackedTables = await this.getTrackedLinksTables(orm)
 
     /**
@@ -306,7 +277,7 @@ export class MigrationsExecutionPlanner {
    *
    * @param actionPlan
    */
-  async executePlan(actionPlan: PlannerAction[]): Promise<void> {
+  async executePlan(actionPlan: LinkMigrationsPlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
     await promiseAll(

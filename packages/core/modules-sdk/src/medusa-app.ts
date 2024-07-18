@@ -4,6 +4,7 @@ import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ConfigModule,
   ExternalModuleDeclaration,
+  ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
   Logger,
@@ -38,9 +39,8 @@ import {
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
-import { MigrationsExecutionPlanner } from "@medusajs/link-modules"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -57,7 +57,7 @@ declare module "@medusajs/types" {
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
 export type GenerateMigrations = (moduleNames: string[]) => Promise<void>
-export type GetLinkExecutionPlanner = () => Promise<MigrationsExecutionPlanner>
+export type GetLinkExecutionPlanner = () => Promise<ILinkMigrationsPlanner>
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
@@ -580,7 +580,7 @@ export async function MedusaAppMigrateGenerate(
 
 export async function MedusaAppGetLinksExecutionPlanner(
   options: MedusaAppOptions = {}
-): Promise<MigrationsExecutionPlanner> {
+): Promise<ILinkMigrationsPlanner> {
   const migrationOnly = true
 
   const { linkMigrationExecutionPlanner } = await MedusaApp_({
