@@ -27,7 +27,6 @@ export const joinerConfig = defineJoinerConfig(Modules.PRODUCT, {
       name: ["product_variant", "product_variants", "variant", "variants"],
       args: {
         entity: "ProductVariant",
-        methodSuffix: "ProductVariants",
       },
     },
   ],

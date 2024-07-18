@@ -1,5 +1,5 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { isObject, pluralize, toPascalCase } from "../common"
+import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
 import { composeLinkName } from "../link"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
@@ -74,7 +74,7 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: false,
       deleteCascade: false,
@@ -87,7 +87,7 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
