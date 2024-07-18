@@ -11,7 +11,7 @@ const SquareBlueSolid = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <rect width={8} height={8} x={3.5} y={3.5} fill="#3B82F6" rx={2} />
+        <rect width={8} height={8} x={3.5} y={3.5} fill="#60A5FA" rx={2} />
         <rect
           width={7}
           height={7}
