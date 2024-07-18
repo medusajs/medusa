@@ -205,6 +205,9 @@ function ReturnItem({
                           <Input
                             onChange={onChange}
                             {...field}
+                            onBlur={() =>
+                              onUpdate({ internal_note: field.value })
+                            }
                             className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
                           />
                         </Form.Control>
@@ -218,7 +221,10 @@ function ReturnItem({
                 type="button"
                 className="flex-shrink"
                 variant="transparent"
-                onClick={() => form.setValue(`items.${index}.note`, null)}
+                onClick={() => {
+                  form.setValue(`items.${index}.note`, null)
+                  onUpdate({ internal_note: null })
+                }}
               >
                 <XMark className="text-ui-fg-muted" />
               </IconButton>

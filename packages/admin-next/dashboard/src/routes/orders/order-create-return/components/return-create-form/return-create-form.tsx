@@ -119,6 +119,7 @@ export const ReturnCreateForm = ({
       items: preview.items.map((i) => ({
         item_id: i.id,
         quantity: i.detail.return_requested_quantity,
+        note: i.actions.find((a) => a.action === "RETURN_ITEM")?.internal_note,
       })),
       option_id: "",
       location_id: "",
@@ -167,6 +168,8 @@ export const ReturnCreateForm = ({
           update(ind, {
             ...items[ind],
             quantity: i.detail.return_requested_quantity,
+            note: i.actions.find((a) => a.action === "RETURN_ITEM")
+              ?.internal_note,
           })
         }
       } else {
