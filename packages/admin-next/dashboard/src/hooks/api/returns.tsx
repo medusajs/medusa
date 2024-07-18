@@ -215,7 +215,54 @@ export const useAddReturnShipping = (
   })
 }
 
-export const useAConfirmReturnRequest = (
+export const useUpdateReturnShipping = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminAddReturnShipping
+  >
+) => {
+  return useMutation({
+    mutationFn: ({
+      actionId,
+      ...payload
+    }: HttpTypes.AdminAddReturnShipping & { actionId: string }) =>
+      sdk.admin.return.updateReturnShipping(id, actionId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteReturnShipping = (
+  id: string,
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+) => {
+  return useMutation({
+    mutationFn: (actionId: string) =>
+      sdk.admin.return.deleteReturnShipping(id, actionId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useConfirmReturnRequest = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,

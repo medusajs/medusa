@@ -60,6 +60,13 @@ export interface AdminAddReturnShipping {
   internal_note?: string
   metadata?: Record<string, unknown>
 }
+
+export interface AdminUpdateReturnShipping {
+  custom_price?: number
+  internal_note?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }

@@ -34,8 +34,9 @@ import {
   useAddReturnItem,
   useAddReturnShipping,
   useCancelReturn,
+  useConfirmReturnRequest,
+  useDeleteReturnShipping,
   useRemoveReturnItem,
-  useRequestReturn,
   useUpdateReturnItem,
 } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
@@ -83,12 +84,23 @@ export const ReturnCreateForm = ({
    * MUTATIONS
    */
   const { mutateAsync: confirmReturnRequest, isPending: isConfirming } =
-    useRequestReturn(activeReturn.id)
+    useConfirmReturnRequest(activeReturn.id)
+
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
     useCancelReturn(activeReturn.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id)
+
+  const {
+    mutateAsync: updateReturnShipping,
+    isPending: isUpdatingReturnShipping,
+  } = useAddReturnShipping(activeReturn.id)
+
+  const {
+    mutateAsync: deleteReturnShipping,
+    isPending: isDeletingReturnShipping,
+  } = useDeleteReturnShipping(activeReturn.id)
 
   const { mutateAsync: addReturnItem, isPending: isAddingReturnItem } =
     useAddReturnItem(activeReturn.id, order.id)
@@ -103,6 +115,8 @@ export const ReturnCreateForm = ({
     isConfirming ||
     isCanceling ||
     isAddingReturnShipping ||
+    isUpdatingReturnShipping ||
+    isDeletingReturnShipping ||
     isAddingReturnItem ||
     isRemovingReturnItem ||
     isUpdatingReturnItem
@@ -221,6 +235,17 @@ export const ReturnCreateForm = ({
     })
 
     setIsOpen("items", false)
+  }
+
+  const onShippingOptionChange = async (selectedOptionId: string) => {
+    const promises = preview.shipping_methods
+      .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
+      .filter(Boolean)
+      .map(deleteReturnShipping)
+
+    await Promise.all(promises)
+
+    await addReturnShipping({ shipping_option_id: selectedOptionId })
   }
 
   useEffect(() => {
@@ -462,7 +487,7 @@ export const ReturnCreateForm = ({
                               value={value}
                               onChange={(v) => {
                                 onChange(v)
-                                addReturnShipping({ shipping_option_id: v })
+                                onShippingOptionChange(v)
                               }}
                               {...field}
                               options={(shipping_options ?? [])

@@ -1,4 +1,8 @@
-import { HttpTypes, SelectParams } from "@medusajs/types"
+import {
+  AdminUpdateReturnShipping,
+  HttpTypes,
+  SelectParams,
+} from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -128,6 +132,40 @@ export class Return {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  async updateReturnShipping(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminAddReturnShipping,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/shipping-method/${actionId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async deleteReturnShipping(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/shipping-method/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
         query,
       }
     )
