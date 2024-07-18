@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminPostReceiveReturnsReqSchema,
   AdminPostReturnsConfirmRequestReqSchema,
   AdminPostReturnsReqSchema,
   AdminPostReturnsRequestItemsActionReqSchema,
@@ -123,6 +124,22 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/returns/:id/request",
+    middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id/receive",
+    middlewares: [
+      validateAndTransformBody(AdminPostReceiveReturnsReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/returns/:id/receive",
     middlewares: [],
   },
 ]

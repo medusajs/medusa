@@ -3,15 +3,28 @@ import { BigNumberInput } from "../../totals"
 interface ReceiveReturnItem {
   id: string
   quantity: BigNumberInput
-  internal_note?: string | null
-  reason_id?: string | null
-  note?: string | null
-  metadata?: Record<string, any>
+  internal_note?: string
+  metadata?: Record<string, any> | null
 }
 
-export interface ReceiveOrderReturnWorkflowInput {
+export interface BeginReceiveOrderReturnWorkflowInput {
   return_id: string
-  created_by?: string | null // The id of the authenticated user
+  created_by?: string // The id of the authenticated user
+  description?: string
+  internal_note?: string
+  metadata?: Record<string, any> | null
+}
+
+export interface ReceiveOrderReturnItemsWorkflowInput {
+  return_id: string
   items: ReceiveReturnItem[]
-  internal_note?: string | null
+}
+
+export interface ReceiveCompleteOrderReturnWorkflowInput {
+  return_id: string
+  created_by?: string // The id of the authenticated user
+  items: ReceiveReturnItem[]
+  description?: string
+  internal_note?: string
+  metadata?: Record<string, any> | null
 }

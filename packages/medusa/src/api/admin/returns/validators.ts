@@ -38,13 +38,6 @@ export const AdminGetOrdersParams = createFindParams({
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
-const ItemSchema = z.object({
-  id: z.string(),
-  quantity: z.number().min(1),
-  reason_id: z.string().nullish(),
-  note: z.string().optional(),
-})
-
 export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
   location_id: z.string().optional(),
@@ -79,12 +72,24 @@ export type AdminPostOrderExchangesReqSchemaType = z.infer<
 >
 
 export const AdminPostReceiveReturnsReqSchema = z.object({
-  return_id: z.string(),
-  items: z.array(ItemSchema),
-  internal_note: z.string().nullish(),
+  internal_note: z.string().optional(),
+  description: z.string().optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminPostReceiveReturnsReqSchemaType = z.infer<
   typeof AdminPostReceiveReturnsReqSchema
+>
+
+const ReceiveItemSchema = z.object({
+  id: z.string(),
+  quantity: z.number().min(1),
+  internal_note: z.string().optional(),
+})
+export const AdminPostReceiveReturnItemsReqSchema = z.object({
+  items: z.array(ReceiveItemSchema),
+})
+export type AdminPostReceiveReturnItemsReqSchemaType = z.infer<
+  typeof AdminPostReceiveReturnItemsReqSchema
 >
 
 export const AdminPostCancelReturnReqSchema = z.object({
@@ -93,7 +98,7 @@ export const AdminPostCancelReturnReqSchema = z.object({
   internal_note: z.string().nullish(),
 })
 export type AdminPostCancelReturnReqSchemaType = z.infer<
-  typeof AdminPostReceiveReturnsReqSchema
+  typeof AdminPostCancelReturnReqSchema
 >
 
 export const AdminPostReturnsShippingReqSchema = z.object({

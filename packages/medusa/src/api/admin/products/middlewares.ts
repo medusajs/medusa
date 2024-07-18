@@ -16,6 +16,7 @@ import {
   AdminCreateProductOption,
   AdminCreateProductVariant,
   AdminCreateVariantInventoryItem,
+  AdminExportProduct,
   AdminGetProductOptionParams,
   AdminGetProductOptionsParams,
   AdminGetProductParams,
@@ -70,11 +71,22 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/products/export",
+    middlewares: [
+      validateAndTransformBody(AdminExportProduct),
+      validateAndTransformQuery(
+        AdminGetProductsParams,
+        QueryConfig.listProductQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig
@@ -87,11 +99,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export)/,
         validateAndTransformBody(AdminUpdateProduct)
       ),
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig
@@ -104,7 +116,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig

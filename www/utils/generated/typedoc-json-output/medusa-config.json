@@ -1,12 +1,12 @@
 {
-	"id": 13489,
+	"id": 13488,
 	"name": "medusa-config",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 13490,
+			"id": 13489,
 			"name": "AdminOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -21,7 +21,7 @@
 			},
 			"children": [
 				{
-					"id": 13491,
+					"id": 13490,
 					"name": "disable",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 					}
 				},
 				{
-					"id": 13492,
+					"id": 13491,
 					"name": "path",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124,7 +124,7 @@
 					}
 				},
 				{
-					"id": 13493,
+					"id": 13492,
 					"name": "outDir",
 					"variant": "declaration",
 					"kind": 1024,
@@ -153,7 +153,7 @@
 					}
 				},
 				{
-					"id": 13494,
+					"id": 13493,
 					"name": "backendUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -174,7 +174,7 @@
 					}
 				},
 				{
-					"id": 13495,
+					"id": 13494,
 					"name": "vite",
 					"variant": "declaration",
 					"kind": 1024,
@@ -200,21 +200,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 13496,
+							"id": 13495,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 13497,
+									"id": 13496,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 13498,
+											"id": 13497,
 											"name": "config",
 											"variant": "param",
 											"kind": 32768,
@@ -249,17 +249,17 @@
 				{
 					"title": "Properties",
 					"children": [
+						13490,
 						13491,
 						13492,
 						13493,
-						13494,
-						13495
+						13494
 					]
 				}
 			]
 		},
 		{
-			"id": 13499,
+			"id": 13498,
 			"name": "HttpCompressionOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -274,7 +274,7 @@
 			},
 			"children": [
 				{
-					"id": 13500,
+					"id": 13499,
 					"name": "enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -303,7 +303,7 @@
 					}
 				},
 				{
-					"id": 13501,
+					"id": 13500,
 					"name": "level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -332,7 +332,7 @@
 					}
 				},
 				{
-					"id": 13502,
+					"id": 13501,
 					"name": "memLevel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -361,7 +361,7 @@
 					}
 				},
 				{
-					"id": 13503,
+					"id": 13502,
 					"name": "threshold",
 					"variant": "declaration",
 					"kind": 1024,
@@ -403,16 +403,16 @@
 				{
 					"title": "Properties",
 					"children": [
+						13499,
 						13500,
 						13501,
-						13502,
-						13503
+						13502
 					]
 				}
 			]
 		},
 		{
-			"id": 13504,
+			"id": 13503,
 			"name": "ProjectConfigOptions",
 			"variant": "declaration",
 			"kind": 256,
@@ -427,7 +427,7 @@
 			},
 			"children": [
 				{
-					"id": 13505,
+					"id": 13504,
 					"name": "databaseName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -467,7 +467,7 @@
 					}
 				},
 				{
-					"id": 13506,
+					"id": 13505,
 					"name": "databaseUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -607,7 +607,7 @@
 					}
 				},
 				{
-					"id": 13507,
+					"id": 13506,
 					"name": "databaseSchema",
 					"variant": "declaration",
 					"kind": 1024,
@@ -640,7 +640,7 @@
 					}
 				},
 				{
-					"id": 13508,
+					"id": 13507,
 					"name": "databaseLogging",
 					"variant": "declaration",
 					"kind": 1024,
@@ -749,7 +749,7 @@
 					}
 				},
 				{
-					"id": 13510,
+					"id": 13509,
 					"name": "databaseDriverOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -832,14 +832,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 13511,
+									"id": 13510,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 13512,
+											"id": 13511,
 											"name": "connection",
 											"variant": "declaration",
 											"kind": 1024,
@@ -849,14 +849,14 @@
 											"type": {
 												"type": "reflection",
 												"declaration": {
-													"id": 13513,
+													"id": 13512,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 13514,
+															"id": 13513,
 															"name": "ssl",
 															"variant": "declaration",
 															"kind": 1024,
@@ -874,14 +874,14 @@
 															"type": {
 																"type": "reflection",
 																"declaration": {
-																	"id": 13515,
+																	"id": 13514,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 13516,
+																			"id": 13515,
 																			"name": "rejectUnauthorized",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -906,7 +906,7 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				13516
+																				13515
 																			]
 																		}
 																	]
@@ -918,7 +918,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																13514
+																13513
 															]
 														}
 													]
@@ -930,7 +930,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												13512
+												13511
 											]
 										}
 									]
@@ -940,7 +940,7 @@
 					}
 				},
 				{
-					"id": 13517,
+					"id": 13516,
 					"name": "redisUrl",
 					"variant": "declaration",
 					"kind": 1024,
@@ -988,7 +988,7 @@
 					}
 				},
 				{
-					"id": 13518,
+					"id": 13517,
 					"name": "redisPrefix",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1036,7 +1036,7 @@
 					}
 				},
 				{
-					"id": 13519,
+					"id": 13518,
 					"name": "redisOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1073,7 +1073,7 @@
 					}
 				},
 				{
-					"id": 13520,
+					"id": 13519,
 					"name": "sessionOptions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1110,7 +1110,7 @@
 					}
 				},
 				{
-					"id": 13522,
+					"id": 13521,
 					"name": "jobsBatchSize",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1150,7 +1150,7 @@
 					}
 				},
 				{
-					"id": 13523,
+					"id": 13522,
 					"name": "workerMode",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1227,7 +1227,7 @@
 					}
 				},
 				{
-					"id": 13524,
+					"id": 13523,
 					"name": "http",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1254,14 +1254,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 13525,
+							"id": 13524,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 13526,
+									"id": 13525,
 									"name": "jwtSecret",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1301,7 +1301,7 @@
 									}
 								},
 								{
-									"id": 13527,
+									"id": 13526,
 									"name": "jwtExpiresIn",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1341,7 +1341,7 @@
 									}
 								},
 								{
-									"id": 13528,
+									"id": 13527,
 									"name": "cookieSecret",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1381,7 +1381,7 @@
 									}
 								},
 								{
-									"id": 13529,
+									"id": 13528,
 									"name": "authCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1495,7 +1495,7 @@
 									}
 								},
 								{
-									"id": 13530,
+									"id": 13529,
 									"name": "compression",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1531,13 +1531,13 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 13499,
+										"target": 13498,
 										"name": "HttpCompressionOptions",
 										"package": "@medusajs/types"
 									}
 								},
 								{
-									"id": 13531,
+									"id": 13530,
 									"name": "storeCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1643,7 +1643,7 @@
 									}
 								},
 								{
-									"id": 13532,
+									"id": 13531,
 									"name": "adminCors",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1749,7 +1749,7 @@
 									}
 								},
 								{
-									"id": 13533,
+									"id": 13532,
 									"name": "authMethodsPerActor",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1839,14 +1839,14 @@
 								{
 									"title": "Properties",
 									"children": [
+										13525,
 										13526,
 										13527,
 										13528,
 										13529,
 										13530,
 										13531,
-										13532,
-										13533
+										13532
 									]
 								}
 							]
@@ -1858,24 +1858,24 @@
 				{
 					"title": "Properties",
 					"children": [
+						13504,
 						13505,
 						13506,
 						13507,
-						13508,
-						13510,
+						13509,
+						13516,
 						13517,
 						13518,
 						13519,
-						13520,
+						13521,
 						13522,
-						13523,
-						13524
+						13523
 					]
 				}
 			]
 		},
 		{
-			"id": 13534,
+			"id": 13533,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1906,7 +1906,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 13535,
+						"target": 13534,
 						"tsLinkText": "projectConfig"
 					},
 					{
@@ -1917,7 +1917,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "admin",
-						"target": 13536,
+						"target": 13535,
 						"tsLinkText": "admin"
 					},
 					{
@@ -1942,7 +1942,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 13541,
+						"target": 13540,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1953,7 +1953,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 13542,
+						"target": 13541,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1988,7 +1988,7 @@
 			},
 			"children": [
 				{
-					"id": 13535,
+					"id": 13534,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2003,13 +2003,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 13504,
+						"target": 13503,
 						"name": "ProjectConfigOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 13536,
+					"id": 13535,
 					"name": "admin",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2037,13 +2037,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 13490,
+						"target": 13489,
 						"name": "AdminOptions",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 13541,
+					"id": 13540,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2185,7 +2185,7 @@
 					}
 				},
 				{
-					"id": 13542,
+					"id": 13541,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2263,16 +2263,16 @@
 				{
 					"title": "Properties",
 					"children": [
+						13534,
 						13535,
-						13536,
-						13541,
-						13542
+						13540,
+						13541
 					]
 				}
 			]
 		},
 		{
-			"id": 13543,
+			"id": 13542,
 			"name": "PluginDetails",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2280,14 +2280,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 13544,
+					"id": 13543,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 13545,
+							"id": 13544,
 							"name": "resolve",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2298,7 +2298,7 @@
 							}
 						},
 						{
-							"id": 13546,
+							"id": 13545,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2309,7 +2309,7 @@
 							}
 						},
 						{
-							"id": 13547,
+							"id": 13546,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2320,7 +2320,7 @@
 							}
 						},
 						{
-							"id": 13548,
+							"id": 13547,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2346,7 +2346,7 @@
 							}
 						},
 						{
-							"id": 13549,
+							"id": 13548,
 							"name": "version",
 							"variant": "declaration",
 							"kind": 1024,
@@ -2361,11 +2361,11 @@
 						{
 							"title": "Properties",
 							"children": [
+								13544,
 								13545,
 								13546,
 								13547,
-								13548,
-								13549
+								13548
 							]
 						}
 					]
@@ -2377,48 +2377,52 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				13490,
-				13499,
-				13504,
-				13534
+				13489,
+				13498,
+				13503,
+				13533
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				13543
+				13542
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"13489": {
+		"13488": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": ""
 		},
-		"13490": {
+		"13489": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "AdminOptions"
 		},
-		"13491": {
+		"13490": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.disable"
 		},
-		"13492": {
+		"13491": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.path"
 		},
-		"13493": {
+		"13492": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.outDir"
 		},
-		"13494": {
+		"13493": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.backendUrl"
 		},
-		"13495": {
+		"13494": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.vite"
+		},
+		"13495": {
+			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
+			"qualifiedName": "__type"
 		},
 		"13496": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
@@ -2426,189 +2430,185 @@
 		},
 		"13497": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "config"
 		},
 		"13498": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "HttpCompressionOptions"
 		},
 		"13499": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "HttpCompressionOptions"
+			"qualifiedName": "__type.enabled"
 		},
 		"13500": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.enabled"
+			"qualifiedName": "__type.level"
 		},
 		"13501": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.level"
+			"qualifiedName": "__type.memLevel"
 		},
 		"13502": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.memLevel"
+			"qualifiedName": "__type.threshold"
 		},
 		"13503": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.threshold"
+			"qualifiedName": "ProjectConfigOptions"
 		},
 		"13504": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "ProjectConfigOptions"
+			"qualifiedName": "__type.databaseName"
 		},
 		"13505": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.databaseName"
+			"qualifiedName": "__type.databaseUrl"
 		},
 		"13506": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.databaseUrl"
+			"qualifiedName": "__type.databaseSchema"
 		},
 		"13507": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
-			"qualifiedName": "__type.databaseSchema"
-		},
-		"13508": {
-			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.databaseLogging"
 		},
-		"13510": {
+		"13509": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.databaseDriverOptions"
 		},
-		"13511": {
+		"13510": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"13512": {
+		"13511": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.connection"
 		},
-		"13513": {
+		"13512": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"13514": {
+		"13513": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.ssl"
 		},
-		"13515": {
+		"13514": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"13516": {
+		"13515": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.rejectUnauthorized"
 		},
-		"13517": {
+		"13516": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redisUrl"
 		},
-		"13518": {
+		"13517": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redisPrefix"
 		},
-		"13519": {
+		"13518": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.redisOptions"
 		},
-		"13520": {
+		"13519": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.sessionOptions"
 		},
-		"13522": {
+		"13521": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.jobsBatchSize"
 		},
-		"13523": {
+		"13522": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.workerMode"
 		},
-		"13524": {
+		"13523": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.http"
 		},
-		"13525": {
+		"13524": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"13526": {
+		"13525": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.jwtSecret"
 		},
-		"13527": {
+		"13526": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.jwtExpiresIn"
 		},
-		"13528": {
+		"13527": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.cookieSecret"
 		},
-		"13529": {
+		"13528": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.authCors"
 		},
-		"13530": {
+		"13529": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.compression"
 		},
-		"13531": {
+		"13530": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.storeCors"
 		},
-		"13532": {
+		"13531": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.adminCors"
 		},
-		"13533": {
+		"13532": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.authMethodsPerActor"
 		},
-		"13534": {
+		"13533": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "ConfigModule"
 		},
-		"13535": {
+		"13534": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.projectConfig"
 		},
-		"13536": {
+		"13535": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.admin"
 		},
-		"13541": {
+		"13540": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.modules"
 		},
-		"13542": {
+		"13541": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.featureFlags"
 		},
-		"13543": {
+		"13542": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "PluginDetails"
 		},
-		"13544": {
+		"13543": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type"
 		},
-		"13545": {
+		"13544": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"13546": {
+		"13545": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.name"
 		},
-		"13547": {
+		"13546": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.id"
 		},
-		"13548": {
+		"13547": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.options"
 		},
-		"13549": {
+		"13548": {
 			"sourceFileName": "../../../../packages/core/types/src/common/config-module.ts",
 			"qualifiedName": "__type.version"
 		}
@@ -2618,7 +2618,7 @@
 			"1": "../../../../packages/core/types/src/common/config-module.ts"
 		},
 		"reflections": {
-			"1": 13489
+			"1": 13488
 		}
 	}
 }
