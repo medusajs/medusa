@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-brightpearl",
-  "version": "1.3.13",
+  "version": "1.3.14",
   "description": "Brightpearl plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -24,14 +24,14 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/register": "^7.7.4",
     "@babel/runtime": "^7.9.6",
-    "@medusajs/medusa": "^1.17.4",
+    "@medusajs/medusa": "^1.20.8",
     "axios-mock-adapter": "^1.18.2",
     "axios-mock-server": "^0.19.1",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.7",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-interfaces": "^1.3.10",
+    "medusa-test-utils": "^1.1.45"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -44,11 +44,11 @@
     "medusa-interfaces": "^1.3.7"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.10.5",
+    "@medusajs/utils": "^1.11.10",
     "axios": "^0.19.2",
     "axios-rate-limit": "^1.2.1",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.2.0",
+    "medusa-core-utils": "^1.2.3",
     "randomatic": "^3.1.1"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",

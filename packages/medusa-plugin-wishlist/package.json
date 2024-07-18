@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-wishlist",
-  "version": "1.1.43",
+  "version": "1.1.44",
   "description": "Provides /customers/:id/wishlist to add items to a customr's wishlist",
   "main": "index.js",
   "repository": {
@@ -26,8 +26,8 @@
     "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.7",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-interfaces": "^1.3.10",
+    "medusa-test-utils": "^1.1.45"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -42,7 +42,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.2.0"
+    "medusa-core-utils": "^1.2.3"
   },
   "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011",
   "keywords": [

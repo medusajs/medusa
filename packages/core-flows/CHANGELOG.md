@@ -1,5 +1,17 @@
 # @medusajs/core-flows
 
+## 0.0.10
+
+### Patch Changes
+
+- [`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- Updated dependencies [[`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30)]:
+  - @medusajs/workflows-sdk@0.1.8
+  - @medusajs/utils@1.11.10
+  - @medusajs/modules-sdk@1.12.12
+  - @medusajs/orchestration@0.5.8
+
 ## 0.0.9
 
 ### Patch Changes

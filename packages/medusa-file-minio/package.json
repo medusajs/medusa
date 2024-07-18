@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-minio",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "MinIO server file connector for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -17,8 +17,8 @@
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.20.1",
-    "@medusajs/types": "^1.11.11",
+    "@medusajs/medusa": "^1.20.8",
+    "@medusajs/types": "^1.11.17",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",
@@ -37,8 +37,8 @@
     "aws-sdk": "^2.983.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.2.0",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-core-utils": "^1.2.3",
+    "medusa-test-utils": "^1.1.45"
   },
   "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011",
   "keywords": [

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/openapi-typescript-codegen",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Library that generates Typescript clients based on the OpenAPI specification.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",

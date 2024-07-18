@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-klarna",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Klarna Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -27,8 +27,8 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.7",
-    "medusa-test-utils": "^1.1.40"
+    "medusa-interfaces": "^1.3.10",
+    "medusa-test-utils": "^1.1.45"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -45,7 +45,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.2.0"
+    "medusa-core-utils": "^1.2.3"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
   "keywords": [

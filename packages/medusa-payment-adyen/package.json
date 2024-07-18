@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-adyen",
-  "version": "1.1.46",
+  "version": "1.1.47",
   "description": "Adyen Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -26,8 +26,8 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.9",
-    "medusa-test-utils": "^1.1.42"
+    "medusa-interfaces": "^1.3.10",
+    "medusa-test-utils": "^1.1.45"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
@@ -36,7 +36,7 @@
     "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.9"
+    "medusa-interfaces": "1.3.10"
   },
   "dependencies": {
     "@adyen/api-library": "^5.0.1",
@@ -46,7 +46,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.2.1"
+    "medusa-core-utils": "^1.2.3"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [

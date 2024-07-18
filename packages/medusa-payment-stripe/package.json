@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "6.0.9",
+  "version": "6.0.10",
   "description": "Stripe Payment provider for Medusa Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -23,8 +23,8 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/admin": "^7.1.12",
-    "@medusajs/medusa": "^1.20.4",
+    "@medusajs/admin": "^7.1.15",
+    "@medusajs/medusa": "^1.20.8",
     "@swc/core": "^1.4.8",
     "@swc/jest": "^0.2.36",
     "@tanstack/react-table": "^8.7.9",
@@ -32,7 +32,7 @@
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-react": "^9.0.16",
+    "medusa-react": "^9.0.18",
     "rimraf": "^5.0.1",
     "typescript": "^4.9.5"
   },
@@ -50,7 +50,7 @@
     "medusa-react": "^9.0.0"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.8",
+    "@medusajs/utils": "^1.11.10",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "stripe": "^11.10.0"
