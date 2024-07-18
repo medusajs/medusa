@@ -1,19 +1,14 @@
 /**
- * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments
- * operationId: PostOrdersIdFulfillmentsFulfillment_idShipments
- * summary: Add Shipments to Order
- * description: Add a list of shipments to a order.
+ * @oas [delete] /admin/returns/{id}/request
+ * operationId: DeleteReturnsIdRequest
+ * summary: Remove Requests from Return
+ * description: Remove a list of requests from a return. This doesn't delete the
+ *   Request, only the association between the Request and the return.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The order's ID.
- *     required: true
- *     schema:
- *       type: string
- *   - name: fulfillment_id
- *     in: path
- *     description: The order's fulfillment id.
+ *     description: The return's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -27,18 +22,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -71,35 +66,17 @@
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/AdminOrderCreateShipment"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X POST
- *       '{backend_url}/admin/orders/{id}/fulfillments/{fulfillment_id}/shipments'
- *       \
- * 
- *       -H 'x-medusa-access-token: {api_token}' \
- * 
- *       -H 'Content-Type: application/json' \
- * 
- *       --data-raw '{
- *         "items": [
- *           {
- *             "id": "id_3QQtl2VvE73c",
- *             "quantity": 6772917941567488
- *           }
- *         ],
- *         "metadata": {}
- *       }'
+ *     source: |-
+ *       curl -X DELETE '{backend_url}/admin/returns/{id}/request' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * tags:
- *   - Orders
+ *   - Returns
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
