@@ -43,14 +43,13 @@ Create the file \`src/modules/my-notification/index.ts\` with the following cont
 
 \`\`\`ts title="src/modules/my-notification/index.ts"
 import MyNotificationProviderService from "./service"
-import { Module } from "@medusajs/utils"
 
-export default Module("my-notification", {
-  service: MyNotificationProviderService,
-})
+export default {
+  services: [MyNotificationProviderService],
+}
 \`\`\`
 
-This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the main service of the module.`,
+This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the module's service.`,
       `## 4. Use Module
 
 To use your Notification Provider Module, add it to the \`providers\` array of the Notification Module:
