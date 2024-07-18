@@ -273,7 +273,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   }
 
   /**
-   * Executes the actionsPlan actions
+   * Executes the actionsPlan actions where the action is one of 'create' | 'update' | 'delete'.
+   * 'noop' and 'notify' actions are implicitly ignored. If a notify action needs to be
+   * executed, you can mutate its action to 'update', in that scenario it means that an unsafe
+   * update sql (from our point of view) will be executed and some data could be lost.
    *
    * @param actionPlan
    */

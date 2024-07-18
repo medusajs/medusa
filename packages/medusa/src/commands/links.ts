@@ -8,7 +8,7 @@ import {
   LinkMigrationsPlannerAction,
   PlannerActionLinkDescriptor,
 } from "@medusajs/types"
-import checkbox from "@inquirer/checkbox"
+import checkbox, { Separator } from "@inquirer/checkbox"
 
 const TERMINAL_SIZE = process.stdout.columns
 
@@ -36,8 +36,11 @@ function displaySection({
   console.log(content)
 }
 
-function buildLinkDescription(linkDescriptor: PlannerActionLinkDescriptor) {
-  return `- ${linkDescriptor.fromModule} to ${linkDescriptor.toModule} (${linkDescriptor.fromModel} to ${linkDescriptor.toModel})`
+function buildLinkDescription(action: LinkMigrationsPlannerAction) {
+  const { linkDescriptor } = action as LinkMigrationsPlannerAction & {
+    linkDescriptor: PlannerActionLinkDescriptor
+  }
+  return `${action.tableName} table (via ${linkDescriptor.fromModule}.${linkDescriptor.fromModel} to ${linkDescriptor.toModule}.${linkDescriptor.toModel})`
 }
 
 function showMessage(
@@ -47,12 +50,7 @@ function showMessage(
   const toCreateDescription = isString(actionsOrContext)
     ? actionsOrContext
     : actionsOrContext
-        .map((action) =>
-          buildLinkDescription(
-            (action as { linkDescriptor: PlannerActionLinkDescriptor })
-              .linkDescriptor
-          )
-        )
+        .map((action) => `- ${buildLinkDescription(action)}`)
         .join("\n")
 
   displaySection({
@@ -70,13 +68,15 @@ async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
       ...actions.map((action) => {
         return {
           name: action.tableName,
-          value: action.tableName,
+          value: action,
           checked: true,
         }
       }),
       {
         name: "none",
-        value: "none",
+        value: {
+          action: "none",
+        } as unknown as LinkMigrationsPlannerAction,
         checked: false,
       },
     ],
@@ -87,7 +87,10 @@ async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
 
       if (
         answer.length > 1 &&
-        answer.some((choice) => "value" in choice && choice.value === "none")
+        answer.some(
+          (choice) =>
+            "value" in choice && (choice.value.action as string) === "none"
+        )
       ) {
         return "'none' cannot be selected with other selected choices"
       }
@@ -96,7 +99,73 @@ async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
     },
   })
 
-  return answer.filter((a) => a !== "none")
+  return answer.filter((a) => (a.action as string) !== "none")
+}
+
+async function askForLinksToUpdate(actions: LinkMigrationsPlannerAction[]) {
+  let choiceIndex = 0
+
+  const sqlToDisplay = {
+    value: "",
+  }
+
+  const readline = require("readline")
+  readline.emitKeypressEvents(process.stdin)
+  process.stdin.setRawMode(true)
+  process.stdin.resume()
+  process.stdin.on("keypress", (str, key) => {
+    if (key.name === "up") {
+      choiceIndex = Math.max(0, choiceIndex - 1)
+    }
+
+    if (key.name === "down") {
+      choiceIndex = Math.min(actions.length - 1, choiceIndex + 1)
+    }
+
+    sqlToDisplay.value = (actions[choiceIndex] as { sql: string }).sql
+  })
+
+  console.log("\n")
+  const answer = await checkbox({
+    message:
+      "Select the link tables you want to delete, this means that those links are not defined anymore and will be removed from the database.",
+    choices: [
+      ...actions.map((action) => {
+        return {
+          name: action.tableName,
+          value: action,
+          checked: true,
+        }
+      }),
+      {
+        name: "none",
+        value: {
+          action: "none",
+        } as unknown as LinkMigrationsPlannerAction,
+        checked: false,
+      },
+      new Separator(sqlToDisplay.value),
+    ],
+    validate: (answer) => {
+      if (answer.length === 0) {
+        return "Please select at least one choice"
+      }
+
+      if (
+        answer.length > 1 &&
+        answer.some(
+          (choice) =>
+            "value" in choice && (choice.value.action as string) === "none"
+        )
+      ) {
+        return "'none' cannot be selected with other selected choices"
+      }
+
+      return true
+    },
+  })
+
+  return answer.filter((a) => (a.action as string) !== "none")
 }
 
 const main = async function ({ directory }) {
@@ -135,23 +204,23 @@ const main = async function ({ directory }) {
 
   const toCreate = groupActionPlan.create ?? []
   if (toCreate.length) {
-    showMessage("Links to be created", toCreate)
+    showMessage("Links tables to be created", toCreate)
   }
 
   const toUpdate = groupActionPlan.update ?? []
   if (toUpdate.length) {
-    showMessage("Links to be updated", toUpdate)
+    showMessage("Links tables to be updated", toUpdate)
   }
 
   const toDelete = groupActionPlan.delete ?? []
   if (toDelete.length) {
-    const answer = askForLinksToDelete(toDelete)
-    console.log(answer)
+    groupActionPlan.delete = await askForLinksToDelete(toDelete)
   }
 
   const toNotify = groupActionPlan.notify ?? []
   if (toNotify.length) {
-    showMessage("Links to be notified", toNotify)
+    const answer = await askForLinksToUpdate(toNotify)
+    console.log(answer)
   }
 
   /* await planner.executeActionPlan(actionPlan)*/
