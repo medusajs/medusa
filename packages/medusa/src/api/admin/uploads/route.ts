@@ -25,6 +25,7 @@ export const POST = async (
         filename: f.originalname,
         mimeType: f.mimetype,
         content: f.buffer.toString("binary"),
+        access: "public",
       })),
     },
   })

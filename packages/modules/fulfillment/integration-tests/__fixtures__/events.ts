@@ -9,7 +9,7 @@ export function buildExpectedEventMessageShape(options: {
   options?: Record<string, unknown>
 }): EventBusTypes.Message {
   return {
-    eventName: options.eventName,
+    name: options.eventName,
     metadata: {
       action: options.action,
       eventGroupId: options.eventGroupId,

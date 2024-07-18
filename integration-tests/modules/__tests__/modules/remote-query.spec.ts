@@ -71,7 +71,7 @@ medusaIntegrationTestRunner({
         )
 
         await expect(getNonExistingRegion).rejects.toThrow(
-          "region id not found: region_123"
+          "Region id not found: region_123"
         )
       })
 

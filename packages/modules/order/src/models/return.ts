@@ -82,7 +82,6 @@ export default class Return {
 
   @OneToOne({
     entity: () => Exchange,
-    cascade: ["soft-remove"] as any,
     fieldName: "exchange_id",
     nullable: true,
   })
@@ -94,7 +93,6 @@ export default class Return {
 
   @OneToOne({
     entity: () => Claim,
-    cascade: ["soft-remove"] as any,
     fieldName: "claim_id",
     nullable: true,
   })

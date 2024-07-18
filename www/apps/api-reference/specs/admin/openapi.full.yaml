@@ -7557,18 +7557,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7612,8 +7606,8 @@ paths:
             --data-raw '{
               "items": [
                 {
-                  "id": "id_uHIzYcTxCHG",
-                  "quantity": 3083340957614080
+                  "id": "id_3QQtl2VvE73c",
+                  "quantity": 6772917941567488
                 }
               ],
               "metadata": {}
@@ -7621,8 +7615,84 @@ paths:
       tags:
         - Orders
       responses:
-        '200':
-          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/orders/{id}/preview:
+    get:
+      operationId: GetOrdersIdPreview
+      summary: List Previews
+      description: Retrieve a list of previews in a order. The previews can be filtered by fields like FILTER FIELDS. The previews can also be paginated.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/orders/{id}/preview' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Orders
+      responses:
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -8889,18 +8959,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -8938,8 +9002,6 @@ paths:
       tags:
         - Price Preferences
       responses:
-        '200':
-          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -8968,18 +9030,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -9022,8 +9078,6 @@ paths:
       tags:
         - Price Preferences
       responses:
-        '200':
-          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -9059,18 +9113,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -9108,8 +9156,6 @@ paths:
       tags:
         - Price Preferences
       responses:
-        '200':
-          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -9144,18 +9190,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -9198,8 +9238,6 @@ paths:
       tags:
         - Price Preferences
       responses:
-        '200':
-          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -9234,18 +9272,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -9283,8 +9315,6 @@ paths:
       tags:
         - Price Preferences
       responses:
-        '200':
-          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -32211,6 +32241,688 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /admin/returns/{id}/request:
+    post:
+      operationId: PostReturnsIdRequest
+      summary: Add Requests to Return
+      description: Add a list of requests to a return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsConfirmRequestReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}/request' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteReturnsIdRequest
+      summary: Remove Requests from Return
+      description: Remove a list of requests from a return. This doesn't delete the Request, only the association between the Request and the return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/returns/{id}/request' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/returns/{id}/request-items:
+    post:
+      operationId: PostReturnsIdRequestItems
+      summary: Add Request Items to Return
+      description: Add a list of request items to a return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsRequestItemsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}/request-items' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/returns/{id}/request-items/{action_id}:
+    post:
+      operationId: PostReturnsIdRequestItemsAction_id
+      summary: Add Request Items to Return
+      description: Add a list of request items to a return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The return's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsRequestItemsActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}/request-items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteReturnsIdRequestItemsAction_id
+      summary: Remove Request Items from Return
+      description: Remove a list of request items from a return. This doesn't delete the Request Item, only the association between the Request Item and the return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The return's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/returns/{id}/request-items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/returns/{id}/shipping-method:
+    post:
+      operationId: PostReturnsIdShippingMethod
+      summary: Add Shipping Methods to Return
+      description: Add a list of shipping methods to a return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsShippingReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}/shipping-method' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "shipping_option_id": "{value}"
+            }'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/returns/{id}/shipping-method/{action_id}:
+    post:
+      operationId: PostReturnsIdShippingMethodAction_id
+      summary: Add Shipping Methods to Return
+      description: Add a list of shipping methods to a return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The return's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsShippingActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteReturnsIdShippingMethodAction_id
+      summary: Remove Shipping Methods from Return
+      description: Remove a list of shipping methods from a return. This doesn't delete the Shipping Method, only the association between the Shipping Method and the return.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The return's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/returns/{id}/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/sales-channels:
     get:
       operationId: GetSalesChannels
@@ -39952,6 +40664,15 @@ components:
           type: string
           title: internal_note
           description: The return's internal note.
+    AdminPostReturnsConfirmRequestReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsConfirmRequestReqSchema
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
     AdminPostReturnsReqSchema:
       type: object
       description: SUMMARY
@@ -39964,6 +40685,114 @@ components:
           type: string
           title: order_id
           description: The return's order id.
+        location_id:
+          type: string
+          title: location_id
+          description: The return's location id.
+        description:
+          type: string
+          title: description
+          description: The return's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
+        metadata:
+          type: object
+          description: The return's metadata.
+    AdminPostReturnsRequestItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsRequestItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The return's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+        reason_id:
+          type: string
+          title: reason_id
+          description: The return's reason id.
+        metadata:
+          type: object
+          description: The return's metadata.
+    AdminPostReturnsRequestItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsRequestItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The return's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - id
+              - quantity
+            properties:
+              id:
+                type: string
+                title: id
+                description: The item's ID.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              description:
+                type: string
+                title: description
+                description: The item's description.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              reason_id:
+                type: string
+                title: reason_id
+                description: The item's reason id.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostReturnsShippingActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsShippingActionReqSchema
+      properties:
+        custom_price:
+          type: number
+          title: custom_price
+          description: The return's custom price.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+        metadata:
+          type: object
+          description: The return's metadata.
+    AdminPostReturnsShippingReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsShippingReqSchema
+      required:
+        - shipping_option_id
+      properties:
+        shipping_option_id:
+          type: string
+          title: shipping_option_id
+          description: The return's shipping option id.
+        custom_price:
+          type: number
+          title: custom_price
+          description: The return's custom price.
         description:
           type: string
           title: description

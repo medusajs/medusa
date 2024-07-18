@@ -6,7 +6,7 @@ export interface CreateReturnItem {
   internal_note?: string | null
   reason_id?: string | null
   note?: string | null
-  metadata?: Record<string, any>
+  metadata?: Record<string, any> | null
 }
 
 export interface CreateOrderReturnWorkflowInput {

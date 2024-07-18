@@ -60,6 +60,9 @@ export class WorkflowsModuleService<
     onApplicationPrepareShutdown: async () => {
       await this.workflowOrchestratorService_.onApplicationPrepareShutdown()
     },
+    onApplicationStart: async () => {
+      await this.workflowOrchestratorService_.onApplicationStart()
+    },
   }
 
   @InjectSharedContext()

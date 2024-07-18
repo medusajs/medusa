@@ -3185,6 +3185,13 @@ export const generatedSidebar = [
                         "path": "/references/order/updateReturns",
                         "title": "updateReturns",
                         "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateShippingMethods",
+                        "title": "updateShippingMethods",
+                        "children": []
                       }
                     ]
                   }

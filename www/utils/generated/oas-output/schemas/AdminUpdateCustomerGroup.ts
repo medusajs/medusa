@@ -4,7 +4,6 @@
  * description: SUMMARY
  * x-schemaName: AdminUpdateCustomerGroup
  * required:
- *   - name
  *   - metadata
  * properties:
  *   name:

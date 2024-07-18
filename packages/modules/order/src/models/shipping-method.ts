@@ -71,7 +71,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.PERSIST, "soft-remove"] as any,
+      cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
   tax_lines = new Collection<Rel<ShippingMethodTaxLine>>(this)
@@ -80,7 +80,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.PERSIST, "soft-remove"] as any,
+      cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
   adjustments = new Collection<Rel<ShippingMethodAdjustment>>(this)

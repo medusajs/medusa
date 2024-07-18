@@ -92,13 +92,13 @@ import { IProductModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export default async function productCreateHandler({
-  data,
+  event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
   const productModuleService: IProductModuleService =
     container.resolve(ModuleRegistrationName.PRODUCT)
 
-  const productId = data.data.id
+  const productId = data.id
 
   const product = await productModuleService.retrieveProduct(
     productId

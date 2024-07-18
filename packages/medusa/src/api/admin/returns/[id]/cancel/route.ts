@@ -6,14 +6,17 @@ import {
 import { AdminPostCancelReturnReqSchemaType } from "../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminPostCancelReturnReqSchemaType>,
   res: MedusaResponse
 ) => {
-  const input = req.validatedBody as AdminPostCancelReturnReqSchemaType
+  const { id } = req.params
 
   const workflow = cancelReturnWorkflow(req.scope)
   const { result } = await workflow.run({
-    input,
+    input: {
+      ...req.validatedBody,
+      return_id: id,
+    },
   })
 
   res.status(200).json({ return: result })
