@@ -177,7 +177,6 @@ const main = async function ({ directory }) {
     configModule,
     linkModules: pluginLinks,
     container,
-    action: "run",
   })
 
   const actionPlan = await planner.createPlan()

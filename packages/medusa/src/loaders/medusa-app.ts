@@ -135,16 +135,12 @@ export async function runMedusaAppMigrations({
  *
  * @param configModule
  * @param container
- * @param moduleNames
  * @param linkModules
- * @param action
  */
 export async function getLinksExecutionPlanner({
   configModule,
   container,
-  moduleNames,
   linkModules,
-  action = "run",
 }: {
   configModule: {
     modules?: CommonTypes.ConfigModule["modules"]
@@ -152,16 +148,7 @@ export async function getLinksExecutionPlanner({
   }
   linkModules?: MedusaAppOptions["linkModules"]
   container: MedusaContainer
-} & (
-  | {
-      moduleNames?: never
-      action: "run"
-    }
-  | {
-      moduleNames: string[]
-      action: "revert" | "generate"
-    }
-)): Promise<ILinkMigrationsPlanner> {
+}): Promise<ILinkMigrationsPlanner> {
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION

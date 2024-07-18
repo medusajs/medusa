@@ -4,6 +4,7 @@ import {
   isObject,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
+import { getLinksExecutionPlanner } from "@medusajs/medusa/dist/loaders/medusa-app"
 
 export async function initDb({
   cwd,
@@ -40,8 +41,16 @@ export async function initDb({
   try {
     const {
       runMedusaAppMigrations,
+      getLinksExecutionPlanner,
     } = require("@medusajs/medusa/dist/loaders/medusa-app")
     await runMedusaAppMigrations({ configModule, container })
+    const planner = await getLinksExecutionPlanner({
+      configModule,
+      container,
+    })
+
+    const actionPlan = await planner.createPlan()
+    await planner.executePlan(actionPlan)
   } catch (err) {
     console.error("Something went wrong while running the migrations")
     throw err
