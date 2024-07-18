@@ -12,6 +12,13 @@
  *     type: string
  *     title: internal_note
  *     description: The return's internal note.
+ *   reason_id:
+ *     type: string
+ *     title: reason_id
+ *     description: The return's reason id.
+ *   metadata:
+ *     type: object
+ *     description: The return's metadata.
  * 
 */
 
