@@ -11,21 +11,10 @@ const ArrowDownCircle = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <g
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          clipPath="url(#a)"
-        >
-          <path d="M9.722 8.167 7.5 10.389 5.278 8.167M7.5 10.389V4.61" />
-          <path d="M7.5 13.945a6.444 6.444 0 1 0 0-12.89 6.444 6.444 0 0 0 0 12.89" />
-        </g>
-        <defs>
-          <clipPath id="a">
-            <path fill="#fff" d="M0 0h15v15H0z" />
-          </clipPath>
-        </defs>
+        <path
+          fill={color}
+          d="M7.5.389C3.58.389.389 3.579.389 7.5s3.19 7.111 7.111 7.111 7.111-3.19 7.111-7.111S11.421.389 7.5.389m2.693 8.249L7.971 10.86a.665.665 0 0 1-.942 0L4.807 8.638a.667.667 0 1 1 .943-.943l1.084 1.084V4.611a.667.667 0 0 1 1.334 0V8.78l1.084-1.084a.667.667 0 1 1 .943.943z"
+        />
       </svg>
     )
   }
