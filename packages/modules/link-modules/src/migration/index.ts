@@ -296,11 +296,15 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       return updateSQL.match(new RegExp(`${fragment}`, "ig"))
     })
 
-    return {
-      action: usesUnsafeCommands ? "notify" : "update",
-      linkDescriptor,
-      tableName,
-      sql: updateSQL,
+    try {
+      return {
+        action: usesUnsafeCommands ? "notify" : "update",
+        linkDescriptor,
+        tableName,
+        sql: updateSQL,
+      }
+    } finally {
+      await orm.close(true)
     }
   }
 
@@ -354,7 +358,11 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       })
     })
 
-    return executionActions
+    try {
+      return executionActions
+    } finally {
+      await orm.close(true)
+    }
   }
 
   /**
@@ -381,6 +389,6 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
             return
         }
       })
-    )
+    ).finally(() => orm.close(true))
   }
 }

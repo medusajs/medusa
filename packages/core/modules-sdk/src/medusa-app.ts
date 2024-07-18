@@ -57,7 +57,7 @@ declare module "@medusajs/types" {
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
 export type GenerateMigrations = (moduleNames: string[]) => Promise<void>
-export type GetLinkExecutionPlanner = () => Promise<ILinkMigrationsPlanner>
+export type GetLinkExecutionPlanner = () => ILinkMigrationsPlanner
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
@@ -370,7 +370,7 @@ async function MedusaApp_({
       generateMigrations: async () => {
         throw new Error("Generate migrations not allowed in loaderOnly mode")
       },
-      linkMigrationExecutionPlanner: async () => {
+      linkMigrationExecutionPlanner: () => {
         throw new Error("Generate migrations not allowed in loaderOnly mode")
       },
     }
@@ -499,7 +499,7 @@ async function MedusaApp_({
     })
   }
 
-  const getMigrationPlannerFn = async () => {
+  const getMigrationPlannerFn = () => {
     const options: Partial<ModuleServiceInitializeOptions> =
       "scope" in linkModuleOrOptions
         ? { ...linkModuleOrOptions.options }
@@ -588,5 +588,5 @@ export async function MedusaAppGetLinksExecutionPlanner(
     migrationOnly,
   })
 
-  return await linkMigrationExecutionPlanner()
+  return linkMigrationExecutionPlanner()
 }

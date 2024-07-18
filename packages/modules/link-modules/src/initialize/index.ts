@@ -8,7 +8,6 @@ import {
   ExternalModuleDeclaration,
   ILinkModule,
   LinkModuleDefinition,
-  LoaderOptions,
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,
@@ -192,14 +191,10 @@ export const initialize = async (
  * If any unsafe sql is identified then we will notify the user to act manually.
  *
  * @param options
- * @param logger
  * @param pluginLinksDefinition
  */
-export async function getMigrationPlanner(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+export function getMigrationPlanner(
+  options: ModuleServiceInitializeOptions,
   pluginLinksDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
@@ -247,7 +242,5 @@ export async function getMigrationPlanner(
     }
   }
 
-  const planner = new MigrationsExecutionPlanner(allLinksToLoad, options)
-
-  return planner
+  return new MigrationsExecutionPlanner(allLinksToLoad, options)
 }
