@@ -27,6 +27,7 @@ export type LinkMigrationsPlannerAction =
     }
   | {
       action: "delete"
+      linkDescriptor: PlannerActionLinkDescriptor
       tableName: string
     }
 

@@ -4,10 +4,7 @@ import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
 import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
 import { getLinksExecutionPlanner } from "../loaders/medusa-app"
-import {
-  LinkMigrationsPlannerAction,
-  PlannerActionLinkDescriptor,
-} from "@medusajs/types"
+import { LinkMigrationsPlannerAction } from "@medusajs/types"
 import checkbox, { Separator } from "@inquirer/checkbox"
 
 const TERMINAL_SIZE = process.stdout.columns
@@ -37,10 +34,8 @@ function displaySection({
 }
 
 function buildLinkDescription(action: LinkMigrationsPlannerAction) {
-  const { linkDescriptor } = action as LinkMigrationsPlannerAction & {
-    linkDescriptor: PlannerActionLinkDescriptor
-  }
-  return `${action.tableName} table (via ${linkDescriptor.fromModule}.${linkDescriptor.fromModel} to ${linkDescriptor.toModule}.${linkDescriptor.toModel})`
+  const { linkDescriptor } = action
+  return `${linkDescriptor.fromModule} (${linkDescriptor.fromModel}) <> ${linkDescriptor.toModule} (${linkDescriptor.toModel}) (table: ${action.tableName})`
 }
 
 function showMessage(
@@ -67,7 +62,7 @@ async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
     choices: [
       ...actions.map((action) => {
         return {
-          name: action.tableName,
+          name: buildLinkDescription(action),
           value: action,
           checked: true,
         }

@@ -95,6 +95,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       CREATE TABLE IF NOT EXISTS "${this.tableName}" (
         id SERIAL PRIMARY KEY,
         table_name VARCHAR(255) NOT NULL UNIQUE,
+        link_descriptor JSONB NOT NULL DEFAULT '{}'::jsonb,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `)
@@ -104,12 +105,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    * Ensure the migrations table is in sync
    *
    * @param orm
-   * @param linksTableNames
    * @protected
    */
   protected async ensureMigrationsTableUpToDate(
-    orm: MikroORM<PostgreSqlDriver>,
-    linksTableNames: string[]
+    orm: MikroORM<PostgreSqlDriver>
   ) {
     const existingTables: string[] = (
       await orm.em
@@ -127,16 +126,26 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
         )
     )
       .map(({ table_name }) => table_name)
-      .filter((tableName) => linksTableNames.includes(tableName))
+      .filter((tableName) =>
+        this.#linksEntities.some(
+          ({ entity }) => entity.meta.collection === tableName
+        )
+      )
+
+    const orderedDescriptors = existingTables.map((tableName) => {
+      return this.#linksEntities.find(
+        ({ entity }) => entity.meta.collection === tableName
+      )!.linkDescriptor
+    })
 
     await orm.em
       .getDriver()
       .getConnection()
       .execute(
         `
-        INSERT INTO ${this.tableName} (table_name) VALUES (?) ON CONFLICT DO NOTHING;
+        INSERT INTO ${this.tableName} (table_name, link_descriptor) VALUES (?, ?) ON CONFLICT DO NOTHING;
     `,
-        [existingTables]
+        [existingTables, orderedDescriptors]
       )
   }
 
@@ -144,25 +153,28 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    * Insert tuple to the migrations table and create the link table
    *
    * @param orm
-   * @param tableName
-   * @param sql
+   * @param action
    * @protected
    */
   protected async createLinkTable(
     orm: MikroORM<PostgreSqlDriver>,
-    tableName: string | string[],
-    sql: string = ""
+    action: LinkMigrationsPlannerAction & {
+      linkDescriptor: PlannerActionLinkDescriptor
+      sql: string
+    }
   ) {
-    const normalizedTableName = Array.isArray(tableName)
-      ? tableName
-      : [tableName]
+    const { tableName, linkDescriptor, sql } = action
 
-    await orm.em.getDriver().getConnection().execute(`
-      INSERT INTO "${this.tableName}" (table_name) VALUES (${normalizedTableName
-      .map((name) => `'${name}'`)
-      .join(",")});
+    await orm.em
+      .getDriver()
+      .getConnection()
+      .execute(
+        `
+      INSERT INTO "${this.tableName}" (table_name, link_descriptor) VALUES (?, ?);
       ${sql}
-    `)
+    `,
+        [tableName, linkDescriptor]
+      )
   }
 
   /**
@@ -188,16 +200,22 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    */
   protected async getTrackedLinksTables(
     orm: MikroORM<PostgreSqlDriver>
-  ): Promise<string[]> {
+  ): Promise<
+    { table_name: string; link_descriptor: PlannerActionLinkDescriptor }[]
+  > {
     const results = await orm.em.getDriver().getConnection().execute<
       {
         table_name: string
+        link_descriptor: PlannerActionLinkDescriptor
       }[]
     >(`
-      SELECT table_name from "${this.tableName}"
+      SELECT table_name, link_descriptor from "${this.tableName}"
     `)
 
-    return results.map((tuple) => tuple.table_name)
+    return results.map((tuple) => ({
+      table_name: tuple.table_name,
+      link_descriptor: tuple.link_descriptor,
+    }))
   }
 
   /**
@@ -290,12 +308,9 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     const executionActions: LinkMigrationsPlannerAction[] = []
 
     const trackedTables = await this.getTrackedLinksTables(orm)
+    const trackedTablesNames = trackedTables.map(({ table_name }) => table_name)
 
-    const linksTableNames = this.#linksEntities.map(
-      ({ entity }) => entity.meta.collection
-    )
-
-    await this.ensureMigrationsTableUpToDate(orm, linksTableNames)
+    await this.ensureMigrationsTableUpToDate(orm)
 
     /**
      * Looping through the new set of entities and generating
@@ -303,18 +318,29 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
      */
     for (let { entity, linkDescriptor } of this.#linksEntities) {
       executionActions.push(
-        await this.getEntityMigrationPlan(linkDescriptor, entity, trackedTables)
+        await this.getEntityMigrationPlan(
+          linkDescriptor,
+          entity,
+          trackedTablesNames
+        )
       )
     }
+
+    const linksTableNames = this.#linksEntities.map(
+      ({ entity }) => entity.meta.collection
+    )
 
     /**
      * Finding the tables to be removed
      */
-    const tablesToRemove = arrayDifference(trackedTables, linksTableNames)
+    const tablesToRemove = arrayDifference(trackedTablesNames, linksTableNames)
     tablesToRemove.forEach((tableToRemove) => {
       executionActions.push({
         action: "delete",
         tableName: tableToRemove,
+        linkDescriptor: trackedTables.find(
+          ({ table_name }) => tableToRemove === table_name
+        )!.link_descriptor,
       })
     })
 
@@ -338,7 +364,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
           case "delete":
             return await this.dropLinkTable(orm, action.tableName)
           case "create":
-            return await this.createLinkTable(orm, action.tableName, action.sql)
+            return await this.createLinkTable(orm, action)
           case "update":
             return await orm.em.getDriver().getConnection().execute(action.sql)
           default:
