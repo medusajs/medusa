@@ -1,11 +1,11 @@
   import * as React from "react"
   import { cleanup, render, screen } from "@testing-library/react"
 
-  import CheckCircle from "../check-circle"
+  import Trophy from "../trophy"
 
-  describe("CheckCircle", () => {
+  describe("Trophy", () => {
     it("should render the icon without errors", async () => {
-      render(<CheckCircle data-testid="icon" />)
+      render(<Trophy data-testid="icon" />)
 
 
       const svgElement = screen.getByTestId("icon")
