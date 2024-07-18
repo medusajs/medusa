@@ -120,6 +120,8 @@ export const ReturnCreateForm = ({
         item_id: i.id,
         quantity: i.detail.return_requested_quantity,
         note: i.actions.find((a) => a.action === "RETURN_ITEM")?.internal_note,
+        reason_id: i.actions.find((a) => a.action === "RETURN_ITEM")?.details
+          ?.reason_id,
       })),
       option_id: "",
       location_id: "",
@@ -165,11 +167,15 @@ export const ReturnCreateForm = ({
 
       if (ind > -1) {
         if (items[ind].quantity !== i.detail.return_requested_quantity) {
+          const returnItemAction = i.actions.find(
+            (a) => a.action === "RETURN_ITEM"
+          )
+
           update(ind, {
             ...items[ind],
             quantity: i.detail.return_requested_quantity,
-            note: i.actions.find((a) => a.action === "RETURN_ITEM")
-              ?.internal_note,
+            note: returnItemAction?.internal_note,
+            reason_id: returnItemAction?.details?.reason_id,
           })
         }
       } else {

@@ -156,6 +156,7 @@ function ReturnItem({
                             className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
                             value={value}
                             onChange={(v) => {
+                              onUpdate({ reason_id: v })
                               onChange(v)
                             }}
                             {...field}
@@ -175,7 +176,10 @@ function ReturnItem({
                 type="button"
                 className="flex-shrink"
                 variant="transparent"
-                onClick={() => form.setValue(`items.${index}.reason_id`, null)}
+                onClick={() => {
+                  onUpdate({ reason_id: null }) // TODO BE: we should be able to set to unset reason here
+                  form.setValue(`items.${index}.reason_id`, "")
+                }}
               >
                 <XMark className="text-ui-fg-muted" />
               </IconButton>

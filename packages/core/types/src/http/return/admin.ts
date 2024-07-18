@@ -50,6 +50,7 @@ export interface AdminAddReturnItems {
 export interface AdminUpdateReturnItems {
   quantity?: number
   internal_note?: string
+  reason_id?: string
 }
 
 export interface AdminAddReturnShipping {
