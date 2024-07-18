@@ -387,7 +387,7 @@ export interface UpdateOrderItemWithSelectorDTO {
 interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
-  internal_note?: string | null
+  internal_note?: string
   note?: string | null
   metadata?: Record<string, unknown> | null
   [key: string]: any
@@ -399,7 +399,7 @@ interface BaseOrderBundledActionsDTO {
   exchange_id?: string
 
   description?: string
-  internal_note?: string | null
+  internal_note?: string
   reference?: string
   reference_id?: string
   created_by?: string | null
@@ -445,6 +445,7 @@ export interface UpdateReturnDTO {
   metadata?: Record<string, unknown> | null
   items?: {
     quantity: BigNumberInput
+    internal_note?: string | null
     note?: string | null
     reason_id?: string | null
     metadata?: Record<string, unknown> | null

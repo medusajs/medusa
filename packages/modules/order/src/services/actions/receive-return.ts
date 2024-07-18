@@ -16,7 +16,6 @@ function createReturnItems(data) {
     details: {
       reference_id: item.id,
       quantity: item.quantity,
-      metadata: item.metadata,
     },
   }))
 }

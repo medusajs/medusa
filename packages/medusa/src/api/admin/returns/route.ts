@@ -1,6 +1,8 @@
 import { beginReturnOrderWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -42,6 +44,7 @@ export const POST = async (
 ) => {
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const workflow = beginReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({
@@ -59,10 +62,13 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderReturn] = await remoteQuery(queryObject)
+  const [order, orderReturn] = await promiseAll([
+    orderModuleService.retrieveOrder(result.order_id),
+    remoteQuery(queryObject),
+  ])
 
   res.json({
-    order_preview: result,
-    return: orderReturn,
+    order,
+    return: orderReturn[0],
   })
 }

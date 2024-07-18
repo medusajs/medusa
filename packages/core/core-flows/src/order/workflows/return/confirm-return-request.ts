@@ -42,7 +42,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
   function (input: WorkflowInput): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
-      fields: ["id", "status", "order_id"],
+      fields: ["id", "status", "order_id", "canceled_at"],
       variables: { id: input.return_id },
       list: false,
       throw_if_key_not_found: true,
@@ -50,7 +50,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "version", "items"],
+      fields: ["id", "version", "canceled_at"],
       variables: { id: orderReturn.order_id },
       list: false,
       throw_if_key_not_found: true,

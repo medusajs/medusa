@@ -62,7 +62,7 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
   ): WorkflowData {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
-      fields: ["id", "status", "order_id"],
+      fields: ["id", "status", "order_id", "canceled_at"],
       variables: { id: input.return_id },
       list: false,
       throw_if_key_not_found: true,

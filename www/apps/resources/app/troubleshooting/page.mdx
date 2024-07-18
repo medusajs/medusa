@@ -6,4 +6,24 @@ export const metadata = {
 
 # {metadata.title}
 
+## Update Medusa Version
+
+While Medusa v2 is still in active development, a version is released every three hours under the `preview` tag.
+
+If you run into issues during your development, try first to remove the `node_modules` directory and `yarn.lock` file (or `package-lock.json`) and re-install the dependencies:
+
+```bash
+rm -rf node_modules
+rm yarn.lock # or package-lock.json
+yarn install # or npm install
+```
+
+This updates the Medusa v2 dependencies to the latest `preview` version, which may have resolved your issue.
+
+If your issue still persists, check out the troubleshooting guides below or [create a GitHub issue](https://github.com/medusajs/medusa/issues/new?assignees=&labels=status:+needs+triaging,+version:+2.0&projects=&template=bug_report_v2.md&title=).
+
+---
+
+## Guides
+
 <ChildDocs />

@@ -30,6 +30,10 @@
  *           type: string
  *           title: internal_note
  *           description: The item's internal note.
+ *         reason_id:
+ *           type: string
+ *           title: reason_id
+ *           description: The item's reason id.
  *         metadata:
  *           type: object
  *           description: The item's metadata.

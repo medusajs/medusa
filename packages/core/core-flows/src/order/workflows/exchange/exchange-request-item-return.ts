@@ -57,7 +57,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
   ): WorkflowData<OrderDTO> {
     const orderExchange = useRemoteQueryStep({
       entry_point: "order_exchange",
-      fields: ["id", "order_id", "return_id"],
+      fields: ["id", "order_id", "return_id", "canceled_at"],
       variables: { id: input.exchange_id },
       list: false,
       throw_if_key_not_found: true,
@@ -68,7 +68,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "return",
-        fields: ["id", "status", "order_id"],
+        fields: ["id", "status", "order_id", "canceled_at"],
         variables: { id: orderExchange.return_id },
         list: false,
         throw_if_key_not_found: true,

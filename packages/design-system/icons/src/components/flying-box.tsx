@@ -11,21 +11,20 @@ const FlyingBox = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <g
+        <path
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          clipPath="url(#a)"
-        >
-          <path d="M1.78 4.232h-.615M2.394 2.388H1.165M10.71 12.612H2.105M10.93 2.388l-.606 2.02a.615.615 0 0 1-.59.44H7.823a.615.615 0 0 1-.589-.792l.5-1.668M5.313 8.157H6.62" />
-          <path d="M11.03 10.248H4.522c-.989 0-1.697-1.015-1.413-2.024l1.327-4.716c.188-.664.762-1.12 1.414-1.12h6.508c.989 0 1.697 1.016 1.414 2.024l-1.328 4.716c-.188.665-.762 1.12-1.414 1.12" />
-        </g>
-        <defs>
-          <clipPath id="a">
-            <path fill="#fff" d="M0 0h15v15H0z" />
-          </clipPath>
-        </defs>
+          d="M7.5 1.5v5.333M11.278 4.167H3.722c-.982 0-1.778.796-1.778 1.778v5.333c0 .982.796 1.778 1.778 1.778h7.556c.982 0 1.778-.796 1.778-1.778V5.945c0-.982-.796-1.778-1.778-1.778"
+        />
+        <path
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          d="m2.167 5.086 1.288-2.598c.3-.605.917-.988 1.593-.988h4.904c.676 0 1.293.383 1.593.988l1.288 2.599M4.167 10.833h1.777"
+        />
       </svg>
     )
   }
