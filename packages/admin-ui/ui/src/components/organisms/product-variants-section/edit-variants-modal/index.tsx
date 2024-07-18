@@ -143,11 +143,11 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
                     ({product.variants.length})
                   </span>
                 </h2>
-                <div className="pr-base inter-small-semibold text-grey-50 mb-small grid grid-cols-[1fr_1fr_48px]">
-                  <p className="col-start-1 col-end-1 text-left">
+                <div className="pe-base inter-small-semibold text-grey-50 mb-small grid grid-cols-[1fr_1fr_48px]">
+                  <p className="col-start-1 col-end-1 text-start">
                     {t("edit-variants-modal-variant", "Variant")}
                   </p>
-                  <p className="col-start-2 col-end-2 text-right">
+                  <p className="col-start-2 col-end-2 text-end">
                     {t("edit-variants-modal-inventory", "Inventory")}
                   </p>
                 </div>

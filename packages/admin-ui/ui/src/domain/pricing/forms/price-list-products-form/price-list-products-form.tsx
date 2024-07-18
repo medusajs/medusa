@@ -177,7 +177,7 @@ const usePriceListProductsFormColumns = () => {
       }),
       columnHelper.accessor("variants", {
         header: () => (
-          <div className="text-right">
+          <div className="text-end">
             {t("price-list-products-form-inventory-label", "Inventory")}
           </div>
         ),
@@ -204,7 +204,7 @@ const usePriceListProductsFormColumns = () => {
               }
             ) ?? undefined
 
-          return <div className="text-right">{content}</div>
+          return <div className="text-end">{content}</div>
         },
       }),
     ],

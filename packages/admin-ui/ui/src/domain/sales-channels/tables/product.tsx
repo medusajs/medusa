@@ -515,7 +515,7 @@ function SalesChannelProductsSelectModal(
               variant="ghost"
               size="small"
               onClick={handleClose}
-              className="mr-2"
+              className="me-2"
             >
               Close
             </Button>

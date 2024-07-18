@@ -165,7 +165,7 @@ const Input = <
   return (
     <div className="space-between flex h-full w-full items-center">
       <div className="flex w-full items-center">
-        <span className="text-grey-40 mr-2">
+        <span className="text-grey-40 me-2">
           <SearchIcon size={16} />
         </span>
         <components.Input {...props} />
@@ -266,10 +266,10 @@ const Option = <
   return (
     <components.Option
       {...props}
-      className="bg-grey-0 active:bg-grey-0 my-1 py-0 px-2"
+      className="bg-grey-0 active:bg-grey-0 my-1 px-2 py-0"
     >
       <div
-        className={`item-renderer hover:bg-grey-10 h-full cursor-pointer rounded py-2 px-2`}
+        className={`item-renderer hover:bg-grey-10 h-full cursor-pointer rounded px-2 py-2`}
       >
         <div className="flex h-full items-center">
           {props.data?.value !== "all" && props.data?.label !== "Select All" ? (
@@ -279,7 +279,7 @@ const Option = <
               ) : (
                 <RadioAdornment isSelected={props.isSelected} />
               )}
-              <span className="text-grey-90 inter-base-regular ml-3">
+              <span className="text-grey-90 inter-base-regular ms-3">
                 {props.data.label}
               </span>
             </>

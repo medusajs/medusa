@@ -46,7 +46,6 @@ export const supportedLanguages = [
     name: "Español",
   },
   {
-
     locale: "hi",
     name: "Hindi",
   },
@@ -76,24 +75,29 @@ export const supportedLanguages = [
   },
   {
     locale: "ko",
-    name: "한국어"
+    name: "한국어",
   },
   {
     locale: "ja",
-    name: "日本語"
+    name: "日本語",
   },
   {
     locale: "cs",
-    name: "Čeština"
+    name: "Čeština",
   },
   {
     locale: "zh",
     name: "简体中文",
-  }
+  },
 ].sort((a, b) => a.locale.localeCompare(b.locale))
 
 const adminPath = getFullAdminPath()
 const pathToLoadFrom = `${adminPath}public/locales/{{lng}}/{{ns}}.json`
+
+const updateDocumentDirection = (lng: string) => {
+  const direction = i18n.dir(lng)
+  document.documentElement.setAttribute("dir", direction)
+}
 
 void i18n
   .use(Backend)
@@ -117,3 +121,11 @@ void i18n
       convertDetectedLanguage: (lng) => lng.split("-")[0],
     },
   })
+
+i18n.on("languageChanged", (lng) => {
+  updateDocumentDirection(lng)
+})
+
+updateDocumentDirection(i18n.language)
+
+export default i18n

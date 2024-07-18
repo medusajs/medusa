@@ -71,7 +71,7 @@ const ResendModal: React.FC<ResendModalProps> = ({
               <div className="flex">
                 <Button
                   variant="ghost"
-                  className="text-small mr-2 w-32 justify-center"
+                  className="text-small me-2 w-32 justify-center"
                   size="large"
                   onClick={handleCancel}
                 >

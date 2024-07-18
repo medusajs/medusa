@@ -34,7 +34,7 @@ const BatchJobFileCard = ({
         {!!icon && icon}
       </div>
 
-      <div className="relative w-full pl-4 text-left">
+      <div className="relative w-full ps-4 text-start">
         <div className="inter-small-regular max-w-[80%] overflow-hidden truncate">
           {fileName}
         </div>

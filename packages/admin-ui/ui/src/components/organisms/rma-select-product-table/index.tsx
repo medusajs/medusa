@@ -117,10 +117,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
           <Table.HeadCell colSpan={2}>
             {t("rma-select-product-table-product-details", "Product Details")}
           </Table.HeadCell>
-          <Table.HeadCell className="pr-8 text-right">
+          <Table.HeadCell className="pe-8 text-end">
             {t("rma-select-product-table-quantity", "Quantity")}
           </Table.HeadCell>
-          <Table.HeadCell className="text-right">
+          <Table.HeadCell className="text-end">
             {t("rma-select-product-table-refundable", "Refundable")}
           </Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
@@ -141,10 +141,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
             <Fragment key={item.id}>
               <Table.Row className={clsx("border-b-grey-0 hover:bg-grey-0")}>
                 <Table.Cell>
-                  <div className="ml-1 flex h-full items-center">
+                  <div className="ms-1 flex h-full items-center">
                     <div
                       onClick={() => handleReturnToggle(item)}
-                      className={`text-grey-0 border-grey-30 rounded-base mr-4 flex h-5 w-5 cursor-pointer justify-center border ${
+                      className={`text-grey-0 border-grey-30 rounded-base me-4 flex h-5 w-5 cursor-pointer justify-center border ${
                         checked && "bg-violet-60"
                       }`}
                     >
@@ -170,7 +170,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         src={item.thumbnail}
                       />
                     </div>
-                    <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
+                    <div className="inter-small-regular text-grey-50 ms-4 flex flex-col">
                       <span>
                         <span className="text-grey-90">{item.title}</span>
                       </span>
@@ -188,12 +188,12 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     </div>
                   </div>
                 </Table.Cell>
-                <Table.Cell className="w-32 pr-8 text-right">
+                <Table.Cell className="w-32 pe-8 text-end">
                   {item.id in toReturn ? (
-                    <div className="text-grey-50 flex w-full justify-end text-right ">
+                    <div className="text-grey-50 flex w-full justify-end text-end ">
                       <span
                         onClick={() => handleQuantity(-1, item)}
-                        className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                        className="hover:bg-grey-20 me-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                       >
                         <MinusIcon size={16} />
                       </span>
@@ -201,7 +201,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                       <span
                         onClick={() => handleQuantity(1, item)}
                         className={clsx(
-                          "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                          "hover:bg-grey-20 ms-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                         )}
                       >
                         <PlusIcon size={16} />
@@ -213,13 +213,13 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     </span>
                   )}
                 </Table.Cell>
-                <Table.Cell className="text-right">
+                <Table.Cell className="text-end">
                   {formatAmountWithSymbol({
                     currency: order.currency_code,
                     amount: item.refundable || 0,
                   })}
                 </Table.Cell>
-                <Table.Cell className="text-grey-40 pr-1 text-right">
+                <Table.Cell className="text-grey-40 pe-1 text-end">
                   {order.currency_code.toUpperCase()}
                 </Table.Cell>
               </Table.Row>
@@ -230,13 +230,13 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                     <div className="max-w-[470px] truncate">
                       {toReturn[item.id]?.reason && (
                         <span className="inter-small-regular text-grey-40">
-                          <span className="text-grey-80 mr-1">
-                            <span className="inter-small-semibold mr-1">
+                          <span className="text-grey-80 me-1">
+                            <span className="inter-small-semibold me-1">
                               {toReturn[item.id]?.reason.label}
                             </span>
                           </span>
                           {toReturn[item.id]?.note || ""}
-                          <span className="ml-2">
+                          <span className="ms-2">
                             {toReturn[item.id]?.images?.length > 0 && (
                               <>
                                 {t(

@@ -75,7 +75,7 @@ const FilterDropdownContainer = ({
           <Button
             size="small"
             tabIndex={-1}
-            className="border-grey-20 mr-2 w-full border"
+            className="border-grey-20 me-2 w-full border"
             variant="ghost"
             onClick={() => onClear()}
           >

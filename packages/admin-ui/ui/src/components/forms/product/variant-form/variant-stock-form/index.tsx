@@ -184,12 +184,12 @@ const VariantStockForm = ({ form }: Props) => {
                 {selectedLocations.map((sl, i) => (
                   <div key={sl.id} className="flex items-center">
                     <div className="inter-base-regular flex items-center">
-                      <IconBadge className="mr-base">
+                      <IconBadge className="me-base">
                         <BuildingsIcon />
                       </IconBadge>
                       {stockLocationsMap.get(sl.location_id)?.name}
                     </div>
-                    <div className="ml-auto flex">
+                    <div className="ms-auto flex">
                       <InputField
                         placeholder={"0"}
                         type="number"

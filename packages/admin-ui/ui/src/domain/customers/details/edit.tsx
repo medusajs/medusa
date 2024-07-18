@@ -153,7 +153,7 @@ const EditCustomerModal = ({
               variant="secondary"
               size="small"
               onClick={handleClose}
-              className="mr-2"
+              className="me-2"
               type="button"
             >
               {t("details-cancel", "Cancel")}

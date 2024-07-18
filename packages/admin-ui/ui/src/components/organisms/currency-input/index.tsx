@@ -259,7 +259,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
                 t("currency-input-amount-is-not-valid", "Amount is not valid")
               }
             >
-              <span className="inter-base-regular text-grey-40 mr-xsmall">
+              <span className="inter-base-regular text-grey-40 me-xsmall">
                 {currencyInfo.symbol_native}
               </span>
             </Tooltip>
@@ -279,7 +279,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
           />
           <div className="flex items-center">
             <button
-              className="text-grey-50 hover:bg-grey-10 rounded-soft mr-2 h-4 w-4 cursor-pointer"
+              className="text-grey-50 hover:bg-grey-10 rounded-soft me-2 h-4 w-4 cursor-pointer"
               type="button"
               onClick={() => handleManualValueChange(-step)}
             >

@@ -57,7 +57,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
         maxSize: 36,
         header: ({ table }) => {
           return (
-            <div className="pl-base pr-large">
+            <div className="ps-base pe-large">
               <IndeterminateCheckbox
                 checked={table.getIsAllRowsSelected()}
                 onChange={(e) => {
@@ -76,7 +76,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
               name={path(`items.${index}.receive`)}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <div className="pl-base pr-large">
+                  <div className="ps-base pe-large">
                     <IndeterminateCheckbox
                       checked={value}
                       onChange={(v: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +123,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
       columnHelper.display({
         id: "quantity",
         header: () => (
-          <p className="text-right">
+          <p className="text-end">
             {t("items-to-receive-form-quantity", "Quantity")}
           </p>
         ),
@@ -154,13 +154,13 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
       columnHelper.accessor("refundable", {
         maxSize: 80,
         header: () => (
-          <p className="text-right">
+          <p className="text-end">
             {t("items-to-receive-form-refundable", "Refundable")}
           </p>
         ),
         cell: ({ getValue }) => {
           return (
-            <p className="text-right">
+            <p className="text-end">
               {formatAmountWithSymbol({
                 amount: getValue() || 0,
                 currency: orderCurrency,
@@ -174,7 +174,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
         maxSize: 20,
         cell: () => {
           return (
-            <p className="pl-base text-grey-50">
+            <p className="ps-base text-grey-50">
               {orderCurrency.toUpperCase()}
             </p>
           )

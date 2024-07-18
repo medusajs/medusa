@@ -134,7 +134,7 @@ const GiftCardDetails = () => {
                       })}
                     </div>
                   </div>
-                  <div className="flex flex-col pl-6">
+                  <div className="flex flex-col ps-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
                       {t("details-balance", "Balance")}
                     </div>
@@ -145,14 +145,14 @@ const GiftCardDetails = () => {
                       })}
                     </div>
                   </div>
-                  <div className="flex flex-col pl-6">
+                  <div className="flex flex-col ps-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
                       {t("details-region", "Region")}
                     </div>
                     <div>{giftCard.region.name}</div>
                   </div>
                   {giftCard.ends_at && (
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col ps-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-expires-on", "Expires on")}
                       </div>
@@ -161,7 +161,7 @@ const GiftCardDetails = () => {
                       </div>
                     </div>
                   )}
-                  <div className="flex flex-col pl-6">
+                  <div className="flex flex-col ps-6">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
                       {t("details-created", "Created")}
                     </div>

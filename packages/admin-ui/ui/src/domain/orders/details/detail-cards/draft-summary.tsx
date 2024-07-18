@@ -166,7 +166,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         {cart?.items?.map((item, i) => (
           <div
             key={i}
-            className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]"
+            className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2"
           >
             <div className="flex justify-center space-x-4">
               <div className="rounded-rounded flex h-[48px] w-[36px] items-center justify-center">
@@ -191,7 +191,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
               </div>
             </div>
             <div className="flex  items-center">
-              <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
+              <div className="small:space-x-2 medium:space-x-4 large:space-x-6 me-3 flex">
                 <div className="inter-small-regular text-grey-50">
                   {formatAmountWithSymbol({
                     amount: (item?.total ?? 0) / item.quantity,
@@ -233,7 +233,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           <div key={index} className="mt-4 flex items-center justify-between">
             <div className="inter-small-regular text-grey-90 flex items-center">
               Discount:{" "}
-              <Badge className="ml-3" variant="default">
+              <Badge className="ms-3" variant="default">
                 {discount.code}
               </Badge>
             </div>

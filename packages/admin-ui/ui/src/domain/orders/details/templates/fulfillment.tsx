@@ -164,7 +164,7 @@ export const FormattedFulfillment = ({
                 : t("templates-shipping-from", "Shipping from")}{" "}
             </div>
             <div className="flex items-center pt-2">
-              <IconBadge className="mr-2">
+              <IconBadge className="me-2">
                 <BuildingsIcon />
               </IconBadge>
               {getLocationNameById(fulfillment.location_id)}

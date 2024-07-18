@@ -116,7 +116,7 @@ const CustomerDetail = () => {
               </div>
               <div>{moment(customer.created_at).format("DD MMM YYYY")}</div>
             </div>
-            <div className="flex flex-col pl-6">
+            <div className="flex flex-col ps-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 {t("details-phone", "Phone")}
               </div>
@@ -124,13 +124,13 @@ const CustomerDetail = () => {
                 {customer.phone || "N/A"}
               </div>
             </div>
-            <div className="flex flex-col pl-6">
+            <div className="flex flex-col ps-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 {t("details-orders", "Orders")}
               </div>
               <div>{customer.orders.length}</div>
             </div>
-            <div className="h-100 flex flex-col pl-6">
+            <div className="h-100 flex flex-col ps-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 {t("details-user", "User")}
               </div>

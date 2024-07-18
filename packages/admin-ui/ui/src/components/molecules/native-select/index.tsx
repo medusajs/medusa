@@ -52,11 +52,11 @@ type ItemProps = RadixSelect.SelectItemProps
 const Item: React.FC<ItemProps> = ({ children, ...props }) => (
   <RadixSelect.Item
     className={clsx(
-      "inter-base-regular hover:bg-grey-10 relative flex items-center justify-start rounded py-1.5 px-9"
+      "inter-base-regular hover:bg-grey-10 relative flex items-center justify-start rounded px-9 py-1.5"
     )}
     {...props}
   >
-    <RadixSelect.ItemIndicator className="bold-active-item absolute left-2.5 flex items-center justify-center pr-2.5">
+    <RadixSelect.ItemIndicator className="bold-active-item absolute left-2.5 flex items-center justify-center pe-2.5">
       <CheckIcon size={ICON_SIZE} />
     </RadixSelect.ItemIndicator>
     <RadixSelect.ItemText>{children}</RadixSelect.ItemText>

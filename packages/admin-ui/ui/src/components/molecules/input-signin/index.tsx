@@ -56,7 +56,7 @@ const SigninInput = React.forwardRef(
           "focus-within:shadow-input focus-within:border-violet-60",
           "flex items-center",
           {
-            "text-grey-40 pl-xsmall pointer-events-none focus-within:border-none focus-within:shadow-none":
+            "text-grey-40 ps-xsmall pointer-events-none focus-within:border-none focus-within:shadow-none":
               props.readOnly,
           },
           className
@@ -64,9 +64,9 @@ const SigninInput = React.forwardRef(
       >
         <input
           className={clsx(
-            "remove-number-spinner leading-base w-full bg-transparent py-3 px-4 outline-none outline-0",
+            "remove-number-spinner leading-base w-full bg-transparent px-4 py-3 outline-none outline-0",
             {
-              "pl-xsmall": props.readOnly,
+              "ps-xsmall": props.readOnly,
             }
           )}
           ref={inputRef}
@@ -89,7 +89,7 @@ const SigninInput = React.forwardRef(
           </button>
         )}
         {props.readOnly && (
-          <LockIcon size={16} className="text-grey-40 mr-base" />
+          <LockIcon size={16} className="text-grey-40 me-base" />
         )}
       </div>
     )

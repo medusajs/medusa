@@ -35,7 +35,7 @@ const useDraftOrderTableColumns = () => {
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell
             {...getCellProps()}
-            className="pl-2"
+            className="ps-2"
           >{`#${value}`}</Table.Cell>
         ),
       },
@@ -79,7 +79,7 @@ const useDraftOrderTableColumns = () => {
         Header: t("draft-order-table-status", "Status"),
         accessor: "status",
         Cell: ({ cell: { value, getCellProps } }) => (
-          <Table.Cell {...getCellProps()} className="pr-2">
+          <Table.Cell {...getCellProps()} className="pe-2">
             {decideStatus(value)}
           </Table.Cell>
         ),

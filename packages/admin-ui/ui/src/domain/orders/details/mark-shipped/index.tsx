@@ -236,7 +236,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   checked={!noNotis}
                   type="checkbox"
                 />
-                <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+                <span className="text-grey-90 gap-x-xsmall ms-3 flex items-center">
                   {t("mark-shipped-send-notifications", "Send notifications")}
                   <IconTooltip content="" />
                 </span>
@@ -244,7 +244,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
               <div className="flex">
                 <Button
                   variant="ghost"
-                  className="text-small mr-2 w-32 justify-center"
+                  className="text-small me-2 w-32 justify-center"
                   size="large"
                   onClick={handleCancel}
                   type="button"

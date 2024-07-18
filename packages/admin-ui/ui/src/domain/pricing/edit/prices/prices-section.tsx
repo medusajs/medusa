@@ -263,7 +263,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
 
   return (
     <Container className="p-0">
-      <div className="flex items-center justify-between px-8 pt-6 pb-4">
+      <div className="flex items-center justify-between px-8 pb-4 pt-6">
         <Heading>{t("price-list-prices-section-heading", "Prices")}</Heading>
         <div className="flex items-center gap-x-2">
           <ProductFilterMenu
@@ -301,7 +301,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
             <DropdownMenu.Content align="end" side="bottom">
               <DropdownMenu.Item onClick={onEditAllProductPrices}>
                 <CurrencyDollar className="text-ui-fg-subtle" />
-                <span className="ml-2">
+                <span className="ms-2">
                   {t(
                     "price-list-prices-section-prices-menu-edit",
                     "Edit prices"
@@ -310,7 +310,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
               </DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => setShowAddProductsModal(true)}>
                 <Tag className="text-ui-fg-subtle" />
-                <span className="ml-2">
+                <span className="ms-2">
                   {t(
                     "price-list-prices-section-prices-menu-add",
                     "Add products"
@@ -349,7 +349,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
               return (
                 <Table.Row
                   key={headerGroup.id}
-                  className="[&_th]:w-1/3 [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
                 >
                   {headerGroup.headers.map((header) => {
                     return (
@@ -633,12 +633,12 @@ const PriceListProductRowActions = ({
       <DropdownMenu.Content align="end" side="bottom">
         <DropdownMenu.Item onClick={onEdit}>
           <PencilSquare className="text-ui-fg-subtle" />
-          <span className="ml-2">Edit prices</span>
+          <span className="ms-2">Edit prices</span>
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item onClick={onDelete}>
           <Trash className="text-ui-fg-subtle" />
-          <span className="ml-2">Delete prices</span>
+          <span className="ms-2">Delete prices</span>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>

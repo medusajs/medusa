@@ -141,7 +141,7 @@ const SSelect = React.forwardRef(
             "rounded-t-rounded bg-white": isFocussed,
           })}
         >
-          <div className="text-grey-50 pointer-events-none mb-2 flex w-full cursor-pointer justify-between pr-0.5">
+          <div className="text-grey-50 pointer-events-none mb-2 flex w-full cursor-pointer justify-between pe-0.5">
             <InputHeader {...{ label, required, tooltip, tooltipContent }} />
           </div>
 

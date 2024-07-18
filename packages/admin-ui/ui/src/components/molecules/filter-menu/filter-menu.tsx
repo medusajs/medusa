@@ -242,11 +242,11 @@ const SelectItem = ({
         <Popover.Trigger
           ref={triggerRef}
           className={clx(
-            "bg-ui-bg-field hover:bg-ui-bg-field-hover transition-fg shadow-buttons-neutral flex h-8 w-[152px] items-center gap-x-2 rounded-md py-1 pr-2 text-left",
+            "bg-ui-bg-field hover:bg-ui-bg-field-hover transition-fg shadow-buttons-neutral flex h-8 w-[152px] items-center gap-x-2 rounded-md py-1 pe-2 text-start",
             "focus:!shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active outline-none",
             {
-              "pl-2": value.length === 0,
-              "pl-1": value.length > 0,
+              "ps-2": value.length === 0,
+              "ps-1": value.length > 0,
             }
           )}
           onClick={() => {

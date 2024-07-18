@@ -37,7 +37,7 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
         <Modal.Content>
           <div className="flex flex-col">
             <span className="inter-large-semibold">Saving changes</span>
-            <span className="inter-base-regular text-grey-50 mt-1 mb-4 w-[420px]">
+            <span className="inter-base-regular text-grey-50 mb-4 mt-1 w-[420px]">
               {hasHiddenColumns
                 ? `You have edited prices in hidden columns: (${hiddenEditedColumns.join(
                     ", "
@@ -71,7 +71,7 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
           <div className="mt-4 flex h-8 w-full justify-end gap-2">
             <Button
               variant="ghost"
-              className="text-small mr-2  justify-center"
+              className="text-small me-2  justify-center"
               size="small"
               onClick={handleClose}
             >

@@ -8,7 +8,7 @@ type FormattedAddressProps = {
 export const FormattedAddress = ({ title, addr }: FormattedAddressProps) => {
   if (!addr) {
     return (
-      <div className="flex flex-col pl-6">
+      <div className="flex flex-col ps-6">
         <div className="inter-small-regular text-grey-50 mb-1">{title}</div>
         <div className="inter-small-regular flex flex-col">N/A</div>
       </div>
@@ -16,7 +16,7 @@ export const FormattedAddress = ({ title, addr }: FormattedAddressProps) => {
   }
 
   return (
-    <div className="flex flex-col pl-6">
+    <div className="flex flex-col ps-6">
       <div className="inter-small-regular text-grey-50 mb-1">{title}</div>
       <div className="inter-small-regular flex flex-col">
         <span>

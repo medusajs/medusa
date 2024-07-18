@@ -140,7 +140,7 @@ Table.HeadCell = React.forwardRef<
   HTMLTableCellElement,
   React.HTMLAttributes<HTMLTableCellElement>
 >(({ className, children, ...props }, ref) => (
-  <th ref={ref} className={clsx("h-[40px] text-left", className)} {...props}>
+  <th ref={ref} className={clsx("h-[40px] text-start", className)} {...props}>
     {children}
   </th>
 ))
@@ -161,7 +161,7 @@ Table.SortingHeadCell = React.forwardRef<
     ref
   ) => {
     return (
-      <th ref={ref} className={clsx("py-2.5 text-left", className)} {...props}>
+      <th ref={ref} className={clsx("py-2.5 text-start", className)} {...props}>
         <div
           className="flex cursor-pointer select-none items-center"
           onClick={(e) => {

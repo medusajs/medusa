@@ -67,7 +67,7 @@ const VariantsTable: React.FC<Props> = (props) => {
     }
 
     if (!isLoading && !variant?.inventory?.length) {
-      return <div className="text-right">{original.inventory_quantity}</div>
+      return <div className="text-end">{original.inventory_quantity}</div>
     }
 
     const { inventory } = variant
@@ -97,7 +97,7 @@ const VariantsTable: React.FC<Props> = (props) => {
 
     return (
       <Tooltip content={LocationTooltip} side="top" className="translate-x-1/4">
-        <div className="text-right">
+        <div className="text-end">
           {total} in {inventory[0].location_levels.length}{" "}
           {pluralize("location", inventory[0].location_levels.length)}
         </div>
@@ -108,7 +108,7 @@ const VariantsTable: React.FC<Props> = (props) => {
   const ProductCell = ({ row: { original } }) => {
     return (
       <div className="flex items-center">
-        <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+        <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
           {original.product.thumbnail ? (
             <img
               src={original.product.thumbnail}
@@ -148,7 +148,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       },
       {
         Header: (
-          <div className="text-small text-right font-semibold text-gray-500">
+          <div className="text-small text-end font-semibold text-gray-500">
             {t("edit-in-stock", "In Stock")}
           </div>
         ),
@@ -157,7 +157,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       },
       {
         Header: (
-          <div className="text-small text-right font-semibold text-gray-500">
+          <div className="text-small text-end font-semibold text-gray-500">
             {t("edit-price", "Price")}
           </div>
         ),
@@ -238,7 +238,7 @@ const VariantsTable: React.FC<Props> = (props) => {
             const selectProps = row.getToggleRowSelectedProps()
 
             return (
-              <div className={clsx({ "mr-2": isReplace })}>
+              <div className={clsx({ "me-2": isReplace })}>
                 <IndeterminateCheckbox
                   {...selectProps}
                   type={isReplace ? "radio" : "checkbox"}

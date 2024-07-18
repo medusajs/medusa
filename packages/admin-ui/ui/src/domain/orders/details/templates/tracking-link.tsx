@@ -7,12 +7,12 @@ export const TrackingLink = ({ trackingLink }) => {
         href={trackingLink.url}
         rel="noreferrer"
       >
-        <div className="text-blue-60 ml-2">{trackingLink.tracking_number} </div>
+        <div className="text-blue-60 ms-2">{trackingLink.tracking_number} </div>
       </a>
     )
   } else {
     return (
-      <span className="text-blue-60 ml-2">{trackingLink.tracking_number} </span>
+      <span className="text-blue-60 ms-2">{trackingLink.tracking_number} </span>
     )
   }
 }

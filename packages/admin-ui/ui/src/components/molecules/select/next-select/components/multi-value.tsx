@@ -88,7 +88,7 @@ export const MultiValueContainer = <
   return (
     <span
       className={clsx(
-        "gap-x-2xsmall py-2xsmall pl-small rounded-rounded bg-grey-20 text-grey-50 inter-small-semibold flex items-center pr-2.5 transition-colors",
+        "gap-x-2xsmall py-2xsmall ps-small rounded-rounded bg-grey-20 text-grey-50 inter-small-semibold flex items-center pe-2.5 transition-colors",
         className
       )}
     >

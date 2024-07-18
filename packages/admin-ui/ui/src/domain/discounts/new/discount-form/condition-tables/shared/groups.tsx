@@ -59,7 +59,7 @@ export const useGroupColumns = () => {
         id: "members",
         accessor: (r) => r.customers?.length,
         Cell: ({ cell: { value } }) => {
-          return <div className="text-right">{value}</div>
+          return <div className="text-end">{value}</div>
         },
       },
     ]

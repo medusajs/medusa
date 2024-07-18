@@ -44,7 +44,7 @@ type FieldMenuItemProps = {
 function Chip(props: ChipProps) {
   const { remove, short } = props
   return (
-    <div className="text-small text-grey-70 border-gray-70 mr-1 inline-flex h-[32px] shrink-0 items-center gap-1 rounded-lg border px-3 last:mr-2">
+    <div className="text-small text-grey-70 border-gray-70 me-1 inline-flex h-[32px] shrink-0 items-center gap-1 rounded-lg border px-3 last:me-2">
       {short}
       <CrossIcon
         className="text-grey-40 cursor-pointer"
@@ -180,7 +180,7 @@ function TableFieldsFilters(props: TableFieldsFilterProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-y-2">
-      <span className="text-small mr-2 whitespace-nowrap font-semibold text-gray-500">
+      <span className="text-small me-2 whitespace-nowrap font-semibold text-gray-500">
         Currently editing these fields:
       </span>
 

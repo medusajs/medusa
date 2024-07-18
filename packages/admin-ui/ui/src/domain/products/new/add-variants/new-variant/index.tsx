@@ -175,7 +175,7 @@ const NewVariant = ({
         ref={preview}
         data-handler-id={handlerId}
         className={clsx(
-          "rounded-rounded py-xsmall pl-xsmall pr-base focus-within:bg-grey-5 hover:bg-grey-5 grid h-16 translate-x-0 translate-y-0 grid-cols-[32px_1fr_90px_100px_48px] transition-all",
+          "rounded-rounded py-xsmall ps-xsmall pe-base focus-within:bg-grey-5 hover:bg-grey-5 grid h-16 translate-x-0 translate-y-0 grid-cols-[32px_1fr_90px_100px_48px] transition-all",
           {
             "opacity-50": isDragging,
           }
@@ -187,11 +187,11 @@ const NewVariant = ({
         >
           <GripIcon size={20} />
         </div>
-        <div className="ml-base flex flex-col justify-center">
+        <div className="ms-base flex flex-col justify-center">
           <p className="inter-base-semibold">
             {source.general.title}
             {source.stock.sku && (
-              <span className="inter-base-regular ml-2xsmall text-grey-50">
+              <span className="inter-base-regular ms-2xsmall text-grey-50">
                 ({source.stock.sku})
               </span>
             )}
@@ -202,7 +202,7 @@ const NewVariant = ({
             </span>
           )}
         </div>
-        <div className="mr-xlarge flex items-center justify-end">
+        <div className="me-xlarge flex items-center justify-end">
           <p>{source.stock.inventory_quantity || "-"}</p>
         </div>
         <div className="flex items-center justify-center">
@@ -212,7 +212,7 @@ const NewVariant = ({
             productDimensions={productDimensions}
           />
         </div>
-        <div className="ml-xlarge pr-base flex items-center justify-center">
+        <div className="ms-xlarge pe-base flex items-center justify-center">
           <Actionables
             forceDropdown
             actions={[
@@ -249,7 +249,7 @@ const NewVariant = ({
             <h1 className="inter-xlarge-semibold">
               {t("new-variant-edit-variant", "Edit Variant")}
               {source.general.title && (
-                <span className="inter-xlarge-regular ml-xsmall text-grey-50">
+                <span className="inter-xlarge-regular ms-xsmall text-grey-50">
                   ({source.general.title})
                 </span>
               )}

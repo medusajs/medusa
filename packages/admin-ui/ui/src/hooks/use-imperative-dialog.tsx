@@ -47,7 +47,7 @@ const DeleteDialog = ({
           <div className="flex w-full justify-end">
             <Button
               variant="secondary"
-              className="text-small mr-2 justify-center"
+              className="text-small me-2 justify-center"
               size="small"
               onClick={onCancel}
             >

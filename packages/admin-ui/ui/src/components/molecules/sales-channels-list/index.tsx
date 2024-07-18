@@ -12,13 +12,13 @@ const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
   const truncateSalesChannels = salesChannels.length > showMax
   return (
     <div className="flex items-center py-1">
-      <IconBadge className="mr-4">
+      <IconBadge className="me-4">
         <ChannelsIcon />
       </IconBadge>
       {salesChannels
         .slice(0, showMax)
         .map((salesChannel, index, slicedArray) => (
-          <span className="inter-base-regular text-grey-90 ml-1 first-of-type:ml-0">
+          <span className="inter-base-regular text-grey-90 ms-1 first-of-type:ms-0">
             {salesChannel.name}
             {index < slicedArray.length - 1 && ", "}
           </span>
@@ -34,7 +34,7 @@ const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
           }
           side="top"
         >
-          <span className="text-grey-50 ml-1">
+          <span className="text-grey-50 ms-1">
             + {salesChannels.length - showMax} more
           </span>
         </Tooltip>

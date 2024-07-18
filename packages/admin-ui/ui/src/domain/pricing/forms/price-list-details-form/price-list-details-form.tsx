@@ -442,12 +442,12 @@ const useCustomerGroupsColumns = () => {
       }),
       columnHelper.accessor("customers", {
         header: () => (
-          <div className="w-full text-right">
+          <div className="w-full text-end">
             {t("price-list-details-form-customer-groups-members", "Members")}
           </div>
         ),
         cell: (info) => (
-          <div className="w-full text-right">
+          <div className="w-full text-end">
             {info.getValue()?.length || "-"}
           </div>
         ),
@@ -637,7 +637,7 @@ const PriceListCustomerGroups = ({
           <div className="pt-6">
             <Container className="overflow-hidden p-0 ">
               <div
-                className={clx("flex px-8 pt-6 pb-4", {
+                className={clx("flex px-8 pb-4 pt-6", {
                   "items-center justify-between": layout === "focus",
                   "flex-col gap-y-4": layout === "drawer",
                 })}

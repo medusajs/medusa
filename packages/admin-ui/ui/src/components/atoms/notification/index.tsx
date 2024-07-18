@@ -30,7 +30,7 @@ const Notification: React.FC<NotificationProps> = ({
   return (
     <ToasterContainer visible={toast.visible} className="w-[380px]">
       <div>{getIcon(type)}</div>
-      <div className="ml-small mr-base gap-y-2xsmall flex flex-grow flex-col text-white">
+      <div className="ms-small me-base gap-y-2xsmall flex flex-grow flex-col text-white">
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-20">{message}</span>
       </div>

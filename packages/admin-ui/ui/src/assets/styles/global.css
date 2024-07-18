@@ -200,7 +200,7 @@
 
     .react-select__value-container--is-multi,
     .react-select__value-container--has-value {
-      @apply m-0 h-6 p-0 pl-3 !important;
+      @apply m-0 h-6 p-0 ps-3 !important;
     }
 
     .react-select__menu,
@@ -209,11 +209,11 @@
     }
 
     .react-select__value-container {
-      @apply pl-3 pr-0;
+      @apply pe-0 ps-3;
     }
 
     .react-select__indicators {
-      @apply flex h-full items-center p-0 pr-3;
+      @apply flex h-full items-center p-0 pe-3;
 
       .react-select__indicator {
         @apply p-0;
@@ -239,7 +239,7 @@
 
 @layer components {
   .badge {
-    @apply rounded-rounded inter-small-semibold w-min py-0.5 px-2;
+    @apply rounded-rounded inter-small-semibold w-min px-2 py-0.5;
   }
 
   .badge-disabled {

@@ -36,7 +36,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = (
       <div className="flex cursor-default">
         {!!relativeTimeElapsed && <span>{relativeTimeElapsed}</span>}
         {shouldShowStatus && (
-          <StatusIndicator variant={"primary"} className="ml-2" />
+          <StatusIndicator variant={"primary"} className="ms-2" />
         )}
       </div>
     )
@@ -60,7 +60,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = (
               ))}
           </div>
 
-          <div className={clsx(!!icon && "pl-8")}>{children}</div>
+          <div className={clsx(!!icon && "ps-8")}>{children}</div>
         </div>
       </div>
     </div>

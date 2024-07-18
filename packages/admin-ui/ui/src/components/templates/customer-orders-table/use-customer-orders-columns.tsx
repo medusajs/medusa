@@ -193,7 +193,7 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
       },
       {
         Header: () => (
-          <div className="text-right">
+          <div className="text-end">
             {t("customer-orders-table-total", "Total")}
           </div>
         ),
@@ -205,7 +205,7 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
           },
         }) => {
           return (
-            <div className="text-right">
+            <div className="text-end">
               {stringDisplayPrice({
                 amount: value,
                 currencyCode: currency_code,

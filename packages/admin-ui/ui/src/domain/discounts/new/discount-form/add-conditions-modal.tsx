@@ -87,7 +87,7 @@ const AddConditionsModal = ({
           <div className="flex h-8 w-full justify-end">
             <Button
               variant="ghost"
-              className="text-small mr-2 w-32 justify-center"
+              className="text-small me-2 w-32 justify-center"
               size="small"
               onClick={onClose}
             >

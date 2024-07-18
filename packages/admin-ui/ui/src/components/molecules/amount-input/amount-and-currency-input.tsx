@@ -94,8 +94,8 @@ const AmountAndCurrencyInput = ({
           <NextSelect
             customStyles={{
               control:
-                "border-none absolute inset-0 bg-transparent focus-within:shadow-none !shadow-none focus-within:border-none pl-0",
-              inner_control: "!max-w-[92px] border-r border-grey-20 pl-base",
+                "border-none absolute inset-0 bg-transparent focus-within:shadow-none !shadow-none focus-within:border-none ps-0",
+              inner_control: "!max-w-[92px] border-r border-grey-20 ps-base",
             }}
             placeholder="USD"
             options={Object.values(currencies).map((c) => ({
@@ -107,7 +107,7 @@ const AmountAndCurrencyInput = ({
             value={value.currency}
             onChange={onCurrencyChange}
           />
-          <div className="pl-xsmall pr-base inter-base-regular absolute inset-y-0 left-[92px] right-0 flex h-10 items-center">
+          <div className="ps-xsmall pe-base inter-base-regular absolute inset-y-0 left-[92px] right-0 flex h-10 items-center">
             <AmountField
               ref={inputRef}
               step={step}
@@ -118,10 +118,10 @@ const AmountAndCurrencyInput = ({
               allowNegativeValue={false}
               placeholder="-"
               decimalScale={decimal_digits}
-              className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent text-right font-normal outline-none outline-0"
+              className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent text-end font-normal outline-none outline-0"
             />
-            <div className="ml-2xsmall flex min-w-[16px] items-center">
-              <p className="text-grey-40 w-full text-right">{symbol_native}</p>
+            <div className="ms-2xsmall flex min-w-[16px] items-center">
+              <p className="text-grey-40 w-full text-end">{symbol_native}</p>
             </div>
           </div>
         </div>

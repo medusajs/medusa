@@ -138,7 +138,7 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
         )}
       >
         {children}
-        <ChevronDownIcon size={16} className="ml-[2px]" />
+        <ChevronDownIcon size={16} className="ms-[2px]" />
       </Dropdown.Trigger>
 
       <Dropdown.Content
@@ -150,10 +150,10 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
             <Dropdown.Item key={i}>
               <button
                 onClick={action.onClick}
-                className="p-2xsmall hover:bg-grey-80 inter-small-semibold rounded-base flex w-full items-center text-left hover:outline-none"
+                className="p-2xsmall hover:bg-grey-80 inter-small-semibold rounded-base flex w-full items-center text-start hover:outline-none"
               >
                 {action.icon && (
-                  <span className="text-grey-0 mr-xsmall">
+                  <span className="text-grey-0 me-xsmall">
                     {React.cloneElement(action.icon, {
                       size: 20,
                     })}

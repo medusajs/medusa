@@ -128,10 +128,10 @@ const Items = () => {
               <Table.HeadCell>
                 {t("components-details", "Details")}
               </Table.HeadCell>
-              <Table.HeadCell className="pr-8 text-right">
+              <Table.HeadCell className="pe-8 text-end">
                 {t("components-quantity", "Quantity")}
               </Table.HeadCell>
-              <Table.HeadCell className="text-right">
+              <Table.HeadCell className="text-end">
                 {t("components-price-excl-taxes", "Price (excl. Taxes)")}
               </Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
@@ -156,7 +156,7 @@ const Items = () => {
                           <ImagePlaceholder />
                         )}
                       </div>
-                      <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
+                      <div className="inter-small-regular text-grey-50 ms-4 flex flex-col">
                         {item.product_title && (
                           <span className="text-grey-90">
                             {item.product_title}
@@ -166,7 +166,7 @@ const Items = () => {
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell className="w-32 pr-8 text-right">
+                  <Table.Cell className="w-32 pe-8 text-end">
                     {editQuantity === index ? (
                       <InputField
                         type="number"
@@ -176,10 +176,10 @@ const Items = () => {
                         onBlur={() => setEditQuantity(-1)}
                       />
                     ) : (
-                      <div className="text-grey-50 flex w-full justify-end text-right ">
+                      <div className="text-grey-50 flex w-full justify-end text-end ">
                         <span
                           onClick={() => handleEditQuantity(index, -1)}
-                          className="hover:bg-grey-20 mr-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                          className="hover:bg-grey-20 me-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                         >
                           <MinusIcon size={16} />
                         </span>
@@ -200,7 +200,7 @@ const Items = () => {
                         <span
                           onClick={() => handleEditQuantity(index, 1)}
                           className={clsx(
-                            "hover:bg-grey-20 ml-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
+                            "hover:bg-grey-20 ms-2 flex h-5 w-5 cursor-pointer items-center justify-center rounded"
                           )}
                         >
                           <PlusIcon size={16} />
@@ -208,7 +208,7 @@ const Items = () => {
                       </div>
                     )}
                   </Table.Cell>
-                  <Table.Cell className="text-right">
+                  <Table.Cell className="text-end">
                     {editPrice === index ? (
                       <Controller
                         control={control}
@@ -252,7 +252,7 @@ const Items = () => {
                       />
                     )}
                   </Table.Cell>
-                  <Table.Cell className="text-grey-40 pr-1 text-right">
+                  <Table.Cell className="text-grey-40 pe-1 text-end">
                     {region!.currency_code.toUpperCase()}
                   </Table.Cell>
                   <Table.Cell>

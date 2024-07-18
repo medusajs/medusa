@@ -434,8 +434,8 @@ const AdjustAvailabilityModal = ({
               <InputHeader label="Item" />
               <InputHeader label="Quantity" />
               <div className="flex flex-col">
-                <span className="pr-base">
-                  <div className="float-left my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+                <span className="pe-base">
+                  <div className="float-left my-1.5 me-4 flex h-[40px] w-[30px] items-center">
                     {variant?.product?.thumbnail ? (
                       <img
                         src={variant?.product?.thumbnail}

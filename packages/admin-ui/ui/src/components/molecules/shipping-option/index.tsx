@@ -35,7 +35,7 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
     <div className="p-base rounded-base border-grey-20 flex items-baseline justify-between border">
       <div className="truncate">
         <div className="flex items-center">
-          <p className="inter-small-semibold mr-xsmall truncate">
+          <p className="inter-small-semibold me-xsmall truncate">
             {option.name} {option.data.name && `(${option.data.name})`}{" "}
           </p>
           {option.admin_only && <Badge variant="primary">Not on website</Badge>}

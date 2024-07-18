@@ -198,7 +198,7 @@ const OrderEditLine = ({
         "This line item is part of a fulfillment and cannot be edited. Cancel the fulfillment to edit the line item."
       )}
     >
-      <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
+      <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2">
         <div className="flex-grow-1 flex justify-center space-x-4">
           <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
             {item.thumbnail ? (
@@ -234,13 +234,13 @@ const OrderEditLine = ({
             </div>
             <div className="flex items-center">
               {isNew && (
-                <div className="text-small bg-blue-10 rounded-rounded mr-2 flex h-[24px] w-[42px] flex-shrink-0 items-center justify-center text-blue-500">
+                <div className="text-small bg-blue-10 rounded-rounded me-2 flex h-[24px] w-[42px] flex-shrink-0 items-center justify-center text-blue-500">
                   {t("order-line-new", "New")}
                 </div>
               )}
 
               {isModified && (
-                <div className="text-small bg-orange-10 rounded-rounded mr-2 flex h-[24px] w-[68px] flex-shrink-0 items-center justify-center text-orange-500">
+                <div className="text-small bg-orange-10 rounded-rounded me-2 flex h-[24px] w-[68px] flex-shrink-0 items-center justify-center text-orange-500">
                   {t("order-line-modified", "Modified")}
                 </div>
               )}
@@ -304,7 +304,7 @@ const OrderEditLine = ({
               )}
             >
               <div
-                className={clsx("min-w-[60px] text-right text-gray-900", {
+                className={clsx("min-w-[60px] text-end text-gray-900", {
                   "pointer-events-none !text-gray-400": isLocked,
                 })}
               >
@@ -314,7 +314,7 @@ const OrderEditLine = ({
                   tax: item.includes_tax ? 0 : item.tax_lines,
                   digits: 2,
                 })}
-                <span className="ml-2 text-gray-400">
+                <span className="ms-2 text-gray-400">
                   {currencyCode.toUpperCase()}
                 </span>
               </div>

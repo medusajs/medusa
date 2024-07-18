@@ -113,7 +113,7 @@ const PriceOverrides = ({
             {variants.map((variant, idx) => (
               <div
                 id={variant.id}
-                className="border-grey-20 rounded-rounded border py-2.5 px-3"
+                className="border-grey-20 rounded-rounded border px-3 py-2.5"
               >
                 <ControlledCheckbox
                   control={control}
@@ -160,7 +160,7 @@ const PriceOverrides = ({
         <div className="flex h-8 w-full justify-end">
           <Button
             variant="ghost"
-            className="text-small rounded-rounded mr-2 w-32 justify-center"
+            className="text-small rounded-rounded me-2 w-32 justify-center"
             size="large"
             onClick={onClose}
           >

@@ -31,7 +31,7 @@ const useCollectionProductColumns = () => {
       {
         accessor: "status",
         Cell: ({ cell: { value } }) => (
-          <Table.Cell className="pr-base w-[10%]">
+          <Table.Cell className="pe-base w-[10%]">
             <div className="flex items-center justify-end">
               {decideStatus(value)}
             </div>

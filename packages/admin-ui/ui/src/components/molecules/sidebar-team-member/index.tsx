@@ -20,7 +20,7 @@ const SidebarTeamMember: React.FC<SidebarTeamMemberProps> = ({
       <div className="h-[24px] w-[24px]">
         <Avatar user={user} color={color} />
       </div>
-      <span className="w-40 truncate pl-2.5">{fullName}</span>
+      <span className="w-40 truncate ps-2.5">{fullName}</span>
     </div>
   )
 }

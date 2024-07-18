@@ -118,7 +118,7 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
                   <UTurnIcon size={20} />
                 </Button>
                 <div className="gap-x-2xsmall flex items-center">
-                  <h2 className="inter-xlarge-semibold ml-4">{screen.title}</h2>
+                  <h2 className="inter-xlarge-semibold ms-4">{screen.title}</h2>
                   {screen.subtitle && (
                     <span className="inter-xlarge-regular text-grey-50">
                       ({screen.subtitle})

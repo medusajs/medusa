@@ -63,7 +63,7 @@ export const CUSTOMER_GROUPS_CUSTOMERS_TABLE_COLUMNS: Column<Customer>[] = [
   },
   {
     accessor: "groups",
-    Header: () => <div className="text-left">Segments</div>,
+    Header: () => <div className="text-start">Segments</div>,
     Cell: ({ cell: { value } }) => <CustomersGroupsSummary groups={value} />,
   },
 ]

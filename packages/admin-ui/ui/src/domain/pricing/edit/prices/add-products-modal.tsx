@@ -557,7 +557,7 @@ const AddProductsModal = ({
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-between">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ms-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
                 value={Tab.PRODUCTS}
                 className="w-full max-w-[200px]"

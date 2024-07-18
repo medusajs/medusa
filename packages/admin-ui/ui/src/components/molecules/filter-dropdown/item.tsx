@@ -89,7 +89,7 @@ const FilterDropdownItem = ({
 
   return (
     <div
-      className={clsx("w-full cursor-pointer py-2 px-4 ", {
+      className={clsx("w-full cursor-pointer px-4 py-2 ", {
         "inter-small-semibold": open,
         "inter-small-regular": !open,
       })}
@@ -101,7 +101,7 @@ const FilterDropdownItem = ({
       >
         <RadixCollapsible.Trigger
           className={clsx(
-            "hover:bg-grey-5 flex w-full items-center justify-between rounded py-1.5 px-3",
+            "hover:bg-grey-5 flex w-full items-center justify-between rounded px-3 py-1.5",
             {
               "inter-small-semibold": open,
               "inter-small-regular": !open,
@@ -125,7 +125,7 @@ const FilterDropdownItem = ({
               readOnly
               type="checkbox"
             />
-            <span className="ml-2">{filterTitle}</span>
+            <span className="ms-2">{filterTitle}</span>
           </div>
           {open && (
             <span className="text-grey-50 self-end">
@@ -135,7 +135,7 @@ const FilterDropdownItem = ({
         </RadixCollapsible.Trigger>
         <RadixCollapsible.Content className="w-full">
           {hasPrev && (
-            <div className="flex py-2 pl-6">
+            <div className="flex py-2 ps-6">
               <button
                 onClick={handlePrev}
                 className="hover:text-violet-60 text-grey-90 font-semibold"
@@ -172,7 +172,7 @@ const FilterDropdownItem = ({
               return (
                 <div
                   className={clsx(
-                    "hover:bg-grey-20 my-1 flex w-full items-center rounded py-1.5 pl-6",
+                    "hover:bg-grey-20 my-1 flex w-full items-center rounded py-1.5 ps-6",
                     {
                       "inter-small-semibold": checked[value],
                       "inter-small-regular": !checked[value],
@@ -182,7 +182,7 @@ const FilterDropdownItem = ({
                   onClick={() => onCheck(value)}
                 >
                   <div
-                    className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${
+                    className={`text-grey-0 border-grey-30 rounded-base me-2 flex h-5 w-5 justify-center border ${
                       checked[value] === true && "bg-violet-60"
                     }`}
                   >
@@ -206,7 +206,7 @@ const FilterDropdownItem = ({
             })
           )}
           {hasMore && (
-            <div className="flex py-2 pl-6">
+            <div className="flex py-2 ps-6">
               <button
                 onClick={handleNext}
                 className="hover:text-violet-60 text-grey-90 font-semibold"
@@ -424,7 +424,7 @@ const DateFilter = ({
         return (
           <div className="flex w-full flex-col">
             <InputField
-              className="pt-0 pb-1"
+              className="pb-1 pt-0"
               type="number"
               placeholder="2"
               value={relativeAmount}
@@ -479,7 +479,7 @@ const DateFilter = ({
     }
   }
   return (
-    <div className="pl-9">
+    <div className="ps-9">
       <RightPopover
         trigger={
           <div className="bg-grey-5 border-grey-20 inter-small-semibold text-grey-90 flex w-full items-center justify-between rounded border px-3 py-1.5">
@@ -520,7 +520,7 @@ const PopoverOptions = ({ options, onClick, selectedItem }) => {
         >
           <div
             className={clsx(
-              "mr-2 flex h-4 w-4 items-center justify-center rounded-full",
+              "me-2 flex h-4 w-4 items-center justify-center rounded-full",
               {
                 "border-violet-60 border-2": item === selectedItem,
                 "border-grey-30 border ": item !== selectedItem,

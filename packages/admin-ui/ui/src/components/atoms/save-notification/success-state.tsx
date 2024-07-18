@@ -32,7 +32,7 @@ const SuccessState: React.FC<SavingStateProps> = ({
       <div>
         <CheckCircleIcon size={20} className="text-emerald-40" />
       </div>
-      <div className="ml-small mr-base gap-y-2xsmall flex flex-grow flex-col">
+      <div className="ms-small me-base gap-y-2xsmall flex flex-grow flex-col">
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-50">{message}</span>
       </div>

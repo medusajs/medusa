@@ -682,9 +682,9 @@ function EditPricesTable(props: EditPricesTableProps) {
         <thead>
           <tr
             style={{ height: 42 }}
-            className="tw-text-medusa-text-subtle h-10 text-left font-normal"
+            className="tw-text-medusa-text-subtle h-10 text-start font-normal"
           >
-            <th className="h-2 border border-t-0 pl-4 font-medium text-gray-400">
+            <th className="h-2 border border-t-0 ps-4 font-medium text-gray-400">
               Product
             </th>
             {props.currencies.map((c) => {
@@ -717,7 +717,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="flex overflow-hidden">
-                      <span title={region?.name} className="truncate pr-1">
+                      <span title={region?.name} className="truncate pe-1">
                         Price {region?.name}
                       </span>
                       ({region?.currency_code.toUpperCase()})
@@ -735,7 +735,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         </thead>
         <tbody>
           <tr style={{ lineHeight: 3, background: "#f9fafb" }} className="">
-            <td className="border pl-4 pr-4">
+            <td className="border pe-4 ps-4">
               <div className="text-black-800 flex items-center gap-2 overflow-hidden">
                 {props.product.thumbnail && (
                   <img
@@ -750,12 +750,12 @@ function EditPricesTable(props: EditPricesTableProps) {
               </div>
             </td>
             {props.currencies.map((c) => (
-              <td className="border pr-4 text-right" key={c}>
+              <td className="border pe-4 text-end" key={c}>
                 -
               </td>
             ))}
             {props.regions.map((r) => (
-              <td className="border pr-4 text-right" key={r}>
+              <td className="border pe-4 text-end" key={r}>
                 -
               </td>
             ))}
@@ -768,7 +768,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 onMouseEnter={() => onMouseRowEnter(variant.id)}
                 style={{ lineHeight: 3 }}
               >
-                <td className="h-10 whitespace-nowrap border pl-10 pr-4 text-gray-600">
+                <td className="h-10 whitespace-nowrap border pe-4 ps-10 text-gray-600">
                   {variant.title} {variant.sku && `∙ ${variant.sku}`}
                 </td>
 

@@ -76,10 +76,10 @@ const AmountInput = ({
             allowNegativeValue={false}
             placeholder="-"
             decimalScale={decimal_digits}
-            className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent text-right font-normal outline-none outline-0"
+            className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-transparent text-end font-normal outline-none outline-0"
           />
-          <div className="ml-2xsmall flex min-w-[16px] items-center">
-            <p className="text-grey-40 w-full text-right">{symbol_native}</p>
+          <div className="ms-2xsmall flex min-w-[16px] items-center">
+            <p className="text-grey-40 w-full text-end">{symbol_native}</p>
           </div>
         </div>
       </div>

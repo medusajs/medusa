@@ -118,7 +118,7 @@ export const VariantCard = ({
       ref={preview}
       data-handler-id={handlerId}
       className={clsx(
-        "rounded-rounded hover:bg-grey-5 focus-within:bg-grey-5 py-xsmall pl-xsmall pr-base grid h-16 translate-y-0 translate-x-0 grid-cols-[32px_1fr_1fr_48px] transition-all",
+        "rounded-rounded hover:bg-grey-5 focus-within:bg-grey-5 py-xsmall ps-xsmall pe-base grid h-16 translate-x-0 translate-y-0 grid-cols-[32px_1fr_1fr_48px] transition-all",
         {
           "bg-grey-5 opacity-50": isDragging,
         }
@@ -130,7 +130,7 @@ export const VariantCard = ({
       >
         <GripIcon size={20} />
       </div>
-      <div className="ml-base flex flex-col justify-center text-left">
+      <div className="ms-base flex flex-col justify-center text-start">
         <p className="inter-base-semibold">
           {title}
           {sku && (
@@ -139,7 +139,7 @@ export const VariantCard = ({
         </p>
         {ean && <span className="inter-base-regular text-grey-50">{ean}</span>}
       </div>
-      <div className="flex items-center justify-end text-right">
+      <div className="flex items-center justify-end text-end">
         <InputField
           {...register(`variants.${index}.inventory_quantity`, {
             min: FormValidator.nonNegativeNumberRule("Inventory"),
@@ -151,7 +151,7 @@ export const VariantCard = ({
           errors={errors}
         />
       </div>
-      <div className="ml-xlarge pr-base flex items-center justify-center">
+      <div className="ms-xlarge pe-base flex items-center justify-center">
         <Actionables
           forceDropdown
           actions={actions}

@@ -197,7 +197,7 @@ function CurrencyCell(props: CurrencyCellProps) {
     <td
       onMouseOver={() => onColumnOver(currencyCode || region)}
       onMouseDown={onCellMouseDown}
-      className={clsx("relative h-10 cursor-pointer border pl-4 pr-2", {
+      className={clsx("relative h-10 cursor-pointer border pe-2 ps-4", {
         "bg-blue-100": isSelected && !isAnchor,
       })}
       style={{

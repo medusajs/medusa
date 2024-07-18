@@ -22,7 +22,7 @@ const useInventoryTableColumn = ({
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+              <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
                 {original.variants[0]?.product?.thumbnail ? (
                   <img
                     src={original.variants[0].product.thumbnail}

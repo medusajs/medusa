@@ -89,7 +89,7 @@ const FallbackWidget = ({
           className="text-rose-40"
         />
       </div>
-      <div className="text-rose-40 inter-small-regular w-full pr-[20px]">
+      <div className="text-rose-40 inter-small-regular w-full pe-[20px]">
         <h1 className="inter-base-semibold mb-2xsmall">Uncaught error</h1>
         <p className="mb-small">
           A widget from <strong>{origin}</strong> crashed. See the console for
@@ -112,7 +112,7 @@ const FallbackWidget = ({
           >
             <div className="flex items-center">
               <XCircleIcon size="20" />
-              <span className="ml-xsmall">Hide</span>
+              <span className="ms-xsmall">Hide</span>
             </div>
           </Button>
           <Button
@@ -124,7 +124,7 @@ const FallbackWidget = ({
           >
             <div className="flex items-center">
               <RefreshIcon size="20" />
-              <span className="ml-xsmall">Reload</span>
+              <span className="ms-xsmall">Reload</span>
             </div>
           </Button>
         </div>

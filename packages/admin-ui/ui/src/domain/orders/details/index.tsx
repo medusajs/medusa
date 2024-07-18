@@ -383,13 +383,13 @@ const OrderDetails = () => {
                         <ClipboardCopyIcon size={12} />
                       </button>
                     </div>
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col ps-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-phone", "Phone")}
                       </div>
                       <div>{order.shipping_address?.phone || "N/A"}</div>
                     </div>
-                    <div className="flex flex-col pl-6">
+                    <div className="flex flex-col ps-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-payment", "Payment")}
                       </div>
@@ -432,7 +432,7 @@ const OrderDetails = () => {
                         {!!payment.amount_refunded && (
                           <div className="mt-4 flex justify-between">
                             <div className="flex">
-                              <div className="text-grey-40 mr-2">
+                              <div className="text-grey-40 me-2">
                                 <CornerDownRightIcon />
                               </div>
                               <div className="inter-small-regular text-grey-90">
@@ -440,7 +440,7 @@ const OrderDetails = () => {
                               </div>
                             </div>
                             <div className="flex">
-                              <div className="inter-small-regular text-grey-90 mr-3">
+                              <div className="inter-small-regular text-grey-90 me-3">
                                 -
                                 {formatAmountWithSymbol({
                                   amount: payment.amount_refunded,
@@ -460,7 +460,7 @@ const OrderDetails = () => {
                         {t("details-total-paid", "Total Paid")}
                       </div>
                       <div className="flex">
-                        <div className="inter-small-semibold text-grey-90 mr-3">
+                        <div className="inter-small-semibold text-grey-90 me-3">
                           {formatAmountWithSymbol({
                             amount: order.paid_total - order.refunded_total,
                             currency: order.currency_code,

@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon"
-
+import ChevronLeftIcon from "../../fundamentals/icons/chevron-left-icon"
 type SettingsCardProps = {
   icon: React.ReactNode
   heading: string
@@ -22,7 +23,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   if (disabled) {
     to = null
   }
-
+  const { i18n } = useTranslation();
   return (
     <Link to={to ?? ""} className="flex flex-1 items-center">
       <button
@@ -39,7 +40,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
             {icon}
           </div>
         </div>
-        <div className="mx-large flex-1 text-left">
+        <div className="mx-large flex-1 text-start">
           <h3 className="inter-large-semibold text-grey-90 group-disabled:text-grey-40 m-0">
             {heading}
           </h3>
@@ -48,7 +49,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
           </p>
         </div>
         <div className="text-grey-40 group-disabled:text-grey-30">
-          <ChevronRightIcon />
+        {i18n.dir() == "rtl" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </div>
       </button>
     </Link>

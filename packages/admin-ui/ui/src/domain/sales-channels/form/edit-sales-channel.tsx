@@ -92,7 +92,7 @@ function EditSalesChannel(props: EditSalesChannelProps) {
               variant="ghost"
               size="small"
               onClick={handleClose}
-              className="mr-2"
+              className="me-2"
             >
               {t("form-close", "Close")}
             </Button>

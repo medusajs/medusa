@@ -97,7 +97,7 @@ const Image = ({ image, index, remove }: ThumbnailProps) => {
             className="rounded-rounded max-h-[64px] max-w-[64px]"
           />
         </div>
-        <div className="inter-small-regular flex flex-col text-left">
+        <div className="inter-small-regular flex flex-col text-start">
           <p>{image.name}</p>
           <p className="text-grey-50">
             {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}

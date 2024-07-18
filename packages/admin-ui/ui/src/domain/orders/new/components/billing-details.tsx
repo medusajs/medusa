@@ -49,7 +49,7 @@ const Billing = () => {
       </span>
       {!isNullishObject(shippingAddress) || shippingAddressId ? (
         <div
-          className="mt-4 mb-6 flex cursor-pointer items-center"
+          className="mb-6 mt-4 flex cursor-pointer items-center"
           onClick={updateSameAsShipping}
         >
           <div
@@ -67,7 +67,7 @@ const Billing = () => {
             {...form.register("same_as_shipping")}
             tabIndex={-1}
           />
-          <span className="text-grey-90 ml-3">
+          <span className="text-grey-90 ms-3">
             {t("components-use-same-as-shipping", "Use same as shipping")}
           </span>
         </div>

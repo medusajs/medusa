@@ -166,7 +166,7 @@ const FulfillmentLine = ({
   return (
     <div
       className={clsx(
-        "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]",
+        "rounded-rounded hover:bg-grey-5 mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2",
         {
           "pointer-events-none opacity-50":
             (!availableQuantity && hasInventoryItem) ||
@@ -198,7 +198,7 @@ const FulfillmentLine = ({
       <div className="flex items-center">
         <FeatureToggle featureFlag="inventoryService">
           {hasInventoryItem && (
-            <div className="inter-base-regular text-grey-50 mr-6 flex flex-col items-end whitespace-nowrap">
+            <div className="inter-base-regular text-grey-50 me-6 flex flex-col items-end whitespace-nowrap">
               <p>{availableQuantity || 0} available</p>
               <p>({inStockQuantity || 0} in stock)</p>
             </div>
@@ -212,7 +212,7 @@ const FulfillmentLine = ({
           suffix={
             <span className="flex">
               {"/"}
-              <span className="pl-1">{getFulfillableQuantity(item)}</span>
+              <span className="ps-1">{getFulfillableQuantity(item)}</span>
             </span>
           }
           value={quantities[item.id]}

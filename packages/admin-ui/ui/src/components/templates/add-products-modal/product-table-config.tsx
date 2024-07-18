@@ -9,7 +9,7 @@ import { decideStatus } from "../collection-product-table/utils"
 export const columns: Column<Product>[] = [
   {
     Header: (
-      <div className="pl-4">
+      <div className="ps-4">
         <Translation>
           {(t) => t("add-products-modal-product-details", "Product Details")}
         </Translation>
@@ -17,8 +17,8 @@ export const columns: Column<Product>[] = [
     ),
     accessor: "title",
     Cell: ({ row: { original } }) => (
-      <div className="flex w-[400px] items-center pl-4">
-        <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+      <div className="flex w-[400px] items-center ps-4">
+        <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
           {original.thumbnail ? (
             <img
               src={original.thumbnail}
@@ -49,14 +49,14 @@ export const columns: Column<Product>[] = [
     ),
     accessor: "status",
     Cell: ({ cell: { value } }) => (
-      <Table.Cell className="pr-base w-[10%]">
+      <Table.Cell className="pe-base w-[10%]">
         <div className="flex items-center">{decideStatus(value)}</div>
       </Table.Cell>
     ),
   },
   {
     Header: (
-      <div className="flex items-center justify-end pr-4">
+      <div className="flex items-center justify-end pe-4">
         <Translation>
           {(t) => t("add-products-modal-variants", "Variants")}
         </Translation>
@@ -64,7 +64,7 @@ export const columns: Column<Product>[] = [
     ),
     accessor: "variants",
     Cell: ({ row: { original } }) => (
-      <Table.Cell className="flex items-center justify-end pr-4">
+      <Table.Cell className="flex items-center justify-end pe-4">
         {original.variants.length}
       </Table.Cell>
     ),

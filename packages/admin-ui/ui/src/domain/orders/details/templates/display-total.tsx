@@ -41,7 +41,7 @@ export const DisplayTotalAmount = ({
   <div className="flex">
     <div
       className={clsx(totalColor, {
-        "inter-small-regular mr-3": variant === "regular",
+        "inter-small-regular me-3": variant === "regular",
         "inter-large-semibold": variant === "bold",
         "inter-xlarge-semibold": variant === "large",
       })}

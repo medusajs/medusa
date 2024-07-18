@@ -76,7 +76,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
             type="button"
           >
             <InputContainer className="shadown-none border-0 focus-within:shadow-none">
-              <div className="text-grey-50 flex w-full justify-between pr-0.5">
+              <div className="text-grey-50 flex w-full justify-between pe-0.5">
                 {label && (
                   <InputHeader
                     {...{
@@ -89,7 +89,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
                 )}
                 <ArrowDownIcon size={16} />
               </div>
-              <label className="w-full text-left">
+              <label className="w-full text-start">
                 {date
                   ? moment(date).format("ddd, DD MMM YYYY")
                   : "---, -- -- ----"}
@@ -111,7 +111,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
               variant="ghost"
               size="medium"
               onClick={() => setIsOpen(false)}
-              className="border-grey-20 mr-2 flex w-1/3 justify-center border"
+              className="border-grey-20 me-2 flex w-1/3 justify-center border"
             >
               Cancel
             </Button>

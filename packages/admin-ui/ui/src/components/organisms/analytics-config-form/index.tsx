@@ -42,7 +42,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
       >
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <div className="flex items-center">
-            <h2 className="inter-base-semibold mr-2">
+            <h2 className="inter-base-semibold me-2">
               {t("analytics-config-form-title", "Anonymize my usage data")}
             </h2>
             {compact && (
@@ -83,7 +83,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
       <div className="flex items-center gap-3">
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <div className="flex items-center">
-            <h2 className="inter-base-semibold mr-2">
+            <h2 className="inter-base-semibold me-2">
               {t(
                 "analytics-config-form-opt-out",
                 "Opt out of sharing my usage data"

@@ -1512,7 +1512,7 @@ const PriceListProductPricesForm = ({
         >
           <thead>
             <tr className="[&_th]:txt-compact-small-plus text-ui-fg-subtle [&_th]:border-ui-border-base h-10 [&_th:last-of-type]:border-r-0 [&_th]:min-w-[220px] [&_th]:border-b [&_th]:border-r">
-              <th className="max-w-[220px] text-left">
+              <th className="max-w-[220px] text-start">
                 <div className="px-4 py-2.5">
                   {t(
                     "price-list-product-prices-form-column-product-label",
@@ -1529,7 +1529,7 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <th className="text-left" key={currency.code}>
+                  <th className="text-start" key={currency.code}>
                     <div className="flex items-center justify-between px-4 py-2.5">
                       <span>
                         {t(
@@ -1560,7 +1560,7 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <th className="text-left" key={region.id}>
+                  <th className="text-start" key={region.id}>
                     <div className="flex items-center justify-between px-4 py-2.5">
                       <span>
                         {t(
@@ -1611,7 +1611,7 @@ const PriceListProductPricesForm = ({
 
                 return (
                   <td key={currency.code}>
-                    <div className="text-ui-fg-muted px-4 py-2.5 text-right">
+                    <div className="text-ui-fg-muted px-4 py-2.5 text-end">
                       -
                     </div>
                   </td>
@@ -1624,7 +1624,7 @@ const PriceListProductPricesForm = ({
 
                 return (
                   <td key={region.id}>
-                    <div className="text-ui-fg-muted px-4 py-2.5 text-right">
+                    <div className="text-ui-fg-muted px-4 py-2.5 text-end">
                       -
                     </div>
                   </td>
@@ -2132,7 +2132,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
             tabIndex={-1}
             placeholder="-"
             className={clx(
-              "h-full flex-1 cursor-default bg-transparent text-right outline-none"
+              "h-full flex-1 cursor-default bg-transparent text-end outline-none"
             )}
           />
         </div>

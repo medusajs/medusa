@@ -138,13 +138,13 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
         }
       >
         <div className="flex">
-          <div className="border-grey-20 border-l pl-6">
+          <div className="border-grey-20 border-l ps-6">
             {getPromotionDescription(discount, t)}
             <span className="inter-small-regular text-grey-50">
               {t("general-discount-amount", "Discount Amount")}
             </span>
           </div>
-          <div className="border-grey-20 ml-12 border-l pl-6">
+          <div className="border-grey-20 ms-12 border-l ps-6">
             <h2 className="inter-xlarge-regular text-grey-90">
               {discount.regions.length.toLocaleString("en-US")}
             </h2>
@@ -152,7 +152,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               {t("general-valid-regions", "Valid Regions")}
             </span>
           </div>
-          <div className="border-grey-20 ml-12 border-l pl-6">
+          <div className="border-grey-20 ms-12 border-l ps-6">
             <h2 className="inter-xlarge-regular text-grey-90">
               {discount.usage_count.toLocaleString("en-US")}
             </h2>
@@ -179,7 +179,7 @@ const getPromotionDescription = (discount: Discount, t: TFunction) => {
               amount: discount.rule.value,
             })}
           </h2>
-          <span className="inter-base-regular text-grey-50 ml-1">
+          <span className="inter-base-regular text-grey-50 ms-1">
             {discount.regions[0].currency_code.toUpperCase()}
           </span>
         </div>
@@ -190,7 +190,7 @@ const getPromotionDescription = (discount: Discount, t: TFunction) => {
           <h2 className="inter-xlarge-regular text-grey-90">
             {discount.rule.value}
           </h2>
-          <span className="inter-base-regular text-grey-50 ml-1">%</span>
+          <span className="inter-base-regular text-grey-50 ms-1">%</span>
         </div>
       )
     case "free_shipping":

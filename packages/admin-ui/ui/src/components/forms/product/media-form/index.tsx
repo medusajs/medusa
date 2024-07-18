@@ -160,7 +160,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
                     className="rounded-rounded max-h-[64px] max-w-[64px]"
                   />
                 </div>
-                <div className="inter-small-regular flex flex-col text-left">
+                <div className="inter-small-regular flex flex-col text-start">
                   <p>{image.name}</p>
                   <p className="text-grey-50">
                     {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}
@@ -177,7 +177,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
                 </span>
               </div>
             </button>
-            <div className="right-base absolute top-0 bottom-0 flex items-center">
+            <div className="right-base absolute bottom-0 top-0 flex items-center">
               <Actionables actions={actions} forceDropdown />
             </div>
           </div>
@@ -195,7 +195,7 @@ type ModalActionsProps = {
 
 const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
   return (
-    <div className="flex h-10 items-center overflow-y-hidden pr-1">
+    <div className="flex h-10 items-center overflow-y-hidden pe-1">
       <div
         className={clsx(
           "gap-x-small flex items-center transition-all duration-200",

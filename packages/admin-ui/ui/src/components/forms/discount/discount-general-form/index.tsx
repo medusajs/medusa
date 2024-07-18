@@ -175,7 +175,7 @@ const DiscountGeneralForm = ({
                       onChange={onChange}
                       ref={ref}
                     />
-                    <p className="ml-small mr-xsmall">Template discount</p>
+                    <p className="ms-small me-xsmall">Template discount</p>
                     <IconTooltip content="Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same." />
                   </div>
                   <InputError errors={errors} name={path("is_dynamic")} />

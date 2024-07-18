@@ -314,7 +314,7 @@ export const Option = <
         </div>
       </div>
       {!isMulti && (
-        <div className="ml-xsmall w-5">
+        <div className="ms-xsmall w-5">
           {isSelected && <CheckIcon size={16} />}
         </div>
       )}

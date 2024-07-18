@@ -116,7 +116,7 @@ const ProductsFilter = ({
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
               {t("products-filters", "Filters")}
-              <div className="text-grey-40 ml-1 flex items-center rounded">
+              <div className="text-grey-40 ms-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
                 </span>
@@ -180,7 +180,7 @@ const ProductsFilter = ({
               />
             </div>
             <span
-              className={clsx("text-grey-90 ml-2", {
+              className={clsx("text-grey-90 ms-2", {
                 "inter-small-semibold": tempState.tags.open,
                 "inter-small-regular": !tempState.tags.open,
               })}
@@ -192,10 +192,10 @@ const ProductsFilter = ({
           {tempState.tags.open && (
             <div
               data-tip={tempState.tags.invalidTagsMessage || ""}
-              className="pl-6"
+              className="ps-6"
             >
               <TagInput
-                className="pt-0 pb-1"
+                className="pb-1 pt-0"
                 showLabel={false}
                 placeholder={t("products-spring-summer", "Spring, summer...")}
                 values={(tempState.tags.filter || [])

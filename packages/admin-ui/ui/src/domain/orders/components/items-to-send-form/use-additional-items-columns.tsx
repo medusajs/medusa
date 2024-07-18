@@ -74,7 +74,7 @@ export const useAdditionalItemsColumns = ({
       columnHelper.display({
         id: "quantity",
         header: () => (
-          <p className="text-right">
+          <p className="text-end">
             {t("items-to-send-form-quantity", "Quantity")}
           </p>
         ),
@@ -103,7 +103,7 @@ export const useAdditionalItemsColumns = ({
       columnHelper.accessor("price", {
         maxSize: 50,
         header: () => (
-          <p className="text-right">{t("items-to-send-form-price", "Price")}</p>
+          <p className="text-end">{t("items-to-send-form-price", "Price")}</p>
         ),
         cell: ({
           getValue,
@@ -114,7 +114,7 @@ export const useAdditionalItemsColumns = ({
           const price = getValue()
 
           return (
-            <div className="text-right">
+            <div className="text-end">
               {original_price !== price && (
                 <Tooltip
                   content={t(
@@ -146,7 +146,7 @@ export const useAdditionalItemsColumns = ({
         maxSize: 20,
         cell: () => {
           return (
-            <p className="pl-base text-grey-50">
+            <p className="ps-base text-grey-50">
               {orderCurrency.toUpperCase()}
             </p>
           )

@@ -224,7 +224,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
           {canDownload && (
             <div className="flex">
               {buildButton(onDeleteFile, "danger", "Delete")}
-              {buildButton(onDownloadFile, "ghost", "Download", "ml-2")}
+              {buildButton(onDownloadFile, "ghost", "Download", "ms-2")}
             </div>
           )}
           {canCancel && buildButton(() => cancelBatchJob(), "danger", "Cancel")}
@@ -236,7 +236,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
   return (
     <ActivityCard
       title={store?.name ?? "Medusa Team"}
-      icon={<MedusaIcon className="mr-3" size={20} />}
+      icon={<MedusaIcon className="me-3" size={20} />}
       relativeTimeElapsed={relativeTimeElapsed.rtf}
       date={batchJob.created_at}
       shouldShowStatus={true}

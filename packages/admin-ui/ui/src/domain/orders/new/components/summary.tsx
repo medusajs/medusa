@@ -143,10 +143,10 @@ const Summary = () => {
           <Table.Head>
             <Table.HeadRow className="inter-small-semibold text-grey-50 border-t">
               <Table.HeadCell>Details</Table.HeadCell>
-              <Table.HeadCell className="text-right">
+              <Table.HeadCell className="text-end">
                 {t("components-quantity", "Quantity")}
               </Table.HeadCell>
-              <Table.HeadCell className="text-right">
+              <Table.HeadCell className="text-end">
                 {t("components-price-excl-taxes", "Price (excl. Taxes)")}
               </Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
@@ -173,7 +173,7 @@ const Summary = () => {
                             <ImagePlaceholder />
                           )}
                         </div>
-                        <div className="inter-small-regular text-grey-50 ml-4 flex flex-col">
+                        <div className="inter-small-regular text-grey-50 ms-4 flex flex-col">
                           <span>
                             <span className="text-grey-90">
                               {item.product_title}
@@ -183,10 +183,10 @@ const Summary = () => {
                         </div>
                       </div>
                     </Table.Cell>
-                    <Table.Cell className="text-right">
+                    <Table.Cell className="text-end">
                       {item.quantity}
                     </Table.Cell>
-                    <Table.Cell className="text-right">
+                    <Table.Cell className="text-end">
                       {displayAmount(regionObj?.currency_code, item.unit_price)}
                     </Table.Cell>
                   </Table.Row>
@@ -252,7 +252,7 @@ const Summary = () => {
             <div className="inter-base-semibold mb-4 flex w-full justify-between">
               <span>
                 {t("components-discount", "Discount")}
-                <span className="inter-base-regular text-grey-50 ml-0.5">
+                <span className="inter-base-regular text-grey-50 ms-0.5">
                   {t("select-shipping-code", "(Code: {{code}})", {
                     code: discount.code,
                   })}
@@ -267,7 +267,7 @@ const Summary = () => {
             </div>
             <div className="flex w-full">
               <div
-                className={clsx("border-grey-20 flex flex-col pr-6", {
+                className={clsx("border-grey-20 flex flex-col pe-6", {
                   "border-r": discount.rule.type !== "free_shipping",
                 })}
               >
@@ -283,7 +283,7 @@ const Summary = () => {
                 </span>
               </div>
               {discount.rule.type !== "free_shipping" && (
-                <div className="flex flex-col pl-6">
+                <div className="flex flex-col ps-6">
                   <span className="text-grey-50">
                     {t("components-value", "Value")}
                   </span>
@@ -303,7 +303,7 @@ const Summary = () => {
       </SummarySection>
       <SummarySection title={"Customer"} editIndex={3}>
         <div className="flex items-center">
-          <div className="mr-3 h-5 w-5">
+          <div className="me-3 h-5 w-5">
             <Avatar
               color="bg-grey-80"
               user={{
@@ -322,7 +322,7 @@ const Summary = () => {
         <SummarySection title={"Shipping details"} editIndex={2}>
           <div className="grid w-full grid-cols-2 gap-x-6">
             {!isNullishObject(shipping) && shipping && (
-              <div className="border-grey-20 flex flex-col border-r pr-6">
+              <div className="border-grey-20 flex flex-col border-r pe-6">
                 <span className="text-grey-50">
                   {t("components-address", "Address")}
                 </span>
@@ -344,7 +344,7 @@ const Summary = () => {
                   {selectedShippingOption.name} -{" "}
                   {customShippingPrice && regionObj ? (
                     <p>
-                      <span className="text-grey-40 mr-2 line-through">
+                      <span className="text-grey-40 me-2 line-through">
                         {extractOptionPrice(shippingOptionPrice, regionObj)}
                       </span>
                       {displayAmount(

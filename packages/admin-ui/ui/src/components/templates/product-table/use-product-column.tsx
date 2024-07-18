@@ -65,7 +65,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+              <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
                 {original.thumbnail ? (
                   <img
                     src={original.thumbnail}
@@ -114,7 +114,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
       {
         accessor: "col-3",
         Header: (
-          <div className="flex justify-end text-right">
+          <div className="flex justify-end text-end">
             <span
               onClick={setListView}
               className={clsx("hover:bg-grey-5 cursor-pointer rounded p-0.5", {

@@ -44,7 +44,7 @@ const DetailsCollapsible = ({
       >
         <div className="flex items-center">
           <Icon size={"20"} />
-          <div className="ml-1">{label}</div>
+          <div className="ms-1">{label}</div>
         </div>
       </RadixCollapsible.Trigger>
       <RadixCollapsible.Content

@@ -24,7 +24,7 @@ const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
       <div>
         <XCircleIcon size={20} className="text-rose-40" />
       </div>
-      <div className="ml-small mr-base gap-y-2xsmall text-grey-0 flex flex-grow flex-col">
+      <div className="ms-small me-base gap-y-2xsmall text-grey-0 flex flex-grow flex-col">
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-20">{message}</span>
       </div>

@@ -15,7 +15,7 @@ const KeyboardShortcuts = ({ ...props }) => {
       <span className="bg-grey-10 rounded p-1">
         <ArrowUpIcon color="#9CA3AF" size="16px" />
       </span>
-      <span className="bg-grey-10 -ml-1 rounded p-1">
+      <span className="bg-grey-10 -ms-1 rounded p-1">
         <ArrowDownIcon color="#9CA3AF" size="16px" />
       </span>
       {t("search-modal-to-navigate", "to navigate")},

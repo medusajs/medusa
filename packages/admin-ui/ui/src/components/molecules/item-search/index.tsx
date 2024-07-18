@@ -87,7 +87,7 @@ const ProductOption = ({ innerProps, data }: OptionProps<ItemOption>) => {
         <p>{data.label}</p>
         <p className="text-grey-50">{data.inventoryItem.sku}</p>
       </div>
-      <div className="text-right">
+      <div className="text-end">
         <p className="text-grey-50">{`${data.inventoryItem.stocked_quantity} stock`}</p>
         <p className="text-grey-50">{`${
           data.inventoryItem.stocked_quantity -
@@ -100,7 +100,7 @@ const ProductOption = ({ innerProps, data }: OptionProps<ItemOption>) => {
 
 const SearchControl = ({ children, ...props }: ControlProps<ItemOption>) => (
   <Control {...props}>
-    <span className="mr-4">
+    <span className="me-4">
       <SearchIcon size={16} className="text-grey-50" />
     </span>
     {children}

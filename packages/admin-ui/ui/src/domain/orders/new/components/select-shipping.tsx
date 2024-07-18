@@ -66,7 +66,7 @@ const SelectShippingMethod = () => {
       {region ? (
         !shippingOptions?.length ? (
           <div className="inter-small-regular bg-orange-5 rounded-rounded mt-6 flex p-4 text-orange-50">
-            <div className="mr-3 h-full">
+            <div className="me-3 h-full">
               <AlertIcon size={20} />
             </div>
             <div className="flex flex-col">
@@ -150,7 +150,7 @@ const SelectShippingMethod = () => {
                     variant="ghost"
                     size="small"
                     onClick={removeCustomPrice}
-                    className="text-grey-40 ml-8 h-8 w-8"
+                    className="text-grey-40 ms-8 h-8 w-8"
                   >
                     <TrashIcon size={20} />
                   </Button>

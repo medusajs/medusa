@@ -376,7 +376,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   <span>{t("returns-shipping", "Shipping")}</span>
                   <div>
                     {displayAmount(order.currency_code, shippingPrice || 0)}{" "}
-                    <span className="text-grey-40 ml-3">
+                    <span className="text-grey-40 ms-3">
                       {order.currency_code.toUpperCase()}
                     </span>
                   </div>
@@ -388,7 +388,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   {!refundEdited && (
                     <>
                       <span
-                        className="text-grey-40 mr-2 cursor-pointer"
+                        className="text-grey-40 me-2 cursor-pointer"
                         onClick={() => setRefundEdited(true)}
                       >
                         <EditIcon size={20} />{" "}
@@ -441,7 +441,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 onChange={() => setNoNotification(!noNotification)}
                 type="checkbox"
               />
-              <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
+              <span className="gap-x-xsmall text-grey-90 ms-3 flex items-center">
                 {t("returns-send-notifications", "Send notifications")}
                 <IconTooltip
                   content={t(

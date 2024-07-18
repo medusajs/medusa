@@ -90,12 +90,12 @@ function ProductCategoryListItemDetails(
                 {props.collapseIcon}
               </div>
             )}
-            <div className="ml-[20px] flex w-[32px] items-center justify-center">
+            <div className="ms-[20px] flex w-[32px] items-center justify-center">
               {hasChildren && <FolderOpenIcon color="#889096" size={18} />}
               {!hasChildren && <TagIcon color="#889096" size={18} />}
             </div>
             <span
-              className={clsx("ml-2 select-none text-xs font-medium", {
+              className={clsx("ms-2 select-none text-xs font-medium", {
                 "font-normal text-gray-400": !hasChildren,
               })}
             >

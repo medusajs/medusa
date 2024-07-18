@@ -198,7 +198,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
       <div className="gap-y-base flex flex-col" key={event.id}>
         {event.canceledAt && (
           <div>
-            <span className="inter-small-semibold mr-2">Requested on:</span>
+            <span className="inter-small-semibold me-2">Requested on:</span>
             <span className="text-grey-50">
               {new Date(event.time).toUTCString()}
             </span>

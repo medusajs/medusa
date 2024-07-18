@@ -104,7 +104,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
                 //         src={window.URL.createObjectURL(f)}
                 //       />
                 //     </div>
-                //     <div className="inter-small-regular ml-8 flex flex-col">
+                //     <div className="inter-small-regular ms-8 flex flex-col">
                 //       {f.name}
                 //       <span className="text-grey-50">
                 //         {(f.size / 1000).toFixed(2)} KB
@@ -165,7 +165,7 @@ const ImageRow = ({ url, onDelete, name, size }) => (
       <div className="bg-voilet-60 h-20 w-20">
         <img className="rounded-rounded h-full w-full object-cover" src={url} />
       </div>
-      <div className="inter-small-regular ml-8 flex flex-col">
+      <div className="inter-small-regular ms-8 flex flex-col">
         {name}
         {size && <span className="text-grey-50">{size} KB</span>}
       </div>

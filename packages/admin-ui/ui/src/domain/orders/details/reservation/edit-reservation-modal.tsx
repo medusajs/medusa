@@ -291,10 +291,10 @@ const EditReservationDrawer = ({
                   inter-base-regular
                   mt-6
                   grid border-collapse grid-cols-2 grid-rows-3 
-                  [&>*]:border-r [&>*]:border-b [&>*]:py-2 
-                  [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:pl-4 
-                  [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
-                  [&>*:nth-child(-n+2)]:border-t`}
+                  [&>*:nth-child(-n+2)]:border-t [&>*:nth-child(even)]:pe-4 [&>*:nth-child(even)]:text-end 
+                  [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:ps-4 
+                  [&>*]:border-b [&>*]:border-r 
+                  [&>*]:py-2`}
                   >
                     <div className="rounded-tl-rounded">Item</div>
                     <div className="rounded-tr-rounded flex justify-end space-x-3">
@@ -315,7 +315,7 @@ const EditReservationDrawer = ({
                     <div className="rounded-bl-rounded">Allocate</div>
                     <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                       <input
-                        className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-right font-normal outline-none outline-0"
+                        className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-end font-normal outline-none outline-0"
                         {...register("item.quantity", {
                           valueAsNumber: true,
                         })}
@@ -323,7 +323,7 @@ const EditReservationDrawer = ({
                         min={0}
                         max={maxReservation}
                       />
-                      <span className="text-grey-50 nowrap whitespace-nowrap pl-2">
+                      <span className="text-grey-50 nowrap whitespace-nowrap ps-2">
                         {maxReservation
                           ? t(
                               "reservation-max-reservation-requested",
@@ -386,7 +386,7 @@ const EditReservationDrawer = ({
               </Button>
             </div>
           </div>
-          <div className="gap-x-xsmall flex w-full justify-end border-t px-8 pt-4 pb-6">
+          <div className="gap-x-xsmall flex w-full justify-end border-t px-8 pb-6 pt-4">
             <Button
               variant="ghost"
               size="small"

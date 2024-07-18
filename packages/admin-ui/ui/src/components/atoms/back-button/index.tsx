@@ -21,7 +21,7 @@ const BackButton = ({ path, label, className }: Props) => {
     >
       <div className="gap-x-xsmall text-grey-50 inter-grey-40 inter-small-semibold flex items-center">
         <ArrowLeftIcon size={20} />
-        <span className="ml-1">
+        <span className="ms-1">
           {label || t("back-button-go-back", "Go back")}
         </span>
       </div>

@@ -16,7 +16,7 @@ const PriceAmount = ({ value, onChange }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="inter-base-semibold">
-            <span className="mr-2 uppercase">{value.currency_code}</span>
+            <span className="me-2 uppercase">{value.currency_code}</span>
             <span className="inter-base-regular text-grey-50 capitalize">
               {currencyName}
             </span>

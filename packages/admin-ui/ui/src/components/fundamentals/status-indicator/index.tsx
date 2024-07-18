@@ -28,7 +28,7 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
       {...props}
     >
       <div className={clsx("h-1.5 w-1.5 self-center rounded-full", dotClass)} />
-      {title && <span className="ml-2">{title}</span>}
+      {title && <span className="ms-2">{title}</span>}
     </div>
   )
 }

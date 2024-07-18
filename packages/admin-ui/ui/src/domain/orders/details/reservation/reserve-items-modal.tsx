@@ -331,7 +331,7 @@ export const ReservationLineItem: React.FC<{
           suffix={
             <span className="flex">
               {"/"}{" "}
-              <span className="ml-1">
+              <span className="ms-1">
                 {maxReservation > 0 ? maxReservation : 0}
               </span>
             </span>

@@ -83,7 +83,7 @@ function TotalsSection(props: TotalsSectionProps) {
         </span>
       </div>
 
-      <div className="bg-grey-20 mt-8 mb-6 h-px w-full" />
+      <div className="bg-grey-20 mb-6 mt-8 h-px w-full" />
     </>
   )
 }
@@ -310,7 +310,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               <Button
                 size="small"
                 variant="ghost"
-                className="border-grey-20 mr-2 h-[32px] flex-shrink-0 border text-gray-900"
+                className="border-grey-20 me-2 h-[32px] flex-shrink-0 border text-gray-900"
                 onClick={() =>
                   layeredModalContext.push(addProductVariantScreen)
                 }

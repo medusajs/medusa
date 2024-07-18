@@ -30,10 +30,10 @@ const SendNotificationForm = ({ form, type }: Props) => {
       render={({ field: { value, onChange } }) => {
         return (
           <div className="flex items-center">
-            <div className="mr-xsmall">
+            <div className="me-xsmall">
               <IndeterminateCheckbox checked={value} onChange={onChange} />
             </div>
-            <p className="inter-small-semibold mr-1.5">
+            <p className="inter-small-semibold me-1.5">
               {t(
                 "send-notification-form-send-notifications",
                 "Send notifications"

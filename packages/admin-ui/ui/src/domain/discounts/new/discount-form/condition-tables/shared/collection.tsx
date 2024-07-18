@@ -62,7 +62,7 @@ export const useCollectionColumns = () => {
         id: "products",
         accessor: (row) => row?.products?.length,
         Cell: ({ cell: { value } }) => {
-          return <div className="text-right">{value}</div>
+          return <div className="text-end">{value}</div>
         },
       },
     ]

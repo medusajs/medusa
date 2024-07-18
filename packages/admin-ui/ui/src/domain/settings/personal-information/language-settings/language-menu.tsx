@@ -12,7 +12,11 @@ const LanguageMenu: React.FC = () => {
 
   return (
     <div className="w-[200px]">
-      <Select value={i18n.language} onValueChange={changeLanguage}>
+      <Select
+        dir={i18n.dir()}
+        value={i18n.language}
+        onValueChange={changeLanguage}
+      >
         <Select.Trigger>
           <Select.Value />
         </Select.Trigger>

@@ -21,7 +21,7 @@ const OrderLine = ({
 }: OrderLineProps) => {
   const { isFeatureEnabled } = useFeatureFlag()
   return (
-    <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]">
+    <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2">
       <div className="flex justify-center space-x-4">
         <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
           {item.thumbnail ? (
@@ -44,7 +44,7 @@ const OrderLine = ({
         </div>
       </div>
       <div className="flex items-center">
-        <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
+        <div className="small:space-x-2 medium:space-x-4 large:space-x-6 me-3 flex">
           <div className="inter-small-regular text-grey-50">
             {formatAmountWithSymbol({
               amount: (item?.total ?? 0) / item.quantity,
@@ -59,7 +59,7 @@ const OrderLine = ({
           {isFeatureEnabled("inventoryService") && isAllocatable && (
             <ReservationIndicator reservations={reservations} lineItem={item} />
           )}
-          <div className="inter-small-regular text-grey-90 min-w-[55px] text-right">
+          <div className="inter-small-regular text-grey-90 min-w-[55px] text-end">
             {formatAmountWithSymbol({
               amount: item.total ?? 0,
               currency: currencyCode,

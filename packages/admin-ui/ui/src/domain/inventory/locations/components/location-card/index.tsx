@@ -90,7 +90,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
         <IconBadge>
           <BuildingsIcon />
         </IconBadge>
-        <div className="ml-base flex flex-col">
+        <div className="ms-base flex flex-col">
           <span className="text-grey-90 font-semibold">{location.name}</span>
           {location.address && (
             <div>
@@ -99,7 +99,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
             </div>
           )}
         </div>
-        <div className="ml-auto">
+        <div className="ms-auto">
           <Actionables actions={DropdownActions} forceDropdown={true} />
         </div>
       </div>

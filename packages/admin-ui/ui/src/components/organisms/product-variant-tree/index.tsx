@@ -65,10 +65,10 @@ const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
     <div className="flex flex-1">
       <div className="truncate">
         <span>{title}</span>
-        {sku && <span className="text-grey-50 ml-xsmall">(SKU: {sku})</span>}
+        {sku && <span className="text-grey-50 ms-xsmall">(SKU: {sku})</span>}
       </div>
       <div className="text-grey-50 flex flex-1 items-center justify-end">
-        <div className="text-grey-50 mr-xsmall">
+        <div className="text-grey-50 me-xsmall">
           {filteredPrices.length ? (
             <span>
               {t("product-variant-tree-count", "{{count}}", {

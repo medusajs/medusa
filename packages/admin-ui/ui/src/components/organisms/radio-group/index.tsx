@@ -110,7 +110,7 @@ const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
   return (
     <label
       className={clsx(
-        "mr-large flex items-center last:mr-0",
+        "me-large flex items-center last:me-0",
         {
           ["pointer-events-none select-none opacity-50"]: rest.disabled,
         },
@@ -133,7 +133,7 @@ const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
           )}
         />
       </RadioGroupPrimitive.Item>
-      <div className="ml-small inter-base-regular w-full cursor-pointer">
+      <div className="ms-small inter-base-regular w-full cursor-pointer">
         <span>{label && label}</span>
         <span>{description && description}</span>
       </div>

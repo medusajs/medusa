@@ -255,13 +255,13 @@ const DraftOrderDetails = () => {
                   </div>
                   <div>{cart?.email}</div>
                 </div>
-                <div className="flex flex-col pl-6">
+                <div className="flex flex-col ps-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
                     {t("draft-orders-phone", "Phone")}
                   </div>
                   <div>{cart?.shipping_address?.phone || "N/A"}</div>
                 </div>
-                <div className="flex flex-col pl-6">
+                <div className="flex flex-col ps-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
                     {t("draft-orders-amount", "Amount {{currency_code}}", {
                       currency_code: region?.currency_code.toUpperCase(),
@@ -310,7 +310,7 @@ const DraftOrderDetails = () => {
                 />
                 {draft_order?.status !== "completed" && (
                   <div className="text-grey-50 inter-small-regular mt-5 flex w-full items-center">
-                    <span className="mr-2.5">
+                    <span className="me-2.5">
                       {t("draft-orders-payment-link", "Payment link:")}
                     </span>
                     {store?.payment_link_template ? (

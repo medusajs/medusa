@@ -28,7 +28,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
     return [
       {
         Header: () => (
-          <div className="ml-large min-w-[140px] max-w-[140px]">
+          <div className="ms-large min-w-[140px] max-w-[140px]">
             <span>Image</span>
           </div>
         ),
@@ -38,7 +38,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
         accessor: "url",
         Cell: ({ cell: { value } }) => {
           return (
-            <div className="py-base ml-large">
+            <div className="py-base ms-large">
               <img
                 className="h-[80px] w-[80px] rounded object-cover"
                 src={value}

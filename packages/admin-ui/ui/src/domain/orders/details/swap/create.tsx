@@ -466,7 +466,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                 checked={!noNotification}
                 type="checkbox"
               />
-              <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+              <span className="text-grey-90 gap-x-xsmall ms-3 flex items-center">
                 {t("swap-send-notifications", "Send notifications")}
                 <IconTooltip
                   content={t(

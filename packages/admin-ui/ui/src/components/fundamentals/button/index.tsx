@@ -64,7 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             return (
               <span
                 key={i}
-                className={clsx("mr-xsmall last:mr-0", spanClassName)}
+                className={clsx("me-xsmall last:me-0", spanClassName)}
               >
                 {child}
               </span>

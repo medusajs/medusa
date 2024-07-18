@@ -51,7 +51,7 @@ export const FilterTab: React.FC<FilterTabProps> = ({
     >
       {label}
       {removable && (
-        <div onClick={handleRemove} className={"ml-1 cursor-pointer"}>
+        <div onClick={handleRemove} className={"ms-1 cursor-pointer"}>
           <CrossIcon size={16} />
         </div>
       )}

@@ -28,13 +28,13 @@ const useReservationsTableColumns = () => {
       },
       {
         Header: () => (
-          <div className="pr-2 text-right">
+          <div className="pe-2 text-end">
             {t("reservations-table-quantity", "Quantity")}
           </div>
         ),
         accessor: "quantity",
         Cell: ({ cell: { value } }) => (
-          <div className="w-full pr-2 text-right">{value}</div>
+          <div className="w-full pe-2 text-end">{value}</div>
         ),
       },
     ],

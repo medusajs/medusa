@@ -27,7 +27,7 @@ function PriceInput(props: PriceInputProps) {
 
   return (
     <div className="relative w-[314px]">
-      <div className="absolute top-0 left-3 flex h-full items-center">
+      <div className="absolute left-3 top-0 flex h-full items-center">
         <span className="text-small text-grey-40 mt-[1px]">{code}</span>
       </div>
 
@@ -47,12 +47,12 @@ function PriceInput(props: PriceInputProps) {
             rounded-lg border
             border-solid
             py-[10px]
-            pl-12
-            text-right
+            ps-12
+            text-end
             focus:bg-white"
       />
 
-      <div className="absolute top-0 right-3 flex h-full items-center">
+      <div className="absolute right-3 top-0 flex h-full items-center">
         <span className="text-small text-grey-40 mt-[1px]">
           {symbol_native}
         </span>

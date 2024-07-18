@@ -65,7 +65,7 @@ const CollapsibleTreeContent: React.FC<CollapsibleTreeContentProps> = ({
   return (
     <div
       className={clsx(
-        "mt-xsmall pl-5",
+        "mt-xsmall ps-5",
         {
           hidden: !open,
           "animate-fade-in-top": open,
@@ -140,11 +140,11 @@ const CollapsibleTreeLeaf: React.FC<CollapsibleTreeLeafProps> = ({
         className
       )}
     >
-      <div className="absolute top-0 left-0 bottom-0">
+      <div className="absolute bottom-0 left-0 top-0">
         <div className="border-grey-20 h-1/2 w-px border-l border-dashed" />
         <div className="border-grey-20 bottom-half-dash h-1/2 w-px border-l border-dashed" />
       </div>
-      <div className="border-grey-20 mr-xsmall h-px w-[13px] border-t border-dashed" />
+      <div className="border-grey-20 me-xsmall h-px w-[13px] border-t border-dashed" />
       <Container className="inter-small-regular flex w-full items-center justify-between">
         {children}
         {actions && (

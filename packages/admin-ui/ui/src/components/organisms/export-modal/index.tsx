@@ -41,7 +41,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
               variant="ghost"
               size="small"
               onClick={handleClose}
-              className="mr-2"
+              className="me-2"
             >
               {t("export-modal-cancel", "Cancel")}
             </Button>

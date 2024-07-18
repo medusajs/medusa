@@ -28,7 +28,7 @@ export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
     Cell: ({ row: { original } }) => {
       return (
         <div className="flex items-center">
-          <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+          <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
             {original.thumbnail ? (
               <img
                 src={original.thumbnail}

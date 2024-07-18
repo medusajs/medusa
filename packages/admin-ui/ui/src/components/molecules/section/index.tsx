@@ -18,7 +18,7 @@ const Section: React.FC<SectionProps> = ({
       <div className="mb-2xsmall flex items-center">
         <h3 className="inter-base-semibold">{title}</h3>
         {tooltip && (
-          <div className="ml-1.5 flex items-center">
+          <div className="ms-1.5 flex items-center">
             <IconTooltip content={tooltip} />
           </div>
         )}

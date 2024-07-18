@@ -96,10 +96,10 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
             bg-grey-5 text-grey-50 border-grey-20 
             mt-8
             grid border-collapse grid-cols-2 grid-rows-5 
-            [&>*]:border-r [&>*]:border-b [&>*]:py-2 
-            [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:pl-4 
-            [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
-            [&>*:nth-child(-n+2)]:border-t`}
+            [&>*:nth-child(-n+2)]:border-t [&>*:nth-child(even)]:pe-4 [&>*:nth-child(even)]:text-end 
+            [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:ps-4 
+            [&>*]:border-b [&>*]:border-r 
+            [&>*]:py-2`}
             >
               <div className="rounded-tl-rounded">
                 {t("reservation-form-item", "Item")}
@@ -121,7 +121,7 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
               </div>
               <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                 <input
-                  className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-right font-normal outline-none outline-0"
+                  className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-end font-normal outline-none outline-0"
                   {...register(path("quantity"), {
                     valueAsNumber: true,
                   })}

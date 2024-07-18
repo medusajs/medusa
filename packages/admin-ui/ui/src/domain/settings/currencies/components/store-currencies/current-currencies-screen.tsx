@@ -154,12 +154,12 @@ const TableActions = ({
     <div className="space-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
-          <span className="inter-small-regular text-grey-50 mr-3">
+          <span className="inter-small-regular text-grey-50 me-3">
             {t("current-currencies-screen-selected-with-count", "{{count}}", {
               count: numberOfSelectedRows,
             })}
           </span>
-          <div className="space-x-xsmall flex pl-3">
+          <div className="space-x-xsmall flex ps-3">
             <Button
               onClick={onDeselect}
               size="small"

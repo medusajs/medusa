@@ -108,7 +108,7 @@ const RefundMenu = ({
           <Modal.Content>
             {isSystemPayment && (
               <div className="inter-small-regular bg-orange-5 rounded-rounded mb-6 flex p-4 text-orange-50">
-                <div className="mr-3 h-full">
+                <div className="me-3 h-full">
                   <AlertIcon size={20} />
                 </div>
                 <div className="flex flex-col">
@@ -207,7 +207,7 @@ const RefundMenu = ({
                   onChange={() => setNoNotification(!noNotification)}
                   type="checkbox"
                 />
-                <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
+                <span className="text-grey-90 gap-x-xsmall ms-3 flex items-center">
                   {t("refund-send-notifications", "Send notifications")}
                   <IconTooltip content="Notify customer of created return" />
                 </span>

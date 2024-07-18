@@ -69,7 +69,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         Cell: ({ row: { original } }) => {
           return (
             <div className="flex items-center">
-              <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+              <div className="my-1.5 me-4 flex h-[40px] w-[30px] items-center">
                 {original.product.thumbnail ? (
                   <img
                     src={original.product.thumbnail}
@@ -101,13 +101,13 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
       },
       {
         Header: (
-          <div className="text-right">
+          <div className="text-end">
             {t("rma-sub-modals-in-stock", "In Stock")}
           </div>
         ),
         accessor: "inventory_quantity",
         Cell: ({ row: { original } }) => (
-          <div className="text-right">{original.inventory_quantity}</div>
+          <div className="text-end">{original.inventory_quantity}</div>
         ),
       },
     ]

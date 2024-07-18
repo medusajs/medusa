@@ -149,14 +149,14 @@ const SteppedModal: React.FC<SteppedProps> = ({
               (lastScreenIsSummary &&
                 context.currentStep !== steps.length - 1 && (
                   <div className="flex items-center">
-                    <span className="text-grey-50 inter-small-regular mr-4 w-[70px]">{`Step ${
+                    <span className="text-grey-50 inter-small-regular me-4 w-[70px]">{`Step ${
                       context.currentStep + 1
                     } of ${steps.length}`}</span>
                     {steps.map((_, i) => (
                       <span
                         key={i}
                         className={clsx(
-                          "mr-3 h-2 w-2 rounded-full",
+                          "me-3 h-2 w-2 rounded-full",
                           {
                             "bg-grey-20": i > context.currentStep,
                             "bg-violet-60": context.currentStep >= i,

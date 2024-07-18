@@ -20,7 +20,7 @@ const TableSearch: React.FC<TableSearchProps> = ({
   return (
     <div
       className={clsx(
-        "inter-small-regular transition-color text-grey-50 rounded-rounded border-grey-20 min-w-content focus-within:shadow-input focus-within:border-violet-60 bg-grey-5 mt-1 mb-1 flex w-60 items-center border py-1.5 pl-1",
+        "inter-small-regular transition-color text-grey-50 rounded-rounded border-grey-20 min-w-content focus-within:shadow-input focus-within:border-violet-60 bg-grey-5 mb-1 mt-1 flex w-60 items-center border py-1.5 ps-1",
         className
       )}
       {...props}

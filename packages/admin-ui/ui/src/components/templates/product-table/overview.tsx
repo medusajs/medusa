@@ -22,7 +22,7 @@ const ProductOverview = ({
 }: ProductOverviewProps) => {
   return (
     <>
-      <div className="border-grey-20 pr-xlarge flex justify-end border-t border-b py-2.5">
+      <div className="border-grey-20 pe-xlarge flex justify-end border-b border-t py-2.5">
         <div className="inter-small-semibold text-grey-50 flex justify-self-end">
           <span
             onClick={toggleListView}
@@ -57,7 +57,7 @@ const ProductTile = ({ product }) => {
     <div className="p-base rounded-rounded hover:bg-grey-5 group flex-col">
       <div className="relative">
         <div
-          className={clsx("rounded-base absolute top-2 right-2 inline-block")}
+          className={clsx("rounded-base absolute right-2 top-2 inline-block")}
         >
           <Actionables
             actions={getActions()}
@@ -85,7 +85,7 @@ const ProductTile = ({ product }) => {
           )}
           <div>
             <div className="mt-base flex items-center justify-between">
-              <p className="inter-small-regular text-grey-90 line-clamp-1 mr-3">
+              <p className="inter-small-regular text-grey-90 me-3 line-clamp-1">
                 {product.title}
               </p>
               <StatusIndicator

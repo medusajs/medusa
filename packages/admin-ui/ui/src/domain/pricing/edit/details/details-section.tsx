@@ -291,7 +291,7 @@ const PriceListStatusMenu = ({
       <DropdownMenu.Trigger asChild disabled={isExpired}>
         <Button
           variant="secondary"
-          className="!text-ui-fg-base flex items-center !gap-x-1.5 pl-2.5 pr-3 capitalize"
+          className="!text-ui-fg-base flex items-center !gap-x-1.5 pe-3 ps-2.5 capitalize"
         >
           {statusDot}
           {statusText}
@@ -337,14 +337,14 @@ const PriceListMenu = ({ onDelete, onOpenDrawer }: PriceListMenuProps) => {
       <DropdownMenu.Content align="end" side="bottom">
         <DropdownMenu.Item onClick={onOpenDrawer}>
           <PencilSquare className="text-ui-fg-subtle" />
-          <span className="ml-2">
+          <span className="ms-2">
             {t("price-list-details-menu-item-edit", "Edit details")}
           </span>
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <DropdownMenu.Item onClick={onDelete}>
           <Trash className="text-ui-fg-subtle" />
-          <span className="ml-2">
+          <span className="ms-2">
             {t("price-list-details-menu-item-delete", "Delete")}
           </span>
         </DropdownMenu.Item>

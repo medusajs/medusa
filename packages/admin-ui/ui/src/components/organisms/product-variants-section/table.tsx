@@ -30,7 +30,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
       quantityColumns.push({
         Header: () => {
           return (
-            <div className="text-right">
+            <div className="text-end">
               <span>
                 {t("product-variants-section-inventory", "Inventory")}
               </span>
@@ -42,7 +42,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
         maxWidth: 56,
         Cell: ({ cell }) => {
           return (
-            <div className="text-right">
+            <div className="text-end">
               <span>{cell.value}</span>
             </div>
           )

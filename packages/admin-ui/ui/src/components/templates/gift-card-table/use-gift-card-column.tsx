@@ -11,12 +11,12 @@ const useGiftCardTableColums = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("gift-card-table-code", "Code")}</div>,
+        Header: <div className="ps-2">{t("gift-card-table-code", "Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
             key={index}
-            className="text-grey-90 group-hover:text-violet-60 w-[20%] pl-2"
+            className="text-grey-90 group-hover:text-violet-60 w-[20%] ps-2"
           >
             {value}
           </Table.Cell>
@@ -28,7 +28,7 @@ const useGiftCardTableColums = () => {
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
             key={index}
-            className="text-grey-90 group-hover:text-violet-60 w-[10%] pl-2"
+            className="text-grey-90 group-hover:text-violet-60 w-[10%] ps-2"
           >
             {value && value?.display_id ? (
               `#${value.display_id}`
@@ -90,13 +90,13 @@ const useGiftCardTableColums = () => {
       },
       {
         Header: () => (
-          <div className="rounded-rounded flex w-full justify-end pr-2">
+          <div className="rounded-rounded flex w-full justify-end pe-2">
             {t("gift-card-table-created", "Created")}
           </div>
         ),
         accessor: "created_at",
         Cell: ({ cell: { value }, index }) => (
-          <Table.Cell className="pr-2" key={index}>
+          <Table.Cell className="pe-2" key={index}>
             <div className="rounded-rounded flex w-full justify-end">
               {moment(value).format("MMM Do YYYY")}
             </div>

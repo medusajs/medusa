@@ -117,13 +117,13 @@ const LocationDropdown = ({
           {locationOptions.map((o, i) => (
             <div
               key={i}
-              className="hover:bg-grey-5 rounded-rounded mb-1 flex py-1.5 px-2"
+              className="hover:bg-grey-5 rounded-rounded mb-1 flex px-2 py-1.5"
               onClick={() => {
                 setOpen(false)
                 onChange(o!.value)
               }}
             >
-              <div className="mr-2 h-[20px] w-[20px]">
+              <div className="me-2 h-[20px] w-[20px]">
                 {selectedLocObj?.value === o.value && (
                   <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
                 )}

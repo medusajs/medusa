@@ -11,7 +11,7 @@ const useViewProductColumns = () => {
         id: "selection",
         Cell: ({ row }) => {
           return (
-            <Table.Cell className="pl-base pr-large w-[0%]">
+            <Table.Cell className="ps-base pe-large w-[0%]">
               <div>{row.index + 1}</div>
             </Table.Cell>
           )
@@ -20,7 +20,7 @@ const useViewProductColumns = () => {
       {
         accessor: "thumbnail",
         Cell: ({ cell: { value } }) => (
-          <Table.Cell className="pr-base w-[0%]">
+          <Table.Cell className="pe-base w-[0%]">
             <div className="bg-grey-5 rounded-soft my-xsmall h-[40px] w-[30px] overflow-hidden">
               {value ? (
                 <img

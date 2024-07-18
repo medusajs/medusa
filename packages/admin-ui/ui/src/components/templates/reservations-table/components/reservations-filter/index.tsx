@@ -215,12 +215,12 @@ const SearchableFilterInventoryItem = ({
         <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
           <InputField
             value={query}
-            className="pr-1"
+            className="pe-1"
             prefix={
               selectedItems.size === 0 ? null : (
                 <div
                   onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall me-xsmall flex cursor-pointer items-center border py-0.5 pe-1 ps-2"
                 >
                   <span className="text-grey-50">{selectedItems.size}</span>
                   <CrossIcon size={16} />
@@ -279,9 +279,9 @@ const InventoryItemItem = ({
   <div
     key={key}
     onClick={onClick}
-    className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
+    className="hover:bg-grey-10 rounded-rounded flex items-center px-2 py-1.5"
   >
-    <div className="mr-2 flex h-[20px] w-[20px] items-center">
+    <div className="me-2 flex h-[20px] w-[20px] items-center">
       {selected && <CheckIcon size={16} color="#111827" />}
     </div>
     <div className="inter-small-regular flex w-full items-center justify-between">
@@ -376,7 +376,7 @@ const CreatedByFilterItem = ({
               selectedUsers.size === 0 ? null : (
                 <div
                   onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall me-xsmall flex cursor-pointer items-center border py-0.5 pe-1 ps-2"
                 >
                   <span className="text-grey-50">{selectedUsers.size}</span>
                   <CrossIcon size={16} />
@@ -431,9 +431,9 @@ const CreatedByItem = ({
     <div
       key={key}
       onClick={onClick}
-      className="hover:bg-grey-10 inter-small-regular rounded-rounded flex items-center py-1.5 px-2"
+      className="hover:bg-grey-10 inter-small-regular rounded-rounded flex items-center px-2 py-1.5"
     >
-      <div className="inter-small-regular mr-2 flex h-[20px] w-[20px] items-center">
+      <div className="inter-small-regular me-2 flex h-[20px] w-[20px] items-center">
         {selected && <CheckIcon size={16} color="#111827" />}
       </div>
       <div>{`${user.first_name} ${user.last_name}`}</div>
@@ -796,8 +796,8 @@ const FilterDatePicker = ({
 }) => (
   <RadixPopover.Root>
     <RadixPopover.Trigger className="w-full">
-      <div className="rounded-rounded inter-small-regular bg-grey-5 flex w-full items-center border py-1.5 pl-3 pr-2 text-left">
-        <span className="text-grey-40 mr-1.5">
+      <div className="rounded-rounded inter-small-regular bg-grey-5 flex w-full items-center border py-1.5 pe-2 ps-3 text-start">
+        <span className="text-grey-40 me-1.5">
           <CalendarIcon size={20} />
         </span>
         {date ? (
@@ -829,7 +829,7 @@ const PopoverSelect = ({
   return (
     <RadixPopover.Root>
       <RadixPopover.Trigger className="w-full">
-        <div className="rounded-rounded bg-grey-5 w-full border py-1.5 pl-3 pr-2 text-left">
+        <div className="rounded-rounded bg-grey-5 w-full border py-1.5 pe-2 ps-3 text-start">
           {value.label}
         </div>
       </RadixPopover.Trigger>
@@ -842,10 +842,10 @@ const PopoverSelect = ({
         {options.map((o, i) => (
           <div
             key={i}
-            className="hover:bg-grey-5 rounded-rounded mb-1 flex py-1.5 px-2"
+            className="hover:bg-grey-5 rounded-rounded mb-1 flex px-2 py-1.5"
             onClick={() => onChange(o)}
           >
-            <div className="mr-2 h-[20px] w-[20px]">
+            <div className="me-2 h-[20px] w-[20px]">
               {value.value === o.value && (
                 <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
               )}
@@ -881,7 +881,7 @@ const CollapsibleWrapper = ({
       >
         <RadixCollapsible.Trigger
           className={clsx(
-            "text-grey-50 flex w-full cursor-pointer items-center justify-between rounded py-1.5 px-3"
+            "text-grey-50 flex w-full cursor-pointer items-center justify-between rounded px-3 py-1.5"
           )}
         >
           <p>{title}</p>

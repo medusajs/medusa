@@ -110,7 +110,7 @@ export const usePromotionTableColumns = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("discount-table-code", "Code")}</div>,
+        Header: <div className="ps-2">{t("discount-table-code", "Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value } }) => (
           <div className="overflow-hidden">
@@ -127,14 +127,12 @@ export const usePromotionTableColumns = () => {
       },
       {
         Header: (
-          <div className="text-right">
-            {t("discount-table-amount", "Amount")}
-          </div>
+          <div className="text-end">{t("discount-table-amount", "Amount")}</div>
         ),
         id: "amount",
         Cell: ({ row: { original } }) => {
           return (
-            <div className="text-right">{getPromotionAmount(original, t)}</div>
+            <div className="text-end">{getPromotionAmount(original, t)}</div>
           )
         },
       },
@@ -154,14 +152,14 @@ export const usePromotionTableColumns = () => {
       },
       {
         Header: () => (
-          <div className="text-right">
+          <div className="text-end">
             {t("discount-table-redemptions", "Redemptions")}
           </div>
         ),
         accessor: "usage_count",
         Cell: ({ row: { original } }) => {
           return (
-            <div className="text-right">
+            <div className="text-end">
               {getUsageCount(original.usage_count)}
             </div>
           )

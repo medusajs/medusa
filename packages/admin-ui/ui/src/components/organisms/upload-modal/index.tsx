@@ -88,12 +88,12 @@ function UploadSummary(props: UploadSummaryProps) {
   return (
     <div className="flex gap-6">
       <div className="text-small text-grey-90 flex items-center">
-        <CheckCircleIcon color="#9CA3AF" className="mr-2" />
+        <CheckCircleIcon color="#9CA3AF" className="me-2" />
         <span className="font-semibold"> {creations || 0}&nbsp;</span>{" "}
         {t("upload-modal-new", "new")} {type}
       </div>
       <div className="text-small text-grey-90 flex items-center">
-        <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
+        <WarningCircleIcon fill="#9CA3AF" className="me-2" />
         <span className="font-semibold">{updates || 0}&nbsp;</span>{" "}
         {t("upload-modal-updates", "updates")}
       </div>
@@ -299,7 +299,7 @@ function UploadModal(props: UploadModalProps) {
             <div className="flex gap-2">
               <Button
                 variant="secondary"
-                className="text-small mr-2 justify-center"
+                className="text-small me-2 justify-center"
                 size="small"
                 onClick={onClose}
               >

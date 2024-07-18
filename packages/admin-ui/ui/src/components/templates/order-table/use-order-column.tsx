@@ -48,10 +48,10 @@ const useOrderTableColums = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("order-table-order", "Order")}</div>,
+        Header: <div className="ps-2">{t("order-table-order", "Order")}</div>,
         accessor: "display_id",
         Cell: ({ cell: { value } }) => (
-          <p className="text-grey-90 group-hover:text-violet-60 min-w-[100px] pl-2">{`#${value}`}</p>
+          <p className="text-grey-90 group-hover:text-violet-60 min-w-[100px] ps-2">{`#${value}`}</p>
         ),
       },
       {
@@ -101,11 +101,11 @@ const useOrderTableColums = () => {
       },
       {
         Header: () => (
-          <div className="text-right">{t("order-table-total", "Total")}</div>
+          <div className="text-end">{t("order-table-total", "Total")}</div>
         ),
         accessor: "total",
         Cell: ({ row, cell: { value } }) => (
-          <div className="text-right">
+          <div className="text-end">
             {formatAmountWithSymbol({
               amount: value,
               currency: row.original.currency_code,
@@ -118,14 +118,14 @@ const useOrderTableColums = () => {
         Header: "",
         accessor: "currency_code",
         Cell: ({ cell: { value } }) => (
-          <div className="text-grey-40 text-right">{value.toUpperCase()}</div>
+          <div className="text-grey-40 text-end">{value.toUpperCase()}</div>
         ),
       },
       {
         Header: "",
         accessor: "country_code",
         Cell: ({ row }) => (
-          <div className="pr-2">
+          <div className="pe-2">
             <div className="rounded-rounded flex w-full justify-end">
               <Tooltip
                 content={

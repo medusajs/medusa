@@ -216,7 +216,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
                 {t("detail-cards-discount", "Discount:")}{" "}
-                <Badge className="ml-3" variant="default">
+                <Badge className="ms-3" variant="default">
                   {discount.code}
                 </Badge>
               </div>
@@ -231,10 +231,10 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
                 Gift card:
-                <Badge className="ml-3" variant="default">
+                <Badge className="ms-3" variant="default">
                   {gcTransaction.gift_card.code}
                 </Badge>
-                <div className="ml-2">
+                <div className="ms-2">
                   <CopyToClipboard
                     value={gcTransaction.gift_card.code}
                     showValue={false}

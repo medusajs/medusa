@@ -151,7 +151,7 @@ function CustomerGroupModal({
             <div className="gap-x-xsmall flex w-full justify-end">
               <Button
                 variant="secondary"
-                className="text-small mr-2 w-32 justify-center"
+                className="text-small me-2 w-32 justify-center"
                 size="small"
                 type="button"
                 onClick={onClose}

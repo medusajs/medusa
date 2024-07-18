@@ -177,17 +177,17 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                       return (
                         <div key={level.id} className="flex items-center py-3">
                           <div className="inter-base-regular flex items-center">
-                            <IconBadge className="mr-base">
+                            <IconBadge className="me-base">
                               <BuildingsIcon />
                             </IconBadge>
                             {locationDetails?.name}
                           </div>
-                          <div className="ml-auto flex">
-                            <div className="mr-base text-small text-grey-50 flex flex-col">
-                              <span className="whitespace-nowrap text-right">
+                          <div className="ms-auto flex">
+                            <div className="me-base text-small text-grey-50 flex flex-col">
+                              <span className="whitespace-nowrap text-end">
                                 {`${locationLevel!.reserved_quantity} reserved`}
                               </span>
-                              <span className="whitespace-nowrap text-right">{`${
+                              <span className="whitespace-nowrap text-end">{`${
                                 locationLevel!.stocked_quantity! -
                                 locationLevel!.reserved_quantity!
                               } available`}</span>
@@ -385,7 +385,7 @@ const ManageLocationsForm = ({
                   key={loc.id}
                 >
                   <div className="flex items-center">
-                    <IconBadge className="mr-base">
+                    <IconBadge className="me-base">
                       <BuildingsIcon />
                     </IconBadge>
                     <h3>{loc.name}</h3>

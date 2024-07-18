@@ -21,7 +21,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
         maxSize: 36,
         header: ({ table }) => {
           return (
-            <div className="pl-base pr-large">
+            <div className="ps-base pe-large">
               <IndeterminateCheckbox
                 checked={table.getIsAllRowsSelected()}
                 onChange={table.getToggleAllRowsSelectedHandler()}
@@ -41,7 +41,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
           const canSelect = getCanSelect()
 
           return (
-            <div className="pl-base pr-large">
+            <div className="ps-base pe-large">
               {canSelect ? (
                 <IndeterminateCheckbox
                   checked={getIsSelected()}
@@ -128,7 +128,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       columnHelper.accessor("inventory_quantity", {
         maxSize: 20,
         header: () => (
-          <p className="select-none text-right">
+          <p className="select-none text-end">
             {t("add-additional-items-screen-stock", "Stock")}
           </p>
         ),
@@ -137,7 +137,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
 
           return (
             <p
-              className={clsx("text-right", {
+              className={clsx("text-end", {
                 "opacity-50": !isSelectable,
               })}
             >
@@ -149,7 +149,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       columnHelper.accessor("calculated_price_incl_tax", {
         maxSize: 80,
         header: () => (
-          <p className="text-right">
+          <p className="text-end">
             {t("add-additional-items-screen-price", "Price")}
           </p>
         ),
@@ -162,7 +162,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
           const price = getValue()
 
           return (
-            <div className="text-right">
+            <div className="text-end">
               {original_price_incl_tax !== price && (
                 <Tooltip
                   content={t(
@@ -194,7 +194,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
         maxSize: 24,
         cell: () => {
           return (
-            <p className="pl-base text-grey-50">
+            <p className="ps-base text-grey-50">
               {order.currency_code.toUpperCase()}
             </p>
           )

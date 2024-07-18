@@ -378,9 +378,9 @@ const AddVariantsForm = ({
             </div>
             {variants?.length > 0 && (
               <div className="mt-small">
-                <div className="inter-small-semibold pr-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
+                <div className="inter-small-semibold pe-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
                   <p>{t("add-variants-variant", "Variant")}</p>
-                  <div className="mr-xlarge flex justify-end">
+                  <div className="me-xlarge flex justify-end">
                     <p>{t("add-variants-inventory", "Inventory")}</p>
                   </div>
                 </div>

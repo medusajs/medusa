@@ -101,7 +101,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         >
           {prefix ? (
-            <span className="text-grey-40 mr-2xsmall">{prefix}</span>
+            <span className="text-grey-40 me-2xsmall">{prefix}</span>
           ) : null}
           <input
             className={clsx(
@@ -124,7 +124,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
           {deletable && (
             <button
               onClick={onDelete}
-              className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft ml-2 flex h-4 w-4 cursor-pointer items-center justify-center pb-px outline-none"
+              className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft ms-2 flex h-4 w-4 cursor-pointer items-center justify-center pb-px outline-none"
               type="button"
             >
               &times;
@@ -136,7 +136,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
               <button
                 onClick={onNumberDecrement}
                 onMouseDown={(e) => e.preventDefault()}
-                className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft mr-2 h-4 w-4 cursor-pointer outline-none"
+                className="text-grey-50 hover:bg-grey-10 focus:bg-grey-20 rounded-soft me-2 h-4 w-4 cursor-pointer outline-none"
                 type="button"
                 tabIndex={-1}
               >
