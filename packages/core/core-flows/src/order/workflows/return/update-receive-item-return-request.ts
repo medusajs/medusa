@@ -10,11 +10,12 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
-  deleteOrderChangeActionsStep,
   previewOrderChangeStep,
+  updateOrderChangeActionsStep,
 } from "../../steps"
 import {
   throwIfIsCancelled,
@@ -22,18 +23,21 @@ import {
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
-  "remove-request-item-return-validation",
-  async function ({
-    order,
-    orderChange,
-    orderReturn,
-    input,
-  }: {
-    order: OrderDTO
-    orderReturn: ReturnDTO
-    orderChange: OrderChangeDTO
-    input: OrderWorkflow.DeleteRequestItemReturnWorkflowInput
-  }) {
+  "update-receive-item-return-request-validation",
+  async function (
+    {
+      order,
+      orderChange,
+      orderReturn,
+      input,
+    }: {
+      order: OrderDTO
+      orderReturn: ReturnDTO
+      orderChange: OrderChangeDTO
+      input: OrderWorkflow.UpdateReceiveItemReturnRequestWorkflowInput
+    },
+    context
+  ) {
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
@@ -46,19 +50,25 @@ const validationStep = createStep(
       throw new Error(
         `No request return found for return ${input.return_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
+    } else if (
+      [
+        ChangeActionType.RECEIVE_RETURN_ITEM,
+        ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM,
+      ].includes(associatedAction.action as ChangeActionType)
+    ) {
       throw new Error(
-        `Action ${associatedAction.id} is not requesting item return`
+        `Action ${associatedAction.id} is not receiving an item return request`
       )
     }
   }
 )
 
-export const removeRequestItemReturnWorkflowId = "remove-request-item-return"
-export const removeRequestItemReturnWorkflow = createWorkflow(
-  removeRequestItemReturnWorkflowId,
+export const updateReceiveItemReturnRequestWorkflowId =
+  "update-receive-item-return-request"
+export const updateReceiveItemReturnRequestWorkflow = createWorkflow(
+  updateReceiveItemReturnRequestWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.DeleteRequestItemReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.UpdateReceiveItemReturnRequestWorkflowInput>
   ): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
@@ -91,7 +101,25 @@ export const removeRequestItemReturnWorkflow = createWorkflow(
 
     validationStep({ order, input, orderReturn, orderChange })
 
-    deleteOrderChangeActionsStep({ ids: [input.action_id] })
+    const updateData = transform(
+      { orderChange, input },
+      ({ input, orderChange }) => {
+        const originalAction = (orderChange.actions ?? []).find(
+          (a) => a.id === input.action_id
+        ) as OrderChangeActionDTO
+
+        const data = input.data
+        return {
+          id: input.action_id,
+          details: {
+            quantity: data.quantity ?? originalAction.details?.quantity,
+          },
+          internal_note: data.internal_note,
+        }
+      }
+    )
+
+    updateOrderChangeActionsStep([updateData])
 
     return previewOrderChangeStep(order.id)
   }

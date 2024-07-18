@@ -35,6 +35,12 @@ OrderChangeProcessing.registerActionType(
         toReturn
       )
 
+      existing.detail.written_off_quantity ??= 0
+      existing.detail.written_off_quantity = MathBN.add(
+        existing.detail.written_off_quantity,
+        action.details.quantity
+      )
+
       setActionReference(existing, action, options)
 
       if (previousEvents) {
@@ -67,6 +73,11 @@ OrderChangeProcessing.registerActionType(
       )
       existing.detail.return_requested_quantity = MathBN.add(
         existing.detail.return_requested_quantity,
+        action.details.quantity
+      )
+
+      existing.detail.written_off_quantity = MathBN.sub(
+        existing.detail.written_off_quantity,
         action.details.quantity
       )
 

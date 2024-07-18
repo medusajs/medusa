@@ -11,7 +11,7 @@ type CreateReturnItemsInput = {
   returnId: string
 }
 
-export const createReturnItems = createStep(
+export const createReturnItemsStep = createStep(
   "create-return-items",
   async (input: CreateReturnItemsInput, { container }) => {
     const orderModuleService = container.resolve<IOrderModuleService>(

@@ -298,7 +298,7 @@ describe("Order Return - Actions", function () {
           return_requested_quantity: "0",
           return_received_quantity: "1",
           return_dismissed_quantity: "1",
-          written_off_quantity: 0,
+          written_off_quantity: "1",
         },
       },
     ])
