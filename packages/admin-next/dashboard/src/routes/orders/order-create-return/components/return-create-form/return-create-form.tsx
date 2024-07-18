@@ -119,8 +119,8 @@ export const ReturnCreateForm = ({
       items: preview.items.map((i) => ({
         item_id: i.id,
         quantity: i.detail.return_requested_quantity,
-        note: i.actions.find((a) => a.action === "RETURN_ITEM")?.internal_note,
-        reason_id: i.actions.find((a) => a.action === "RETURN_ITEM")?.details
+        note: i.actions?.find((a) => a.action === "RETURN_ITEM")?.internal_note,
+        reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
           ?.reason_id,
       })),
       option_id: "",
@@ -167,7 +167,7 @@ export const ReturnCreateForm = ({
 
       if (ind > -1) {
         if (items[ind].quantity !== i.detail.return_requested_quantity) {
-          const returnItemAction = i.actions.find(
+          const returnItemAction = i.actions?.find(
             (a) => a.action === "RETURN_ITEM"
           )
 
