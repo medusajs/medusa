@@ -74,12 +74,11 @@ describe("Workflow Orchestrator module", function () {
       },
     })
 
-    await onApplicationStart()
-
     query = remoteQuery
     sharedContainer_ = sharedContainer!
 
     await runMigrations()
+    await onApplicationStart()
 
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
   })
@@ -391,7 +390,7 @@ describe("Workflow Orchestrator module", function () {
         asFunction(() => "test")
       )
 
-      const spy = await createScheduled("remove-scheduled", {
+      const spy = await createScheduled("shared-container-job", {
         cron: "* * * * * *",
       })
       await setTimeout(1100)
