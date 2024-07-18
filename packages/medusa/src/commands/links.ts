@@ -220,10 +220,21 @@ const main = async function ({ directory }) {
   const toNotify = groupActionPlan.notify ?? []
   if (toNotify.length) {
     const answer = await askForLinksToUpdate(toNotify)
-    console.log(answer)
+    groupActionPlan.update.push(
+      ...answer.map((action) => {
+        return {
+          ...action,
+          action: "update",
+        } as LinkMigrationsPlannerAction
+      })
+    )
   }
 
-  /* await planner.executeActionPlan(actionPlan)*/
+  await planner.executePlan([
+    ...(groupActionPlan.create ?? []),
+    ...(groupActionPlan.update ?? []),
+    ...(groupActionPlan.delete ?? []),
+  ])
 
   console.log(new Array(TERMINAL_SIZE).join("-"))
   Logger.info("Links sync completed")
