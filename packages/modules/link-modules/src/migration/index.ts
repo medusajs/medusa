@@ -132,6 +132,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
         )
       )
 
+    if (!existingTables.length) {
+      return
+    }
+
     const orderedDescriptors = existingTables.map((tableName) => {
       return this.#linksEntities.find(
         ({ entity }) => entity.meta.collection === tableName
