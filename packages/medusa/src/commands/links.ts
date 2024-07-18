@@ -54,7 +54,10 @@ function showMessage(
   })
 }
 
-async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
+async function askForLinkActionsToPerform(
+  message: string,
+  actions: LinkMigrationsPlannerAction[]
+) {
   console.log("\n")
 
   const choices = [
@@ -93,56 +96,7 @@ async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
   }
 
   const answer = await checkbox({
-    message:
-      "Confirm the links to delete, this means that those links are not defined anymore and will be removed from the database.",
-    choices,
-    validate,
-  })
-
-  return answer.filter((a) => (a.action as string) !== "none")
-}
-
-async function askForLinksToUpdate(actions: LinkMigrationsPlannerAction[]) {
-  console.log("\n")
-
-  const choices = [
-    ...actions.map((action) => {
-      return {
-        name: buildLinkDescription(action),
-        value: action,
-        checked: true,
-      }
-    }),
-    {
-      name: "none",
-      value: {
-        action: "none",
-      } as unknown as LinkMigrationsPlannerAction,
-      checked: false,
-    },
-  ]
-
-  const validate = (answer) => {
-    if (answer.length === 0) {
-      return "Please select at least one choice"
-    }
-
-    if (
-      answer.length > 1 &&
-      answer.some(
-        (choice) =>
-          "value" in choice && (choice.value.action as string) === "none"
-      )
-    ) {
-      return "'none' cannot be selected with other selected choices"
-    }
-
-    return true
-  }
-
-  const answer = await checkbox({
-    message:
-      "Confirm the links to update, this means that the update might result in data loss if they are any data.",
+    message,
     choices,
     validate,
   })
@@ -195,12 +149,19 @@ const main = async function ({ directory }) {
 
   const toDelete = groupActionPlan.delete ?? []
   if (toDelete.length) {
-    groupActionPlan.delete = await askForLinksToDelete(toDelete)
+    groupActionPlan.delete = await askForLinkActionsToPerform(
+      "Confirm the links to delete, this means that those links are not defined anymore and will be removed from the database.",
+      toDelete
+    )
   }
 
   const toNotify = groupActionPlan.notify ?? []
   if (toNotify.length) {
-    const answer = await askForLinksToUpdate(toNotify)
+    const answer = await askForLinkActionsToPerform(
+      "Confirm the links to update, this means that the update might result in data loss if they are any data.",
+      toNotify
+    )
+
     groupActionPlan.update ??= []
     groupActionPlan.update.push(
       ...answer.map((action) => {
