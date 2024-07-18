@@ -97,14 +97,7 @@ export class MigrationsExecutionPlanner {
           linkDescriptor,
         }
       })
-      .filter(
-        (
-          item
-        ): item is {
-          linkDescriptor: PlannerActionLinkDescriptor
-          entity: EntitySchema
-        } => !!item
-      )
+      .filter((item) => !!item)
   }
 
   /**
@@ -141,20 +134,29 @@ export class MigrationsExecutionPlanner {
    * @param action
    * @protected
    */
-  protected async trackLinkMigrationsTable(
+  protected async trackLinkTable(
     orm: MikroORM<PostgreSqlDriver>,
-    tableName: string,
-    action: "insert" | "delete"
+    tableName: string
   ) {
-    if (action === "insert") {
-      await orm.em.getDriver().getConnection().execute(`
-        INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}')
-      `)
-    } else if (action === "delete") {
-      await orm.em.getDriver().getConnection().execute(`
-        DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}')
-      `)
-    }
+    await orm.em.getDriver().getConnection().execute(`
+      INSERT INTO "${this.tableName}" (table_name) VALUES ('${tableName}')
+    `)
+  }
+
+  /**
+   * Drops the link table and untracks it from the "link_modules_migrations"
+   * table.
+   */
+  protected async dropLinkTable(
+    orm: MikroORM<PostgreSqlDriver>,
+    tableName: string
+  ) {
+    await orm.em.getDriver().getConnection().execute(`
+      DROP TABLE IF EXISTS "${tableName}"
+    `)
+    await orm.em.getDriver().getConnection().execute(`
+      DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}')
+    `)
   }
 
   /**
@@ -300,36 +302,28 @@ export class MigrationsExecutionPlanner {
   }
 
   /**
-   * From a given planner action, execute the actions
+   * Executes the actionsPlan actions
+   *
    * @param actionPlan
    */
-  async executeActionPlan(actionPlan: PlannerAction[]): Promise<void> {
+  async executePlan(actionPlan: PlannerAction[]): Promise<void> {
     const orm = await this.createORM()
 
     await promiseAll(
       actionPlan.map(async (action) => {
-        if (action.action === "noop") {
-          return
-        }
-
-        if (action.action === "delete") {
-          await orm.em.getDriver().getConnection().execute(`
-          DROP TABLE IF EXISTS "${action.tableName}"
-        `)
-          await this.trackLinkMigrationsTable(orm, action.tableName, "delete")
-          return
-        }
-
-        /**
-         * A notify action being provided for execution is equivalent
-         * to an update that has been accepted to be run
-         */
-        if (["create", "update", "notify"].includes(action.action)) {
-          await orm.em.getDriver().getConnection().execute(action.sql)
-
-          if (action.action === "create") {
-            await this.trackLinkMigrationsTable(orm, action.tableName, "insert")
-          }
+        switch (action.action) {
+          case "noop":
+          case "notify":
+            return
+          case "delete":
+            await this.dropLinkTable(orm, action.tableName)
+            return
+          case "create":
+            await orm.em.getDriver().getConnection().execute(action.sql)
+            await this.trackLinkTable(orm, action.tableName)
+            return
+          case "update":
+            await orm.em.getDriver().getConnection().execute(action.sql)
         }
       })
     )
