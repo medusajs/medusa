@@ -297,7 +297,7 @@ The Medusa application resolves module relationships without creating an actual 
   ```ts title="src/modules/digital-product/service.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
   // other imports...
   import { ModuleJoinerConfig } from "@medusajs/types"
-  import { Modules } from "@medusajs/modules-sdk"
+  import { Modules } from "@medusajs/utils"
   
   // ...
   
@@ -1104,7 +1104,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
   } from "@medusajs/types"
   import { 
     ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+  } from "@medusajs/utils"
   import DigitalProductModuleService 
     from "../modules/digital-product/service"
 
