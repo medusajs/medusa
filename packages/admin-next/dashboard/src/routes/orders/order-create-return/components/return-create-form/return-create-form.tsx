@@ -38,6 +38,7 @@ import {
   useDeleteReturnShipping,
   useRemoveReturnItem,
   useUpdateReturnItem,
+  useUpdateReturnShipping,
 } from "../../../../../hooks/api/returns"
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
@@ -90,17 +91,17 @@ export const ReturnCreateForm = ({
     useCancelReturn(activeReturn.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
-    useAddReturnShipping(activeReturn.id)
+    useAddReturnShipping(activeReturn.id, order.id)
 
   const {
     mutateAsync: updateReturnShipping,
     isPending: isUpdatingReturnShipping,
-  } = useAddReturnShipping(activeReturn.id)
+  } = useUpdateReturnShipping(activeReturn.id, order.id)
 
   const {
     mutateAsync: deleteReturnShipping,
     isPending: isDeletingReturnShipping,
-  } = useDeleteReturnShipping(activeReturn.id)
+  } = useDeleteReturnShipping(activeReturn.id, order.id)
 
   const { mutateAsync: addReturnItem, isPending: isAddingReturnItem } =
     useAddReturnItem(activeReturn.id, order.id)
@@ -559,7 +560,30 @@ export const ReturnCreateForm = ({
                   {isShippingPriceEdit ? (
                     <CurrencyInput
                       id="js-shipping-input"
-                      onBlur={() => setIsShippingPriceEdit(false)}
+                      onBlur={() => {
+                        let actionId
+
+                        preview.shipping_methods.forEach((s) => {
+                          if (s.actions) {
+                            for (let a of s.actions) {
+                              if (a.action === "SHIPPING_ADD") {
+                                actionId = a.id
+                              }
+                            }
+                          }
+                        })
+
+                        if (actionId) {
+                          updateReturnShipping({
+                            actionId,
+                            custom_price:
+                              typeof customShippingAmount === "string"
+                                ? null
+                                : customShippingAmount,
+                          })
+                        }
+                        setIsShippingPriceEdit(false)
+                      }}
                       symbol={
                         currencies[order.currency_code.toUpperCase()]
                           .symbol_native

@@ -193,6 +193,7 @@ export const useRemoveReturnItem = (
 
 export const useAddReturnShipping = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
@@ -209,6 +210,9 @@ export const useAddReturnShipping = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
       })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -217,6 +221,7 @@ export const useAddReturnShipping = (
 
 export const useUpdateReturnShipping = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
@@ -236,6 +241,9 @@ export const useUpdateReturnShipping = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
       })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -244,6 +252,7 @@ export const useUpdateReturnShipping = (
 
 export const useDeleteReturnShipping = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
 ) => {
   return useMutation({
@@ -255,6 +264,9 @@ export const useDeleteReturnShipping = (
       })
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },
