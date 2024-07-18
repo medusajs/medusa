@@ -179,7 +179,7 @@ medusaIntegrationTestRunner({
       // 2. Request to return items
       // 3. Add return shipping
       // 4. Confirm return
-      it.only("should initiate a return", async () => {
+      it("should initiate a return", async () => {
         let result = await api.post(
           "/admin/returns",
           {
@@ -297,9 +297,6 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
-
-        console.log(result.data.order_preview)
-        console.log(result.data.order_preview.summary)
 
         // updated the requested quantitty
         const updateReturnItemActionId =
