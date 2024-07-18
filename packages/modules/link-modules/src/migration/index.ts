@@ -138,14 +138,20 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       )!.linkDescriptor
     })
 
+    const positionalArgs = new Array(existingTables.length)
+      .fill("(?, ?)")
+      .join(", ")
     await orm.em
       .getDriver()
       .getConnection()
       .execute(
         `
-        INSERT INTO ${this.tableName} (table_name, link_descriptor) VALUES (?, ?) ON CONFLICT DO NOTHING;
-    `,
-        [existingTables, orderedDescriptors]
+                  INSERT INTO ${this.tableName} (table_name, link_descriptor) VALUES ${positionalArgs} ON CONFLICT DO NOTHING;
+        `,
+        existingTables.flatMap((tableName, index) => [
+          tableName,
+          JSON.stringify(orderedDescriptors[index]),
+        ])
       )
   }
 
@@ -187,7 +193,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   ) {
     await orm.em.getDriver().getConnection().execute(`
       DROP TABLE IF EXISTS "${tableName}";
-      DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}');
+      DELETE FROM "${this.tableName}" WHERE table_name = '${tableName}';
     `)
   }
 
@@ -307,10 +313,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
 
     const executionActions: LinkMigrationsPlannerAction[] = []
 
+    await this.ensureMigrationsTableUpToDate(orm)
+
     const trackedTables = await this.getTrackedLinksTables(orm)
     const trackedTablesNames = trackedTables.map(({ table_name }) => table_name)
-
-    await this.ensureMigrationsTableUpToDate(orm)
 
     /**
      * Looping through the new set of entities and generating

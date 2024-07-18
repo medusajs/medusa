@@ -5,7 +5,7 @@ import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
 import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
 import { getLinksExecutionPlanner } from "../loaders/medusa-app"
 import { LinkMigrationsPlannerAction } from "@medusajs/types"
-import checkbox, { Separator } from "@inquirer/checkbox"
+import checkbox from "@inquirer/checkbox"
 
 const TERMINAL_SIZE = process.stdout.columns
 
@@ -56,108 +56,95 @@ function showMessage(
 
 async function askForLinksToDelete(actions: LinkMigrationsPlannerAction[]) {
   console.log("\n")
+
+  const choices = [
+    ...actions.map((action) => {
+      return {
+        name: buildLinkDescription(action),
+        value: action,
+        checked: true,
+      }
+    }),
+    {
+      name: "none",
+      value: {
+        action: "none",
+      } as unknown as LinkMigrationsPlannerAction,
+      checked: false,
+    },
+  ]
+
+  const validate = (answer) => {
+    if (answer.length === 0) {
+      return "Please select at least one choice"
+    }
+
+    if (
+      answer.length > 1 &&
+      answer.some(
+        (choice) =>
+          "value" in choice && (choice.value.action as string) === "none"
+      )
+    ) {
+      return "'none' cannot be selected with other selected choices"
+    }
+
+    return true
+  }
+
   const answer = await checkbox({
     message:
-      "Select the link tables you want to delete, this means that those links are not defined anymore and will be removed from the database.",
-    choices: [
-      ...actions.map((action) => {
-        return {
-          name: buildLinkDescription(action),
-          value: action,
-          checked: true,
-        }
-      }),
-      {
-        name: "none",
-        value: {
-          action: "none",
-        } as unknown as LinkMigrationsPlannerAction,
-        checked: false,
-      },
-    ],
-    validate: (answer) => {
-      if (answer.length === 0) {
-        return "Please select at least one choice"
-      }
-
-      if (
-        answer.length > 1 &&
-        answer.some(
-          (choice) =>
-            "value" in choice && (choice.value.action as string) === "none"
-        )
-      ) {
-        return "'none' cannot be selected with other selected choices"
-      }
-
-      return true
-    },
+      "Confirm the links to delete, this means that those links are not defined anymore and will be removed from the database.",
+    choices,
+    validate,
   })
 
   return answer.filter((a) => (a.action as string) !== "none")
 }
 
 async function askForLinksToUpdate(actions: LinkMigrationsPlannerAction[]) {
-  let choiceIndex = 0
+  console.log("\n")
 
-  const sqlToDisplay = {
-    value: "",
+  const choices = [
+    ...actions.map((action) => {
+      return {
+        name: buildLinkDescription(action),
+        value: action,
+        checked: true,
+      }
+    }),
+    {
+      name: "none",
+      value: {
+        action: "none",
+      } as unknown as LinkMigrationsPlannerAction,
+      checked: false,
+    },
+  ]
+
+  const validate = (answer) => {
+    if (answer.length === 0) {
+      return "Please select at least one choice"
+    }
+
+    if (
+      answer.length > 1 &&
+      answer.some(
+        (choice) =>
+          "value" in choice && (choice.value.action as string) === "none"
+      )
+    ) {
+      return "'none' cannot be selected with other selected choices"
+    }
+
+    return true
   }
 
-  const readline = require("readline")
-  readline.emitKeypressEvents(process.stdin)
-  process.stdin.setRawMode(true)
-  process.stdin.resume()
-  process.stdin.on("keypress", (str, key) => {
-    if (key.name === "up") {
-      choiceIndex = Math.max(0, choiceIndex - 1)
-    }
-
-    if (key.name === "down") {
-      choiceIndex = Math.min(actions.length - 1, choiceIndex + 1)
-    }
-
-    sqlToDisplay.value = (actions[choiceIndex] as { sql: string }).sql
-  })
-
-  console.log("\n")
   const answer = await checkbox({
     message:
-      "Select the link tables you want to delete, this means that those links are not defined anymore and will be removed from the database.",
-    choices: [
-      ...actions.map((action) => {
-        return {
-          name: action.tableName,
-          value: action,
-          checked: true,
-        }
-      }),
-      {
-        name: "none",
-        value: {
-          action: "none",
-        } as unknown as LinkMigrationsPlannerAction,
-        checked: false,
-      },
-      new Separator(sqlToDisplay.value),
-    ],
-    validate: (answer) => {
-      if (answer.length === 0) {
-        return "Please select at least one choice"
-      }
-
-      if (
-        answer.length > 1 &&
-        answer.some(
-          (choice) =>
-            "value" in choice && (choice.value.action as string) === "none"
-        )
-      ) {
-        return "'none' cannot be selected with other selected choices"
-      }
-
-      return true
-    },
+      "Confirm the links to update, this means that the update might result in data loss if they are any data.",
+    choices,
+    validate,
   })
 
   return answer.filter((a) => (a.action as string) !== "none")
@@ -215,6 +202,7 @@ const main = async function ({ directory }) {
   const toNotify = groupActionPlan.notify ?? []
   if (toNotify.length) {
     const answer = await askForLinksToUpdate(toNotify)
+    groupActionPlan.update ??= []
     groupActionPlan.update.push(
       ...answer.map((action) => {
         return {
