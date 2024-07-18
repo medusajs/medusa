@@ -21,7 +21,7 @@ const validationStep = createStep(
       input,
     }: {
       orderReturn
-      input: OrderWorkflow.ReceiveOrderReturnWorkflowInput
+      input: OrderWorkflow.ReceiveCompleteOrderReturnWorkflowInput
     },
     context
   ) {
@@ -30,11 +30,11 @@ const validationStep = createStep(
   }
 )
 
-export const receiveReturnOrderWorkflowId = "receive-return-order"
-export const receiveReturnOrderWorkflow = createWorkflow(
-  receiveReturnOrderWorkflowId,
+export const receiveAndCompleteReturnOrderWorkflowId = "receive-return-order"
+export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(
+  receiveAndCompleteReturnOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.ReceiveOrderReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.ReceiveCompleteOrderReturnWorkflowInput>
   ): WorkflowData<ReturnDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "returns",

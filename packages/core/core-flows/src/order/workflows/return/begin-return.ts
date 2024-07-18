@@ -6,8 +6,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderChangeStep } from "../../steps/create-order-change"
-import { createReturnsStep } from "../../steps/create-returns"
+import { createOrderChangeStep, createReturnsStep } from "../../steps"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(

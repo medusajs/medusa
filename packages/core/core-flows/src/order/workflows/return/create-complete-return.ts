@@ -15,15 +15,15 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
-import { createReturnFulfillmentWorkflow } from "../../fulfillment"
-import { createCompleteReturnStep } from "../steps/create-complete-return"
-import { receiveReturnStep } from "../steps/receive-return"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
+import { createCompleteReturnStep } from "../../steps/create-complete-return"
+import { receiveReturnStep } from "../../steps/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
-} from "../utils/order-validation"
-import { validateReturnReasons } from "../utils/validate-return-reason"
+} from "../../utils/order-validation"
+import { validateReturnReasons } from "../../utils/validate-return-reason"
 
 function prepareShippingMethodData({
   orderId,
