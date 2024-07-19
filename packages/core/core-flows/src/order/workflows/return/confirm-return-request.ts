@@ -9,7 +9,7 @@ import {
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItems } from "../../steps/create-return-items"
+import { createReturnItemsStep } from "../../steps/create-return-items"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -20,7 +20,7 @@ type WorkflowInput = {
 }
 
 const validationStep = createStep(
-  "validate-create-return-shipping-method",
+  "validate-confirm-return-request",
   async function ({
     order,
     orderChange,
@@ -85,7 +85,10 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     validationStep({ order, orderReturn, orderChange })
 
-    createReturnItems({ returnId: orderReturn.id, changes: returnItemActions })
+    createReturnItemsStep({
+      returnId: orderReturn.id,
+      changes: returnItemActions,
+    })
 
     confirmOrderChanges({ changes: [orderChange], orderId: order.id })
 

@@ -1,48 +1,19 @@
 import * as Dialog from "@radix-ui/react-dialog"
 
 import {
-  ArrowRightOnRectangle,
   BellAlert,
-  BookOpen,
-  Calendar,
-  CircleHalfSolid,
-  CogSixTooth,
-  Keyboard,
-  MagnifyingGlass,
   SidebarLeft,
   TriangleRightMini,
-  User as UserIcon,
+  XMark,
 } from "@medusajs/icons"
-import {
-  Avatar,
-  Button,
-  DropdownMenu,
-  Heading,
-  IconButton,
-  Kbd,
-  Text,
-  clx,
-} from "@medusajs/ui"
-import { PropsWithChildren, useState } from "react"
-import {
-  Link,
-  Outlet,
-  UIMatch,
-  useLocation,
-  useMatches,
-  useNavigate,
-} from "react-router-dom"
+import { IconButton, clx } from "@medusajs/ui"
+import { PropsWithChildren } from "react"
+import { Link, Outlet, UIMatch, useMatches } from "react-router-dom"
 
 import { useTranslation } from "react-i18next"
-import { useLogout } from "../../../hooks/api/auth"
-import { useMe } from "../../../hooks/api/users"
-import { queryClient } from "../../../lib/query-client"
 import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
-import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
-import { useTheme } from "../../../providers/theme-provider"
-import { Skeleton } from "../../common/skeleton"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -136,239 +107,6 @@ const Breadcrumbs = () => {
   )
 }
 
-const UserBadge = () => {
-  const { user, isLoading, isError, error } = useMe()
-
-  const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
-  const displayName = name || user?.email
-
-  const fallback = displayName ? displayName[0].toUpperCase() : null
-
-  if (isLoading) {
-    return (
-      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5">
-        <Skeleton className="h-5 w-5 rounded-full" />
-        <Skeleton className="h-[9px] w-[70px]" />
-      </button>
-    )
-  }
-
-  if (isError) {
-    throw error
-  }
-
-  return (
-    <DropdownMenu.Trigger asChild>
-      <button
-        disabled={!user}
-        className={clx(
-          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 outline-none"
-        )}
-      >
-        {fallback ? (
-          <Avatar size="xsmall" fallback={fallback} />
-        ) : (
-          <Skeleton className="h-5 w-5 rounded-full" />
-        )}
-        {displayName ? (
-          <Text
-            size="xsmall"
-            weight="plus"
-            leading="compact"
-            className="truncate"
-          >
-            {displayName}
-          </Text>
-        ) : (
-          <Skeleton className="h-[9px] w-[70px]" />
-        )}
-      </button>
-    </DropdownMenu.Trigger>
-  )
-}
-
-const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme()
-
-  return (
-    <DropdownMenu.SubMenu>
-      <DropdownMenu.SubMenuTrigger className="rounded-md">
-        <CircleHalfSolid className="text-ui-fg-subtle mr-2" />
-        Theme
-      </DropdownMenu.SubMenuTrigger>
-      <DropdownMenu.SubMenuContent>
-        <DropdownMenu.RadioGroup value={theme}>
-          <DropdownMenu.RadioItem
-            value="light"
-            onClick={(e) => {
-              e.preventDefault()
-              setTheme("light")
-            }}
-          >
-            Light
-          </DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem
-            value="dark"
-            onClick={(e) => {
-              e.preventDefault()
-              setTheme("dark")
-            }}
-          >
-            Dark
-          </DropdownMenu.RadioItem>
-        </DropdownMenu.RadioGroup>
-      </DropdownMenu.SubMenuContent>
-    </DropdownMenu.SubMenu>
-  )
-}
-
-const Logout = () => {
-  const navigate = useNavigate()
-  const { mutateAsync: logoutMutation } = useLogout()
-
-  const handleLogout = async () => {
-    await logoutMutation(undefined, {
-      onSuccess: () => {
-        /**
-         * When the user logs out, we want to clear the query cache
-         */
-        queryClient.clear()
-        navigate("/login")
-      },
-    })
-  }
-
-  return (
-    <DropdownMenu.Item onClick={handleLogout}>
-      <div className="flex items-center gap-x-2">
-        <ArrowRightOnRectangle className="text-ui-fg-subtle" />
-        <span>Logout</span>
-      </div>
-    </DropdownMenu.Item>
-  )
-}
-
-const Profile = () => {
-  const location = useLocation()
-
-  return (
-    <Link to="/settings/profile" state={{ from: location.pathname }}>
-      <DropdownMenu.Item>
-        <UserIcon className="text-ui-fg-subtle mr-2" />
-        Profile
-      </DropdownMenu.Item>
-    </Link>
-  )
-}
-
-const GlobalKeybindsModal = (props: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}) => {
-  const { t } = useTranslation()
-  const globalShortcuts = useGlobalShortcuts()
-
-  return (
-    <Dialog.Root {...props}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle shadow-elevation-modal fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg">
-          <div className="px-6 py-4">
-            <Dialog.Title asChild>
-              <Heading>Keyboard Shortcuts</Heading>
-            </Dialog.Title>
-          </div>
-          <div className="flex flex-col divide-y overflow-y-auto">
-            {globalShortcuts.map((shortcut, index) => {
-              return (
-                <div
-                  key={index}
-                  className="text-ui-fg-subtle flex items-center justify-between px-6 py-3"
-                >
-                  <Text size="small">{shortcut.label}</Text>
-                  <div className="flex items-center gap-x-1.5">
-                    {shortcut.keys.Mac?.map((key, index) => {
-                      return <Kbd key={index}>{key}</Kbd>
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-          <div className="flex items-center justify-end border-b px-6 py-4">
-            <Dialog.Close asChild>
-              <Button size="small">{t("actions.close")}</Button>
-            </Dialog.Close>
-          </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
-  )
-}
-
-const LoggedInUser = () => {
-  const [openMenu, setOpenMenu] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
-
-  const toggleModal = () => {
-    setOpenMenu(false)
-    setOpenModal(!openModal)
-  }
-
-  return (
-    <div>
-      <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
-        <UserBadge />
-        <DropdownMenu.Content align="center">
-          <Profile />
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item asChild>
-            <Link to="https://docs.medusajs.com/v2" target="_blank">
-              <BookOpen className="text-ui-fg-subtle mr-2" />
-              Documentation
-            </Link>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item asChild>
-            <Link to="https://medusajs.com/changelog/" target="_blank">
-              <Calendar className="text-ui-fg-subtle mr-2" />
-              Changelog
-            </Link>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item onClick={toggleModal}>
-            <Keyboard className="text-ui-fg-subtle mr-2" />
-            Keyboard shortcuts
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <ThemeToggle />
-          <DropdownMenu.Separator />
-          <Logout />
-        </DropdownMenu.Content>
-      </DropdownMenu>
-      <GlobalKeybindsModal open={openModal} onOpenChange={setOpenModal} />
-    </div>
-  )
-}
-
-const SettingsLink = () => {
-  const location = useLocation()
-
-  return (
-    <Link
-      to="/settings"
-      className="flex items-center justify-center"
-      state={{ from: location.pathname }}
-    >
-      <IconButton
-        size="small"
-        variant="transparent"
-        className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle"
-      >
-        <CogSixTooth />
-      </IconButton>
-    </Link>
-  )
-}
-
 const ToggleNotifications = () => {
   return (
     <IconButton
@@ -381,26 +119,6 @@ const ToggleNotifications = () => {
   )
 }
 
-const Searchbar = () => {
-  const { t } = useTranslation()
-  const { toggleSearch } = useSearch()
-
-  return (
-    <button
-      onClick={toggleSearch}
-      className="shadow-borders-base bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover transition-fg focus-visible:shadow-borders-focus text-ui-fg-muted flex w-full max-w-[280px] select-none items-center gap-x-2 rounded-full py-1.5 pl-2 pr-1.5 outline-none"
-    >
-      <MagnifyingGlass />
-      <div className="flex-1 text-left">
-        <Text size="small" leading="compact">
-          {t("app.search.placeholder")}
-        </Text>
-      </div>
-      <Kbd className="rounded-full">⌘K</Kbd>
-    </button>
-  )
-}
-
 const ToggleSidebar = () => {
   const { toggle } = useSidebar()
 
@@ -410,6 +128,7 @@ const ToggleSidebar = () => {
         className="hidden lg:flex"
         variant="transparent"
         onClick={() => toggle("desktop")}
+        size="small"
       >
         <SidebarLeft className="text-ui-fg-muted" />
       </IconButton>
@@ -417,6 +136,7 @@ const ToggleSidebar = () => {
         className="hidden max-lg:flex"
         variant="transparent"
         onClick={() => toggle("mobile")}
+        size="small"
       >
         <SidebarLeft className="text-ui-fg-muted" />
       </IconButton>
@@ -426,20 +146,13 @@ const ToggleSidebar = () => {
 
 const Topbar = () => {
   return (
-    <div className="grid w-full grid-cols-3 border-b p-3">
+    <div className="grid w-full grid-cols-2 border-b p-3">
       <div className="flex items-center gap-x-1.5">
         <ToggleSidebar />
         <Breadcrumbs />
       </div>
-      <div className="flex items-center justify-center">
-        <Searchbar />
-      </div>
       <div className="flex items-center justify-end gap-x-3">
-        <div className="text-ui-fg-muted flex items-center gap-x-1">
-          <ToggleNotifications />
-          <SettingsLink />
-        </div>
-        <LoggedInUser />
+        <ToggleNotifications />
       </div>
     </div>
   )
@@ -460,13 +173,41 @@ const DesktopSidebarContainer = ({ children }: PropsWithChildren) => {
 }
 
 const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation()
   const { mobile, toggle } = useSidebar()
 
   return (
     <Dialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
       <Dialog.Portal>
-        <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-full max-w-[240px] border-r">
+        <Dialog.Overlay
+          className={clx(
+            "bg-ui-bg-overlay fixed inset-0",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+          )}
+        />
+        <Dialog.Content
+          className={clx(
+            "bg-ui-bg-subtle shadow-elevation-modal fixed inset-y-2 left-2 flex w-full max-w-[304px] flex-col overflow-hidden rounded-lg border-r",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-left-1/2 duration-200"
+          )}
+        >
+          <div className="p-3">
+            <Dialog.Close asChild>
+              <IconButton
+                size="small"
+                variant="transparent"
+                className="text-ui-fg-subtle"
+              >
+                <XMark />
+              </IconButton>
+            </Dialog.Close>
+            <Dialog.Title className="sr-only">
+              {t("app.nav.accessibility.title")}
+            </Dialog.Title>
+            <Dialog.Description className="sr-only">
+              {t("app.nav.accessibility.description")}
+            </Dialog.Description>
+          </div>
           {children}
         </Dialog.Content>
       </Dialog.Portal>

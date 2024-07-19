@@ -432,6 +432,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/pricing/relations-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/pricing/tax-inclusive-pricing/page.mdx",
+    "pathname": "/commerce-modules/pricing/tax-inclusive-pricing"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/_events/_events-table/page.mdx",
     "pathname": "/commerce-modules/product/_events/_events-table"
   },
@@ -898,6 +902,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/products/page.mdx",
     "pathname": "/storefront-development/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/examples/sale-price/page.mdx",
+    "pathname": "/storefront-development/products/price/examples/sale-price"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/examples/show-price/page.mdx",
+    "pathname": "/storefront-development/products/price/examples/show-price"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
