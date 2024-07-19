@@ -16,16 +16,14 @@ moduleIntegrationTestRunner<ICartModuleService>({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "address",
-          "adjustmentLine",
           "cart",
+          "address",
+          "lineItem",
           "lineItemAdjustment",
           "lineItemTaxLine",
-          "lineItem",
+          "shippingMethod",
           "shippingMethodAdjustment",
           "shippingMethodTaxLine",
-          "shippingMethod",
-          "taxLine",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -33,85 +31,53 @@ moduleIntegrationTestRunner<ICartModuleService>({
         })
 
         expect(linkable).toEqual({
-          address: {
-            id: {
-              linkable: "address_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "address",
-            },
-          },
-          adjustmentLine: {
-            id: {
-              linkable: "adjustment_line_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "adjustmentLine",
-            },
-          },
           cart: {
-            id: {
-              linkable: "cart_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "cart",
-            },
+            linkable: "cart_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "cart",
           },
-          lineItemAdjustment: {
-            id: {
-              linkable: "line_item_adjustment_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "lineItemAdjustment",
-            },
-          },
-          lineItemTaxLine: {
-            id: {
-              linkable: "line_item_tax_line_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "lineItemTaxLine",
-            },
+          address: {
+            linkable: "address_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "address",
           },
           lineItem: {
-            id: {
-              linkable: "line_item_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "lineItem",
-            },
+            linkable: "line_item_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "lineItem",
           },
-          shippingMethodAdjustment: {
-            id: {
-              linkable: "shipping_method_adjustment_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "shippingMethodAdjustment",
-            },
+          lineItemAdjustment: {
+            linkable: "line_item_adjustment_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "lineItemAdjustment",
           },
-          shippingMethodTaxLine: {
-            id: {
-              linkable: "shipping_method_tax_line_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "shippingMethodTaxLine",
-            },
+          lineItemTaxLine: {
+            linkable: "line_item_tax_line_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "lineItemTaxLine",
           },
           shippingMethod: {
-            id: {
-              linkable: "shipping_method_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "shippingMethod",
-            },
+            linkable: "shipping_method_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "shippingMethod",
           },
-          taxLine: {
-            id: {
-              linkable: "tax_line_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "taxLine",
-            },
+          shippingMethodAdjustment: {
+            linkable: "shipping_method_adjustment_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "shippingMethodAdjustment",
+          },
+          shippingMethodTaxLine: {
+            linkable: "shipping_method_tax_line_id",
+            primaryKey: "id",
+            serviceName: "cart",
+            field: "shippingMethodTaxLine",
           },
         })
       })
