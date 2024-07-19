@@ -30,8 +30,10 @@ export function calculateAdjustmentTotal({
         adj["subtotal"] = new BigNumber(MathBN.sub(adj.amount, taxAmount))
         adj["total"] = new BigNumber(adj.amount)
       } else {
+        total = MathBN.add(adj.amount, taxAmount)
+
         adj["subtotal"] = new BigNumber(adj.amount)
-        adj["total"] = new BigNumber(MathBN.add(adj.amount, taxAmount))
+        adj["total"] = new BigNumber(total)
       }
     }
   }

@@ -698,6 +698,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Prices Calculation",
               },
               {
+                path: "/commerce-modules/pricing/tax-inclusive-pricing",
+                title: "Tax-Inclusive Pricing",
+              },
+              {
                 path: "/commerce-modules/pricing/relations-to-other-modules",
                 title: "Relation to Modules",
               },
@@ -1835,6 +1839,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
+            children: [
+              {
+                path: "/storefront-development/products/price/examples/show-price",
+                title: "Example: Show Variant Price",
+              },
+              {
+                path: "/storefront-development/products/price/examples/sale-price",
+                title: "Example: Show Sale Price",
+              },
+            ],
           },
           {
             path: "/storefront-development/products/categories",

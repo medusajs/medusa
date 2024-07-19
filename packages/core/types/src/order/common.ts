@@ -36,13 +36,7 @@ export type OrderSummaryDTO = {
   net_subtotal: BigNumberValue
   net_total_tax: BigNumberValue
 
-  future_total: BigNumberValue
-  future_subtotal: BigNumberValue
-  future_total_tax: BigNumberValue
-  future_projected_total: BigNumberValue
-
   balance: BigNumberValue
-  future_balance: BigNumberValue
 
   paid_total: BigNumberValue
   refunded_total: BigNumberValue
