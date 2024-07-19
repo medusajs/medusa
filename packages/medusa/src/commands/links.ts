@@ -68,49 +68,19 @@ async function askForLinkActionsToPerform(
 ) {
   console.log(boxen(message, { borderColor: "red", padding: 1 }))
 
-  const choices = [
-    ...actions.map((action) => {
+  return await checkbox({
+    message: "Select tables to act upon",
+    instructions: chalk.dim(
+      " <space> select, <a> select all, <i> inverse, <enter> submit"
+    ),
+    choices: actions.map((action) => {
       return {
         name: buildLinkDescription(action),
         value: action,
-        checked: true,
+        checked: false,
       }
     }),
-    {
-      name: "none",
-      value: {
-        action: "none",
-      } as unknown as LinkMigrationsPlannerAction,
-      checked: false,
-    },
-  ]
-
-  const validate = (answer) => {
-    if (answer.length === 0) {
-      return "Please select at least one choice"
-    }
-
-    if (
-      answer.length > 1 &&
-      answer.some(
-        (choice) =>
-          "value" in choice && (choice.value.action as string) === "none"
-      )
-    ) {
-      return "'none' cannot be selected with other selected choices"
-    }
-
-    return true
-  }
-
-  const answer = await checkbox({
-    message: "Select tables to act upon",
-    instructions: chalk.dim(" Press <space> to select and <enter> to submit"),
-    choices,
-    validate,
   })
-
-  return answer.filter((a) => (a.action as string) !== "none")
 }
 
 const main = async function ({ directory }) {
@@ -149,7 +119,7 @@ const main = async function ({ directory }) {
     groupActionPlan.delete = await askForLinkActionsToPerform(
       `Select the tables to ${chalk.red(
         "DELETE"
-      )}. The links for the following DB tables have been removed`,
+      )}. The following links have been removed`,
       groupActionPlan.delete
     )
   }
@@ -158,7 +128,7 @@ const main = async function ({ directory }) {
     const answer = await askForLinkActionsToPerform(
       `Select the tables to ${chalk.red(
         "UPDATE"
-      )}. The links for the following DB tables have been modified`,
+      )}. The following links have been updated`,
       groupActionPlan.notify
     )
 
