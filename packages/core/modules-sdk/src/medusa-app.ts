@@ -371,7 +371,9 @@ async function MedusaApp_({
         throw new Error("Generate migrations not allowed in loaderOnly mode")
       },
       linkMigrationExecutionPlanner: () => {
-        throw new Error("Generate migrations not allowed in loaderOnly mode")
+        throw new Error(
+          "Migrations planner is not avaibable in loaderOnly mode"
+        )
       },
     }
   }

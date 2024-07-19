@@ -56,6 +56,7 @@
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
+    "chalk": "^4.0.0",
     "chokidar": "^3.4.2",
     "compression": "^1.7.4",
     "connect-redis": "^5.0.0",
