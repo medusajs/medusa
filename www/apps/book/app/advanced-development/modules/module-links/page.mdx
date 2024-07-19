@@ -32,31 +32,6 @@ You can then retrieve data across the linked modules, and manage their linked re
 
 ---
 
-## Prerequisite: isQueryable Configuration
-
-Before you define a module link, you must enable the `isQueryable` configuration of the module.
-
-For example:
-
-```js
-import { HELLO_MODULE } from "./src/modules/hello"
-// ...
-
-module.exports = defineConfig({
-  // ...
-  modules: {
-    [HELLO_MODULE]: {
-      resolve: "./modules/hello",
-      definition: {
-        isQueryable: true,
-      },
-    },
-  },
-})
-```
-
----
-
 ## How to Define a Module Link?
 
 ### 1. Create Link File
