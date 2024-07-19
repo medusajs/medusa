@@ -118,14 +118,19 @@ const Header = () => {
             "focus-visible:shadow-borders-focus"
           )}
         >
-          <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2 overflow-hidden">
             {fallback ? (
               <Avatar variant="squared" size="xsmall" fallback={fallback} />
             ) : (
-              <Skeleton className="h-7 w-7 rounded-md" />
+              <Skeleton className="h-6 w-6 rounded-md" />
             )}
             {name ? (
-              <Text size="small" weight="plus" leading="compact">
+              <Text
+                size="small"
+                weight="plus"
+                leading="compact"
+                className="truncate"
+              >
                 {store.name}
               </Text>
             ) : (
@@ -138,8 +143,13 @@ const Header = () => {
           <DropdownMenu.Content className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-0">
             <div className="flex items-center gap-x-3 px-2 py-1">
               <Avatar variant="squared" size="small" fallback={fallback} />
-              <div className="flex flex-col">
-                <Text size="small" weight="plus" leading="compact">
+              <div className="flex flex-col overflow-hidden">
+                <Text
+                  size="small"
+                  weight="plus"
+                  leading="compact"
+                  className="truncate"
+                >
                   {name}
                 </Text>
                 <Text

@@ -50,7 +50,7 @@ const SubMenuTrigger = React.forwardRef<
       "focus-visible:bg-ui-bg-component-hover focus:bg-ui-bg-component-hover",
       "active:bg-ui-bg-component-pressed",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
-      "data-[state=open]:bg-ui-bg-base-hover",
+      "data-[state=open]:!bg-ui-bg-component-hover",
       className
     )}
     {...props}

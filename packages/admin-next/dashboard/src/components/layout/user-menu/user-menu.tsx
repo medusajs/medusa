@@ -46,7 +46,7 @@ export const UserMenu = () => {
     <div>
       <DropdownMenu open={openMenu} onOpenChange={setOpenMenu}>
         <UserBadge />
-        <DropdownMenu.Content className="min-w-0 !max-w-[var(--radix-dropdown-menu-trigger-width)]">
+        <DropdownMenu.Content className="min-w-[var(--radix-dropdown-menu-trigger-width)] max-w-[var(--radix-dropdown-menu-trigger-width)]">
           <UserItem />
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
@@ -84,14 +84,14 @@ export const UserMenu = () => {
 }
 
 const UserBadge = () => {
-  const { user, isLoading, isError, error } = useMe()
+  const { user, isPending, isError, error } = useMe()
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email
 
   const fallback = displayName ? displayName[0].toUpperCase() : null
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5">
         <Skeleton className="h-5 w-5 rounded-full" />
@@ -122,7 +122,7 @@ const UserBadge = () => {
             <Skeleton className="h-6 w-6 rounded-full" />
           )}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center overflow-hidden">
           {displayName ? (
             <Text
               size="xsmall"
