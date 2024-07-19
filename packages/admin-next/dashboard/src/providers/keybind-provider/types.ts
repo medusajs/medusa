@@ -15,6 +15,14 @@ export type Shortcut = {
   keys: Keys
   type: ShortcutType
   label: string
-  callback: () => void
   _defaultKeys?: Keys
-}
+} & (
+  | {
+      callback: () => void
+      to?: never
+    }
+  | {
+      to: string
+      callback?: never
+    }
+)
