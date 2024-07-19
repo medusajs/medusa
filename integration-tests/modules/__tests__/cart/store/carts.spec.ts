@@ -2030,7 +2030,7 @@ medusaIntegrationTestRunner({
               shipping_subtotal: 0,
               shipping_tax_total: 0,
               original_shipping_tax_total: 0,
-              original_shipping_tax_subtotal: 0,
+              original_shipping_subtotal: 0,
               original_shipping_total: 0,
               items: [
                 expect.objectContaining({

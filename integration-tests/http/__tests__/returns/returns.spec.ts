@@ -301,6 +301,7 @@ medusaIntegrationTestRunner({
         // updated the requested quantitty
         const updateReturnItemActionId =
           result.data.order_preview.items[0].actions[0].id
+
         result = await api.post(
           `/admin/returns/${returnId}/request-items/${updateReturnItemActionId}`,
           {

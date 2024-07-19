@@ -23,6 +23,7 @@ import { Store } from "./store"
 import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
+import { User } from "./user"
 
 export class Admin {
   public invite: Invite
@@ -48,6 +49,7 @@ export class Admin {
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
+  public user: User
   public return: Return
 
   constructor(client: Client) {
@@ -74,6 +76,7 @@ export class Admin {
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
+    this.user = new User(client)
     this.return = new Return(client)
   }
 }

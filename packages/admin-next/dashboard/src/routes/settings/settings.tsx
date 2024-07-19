@@ -7,7 +7,7 @@ export const Settings = () => {
 
   useEffect(() => {
     if (location.pathname === "/settings") {
-      navigate("/settings/profile")
+      navigate("/settings/store", { replace: true })
     }
   }, [location.pathname, navigate])
 
