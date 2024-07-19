@@ -11,8 +11,8 @@ import {
 
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   Searchable,
 } from "@medusajs/utils"

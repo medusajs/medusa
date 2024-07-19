@@ -1,4 +1,5 @@
-import { isObject } from "./is-object"
+import { RemoteQueryEntryPointFields } from "@medusajs/types"
+import { isObject } from "../common"
 
 /**
  * Convert a string fields array to a remote query object
@@ -83,12 +84,15 @@ import { isObject } from "./is-object"
  * //   },
  * // }
  */
-export function remoteQueryObjectFromString(
+export function remoteQueryObjectFromString<
+  const EntryPoint extends string,
+  Fields = RemoteQueryEntryPointFields<EntryPoint>
+>(
   config:
     | {
-        entryPoint: string
+        entryPoint: EntryPoint
         variables?: any
-        fields: string[]
+        fields: Fields
       }
     | {
         service: string
@@ -113,7 +117,7 @@ export function remoteQueryObjectFromString(
 
   const usedVariables = new Set()
 
-  for (const field of fields) {
+  for (const field of fields as string[]) {
     if (!field.includes(".")) {
       remoteJoinerConfig[entryKey]["fields"].push(field)
       continue

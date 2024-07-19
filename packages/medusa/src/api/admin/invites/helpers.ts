@@ -1,4 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
+
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -10,6 +11,7 @@ export const refetchInvite = async (
   fields: string[]
 ) => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "invite",
     variables: {
