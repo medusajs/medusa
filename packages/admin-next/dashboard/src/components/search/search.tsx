@@ -10,7 +10,7 @@ import {
 } from "react"
 
 import { useTranslation } from "react-i18next"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
 import { useSearch } from "../../providers/search-provider"
@@ -20,6 +20,7 @@ export const Search = () => {
   const globalCommands = useGlobalShortcuts()
   const location = useLocation()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     onOpenChange(false)
@@ -40,9 +41,18 @@ export const Search = () => {
     }))
   }, [globalCommands])
 
-  const handleSelect = (callback: () => void) => {
-    callback()
+  const handleSelect = (shortcut: Shortcut) => {
     onOpenChange(false)
+
+    if (shortcut.to) {
+      navigate(shortcut.to)
+      return
+    }
+
+    if (shortcut.callback) {
+      shortcut.callback()
+      return
+    }
   }
 
   return (
@@ -60,13 +70,25 @@ export const Search = () => {
                 return (
                   <CommandItem
                     key={item.label}
-                    onSelect={() => handleSelect(item.callback)}
+                    onSelect={() => handleSelect(item)}
                     className="flex items-center justify-between"
                   >
                     <span>{item.label}</span>
                     <div className="flex items-center gap-x-1.5">
                       {item.keys.Mac?.map((key, index) => {
-                        return <Kbd key={index}>{key}</Kbd>
+                        return (
+                          <div
+                            className="flex items-center gap-x-1"
+                            key={index}
+                          >
+                            <Kbd>{key}</Kbd>
+                            {index < (item.keys.Mac?.length || 0) - 1 && (
+                              <span className="txt-compact-xsmall text-ui-fg-subtle">
+                                {t("app.keyboardShortcuts.then")}
+                              </span>
+                            )}
+                          </div>
+                        )
                       })}
                     </div>
                   </CommandItem>
@@ -104,8 +126,8 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
     <Dialog.Root {...props}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] w-full max-w-2xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-xl p-0">
-          <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input]]:h-[52px]">
+        <Dialog.Content className="bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] flex max-h-[calc(100%-16px)] w-[calc(100%-16px)] min-w-0 max-w-2xl translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden rounded-xl p-0">
+          <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground flex h-full flex-col overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input]]:h-[52px]">
             {children}
           </CommandPalette>
           <div className="bg-ui-bg-field text-ui-fg-subtle flex items-center justify-end border-t px-4 py-3">
@@ -167,7 +189,7 @@ const CommandList = forwardRef<
   <Command.List
     ref={ref}
     className={clx(
-      "max-h-[300px] overflow-y-auto overflow-x-hidden px-2 pb-4",
+      "max-h-[300px] flex-1 overflow-y-auto overflow-x-hidden px-2 pb-4",
       className
     )}
     {...props}
