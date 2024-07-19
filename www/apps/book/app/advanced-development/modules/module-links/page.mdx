@@ -141,3 +141,26 @@ Then, in the next chapters, you'll learn how to:
 - Link each product to a record of your data model.
 - Retrieve your data model's properties when you retrieve products.
 
+---
+
+## Set Delete Cascades on Link
+
+To enable delete cascade when a linked record is deleted, pass the `deleteCascades` property in the object passed to `defineLink`.
+
+For example:
+
+```ts
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    linkable: HelloModule.linkable.myCustom,
+    deleteCascades: true,
+  },
+  ProductModule.linkable.product
+)
+```
+
+In this example, when a product is deleted, its linked `myCustom` record is also deleted.
