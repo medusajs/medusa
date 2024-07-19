@@ -58,7 +58,6 @@ export type VirtualOrder = {
 
 export enum EVENT_STATUS {
   PENDING = "pending",
-  VOIDED = "voided",
   DONE = "done",
 }
 
@@ -66,9 +65,7 @@ export interface OrderSummaryCalculated {
   current_order_total: BigNumberInput
   original_order_total: BigNumberInput
   transaction_total: BigNumberInput
-  future_difference: BigNumberInput
   pending_difference: BigNumberInput
-  future_temporary_difference: BigNumberInput
   temporary_difference: BigNumberInput
   difference_sum: BigNumberInput
   paid_total: BigNumberInput
@@ -92,15 +89,7 @@ export interface OrderChangeEvent {
 
   change_id?: string
 
-  evaluationOnly?: boolean
-
   details?: any
-
-  resolve?: {
-    change_id?: string
-    reference_id?: string
-    amount?: BigNumberInput
-  }
 }
 
 export type InternalOrderChangeEvent = OrderChangeEvent & {
@@ -125,11 +114,7 @@ export type OrderReferences = {
 export interface ActionTypeDefinition {
   isDeduction?: boolean
   awaitRequired?: boolean
-  versioning?: boolean
-  void?: boolean
-  commitsAction?: string
   operation?: (obj: OrderReferences) => BigNumberInput | void
-  revert?: (obj: OrderReferences) => BigNumberInput | void
   validate?: (obj: OrderReferences) => void
   [key: string]: unknown
 }

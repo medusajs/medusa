@@ -16,12 +16,7 @@ export interface BaseOrderSummary {
   net_total: number
   net_subtotal: number
   net_total_tax: number
-  future_total: number
-  future_subtotal: number
-  future_total_tax: number
-  future_projected_total: number
   balance: number
-  future_balance: number
   paid_total: number
   refunded_total: number
 }

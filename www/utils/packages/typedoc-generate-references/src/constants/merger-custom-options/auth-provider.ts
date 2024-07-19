@@ -39,14 +39,13 @@ Create the file \`src/modules/my-auth/index.ts\` with the following content:
 
 \`\`\`ts title="src/modules/my-auth/index.ts"
 import MyAuthProviderService from "./service"
-import { Module } from "@medusajs/utils"
 
-export default Module("my-auth", {
-  service: MyAuthProviderService,
-})
+export default {
+  services: [MyAuthProviderService],
+}
 \`\`\`
 
-This exports the module's definition, indicating that the \`MyAuthProviderService\` is the main service of the module.`,
+This exports the module's definition, indicating that the \`MyAuthProviderService\` is the module's service.`,
       `## 4. Use Module
 
 To use your Auth Provider Module, add it to the \`providers\` array of the Auth Module:
