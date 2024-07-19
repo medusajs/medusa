@@ -647,7 +647,7 @@ describe("Total calculation", function () {
             return_requested_quantity: 0,
             return_received_quantity: 1,
             return_dismissed_quantity: 1,
-            written_off_quantity: 0,
+            written_off_quantity: 1,
           },
           tax_lines: [
             {
@@ -690,7 +690,7 @@ describe("Total calculation", function () {
             return_received_quantity: 1,
             return_requested_quantity: 0,
             shipped_quantity: 2,
-            written_off_quantity: 0,
+            written_off_quantity: 1,
           },
           subtotal: 100,
           total: 88,
@@ -704,7 +704,7 @@ describe("Total calculation", function () {
           return_requested_total: 0,
           return_received_total: 44,
           return_dismissed_total: 44,
-          write_off_total: 0,
+          write_off_total: 44,
           refundable_total: 0,
           refundable_total_per_unit: 0,
         },
@@ -727,7 +727,7 @@ describe("Total calculation", function () {
       return_requested_total: 0,
       return_received_total: 44,
       return_dismissed_total: 44,
-      write_off_total: 0,
+      write_off_total: 44,
     })
   })
 })

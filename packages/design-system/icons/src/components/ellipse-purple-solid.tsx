@@ -13,7 +13,7 @@ const EllipsePurpleSolid = React.forwardRef<SVGSVGElement, IconProps>(
       >
         <g clipPath="url(#a)" filter="url(#b)">
           <rect width={10} height={10} x={2.5} y={2.5} fill="#fff" rx={5} />
-          <circle cx={7.5} cy={7.5} r={3} fill="#8B5CF6" />
+          <circle cx={7.5} cy={7.5} r={3} fill="#A78BFA" />
         </g>
         <defs>
           <clipPath id="a">

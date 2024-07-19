@@ -4,12 +4,8 @@ import {
   MedusaError,
   isDefined,
 } from "@medusajs/utils"
-import { VirtualOrder } from "@types"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import {
-  setActionReference,
-  unsetActionReference,
-} from "../set-action-reference"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
   isDeduction: true,
@@ -35,27 +31,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
     }
 
     return MathBN.mult(existing.unit_price, action.details.quantity)
-  },
-  revert({ action, currentOrder }) {
-    const existing = currentOrder.items.find(
-      (item) => item.id === action.details.reference_id
-    )
-
-    if (existing) {
-      existing.quantity = MathBN.add(existing.quantity, action.details.quantity)
-      existing.detail.quantity = MathBN.add(
-        existing.detail.quantity,
-        action.details.quantity
-      )
-
-      unsetActionReference(existing, action)
-    } else {
-      currentOrder.items.push({
-        id: action.details.reference_id!,
-        unit_price: action.details.unit_price,
-        quantity: action.details.quantity,
-      } as VirtualOrder["items"][0])
-    }
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id

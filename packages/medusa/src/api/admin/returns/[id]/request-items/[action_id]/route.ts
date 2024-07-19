@@ -1,5 +1,5 @@
 import {
-  removeRequestItemReturnWorkflow,
+  removeItemReturnActionWorkflow,
   updateRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import {
@@ -55,7 +55,7 @@ export const DELETE = async (
 
   const { id, action_id } = req.params
 
-  const { result: orderPreview } = await removeRequestItemReturnWorkflow(
+  const { result: orderPreview } = await removeItemReturnActionWorkflow(
     req.scope
   ).run({
     input: {

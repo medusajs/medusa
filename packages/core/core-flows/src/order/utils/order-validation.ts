@@ -84,7 +84,7 @@ export function throwIfItemsDoesNotExistsInReturn({
   orderReturn: Pick<ReturnDTO, "id" | "items">
   inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
 }) {
-  const orderReturnItemIds = orderReturn.items?.map((i) => i.id) ?? []
+  const orderReturnItemIds = orderReturn.items?.map((i: any) => i.item_id) ?? []
   const inputItemIds = inputItems.map((i) => i.id)
   const diff = arrayDifference(inputItemIds, orderReturnItemIds)
 

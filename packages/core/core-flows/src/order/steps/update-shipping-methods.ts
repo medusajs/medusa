@@ -19,7 +19,7 @@ export const updateOrderShippingMethodsStep = createStep(
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata"],
     })
-    const dataBeforeUpdate = await service.listOrderClaims(
+    const dataBeforeUpdate = await service.listShippingMethods(
       { id: data.map((d) => d.id) },
       { relations, select: selects }
     )

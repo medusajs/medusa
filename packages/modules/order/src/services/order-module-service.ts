@@ -2478,6 +2478,8 @@ export default class OrderModuleService<
         "requested_at",
         "requested_by",
         "status",
+        "description",
+        "internal_note",
       ],
       relations: [] as string[],
       order: {},
