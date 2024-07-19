@@ -28,7 +28,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
     eventBusModuleService: new MockEventBusService(),
   },
   testSuite: ({ service }) => {
-    it.only(`should export the appropriate linkable configuration`, () => {
+    it(`should export the appropriate linkable configuration`, () => {
       const linkable = Module(Modules.USER, {
         service: UserModuleService,
       }).linkable
