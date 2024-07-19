@@ -184,13 +184,10 @@ function convertToPriceArray(
 ) {
   const prices: PriceObject[] = []
 
-  const regionCurrencyMap = regions.reduce(
-    (map, region) => {
-      map[region.id] = region.currency_code
-      return map
-    },
-    {} as Record<string, string>
-  )
+  const regionCurrencyMap = regions.reduce((map, region) => {
+    map[region.id] = region.currency_code
+    return map
+  }, {} as Record<string, string>)
 
   for (const [_productId, product] of Object.entries(data || {})) {
     const { variants } = product || {}
@@ -242,21 +239,15 @@ function comparePrices(initialPrices: PriceObject[], newPrices: PriceObject[]) {
   const pricesToCreate: HttpTypes.AdminCreatePriceListPrice[] = []
   const pricesToDelete: string[] = []
 
-  const initialPriceMap = initialPrices.reduce(
-    (map, price) => {
-      map[createMapKey(price)] = price
-      return map
-    },
-    {} as Record<string, (typeof initialPrices)[0]>
-  )
+  const initialPriceMap = initialPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof initialPrices)[0]>)
 
-  const newPriceMap = newPrices.reduce(
-    (map, price) => {
-      map[createMapKey(price)] = price
-      return map
-    },
-    {} as Record<string, (typeof newPrices)[0]>
-  )
+  const newPriceMap = newPrices.reduce((map, price) => {
+    map[createMapKey(price)] = price
+    return map
+  }, {} as Record<string, (typeof newPrices)[0]>)
 
   const keys = new Set([
     ...Object.keys(initialPriceMap),

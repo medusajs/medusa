@@ -39,6 +39,7 @@ export class SortedSet<T> {
 
   getNext(value: T): T | null {
     const index = this.findInsertionIndex(value)
+
     if (index === this.items.length - 1) {
       return null
     }
@@ -92,35 +93,6 @@ export type PasteCommandArgs = {
   next: string[]
   prev: string[]
   setter: (selection: Record<string, boolean>, values: string[]) => void
-}
-
-export class DeleteCommand implements Command {
-  private _selection: Record<string, boolean>
-
-  private _prev: string[]
-  private _next: string[]
-
-  private _setter: (
-    selection: Record<string, boolean>,
-    values: string[]
-  ) => void
-
-  constructor({ selection, prev, next, setter }: PasteCommandArgs) {
-    this._selection = selection
-    this._prev = prev
-    this._next = next
-    this._setter = setter
-  }
-
-  execute(): void {
-    this._setter(this._selection, this._next)
-  }
-  undo(): void {
-    this._setter(this._selection, this._prev)
-  }
-  redo(): void {
-    this.execute()
-  }
 }
 
 export class PasteCommand implements Command {

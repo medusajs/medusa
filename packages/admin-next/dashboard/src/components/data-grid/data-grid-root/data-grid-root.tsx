@@ -10,15 +10,17 @@ import {
 import { Adjustments } from "@medusajs/icons"
 import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
+  Cell,
   CellContext,
   ColumnDef,
   Row,
+  Table,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useVirtualizer } from "@tanstack/react-virtual"
+import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
@@ -77,19 +79,28 @@ export const DataGridRoot = <
 
   const [cells, setCells] = useState<Record<string, boolean>>({})
 
-  const [anchor, setAnchor] = useState<CellCoords | null>(null)
-  const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
   const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
 
-  const [selection, setSelection] = useState<Record<string, boolean>>({})
-  const [dragSelection, setDragSelection] = useState<Record<string, boolean>>(
-    {}
-  )
-
-  const [isSelecting, setIsSelecting] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-
   const [isEditing, setIsEditing] = useState(false)
+
+  const {
+    anchor,
+    rangeEnd,
+    selection,
+    dragSelection,
+    isSelecting,
+    isDragging,
+    moveAnchor,
+    clearRange,
+    setSingleRange,
+    updateSelection,
+    updateDragSelection,
+    startSelection,
+    endSelection,
+    startDragging,
+    endDragging,
+    setRangeEnd,
+  } = useDataGridSelection()
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -172,55 +183,6 @@ export const DataGridRoot = <
       })
     },
     [cols, rows]
-  )
-
-  /**
-   * Moves the anchor to the specified point. Also attempts to blur
-   * the active element to reset the focus.
-   */
-  const moveAnchor = useCallback((point: CellCoords | null) => {
-    const activeElement = document.activeElement
-
-    if (activeElement instanceof HTMLElement) {
-      activeElement.blur()
-    }
-
-    setAnchor(point)
-  }, [])
-
-  /**
-   * Clears the start and end of current range.
-   */
-  const clearRange = useCallback(
-    (point?: CellCoords | null) => {
-      const keys = Object.keys(selection)
-      const anchorKey = anchor ? generateCellId(anchor) : null
-      const newKey = point ? generateCellId(point) : null
-
-      const isAnchorOnlySelected = keys.length === 1 && anchorKey === keys[0]
-      const isAnchorNewPoint = anchorKey && newKey && anchorKey === newKey
-
-      const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
-
-      if (!shouldIgnoreAnchor) {
-        moveAnchor(null)
-        setSelection({})
-        setRangeEnd(null)
-      }
-
-      setDragSelection({})
-    },
-    [anchor, selection, moveAnchor]
-  )
-
-  const setSingleRange = useCallback(
-    (coordinates: CellCoords | null) => {
-      clearRange(coordinates)
-
-      moveAnchor(coordinates)
-      setRangeEnd(coordinates)
-    },
-    [clearRange, moveAnchor]
   )
 
   const getSelectionValues = useCallback(
@@ -617,32 +579,6 @@ export const DataGridRoot = <
     [anchor, execute, getValues, isEditing, setValue]
   )
 
-  const handleCatchAllKey = useCallback(
-    (e: KeyboardEvent) => {
-      if (!anchor || isEditing) {
-        return
-      }
-
-      const container = containerRef.current
-      const id = generateCellId(anchor)
-
-      if (!container) {
-        return
-      }
-
-      const input = container.querySelector(
-        `[data-cell-id="${id}"]`
-      ) as HTMLElement
-
-      if (!input) {
-        return
-      }
-
-      console.log(e.target)
-    },
-    [anchor, isEditing]
-  )
-
   const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
       if (ARROW_KEYS.includes(e.key)) {
@@ -674,8 +610,6 @@ export const DataGridRoot = <
         handleEnterKey(e)
         return
       }
-
-      handleCatchAllKey(e)
     },
     [
       handleKeyboardNavigation,
@@ -684,7 +618,6 @@ export const DataGridRoot = <
       handleEnterKey,
       handleTabKey,
       handleDeleteKey,
-      handleCatchAllKey,
     ]
   )
 
@@ -714,12 +647,7 @@ export const DataGridRoot = <
 
     execute(command)
 
-    setIsDragging(false)
-    setDragEnd(null)
-    setDragSelection({})
-
-    // Select the dragged cells.
-    setSelection(dragSelection)
+    endDragging()
   }, [
     isDragging,
     anchor,
@@ -728,12 +656,12 @@ export const DataGridRoot = <
     getSelectionValues,
     setSelectionValues,
     execute,
+    endDragging,
   ])
 
   const handleMouseUpEvent = useCallback(() => {
-    handleDragEnd()
-    setIsSelecting(false)
-  }, [handleDragEnd])
+    endSelection()
+  }, [endSelection])
 
   const handleCopyEvent = useCallback(
     (e: ClipboardEvent) => {
@@ -809,12 +737,10 @@ export const DataGridRoot = <
           return
         }
 
-        setIsSelecting(true)
-        clearRange(coords)
-        setAnchor(coords)
+        startSelection(coords)
       }
     },
-    [clearRange]
+    [setRangeEnd, startSelection]
   )
 
   const getInputMouseDownHandler = useCallback((coords: CellCoords) => {
@@ -836,7 +762,6 @@ export const DataGridRoot = <
       }
 
       const cell = container.querySelector(`[data-cell-id="${id}"]`)
-      console.log("found", cell)
     }
   }, [])
 
@@ -862,7 +787,7 @@ export const DataGridRoot = <
         }
       }
     },
-    [anchor, isDragging, isSelecting]
+    [anchor?.col, isDragging, isSelecting, setRangeEnd]
   )
 
   const onInputFocus = useCallback(() => {
@@ -892,68 +817,12 @@ export const DataGridRoot = <
     [setValue, execute]
   )
 
-  const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
-    setIsDragging(true)
-  }, [])
-
-  /** Effects */
-
-  /**
-   * If anchor and rangeEnd are set, then select all cells between them.
-   */
-  useEffect(() => {
-    if (!anchor || !rangeEnd) {
-      return
-    }
-
-    const range = getRange(anchor, rangeEnd)
-
-    setSelection(range)
-  }, [anchor, rangeEnd])
-
-  /**
-   * If anchor and dragEnd are set, then select all cells between them.
-   */
-  useEffect(() => {
-    if (!anchor || !dragEnd) {
-      return
-    }
-
-    const range = getRange(anchor, dragEnd)
-
-    setDragSelection(range)
-  }, [anchor, dragEnd])
-
-  /**
-   * Auto corrective effect for ensuring that the anchor is always
-   * part of the selected cells.
-   */
-  useEffect(() => {
-    if (!anchor) {
-      return
-    }
-
-    setSelection((prev) => ({
-      ...prev,
-      [generateCellId(anchor)]: true,
-    }))
-  }, [anchor])
-
-  /**
-   * Auto corrective effect for ensuring we always
-   * have a range end.
-   */
-  useEffect(() => {
-    if (!anchor) {
-      return
-    }
-
-    if (rangeEnd) {
-      return
-    }
-
-    setRangeEnd(anchor)
-  }, [anchor, rangeEnd])
+  const onDragToFillStart = useCallback(
+    (_e: MouseEvent<HTMLElement>) => {
+      startDragging()
+    },
+    [startDragging]
+  )
 
   return (
     <DataGridContext.Provider
@@ -972,37 +841,7 @@ export const DataGridRoot = <
       }}
     >
       <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
-        <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
-          <DropdownMenu>
-            <DropdownMenu.Trigger asChild>
-              <Button size="small" variant="secondary">
-                <Adjustments />
-                Edit columns
-              </Button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content>
-              {grid.getAllLeafColumns().map((column) => {
-                const checked = column.getIsVisible()
-                const disabled = !column.getCanHide()
-
-                if (disabled) {
-                  return null
-                }
-
-                return (
-                  <DropdownMenu.CheckboxItem
-                    key={column.id}
-                    checked={checked}
-                    onCheckedChange={(value) => column.toggleVisibility(value)}
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    {getColumnName(column)}
-                  </DropdownMenu.CheckboxItem>
-                )
-              })}
-            </DropdownMenu.Content>
-          </DropdownMenu>
-        </div>
+        <DataGridHeader grid={grid} />
         <div
           ref={containerRef}
           className="relative h-full select-none overflow-auto"
@@ -1055,81 +894,21 @@ export const DataGridRoot = <
             >
               {virtualRows.map((virtualRow) => {
                 const row = flatRows[virtualRow.index] as Row<TData>
-                const visibleCells = row.getVisibleCells()
 
                 return (
-                  <tr
+                  <DataGridRow
                     key={row.id}
-                    style={{
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                    className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
-                  >
-                    {virtualPaddingLeft ? (
-                      // Empty column to fill the virtual padding
-                      <td
-                        style={{ display: "flex", width: virtualPaddingLeft }}
-                      />
-                    ) : null}
-                    {virtualColumns.map((vc) => {
-                      const cell = visibleCells[vc.index]
-                      const column = cell.column
-
-                      const columnIndex = visibleColumns.findIndex(
-                        (c) => c.id === column.id
-                      )
-
-                      const coords: CellCoords = {
-                        row: virtualRow.index,
-                        col: columnIndex,
-                      }
-
-                      const isAnchor = isCellMatch(coords, anchor)
-                      const isSelected = selection[generateCellId(coords)]
-                      const isDragSelected =
-                        dragSelection[generateCellId(coords)]
-
-                      return (
-                        <td
-                          key={cell.id}
-                          style={{
-                            width: cell.column.getSize(),
-                          }}
-                          data-row-index={virtualRow.index}
-                          data-column-index={columnIndex}
-                          className={clx(
-                            "bg-ui-bg-base relative flex items-center border-b border-r p-0 outline-none",
-                            {
-                              "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
-                                isSelected || isAnchor,
-                              "bg-ui-bg-subtle": isDragSelected && !isAnchor,
-                            }
-                          )}
-                          tabIndex={-1}
-                        >
-                          <div className="relative h-full w-full">
-                            {flexRender(cell.column.columnDef.cell, {
-                              ...cell.getContext(),
-                              columnIndex,
-                              rowIndex: virtualRow.index,
-                            } as CellContext<TData, any>)}
-                            {isAnchor && (
-                              <div
-                                onMouseDown={onDragToFillStart}
-                                className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
-                              />
-                            )}
-                          </div>
-                        </td>
-                      )
-                    })}
-                    {virtualPaddingRight ? (
-                      // Empty column to fill the virtual padding
-                      <td
-                        style={{ display: "flex", width: virtualPaddingRight }}
-                      />
-                    ) : null}
-                  </tr>
+                    row={row}
+                    virtualRow={virtualRow}
+                    visibleColumns={visibleColumns}
+                    virtualColumns={virtualColumns}
+                    anchor={anchor}
+                    dragSelection={dragSelection}
+                    selection={selection}
+                    virtualPaddingLeft={virtualPaddingLeft}
+                    virtualPaddingRight={virtualPaddingRight}
+                    onDragToFillStart={onDragToFillStart}
+                  />
                 )
               })}
             </tbody>
@@ -1137,5 +916,357 @@ export const DataGridRoot = <
         </div>
       </div>
     </DataGridContext.Provider>
+  )
+}
+
+type DataGridHeaderProps<TData> = {
+  grid: Table<TData>
+}
+
+const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
+  return (
+    <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
+      <DropdownMenu>
+        <DropdownMenu.Trigger asChild>
+          <Button size="small" variant="secondary">
+            <Adjustments />
+            Edit columns
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {grid.getAllLeafColumns().map((column) => {
+            const checked = column.getIsVisible()
+            const disabled = !column.getCanHide()
+
+            if (disabled) {
+              return null
+            }
+
+            return (
+              <DropdownMenu.CheckboxItem
+                key={column.id}
+                checked={checked}
+                onCheckedChange={(value) => column.toggleVisibility(value)}
+                onSelect={(e) => e.preventDefault()}
+              >
+                {getColumnName(column)}
+              </DropdownMenu.CheckboxItem>
+            )
+          })}
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    </div>
+  )
+}
+
+type DataGridCellProps<TData> = {
+  cell: Cell<TData, unknown>
+  columnIndex: number
+  rowIndex: number
+  anchor: CellCoords | null
+  selection: Record<string, boolean>
+  dragSelection: Record<string, boolean>
+  onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+}
+
+const DataGridCell = <TData,>({
+  cell,
+  columnIndex,
+  rowIndex,
+  anchor,
+  selection,
+  dragSelection,
+  onDragToFillStart,
+}: DataGridCellProps<TData>) => {
+  const coords: CellCoords = {
+    row: rowIndex,
+    col: columnIndex,
+  }
+
+  const isAnchor = isCellMatch(coords, anchor)
+  const isSelected = selection[generateCellId(coords)]
+  const isDragSelected = dragSelection[generateCellId(coords)]
+
+  return (
+    <td
+      style={{
+        width: cell.column.getSize(),
+      }}
+      data-row-index={rowIndex}
+      data-column-index={columnIndex}
+      className={clx(
+        "bg-ui-bg-base relative flex items-center border-b border-r p-0 outline-none",
+        {
+          "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
+            isSelected || isAnchor,
+          "bg-ui-bg-subtle": isDragSelected && !isAnchor,
+        }
+      )}
+      tabIndex={-1}
+    >
+      <div className="relative h-full w-full">
+        {flexRender(cell.column.columnDef.cell, {
+          ...cell.getContext(),
+          columnIndex,
+          rowIndex: rowIndex,
+        } as CellContext<TData, any>)}
+        {isAnchor && (
+          <div
+            onMouseDown={onDragToFillStart}
+            className="bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize"
+          />
+        )}
+      </div>
+    </td>
+  )
+}
+
+type DataGridRowProps<TData> = {
+  row: Row<TData>
+  virtualRow: VirtualItem
+  virtualPaddingLeft?: number
+  virtualPaddingRight?: number
+  virtualColumns: VirtualItem[]
+  visibleColumns: ColumnDef<TData>[]
+  anchor: CellCoords | null
+  selection: Record<string, boolean>
+  dragSelection: Record<string, boolean>
+  onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+}
+
+const DataGridRow = <TData,>({
+  row,
+  virtualRow,
+  virtualPaddingLeft,
+  virtualPaddingRight,
+  virtualColumns,
+  visibleColumns,
+  anchor,
+  selection,
+  dragSelection,
+  onDragToFillStart,
+}: DataGridRowProps<TData>) => {
+  const visibleCells = row.getVisibleCells()
+
+  return (
+    <tr
+      key={row.id}
+      style={{
+        transform: `translateY(${virtualRow.start}px)`,
+      }}
+      className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
+    >
+      {virtualPaddingLeft ? (
+        // Empty column to fill the virtual padding
+        <td style={{ display: "flex", width: virtualPaddingLeft }} />
+      ) : null}
+      {virtualColumns.map((vc) => {
+        const cell = visibleCells[vc.index]
+        const column = cell.column
+
+        const columnIndex = visibleColumns.findIndex((c) => c.id === column.id)
+
+        return (
+          <DataGridCell
+            key={cell.id}
+            cell={cell}
+            columnIndex={columnIndex}
+            rowIndex={virtualRow.index}
+            anchor={anchor}
+            selection={selection}
+            dragSelection={dragSelection}
+            onDragToFillStart={onDragToFillStart}
+          />
+        )
+      })}
+      {virtualPaddingRight ? (
+        // Empty column to fill the virtual padding
+        <td style={{ display: "flex", width: virtualPaddingRight }} />
+      ) : null}
+    </tr>
+  )
+}
+
+export const useDataGridSelection = () => {
+  const [anchor, setAnchor] = useState<CellCoords | null>(null)
+  const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
+  const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
+  const [selection, setSelection] = useState<Record<string, boolean>>({})
+  const [dragSelection, setDragSelection] = useState<Record<string, boolean>>(
+    {}
+  )
+  const [isSelecting, setIsSelecting] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const moveAnchor = useCallback((point: CellCoords | null) => {
+    const activeElement = document.activeElement
+
+    if (activeElement instanceof HTMLElement) {
+      activeElement.blur()
+    }
+
+    setAnchor(point)
+  }, [])
+
+  const clearRange = useCallback(
+    (point?: CellCoords | null) => {
+      const keys = Object.keys(selection)
+      const anchorKey = anchor ? generateCellId(anchor) : null
+      const newKey = point ? generateCellId(point) : null
+
+      const isAnchorOnlySelected = keys.length === 1 && anchorKey === keys[0]
+      const isAnchorNewPoint = anchorKey && newKey && anchorKey === newKey
+
+      const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
+
+      if (!shouldIgnoreAnchor) {
+        moveAnchor(null)
+        setSelection({})
+        setRangeEnd(null)
+      }
+
+      setDragSelection({})
+    },
+    [anchor, selection, moveAnchor]
+  )
+
+  const setSingleRange = useCallback(
+    (coordinates: CellCoords | null) => {
+      clearRange(coordinates)
+      moveAnchor(coordinates)
+      setRangeEnd(coordinates)
+    },
+    [clearRange, moveAnchor]
+  )
+
+  const updateSelection = useCallback(() => {
+    if (!anchor || !rangeEnd) {
+      return
+    }
+    const range = getRange(anchor, rangeEnd)
+    setSelection(range)
+  }, [anchor, rangeEnd])
+
+  const updateDragSelection = useCallback(() => {
+    if (!anchor || !rangeEnd || !isDragging) {
+      return
+    }
+    const range = getRange(anchor, rangeEnd)
+    setDragSelection(range)
+  }, [anchor, rangeEnd, isDragging])
+
+  const startSelection = useCallback(
+    (coords: CellCoords) => {
+      setIsSelecting(true)
+      clearRange(coords)
+      setAnchor(coords)
+    },
+    [clearRange]
+  )
+
+  const endSelection = useCallback(() => {
+    setIsSelecting(false)
+    setIsDragging(false)
+  }, [])
+
+  const startDragging = useCallback(() => {
+    setIsDragging(true)
+  }, [])
+
+  const endDragging = useCallback(() => {
+    if (isDragging && anchor && rangeEnd) {
+      setSelection(dragSelection)
+    }
+    setIsDragging(false)
+    setDragSelection({})
+  }, [isDragging, anchor, rangeEnd, dragSelection])
+
+  useEffect(() => {
+    if (!anchor || !rangeEnd) {
+      return
+    }
+    const range = getRange(anchor, rangeEnd)
+
+    setSelection(range)
+  }, [anchor, rangeEnd])
+
+  useEffect(() => {
+    if (!anchor || !dragEnd) {
+      return
+    }
+
+    const range = getRange(anchor, dragEnd)
+
+    setDragSelection(range)
+  }, [anchor, dragEnd])
+
+  /**
+   * Auto corrective effect for ensuring that the anchor is always
+   * part of the selected cells.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    setSelection((prev) => ({
+      ...prev,
+      [generateCellId(anchor)]: true,
+    }))
+  }, [anchor])
+
+  /**
+   * Auto corrective effect for ensuring we always
+   * have a range end.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    if (rangeEnd) {
+      return
+    }
+
+    setRangeEnd(anchor)
+  }, [anchor, rangeEnd])
+
+  // Memoize the return value to prevent unnecessary re-renders
+  return useMemo(
+    () => ({
+      anchor,
+      rangeEnd,
+      selection,
+      dragSelection,
+      isSelecting,
+      isDragging,
+      moveAnchor,
+      clearRange,
+      setSingleRange,
+      updateSelection,
+      updateDragSelection,
+      startSelection,
+      endSelection,
+      startDragging,
+      endDragging,
+      setRangeEnd,
+    }),
+    [
+      anchor,
+      rangeEnd,
+      selection,
+      dragSelection,
+      isSelecting,
+      isDragging,
+      moveAnchor,
+      clearRange,
+      setSingleRange,
+      updateSelection,
+      updateDragSelection,
+      startSelection,
+      endSelection,
+      startDragging,
+      endDragging,
+    ]
   )
 }
