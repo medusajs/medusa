@@ -7,11 +7,11 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
   createStep,
   createWorkflow,
   transform,
   when,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
@@ -89,7 +89,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     const orderReturn: ReturnDTO = transform(
       { createdReturn, existingOrderReturn, orderExchange },
       ({ createdReturn, existingOrderReturn, orderExchange }) => {
-        return existingOrderReturn ?? (createdReturn[0] as ReturnDTO)
+        return existingOrderReturn ?? (createdReturn?.[0] as ReturnDTO)
       }
     )
 
@@ -128,7 +128,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
       const createdReturnId = transform(
         { createdReturn },
         ({ createdReturn }) => {
-          return createdReturn[0]!.id
+          return createdReturn?.[0]!.id
         }
       )
       updateOrderExchangesStep([
