@@ -95,77 +95,82 @@ const main = async function ({ directory }) {
     return process.exit()
   }
 
-  const container = await initializeContainer(directory)
+  try {
+    const container = await initializeContainer(directory)
 
-  const configModule = container.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
-
-  const plugins = getResolvedPlugins(directory, configModule, true) || []
-  const pluginLinks = await resolvePluginsLinks(plugins, container)
-
-  const planner = await getLinksExecutionPlanner({
-    configModule,
-    linkModules: pluginLinks,
-    container,
-  })
-
-  Logger.info("Syncing links...")
-
-  const actionPlan = await planner.createPlan()
-  const groupActionPlan = groupByActionPlan(actionPlan)
-
-  if (groupActionPlan.delete?.length) {
-    groupActionPlan.delete = await askForLinkActionsToPerform(
-      `Select the tables to ${chalk.red(
-        "DELETE"
-      )}. The following links have been removed`,
-      groupActionPlan.delete
-    )
-  }
-
-  if (groupActionPlan.notify?.length) {
-    const answer = await askForLinkActionsToPerform(
-      `Select the tables to ${chalk.red(
-        "UPDATE"
-      )}. The following links have been updated`,
-      groupActionPlan.notify
+    const configModule = container.resolve(
+      ContainerRegistrationKeys.CONFIG_MODULE
     )
 
-    groupActionPlan.update ??= []
-    groupActionPlan.update.push(
-      ...answer.map((action) => {
-        return {
-          ...action,
-          action: "update",
-        } as LinkMigrationsPlannerAction
-      })
-    )
-  }
+    const plugins = getResolvedPlugins(directory, configModule, true) || []
+    const pluginLinks = await resolvePluginsLinks(plugins, container)
 
-  const toCreate = groupActionPlan.create ?? []
-  const toUpdate = groupActionPlan.update ?? []
-  const toDelete = groupActionPlan.delete ?? []
-  const actionsToExecute = [...toCreate, ...toUpdate, ...toDelete]
+    const planner = await getLinksExecutionPlanner({
+      configModule,
+      linkModules: pluginLinks,
+      container,
+    })
 
-  await planner.executePlan(actionsToExecute)
+    Logger.info("Syncing links...")
 
-  if (toCreate.length) {
-    logActions("Created following links tables", toCreate)
-  }
-  if (toUpdate.length) {
-    logActions("Updated following links tables", toUpdate)
-  }
-  if (toDelete.length) {
-    logActions("Deleted following links tables", toDelete)
-  }
+    const actionPlan = await planner.createPlan()
+    const groupActionPlan = groupByActionPlan(actionPlan)
 
-  if (actionsToExecute.length) {
-    Logger.info("Links sync completed")
-  } else {
-    Logger.info("Database already up-to-date")
+    if (groupActionPlan.delete?.length) {
+      groupActionPlan.delete = await askForLinkActionsToPerform(
+        `Select the tables to ${chalk.red(
+          "DELETE"
+        )}. The following links have been removed`,
+        groupActionPlan.delete
+      )
+    }
+
+    if (groupActionPlan.notify?.length) {
+      const answer = await askForLinkActionsToPerform(
+        `Select the tables to ${chalk.red(
+          "UPDATE"
+        )}. The following links have been updated`,
+        groupActionPlan.notify
+      )
+
+      groupActionPlan.update ??= []
+      groupActionPlan.update.push(
+        ...answer.map((action) => {
+          return {
+            ...action,
+            action: "update",
+          } as LinkMigrationsPlannerAction
+        })
+      )
+    }
+
+    const toCreate = groupActionPlan.create ?? []
+    const toUpdate = groupActionPlan.update ?? []
+    const toDelete = groupActionPlan.delete ?? []
+    const actionsToExecute = [...toCreate, ...toUpdate, ...toDelete]
+
+    await planner.executePlan(actionsToExecute)
+
+    if (toCreate.length) {
+      logActions("Created following links tables", toCreate)
+    }
+    if (toUpdate.length) {
+      logActions("Updated following links tables", toUpdate)
+    }
+    if (toDelete.length) {
+      logActions("Deleted following links tables", toDelete)
+    }
+
+    if (actionsToExecute.length) {
+      Logger.info("Links sync completed")
+    } else {
+      Logger.info("Database already up-to-date")
+    }
+    process.exit()
+  } catch (e) {
+    Logger.error(e)
+    process.exit(1)
   }
-  process.exit()
 }
 
 export default main
