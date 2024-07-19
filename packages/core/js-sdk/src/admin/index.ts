@@ -5,6 +5,7 @@ import { FulfillmentProvider } from "./fulfillment-provider"
 import { FulfillmentSet } from "./fulfillment-set"
 import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
+import { Notification } from "./notification"
 import { Order } from "./order"
 import { PriceList } from "./price-list"
 import { PricePreference } from "./price-preference"
@@ -43,6 +44,7 @@ export class Admin {
   public shippingOption: ShippingOption
   public shippingProfile: ShippingProfile
   public inventoryItem: InventoryItem
+  public notification: Notification
   public order: Order
   public taxRate: TaxRate
   public taxRegion: TaxRegion
@@ -69,6 +71,7 @@ export class Admin {
     this.shippingOption = new ShippingOption(client)
     this.shippingProfile = new ShippingProfile(client)
     this.inventoryItem = new InventoryItem(client)
+    this.notification = new Notification(client)
     this.order = new Order(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
