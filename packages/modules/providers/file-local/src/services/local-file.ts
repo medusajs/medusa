@@ -38,9 +38,9 @@ export class LocalFileService extends AbstractFileProviderService {
 
     const fileKey = path.join(
       parsedFilename.dir,
-      // We append "private" to the file key so deletions and presigned URLs can know which folder to look into
-      `${Date.now()}-${parsedFilename.base}${
-        file.access === "public" ? "" : "-private"
+      // We prepend "private" to the file key so deletions and presigned URLs can know which folder to look into
+      `${file.access === "public" ? "" : "private-"}${Date.now()}-${
+        parsedFilename.base
       }`
     )
 
@@ -57,7 +57,7 @@ export class LocalFileService extends AbstractFileProviderService {
   }
 
   async delete(file: FileTypes.ProviderDeleteFileDTO): Promise<void> {
-    const baseDir = file.fileKey.endsWith("-private")
+    const baseDir = file.fileKey.startsWith("private-")
       ? this.privateUploadDir_
       : this.uploadDir_
 
@@ -77,7 +77,7 @@ export class LocalFileService extends AbstractFileProviderService {
   async getPresignedDownloadUrl(
     file: FileTypes.ProviderGetFileDTO
   ): Promise<string> {
-    const isPrivate = file.fileKey.endsWith("-private")
+    const isPrivate = file.fileKey.startsWith("private-")
     const baseDir = isPrivate ? this.privateUploadDir_ : this.uploadDir_
 
     const filePath = this.getUploadFilePath(baseDir, file.fileKey)

@@ -51,6 +51,50 @@ medusaIntegrationTestRunner({
             title: "Base product",
             collection_id: baseCollection.id,
             type_id: baseType.id,
+            variants: [
+              {
+                title: "Test variant",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 100,
+                  },
+                  {
+                    currency_code: "eur",
+                    amount: 45,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 30,
+                  },
+                ],
+                options: {
+                  size: "large",
+                  color: "green",
+                },
+              },
+              {
+                title: "Test variant 2",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 200,
+                  },
+                  {
+                    currency_code: "eur",
+                    amount: 65,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 50,
+                  },
+                ],
+                options: {
+                  size: "small",
+                  color: "green",
+                },
+              },
+            ],
           }),
           adminHeaders
         )
