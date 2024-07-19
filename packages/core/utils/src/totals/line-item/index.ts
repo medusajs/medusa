@@ -132,8 +132,8 @@ function getLineItemTotals(
     unit_price: item.unit_price,
 
     subtotal: new BigNumber(subtotal),
-
     total: new BigNumber(total),
+
     original_total: new BigNumber(subtotal),
 
     discount_total: new BigNumber(discountTotal),
