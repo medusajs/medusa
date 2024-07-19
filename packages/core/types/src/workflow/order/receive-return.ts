@@ -28,3 +28,12 @@ export interface ReceiveCompleteOrderReturnWorkflowInput {
   internal_note?: string
   metadata?: Record<string, any> | null
 }
+
+export interface UpdateReceiveItemReturnRequestWorkflowInput {
+  return_id: string
+  action_id: string
+  data: {
+    quantity?: BigNumberInput
+    internal_note?: string | null
+  }
+}

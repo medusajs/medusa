@@ -256,7 +256,7 @@ export default class OrderModuleService<
       "shipping_subtotal",
       "shipping_tax_total",
       "original_shipping_tax_total",
-      "original_shipping_tax_subtotal",
+      "original_shipping_subtotal",
       "original_shipping_total",
     ]
 
