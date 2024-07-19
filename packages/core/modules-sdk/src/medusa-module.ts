@@ -387,9 +387,13 @@ class MedusaModule {
       services[keyName].__definition = resolution.definition
 
       if (resolution.definition.isQueryable) {
-        const joinerConfig: ModuleJoinerConfig = await services[
-          keyName
-        ].__joinerConfig?.()
+        let joinerConfig!: ModuleJoinerConfig
+
+        try {
+          joinerConfig = await services[keyName].__joinerConfig?.()
+        } catch {
+          // noop
+        }
 
         if (!joinerConfig) {
           throw new Error(
@@ -519,9 +523,19 @@ class MedusaModule {
       services[keyName].__definition = resolution.definition
 
       if (resolution.definition.isQueryable) {
-        const joinerConfig: ModuleJoinerConfig = await services[
-          keyName
-        ].__joinerConfig()
+        let joinerConfig!: ModuleJoinerConfig
+
+        try {
+          joinerConfig = await services[keyName].__joinerConfig?.()
+        } catch {
+          // noop
+        }
+
+        if (!joinerConfig) {
+          throw new Error(
+            `Your module is missing a joiner config: ${keyName}. If this module is not queryable, please set { definition: { isQueryable: false } } in your module configuration.`
+          )
+        }
 
         services[keyName].__joinerConfig = joinerConfig
         MedusaModule.setJoinerConfig(keyName, joinerConfig)
