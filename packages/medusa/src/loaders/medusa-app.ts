@@ -19,7 +19,9 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  isBoolean,
   isObject,
+  isPresent,
   upperCaseFirst,
 } from "@medusajs/utils"
 
@@ -45,11 +47,15 @@ export function mergeDefaultModules(
   )) {
     const def = {} as ModuleDefinition
     def.key ??= key
-    def.registrationName ??= key
-    def.label ??= upperCaseFirst(key)
+    def.registrationName ??= ModulesDefinition[key]?.registrationName ?? key
+    def.label ??= ModulesDefinition[key]?.label ?? upperCaseFirst(key)
+    def.isQueryable = ModulesDefinition[key]?.isQueryable ?? true
 
-    const orignalDef = value?.definition
-    if (isObject(orignalDef)) {
+    const orignalDef = value?.definition ?? ModulesDefinition[key]
+    if (
+      !isBoolean(value) &&
+      (isObject(orignalDef) || !isPresent(value.definition))
+    ) {
       value.definition = {
         ...def,
         ...orignalDef,
