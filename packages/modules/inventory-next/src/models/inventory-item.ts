@@ -9,6 +9,7 @@ import {
   Collection,
   Entity,
   Filter,
+  Formula,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -128,6 +129,20 @@ export class InventoryItem {
     }
   )
   reservation_items = new Collection<Rel<ReservationItem>>(this)
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(reserved_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id AND il.deleted_at IS NULL)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  reserved_quantity: number
+
+  @Formula(
+    (item) =>
+      `(SELECT SUM(stocked_quantity) FROM inventory_level il WHERE il.inventory_item_id = ${item}.id AND il.deleted_at IS NULL)`,
+    { lazy: true, serializer: Number, hidden: true }
+  )
+  stocked_quantity: number
 
   @BeforeCreate()
   private beforeCreate(): void {
