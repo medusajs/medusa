@@ -48,6 +48,7 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+  - name: Notifications
   - name: Orders
   - name: Payments
   - name: Price Lists

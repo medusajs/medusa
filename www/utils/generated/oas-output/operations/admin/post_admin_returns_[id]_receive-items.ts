@@ -1,8 +1,8 @@
 /**
- * @oas [post] /admin/returns/{id}/cancel
- * operationId: PostReturnsIdCancel
- * summary: Add Cancels to Return
- * description: Add a list of cancels to a return.
+ * @oas [post] /admin/returns/{id}/receive-items
+ * operationId: PostReturnsIdReceiveItems
+ * summary: Add Receive Items to Return
+ * description: Add a list of receive items to a return.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -21,18 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -65,15 +65,22 @@
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostReturnsReceiveItemsReqSchema"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
- *       curl -X POST '{backend_url}/admin/returns/{id}/cancel' \
+ *       curl -X POST '{backend_url}/admin/returns/{id}/receive-items' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Returns
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -86,11 +93,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/AdminPostCancelReturnReqSchema"
  * 
 */
 
