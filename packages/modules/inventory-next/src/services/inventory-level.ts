@@ -1,5 +1,5 @@
 import { Context } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { BigNumber, ModulesSdkUtils } from "@medusajs/utils"
 
 import { InventoryLevelRepository } from "@repositories"
 import { InventoryLevel } from "../models/inventory-level"
@@ -23,7 +23,7 @@ export default class InventoryLevelService extends ModulesSdkUtils.MedusaInterna
     inventoryItemId: string,
     locationIds: string[] | string,
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const locationIdArray = Array.isArray(locationIds)
       ? locationIds
       : [locationIds]
@@ -39,7 +39,7 @@ export default class InventoryLevelService extends ModulesSdkUtils.MedusaInterna
     inventoryItemId: string,
     locationIds: string[] | string,
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const locationIdArray = Array.isArray(locationIds)
       ? locationIds
       : [locationIds]
