@@ -101,7 +101,7 @@ class MyFileProviderService extends AbstractFileProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The file to upload","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The file content as a binary-encoded string","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The file to upload","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The file content as a binary-encoded string","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"access","type":"`\"public\"` \\| `\"private\"`","description":"The access level of the file. Defaults to private if not passed","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
 
 #### Returns
 
@@ -159,7 +159,7 @@ class MyFileProviderService extends AbstractFileProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file to get its \npresigned URL.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file to get its \npresigned URL.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 
@@ -173,14 +173,13 @@ Create the file `src/modules/my-file/index.ts` with the following content:
 
 ```ts title="src/modules/my-file/index.ts"
 import MyFileProviderService from "./service"
-import { Module } from "@medusajs/utils"
 
-export default Module("my-file", {
-  service: MyFileProviderService,
-})
+export default {
+  services: [MyFileProviderService],
+}
 ```
 
-This exports the module's definition, indicating that the `MyFileProviderService` is the main service of the module.
+This exports the module's definition, indicating that the `MyFileProviderService` is the module's service.
 
 ---
 
