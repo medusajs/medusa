@@ -32,31 +32,6 @@ You can then retrieve data across the linked modules, and manage their linked re
 
 ---
 
-## Prerequisite: isQueryable Configuration
-
-Before you define a module link, you must enable the `isQueryable` configuration of the module.
-
-For example:
-
-```js
-import { HELLO_MODULE } from "./src/modules/hello"
-// ...
-
-module.exports = defineConfig({
-  // ...
-  modules: {
-    [HELLO_MODULE]: {
-      resolve: "./modules/hello",
-      definition: {
-        isQueryable: true,
-      },
-    },
-  },
-})
-```
-
----
-
 ## How to Define a Module Link?
 
 ### 1. Create Link File
@@ -141,3 +116,26 @@ Then, in the next chapters, you'll learn how to:
 - Link each product to a record of your data model.
 - Retrieve your data model's properties when you retrieve products.
 
+---
+
+## Set Delete Cascades on Link
+
+To enable delete cascade on a link so that when a record is deleted, its linked records are also deleted, pass the `deleteCascades` property in the object passed to `defineLink`.
+
+For example:
+
+```ts
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    linkable: HelloModule.linkable.myCustom,
+    deleteCascades: true,
+  },
+  ProductModule.linkable.product
+)
+```
+
+In this example, when a product is deleted, its linked `myCustom` record is also deleted.
