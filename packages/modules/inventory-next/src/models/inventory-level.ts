@@ -29,20 +29,21 @@ const InventoryLevelDeletedAtIndex = createPsqlIndexStatementHelper({
 const InventoryLevelInventoryItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
   columns: "inventory_item_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const InventoryLevelLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
   columns: "location_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const InventoryLevelLocationIdInventoryItemIdIndex =
   createPsqlIndexStatementHelper({
     tableName: "inventory_level",
-    columns: "location_id",
-    where: "deleted_at IS NOT NULL",
+    columns: ["inventory_item_id", "location_id"],
+    unique: true,
+    where: "deleted_at IS NULL",
   })
 
 @Entity()

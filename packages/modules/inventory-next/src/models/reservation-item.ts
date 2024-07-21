@@ -27,19 +27,19 @@ const ReservationItemDeletedAtIndex = createPsqlIndexStatementHelper({
 const ReservationItemLineItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "line_item_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemInventoryItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "inventory_item_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "location_id",
-  where: "deleted_at IS NOT NULL",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()

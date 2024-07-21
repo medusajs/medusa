@@ -24,13 +24,14 @@ export class Migration20240719123015 extends Migration {
         DROP INDEX IF EXISTS "IDX_reservation_item_location_id";
         DROP INDEX IF EXISTS "IDX_reservation_item_inventory_item_id";
 
-        CREATE UNIQUE INDEX IF NOT EXISTS "IDX_inventory_item_sku_unique" ON "inventory_item" (sku) WHERE deleted_at IS NOT NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_inventory_level_inventory_item_id" ON "inventory_level" (inventory_item_id) WHERE deleted_at IS NOT NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_inventory_level_location_id" ON "inventory_level" (location_id) WHERE deleted_at IS NOT NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_line_item_id" ON "reservation_item" (line_item_id) WHERE deleted_at IS NOT NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_location_id" ON "reservation_item" (location_id) WHERE deleted_at IS NOT NULL;
-        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_inventory_item_id" ON "reservation_item" (inventory_item_id) WHERE deleted_at IS NOT NULL;
+        CREATE UNIQUE INDEX IF NOT EXISTS "IDX_inventory_item_sku_unique" ON "inventory_item" (sku) WHERE deleted_at IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_inventory_level_inventory_item_id" ON "inventory_level" (inventory_item_id) WHERE deleted_at IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_inventory_level_location_id" ON "inventory_level" (location_id) WHERE deleted_at IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_line_item_id" ON "reservation_item" (line_item_id) WHERE deleted_at IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_location_id" ON "reservation_item" (location_id) WHERE deleted_at IS NULL;
+        CREATE INDEX IF NOT EXISTS "IDX_reservation_item_inventory_item_id" ON "reservation_item" (inventory_item_id) WHERE deleted_at IS NULL;
 
+        CREATE UNIQUE INDEX "IDX_inventory_level_item_location" ON "inventory_level" (inventory_item_id, location_id) WHERE deleted_at IS NULL;
       `
     )
   }
@@ -64,6 +65,8 @@ export class Migration20240719123015 extends Migration {
         CREATE INDEX IF NOT EXISTS "IDX_reservation_item_line_item_id" ON "reservation_item" (line_item_id);
         CREATE INDEX IF NOT EXISTS "IDX_reservation_item_location_id" ON "reservation_item" (location_id);
         CREATE INDEX IF NOT EXISTS "IDX_reservation_item_inventory_item_id" ON "reservation_item" (inventory_item_id);
+
+        DROP INDEX IF EXISTS "IDX_inventory_level_item_location"
       `
     )
   }
