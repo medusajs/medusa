@@ -1,8 +1,8 @@
 import { ICartModuleService } from "@medusajs/types"
 import { BigNumber, Module, Modules } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { CartModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -2756,11 +2756,11 @@ moduleIntegrationTestRunner<ICartModuleService>({
           },
         ],
         total: 210,
-        subtotal: 500,
+        subtotal: 510,
         tax_total: 0,
         discount_total: 300,
         discount_tax_total: 0,
-        original_total: 210,
+        original_total: 220,
         original_tax_total: 0,
         item_total: 200,
         item_subtotal: 500,
@@ -2772,14 +2772,14 @@ moduleIntegrationTestRunner<ICartModuleService>({
         shipping_subtotal: 10,
         shipping_tax_total: 0,
         original_shipping_tax_total: 0,
-        original_shipping_tax_subtotal: 10,
+        original_shipping_subtotal: 10,
         original_shipping_total: 10,
         raw_total: {
           value: "210",
           precision: 20,
         },
         raw_subtotal: {
-          value: "500",
+          value: "510",
           precision: 20,
         },
         raw_tax_total: {
@@ -2795,7 +2795,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           precision: 20,
         },
         raw_original_total: {
-          value: "210",
+          value: "220",
           precision: 20,
         },
         raw_original_tax_total: {
@@ -2842,7 +2842,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           value: "0",
           precision: 20,
         },
-        raw_original_shipping_tax_subtotal: {
+        raw_original_shipping_subtotal: {
           value: "10",
           precision: 20,
         },

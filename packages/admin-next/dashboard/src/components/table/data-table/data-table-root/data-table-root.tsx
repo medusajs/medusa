@@ -14,7 +14,7 @@ import {
   useState,
 } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { NoResults } from "../../../common/empty-table-content"
 
 type BulkCommand = {
@@ -83,7 +83,6 @@ export const DataTableRoot = <TData,>({
   layout = "fit",
 }: DataTableRootProps<TData>) => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const [showStickyBorder, setShowStickyBorder] = useState(false)
 
   const scrollableRef = useRef<HTMLDivElement>(null)
@@ -204,6 +203,13 @@ export const DataTableRoot = <TData,>({
                 return (
                   <Table.Row
                     key={row.id}
+                    onKeyDown={(e) => {
+                      console.log("e.key", e.key, e.target)
+
+                      if (e.key === "x") {
+                        row.toggleSelected()
+                      }
+                    }}
                     data-selected={row.getIsSelected()}
                     className={clx(
                       "transition-fg group/row group relative [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
