@@ -80,7 +80,7 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
         <PopoverPrimitive.Content
           side="top"
           sideOffset={8}
-          className="rounded-rounded scrollbar-hide border-grey-20 bg-grey-0 shadow-dropdown flex w-full border px-6 pb-4 pt-6"
+          className="rounded-rounded scrollbar-hide z-10 border-grey-20 bg-grey-0 shadow-dropdown flex w-full border px-6 pb-4 pt-6"
         >
           <NumberScroller
             numbers={hourNumbers}
@@ -93,7 +93,7 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
             selected={selectedMinute}
             onSelect={(n) => setSelectedMinute(n as number)}
           />
-          <div className="to-grey-0 h-xlarge absolute bottom-4 left-0 right-0 z-10 bg-gradient-to-b from-transparent" />
+          <div className="to-grey-0 h-xlarge absolute bottom-4 end-0 start-0 z-10 bg-gradient-to-b from-transparent" />
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Root>
     </div>

@@ -103,7 +103,7 @@ const EditCustomerModal = ({
               <h2 className="inter-base-semibold text-grey-90 mb-4">
                 {t("details-general", "General")}
               </h2>
-              <div className="flex w-full space-x-2">
+              <div className="flex w-full gap-x-2">
                 <InputField
                   label={t("details-first-name", "First Name")}
                   {...register("first_name")}
@@ -118,7 +118,7 @@ const EditCustomerModal = ({
             </div>
             <div>
               <h2 className="inter-base-semibold text-grey-90 mb-4">Contact</h2>
-              <div className="flex space-x-2">
+              <div className="flex gap-x-2">
                 <InputField
                   label={t("details-email", "Email")}
                   {...register("email", {

@@ -43,7 +43,7 @@ export const FilterTab: React.FC<FilterTabProps> = ({
       onKeyUp={handleKeyPress}
       onClick={handleClick}
       className={clsx(
-        "bg-grey-5 border-grey-20 inter-small-regular text-grey-50 rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex flex h-6 items-center items-center space-x-1 border px-2 focus-visible:outline-none",
+        "bg-grey-5 border-grey-20 inter-small-regular text-grey-50 rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex flex h-6 items-center items-center gap-x-1 border px-2 focus-visible:outline-none",
         {
           ["bg-violet-5 border-violet-60 text-violet-60 "]: isActive,
         }

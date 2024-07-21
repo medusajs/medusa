@@ -60,7 +60,7 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
         <span className="inter-small-semibold">{title}</span>
         <span className="inter-small-regular text-grey-50">{message}</span>
       </div>
-      <div className="inter-small-semibold border-grey-20 flex h-full flex-col border-l">
+      <div className="inter-small-semibold border-grey-20 flex h-full flex-col border-s">
         <button
           onClick={handleSave}
           className="inter-small-semibold border-grey-20 px-base text-violet-60 flex h-1/2 items-center justify-center border-b"

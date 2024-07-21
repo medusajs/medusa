@@ -177,7 +177,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
                 </span>
               </div>
             </button>
-            <div className="right-base absolute bottom-0 top-0 flex items-center">
+            <div className="end-base absolute bottom-0 top-0 flex items-center">
               <Actionables actions={actions} forceDropdown />
             </div>
           </div>

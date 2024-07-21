@@ -33,15 +33,15 @@ const ExistingConditionTableActions = ({
   const { push } = useContext(LayeredModalContext)
 
   return (
-    <div className="space-x-xsmall flex h-[34px] overflow-hidden">
+    <div className="gap-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
-        <div className="mb-2 flex h-[34px] items-center divide-x">
+        <div className="mb-2 flex h-[34px] items-center divide-x rtl:divide-x-reverse ">
           <span className="inter-small-regular text-grey-50 me-3">
             {t("edit-condition-selected-with-count", "{{count}}", {
               count: numberOfSelectedRows,
             })}
           </span>
-          <div className="space-x-xsmall flex ps-3">
+          <div className="gap-x-xsmall flex ps-3">
             <Button
               onClick={onDeselect}
               size="small"

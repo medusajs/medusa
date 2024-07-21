@@ -49,7 +49,7 @@ const useGiftCardTableColums = () => {
                 currency: row.original.region.currency_code,
               })
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-x-2">
                 <span>N / A</span>
                 <IconTooltip content={"Region has been deleted"} />
               </div>
@@ -69,7 +69,7 @@ const useGiftCardTableColums = () => {
                   currency: row.original.region.currency_code,
                 })
               ) : (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <span>N / A</span>
                   <IconTooltip
                     content={t(

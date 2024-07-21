@@ -292,12 +292,12 @@ const EditReservationDrawer = ({
                   mt-6
                   grid border-collapse grid-cols-2 grid-rows-3 
                   [&>*:nth-child(-n+2)]:border-t [&>*:nth-child(even)]:pe-4 [&>*:nth-child(even)]:text-end 
-                  [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:ps-4 
-                  [&>*]:border-b [&>*]:border-r 
+                  [&>*:nth-child(odd)]:border-s [&>*:nth-child(odd)]:ps-4 
+                  [&>*]:border-b [&>*]:border-e 
                   [&>*]:py-2`}
                   >
                     <div className="rounded-tl-rounded">Item</div>
-                    <div className="rounded-tr-rounded flex justify-end space-x-3">
+                    <div className="rounded-tr-rounded flex justify-end gap-x-3">
                       <p className="inter-base-regular text-grey-50 truncate ">
                         {inventory_item?.title ?? item?.title ?? "-"}
                       </p>

@@ -100,7 +100,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
         <PopoverPrimitive.Content
           side="top"
           sideOffset={8}
-          className="rounded-rounded border-grey-20  bg-grey-0 shadow-dropdown w-full border px-8"
+          className="rounded-rounded border-grey-20 z-10 bg-grey-0 shadow-dropdown w-full border px-8"
         >
           <CalendarComponent
             date={tempDate}

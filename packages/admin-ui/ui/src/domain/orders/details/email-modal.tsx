@@ -61,7 +61,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
           </Modal.Header>
           <Modal.Content>
             <div className="space-y-4">
-              <div className="mt-4 flex space-x-4">
+              <div className="mt-4 flex gap-x-4">
                 <Input
                   label={t("details-email", "Email")}
                   {...register("email")}

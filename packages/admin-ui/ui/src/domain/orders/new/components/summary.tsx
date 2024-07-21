@@ -268,7 +268,7 @@ const Summary = () => {
             <div className="flex w-full">
               <div
                 className={clsx("border-grey-20 flex flex-col pe-6", {
-                  "border-r": discount.rule.type !== "free_shipping",
+                  "border-e": discount.rule.type !== "free_shipping",
                 })}
               >
                 <span className="text-grey-50">
@@ -322,7 +322,7 @@ const Summary = () => {
         <SummarySection title={"Shipping details"} editIndex={2}>
           <div className="grid w-full grid-cols-2 gap-x-6">
             {!isNullishObject(shipping) && shipping && (
-              <div className="border-grey-20 flex flex-col border-r pe-6">
+              <div className="border-grey-20 flex flex-col border-e pe-6">
                 <span className="text-grey-50">
                   {t("components-address", "Address")}
                 </span>

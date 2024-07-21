@@ -5,6 +5,7 @@ import { Toast } from "react-hot-toast"
 import Spinner from "../../atoms/spinner"
 import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
 import RefreshIcon from "../../fundamentals/icons/refresh-icon"
+import i18n from "../../../i18n"
 
 type FormToasterContainerProps = {
   toast?: Toast
@@ -76,7 +77,7 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
 
 const Actions: React.FC = ({ children }) => {
   return (
-    <div className="border-grey-70 h-full border-l">
+    <div className="border-grey-70 h-full border-s">
       {Children.map(children, (child) => {
         return (
           <div className="border-grey-70 flex h-1/2 w-[72px] items-center justify-center border-b last:border-none">
@@ -130,7 +131,7 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
   actions,
 }) => {
   return (
-    <Dropdown.Root>
+    <Dropdown.Root dir={i18n.dir()}>
       <Dropdown.Trigger
         className={clsx(
           "inter-small-semibold flex h-full w-full items-center justify-center",

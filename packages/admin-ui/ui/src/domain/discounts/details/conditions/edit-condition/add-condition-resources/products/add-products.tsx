@@ -52,7 +52,7 @@ const AddProductConditionsScreen = () => {
         />
       </Modal.Content>
       <Modal.Footer>
-        <div className="space-x-xsmall flex w-full justify-end">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
             {t("products-cancel", "Cancel")}
           </Button>

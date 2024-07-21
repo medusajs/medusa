@@ -199,7 +199,7 @@ const OrderEditLine = ({
       )}
     >
       <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2">
-        <div className="flex-grow-1 flex justify-center space-x-4">
+        <div className="flex-grow-1 flex justify-center gap-x-4">
           <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
             {item.thumbnail ? (
               <img src={item.thumbnail} className="object-cover" />
@@ -299,7 +299,7 @@ const OrderEditLine = ({
           <div className="flex h-full items-center gap-6">
             <div
               className={clsx(
-                "small:space-x-2 medium:space-x-4 large:space-x-6 flex",
+                "small:gap-x-2 medium:gap-x-4 large:gap-x-6 flex",
                 { "pointer-events-none !text-gray-400": isLocked }
               )}
             >

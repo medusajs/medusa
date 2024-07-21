@@ -13,7 +13,7 @@ export const usePriceListTableColumns = () => {
   const columns = useMemo<Column<PriceList>[]>(
     () => [
       {
-        Header: t("price-list-table-name", "Name"),
+        Header: t("price-list-table-description", "Names"),
         accessor: "name",
         Cell: ({ cell: { value } }) => (
           <Table.Cell>

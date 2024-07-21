@@ -93,8 +93,8 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
                 const callback = !hasHiddenColumns
                   ? onSaveOnlyVisible
                   : saveSelection === SaveMode.SAVE_ALL
-                  ? onSaveAll
-                  : onSaveOnlyVisible
+                    ? onSaveAll
+                    : onSaveOnlyVisible
 
                 callback()
               }}

@@ -22,7 +22,7 @@ import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
 const MultiValueLabel = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   innerProps,
   data,
@@ -50,7 +50,7 @@ const MultiValueLabel = <
 const Menu = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   className,
   ...props
@@ -73,7 +73,7 @@ const Menu = <
 const MenuList = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   className,
   ...props
@@ -89,7 +89,7 @@ const MenuList = <
 const Placeholder = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >(
   props: PlaceholderProps<Option, IsMulti, Group>
 ) => {
@@ -101,7 +101,7 @@ const Placeholder = <
 const SingleValue = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   children,
   ...props
@@ -116,7 +116,7 @@ const SingleValue = <
 const DropdownIndicator = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   innerProps,
   selectProps: { menuIsOpen },
@@ -136,7 +136,7 @@ const DropdownIndicator = <
 const SelectContainer = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >(
   props: ContainerProps<Option, IsMulti, Group>
 ) => {
@@ -150,7 +150,7 @@ const SelectContainer = <
 const Input = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >(
   props: InputProps<Option, IsMulti, Group>
 ) => {
@@ -177,7 +177,7 @@ const Input = <
 const ClearIndicator = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   innerProps,
   selectProps: { isMulti, menuIsOpen },
@@ -240,7 +240,7 @@ const RadioAdornment = ({ isSelected }: { isSelected: boolean }) => {
 const NoOptionsMessage = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   innerProps,
   selectProps: { isLoading },
@@ -258,7 +258,7 @@ const NoOptionsMessage = <
 const Option = <
   Option,
   IsMulti extends boolean,
-  Group extends GroupBase<Option>
+  Group extends GroupBase<Option>,
 >({
   className,
   ...props

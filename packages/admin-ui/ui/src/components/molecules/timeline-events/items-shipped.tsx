@@ -13,8 +13,8 @@ const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
     event.sourceType === "claim"
       ? "Replacement Items Shipped"
       : event.sourceType === "exchange"
-      ? "Exchange Items Shipped"
-      : "Items Shipped"
+        ? "Exchange Items Shipped"
+        : "Items Shipped"
 
   const detail = event.locationName
     ? `Shipped from ${event.locationName}`

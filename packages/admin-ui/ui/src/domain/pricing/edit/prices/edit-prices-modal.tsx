@@ -572,7 +572,7 @@ const EditPricesModal = ({
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-start">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ms-2 min-w-0 flex-1 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ms-2 min-w-0 flex-1 border-s">
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
                 disabled={isLoading || isError}

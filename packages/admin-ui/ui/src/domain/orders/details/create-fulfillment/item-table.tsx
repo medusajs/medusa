@@ -174,7 +174,7 @@ const FulfillmentLine = ({
         }
       )}
     >
-      <div className="flex justify-center space-x-4">
+      <div className="flex justify-center gap-x-4">
         <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
           {item.thumbnail ? (
             <img src={item.thumbnail} className="object-cover" />

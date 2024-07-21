@@ -122,7 +122,7 @@ const GiftCardDetails = () => {
               actionables={actions}
             >
               <div className="flex justify-between">
-                <div className="flex space-x-6 divide-x">
+                <div className="flex gap-x-6 divide-x rtl:divide-x-reverse ">
                   <div className="flex flex-col">
                     <div className="inter-smaller-regular text-grey-50 mb-1">
                       {t("details-original-amount", "Original amount")}

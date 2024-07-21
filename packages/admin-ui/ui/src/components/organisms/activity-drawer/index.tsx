@@ -21,7 +21,7 @@ const ActivityDrawer = ({ onDismiss }) => {
   return (
     <div
       ref={ref}
-      className="bg-grey-0 shadow-dropdown rounded-rounded fixed bottom-2 right-3 top-[64px] z-[1] flex w-[400px] flex-col overflow-x-hidden rounded"
+      className="bg-grey-0 shadow-dropdown rounded-rounded fixed bottom-2 end-3 top-[64px] z-[1] flex w-[400px] flex-col overflow-x-hidden rounded"
     >
       <div className="inter-large-semibold pb-1 ps-8 pt-7">
         {t("activity-drawer-activity", "Activity")}

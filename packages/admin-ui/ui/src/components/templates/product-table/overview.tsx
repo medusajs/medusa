@@ -42,9 +42,7 @@ const ProductOverview = ({
         </div>
       </div>
       <div className="grid grid-cols-6">
-        {products?.map((product) => (
-          <ProductTile product={product} />
-        ))}
+        {products?.map((product) => <ProductTile product={product} />)}
       </div>
     </>
   )
@@ -56,9 +54,7 @@ const ProductTile = ({ product }) => {
   return (
     <div className="p-base rounded-rounded hover:bg-grey-5 group flex-col">
       <div className="relative">
-        <div
-          className={clsx("rounded-base absolute right-2 top-2 inline-block")}
-        >
+        <div className={clsx("rounded-base absolute end-2 top-2 inline-block")}>
           <Actionables
             actions={getActions()}
             customTrigger={

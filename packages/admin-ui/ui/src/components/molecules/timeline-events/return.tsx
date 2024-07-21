@@ -136,15 +136,15 @@ function buildReturn(
             React.createElement(React.Fragment, { key: "button" }, button),
           ]
         : event.status === "received"
-        ? [
-            event.items.map((i, index) => (
-              <EventItemContainer
-                key={index}
-                item={{ ...i, quantity: i.receivedQuantity ?? i.quantity }}
-              />
-            )),
-          ]
-        : null,
+          ? [
+              event.items.map((i, index) => (
+                <EventItemContainer
+                  key={index}
+                  item={{ ...i, quantity: i.receivedQuantity ?? i.quantity }}
+                />
+              )),
+            ]
+          : null,
   }
 }
 

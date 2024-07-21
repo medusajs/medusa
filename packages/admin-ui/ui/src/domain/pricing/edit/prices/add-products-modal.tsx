@@ -557,10 +557,10 @@ const AddProductsModal = ({
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-between">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ms-2 min-w-0 flex-1 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ms-2 min-w-0 flex-1 border-s">
               <ProgressTabs.Trigger
                 value={Tab.PRODUCTS}
-                className="w-full max-w-[200px]"
+                className="w-full max-w-[200px] text-start"
                 status={status[Tab.PRODUCTS]}
               >
                 <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -573,7 +573,7 @@ const AddProductsModal = ({
               <ProgressTabs.Trigger
                 disabled={status[Tab.PRODUCTS] !== "completed"}
                 value={Tab.PRICES}
-                className="w-full max-w-[200px]"
+                className="w-full max-w-[200px] text-start"
                 status={status[Tab.PRICES]}
               >
                 <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -583,7 +583,7 @@ const AddProductsModal = ({
               {product && (
                 <ProgressTabs.Trigger
                   value={Tab.EDIT}
-                  className="w-full max-w-[200px]"
+                  className="w-full max-w-[200px] text-start"
                   status={isEditDirty ? "in-progress" : "not-started"}
                 >
                   <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">

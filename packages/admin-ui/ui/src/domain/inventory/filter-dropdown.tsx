@@ -62,14 +62,14 @@ const ProductsFilter = ({
   }
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex gap-x-1">
       <FilterDropdownContainer
         submitFilters={onSubmit}
         clearFilters={onClear}
         triggerElement={
           <button
             className={clsx(
-              "rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex items-center space-x-1 focus-visible:outline-none"
+              "rounded-rounded focus-visible:shadow-input focus-visible:border-violet-60 flex items-center gap-x-1 focus-visible:outline-none"
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">

@@ -12,7 +12,9 @@ type RequestedProps = {
 }
 
 const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
-  const { order_edits: edits } = useAdminOrderEdits({ order_id: event.orderId })
+  const { order_edits: edits } = useAdminOrderEdits({
+    order_id: event.orderId,
+  })
   const { order } = useAdminOrder(event.orderId)
 
   const requestedEditDifferenceDue =

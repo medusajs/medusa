@@ -173,7 +173,7 @@ const DraftOrderDetails = () => {
           <Spinner size={"large"} variant={"secondary"} />
         </BodyCard>
       ) : (
-        <div className="flex space-x-4">
+        <div className="flex gap-x-4">
           <div className="flex h-full w-full flex-col">
             {beforeWidgets?.length > 0 && (
               <div className="mb-4 flex w-full flex-col gap-y-4">
@@ -248,7 +248,7 @@ const DraftOrderDetails = () => {
                     ]
               }
             >
-              <div className="mt-6 flex space-x-6 divide-x">
+              <div className="mt-6 flex gap-x-6 divide-x rtl:divide-x-reverse ">
                 <div className="flex flex-col">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
                     {t("draft-orders-email", "Email")}
@@ -396,7 +396,7 @@ const DraftOrderDetails = () => {
               ]}
             >
               <div className="mt-6">
-                <div className="flex w-full items-center space-x-4">
+                <div className="flex w-full items-center gap-x-4">
                   <div className="flex h-[40px] w-[40px] ">
                     <Avatar
                       user={cart?.customer}
@@ -420,7 +420,7 @@ const DraftOrderDetails = () => {
                     )}
                   </div>
                 </div>
-                <div className="mt-6 flex space-x-6 divide-x">
+                <div className="mt-6 flex gap-x-6 divide-x rtl:divide-x-reverse ">
                   <div className="flex flex-col">
                     <div className="inter-small-regular text-grey-50 mb-1">
                       {t("draft-orders-contact", "Contact")}

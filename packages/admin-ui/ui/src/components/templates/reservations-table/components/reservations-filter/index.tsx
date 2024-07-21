@@ -44,7 +44,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
   }
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex gap-x-1">
       <FilterDropdownContainer
         submitFilters={onSubmit}
         clearFilters={onClear}

@@ -89,13 +89,13 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
       // variant inventory exists and we can remove location levels
       // (it's important to do this before potentially deleting the inventory item)
       const deleteLocations = manageInventory
-        ? variantInventoryItem?.location_levels?.filter(
+        ? (variantInventoryItem?.location_levels?.filter(
             (itemLevel: InventoryLevelDTO) => {
               return !locationLevels.find(
                 (level) => level.location_id === itemLevel.location_id
               )
             }
-          ) ?? []
+          ) ?? [])
         : []
 
       if (inventoryItemId) {

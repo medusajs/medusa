@@ -98,7 +98,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
         </Modal.Content>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex w-full justify-end space-x-2">
+        <div className="flex w-full justify-end gap-x-2">
           <Button
             size="small"
             variant="secondary"

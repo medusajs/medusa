@@ -56,7 +56,7 @@ const Item: React.FC<ItemProps> = ({ children, ...props }) => (
     )}
     {...props}
   >
-    <RadixSelect.ItemIndicator className="bold-active-item absolute left-2.5 flex items-center justify-center pe-2.5">
+    <RadixSelect.ItemIndicator className="bold-active-item absolute start-2.5 flex items-center justify-center pe-2.5">
       <CheckIcon size={ICON_SIZE} />
     </RadixSelect.ItemIndicator>
     <RadixSelect.ItemText>{children}</RadixSelect.ItemText>

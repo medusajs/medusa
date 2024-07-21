@@ -428,7 +428,10 @@ const PriceListProductsForm = ({
                 >
                   {headerGroup.headers.map((header) => {
                     return (
-                      <Table.HeaderCell key={header.id}>
+                      <Table.HeaderCell
+                        key={header.id}
+                        className="text-start pe-6"
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -456,7 +459,7 @@ const PriceListProductsForm = ({
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <Table.Cell key={cell.id}>
+                  <Table.Cell key={cell.id} className="text-start pe-6">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Table.Cell>
                 ))}

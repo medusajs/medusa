@@ -109,7 +109,7 @@ const CustomerDetail = () => {
             </div>
             <Actionables actions={actions} forceDropdown />
           </div>
-          <div className="mt-6 flex space-x-6 divide-x">
+          <div className="mt-6 flex gap-x-6 divide-x rtl:divide-x-reverse ">
             <div className="flex flex-col">
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 {t("details-first-seen", "First seen")}

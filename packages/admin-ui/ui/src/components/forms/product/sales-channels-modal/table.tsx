@@ -184,13 +184,13 @@ export const SalesChannelTableActions = ({
   const { push } = useLayeredModal()
 
   return (
-    <div className="space-x-xsmall flex h-[34px] overflow-hidden">
+    <div className="gap-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
-        <div className="mb-2 flex h-[34px] items-center divide-x">
+        <div className="mb-2 flex h-[34px] items-center divide-x rtl:divide-x-reverse ">
           <span className="inter-small-regular text-grey-50 me-3">
             {numberOfSelectedRows} selected
           </span>
-          <div className="space-x-xsmall flex ps-3">
+          <div className="gap-x-xsmall flex ps-3">
             <Button
               onClick={onDeselect}
               size="small"

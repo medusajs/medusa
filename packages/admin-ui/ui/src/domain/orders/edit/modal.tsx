@@ -130,7 +130,7 @@ export function AddProductVariant(props: AddProductVariantProps) {
         </div>
       </Modal.Content>
       <Modal.Footer>
-        <div className="space-x-xsmall flex w-full justify-end">
+        <div className="gap-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={onBack}>
             {t("edit-back", "Back")}
           </Button>

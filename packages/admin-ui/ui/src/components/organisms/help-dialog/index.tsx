@@ -28,8 +28,8 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
-      <Dialog.Overlay className="fixed top-0 left-0 right-0 bottom-0 z-50 grid place-items-end overflow-y-auto">
-        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between p-8">
+      <Dialog.Overlay className="fixed bottom-0 end-0 start-0 top-0 z-50 grid place-items-end overflow-y-auto">
+        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed bottom-2 end-3 top-[64px] flex w-[400px] flex-col justify-between p-8">
           <div>
             <Dialog.Title className="inter-xlarge-semibold mb-1">
               {t("help-dialog-how-can-we-help", "How can we help?")}

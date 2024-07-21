@@ -22,7 +22,7 @@ const OrderLine = ({
   const { isFeatureEnabled } = useFeatureFlag()
   return (
     <div className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between px-[5px] py-2">
-      <div className="flex justify-center space-x-4">
+      <div className="flex justify-center gap-x-4">
         <div className="rounded-rounded flex h-[48px] w-[36px] overflow-hidden">
           {item.thumbnail ? (
             <img src={item.thumbnail} className="object-cover" />
@@ -44,7 +44,7 @@ const OrderLine = ({
         </div>
       </div>
       <div className="flex items-center">
-        <div className="small:space-x-2 medium:space-x-4 large:space-x-6 me-3 flex">
+        <div className="small:gap-x-2 medium:gap-x-4 large:gap-x-6 me-3 flex">
           <div className="inter-small-regular text-grey-50">
             {formatAmountWithSymbol({
               amount: (item?.total ?? 0) / item.quantity,

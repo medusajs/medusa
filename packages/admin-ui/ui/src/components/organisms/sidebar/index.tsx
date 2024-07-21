@@ -44,7 +44,7 @@ const Sidebar: React.FC = () => {
     isFeatureEnabled("stockLocationService")
 
   return (
-    <div className="min-w-sidebar max-w-sidebar bg-gray-0 border-grey-20 py-base px-base h-screen overflow-y-auto border-r">
+    <div className="min-w-sidebar max-w-sidebar bg-gray-0 border-grey-20 py-base px-base h-screen overflow-y-auto border-e">
       <div className="h-full">
         <div className="flex justify-between px-2">
           <div className="rounded-circle flex h-8 w-8 items-center justify-center border border-solid border-gray-300">

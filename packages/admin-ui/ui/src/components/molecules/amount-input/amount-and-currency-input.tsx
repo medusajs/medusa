@@ -95,7 +95,7 @@ const AmountAndCurrencyInput = ({
             customStyles={{
               control:
                 "border-none absolute inset-0 bg-transparent focus-within:shadow-none !shadow-none focus-within:border-none ps-0",
-              inner_control: "!max-w-[92px] border-r border-grey-20 ps-base",
+              inner_control: "!max-w-[92px] border-e border-grey-20 ps-base",
             }}
             placeholder="USD"
             options={Object.values(currencies).map((c) => ({
@@ -107,7 +107,7 @@ const AmountAndCurrencyInput = ({
             value={value.currency}
             onChange={onCurrencyChange}
           />
-          <div className="ps-xsmall pe-base inter-base-regular absolute inset-y-0 left-[92px] right-0 flex h-10 items-center">
+          <div className="ps-xsmall pe-base inter-base-regular absolute inset-y-0 end-0 start-[92px] flex h-10 items-center">
             <AmountField
               ref={inputRef}
               step={step}

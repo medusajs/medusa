@@ -171,7 +171,7 @@ const PriceListDetailsSection = ({
               </Text>
             )}
           </div>
-          <div className="border-ui-border-base flex flex-col gap-y-1 border-l px-4">
+          <div className="border-ui-border-base flex flex-col gap-y-1 border-s px-4">
             <Text size="base" className="text-ui-fg-subtle">
               {t("price-list-details-section-last-edited", "Last edited")}
             </Text>
@@ -179,7 +179,7 @@ const PriceListDetailsSection = ({
               {format(new Date(priceList.updated_at), "EEE d, MMM yyyy")}
             </Text>
           </div>
-          <div className="border-ui-border-base flex flex-col gap-y-1 border-l px-4">
+          <div className="border-ui-border-base flex flex-col gap-y-1 border-s px-4">
             <Text size="base" className="text-ui-fg-subtle">
               {t("price-list-details-section-number-of-prices", "Prices")}
             </Text>

@@ -97,8 +97,8 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
             mt-8
             grid border-collapse grid-cols-2 grid-rows-5 
             [&>*:nth-child(-n+2)]:border-t [&>*:nth-child(even)]:pe-4 [&>*:nth-child(even)]:text-end 
-            [&>*:nth-child(odd)]:border-l [&>*:nth-child(odd)]:ps-4 
-            [&>*]:border-b [&>*]:border-r 
+            [&>*:nth-child(odd)]:border-s [&>*:nth-child(odd)]:ps-4 
+            [&>*]:border-b [&>*]:border-e 
             [&>*]:py-2`}
             >
               <div className="rounded-tl-rounded">

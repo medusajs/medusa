@@ -50,7 +50,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
     >
       <div className="relative">
         {isScrolled && (
-          <div className="rounded-t-rounded from-grey-0 h-xlarge absolute left-0 right-0 top-0 z-10 bg-gradient-to-b to-[rgba(255,255,255,0)]" />
+          <div className="rounded-t-rounded from-grey-0 h-xlarge absolute end-0 start-0 top-0 z-10 bg-gradient-to-b to-[rgba(255,255,255,0)]" />
         )}
       </div>
       <div
@@ -81,7 +81,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
               )}
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               {status && status}
               <Actionables
                 actions={actionables}

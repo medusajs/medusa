@@ -111,7 +111,7 @@ const MetadataForm = ({ form }: MetadataProps) => {
   }, [subscriber])
 
   const rowClasses =
-    "divide-grey-20 grid grid-cols-[165px_1fr] divide-x divide-solid [&>div]:px-base [&>div]:py-xsmall"
+    "divide-grey-20 grid grid-cols-[165px_1fr] divide-x rtl:divide-x-reverse  divide-solid [&>div]:px-base [&>div]:py-xsmall"
 
   return (
     <>
@@ -248,7 +248,7 @@ const MetadataRow = ({
 
   return (
     <div className="last-of-type:rounded-b-rounded group/metadata relative">
-      <div className="divide-grey-20 [&>div]:px-base [&>div]:py-xsmall grid grid-cols-[165px_1fr] divide-x divide-solid">
+      <div className="divide-grey-20 [&>div]:px-base [&>div]:py-xsmall grid grid-cols-[165px_1fr] divide-x rtl:divide-x-reverse  divide-solid">
         {children}
       </div>
       <DropdownMenu.Root>
@@ -257,7 +257,7 @@ const MetadataRow = ({
             variant="secondary"
             size="small"
             className={clsx(
-              "h-xlarge w-large -right-small radix-state-open:opacity-100 absolute inset-y-1/2 -translate-y-1/2 transform opacity-0 transition-opacity group-hover/metadata:opacity-100"
+              "h-xlarge w-large -end-small radix-state-open:opacity-100 absolute inset-y-1/2 -translate-y-1/2 transform opacity-0 transition-opacity group-hover/metadata:opacity-100"
             )}
           >
             <EllipsisVerticalIcon />
@@ -310,13 +310,16 @@ const MetadataRow = ({
 export const getSubmittableMetadata = (
   data: MetadataFormType
 ): Record<string, unknown> => {
-  const metadata = data.entries.reduce((acc, { key, value }) => {
-    if (key) {
-      acc[key] = value
-    }
+  const metadata = data.entries.reduce(
+    (acc, { key, value }) => {
+      if (key) {
+        acc[key] = value
+      }
 
-    return acc
-  }, {} as Record<string, unknown>)
+      return acc
+    },
+    {} as Record<string, unknown>
+  )
 
   if (data.deleted?.length) {
     data.deleted.forEach((key) => {

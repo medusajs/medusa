@@ -3,6 +3,7 @@ import clsx from "clsx"
 import React from "react"
 import Button from "../fundamentals/button"
 import MoreHorizontalIcon from "../fundamentals/icons/more-horizontal-icon"
+import i18n from "../../i18n"
 
 export type ActionType = {
   label: string
@@ -26,7 +27,7 @@ const Actionables: React.FC<ActionablesProps> = ({
   if (actions && (forceDropdown || actions.length > 1)) {
     return (
       <div>
-        <DropdownMenu.Root>
+        <DropdownMenu.Root dir={i18n.dir()}>
           <DropdownMenu.Trigger asChild>
             {!customTrigger ? (
               <Button

@@ -15,7 +15,9 @@ type RequestedProps = {
 const RefundRequired: React.FC<RequestedProps> = ({ event }) => {
   const { order } = useAdminOrder(event.orderId)
 
-  const { order_edits: edits } = useAdminOrderEdits({ order_id: event.orderId })
+  const { order_edits: edits } = useAdminOrderEdits({
+    order_id: event.orderId,
+  })
 
   const requestedEditDifferenceDue =
     edits?.find((e) => e.status === "requested")?.difference_due || 0

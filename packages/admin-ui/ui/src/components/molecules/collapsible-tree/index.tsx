@@ -140,9 +140,9 @@ const CollapsibleTreeLeaf: React.FC<CollapsibleTreeLeafProps> = ({
         className
       )}
     >
-      <div className="absolute bottom-0 left-0 top-0">
-        <div className="border-grey-20 h-1/2 w-px border-l border-dashed" />
-        <div className="border-grey-20 bottom-half-dash h-1/2 w-px border-l border-dashed" />
+      <div className="absolute bottom-0 start-0 top-0">
+        <div className="border-grey-20 h-1/2 w-px border-s border-dashed" />
+        <div className="border-grey-20 bottom-half-dash h-1/2 w-px border-s border-dashed" />
       </div>
       <div className="border-grey-20 me-xsmall h-px w-[13px] border-t border-dashed" />
       <Container className="inter-small-regular flex w-full items-center justify-between">

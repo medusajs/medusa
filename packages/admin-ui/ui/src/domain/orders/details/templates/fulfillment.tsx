@@ -173,7 +173,7 @@ export const FormattedFulfillment = ({
         )}
       </div>
       {!fulfillment.canceled_at && !fulfillment.shipped_at && (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-x-2">
           <Actionables
             actions={[
               {

@@ -50,7 +50,7 @@ export const TablePagination = ({
             )}
           </div>
         </Skeleton>
-        <div className="flex space-x-4">
+        <div className="flex gap-x-4">
           <Skeleton>
             <div>
               {t(
@@ -63,7 +63,7 @@ export const TablePagination = ({
               )}
             </div>
           </Skeleton>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-x-4">
             <button
               className="disabled:text-grey-30 cursor-pointer disabled:cursor-default"
               disabled={!hasPrev || isLoading}

@@ -246,7 +246,10 @@ const PriceListOverview = () => {
                     >
                       {headerGroup.headers.map((header) => {
                         return (
-                          <Table.HeaderCell key={header.id}>
+                          <Table.HeaderCell
+                            key={header.id}
+                            className="text-start"
+                          >
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext()
@@ -268,7 +271,7 @@ const PriceListOverview = () => {
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <Table.Cell key={cell.id}>
+                      <Table.Cell key={cell.id} className="text-start pe-6">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -339,18 +342,18 @@ const columns = [
       const color = isExpired
         ? "red"
         : isDraft
-        ? "grey"
-        : isScheduled
-        ? "orange"
-        : "green"
+          ? "grey"
+          : isScheduled
+            ? "orange"
+            : "green"
 
       const text = isExpired
         ? "Expired"
         : isDraft
-        ? "Draft"
-        : isScheduled
-        ? "Scheduled"
-        : "Active"
+          ? "Draft"
+          : isScheduled
+            ? "Scheduled"
+            : "Active"
 
       return (
         <StatusBadge color={color}>

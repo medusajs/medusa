@@ -108,13 +108,16 @@ const useCopyProduct = () => {
           "purchasable",
         ])
 
-        const variantBase = Object.entries(rest).reduce((acc, [key, value]) => {
-          if (value) {
-            acc[key] = value
-          }
+        const variantBase = Object.entries(rest).reduce(
+          (acc, [key, value]) => {
+            if (value) {
+              acc[key] = value
+            }
 
-          return acc
-        }, {} as NonNullable<AdminPostProductsReq["variants"]>[0])
+            return acc
+          },
+          {} as NonNullable<AdminPostProductsReq["variants"]>[0]
+        )
 
         variantBase.prices = []
 
