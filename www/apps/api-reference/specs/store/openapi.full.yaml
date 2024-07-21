@@ -5366,6 +5366,21 @@ components:
           format: date-time
           title: updated_at
           description: The group's updated at.
+    AdminExportProductRequest:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminExportProductRequest
+    AdminExportProductResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminExportProductResponse
+      required:
+        - workflow_id
+      properties:
+        workflow_id:
+          type: string
+          title: workflow_id
+          description: The product's workflow id.
     AdminFulfillmentProvider:
       type: object
       description: The shipping option's provider.
@@ -5565,50 +5580,43 @@ components:
         metadata:
           type: object
           description: The order's metadata.
-    AdminPostReceiveReturnsReqSchema:
+    AdminPostCancelReturnReqSchema:
       type: object
-      description: SUMMARY
-      x-schemaName: AdminPostReceiveReturnsReqSchema
       required:
         - return_id
-        - items
         - internal_note
+      x-schemaName: AdminPostCancelReturnReqSchema
       properties:
         return_id:
           type: string
           title: return_id
           description: The return's return id.
-        items:
-          type: array
-          description: The return's items.
-          items:
-            type: object
-            description: The item's items.
-            required:
-              - id
-              - quantity
-              - reason_id
-            properties:
-              id:
-                type: string
-                title: id
-                description: The item's ID.
-              quantity:
-                type: number
-                title: quantity
-                description: The item's quantity.
-              reason_id:
-                type: string
-                title: reason_id
-                description: The item's reason id.
-              note:
-                type: string
-                title: note
-                description: The item's note.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
         internal_note:
           type: string
           title: internal_note
           description: The return's internal note.
+    AdminPostReceiveReturnsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReceiveReturnsReqSchema
+      required:
+        - metadata
+      properties:
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+        description:
+          type: string
+          title: description
+          description: The return's description.
+        metadata:
+          type: object
+          description: The return's metadata.
     AdminPostReturnsConfirmRequestReqSchema:
       type: object
       description: SUMMARY
@@ -5618,6 +5626,63 @@ components:
           type: boolean
           title: no_notification
           description: The return's no notification.
+    AdminPostReturnsDismissItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsDismissItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The return's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+    AdminPostReturnsReceiveItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsReceiveItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The return's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The return's internal note.
+    AdminPostReturnsReceiveItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsReceiveItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The return's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - id
+              - quantity
+            properties:
+              id:
+                type: string
+                title: id
+                description: The item's ID.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              description:
+                type: string
+                title: description
+                description: The item's description.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
     AdminPostReturnsReqSchema:
       type: object
       description: SUMMARY
