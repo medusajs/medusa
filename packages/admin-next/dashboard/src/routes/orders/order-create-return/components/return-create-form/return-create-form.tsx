@@ -136,14 +136,16 @@ export const ReturnCreateForm = ({
       )
 
       return Promise.resolve({
-        items: preview.items.map((i) => ({
-          item_id: i.id,
-          quantity: i.detail.return_requested_quantity,
-          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-            ?.internal_note,
-          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
-            ?.reason_id,
-        })),
+        items: preview.items
+          .filter((i) => !!i.detail.return_requested_quantity)
+          .map((i) => ({
+            item_id: i.id,
+            quantity: i.detail.return_requested_quantity,
+            note: i.actions?.find((a) => a.action === "RETURN_ITEM")
+              ?.internal_note,
+            reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")
+              ?.details?.reason_id,
+          })),
         option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
