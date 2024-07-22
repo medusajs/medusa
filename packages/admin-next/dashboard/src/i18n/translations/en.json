@@ -2104,6 +2104,9 @@
       "value": "Value"
     }
   },
+  "notifications": {
+    "domain": "Notifications"
+  },
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"

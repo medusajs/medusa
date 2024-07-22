@@ -12,6 +12,7 @@ export type AdminGetNotificationsParamsType = z.infer<
 export const AdminGetNotificationsParams = createFindParams({
   limit: 50,
   offset: 0,
+  order: "-created_at",
 }).merge(
   z.object({
     q: z.string().optional(),
