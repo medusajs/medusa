@@ -1,4 +1,5 @@
 import { BigNumberInput } from "../../totals"
+import { CreateFulfillmentLabelWorkflowDTO } from "../fulfillment/create-fulfillment"
 
 export interface CreateReturnItem {
   id: string
@@ -16,6 +17,7 @@ export interface CreateOrderReturnWorkflowInput {
   return_shipping?: {
     option_id: string
     price?: number
+    labels?: CreateFulfillmentLabelWorkflowDTO[]
   }
   note?: string | null
   receive_now?: boolean

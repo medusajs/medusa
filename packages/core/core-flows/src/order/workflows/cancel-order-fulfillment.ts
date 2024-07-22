@@ -1,11 +1,16 @@
-import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import {
+  BigNumberInput,
+  FulfillmentDTO,
+  OrderDTO,
+  OrderWorkflow,
+} from "@medusajs/types"
 import { MedusaError, Modules } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"
@@ -82,7 +87,7 @@ function prepareInventoryUpdate({
   const inventoryAdjustment: {
     inventory_item_id: string
     location_id: string
-    adjustment: number // TODO: BigNumberInput
+    adjustment: BigNumberInput
   }[] = []
 
   for (const item of fulfillment.items) {

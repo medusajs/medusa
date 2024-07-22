@@ -15,6 +15,7 @@ import {
   StockLocationDTO,
 } from "@medusajs/types"
 import {
+  BigNumber,
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
@@ -345,6 +346,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should create a order fulfillment and cancel it", async () => {
+        const inventoryModule = container.resolve(
+          ModuleRegistrationName.INVENTORY
+        )
+
         const order = await createOrderFixture({ container, product, location })
 
         // Create a fulfillment
@@ -389,9 +394,6 @@ medusaIntegrationTestRunner({
         expect(orderFulfill.fulfillments).toHaveLength(1)
         expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
 
-        const inventoryModule = container.resolve(
-          ModuleRegistrationName.INVENTORY
-        )
         const reservation = await inventoryModule.listReservationItems({
           line_item_id: order.items![0].id,
         })
@@ -401,7 +403,7 @@ medusaIntegrationTestRunner({
           inventoryItem.id,
           [location.id]
         )
-        expect(stockAvailability).toEqual(1)
+        expect(stockAvailability).toEqual(new BigNumber(1))
 
         // Cancel the fulfillment
         const cancelFulfillmentData: OrderWorkflow.CancelOrderFulfillmentWorkflowInput =
@@ -443,7 +445,7 @@ medusaIntegrationTestRunner({
           await inventoryModule.retrieveStockedQuantity(inventoryItem.id, [
             location.id,
           ])
-        expect(stockAvailabilityAfterCancelled).toEqual(2)
+        expect(stockAvailabilityAfterCancelled.valueOf()).toEqual(2)
       })
 
       it("should revert an order fulfillment when it fails and recreate it when tried again", async () => {
@@ -518,7 +520,7 @@ medusaIntegrationTestRunner({
           inventoryItem.id,
           [location.id]
         )
-        expect(stockAvailability).toEqual(1)
+        expect(stockAvailability.valueOf()).toEqual(1)
       })
     })
   },

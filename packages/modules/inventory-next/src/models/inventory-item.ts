@@ -32,6 +32,7 @@ const InventoryItemSkuIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_item",
   columns: "sku",
   unique: true,
+  where: "deleted_at IS NULL",
 })
 
 type InventoryItemOptionalProps = DAL.SoftDeletableModelDateColumns

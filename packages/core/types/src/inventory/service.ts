@@ -3,6 +3,7 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
+import { BigNumberInput, IBigNumber } from "../totals"
 import {
   FilterableInventoryItemProps,
   FilterableInventoryLevelProps,
@@ -1044,7 +1045,7 @@ export interface IInventoryService extends IModuleService {
     data: {
       inventoryItemId: string
       locationId: string
-      adjustment: number
+      adjustment: BigNumberInput
     }[],
     context?: Context
   ): Promise<InventoryLevelDTO[]>
@@ -1052,7 +1053,7 @@ export interface IInventoryService extends IModuleService {
   adjustInventory(
     inventoryItemId: string,
     locationId: string,
-    adjustment: number,
+    adjustment: BigNumberInput,
     context?: Context
   ): Promise<InventoryLevelDTO>
 
@@ -1076,7 +1077,7 @@ export interface IInventoryService extends IModuleService {
   confirmInventory(
     inventoryItemId: string,
     locationIds: string[],
-    quantity: number,
+    quantity: BigNumberInput,
     context?: Context
   ): Promise<boolean>
 
@@ -1086,7 +1087,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The inventory item's ID.
    * @param {string[]} locationIds - The locations' IDs.
    * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<number>} The available quantity of the item.
+   * @returns {Promise<BigNumber>} The available quantity of the item.
    *
    * @example
    * const availableQuantity =
@@ -1099,7 +1100,7 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationIds: string[],
     context?: Context
-  ): Promise<number>
+  ): Promise<IBigNumber>
 
   /**
    * This method retrieves the stocked quantity of an inventory item in the specified location.
@@ -1107,7 +1108,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The inventory item's ID.
    * @param {string[]} locationIds - The locations' IDs.
    * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<number>} The stocked quantity of the item.
+   * @returns {Promise<BigNumber>} The stocked quantity of the item.
    *
    * @example
    * const stockedQuantity =
@@ -1120,7 +1121,7 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationIds: string[],
     context?: Context
-  ): Promise<number>
+  ): Promise<IBigNumber>
 
   /**
    * This method retrieves the reserved quantity of an inventory item in the specified location.
@@ -1128,7 +1129,7 @@ export interface IInventoryService extends IModuleService {
    * @param {string} inventoryItemId - The inventory item's ID.
    * @param {string[]} locationIds - The locations' IDs.
    * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<number>} The reserved quantity of the item.
+   * @returns {Promise<BigNumber>} The reserved quantity of the item.
    *
    * @example
    * const reservedQuantity =
@@ -1141,5 +1142,5 @@ export interface IInventoryService extends IModuleService {
     inventoryItemId: string,
     locationIds: string[],
     context?: Context
-  ): Promise<number>
+  ): Promise<IBigNumber>
 }
