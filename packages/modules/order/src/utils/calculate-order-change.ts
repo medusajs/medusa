@@ -2,7 +2,6 @@ import { BigNumberInput, OrderSummaryDTO } from "@medusajs/types"
 import {
   BigNumber,
   MathBN,
-  isDefined,
   isPresent,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
@@ -195,7 +194,7 @@ export class OrderChangeProcessing {
       calculatedAmount = type.operation(params) as BigNumberInput
 
       // the action.amount has priority over the calculated amount
-      if (!isDefined(action.amount)) {
+      if (action.amount == undefined) {
         action.amount = calculatedAmount ?? 0
       }
     }

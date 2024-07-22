@@ -88,10 +88,10 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading className="capitalize">
-                  {t("salesChannels.createSalesChannel")}
+                  {t("taxRegions.create.header")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("salesChannels.createSalesChannelHint")}
+                  {t("taxRegions.create.hint")}
                 </Text>
               </div>
               <div className="flex flex-col gap-y-4">

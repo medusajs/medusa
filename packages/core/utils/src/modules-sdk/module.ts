@@ -33,10 +33,14 @@ export function Module<
 ): ModuleExports<Service> & {
   linkable: Linkable
 } {
-  const defaultJoinerConfig = defineJoinerConfig(serviceName)
-  service.prototype.__joinerConfig ??= () => defaultJoinerConfig
-
   const modelObjects = service[MedusaServiceModelObjectsSymbol] ?? {}
+
+  const defaultJoinerConfig = defineJoinerConfig(serviceName, {
+    models: Object.keys(modelObjects).length
+      ? Object.values(modelObjects)
+      : undefined,
+  })
+  service.prototype.__joinerConfig ??= () => defaultJoinerConfig
 
   let linkable = {} as Linkable
 

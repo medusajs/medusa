@@ -292,7 +292,7 @@ const GridInput = forwardRef<
       {...props}
       autoComplete="off"
       className={clx(
-        "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted disabled:text-ui-fg-disabled disabled:bg-ui-bg-base px-2 py-1.5 outline-none",
+        "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted disabled:text-ui-fg-disabled disabled:bg-ui-bg-base bg-transparent px-2 py-1.5 outline-none",
         className
       )}
     />
