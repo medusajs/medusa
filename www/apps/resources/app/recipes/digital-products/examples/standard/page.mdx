@@ -1376,32 +1376,34 @@ const DigitalProductsPage = () => {
   // ...
     
   return (
-    {/* Replace the TODO with the following */}
-    <Drawer open={open} onOpenChange={(openChanged) => setOpen(openChanged)}>
-      <Drawer.Trigger 
-        onClick={() => {
-          setOpen(true)
-        }}
-        asChild
-      >
-        <Button>Create</Button>
-      </Drawer.Trigger>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Drawer.Title>Create Product</Drawer.Title>
-        </Drawer.Header>
-        <Drawer.Body>
-          <CreateDigitalProductForm onSuccess={() => {
-            setOpen(false)
-            if (currentPage === 0) {
-              fetchProducts()
-            } else {
-              setCurrentPage(0)
-            }
-          }} />
-        </Drawer.Body>
-      </Drawer.Content>
-    </Drawer>
+    <Container>
+      {/* Replace the TODO with the following */}
+      <Drawer open={open} onOpenChange={(openChanged) => setOpen(openChanged)}>
+        <Drawer.Trigger 
+          onClick={() => {
+            setOpen(true)
+          }}
+          asChild
+        >
+          <Button>Create</Button>
+        </Drawer.Trigger>
+        <Drawer.Content>
+          <Drawer.Header>
+            <Drawer.Title>Create Product</Drawer.Title>
+          </Drawer.Header>
+          <Drawer.Body>
+            <CreateDigitalProductForm onSuccess={() => {
+              setOpen(false)
+              if (currentPage === 0) {
+                fetchProducts()
+              } else {
+                setCurrentPage(0)
+              }
+            }} />
+          </Drawer.Body>
+        </Drawer.Content>
+      </Drawer>
+    </Container>
   )
 }
 ```
@@ -2152,16 +2154,18 @@ Finally, in the `return` statement, add a new button above the add-to-cart butto
 
 ```tsx title="src/modules/products/components/product-actions/index.tsx"
 return (
-  {/* Before add to cart */}
-  {selectedVariant?.digital_product && (
-    <Button
-      onClick={handleDownloadPreview}
-      variant="secondary"
-      className="w-full h-10"
-    >
-      Download Preview
-    </Button>
-    )}
+  <div>
+    {/* Before add to cart */}
+    {selectedVariant?.digital_product && (
+      <Button
+        onClick={handleDownloadPreview}
+        variant="secondary"
+        className="w-full h-10"
+      >
+        Download Preview
+      </Button>
+      )}
+  </div>
 )
 ```
 
@@ -2305,20 +2309,22 @@ const AccountNav = ({
   // ...
     
   return (
-    {/* Add before log out */}
-    <li>
-      <LocalizedClientLink
-        href="/account/digital-products"
-        className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-        data-testid="digital-products-link"
-      >
-        <div className="flex items-center gap-x-2">
-          <Photo />
-          <span>Digital Products</span>
-        </div>
-        <ChevronDown className="transform -rotate-90" />
-      </LocalizedClientLink>
-    </li>
+    <div>
+      {/* Add before log out */}
+      <li>
+        <LocalizedClientLink
+          href="/account/digital-products"
+          className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+          data-testid="digital-products-link"
+        >
+          <div className="flex items-center gap-x-2">
+            <Photo />
+            <span>Digital Products</span>
+          </div>
+          <ChevronDown className="transform -rotate-90" />
+        </LocalizedClientLink>
+      </li>
+    </div>
   )
 }
 ```
