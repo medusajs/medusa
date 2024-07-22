@@ -138,7 +138,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await execute(
-          ["npx medusa migrations run", npxOptions],
+          ["npx medusa migrations run && npx medusa links sync", npxOptions],
           { verbose, needOutput: true }
         )
 
