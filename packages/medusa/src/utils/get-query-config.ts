@@ -1,10 +1,11 @@
 import {
   getSetDifference,
+  isDefined,
   isPresent,
+  MedusaError,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
 import { pick } from "lodash"
-import { MedusaError, isDefined } from "@medusajs/utils"
 import { RequestQueryFields } from "@medusajs/types"
 import { FindConfig, QueryConfig } from "../types/common"
 
@@ -76,10 +77,6 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
       })
     }
 
-    // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
-    if (queryConfig.isList) {
-      allFields.add("created_at")
-    }
     allFields.add("id")
   }
 
