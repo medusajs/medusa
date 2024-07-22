@@ -1,9 +1,8 @@
-import { BaseReturnReason, BaseReturnReasonFilters } from "./common"
+import { BaseReturnReason } from "./common"
 import { FindParams } from "../common"
-import { OperatorMap } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 export interface AdminReturnReason extends BaseReturnReason {}
-export interface AdminReturnReasonFilters extends BaseReturnReasonFilters {}
 
 export interface AdminCreateReturnReason {
   // TODO:
@@ -16,7 +15,9 @@ export interface AdminReturnReasonsResponse {
   return_reasons: AdminReturnReason[]
 }
 
-export interface AdminReturnReasonListParams extends FindParams {
+export interface AdminReturnReasonListParams
+  extends FindParams,
+    BaseFilterable<AdminReturnReasonListParams> {
   id?: string[] | string | OperatorMap<string | string[]>
   value?: string | OperatorMap<string>
   label?: string | OperatorMap<string>

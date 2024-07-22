@@ -226,7 +226,10 @@ function ReturnItem({
                 className="flex-shrink"
                 variant="transparent"
                 onClick={() => {
-                  form.setValue(`items.${index}.note`, null)
+                  form.setValue(`items.${index}.note`, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  })
                   onUpdate({ internal_note: null })
                 }}
               >

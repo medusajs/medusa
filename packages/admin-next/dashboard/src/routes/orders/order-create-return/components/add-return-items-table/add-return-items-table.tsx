@@ -117,7 +117,7 @@ export const AddReturnItemsTable = ({
   const { table } = useDataTable({
     data: queriedItems as AdminOrderLineItem[],
     columns: columns,
-    count: items.length,
+    count: queriedItems.length,
     enablePagination: true,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,

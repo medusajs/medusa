@@ -1,4 +1,4 @@
-export interface BaseReturnItem {
+export interface AdminBaseReturnItem {
   id: string
   quantity: number
   received_quantity: number
@@ -19,7 +19,7 @@ export interface AdminReturn {
   display_id: number
   no_notification?: boolean
   refund_amount?: number
-  items: BaseReturnItem[]
+  items: AdminBaseReturnItem[]
 }
 
 export interface AdminReturnResponse {

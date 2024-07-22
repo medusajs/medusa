@@ -374,14 +374,9 @@ export const ReturnCreateForm = ({
                   <StackedFocusModal.Footer>
                     <div className="flex w-full items-center justify-end gap-x-4">
                       <div className="flex items-center justify-end gap-x-2">
-                        <RouteFocusModal.Close
-                          asChild
-                          onClick={(e) => {
-                            e.stopPropagation()
-                          }}
-                        >
+                        <RouteFocusModal.Close asChild>
                           <Button
-                            role="button"
+                            type="button"
                             variant="secondary"
                             size="small"
                           >
@@ -423,7 +418,7 @@ export const ReturnCreateForm = ({
                 onRemove={() => {
                   const actionId = preview.items
                     .find((i) => i.id === item.item_id)
-                    ?.actions.find((a) => a.action === "RETURN_ITEM")?.id
+                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                   if (actionId) {
                     removeReturnItem(actionId)
@@ -432,7 +427,7 @@ export const ReturnCreateForm = ({
                 onUpdate={(payload) => {
                   const actionId = preview.items
                     .find((i) => i.id === item.item_id)
-                    ?.actions.find((a) => a.action === "RETURN_ITEM")?.id
+                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                   if (actionId) {
                     updateReturnItem({ ...payload, actionId })
@@ -669,6 +664,7 @@ export const ReturnCreateForm = ({
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
                 <Button
+                  type="button"
                   // onClick={() => cancelReturnRequest()}
                   variant="secondary"
                   size="small"
