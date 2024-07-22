@@ -1,9 +1,10 @@
 import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
-import type {
+import {
   ConfigModule,
   ExternalModuleDeclaration,
+  ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
   Logger,
@@ -38,8 +39,8 @@ import {
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
-import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
+import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -56,6 +57,7 @@ declare module "@medusajs/types" {
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
 export type GenerateMigrations = (moduleNames: string[]) => Promise<void>
+export type GetLinkExecutionPlanner = () => ILinkMigrationsPlanner
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
@@ -164,7 +166,7 @@ async function initializeLinks({
   moduleExports,
 }) {
   try {
-    const { initialize, runMigrations, revertMigrations } =
+    const { initialize, getMigrationPlanner } =
       moduleExports ?? (await import(LinkModulePackage))
 
     const linkResolution = await initialize(
@@ -176,16 +178,14 @@ async function initializeLinks({
     return {
       remoteLink: new RemoteLink(),
       linkResolution,
-      runMigrations,
-      revertMigrations,
+      getMigrationPlanner,
     }
   } catch (err) {
     console.warn("Error initializing link modules.", err)
     return {
       remoteLink: undefined,
       linkResolution: undefined,
-      runMigrations: () => void 0,
-      revertMigrations: () => void 0,
+      getMigrationPlanner: () => void 0,
     }
   }
 }
@@ -231,6 +231,7 @@ export type MedusaAppOutput = {
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
   generateMigrations: GenerateMigrations
+  linkMigrationExecutionPlanner: GetLinkExecutionPlanner
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
   onApplicationStart: () => Promise<void>
@@ -369,6 +370,11 @@ async function MedusaApp_({
       generateMigrations: async () => {
         throw new Error("Generate migrations not allowed in loaderOnly mode")
       },
+      linkMigrationExecutionPlanner: () => {
+        throw new Error(
+          "Migrations planner is not avaibable in loaderOnly mode"
+        )
+      },
     }
   }
 
@@ -392,11 +398,7 @@ async function MedusaApp_({
     }
   }
 
-  const {
-    remoteLink,
-    runMigrations: linkModuleMigration,
-    revertMigrations: revertLinkModuleMigration,
-  } = await initializeLinks({
+  const { remoteLink, getMigrationPlanner } = await initializeLinks({
     config: linkModuleOrOptions,
     linkModules,
     injectedDependencies,
@@ -479,7 +481,27 @@ async function MedusaApp_({
     await applyMigration({
       modulesNames: Object.keys(allModules),
     })
+  }
 
+  const revertMigrations: RevertMigrationFn = async (
+    modulesNames
+  ): Promise<void> => {
+    await applyMigration({
+      modulesNames,
+      action: "revert",
+    })
+  }
+
+  const generateMigrations: GenerateMigrations = async (
+    modulesNames
+  ): Promise<void> => {
+    await applyMigration({
+      modulesNames,
+      action: "generate",
+    })
+  }
+
+  const getMigrationPlannerFn = () => {
     const options: Partial<ModuleServiceInitializeOptions> =
       "scope" in linkModuleOrOptions
         ? { ...linkModuleOrOptions.options }
@@ -491,52 +513,7 @@ async function MedusaApp_({
       ...sharedResourcesConfig?.database,
     }
 
-    await linkModuleMigration(
-      {
-        options,
-        injectedDependencies,
-      },
-      linkModules
-    )
-  }
-
-  const revertMigrations: RevertMigrationFn = async (
-    modulesNames
-  ): Promise<void> => {
-    await applyMigration({
-      modulesNames,
-      action: "revert",
-    })
-
-    // TODO: Temporarely disabling this part until we discussed a more appropriate approach to sync the link
-    // Currently it would revert all link as soon as the revert is run
-    /*const options: Partial<ModuleServiceInitializeOptions> =
-      "scope" in linkModuleOrOptions
-        ? { ...linkModuleOrOptions.options }
-        : {
-            ...(linkModuleOrOptions as Partial<ModuleServiceInitializeOptions>),
-          }
-
-    options.database ??= {
-      ...sharedResourcesConfig?.database,
-    }
-
-    await revertLinkModuleMigration(
-      {
-        options,
-        injectedDependencies,
-      },
-      linkModules
-    )*/
-  }
-
-  const generateMigrations: GenerateMigrations = async (
-    modulesNames
-  ): Promise<void> => {
-    await applyMigration({
-      modulesNames,
-      action: "generate",
-    })
+    return getMigrationPlanner(options, linkModules)
   }
 
   return {
@@ -551,6 +528,7 @@ async function MedusaApp_({
     runMigrations,
     revertMigrations,
     generateMigrations,
+    linkMigrationExecutionPlanner: getMigrationPlannerFn,
     sharedContainer: sharedContainer_,
   }
 }
@@ -600,4 +578,17 @@ export async function MedusaAppMigrateGenerate(
   })
 
   await generateMigrations(moduleNames).finally(MedusaModule.clearInstances)
+}
+
+export async function MedusaAppGetLinksExecutionPlanner(
+  options: MedusaAppOptions = {}
+): Promise<ILinkMigrationsPlanner> {
+  const migrationOnly = true
+
+  const { linkMigrationExecutionPlanner } = await MedusaApp_({
+    ...options,
+    migrationOnly,
+  })
+
+  return linkMigrationExecutionPlanner()
 }

@@ -170,6 +170,7 @@ class MedusaModule {
     MedusaModule.modules_.clear()
     MedusaModule.joinerConfig_.clear()
     MedusaModule.moduleResolutions_.clear()
+    MedusaModule.customLinks_.length = 0
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
