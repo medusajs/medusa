@@ -18,8 +18,8 @@ export async function initDb({
 
   const container = createMedusaContainer()
 
-  const configModule =
-    await require("@medusajs/medusa/dist/loaders/config").default(cwd)
+  const { configManager } = await import("@medusajs/framework/config")
+  const configModule = configManager.config
 
   const pgConnection =
     await require("@medusajs/medusa/dist/loaders/pg-connection").default({

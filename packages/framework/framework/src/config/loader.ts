@@ -11,6 +11,11 @@ const handleConfigError = (error: Error): void => {
   process.exit(1)
 }
 
+// TODO: Later on we could store the config manager into the unique container
+export const configManager = new ConfigManager({
+  logger,
+})
+
 /**
  * Loads the config file and returns the config module after validating, normalizing the configurations
  *
@@ -30,10 +35,5 @@ export function configLoader(
     handleConfigError(error)
   }
 
-  const configManager = new ConfigManager(configModule, {
-    logger,
-  })
-
-  // TODO: Later on we could store the config manager into the unique container
-  return configManager.getConfig()
+  return configManager.loadConfig(configModule)
 }

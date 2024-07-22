@@ -4,12 +4,6 @@ import { Logger } from "@medusajs/types"
 
 export class ConfigManager {
   /**
-   * The input config object from which to prepare the full configuration to use
-   * @private
-   */
-  readonly #inputConfig: Partial<ConfigModule>
-
-  /**
    * A flag to secify if we are in product or not, determine weither an error would be critical and thrown or just logged as a warning in developement
    * @private
    */
@@ -36,15 +30,16 @@ export class ConfigManager {
    */
   #config!: ConfigModule
 
-  constructor(
-    rawConfig: Partial<ConfigModule> = {},
-    {
-      logger,
-    }: {
-      logger: Logger
+  get config(): ConfigModule {
+    if (!this.#config) {
+      this.rejectErrors(
+        `[config] ⚠️ Config not loaded. Make sure the config have been loaded first using the 'configLoader' or 'configManager.loadConfig'.`
+      )
     }
-  ) {
-    this.#inputConfig = rawConfig
+    return this.#config
+  }
+
+  constructor({ logger }: { logger: Logger }) {
     this.#logger = logger
   }
 
@@ -145,26 +140,20 @@ export class ConfigManager {
 
   /**
    * Prepare the full configuration after validation and normalization
-   * @protected
    */
-  protected loadConfig(): ConfigModule {
+  loadConfig(rawConfig: Partial<ConfigModule> = {}): ConfigModule {
     const projectConfig = this.normalizeProjectConfig(
-      this.#inputConfig.projectConfig ?? {}
+      rawConfig.projectConfig ?? {}
     )
 
-    return {
+    this.#config = {
       projectConfig,
-      admin: this.#inputConfig.admin ?? {},
-      modules: this.#inputConfig.modules ?? {},
-      featureFlags: this.#inputConfig.featureFlags ?? {},
-      plugins: this.#inputConfig.plugins ?? [],
+      admin: rawConfig.admin ?? {},
+      modules: rawConfig.modules ?? {},
+      featureFlags: rawConfig.featureFlags ?? {},
+      plugins: rawConfig.plugins ?? [],
     }
-  }
 
-  /**
-   * Returns the config object after loading it
-   */
-  getConfig(): ConfigModule {
-    return this.#config ?? (this.#config = this.loadConfig())
+    return this.#config
   }
 }
