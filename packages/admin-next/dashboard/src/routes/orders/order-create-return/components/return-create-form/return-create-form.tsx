@@ -230,7 +230,7 @@ export const ReturnCreateForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await confirmReturnRequest()
+      await confirmReturnRequest({ no_notification: !data.send_notification })
 
       handleSuccess()
     } catch (e) {
