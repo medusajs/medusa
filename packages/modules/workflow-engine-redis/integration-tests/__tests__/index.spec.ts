@@ -83,6 +83,10 @@ describe("Workflow Orchestrator module", function () {
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
   })
 
+  afterAll(async () => {
+    await WorkflowManager.unregisterAll()
+  })
+
   it(`should export the appropriate linkable configuration`, () => {
     const linkable = Module(Modules.WORKFLOW_ENGINE, {
       service: WorkflowsModuleService,
