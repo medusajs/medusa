@@ -44,8 +44,7 @@ const configAsMap = handlerConfig.reduce(
 )
 
 export default async function configurableNotifications({
-  data,
-  eventName,
+  event,
   container,
 }: SubscriberArgs<any>) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
@@ -53,8 +52,8 @@ export default async function configurableNotifications({
     ModuleRegistrationName.NOTIFICATION
   )
 
-  const handlers = configAsMap[eventName] ?? []
-  const payload = data.data
+  const handlers = configAsMap[event.name] ?? []
+  const payload = event.data
 
   await promiseAll(
     handlers.map(async (handler) => {
@@ -75,7 +74,7 @@ export default async function configurableNotifications({
         await notificationService.createNotifications(notificationData)
       } catch (err) {
         logger.error(
-          `Failed to send notification for ${eventName}`,
+          `Failed to send notification for ${event.name}`,
           err.message
         )
       }

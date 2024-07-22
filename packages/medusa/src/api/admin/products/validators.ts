@@ -268,6 +268,9 @@ export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
   id: z.string(),
 })
 
+export type AdminExportProductType = z.infer<typeof AdminExportProduct>
+export const AdminExportProduct = z.object({})
+
 // TODO: Handle in create and update product once ready
 // @IsOptional()
 // @Type(() => ProductProductCategoryReq)

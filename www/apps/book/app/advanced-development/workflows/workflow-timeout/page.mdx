@@ -20,7 +20,7 @@ Timeout doesn't stop the execution of a running step. The timeout only affects t
 
 For example:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["22"]]} collapsibleLines="1-16" expandButtonLabel="Show More"
+```ts title="src/workflows/hello-world.ts" highlights={[["15"]]} collapsibleLines="1-12" expandButtonLabel="Show More"
 import { 
   createStep,  
   createWorkflow,
@@ -33,14 +33,7 @@ const step1 = createStep(
   }
 )
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->({
+const myWorkflow = createWorkflow({
   name: "hello-world",
   timeout: 2, // 2 seconds
 }, function () {

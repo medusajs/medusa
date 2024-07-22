@@ -42,6 +42,7 @@ export const ModulesDefinition: {
     defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
     label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
     isRequired: true,
+    isQueryable: false,
     dependencies: ["logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
@@ -80,6 +81,7 @@ export const ModulesDefinition: {
     defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
     label: upperCaseFirst(ModuleRegistrationName.CACHE),
     isRequired: true,
+    isQueryable: false,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -145,6 +147,7 @@ export const ModulesDefinition: {
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
+    __passSharedContainer: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -326,7 +329,7 @@ export const ModulesDefinition: {
     label: upperCaseFirst(ModuleRegistrationName.NOTIFICATION),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger"],
+    dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

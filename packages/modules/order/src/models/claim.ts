@@ -77,7 +77,6 @@ export default class OrderClaim {
   @OneToOne({
     entity: () => Return,
     mappedBy: (ret) => ret.claim,
-    cascade: ["soft-remove"] as any,
     fieldName: "return_id",
     nullable: true,
     owner: true,

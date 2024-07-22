@@ -1,0 +1,141 @@
+export const metadata = {
+  title: `${pageNumber} Execute Another Workflow`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to execute a workflow in another.
+
+## Execute in a Workflow
+
+To execute a workflow in another, use the `runAsStep` method that every workflow has.
+
+For example:
+
+export const workflowsHighlights = [
+  ["11", "runAsStep", "Use the `runAsStep` method to run the workflow as a step."],
+  ["12", "input", "Pass the input as you did in the `run` method before."]
+]
+
+```ts highlights={workflowsHighlights} collapsibleLines="1-7" expandMoreButton="Show Imports"
+import {
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+import { 
+  createProductsWorkflow,
+} from "@medusajs/core-flows"
+
+const workflow = createWorkflow(
+  "hello-world",
+  async (input) => {
+    const products = createProductsWorkflow.runAsStep({
+      input: {
+        products: [
+          // ...
+        ],
+      },
+    })
+
+    // ...
+  }
+)
+```
+
+Instead of invoking the workflow, passing it the container, you instead use its `runAsStep` method and pass it an object as a parameter. The object has an `input` property to pass input to the workflow.
+
+---
+
+## Preparing Input Data
+
+If you need to perform some data manipulation to prepare the other workflow's input data, use the `transform` utility function imported from `@medusajs/workflows-sdk`.
+
+For example:
+
+export const transformHighlights = [
+  ["16", "transform", "Make changes to the input data before passing it to the workflow."],
+  ["26", "createProductsData", "Pass the data prepared with the `transform` function to the workflow."]
+]
+
+```ts highlights={transformHighlights} collapsibleLines="1-12"
+import {
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { 
+  createProductsWorkflow,
+} from "@medusajs/core-flows"
+
+type WorkflowInput = {
+  title: string
+}
+
+const workflow = createWorkflow(
+  "hello-product",
+  async (input: WorkflowInput) => {
+    const createProductsData = transform({
+      input,
+    }, (data) => [
+      {
+        title: `Hello ${data.input.title}`,
+      },
+    ])
+
+    const products = createProductsWorkflow.runAsStep({
+      input: {
+        products: createProductsData,
+      },
+    })
+
+    // ...
+  }
+)
+```
+
+In this example, you use the `transform` function to prepend `Hello` to the title of the product. Then, you pass the variable created through `transform` as an input to the `createProductsWorkflow`.
+
+---
+
+## Run Workflow Conditionally
+
+To run a workflow in another based on a condition, use the `when` utility function imported from `@medusajs/workflows-sdk`.
+
+For example:
+
+export const whenHighlights = [
+  ["20", "when", "If `should_create` passed in the input is enabled, then run the function passed to `then`."],
+  ["22", "createProductsWorkflow", "Workflow only runs if `when`'s condition is `true`."]
+]
+
+```ts highlights={whenHighlights} collapsibleLines="1-16"
+import {
+  createWorkflow,
+  when,
+} from "@medusajs/workflows-sdk"
+import { 
+  createProductsWorkflow,
+} from "@medusajs/core-flows"
+import { 
+  CreateProductWorkflowInputDTO,
+} from "@medusajs/types"
+
+type WorkflowInput = {
+  product?: CreateProductWorkflowInputDTO
+  should_create?: boolean
+}
+
+const workflow = createWorkflow(
+  "hello-product",
+  async (input: WorkflowInput) => {
+    const product = when(input, ({ should_create }) => should_create)
+      .then(() => {
+        return createProductsWorkflow.runAsStep({
+          input: {
+            products: [input.product],
+          },
+        })
+      })
+  }
+)
+```
+
+In this example, you use the `when` utility to run the `createProductsWorkflow` only if `should_create` (passed in the `input`) is enabled.

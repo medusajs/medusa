@@ -11,7 +11,6 @@ import {
   RestoreReturn,
   SoftDeleteReturn,
   UpdateOrderItemWithSelectorDTO,
-  UpdateOrderReturnReasonDTO,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -257,7 +256,7 @@ export default class OrderModuleService<
       "shipping_subtotal",
       "shipping_tax_total",
       "original_shipping_tax_total",
-      "original_shipping_tax_subtotal",
+      "original_shipping_subtotal",
       "original_shipping_total",
     ]
 
@@ -2124,8 +2123,6 @@ export default class OrderModuleService<
       })
     }
 
-    // TODO - add new shipping methods
-
     const calcOrder = calculated.order
 
     decorateCartTotals(calcOrder as DecorateCartLikeInputDTO)
@@ -2481,6 +2478,8 @@ export default class OrderModuleService<
         "requested_at",
         "requested_by",
         "status",
+        "description",
+        "internal_note",
       ],
       relations: [] as string[],
       order: {},
@@ -2910,146 +2909,6 @@ export default class OrderModuleService<
     createRawPropertiesFromBigNumber(summaries)
 
     await this.orderSummaryService_.update(summaries, sharedContext)
-  }
-
-  // @ts-ignore
-  async createReturnReasons(
-    transactionData: OrderTypes.CreateOrderReturnReasonDTO,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO>
-
-  async createReturnReasons(
-    transactionData: OrderTypes.CreateOrderReturnReasonDTO[],
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  @InjectTransactionManager("baseRepository_")
-  async createReturnReasons(
-    returnReasonData:
-      | OrderTypes.CreateOrderReturnReasonDTO
-      | OrderTypes.CreateOrderReturnReasonDTO[],
-    @MedusaContext() sharedContext?: Context
-  ): Promise<
-    OrderTypes.OrderReturnReasonDTO | OrderTypes.OrderReturnReasonDTO[]
-  > {
-    const data = Array.isArray(returnReasonData)
-      ? returnReasonData
-      : [returnReasonData]
-
-    const created = await this.returnReasonService_.create(data, sharedContext)
-
-    return await this.baseRepository_.serialize<OrderTypes.OrderReturnReasonDTO>(
-      !Array.isArray(returnReasonData) ? created[0] : created,
-      {
-        populate: true,
-      }
-    )
-  }
-
-  // @ts-ignore
-  updateReturnReasons(
-    data: OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[]
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  updateReturnReasons(
-    selector: Partial<OrderTypes.FilterableOrderReturnReasonProps>,
-    data: OrderTypes.UpdateOrderReturnReasonDTO,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO[]>
-
-  updateReturnReasons(
-    id: string,
-    data: Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    sharedContext?: Context
-  ): Promise<OrderTypes.OrderReturnReasonDTO>
-
-  @InjectManager("baseRepository_")
-  async updateReturnReasons(
-    idOrDataOrSelector:
-      | string
-      | OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[]
-      | Partial<OrderTypes.FilterableOrderReturnReasonProps>,
-    data?:
-      | OrderTypes.UpdateOrderReturnReasonDTO
-      | Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<
-    OrderTypes.OrderReturnReasonDTO[] | OrderTypes.OrderReturnReasonDTO
-  > {
-    let reasons: ReturnReason[] = []
-    if (isString(idOrDataOrSelector)) {
-      const reason = await this.updateReturnReason_(
-        idOrDataOrSelector,
-        data as Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-        sharedContext
-      )
-
-      return await this.baseRepository_.serialize<OrderTypes.OrderReturnReasonDTO>(
-        reason,
-        {
-          populate: true,
-        }
-      )
-    }
-
-    const toUpdate = Array.isArray(idOrDataOrSelector)
-      ? idOrDataOrSelector
-      : [
-          {
-            selector: idOrDataOrSelector,
-            data: data,
-          } as OrderTypes.UpdateOrderReturnReasonWithSelectorDTO,
-        ]
-
-    reasons = await this.updateReturnReasonsWithSelector_(
-      toUpdate,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<
-      OrderTypes.OrderReturnReasonDTO[]
-    >(reasons, {
-      populate: true,
-    })
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateReturnReason_(
-    reasonId: string,
-    data: Partial<OrderTypes.UpdateOrderReturnReasonDTO>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ReturnReason> {
-    const [reason] = await this.returnReasonService_.update(
-      [{ id: reasonId, ...data }],
-      sharedContext
-    )
-
-    return reason
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  protected async updateReturnReasonsWithSelector_(
-    updates: OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ReturnReason[]> {
-    let toUpdate: UpdateOrderReturnReasonDTO[] = []
-
-    for (const { selector, data } of updates) {
-      const reasons = await super.listReturnReasons(
-        { ...selector },
-        {},
-        sharedContext
-      )
-
-      reasons.forEach((reason) => {
-        toUpdate.push({
-          ...data,
-          id: reason.id,
-        })
-      })
-    }
-
-    return await this.returnReasonService_.update(toUpdate, sharedContext)
   }
 
   async archive(

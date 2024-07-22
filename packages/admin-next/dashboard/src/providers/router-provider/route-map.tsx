@@ -624,6 +624,9 @@ export const RouteMap: RouteObject[] = [
     children: [
       {
         path: "/settings",
+        handle: {
+          crumb: () => "Settings",
+        },
         element: <SettingsLayout />,
         children: [
           {

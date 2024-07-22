@@ -13,10 +13,23 @@ medusaIntegrationTestRunner({
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
+    let returnReason
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      returnReason = (
+        await api.post(
+          "/admin/return-reasons",
+          {
+            value: "return-reason-test",
+            label: "Test return reason",
+            description: "This is the reason description!!!",
+          },
+          adminHeaders
+        )
+      ).data.return_reason
 
       const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
@@ -26,8 +39,8 @@ medusaIntegrationTestRunner({
         items: [
           {
             title: "Custom Item 2",
-            quantity: 1,
-            unit_price: 50,
+            quantity: 2,
+            unit_price: 25,
           },
         ],
         sales_channel_id: "test",
@@ -152,7 +165,7 @@ medusaIntegrationTestRunner({
           items: [
             {
               id: item.id,
-              quantity: 1,
+              quantity: 2,
             },
           ],
         },
@@ -188,12 +201,11 @@ medusaIntegrationTestRunner({
           })
         )
 
-        expect(result.data.order_preview).toEqual(
+        expect(result.data.order.order_change).toEqual(
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
             change_type: "return",
-            actions: [],
             description: "Test",
             status: "pending",
             order_id: order.id,
@@ -202,6 +214,64 @@ medusaIntegrationTestRunner({
 
         const item = order.items[0]
 
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 2,
+                reason_id: returnReason.id,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                title: "Custom Item 2",
+                unit_price: 25,
+                quantity: 2,
+                subtotal: 50,
+                total: 50,
+                fulfilled_total: 50,
+                return_requested_total: 50,
+                detail: expect.objectContaining({
+                  quantity: 2,
+                  return_requested_quantity: 2,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        // Remove item return requesta
+        const returnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+        result = await api.delete(
+          `/admin/returns/${returnId}/request-items/${returnItemActionId}`,
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        // Add item return request again
         result = await api.post(
           `/admin/returns/${returnId}/request-items`,
           {
@@ -220,14 +290,37 @@ medusaIntegrationTestRunner({
             id: order.id,
             items: expect.arrayContaining([
               expect.objectContaining({
-                id: expect.any(String),
-                title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
-                subtotal: 50,
-                total: 50,
-                fulfilled_total: 50,
-                return_requested_total: 50,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 1,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        // updated the requested quantitty
+        const updateReturnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items/${updateReturnItemActionId}`,
+          {
+            quantity: 2,
+            internal_note: "Test internal note",
+            reason_id: returnReason.id,
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview).toEqual(
+          expect.objectContaining({
+            id: order.id,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                detail: expect.objectContaining({
+                  quantity: 2,
+                  return_requested_quantity: 2,
+                }),
               }),
             ]),
           })
@@ -248,12 +341,20 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
                 return_requested_total: 50,
+                actions: expect.arrayContaining([
+                  expect.objectContaining({
+                    details: expect.objectContaining({
+                      quantity: 2,
+                    }),
+                    internal_note: "Test internal note",
+                  }),
+                ]),
               }),
             ]),
             shipping_methods: expect.arrayContaining([
@@ -280,8 +381,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -300,12 +401,13 @@ medusaIntegrationTestRunner({
           })
         )
 
-
         expect(result.data.order_preview.shipping_methods).toHaveLength(2)
+
         // remove shipping method
-        const action_id = result.data.order_preview.shipping_methods[1].actions[0].id
+        const shippingActionId =
+          result.data.order_preview.shipping_methods[1].actions[0].id
         result = await api.delete(
-          `/admin/returns/${returnId}/shipping-method/${action_id}`,
+          `/admin/returns/${returnId}/shipping-method/${shippingActionId}`,
           adminHeaders
         )
 
@@ -320,10 +422,53 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        // updates the shipping method price
+        const updateShippingActionId =
+          result.data.order_preview.shipping_methods[1].actions[0].id
+        result = await api.post(
+          `/admin/returns/${returnId}/shipping-method/${updateShippingActionId}`,
+          {
+            custom_price: 1002,
+            internal_note: "cx agent note",
+          },
+          adminHeaders
+        )
+
+        expect(result.data.order_preview.shipping_methods).toHaveLength(2)
+        expect(result.data.order_preview.shipping_methods[1]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            name: "Return shipping",
+            amount: 1002,
+            subtotal: 1002,
+            total: 1002,
+            actions: [
+              expect.objectContaining({
+                internal_note: "cx agent note",
+              }),
+            ],
+          })
+        )
+
         result = await api.post(
           `/admin/returns/${returnId}/request`,
           {},
           adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            items: [
+              expect.objectContaining({
+                reason: expect.objectContaining({
+                  id: returnReason.id,
+                  value: "return-reason-test",
+                  label: "Test return reason",
+                  description: "This is the reason description!!!",
+                }),
+              }),
+            ],
+          })
         )
 
         expect(result.data.order_preview).toEqual(
@@ -333,8 +478,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -345,9 +490,9 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 name: "Return shipping",
-                amount: 1000,
-                subtotal: 1000,
-                total: 1000,
+                amount: 1002,
+                subtotal: 1002,
+                total: 1002,
               }),
             ]),
           })
@@ -366,8 +511,8 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 title: "Custom Item 2",
-                unit_price: 50,
-                quantity: 1,
+                unit_price: 25,
+                quantity: 2,
                 subtotal: 50,
                 total: 50,
                 fulfilled_total: 50,
@@ -378,13 +523,194 @@ medusaIntegrationTestRunner({
               expect.objectContaining({
                 id: expect.any(String),
                 name: "Return shipping",
-                amount: 1000,
-                subtotal: 1000,
-                total: 1000,
+                amount: 1002,
+                subtotal: 1002,
+                total: 1002,
               }),
             ]),
           })
         )
+      })
+
+      it("should cancel a return request", async () => {
+        let result = await api.post(
+          "/admin/returns",
+          {
+            order_id: order.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        const returnId = result.data.return.id
+
+        const item = order.items[0]
+        await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 2,
+                reason_id: returnReason.id,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
+        await api.delete(`/admin/returns/${returnId}/request`, adminHeaders)
+
+        result = await api
+          .post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(result.response.status).toEqual(404)
+        expect(result.response.data.message).toEqual(
+          `Return id not found: ${returnId}`
+        )
+      })
+
+      describe("should request a return and receive if", () => {
+        let returnId
+        beforeEach(async () => {
+          let result = await api.post(
+            "/admin/returns",
+            {
+              order_id: order.id,
+              description: "Test",
+            },
+            adminHeaders
+          )
+
+          returnId = result.data.return.id
+          const item = order.items[0]
+          await api.post(
+            `/admin/returns/${returnId}/request-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                  reason_id: returnReason.id,
+                },
+              ],
+            },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/returns/${returnId}/shipping-method`,
+            {
+              shipping_option_id: returnShippingOption.id,
+            },
+            adminHeaders
+          )
+          await api.post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
+        })
+
+        it("should receive the return", async () => {
+          let result = await api.post(
+            `/admin/returns/${returnId}/receive`,
+            {
+              internal_note: "Test internal note",
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order.order_change).toEqual(
+            expect.objectContaining({
+              return_id: returnId,
+              change_type: "return",
+              status: "pending",
+              internal_note: "Test internal note",
+            })
+          )
+
+          const item = order.items[0]
+          result = await api.post(
+            `/admin/returns/${returnId}/receive-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order_preview).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  detail: expect.objectContaining({
+                    quantity: 2,
+                    return_requested_quantity: 1,
+                    return_received_quantity: 1,
+                    return_dismissed_quantity: 0,
+                    written_off_quantity: 0,
+                  }),
+                }),
+              ]),
+            })
+          )
+
+          result = await api.post(
+            `/admin/returns/${returnId}/dismiss-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(result.data.order_preview).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  detail: expect.objectContaining({
+                    quantity: 2,
+                    return_requested_quantity: 0,
+                    return_received_quantity: 1,
+                    return_dismissed_quantity: 1,
+                    written_off_quantity: 1,
+                  }),
+                }),
+              ]),
+            })
+          )
+
+          result = await api.post(
+            `/admin/returns/${returnId}/receive/confirm`,
+            {},
+            adminHeaders
+          )
+
+          expect(result.data.return).toEqual(
+            expect.objectContaining({
+              items: [
+                expect.objectContaining({
+                  received_quantity: 2,
+                }),
+              ],
+            })
+          )
+        })
       })
     })
   },

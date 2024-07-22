@@ -1,13 +1,17 @@
-import { IOrderModuleService, OrderChangeActionDTO } from "@medusajs/types"
+import {
+  IOrderModuleService,
+  OrderChangeActionDTO,
+  UpdateReturnDTO,
+} from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CreateReturnItemsInput = {
   changes: OrderChangeActionDTO[]
   returnId: string
 }
 
-export const createReturnItems = createStep(
+export const createReturnItemsStep = createStep(
   "create-return-items",
   async (input: CreateReturnItemsInput, { container }) => {
     const orderModuleService = container.resolve<IOrderModuleService>(
@@ -18,6 +22,7 @@ export const createReturnItems = createStep(
       return {
         return_id: item.reference_id,
         item_id: item.details?.reference_id,
+        reason_id: item.details?.reason_id,
         quantity: item.details?.quantity as number,
         note: item.internal_note,
         metadata: (item.details?.metadata as Record<string, unknown>) ?? {},
@@ -33,7 +38,10 @@ export const createReturnItems = createStep(
     )
 
     const createdReturnItems = await orderModuleService.updateReturns([
-      { selector: { id: input.returnId }, data: { items: returnItems } },
+      {
+        selector: { id: input.returnId },
+        data: { items: returnItems as UpdateReturnDTO["items"] },
+      },
     ])
 
     return new StepResponse(createdReturnItems, prevReturn)

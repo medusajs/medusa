@@ -415,68 +415,36 @@ npx medusa migrations generate <module_names...>
   </Table.Body>
 </Table>
 
-### seed
+### links
 
-Runs latest migrations and populates the database with data from a provided JSON file.
+Manage module links in the database.
 
 ```bash
-npx medusa seed --seed-file=<file_path>
+npx medusa links <action>
 ```
 
-#### Options
+#### Actions
+
+The `links` command receive an action name as an argument.
 
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Name</Table.HeaderCell>
       <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
       <Table.Cell>
       
-      `-f=<file_path>`, `--seed-file=<file_path>`
+      `sync`
       
       </Table.Cell>
       <Table.Cell>
 
-      Path to the file holding the data to seed.
+      Add, update, or delete links based on the definitions in the `src/links` directory of your project.
       
-      </Table.Cell>
-      <Table.Cell>
-
-      Yes
-
-      </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `-m=<value>`, `--migrate=<value>`
-      
-      </Table.Cell>
-      <Table.Cell>
-
-      Whether to run migrations before seeding the database.
-      
-      </Table.Cell>
-      <Table.Cell>
-
-      No
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `true`
-
       </Table.Cell>
     </Table.Row>
   </Table.Body>

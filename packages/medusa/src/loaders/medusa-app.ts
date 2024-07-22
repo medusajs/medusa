@@ -1,5 +1,6 @@
 import {
   MedusaApp,
+  MedusaAppGetLinksExecutionPlanner,
   MedusaAppMigrateDown,
   MedusaAppMigrateGenerate,
   MedusaAppMigrateUp,
@@ -10,6 +11,7 @@ import {
 import {
   CommonTypes,
   ConfigModule,
+  ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
   MedusaContainer,
@@ -17,7 +19,9 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  isBoolean,
   isObject,
+  isPresent,
   upperCaseFirst,
 } from "@medusajs/utils"
 
@@ -43,11 +47,15 @@ export function mergeDefaultModules(
   )) {
     const def = {} as ModuleDefinition
     def.key ??= key
-    def.registrationName ??= key
-    def.label ??= upperCaseFirst(key)
+    def.registrationName ??= ModulesDefinition[key]?.registrationName ?? key
+    def.label ??= ModulesDefinition[key]?.label ?? upperCaseFirst(key)
+    def.isQueryable = ModulesDefinition[key]?.isQueryable ?? true
 
-    const orignalDef = value?.definition
-    if (isObject(orignalDef)) {
+    const orignalDef = value?.definition ?? ModulesDefinition[key]
+    if (
+      !isBoolean(value) &&
+      (isObject(orignalDef) || !isPresent(value.definition))
+    ) {
       value.definition = {
         ...def,
         ...orignalDef,
@@ -128,6 +136,57 @@ export async function runMedusaAppMigrations({
   }
 }
 
+/**
+ * Return an instance of the link module migration planner.
+ *
+ * @param configModule
+ * @param container
+ * @param linkModules
+ */
+export async function getLinksExecutionPlanner({
+  configModule,
+  container,
+  linkModules,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  linkModules?: MedusaAppOptions["linkModules"]
+  container: MedusaContainer
+}): Promise<ILinkMigrationsPlanner> {
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
+  }
+
+  const sharedResourcesConfig = {
+    database: {
+      clientUrl:
+        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
+          ?.config?.connection?.connectionString ??
+        configModule.projectConfig.databaseUrl,
+      driverOptions: configModule.projectConfig.databaseDriverOptions,
+      debug: !!(configModule.projectConfig.databaseLogging ?? false),
+    },
+  }
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  const migrationOptions = {
+    modulesConfig: configModules,
+    sharedContainer: container,
+    linkModules,
+    sharedResourcesConfig,
+    injectedDependencies,
+  }
+
+  return await MedusaAppGetLinksExecutionPlanner(migrationOptions)
+}
+
 export const loadMedusaApp = async (
   {
     container,
@@ -194,7 +253,7 @@ export const loadMedusaApp = async (
     )
   }
 
-  // Register all unresolved modules as undefined to be present in the container with undefined value by defaul
+  // Register all unresolved modules as undefined to be present in the container with undefined value by default
   // but still resolvable
   for (const moduleDefinition of Object.values(ModulesDefinition)) {
     if (!container.hasRegistration(moduleDefinition.registrationName)) {

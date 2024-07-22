@@ -1,4 +1,7 @@
-import { confirmReturnRequestWorkflow } from "@medusajs/core-flows"
+import {
+  cancelReturnRequestWorkflow,
+  confirmReturnRequestWorkflow,
+} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -37,5 +40,24 @@ export const POST = async (
   res.json({
     order_preview: result,
     return: orderReturn,
+  })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const { id } = req.params
+
+  await cancelReturnRequestWorkflow(req.scope).run({
+    input: {
+      return_id: id,
+    },
+  })
+
+  res.status(200).json({
+    id,
+    object: "return",
+    deleted: true,
   })
 }

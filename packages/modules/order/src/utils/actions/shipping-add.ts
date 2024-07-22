@@ -25,19 +25,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
     setActionReference(existing, action, options)
     currentOrder.shipping_methods = shipping
   },
-  revert({ action, currentOrder }) {
-    const shipping = Array.isArray(currentOrder.shipping_methods)
-      ? currentOrder.shipping_methods
-      : [currentOrder.shipping_methods]
-
-    const existingIndex = shipping.findIndex(
-      (item) => item.id === action.reference_id
-    )
-
-    if (existingIndex > -1) {
-      shipping.splice(existingIndex, 1)
-    }
-  },
   validate({ action }) {
     if (!action.reference_id) {
       throw new MedusaError(

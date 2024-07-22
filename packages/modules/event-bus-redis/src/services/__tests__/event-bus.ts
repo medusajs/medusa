@@ -101,7 +101,7 @@ describe("RedisEventBusService", () => {
       it("should add job to queue with default options", async () => {
         await eventBus.emit([
           {
-            eventName: "eventName",
+            name: "eventName",
             data: {
               hi: "1234",
             },
@@ -112,7 +112,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { eventName: "eventName", data: { hi: "1234" } },
+            data: { hi: "1234" },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -122,16 +122,17 @@ describe("RedisEventBusService", () => {
       })
 
       it("should add job to queue with custom options passed directly upon emitting", async () => {
-        await eventBus.emit(
-          [{ eventName: "eventName", data: { hi: "1234" } }],
-          { attempts: 3, backoff: 5000, delay: 1000 }
-        )
+        await eventBus.emit([{ name: "eventName", data: { hi: "1234" } }], {
+          attempts: 3,
+          backoff: 5000,
+          delay: 1000,
+        })
 
         expect(queue.addBulk).toHaveBeenCalledTimes(1)
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { eventName: "eventName", data: { hi: "1234" } },
+            data: { hi: "1234" },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -164,7 +165,7 @@ describe("RedisEventBusService", () => {
         await eventBus.emit(
           [
             {
-              eventName: "eventName",
+              name: "eventName",
               data: { hi: "1234" },
             },
           ],
@@ -175,7 +176,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { eventName: "eventName", data: { hi: "1234" } },
+            data: { hi: "1234" },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -208,7 +209,7 @@ describe("RedisEventBusService", () => {
 
         await eventBus.emit(
           {
-            eventName: "eventName",
+            name: "eventName",
             data: { hi: "1234" },
           },
           { delay: 1000 }
@@ -218,7 +219,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { eventName: "eventName", data: { hi: "1234" } },
+            data: { hi: "1234" },
             opts: {
               attempts: 1,
               removeOnComplete: 5,
@@ -231,7 +232,7 @@ describe("RedisEventBusService", () => {
       it("should successfully group events", async () => {
         const options = { delay: 1000 }
         const event = {
-          eventName: "eventName",
+          name: "eventName",
           data: { hi: "1234" },
           metadata: { eventGroupId: "test-group-1" },
         }
@@ -252,21 +253,21 @@ describe("RedisEventBusService", () => {
         const options = { delay: 1000 }
         const events = [
           {
-            eventName: "grouped-event-1",
+            name: "grouped-event-1",
             data: { hi: "1234" },
             metadata: { eventGroupId: "test-group-1" },
           },
           {
-            eventName: "ungrouped-event-2",
+            name: "ungrouped-event-2",
             data: { hi: "1234" },
           },
           {
-            eventName: "grouped-event-2",
+            name: "grouped-event-2",
             data: { hi: "1234" },
             metadata: { eventGroupId: "test-group-2" },
           },
           {
-            eventName: "grouped-event-3",
+            name: "grouped-event-3",
             data: { hi: "1235" },
             metadata: { eventGroupId: "test-group-2" },
           },

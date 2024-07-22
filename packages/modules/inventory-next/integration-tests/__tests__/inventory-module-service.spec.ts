@@ -1,6 +1,6 @@
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import { BigNumber, Module, Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Module, Modules } from "@medusajs/utils"
 import { InventoryModuleService } from "../../src/services"
 
 jest.setTimeout(100000)
@@ -882,7 +882,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             ["location-1", "location-2"]
           )
 
-          expect(level).toEqual(6)
+          expect(level).toEqual(new BigNumber(6))
         })
       })
 
@@ -930,7 +930,7 @@ moduleIntegrationTestRunner<IInventoryService>({
             ["location-1", "location-2"]
           )
 
-          expect(stockedQuantity).toEqual(8)
+          expect(stockedQuantity.valueOf()).toEqual(8)
         })
       })
 
@@ -991,12 +991,12 @@ moduleIntegrationTestRunner<IInventoryService>({
         })
 
         it("retrieves reserved quantity", async () => {
-          const reservedQuantity = await service.retrieveReservedQuantity(
+          const reservedQuantity = (await service.retrieveReservedQuantity(
             inventoryItem.id,
             ["location-1", "location-2"]
-          )
+          )) as any
 
-          expect(reservedQuantity).toEqual(2)
+          expect(reservedQuantity + 0).toEqual(2)
         })
       })
 

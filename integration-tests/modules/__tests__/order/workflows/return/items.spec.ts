@@ -120,7 +120,7 @@ medusaIntegrationTestRunner({
           })
 
           expect(error.error.message).toEqual(
-            "order id not found: does-not-exist"
+            "Return id not found: does-not-exist"
           )
         })
 
@@ -145,7 +145,7 @@ medusaIntegrationTestRunner({
             throwOnError: false,
           })
 
-          expect(error.error.message).toEqual(`order id not found: ${order.id}`)
+          expect(error.error.message).toEqual(`Order id not found: ${order.id}`)
         })
 
         it("should throw an error if order change does not exist", async () => {
@@ -206,7 +206,7 @@ medusaIntegrationTestRunner({
           })
 
           expect(error.error.message).toEqual(
-            `Order Change cannot be modified: ${orderChange.id}.`
+            `An active Order Change is required to proceed`
           )
         })
 

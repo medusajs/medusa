@@ -60,7 +60,7 @@ jobs:
         working-directory: ../cli-test
 
       - name: Run migrations
-        run: medusa migrations run
+        run: medusa migrations run && medusa links sync
         working-directory: ../cli-test
 
       - name: Create admin user

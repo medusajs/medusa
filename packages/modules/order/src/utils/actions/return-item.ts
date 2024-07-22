@@ -5,10 +5,7 @@ import {
   isDefined,
 } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import {
-  setActionReference,
-  unsetActionReference,
-} from "../set-action-reference"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
   isDeduction: true,
@@ -27,18 +24,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
     setActionReference(existing, action, options)
 
     return MathBN.mult(existing.unit_price, action.details.quantity)
-  },
-  revert({ action, currentOrder }) {
-    const existing = currentOrder.items.find(
-      (item) => item.id === action.details.reference_id
-    )!
-
-    existing.detail.return_requested_quantity = MathBN.sub(
-      existing.detail.return_requested_quantity,
-      action.details.quantity
-    )
-
-    unsetActionReference(existing, action)
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id

@@ -40,7 +40,7 @@ const main = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const action = args[0] as "run" | "revert" | "generate" | "show"
+  const action = args[0] as Action
   const modules = args.splice(1)
 
   validateInputArgs({ action, modules })

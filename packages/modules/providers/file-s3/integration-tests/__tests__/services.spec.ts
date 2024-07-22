@@ -35,45 +35,50 @@ describe.skip("S3 File Plugin", () => {
       }
     )
   })
+  ;(["public", "private"] as const).forEach((access) => {
+    it("uploads, reads, and then deletes a file successfully", async () => {
+      const fileContent = await fs.readFile(fixtureImagePath)
+      const fixtureAsBinary = fileContent.toString("binary")
 
-  it("uploads, reads, and then deletes a file successfully", async () => {
-    const fileContent = await fs.readFile(fixtureImagePath)
-    const fixtureAsBinary = fileContent.toString("binary")
+      const resp = await s3Service.upload({
+        filename: "catphoto.jpg",
+        mimeType: "image/jpeg",
+        content: fixtureAsBinary,
+        access,
+      })
 
-    const resp = await s3Service.upload({
-      filename: "catphoto.jpg",
-      mimeType: "image/jpeg",
-      content: fixtureAsBinary,
+      expect(resp).toEqual({
+        key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
+        url: expect.stringMatching(/https:\/\/.*\.jpg/),
+      })
+
+      const urlResp = await axios.get(resp.url).catch((e) => e.response)
+      expect(urlResp.status).toEqual(access === "public" ? 200 : 403)
+
+      const signedUrl = await s3Service.getPresignedDownloadUrl({
+        fileKey: resp.key,
+      })
+
+      const signedUrlFile = Buffer.from(
+        await axios
+          .get(signedUrl, { responseType: "arraybuffer" })
+          .then((r) => r.data)
+      )
+
+      expect(signedUrlFile.toString("binary")).toEqual(fixtureAsBinary)
+
+      await s3Service.delete({ fileKey: resp.key })
+
+      // TODO: Currently the presignedURL will be returned even if the file doesn't exist. Should we check for existence first?
+      const deletedFileUrl = await s3Service.getPresignedDownloadUrl({
+        fileKey: resp.key,
+      })
+
+      const { response } = await axios
+        .get(deletedFileUrl, { responseType: "arraybuffer" })
+        .catch((e) => e)
+
+      expect(response.status).toEqual(404)
     })
-
-    expect(resp).toEqual({
-      key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
-      url: expect.stringMatching(/https:\/\/.*\.jpg/),
-    })
-
-    const signedUrl = await s3Service.getPresignedDownloadUrl({
-      fileKey: resp.key,
-    })
-
-    const signedUrlFile = Buffer.from(
-      await axios
-        .get(signedUrl, { responseType: "arraybuffer" })
-        .then((r) => r.data)
-    )
-
-    expect(signedUrlFile.toString("binary")).toEqual(fixtureAsBinary)
-
-    await s3Service.delete({ fileKey: resp.key })
-
-    // TODO: Currently the presignedURL will be returned even if the file doesn't exist. Should we check for existence first?
-    const deletedFileUrl = await s3Service.getPresignedDownloadUrl({
-      fileKey: resp.key,
-    })
-
-    const { response } = await axios
-      .get(deletedFileUrl, { responseType: "arraybuffer" })
-      .catch((e) => e)
-
-    expect(response.status).toEqual(404)
   })
 })

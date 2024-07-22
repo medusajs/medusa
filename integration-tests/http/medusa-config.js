@@ -31,6 +31,21 @@ module.exports = defineConfig({
         providers: [customFulfillmentProvider],
       },
     },
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            id: "local",
+            options: {
+              name: "Local Notification Provider",
+              channels: ["feed"],
+            },
+          },
+        ],
+      },
+    },
     [Modules.FILE]: {
       resolve: "@medusajs/file",
       options: {

@@ -1,16 +1,17 @@
-import * as React from "react"
-import { cleanup, render, screen } from "@testing-library/react"
+  import * as React from "react"
+  import { cleanup, render, screen } from "@testing-library/react"
 
-import CheckCircle from "../check-circle"
+  import CheckCircle from "../check-circle"
 
-describe("CheckCircle", () => {
-  it("should render the icon without errors", async () => {
-    render(<CheckCircle data-testid="icon" />)
+  describe("CheckCircle", () => {
+    it("should render the icon without errors", async () => {
+      render(<CheckCircle data-testid="icon" />)
 
-    const svgElement = screen.getByTestId("icon")
 
-    expect(svgElement).toBeInTheDocument()
+      const svgElement = screen.getByTestId("icon")
 
-    cleanup()
+      expect(svgElement).toBeInTheDocument()
+
+      cleanup()
+    })
   })
-})

@@ -5,10 +5,7 @@ import {
   isDefined,
 } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import {
-  setActionReference,
-  unsetActionReference,
-} from "../set-action-reference"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
   operation({ action, currentOrder, options }) {
@@ -23,18 +20,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
     )
 
     setActionReference(existing, action, options)
-  },
-  revert({ action, currentOrder }) {
-    const existing = currentOrder.items.find(
-      (item) => item.id === action.details.reference_id
-    )!
-
-    existing.detail.written_off_quantity = MathBN.sub(
-      existing.detail.written_off_quantity,
-      action.details.quantity
-    )
-
-    unsetActionReference(existing, action)
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id

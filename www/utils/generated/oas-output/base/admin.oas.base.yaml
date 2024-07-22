@@ -48,13 +48,17 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+  - name: Notifications
   - name: Orders
   - name: Payments
   - name: Price Lists
+  - name: Price Preferences
   - name: Product Categories
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductCategory"
   - name: Product Tags
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductTag"
   - name: Product Types
   - name: Products
     x-associatedSchema:

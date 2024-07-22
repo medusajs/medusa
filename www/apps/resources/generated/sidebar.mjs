@@ -3185,6 +3185,13 @@ export const generatedSidebar = [
                         "path": "/references/order/updateReturns",
                         "title": "updateReturns",
                         "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateShippingMethods",
+                        "title": "updateShippingMethods",
+                        "children": []
                       }
                     ]
                   }
@@ -3768,6 +3775,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/pricing/price-calculation",
                 "title": "Prices Calculation",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/pricing/tax-inclusive-pricing",
+                "title": "Tax-Inclusive Pricing",
                 "children": []
               },
               {
@@ -7637,7 +7651,22 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/show-price",
+                "title": "Example: Show Variant Price",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/sale-price",
+                "title": "Example: Show Sale Price",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

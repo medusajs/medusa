@@ -1,6 +1,16 @@
 import { INotificationModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import {
+  CommonEvents,
+  Module,
+  Modules,
+  NotificationEvents,
+  composeMessage,
+} from "@medusajs/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 import { resolve } from "path"
 import { NotificationModuleService } from "@services"
 
@@ -27,6 +37,12 @@ moduleIntegrationTestRunner({
   moduleOptions,
   testSuite: ({ service }: SuiteOptions<INotificationModuleService>) =>
     describe("Notification Module Service", () => {
+      let eventBusEmitSpy
+
+      beforeEach(() => {
+        eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+      })
+
       it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.NOTIFICATION, {
           service: NotificationModuleService,
@@ -65,6 +81,27 @@ moduleIntegrationTestRunner({
             external_id: "external_id",
           })
         )
+      })
+
+      it("emits an event when a notification is created", async () => {
+        const notification = {
+          to: "admin@medusa.com",
+          template: "some-template",
+          channel: "email",
+          data: {},
+        }
+
+        const result = await service.createNotifications(notification)
+
+        expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
+        expect(eventBusEmitSpy).toHaveBeenCalledWith([
+          composeMessage(NotificationEvents.NOTIFICATION_CREATED, {
+            data: { id: result.id },
+            object: "notification",
+            source: Modules.NOTIFICATION,
+            action: CommonEvents.CREATED,
+          }),
+        ])
       })
 
       it("ensures the same notification is not sent twice", async () => {

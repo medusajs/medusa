@@ -53,6 +53,7 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+  - name: Notifications
   - name: Orders
   - name: Payments
   - name: Price Lists
@@ -180,6 +181,10 @@ paths:
     $ref: paths/admin_invites_{id}.yaml
   /admin/invites/{id}/resend:
     $ref: paths/admin_invites_{id}_resend.yaml
+  /admin/notifications:
+    $ref: paths/admin_notifications.yaml
+  /admin/notifications/{id}:
+    $ref: paths/admin_notifications_{id}.yaml
   /admin/orders:
     $ref: paths/admin_orders.yaml
   /admin/orders/{id}:
@@ -196,6 +201,8 @@ paths:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_cancel.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
+  /admin/orders/{id}/preview:
+    $ref: paths/admin_orders_{id}_preview.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:
@@ -236,6 +243,8 @@ paths:
     $ref: paths/admin_products.yaml
   /admin/products/batch:
     $ref: paths/admin_products_batch.yaml
+  /admin/products/export:
+    $ref: paths/admin_products_export.yaml
   /admin/products/{id}:
     $ref: paths/admin_products_{id}.yaml
   /admin/products/{id}/options:
@@ -290,8 +299,28 @@ paths:
     $ref: paths/admin_returns_{id}.yaml
   /admin/returns/{id}/cancel:
     $ref: paths/admin_returns_{id}_cancel.yaml
+  /admin/returns/{id}/dismiss-items:
+    $ref: paths/admin_returns_{id}_dismiss-items.yaml
+  /admin/returns/{id}/dismiss-items/{action_id}:
+    $ref: paths/admin_returns_{id}_dismiss-items_{action_id}.yaml
   /admin/returns/{id}/receive:
     $ref: paths/admin_returns_{id}_receive.yaml
+  /admin/returns/{id}/receive-items:
+    $ref: paths/admin_returns_{id}_receive-items.yaml
+  /admin/returns/{id}/receive-items/{action_id}:
+    $ref: paths/admin_returns_{id}_receive-items_{action_id}.yaml
+  /admin/returns/{id}/receive/confirm:
+    $ref: paths/admin_returns_{id}_receive_confirm.yaml
+  /admin/returns/{id}/request:
+    $ref: paths/admin_returns_{id}_request.yaml
+  /admin/returns/{id}/request-items:
+    $ref: paths/admin_returns_{id}_request-items.yaml
+  /admin/returns/{id}/request-items/{action_id}:
+    $ref: paths/admin_returns_{id}_request-items_{action_id}.yaml
+  /admin/returns/{id}/shipping-method:
+    $ref: paths/admin_returns_{id}_shipping-method.yaml
+  /admin/returns/{id}/shipping-method/{action_id}:
+    $ref: paths/admin_returns_{id}_shipping-method_{action_id}.yaml
   /admin/sales-channels:
     $ref: paths/admin_sales-channels.yaml
   /admin/sales-channels/{id}:
