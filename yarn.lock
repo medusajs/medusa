@@ -4604,7 +4604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@workspace:^, @medusajs/framework@workspace:packages/framework/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
@@ -4838,7 +4838,7 @@ __metadata:
     "@inquirer/checkbox": ^2.3.11
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
-    "@medusajs/framework": "workspace:*"
+    "@medusajs/framework": "workspace:^"
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
@@ -22719,6 +22719,8 @@ __metadata:
     get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
+    "@medusajs/framework":
+      optional: true
     "@medusajs/medusa":
       optional: true
     axios:

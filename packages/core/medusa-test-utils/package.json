@@ -21,7 +21,7 @@
   "files": [
     "dist"
   ],
-  "author": "Sebastian Rindom",
+  "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
@@ -40,6 +40,9 @@
     "pg-god": "^1.0.12"
   },
   "peerDependenciesMeta": {
+    "@medusajs/framework": {
+      "optional": true
+    },
     "@medusajs/medusa": {
       "optional": true
     },
