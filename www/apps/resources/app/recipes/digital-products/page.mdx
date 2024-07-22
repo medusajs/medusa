@@ -9,19 +9,11 @@ export const metadata = {
 
 This recipe provides the general steps to implement digital products in your Medusa application.
 
-<Note type="soon" title="In Development">
-
-This recipe is a work in progress, as some features are not ready yet in Medusa V2.
-
-</Note>
-
 ## Overview
 
 Digital products are stored privately using a storage service like S3. When the customer buys this type of product, an email is sent to them where they can download the product.
 
-Medusa doesn't have a built-in concept of a digital product since our focus is standardizing features and implementations, then offering the building blocks that enable you to build your use case.
-
-You can create a Digital Product Module that introduces the concept of a digital product and links it to existing product concepts in the Product Module.
+To implement digital products in Medusa, you create a Digital Product Module that introduces the concept of a digital product and link it to existing product concepts in the Product Module.
 
 ---
 
@@ -52,35 +44,6 @@ During development, you can use the Local File Module Provider, which is install
 
 ---
 
-## Install a Notification Module Provider
-
-A notification module provider handles sending notifications to users and customers.
-
-For digital products, a notification module provider allows you to send the customer an email or another form of notification with a link to download the file they purchased.
-
-You can use one of Medusa’s notification module providers or create your own.
-
-{/* TODO add links */}
-
-<CardList items={[
-  {
-    href: "/architectural-modules/notification",
-    title: "Notification Module Providers",
-    text: "Check out available official notification module providers.",
-    startIcon: <PuzzleSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "/references/notification-provider-module",
-    title: "Create a Notification Module Provider",
-    text: "Learn how to create a custom notification service.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false,
-  },
-]} />
-
----
-
 ## Create Digital Product Module
 
 Your custom features and functionalities are implemented inside modules. The module is integrated into the Medusa application without any implications on existing functionalities.
@@ -95,149 +58,34 @@ The module will hold your custom data models and the service implementing digita
   showLinkIcon={false}
 />
 
-<Details summaryContent="Example: Create the Digital Product Module">
+### Create Custom Data Model
 
-  In this section, you’ll create the skeleton of the Digital Product Module. In later sections, you’ll add more resources to it.
-  
-  Start by creating the directory `src/modules/digital-product`.
-  
-  Then, create the file `src/modules/digital-product/service.ts` with the following content:
-  
-  ```ts title="src/modules/digital-product/service.ts"
-  class DigitalProductModuleService {
-    // TODO
-  }
-  
-  export default DigitalProductModuleService
-  ```
-  
-  A module must export a service. So, you implement a dummy service for now.
-  
-  Next, create the file `src/modules/digital-product/index.ts` with the following content:
-  
-  ```ts title="src/modules/digital-product/index.ts"
-  import DigitalProductModuleService from "./service"
-  import { Module } from "@medusajs/utils"
+A data model represents a table in the database. You can define in your module data models to store data related to your custom features, such as a digital product.
 
-  export default Module("digital-product", {
-    service: DigitalProductModuleService,
-  })
-  ```
-  
-  This file holds the definition of the module.
-  
-  Finally, add the module to `medusa-config.js` into the `modules` object:
-  
-  ```js title="medusa-config.js"
-  module.exports = defineConfig({
-    // ...
-    modules: {
-      digitalProductModuleService: {
-        resolve: "./modules/digital-product",
-      },
-    },
-  })
-  ```
+Then, you can link your custom data model to data models from other modules. For example, you can link the digital product model to the Product Module's `ProductVariant` data model.
 
-</Details>
+<CardList itemsPerRow={2} items={[
+  {
+    href: "!docs!/basics/data-models",
+    title: "How to Create a Data Model",
+    text: "Learn how to create a data model.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/advanced-development/modules/module-links",
+    title: "Module Links",
+    text: "Learn how to link data models of different modules.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
 
----
+### Implement Data Management Features
 
-## Create Custom Data Model
+Your module’s main service holds data-management and other related features. Then, in other resources, such as an API route, you can resolve the service from the Medusa container and use its functionalities.
 
-A data model represents a table in the database. You can define in your module data models to store data related to your custom features.
-
-To represent a digital product, it's recommended to create a data model that has a `variant_id` property. In a later section, you’ll learn how to add a relationship to the Product Module’s `ProductVariant` data model.
-
-<Note type="soon">
-
-Module Relationships is coming soon.
-
-</Note>
-
-<Card
-  href="!docs!/basics/data-models"
-  title="How to Create a Data Model"
-  text="Learn how to create a data model."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
-{/* <Details summaryContent="Example: Create ProductMedia Data Model">
-
-  In this section, you’ll create a `ProductMedia` data model that represents your digital products.
-    
-  Before creating the data model, create the file `src/types/digital-product/product-media.ts` that holds common types:
-  
-  ```ts title="src/types/digital-product/product-media.ts"
-  export enum MediaType {
-    MAIN = "main",
-    PREVIEW = "preview"
-  }
-  ```
-  
-  Then, create the file `src/modules/digital-product/models/product-media.ts` with the following content:
-  
-  ```ts title="src/modules/digital-product/models/product-media.ts"
-  import { model } from "@medusajs/utils"
-  import { MediaType } from "../../../types/digital-product/product-media"
-
-  const ProductMedia = model.define("product_media", {
-    id: model.id().primaryKey(),
-    name: model.text(),
-    type: model.enum(Object.values(MediaType)),
-    fileKey: model.text(),
-    mimeType: model.text(),
-    variant_id: model.text().index("IDX_product_media_variant_id"),
-  })
-
-  export default ProductMedia
-  ```
-  
-  The `ProductMedia` data model has properties relevant to digital products. Most importantly, it has a `variant_id` property that will later be used for its relationship with the Product Module.
-  
-  To reflect the data model in the database, you must create a migration.
-  
-  <Note>
-  
-  Learn how to generate a migration in [this guide](!docs!/basics/data-models#create-a-migration).
-  
-  </Note>
-  
-  Create the file `src/modules/digital-product/migrations/Migration20240509093233.ts` with the following content:
-  
-  ```ts title="src/modules/digital-product/migrations/Migration20240509093233.ts"
-  import { Migration } from "@mikro-orm/migrations"
-  
-  export class Migration20240509093233 extends Migration {
-  
-    async up(): Promise<void> {
-      this.addSql("create table if not exists \"product_media\" (\"id\" text not null, \"name\" text not null, \"type\" text check (\"type\" in ('main', 'preview')) not null, \"file_key\" text not null, \"mime_type\" text not null, \"variant_id\" text not null, constraint \"product_media_pkey\" primary key (\"id\"));")
-      this.addSql("CREATE INDEX IF NOT EXISTS \"IDX_product_media_variant_id\" ON \"product_media\" (variant_id);")
-    }
-  
-    async down(): Promise<void> {
-      this.addSql("drop table if exists \"product_media\" cascade;")
-    }
-  
-  }
-  ```
-  
-  To run the migrations, run the `migrations run` command:
-  
-  ```bash npm2yarn
-  npx medusa migrations run
-  ```
-
-</Details> */}
-
----
-
-## Implement Data Management Features
-
-Your module’s main service holds the management and other related features. Then, in other resources, such as an API route, you can resolve the service from the Medusa container and use its functionalities.
-
-Medusa facilitates implementing data-management features by providing a service factory. This service factory implements basic data-management features, so you only need to implement features specific to your module.
+Medusa facilitates implementing data-management features using the service factory. Your module's main service can extend this service factory, and it generates data-management methods for your data models.
 
 <Card
   href="!docs!/advanced-development/modules/service-factory"
@@ -247,122 +95,6 @@ Medusa facilitates implementing data-management features by providing a service 
   showLinkIcon={false}
 />
 
-{/* <Details summaryContent="Example: Add Implementation of DigitalProductModuleService">
-    
-  In this section, you’ll modify the `DigitalProductModuleService` you created earlier to provide data-management functionalities of the `ProductMedia` data model.
-  
-  Change the content of `src/modules/digital-product/service.ts` to the following:
-  
-  ```ts title="src/modules/digital-product/service.ts"
-  import { MedusaService } from "@medusajs/utils"
-  import ProductMedia from "./models/product-media"
-
-  class DigitalProductModuleService extends MedusaService({
-    ProductMedia,
-  }){
-    // TODO add custom methods
-  }
-
-  export default DigitalProductModuleService
-  ```
-  
-  The `DigitalProductModuleService` now extends the service factory which generates data-management methods for the `ProductMedia` data model.
-  
-</Details> */}
-
-{/* --- */}
-
-{/* ## Add Relationship to Product Variants
-
-As mentioned in a previous section, the product media has a `variant_id` that points to the saleable product variant.
-
-The Product Module implements product variants. However, modules are isolated. So, to reference data models and records from other modules, you can use module relationships.
-
-The Medusa application resolves module relationships without creating an actual dependency between the modules. This allows you to associate more properties with existing modules while maintaining module isolation.
-
-<Card
-  href="#"
-  title="Module Relationships"
-  text="Learn about what module relationships are and how to use them."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
-
-<Details summaryContent="Example: Create Relationship to Product Module">
-    
-  In this section, you’ll create a relationship from the Digital Product Module to the Product Module.
-  
-  To do that, add the following `__joinerConfig` method to the `DigitalProductModuleService`:
-  
-  ```ts title="src/modules/digital-product/service.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
-  // other imports...
-  import { ModuleJoinerConfig } from "@medusajs/types"
-  import { Modules } from "@medusajs/modules-sdk"
-  
-  // ...
-  
-  class DigitalProductModuleService extends ModulesSdkUtils
-    .abstractModuleServiceFactory<
-      // ...
-    >(
-      // ...
-    ) {
-      // ...
-      
-      __joinerConfig(): ModuleJoinerConfig {
-        return {
-          serviceName: "digitalProductModuleService",
-          primaryKeys: ["id"],
-          alias: [
-            {
-              name: "product_media",
-              args: {
-                entity: ProductMedia.name,
-              },
-            },
-          ],
-          relationships: [
-            {
-              serviceName: Modules.PRODUCT,
-              alias: "variant",
-              primaryKey: "id",
-              foreignKey: "variant_id",
-              args: {
-                methodSuffix: "Variants",
-              },
-            },
-          ],
-        }
-      }
-    }
-  ```
-  
-  This informs the Medusa application that, whenever there’s a `variant_id` property in your module’s data models, look for the record it’s referencing in the `variant` alias (which is the `ProductVariant` data model) of the Product Module.
-  
-  <Note>
-
-  Learn more about the data returned in the `__joinerConfig` method here.
-  
-  </Note>
-  
-  Next, change the module’s entry in the `modules` object in `medusa-config.js` to the following:
-  
-  ```ts title="medusa-config.js"
-  module.exports = defineConfig({
-    // ...
-    modules: {
-      digitalProductModuleService: {
-        resolve: "./modules/digital-product",
-        definition: {
-          isQueryable: true,
-        },
-      },
-    },
-  })
-  ```
-
-</Details> */}
-
 ---
 
 ## Add Custom API Routes
@@ -371,368 +103,54 @@ API routes expose your features to external applications, such as the admin dash
 
 You can create custom API routes that allow merchants to list and create digital products. In these API routes, you resolve the Digital Product Module’s main service to use its data-management features.
 
-To utilize the relationship to the Product Module, you use the remote query to fetch data across modules.
+<Card
+  href="!docs!/basics/api-routes"
+  title="API Routes"
+  text="Learn how to create an API route."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
 
-<Note type="soon">
+---
 
-Fetching data across modules using the remote query is coming soon.
+## Implement Workflows
 
-</Note>
+Your use case most likely has flows, such as creating digital products, that require multiple steps.
+
+Create workflows to implement these flows, then utilize these workflows in other resources, such as an API route.
+
+<Card
+  href="!docs!/basics/workflows"
+  title="Workflows"
+  text="Learn how to create a workflow."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+---
+
+## Manage Linked Records
+
+If you've defined links between data models of two modules, you can manage them through two functions: remote link and remote query.
+
+Use the remote link to create a link between two records, and use the remote query to fetch data across linked data models.
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "!docs!/basics/api-routes",
-    title: "API Routes",
-    text: "Learn how to create an API route.",
+    href: "!docs!/advanced-development/modules/remote-link",
+    title: "How to Use the Remote Link",
+    text: "Learn how to link data models of different modules.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
     href: "!docs!/advanced-development/modules/remote-query",
-    title: "Remote Query",
-    text: "Learn about what the remote query is and how to use it.",
+    title: "How to Use the Remote Query",
+    text: "Learn how to fetch data across modules with remote query.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
 ]} />
-
-{/* <Details summaryContent="Example: Custom API Routes for Digital Products">
-
-  In this section, you’ll create a List and Create API routes to retrieve and create digital products.
-  
-  ### Create API Route
-  
-  In the Create API route, you want to create not only the product media but also the associated product variant if no ID is specified.
-  
-  You’ll implement this logic in a workflow, then use the workflow in the API route.
-  
-  Start by changing the content of `src/types/digital-product/product-media.ts` to include more types:
-  
-  ```ts title="src/types/digital-product/product-media.ts"
-  import { 
-    ProductVariantDTO,
-    CreateProductWorkflowInputDTO,
-  } from "@medusajs/types"
-  
-  export enum MediaType {
-    MAIN = "main",
-    PREVIEW = "preview"
-  }
-  
-  export type ProductMediaDTO = {
-    id: string
-    name: string
-    type: MediaType
-    file_key: string
-    mime_type: string
-    variant_id: string
-    variant?: ProductVariantDTO
-  }
-  
-  export type CreateProductMediaDTO = {
-    name: string
-    file_key: string
-    type: MediaType
-    mime_type: string
-    variant_id?: string
-  }
-  
-  export type CreateProductMediaWorkflowInput = 
-    CreateProductMediaDTO & {
-      product?: CreateProductWorkflowInputDTO
-    }
-
-  ```
-  
-  Then, create the file `src/workflows/digital-product/create.ts` with the following content:
-  
-  ```ts title="src/workflows/digital-product/create.ts" collapsibleLines="1-19" expandButtonLabel="Show Imports"
-  import { 
-    createWorkflow,
-    WorkflowData,
-    createStep,
-    StepResponse,
-  } from "@medusajs/workflows-sdk"
-  import { createProductsWorkflow } from "@medusajs/core-flows"
-  import { 
-    CreateProductMediaDTO, 
-    CreateProductMediaWorkflowInput,
-    ProductMediaDTO,
-  } from "../../types/digital-product/product-media"
-  import DigitalProductModuleService from 
-    "../../modules/digital-product/service"
-  import { RemoteQueryFunction } from "@medusajs/modules-sdk"
-  import { 
-    ContainerRegistrationKeys,
-    remoteQueryObjectFromString,
-  } from "@medusajs/utils"
-
-  const tryToCreateProductVariantStep = createStep(
-    "try-to-create-product-variant-step",
-    async (input: CreateProductMediaWorkflowInput, { container }) => {
-      if (input.product && !input.variant_id) {
-        const { result, errors } = await createProductsWorkflow(container)
-          .run({
-            input: {
-              products: [input.product],
-            },
-            throwOnError: false,
-          })
-
-        if (errors.length) {
-          throw errors[0].error
-        }
-
-        input.variant_id = result[0].variants[0].id
-
-        delete input.product
-      }
-
-      return new StepResponse(input)
-    }
-  )
-
-  const createProductMediaStep = createStep(
-    "create-product-media-step",
-    async (input: CreateProductMediaDTO, { container }) => {
-      const digitalProductModuleService: 
-        DigitalProductModuleService = container.resolve(
-          "digitalProductModuleService"
-        )
-
-      const productMedia = await digitalProductModuleService
-        .createProductMedias(
-          input
-        )
-
-      return new StepResponse(productMedia)
-    }
-  )
-
-  const retrieveProductMediaWithVariant = createStep(
-    "retrieve-product-media-with-variant-step",
-    async (input: ProductMediaDTO, { container }) => {
-      const remoteQuery: RemoteQueryFunction = container.resolve(
-        ContainerRegistrationKeys.REMOTE_QUERY
-      )
-
-      const query = remoteQueryObjectFromString({
-        entryPoint: "product_media",
-        fields: [
-          "id",
-          "name",
-          "type",
-          "file_key",
-          "mime_type",
-          "variant.*",
-        ],
-        variables: {
-          filters: {
-            id: input.id,
-          },
-        },
-      })
-
-      const result = await remoteQuery(query)
-
-      return new StepResponse(result[0])
-    }
-  )
-
-  type WorkflowInput = {
-    data: CreateProductMediaWorkflowInput
-  }
-
-  export const createProductMediaWorkflow = createWorkflow(
-    "create-product-media-workflow",
-    function (input: WorkflowData<WorkflowInput>) {
-      // create the product variant before creating the media
-      // if variant_id isn't passed
-      const normalizedInput = tryToCreateProductVariantStep(input.data)
-      
-      const productMedia = createProductMediaStep(normalizedInput)
-
-      return retrieveProductMediaWithVariant(productMedia)
-    }
-  )
-  ```
-  
-  This workflow has three steps:
-  
-  1. If a `variant_id` field isn’t passed and a `product` field is passed, create the product using Medusa’s `createProductsWorkflow` and set the ID of the variant in the `variant_id` property.
-  2. Use the `DigitalProductModuleService` to create the product media.
-  3. Use the remote query to retrieve the product media along with the variant it references.
-  
-  Finally, create the `src/api/admin/digital-products/route.ts` file with the following content:
-  
-  ```ts title="src/api/admin/digital-products/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
-  import {
-    MedusaRequest,
-    MedusaResponse,
-  } from "@medusajs/medusa"
-  import { MedusaError } from "@medusajs/utils"
-  import { 
-    CreateProductMediaWorkflowInput,
-  } from "../../../types/digital-product/product-media"
-  import { 
-    createProductMediaWorkflow,
-  } from "../../../workflows/digital-product/create"
-  
-  type CreateProductMediaReq = CreateProductMediaWorkflowInput
-  
-  export async function POST(
-    req: MedusaRequest<CreateProductMediaReq>,
-    res: MedusaResponse
-  ) {
-    // validation omitted for simplicity
-    const { 
-      result, 
-      errors,
-    } = await createProductMediaWorkflow(req.scope)
-      .run({
-        input: {
-          data: {
-            ...req.body,
-          },
-        },
-        throwOnError: false,
-      })
-  
-    if (errors.length) {
-      throw new MedusaError(
-        MedusaError.Types.DB_ERROR, 
-        errors[0].error
-      )
-    }
-  
-    res.json({
-      product_media: result,
-    })
-  }
-  ```
-  
-  This adds a `POST` API route at `/admin/digital-products` that executes the `createProductMediaWorkflow` workflow.
-  
-  To test it out, start the Medusa application:
-  
-  ```bash npm2yarn
-  npm run dev
-  ```
-  
-  Next, authenticate as an admin user as explained in the [API Reference]
-  
-  Then, upload a file using the Upload API route:
-  
-  ```bash
-  curl -X POST 'http://localhost:9000/admin/uploads' \
-  -H 'Authorization: Bearer {bearer_token}' \
-  --form 'files=@"/path/to/file"'
-  ```
-  
-  Make sure to replace `/path/to/file` with the path to the file to upload. Copy the `id` field’s value as you’ll use it as the `file_key`'s value when creating the digital product.
-  
-  Finally, send a request to the API route you created:
-  
-  ```bash
-  curl -X POST 'localhost:9000/admin/digital-products' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer {bearer_token}' \
-  --data '{
-      "name": "Harry Potter",
-      "file_key": "file.png",
-      "type": "main",
-      "mime_type": "image/png",
-      "product": {
-          "title": "Harry Potter Books",
-          "variants": [
-              {
-                  "title": "Harry Potter 1"
-              }
-          ]
-      }
-  }'
-  ```
-  
-  This creates a product and a variant, and a product media that references the created variant.
-  
-  You’ll receive a response similar to the following:
-  
-  ```json
-  {
-      "product_media": {
-          "id": "promed_01HXEFRMS79293ASYVN8YY9Y0J",
-          "name": "Harry Potter",
-          "type": "main",
-          "file_key": "file.png",
-          "mime_type": "image/png",
-          "variant_id": "variant_01HXEFRMR3B09EZJX23P1DMYFQ",
-          "variant": {
-              "id": "variant_01HXEFRMR3B09EZJX23P1DMYFQ",
-              "title": "Harry Potter 1",
-              // ...
-          }
-      }
-  }
-  ```
-  
-  ### List API Route
-  
-  Next, you’ll create the List API route that returns a list of digital products.
-  
-  To do that, add the following to `src/api/admin/digital-products/route.ts`:
-  
-  ```ts title="src/api/admin/digital-products/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
-  // other imports...
-  import { RemoteQueryFunction } from "@medusajs/modules-sdk"
-  import { 
-    ContainerRegistrationKeys,
-    remoteQueryObjectFromString,
-  } from "@medusajs/utils"
-  
-  // ...
-  
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const remoteQuery: RemoteQueryFunction = req.scope.resolve(
-      ContainerRegistrationKeys.REMOTE_QUERY
-    )
-  
-    const query = remoteQueryObjectFromString({
-      entryPoint: "product_media",
-      fields: [
-        "id",
-        "name",
-        "type",
-        "file_key",
-        "mime_type",
-        "variant.*",
-        "variant.product.*",
-      ],
-    })
-  
-    const result = await remoteQuery(query)
-  
-    res.json({
-      product_medias: result,
-    })
-  }
-  ```
-  
-  This creates a new `GET` API route at `/admin/digital-products` that retrieves the list of digital products and their associated variants.
-  
-  To test it out, send a request to the API route while your Medusa application is running:
-  
-  ```bash apiTesting testApiUrl="http://localhost:9000/admin/digital-products" testApiMethod="GET"
-  curl 'localhost:9000/admin/digital-products' \
-  -H 'Authorization: Bearer {bearer_token}' \
-  ```
-  
-  You’ll receive a list of digital products.
-
-</Details> */}
-    
 
 ---
 
@@ -759,419 +177,27 @@ In your customizations, you send requests to the API routes you created to creat
   },
 ]} />
 
-{/* <Details summaryContent="Example: Digital Products Page in Admin">
-
-  In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
-
-  To create the UI route, create the file `src/admin/routes/product-media/page.tsx` with the following content:
-
-  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application" collapsibleLines="1-13" expandButtonLabel="Show Imports"
-  import { defineRouteConfig } from "@medusajs/admin-shared"
-  import { useEffect, useState } from "react"
-  import { 
-    Container, 
-    Heading, 
-    Table,
-  } from "@medusajs/ui"
-  import { PhotoSolid } from "@medusajs/icons"
-  import { ProductMediaDTO } from "../../../types/digital-product/product-media"
-  import { Link } from "react-router-dom"
-  import ProductMediaCreateForm 
-    from "../../components/product-media/CreateForm"
-
-  const ProductMediaListPage = () => {
-    const [loading, setLoading] = useState(true)
-    const [productMedias, setProductMedias] = useState<ProductMediaDTO[]>([])
-
-    useEffect(() => {
-      if (!loading) {
-        return
-      }
-
-      fetch(`/admin/digital-products`, {
-        credentials: "include",
-      })
-      .then((response) => response.json())
-      .then(({ product_medias }) => {
-        setProductMedias(product_medias)
-        setLoading(false)
-      })
-    }, [loading])
-
-    return (
-      <Container>
-        <div className="flex justify-between mb-4">
-          <Heading level="h1">Digital Products</Heading>
-          <ProductMediaCreateForm onCreate={() => setLoading(true)} />
-        </div>
-        {loading && <div>Loading...</div>}
-        {!loading && !productMedias.length && (
-          <div>No Digital Products</div>
-        )}
-        {!loading && productMedias.length > 0 && (
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Product</Table.HeaderCell>
-                <Table.HeaderCell>
-                  Product Variant
-                </Table.HeaderCell>
-                <Table.HeaderCell>File Key</Table.HeaderCell>
-                <Table.HeaderCell>Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {productMedias.map((product_media) => (
-                <Table.Row key={product_media.id}>
-                  <Table.Cell>
-                    {product_media.variant?.product.title}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {product_media.variant?.title}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {product_media.file_key}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {product_media.variant && <Link to={`/products/${
-                      product_media.variant.product_id
-                    }`}>
-                      View Product
-                    </Link>}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        )}
-      </Container>
-    )
-  }
-
-  export const config = defineRouteConfig({
-      label: "Digital Products",
-      icon: PhotoSolid,
-    })
-
-  export default ProductMediaListPage
-  ```
-
-  This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `/admin/digital-products` API route to retrieve and display the product medias.
-
-  You also render a `ProductMediaCreateForm` component that implements the Create Digital Product form.
-
-  To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
-
-  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Medusa Application" collapsibleLines="1-11" expandButtonLabel="Show Imports"
-  import { useState } from "react"
-  import { redirect } from "react-router-dom"
-  import { 
-    Button, 
-    Container, 
-    Input, 
-    Label, 
-    Select,
-    Drawer,
-  } from "@medusajs/ui"
-
-  type Props = {
-    onCreate: () => void
-  }
-
-  const ProductMediaCreateForm = ({ onCreate }: Props) => {
-    const [open, setOpen] = useState(false)
-    const [productName, setProductName] = useState("")
-    const [
-      productVariantName, 
-      setProductVariantName,
-    ] = useState("")
-    const [name, setName] = useState("")
-    const [type, setType] = useState("main")
-    const [file, setFile] = useState<File>()
-    const [loading, setLoading] = useState(false)
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      setLoading(true)
-
-      const formData = new FormData()
-      formData.append("files", file)
-  
-      // upload file
-      fetch(`/admin/uploads`, {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      })
-      .then((res) => res.json())
-      .then(({ files }) => {
-        // create digital product
-        fetch(`/admin/digital-products`, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            file_key: files[0].id,
-            type,
-            mime_type: file.type,
-            product: {
-              title: productName,
-              variants: [
-                {
-                  title: name,
-                },
-              ],
-            },
-          }),
-        })
-        .then((res) => res.json())
-        .then(() => {
-          setOpen(false)
-          setLoading(false)
-          onCreate()
-        })
-        .catch((e) => {
-          console.error(e)
-          setLoading(false)
-        })
-      })
-      .catch((e) => {
-        console.error(e)
-        setLoading(false)
-      })
-    }
-
-    return (
-      <Drawer open={open} onOpenChange={setOpen}>
-        <Drawer.Trigger>
-          <Button onClick={() => setOpen(true)}>Create</Button>
-        </Drawer.Trigger>
-        <Drawer.Content>
-          <Drawer.Header>
-            <Drawer.Title>
-              Create Digital Product
-            </Drawer.Title>
-          </Drawer.Header>
-          <Drawer.Body>
-          <Container>
-            <form 
-              onSubmit={handleSubmit} 
-              className="flex flex-col gap-4"
-            >
-              <div className="flex gap-4 items-center">
-                <Label>Product Name</Label>
-                <Input 
-                  type="text" 
-                  placeholder="Product Name" 
-                  value={productName} 
-                  onChange={(e) => setProductName(e.target.value)}
-                />
-              </div>
-              <div className="flex gap-4 items-center">
-                <Label>Product Variant Name</Label>
-                <Input 
-                  type="text" 
-                  placeholder="Product Variant" 
-                  value={productVariantName} 
-                  onChange={(e) => 
-                    setProductVariantName(e.target.value)
-                  }
-                />
-              </div>
-              <div className="flex gap-4 items-center">
-                <Label>Media Name</Label>
-                <Input 
-                  type="text" 
-                  placeholder="Media Name" 
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="flex gap-4 items-center">
-                <Label>Type</Label>
-                <Select onValueChange={setType} value={type}>
-                  <Select.Trigger>
-                    <Select.Value placeholder="Type" />
-                  </Select.Trigger>
-                  <Select.Content className="z-50">
-                    <Select.Item value={"main"}>
-                      Main
-                    </Select.Item>
-                    <Select.Item value={"preview"}>
-                      Preview
-                    </Select.Item>
-                  </Select.Content>
-                </Select>
-              </div>
-              <div className="flex gap-4 items-center">
-                <Label>File</Label>
-                <Input 
-                  type="file" 
-                  onChange={(e) => setFile(e.target.files[0])}
-                />
-              </div>
-              <Button 
-                variant="primary" 
-                type="submit" 
-                isLoading={loading}>
-                Create
-              </Button>
-            </form>
-          </Container>
-        </Drawer.Body>
-      </Drawer.Content>
-    </Drawer>
-    )
-  }
-
-  export default ProductMediaCreateForm
-  ```
-
-  In this component, you create a form that accepts basic information needed to create the digital product. This form only accepts one file for one variant for simplicity purposes. You can expand on this based on your use case.
-
-  <Note>
-
-  An alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
-
-  </Note>
-
-  When the user submits the form, you first upload the file using the [Upload Protected File API Route](!api!/admin#uploads_postuploads). Then, you create the digital product using the custom API Route you created.
-
-  The product’s details can still be edited from the product's page, similar to regular products. You can edit its price, add more variants, and more.
-
-  To test it out, run the `dev` command:
-
-  ```bash npm2yarn
-  npm run dev
-  ```
-
-  If you open the admin now, you’ll find a new Digital Products item in the sidebar. You can try adding Digital Products and viewing them.
-
-</Details> */}
-
 ---
 
 ## Deliver Digital Products to the Customer
 
 When a customer purchases a digital product, they should receive a link to download it.
 
-You can create a subscriber that listens to the `order.placed` event. In the subscriber, you check for the digital products in the order and obtain the download URLs using the file module provider’s `getPresignedDownloadUrl` method.
+You can create or install a fulfillment module provider that handles the logic of fulfilling the digital product.
 
 <Note type="soon">
 
-The `order.placed` event isn't currently emitted.
+Fulfillment providers are under development.
 
 </Note>
-
-<Note>
-
-Following this approach assumes the file module provider you're using handles creating secure pre-signed URLs with an expiration mechanism. Alternatively, create a token on purchase using the API Key Module and create an API route that validates that token.
-
-</Note>
-
-In the subscriber, you can send a notification, such as an email, to the customer using the notification module provider of your choice. That notification would hold the download links to the products the customer purchased.
 
 <Card
-  href="!docs!/basics/events-and-subscribers"
-  title="Create a Subscriber"
-  text="Learn how to create a subscriber."
+  href="/commerce-modules/fulfillment"
+  title="Fulfillment Module"
+  text="Learn about the fulfillment module and its providers."
   startIcon={<AcademicCapSolid />}
   showLinkIcon={false}
 />
-
-{/* <Details summaryContent="Example">
-
-  <Note>
-
-  An alternative solution is to create a store download API Route that allows authenticated customers to download products they've purchased, then add the link to the API Route or a storefront page that calls the API Route in the email. Learn how to implement the download API Route [here](#download-product-after-purchase).
-
-  </Note>
-
-  Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the installed notification module provider:
-      
-  ```ts title="src/subscribers/handle-order.ts" badgeLabel="Medusa Application" collapsibleLines="1-15" expandButtonLabel="Show Imports"
-  import { 
-    type SubscriberConfig, 
-    type SubscriberArgs,
-  } from "@medusajs/medusa"
-  import { 
-    IOrderModuleService,
-    IFileModuleService,
-    INotificationModuleService,
-  } from "@medusajs/types"
-  import { 
-    ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
-  import DigitalProductModuleService 
-    from "../modules/digital-product/service"
-
-  export default async function handleOrderPlaced({ 
-    data, container, 
-  }: SubscriberArgs<{ id: string }>) {
-    const orderModuleService: IOrderModuleService = 
-      container.resolve(
-        ModuleRegistrationName.ORDER
-      )
-    const fileModuleService: IFileModuleService = 
-      container.resolve(
-        ModuleRegistrationName.FILE
-      )
-    const notificationModuleService: INotificationModuleService = 
-      container.resolve(ModuleRegistrationName.NOTIFICATION)
-    const digitalProductModuleService:
-      DigitalProductModuleService = container.resolve(
-        "digitalProductModuleService"
-      )
-
-    const orderId = data.data.id
-
-    const order = await orderModuleService.retrieveOrder(orderId, {
-      relations: ["items"],
-    })
-
-    // find product medias in the order
-    const urls = []
-    for (const item of order.items) {
-      const productMedias = await digitalProductModuleService
-        .listProductMedias({
-          variant_id: [item.variant_id],
-        })
-        
-      const downloadUrls = await Promise.all(
-        productMedias.map(async (productMedia) => {
-        
-          // get the download URL from the file service
-          return (await fileModuleService.retrieveFile(
-            productMedia.file_key
-          )).url
-        })
-      )
-
-      urls.push(...downloadUrls)
-    }
-
-    notificationModuleService.createNotifications({
-      to: order.email,
-      template: "digital-download",
-      channel: "email",
-      data: {
-        // any data necessary for your template...
-        digital_download_urls: urls,
-      },
-    })
-  }
-
-  export const config: SubscriberConfig = {
-    event: "order.placed",
-  }
-  ```
-    
-  The `handleOrderPlaced` subscriber function retrieves the order, loops over its items to find digital products and retrieve their download links, then uses the installed notification module provider to send the email, passing the URLs as a data payload. You can customize the sent data based on your template and your use case.
-
-</Details> */}
 
 ---
 
@@ -1183,10 +209,19 @@ Medusa provides a Next.js storefront with standard commerce features including l
 
 Alternatively, you can build the storefront with your preferred tech stack.
 
-<Card
-  href="/storefront-development"
-  title="Storefront Guides"
-  text="Learn how to build a storefront for your Medusa application."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
-/>
+<CardList items={[
+  {
+    href: "/nextjs-starter",
+    title: "Next.js Starter",
+    text: "Learn how to install and use the Next.js Starter storefront.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "/storefront-development",
+    title: "Storefront Guides",
+    text: "Learn how to build a storefront for your Medusa application.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
