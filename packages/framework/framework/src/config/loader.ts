@@ -31,9 +31,7 @@ export function configLoader(
   }
 
   const configManager = new ConfigManager(configModule, {
-    isProduction: ["production", "prod"].includes(process.env.NODE_ENV || ""),
-    envWorkMode: process.env
-      .MEDUSA_WORKER_MODE as ConfigModule["projectConfig"]["workerMode"],
+    logger,
   })
 
   return configManager.getConfig()
