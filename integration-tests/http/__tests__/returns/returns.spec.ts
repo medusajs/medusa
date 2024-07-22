@@ -1,4 +1,9 @@
-import { ModuleRegistrationName, RuleOperator } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+  RuleOperator,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -14,10 +19,29 @@ medusaIntegrationTestRunner({
     let shippingProfile
     let fulfillmentSet
     let returnReason
+    let inventoryItem
+    let location
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      const inventoryModule = container.resolve(
+        ModuleRegistrationName.INVENTORY
+      )
+      const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
+
+      const [product] = await productModule.createProducts([
+        {
+          title: "Test product",
+          variants: [
+            {
+              title: "Test variant",
+              sku: "test-variant",
+            },
+          ],
+        },
+      ])
 
       returnReason = (
         await api.post(
@@ -39,6 +63,7 @@ medusaIntegrationTestRunner({
         items: [
           {
             title: "Custom Item 2",
+            variant_id: product.variants[0].id,
             quantity: 2,
             unit_price: 25,
           },
@@ -91,7 +116,7 @@ medusaIntegrationTestRunner({
         )
       ).data.shipping_profile
 
-      let location = (
+      location = (
         await api.post(
           `/admin/stock-locations`,
           {
@@ -122,6 +147,50 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.fulfillment_set
+
+      inventoryItem = await inventoryModule.createInventoryItems({
+        sku: "inv-1234",
+      })
+
+      await inventoryModule.createInventoryLevels([
+        {
+          inventory_item_id: inventoryItem.id,
+          location_id: location.id,
+          stocked_quantity: 2,
+          reserved_quantity: 0,
+        } as any,
+      ])
+
+      const remoteLink = container.resolve(
+        ContainerRegistrationKeys.REMOTE_LINK
+      )
+
+      await remoteLink.create([
+        {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+          [Modules.FULFILLMENT]: {
+            fulfillment_set_id: fulfillmentSet.id,
+          },
+        },
+        {
+          [Modules.SALES_CHANNEL]: {
+            sales_channel_id: "test",
+          },
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+        },
+        {
+          [Modules.PRODUCT]: {
+            variant_id: product.variants[0].id,
+          },
+          [Modules.INVENTORY]: {
+            inventory_item_id: inventoryItem.id,
+          },
+        },
+      ])
 
       const shippingOptionPayload = {
         name: "Return shipping",
@@ -587,6 +656,7 @@ medusaIntegrationTestRunner({
             {
               order_id: order.id,
               description: "Test",
+              location_id: location.id,
             },
             adminHeaders
           )
@@ -616,7 +686,15 @@ medusaIntegrationTestRunner({
           await api.post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
         })
 
-        it("should receive the return", async () => {
+        it.only("should receive the return", async () => {
+          let inventoryLevel = (
+            await api.get(
+              `/admin/inventory-items/${inventoryItem.id}/location-levels?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data.inventory_levels
+          expect(inventoryLevel[0].stocked_quantity).toEqual(2)
+
           let result = await api.post(
             `/admin/returns/${returnId}/receive`,
             {
@@ -710,6 +788,14 @@ medusaIntegrationTestRunner({
               ],
             })
           )
+
+          inventoryLevel = (
+            await api.get(
+              `/admin/inventory-items/${inventoryItem.id}/location-levels?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data.inventory_levels
+          expect(inventoryLevel[0].stocked_quantity).toEqual(3)
         })
       })
     })
