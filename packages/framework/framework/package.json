@@ -1,0 +1,65 @@
+{
+  "name": "@medusajs/framework",
+  "version": "0.0.0",
+  "description": "Framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "node": "./dist/index.js",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js",
+      "require": "./dist/config/index.js",
+      "node": "./dist/config/index.js"
+    },
+    "./logger": {
+      "types": "./dist/logger/index.d.ts",
+      "import": "./dist/logger/index.js",
+      "require": "./dist/logger/index.js",
+      "node": "./dist/logger/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/framework/framework"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc --build --watch -p ./tsconfig.build.json",
+    "watch:test": "tsc --build tsconfig.spec.json --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build && tsc-alias -p tsconfig.json",
+    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.build.json",
+    "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
+    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
+  },
+  "devDependencies": {
+    "@medusajs/types": "workspace:^",
+    "ioredis": "^5.2.5",
+    "rimraf": "^3.0.2",
+    "tsc-alias": "^1.8.6",
+    "typescript": "^5.1.6",
+    "vite": "^5.2.11"
+  },
+  "dependencies": {
+    "@medusajs/medusa-cli": "workspace:^",
+    "@medusajs/utils": "workspace:^",
+    "awilix": "^8.0.0"
+  }
+}
