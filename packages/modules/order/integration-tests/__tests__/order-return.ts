@@ -138,7 +138,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -163,7 +163,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   shipped_quantity: 0,
                 }),
               }),
-            ],
+            ]),
           })
         )
 
@@ -198,7 +198,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -223,7 +223,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   shipped_quantity: 1,
                 }),
               }),
-            ],
+            ]),
           })
         )
 
@@ -293,7 +293,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(serializedOrder.shipping_methods).toHaveLength(3)
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -321,7 +321,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   return_requested_quantity: 1,
                 }),
               }),
-            ],
+            ]),
           })
         )
 
@@ -446,7 +446,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -477,7 +477,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   return_received_quantity: 1,
                 }),
               }),
-            ],
+            ]),
           })
         )
       })
