@@ -150,6 +150,10 @@ medusaIntegrationTestRunner({
       ).data.product
     })
 
+    afterEach(() => {
+      ;(eventBus as any).eventEmitter_.removeAllListeners()
+    })
+
     describe("POST /admin/products/export", () => {
       it("should export a csv file containing the expected products", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
