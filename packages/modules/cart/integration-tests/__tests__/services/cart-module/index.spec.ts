@@ -16,16 +16,14 @@ moduleIntegrationTestRunner<ICartModuleService>({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "address",
-          "adjustmentLine",
           "cart",
+          "address",
+          "lineItem",
           "lineItemAdjustment",
           "lineItemTaxLine",
-          "lineItem",
+          "shippingMethod",
           "shippingMethodAdjustment",
           "shippingMethodTaxLine",
-          "shippingMethod",
-          "taxLine",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -33,6 +31,14 @@ moduleIntegrationTestRunner<ICartModuleService>({
         })
 
         expect(linkable).toEqual({
+          cart: {
+            id: {
+              linkable: "cart_id",
+              primaryKey: "id",
+              serviceName: "cart",
+              field: "cart",
+            },
+          },
           address: {
             id: {
               linkable: "address_id",
@@ -41,20 +47,12 @@ moduleIntegrationTestRunner<ICartModuleService>({
               field: "address",
             },
           },
-          adjustmentLine: {
+          lineItem: {
             id: {
-              linkable: "adjustment_line_id",
+              linkable: "line_item_id",
               primaryKey: "id",
               serviceName: "cart",
-              field: "adjustmentLine",
-            },
-          },
-          cart: {
-            id: {
-              linkable: "cart_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "cart",
+              field: "lineItem",
             },
           },
           lineItemAdjustment: {
@@ -73,12 +71,12 @@ moduleIntegrationTestRunner<ICartModuleService>({
               field: "lineItemTaxLine",
             },
           },
-          lineItem: {
+          shippingMethod: {
             id: {
-              linkable: "line_item_id",
+              linkable: "shipping_method_id",
               primaryKey: "id",
               serviceName: "cart",
-              field: "lineItem",
+              field: "shippingMethod",
             },
           },
           shippingMethodAdjustment: {
@@ -95,22 +93,6 @@ moduleIntegrationTestRunner<ICartModuleService>({
               primaryKey: "id",
               serviceName: "cart",
               field: "shippingMethodTaxLine",
-            },
-          },
-          shippingMethod: {
-            id: {
-              linkable: "shipping_method_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "shippingMethod",
-            },
-          },
-          taxLine: {
-            id: {
-              linkable: "tax_line_id",
-              primaryKey: "id",
-              serviceName: "cart",
-              field: "taxLine",
             },
           },
         })

@@ -33,27 +33,27 @@ moduleIntegrationTestRunner<IUserModuleService>({
         service: UserModuleService,
       }).linkable
 
-      expect(Object.keys(linkable)).toEqual(["invite", "user"])
+      expect(Object.keys(linkable)).toEqual(["user", "invite"])
 
       Object.keys(linkable).forEach((key) => {
         delete linkable[key].toJSON
       })
 
       expect(linkable).toEqual({
-        invite: {
-          id: {
-            linkable: "invite_id",
-            primaryKey: "id",
-            serviceName: "user",
-            field: "invite",
-          },
-        },
         user: {
           id: {
             linkable: "user_id",
             primaryKey: "id",
             serviceName: "user",
             field: "user",
+          },
+        },
+        invite: {
+          id: {
+            linkable: "invite_id",
+            primaryKey: "id",
+            serviceName: "user",
+            field: "invite",
           },
         },
       })
