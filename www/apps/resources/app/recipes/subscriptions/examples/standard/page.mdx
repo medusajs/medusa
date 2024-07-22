@@ -161,9 +161,6 @@ module.exports = defineConfig({
   modules: {
     subscriptionModuleService: {
       resolve: "./modules/subscription",
-      definition: {
-        isQueryable: true,
-      },
     },
   },
 })
@@ -250,7 +247,7 @@ This defines a list link to the `Order` data model since a subscription has mult
 
 ---
 
-## Step 3: Generate and Run Migrations
+## Step 3: Run Migrations
 
 To create a table for the `Subscription` data model in the database, start by generating the migrations for the Subscription Module with the following command:
 
@@ -260,10 +257,16 @@ npx medusa migrations generate subscriptionModuleService
 
 This generates a migration in the `src/modules/marketeplace/migrations` directory.
 
-Then, to reflect the migration and the module links in the database, run the following command:
+Then, to reflect the migration in the database, run the following command:
 
 ```bash
 npx medusa migrations run
+```
+
+Next, to reflect your links in the database, run the `links sync` command:
+
+```bash
+npx medusa links sync
 ```
 
 ---
