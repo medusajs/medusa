@@ -161,7 +161,7 @@ const API_KEY_INJECTION_ZONES = [
   "api_key.details.after",
   "api_key.list.before",
   "api_key.list.after",
-]
+] as const
 
 const WORKFLOW_INJECTION_ZONES = [
   "workflow.details.before",
