@@ -68,14 +68,14 @@ const DigitalProduct = model.define("digital_product", {
   id: model.id().primaryKey(),
   name: model.text(),
   medias: model.hasMany(() => DigitalProductMedia, {
-    mappedBy: "digitalProduct"
+    mappedBy: "digitalProduct",
   }),
   orders: model.manyToMany(() => DigitalProductOrder, {
-    mappedBy: "products"
-  })
+    mappedBy: "products",
+  }),
 })
 .cascades({
-  delete: ["medias"]
+  delete: ["medias"],
 })
 
 export default DigitalProduct
@@ -100,8 +100,8 @@ const DigitalProductMedia = model.define("digital_product_media", {
   fileId: model.text(),
   mimeType: model.text(),
   digitalProduct: model.belongsTo(() => DigitalProduct, {
-    mappedBy: "medias"
-  })
+    mappedBy: "medias",
+  }),
 })
 
 export default DigitalProductMedia
@@ -131,8 +131,8 @@ const DigitalProductOrder = model.define("digital_product_order", {
   id: model.id().primaryKey(),
   status: model.enum(OrderStatus),
   products: model.manyToMany(() => DigitalProduct, {
-    mappedBy: "orders"
-  })
+    mappedBy: "orders",
+  }),
 })
 
 export default DigitalProductOrder
@@ -155,14 +155,14 @@ Next, create the main service of the module at `src/modules/digital-product/serv
 
 ```ts title="src/modules/digital-product/service.ts"
 import { MedusaService } from "@medusajs/utils"
-import DigitalProduct from "./models/digital-product";
-import DigitalProductOrder from "./models/digital-product-order";
-import DigitalProductMedia from "./models/digital-product-media";
+import DigitalProduct from "./models/digital-product"
+import DigitalProductOrder from "./models/digital-product-order"
+import DigitalProductMedia from "./models/digital-product-media"
 
 class DigitalProductModuleService extends MedusaService({
   DigitalProduct,
   DigitalProductMedia,
-  DigitalProductOrder
+  DigitalProductOrder,
 }) {
 
 }
@@ -196,9 +196,9 @@ module.exports = defineConfig({
   // ...
   modules: {
     digitalProductModuleService: {
-      resolve: "./modules/digital-product"
-    }
-  }
+      resolve: "./modules/digital-product",
+    },
+  },
 })
 ```
 
@@ -242,7 +242,7 @@ import { defineLink } from "@medusajs/utils"
 export default defineLink(
   {
     linkable: DigitalProductModule.linkable.digitalProductOrder,
-    deleteCascade: true
+    deleteCascade: true,
   },
   OrderModule.linkable.order
 )
@@ -292,7 +292,7 @@ Create the file `src/api/admin/digital-products/route.ts` with the following con
 ```ts title="src/api/admin/digital-products/route.ts"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
@@ -303,7 +303,7 @@ export const GET = async (
   const { 
     fields, 
     limit = 20, 
-    offset = 0
+    offset = 0,
   } = req.validatedQuery || {}
   const remoteQuery = req.scope.resolve("remoteQuery")
 
@@ -313,12 +313,12 @@ export const GET = async (
       "*",
       "medias.*",
       "product_variant.*",
-      ...(fields || [])
+      ...(fields || []),
     ],
     variables: {
       skip: offset,
-      take: limit
-    }
+      take: limit,
+    },
   })
 
   const { 
@@ -330,7 +330,7 @@ export const GET = async (
     digital_products: rows,
     count,
     limit: take,
-    offset: skip
+    offset: skip,
   })
 }
 ```
@@ -407,7 +407,7 @@ export const createDpHighlights = [
 ```ts title="src/workflows/create-digital-product/steps/create-digital-product.ts" highlights={createDpHighlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
@@ -426,9 +426,9 @@ const createDigitalProductStep = createStep(
       .createDigitalProducts(data)
     
     return new StepResponse({
-      digital_product: digitalProduct
+      digital_product: digitalProduct,
     }, {
-      digital_product: digitalProduct
+      digital_product: digitalProduct,
     })
   },
   async ({ digital_product }, { container }) => {
@@ -461,7 +461,7 @@ export const createDigitalProductMediaHighlights = [
 ```ts title="src/workflows/create-digital-product/steps/create-digital-product-medias.ts" highlights={createDigitalProductMediaHighlights} collapsibleLines="1-8" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
@@ -481,7 +481,7 @@ type CreateDigitalProductMediasStepInput = {
 const createDigitalProductMediasStep = createStep(
   "create-digital-product-medias",
   async ({ 
-    medias
+    medias,
   }: CreateDigitalProductMediasStepInput, { container }) => {
     const digitalProductModuleService: DigitalProductModuleService = 
       container.resolve(DIGITAL_PRODUCT_MODULE)
@@ -490,9 +490,9 @@ const createDigitalProductMediasStep = createStep(
       .createDigitalProductMedias(medias)
 
     return new StepResponse({
-      digital_product_medias: digitalProductMedias
+      digital_product_medias: digitalProductMedias,
     }, {
-      digital_product_medias: digitalProductMedias
+      digital_product_medias: digitalProductMedias,
     })
   },
   async ({ digital_product_medias }, { container }) => {
@@ -526,23 +526,23 @@ export const createDpWorkflowHighlights = [
 ```ts title="src/workflows/create-digital-product/index.ts" highlights={createDpWorkflowHighlights} collapsibleLines="1-22" expandMoreLabel="Show Imports"
 import { 
   createWorkflow,
-  transform
+  transform,
 } from "@medusajs/workflows-sdk"
 import {
-  CreateProductWorkflowInputDTO
+  CreateProductWorkflowInputDTO,
 } from "@medusajs/types"
 import { 
   createProductsWorkflow,
-  createRemoteLinkStep
+  createRemoteLinkStep,
 } from "@medusajs/core-flows"
 import { 
-  Modules
+  Modules,
 } from "@medusajs/utils"
 import createDigitalProductStep, { 
-  CreateDigitalProductStepInput
+  CreateDigitalProductStepInput,
 } from "./steps/create-digital-product"
 import createDigitalProductMediasStep, { 
-  CreateDigitalProductMediaInput
+  CreateDigitalProductMediaInput,
 } from "./steps/create-digital-product-medias"
 import { DIGITAL_PRODUCT_MODULE } from "../../modules/digital-product"
 
@@ -560,8 +560,8 @@ const createDigitalProductWorkflow = createWorkflow(
 
     const product = createProductsWorkflow.runAsStep({
       input: {
-        products: [input.product]
-      }
+        products: [input.product],
+      },
     })
 
     const { digital_product } = createDigitalProductStep(
@@ -571,31 +571,31 @@ const createDigitalProductWorkflow = createWorkflow(
     const { digital_product_medias } = createDigitalProductMediasStep(
       transform({
         digital_product,
-        medias
+        medias,
       },
       (data) => ({
         medias: data.medias.map((media) => ({
           ...media,
-          digital_product_id: data.digital_product.id
-        }))
+          digital_product_id: data.digital_product.id,
+        })),
       })
       )
     )
 
     createRemoteLinkStep([{
       [DIGITAL_PRODUCT_MODULE]: {
-        digital_product_id: digital_product.id
+        digital_product_id: digital_product.id,
       },
       [Modules.PRODUCT]: {
-        product_variant_id: product[0].variants[0].id
-      }
+        product_variant_id: product[0].variants[0].id,
+      },
     }])
 
     return {
       digital_product: {
         ...digital_product,
-        medias: digital_product_medias
-      }
+        medias: digital_product_medias,
+      },
     }
   }
 )
@@ -654,15 +654,15 @@ export const POST = async (
         medias: req.validatedBody.medias.map((media) => ({
           fileId: media.file_id,
           mimeType: media.mime_type,
-          ...media
-        })) as Omit<CreateDigitalProductMediaInput, "digital_product_id">[]
+          ...media,
+        })) as Omit<CreateDigitalProductMediaInput, "digital_product_id">[],
       },
-      product: req.validatedBody.product
-    }
+      product: req.validatedBody.product,
+    },
   })
 
   res.json({
-    digital_product: result.digital_product
+    digital_product: result.digital_product,
   })
 }
 ```
@@ -673,7 +673,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 
 ```ts title="src/api/validation-schemas.ts"
 import { 
-  AdminCreateProduct
+  AdminCreateProduct,
 } from "@medusajs/medusa/dist/api/admin/products/validators"
 import { z } from "zod"
 import { MediaType } from "../modules/digital-product/types"
@@ -683,9 +683,9 @@ export const createDigitalProductsSchema = z.object({
   medias: z.array(z.object({
     type: z.nativeEnum(MediaType),
     file_id: z.string(),
-    mime_type: z.string()
+    mime_type: z.string(),
   })),
-  product: AdminCreateProduct
+  product: AdminCreateProduct,
 })
 ```
 
@@ -698,7 +698,7 @@ import {
   MiddlewaresConfig, 
 } from "@medusajs/medusa"
 import { 
-  validateAndTransformBody
+  validateAndTransformBody,
 } from "@medusajs/medusa/dist/api/utils/validate-body"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
@@ -806,8 +806,8 @@ export const config: MiddlewaresConfig = {
       method: "POST",
       middlewares: [
         upload.array("files"),
-      ]
-    }
+      ],
+    },
   ],
 }
 ```
@@ -996,16 +996,16 @@ const DigitalProductsPage = () => {
   const fetchProducts = () => {
     const query = new URLSearchParams({
       limit: `${pageLimit}`,
-      offset: `${pageLimit * currentPage}`
+      offset: `${pageLimit * currentPage}`,
     })
     
     fetch(`/admin/digital-products?${query.toString()}`, {
-      credentials: "include"
+      credentials: "include",
     })
     .then((res) => res.json())
     .then(({ 
       digital_products: data, 
-      count
+      count,
     }) => {
       setDigitalProducts(data)
       setCount(count)
@@ -1078,7 +1078,7 @@ type Props = {
 }
 
 const CreateDigitalProductForm = ({
-  onSuccess
+  onSuccess,
 }: Props) => {
   const [name, setName] = useState("")
   const [medias, setMedias] = useState<CreateMedia[]>([])
@@ -1130,7 +1130,7 @@ return (
             onValueChange={(value) => changeFiles(
               index,
               {
-                type: value as MediaType
+                type: value as MediaType,
               }
             )}
           >
@@ -1152,7 +1152,7 @@ return (
             onChange={(e) => changeFiles(
               index,
               {
-                file: e.target.files[0]
+                file: e.target.files[0],
               }
             )}
             className="mt-2"
@@ -1190,7 +1190,7 @@ const onAddMedia = () => {
     ...prev,
     {
       type: MediaType.PREVIEW,
-    }
+    },
   ])
 }
 ```
@@ -1206,9 +1206,9 @@ const changeFiles = (
     ...(prev.slice(0, index)),
     {
       ...prev[index],
-      ...data
+      ...data,
     },
-    ...(prev.slice(index + 1))
+    ...(prev.slice(index + 1)),
   ])
 }
 ```
@@ -1243,7 +1243,7 @@ const uploadMediaFiles = async (
 
   return {
     mediaWithFiles,
-    files
+    files,
   }
 }
 ```
@@ -1265,11 +1265,11 @@ const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   try {
     const {
       mediaWithFiles: previewMedias,
-      files: previewFiles
+      files: previewFiles,
     } = await uploadMediaFiles(MediaType.PREVIEW) || {}
     const {
       mediaWithFiles: mainMedias,
-      files: mainFiles
+      files: mainFiles,
     } = await uploadMediaFiles(MediaType.MAIN) || {}
 
     const mediaData = []
@@ -1313,7 +1313,7 @@ fetch(`/admin/digital-products`, {
   method: "POST",
   credentials: "include",
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     name,
@@ -1322,19 +1322,19 @@ fetch(`/admin/digital-products`, {
       title: productTitle,
       options: [{
         title: "Default",
-        values: ["default"]
+        values: ["default"],
       }],
       variants: [{
         title: productTitle,
         options: {
-          Default: "default"
+          Default: "default",
         },
         // delegate setting the prices to the
         // product's page.
-        prices: []
-      }]
-    }
-  })
+        prices: [],
+      }],
+    },
+  }),
 })
 .then((res) => res.json())
 .then(({ message }) => {
@@ -1346,7 +1346,7 @@ fetch(`/admin/digital-products`, {
 .catch((e) => {
   console.error(e)
   toast.error("Error", {
-    description: `An error occurred while creating the digital product: ${e}`
+    description: `An error occurred while creating the digital product: ${e}`,
   })
 })
 .finally(() => setLoading(false))
@@ -1470,15 +1470,15 @@ export const createDpoHighlights = [
 ```ts title="src/workflows/create-digital-product-order/steps/create-digital-product-order.ts" highlights={createDpoHighlights} collapsibleLines="1-15" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
   OrderLineItemDTO,
-  ProductVariantDTO
+  ProductVariantDTO,
 } from "@medusajs/types"
 import { 
   DigitalProductData, 
-  OrderStatus
+  OrderStatus,
 } from "../../../modules/digital-product/types"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
@@ -1502,11 +1502,11 @@ const createDigitalProductOrderStep = createStep(
     const digitalProductOrder = await digitalProductModuleService
       .createDigitalProductOrders({
         status: OrderStatus.PENDING,
-        products: digitalProductIds
+        products: digitalProductIds,
       })
 
     return new StepResponse({
-      digital_product_order: digitalProductOrder
+      digital_product_order: digitalProductOrder,
     }, {
       digital_product_order: digitalProductOrder,
     })
@@ -1545,15 +1545,15 @@ export const createDpoWorkflowHighlights = [
 import {
   createWorkflow,
   transform,
-  when
+  when,
 } from "@medusajs/workflows-sdk"
 import {
   completeCartWorkflow,
   useRemoteQueryStep,
-  createRemoteLinkStep
+  createRemoteLinkStep,
 } from "@medusajs/core-flows"
 import {
-  Modules
+  Modules,
 } from "@medusajs/utils"
 import createDigitalProductOrderStep from "./steps/create-digital-product-order"
 import { DIGITAL_PRODUCT_MODULE } from "../../modules/digital-product"
@@ -1567,8 +1567,8 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   (input: WorkflowInput) => {
     const order = completeCartWorkflow.runAsStep({
       input: {
-        id: input.cart_id
-      }
+        id: input.cart_id,
+      },
     })
 
     const { items } = useRemoteQueryStep({
@@ -1577,19 +1577,19 @@ const createDigitalProductOrderWorkflow = createWorkflow(
         "*",
         "items.*",
         "items.variant.*",
-        "items.variant.digital_product.*"
+        "items.variant.digital_product.*",
       ],
       variables: {
         filters: {
-          id: order.id
-        }
+          id: order.id,
+        },
       },
       throw_if_key_not_found: true,
-      list: false
+      list: false,
     })
 
     const itemsWithDigitalProducts = transform({
-      items
+      items,
     },
     (data) => {
       return data.items.filter((item) => item.variant.digital_product !== undefined)
@@ -1608,11 +1608,11 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   
       createRemoteLinkStep([{
         [DIGITAL_PRODUCT_MODULE]: {
-          digital_product_order_id: digital_product_order.id
+          digital_product_order_id: digital_product_order.id,
         },
         [Modules.ORDER]: {
-          order_id: order.id
-        }
+          order_id: order.id,
+        },
       }])
 
       return digital_product_order
@@ -1620,7 +1620,7 @@ const createDigitalProductOrderWorkflow = createWorkflow(
 
     return {
       order,
-      digital_product_order
+      digital_product_order,
     }
   }
 )
@@ -1643,8 +1643,8 @@ The workflow returns the Medusa order and the digital product order, if created.
 Next, create the file `src/api/store/carts/[id]/complete/route.ts` with the following content:
 
 ```ts title="src/api/store/carts/[id]/complete/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import createDigitalProductOrderWorkflow from "../../../../../workflows/create-digital-product-order";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import createDigitalProductOrderWorkflow from "../../../../../workflows/create-digital-product-order"
 
 export const POST = async (
   req: MedusaRequest,
@@ -1653,13 +1653,13 @@ export const POST = async (
   const { result } = await createDigitalProductOrderWorkflow(req.scope)
     .run({
       input: {
-        cart_id: req.params.id
-      }
+        cart_id: req.params.id,
+      },
     })
 
   res.json({
     type: "order",
-    ...result
+    ...result,
   })
 }
 ```
@@ -1694,7 +1694,7 @@ Create the file `src/jobs/create-digital-fulfillment.ts` with the following cont
 
 ```ts title="src/jobs/create-digital-fulfillment.ts"
 import {
-  MedusaContainer
+  MedusaContainer,
 } from "@medusajs/types"
 import DigitalProductModuleService from "../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../modules/digital-product"
@@ -1713,12 +1713,12 @@ export default async function createDigitalFulfillment(
   do {
     const [
       digitalProductOrders, 
-      count
+      count,
     ] = await digitalProductModuleService.listAndCountDigitalProductOrders({
-      status: OrderStatus.PENDING
+      status: OrderStatus.PENDING,
     }, {
       skip: page * limit,
-      take: limit
+      take: limit,
     })
 
     // TODO create fulfillment for the digital product's items.
@@ -1735,7 +1735,7 @@ export default async function createDigitalFulfillment(
 export const config = {
   name: "create-digital-fulfillment",
   schedule: "*/5 * * * *", // Check every 5 minutes
-};
+}
 ```
 
 This creates a scheduled job that runs every five minutes. This scheduled job finds the digital product orders whose status is `pending` to fulfill them. 
@@ -1766,18 +1766,18 @@ export const previewRouteHighlights = [
 ```ts title="src/api/store/digital-products/[id]/preview/route.ts" highlights={previewRouteHighlights} collapsibleLines="1-15" expandMoreLabel="Show Imports"
 import { 
   MedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import {
-  ModuleRegistrationName
+  ModuleRegistrationName,
 } from "@medusajs/utils"
 import { 
-  DIGITAL_PRODUCT_MODULE
-} from "../../../../../modules/digital-product";
-import DigitalProductModuleService from "../../../../../modules/digital-product/service";
+  DIGITAL_PRODUCT_MODULE,
+} from "../../../../../modules/digital-product"
+import DigitalProductModuleService from "../../../../../modules/digital-product/service"
 import { 
-  MediaType
-} from "../../../../../modules/digital-product/types";
+  MediaType,
+} from "../../../../../modules/digital-product/types"
 
 export const GET = async (
   req: MedusaRequest,
@@ -1794,7 +1794,7 @@ export const GET = async (
   
   const medias = await digitalProductModuleService.listDigitalProductMedias({
     digital_product_id: req.params.id,
-    type: MediaType.PREVIEW
+    type: MediaType.PREVIEW,
   })
 
   const normalizedMedias = await Promise.all(
@@ -1804,13 +1804,13 @@ export const GET = async (
 
       return {
         ...mediaData,
-        url: fileData.url
+        url: fileData.url,
       }
     })
   )
 
   res.json({
-    previews: normalizedMedias
+    previews: normalizedMedias,
   })
 }
 ```
@@ -1832,10 +1832,10 @@ export const purchasedDpHighlights = [
 ```ts title="src/api/store/customers/me/digital-products/route.ts" highlights={purchasedDpHighlights} collapsibleLines="1-8" expandMoreLabel="Show Imports"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { 
-  remoteQueryObjectFromString
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 export const GET = async (
@@ -1848,13 +1848,13 @@ export const GET = async (
     entryPoint: "customer",
     fields: [
       "orders.digital_product_order.products.*",
-      "orders.digital_product_order.products.medias.*"
+      "orders.digital_product_order.products.medias.*",
     ],
     variables: {
       filters: {
         id: req.auth_context.actor_id,
-      }
-    }
+      },
+    },
   })
 
   const result = await remoteQuery(query)
@@ -1868,7 +1868,7 @@ export const GET = async (
   })
 
   res.json({
-    digital_products: Object.values(digitalProducts)
+    digital_products: Object.values(digitalProducts),
   })
 }
 
@@ -1893,12 +1893,12 @@ export const downloadUrlHighlights = [
 ```ts title="src/api/store/customers/me/digital-products/[mediaId]/download/route.ts" highlights={downloadUrlHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { 
   ModuleRegistrationName,
   remoteQueryObjectFromString,
-  MedusaError
+  MedusaError,
 } from "@medusajs/utils"
 
 export const POST = async (
@@ -1918,8 +1918,8 @@ export const POST = async (
     variables: {
       filters: {
         id: req.auth_context.actor_id,
-      }
-    }
+      },
+    },
   })
 
   const customerResult = await remoteQuery(customerQuery)
@@ -1930,13 +1930,13 @@ export const POST = async (
   const dpoQuery = remoteQueryObjectFromString({
     entryPoint: "digital_product_order",
     fields: [
-      "products.medias.*"
+      "products.medias.*",
     ],
     variables: {
       filters: {
-        id: customerDigitalOrderIds
-      }
-    }
+        id: customerDigitalOrderIds,
+      },
+    },
   })
 
   const dpoResult = await remoteQuery(dpoQuery)
@@ -1968,7 +1968,7 @@ export const POST = async (
   const fileData = await fileModuleService.retrieveFile(foundMedia.fileId)
 
   res.json({
-    url: fileData.url
+    url: fileData.url,
   })
 }
 ```
@@ -2044,7 +2044,7 @@ export const getProductsById = cache(async function ({
       {
         // ...
         fields: "*variants.calculated_price,*variants.digital_product",
-      },
+      }
       // ...
     )
     // ...
@@ -2059,7 +2059,7 @@ export const getProductByHandle = cache(async function (
       {
         // ...
         fields: "*variants.calculated_price,*variants.digital_product",
-      },
+      }
       // ...
     )
     // ...
@@ -2073,14 +2073,14 @@ When a customer views a product’s details page, digital products linked to var
 To retrieve the links of a digital product’s preview media, add in `src/lib/data/products.ts` the following function:
 
 ```ts title="src/lib/data/products.ts"
-export const getDigitalProductPreview = cache(async function({
-  id
+export const getDigitalProductPreview = cache(async function ({
+  id,
 }: {
   id: string
 }) {
   const { previews } = await fetch(
     `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/digital-products/${id}/preview`, {
-    credentials: "include"
+    credentials: "include",
   }).then((res) => res.json())
 
   // for simplicity, return only the first preview url
@@ -2134,7 +2134,7 @@ export default function ProductActions({
     }
 
     const downloadUrl = await getDigitalProductPreview({
-      id: selectedVariant?.digital_product.id
+      id: selectedVariant?.digital_product.id,
     })
 
     if (downloadUrl.length) {
@@ -2188,8 +2188,8 @@ export const getCustomerDigitalProducts = async () => {
     `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/customers/me/digital-products`, {
     credentials: "include",
     headers: {
-      ...getAuthHeaders()
-    }
+      ...getAuthHeaders(),
+    },
   }).then((res) => res.json())
 
   return digital_products as DigitalProduct[]
@@ -2212,7 +2212,7 @@ type Props = {
 }
 
 export const DigitalProductsList = ({
-  digitalProducts
+  digitalProducts,
 }: Props) => {
   return (
     <Table>
@@ -2344,8 +2344,8 @@ export const getDigitalMediaDownloadLink = async (mediaId: string) => {
     credentials: "include",
     method: "POST",
     headers: {
-      ...getAuthHeaders()
-    }
+      ...getAuthHeaders(),
+    },
   }).then((res) => res.json())
 
   return url
