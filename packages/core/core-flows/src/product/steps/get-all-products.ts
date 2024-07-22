@@ -19,7 +19,7 @@ export const getAllProductsStep = createStep(
     )
 
     const allProducts: any[] = []
-    const pageSize = 500
+    const pageSize = 200
     let page = 0
 
     // We intentionally fetch the products serially here to avoid putting too much load on the DB

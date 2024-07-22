@@ -14,13 +14,14 @@ export const generateProductCsvStep = createStep(
       ModuleRegistrationName.FILE
     )
 
+    const filename = `${Date.now()}-product-exports.csv`
     const file = await fileModule.createFiles({
-      filename: `${Date.now()}-product-exports.csv`,
+      filename,
       mimeType: "text/csv",
       content: csvContent,
     })
 
-    return new StepResponse(file.id, file.id)
+    return new StepResponse({ id: file.id, filename }, file.id)
   },
   async (fileId, { container }) => {
     if (!fileId) {

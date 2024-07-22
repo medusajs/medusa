@@ -93,8 +93,6 @@ moduleIntegrationTestRunner({
 
         const result = await service.createNotifications(notification)
 
-        console.log(eventBusEmitSpy.mock.calls)
-
         expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
         expect(eventBusEmitSpy).toHaveBeenCalledWith([
           composeMessage(NotificationEvents.NOTIFICATION_CREATED, {

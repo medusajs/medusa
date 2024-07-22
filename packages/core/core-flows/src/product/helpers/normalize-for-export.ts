@@ -83,8 +83,9 @@ const normalizeVariantForExport = (
     price_set?: PricingTypes.PriceSetDTO
   }
 ): object => {
-  const flattenedPrices = variant.price_set?.prices?.reduce(
-    (acc: Record<string, BigNumberInput>, price) => {
+  const flattenedPrices = variant.price_set?.prices
+    ?.sort((a, b) => b.currency_code!.localeCompare(a.currency_code!))
+    .reduce((acc: Record<string, BigNumberInput>, price) => {
       const regionRule = price.price_rules?.find(
         (r) => r.attribute === "region"
       )
@@ -96,9 +97,7 @@ const normalizeVariantForExport = (
         ] = price.amount!
       }
       return acc
-    },
-    {}
-  )
+    }, {})
 
   const flattenedOptions = variant.options?.reduce(
     (acc: Record<string, string>, option, idx) => {

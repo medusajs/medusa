@@ -14,28 +14,32 @@ export const exportProductsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowTypes.ProductWorkflow.ExportProductsDTO>
   ): WorkflowData<void> => {
-    const products = getAllProductsStep(input)
-    const fileKey = generateProductCsvStep(products)
+    const products = getAllProductsStep(input).config({
+      async: true,
+      backgroundExecution: true,
+    })
 
+    const file = generateProductCsvStep(products)
     const fileDetails = useRemoteQueryStep({
       fields: ["id", "url"],
       entry_point: "file",
-      variables: { id: fileKey },
+      variables: { id: file.id },
       list: false,
     })
 
-    const notifications = transform(fileDetails, (data) => {
+    const notifications = transform({ fileDetails, file }, (data) => {
       return [
         {
+          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
           to: "",
           channel: "feed",
           template: "admin-ui",
           data: {
-            title: "Test",
-            description: "Test",
+            title: "Product export",
+            description: "Product export completed successfully!",
             file: {
-              filename: "",
-              url: data.url,
+              filename: data.file.filename,
+              url: data.fileDetails.url,
               mimeType: "text/csv",
             },
           },

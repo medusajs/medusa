@@ -1,4 +1,4 @@
-import { FilterableProductProps, ProductStatus } from "../../product"
+import { FilterableProductProps } from "../../product"
 
 export interface ExportProductsDTO {
   select: string[]
