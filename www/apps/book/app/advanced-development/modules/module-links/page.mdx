@@ -60,13 +60,15 @@ The `defineLink` function accepts as parameters the link configurations of each 
 
 In this example, you define a module link between the `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
 
-### 2. Run Migrations
+### 2. Sync Links
 
-Medusa stores links as pivot tables in the database, so you must run migrations after defining a link:
+Medusa stores links as pivot tables in the database. So, to reflect your link in the database, run the `links sync` command:
 
 ```bash
-npx medusa migrations run
+npx medusa links sync
 ```
+
+Use this command whenever you make changes to your links, such as if you remove your link definition file.
 
 ---
 
