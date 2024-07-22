@@ -686,7 +686,7 @@ medusaIntegrationTestRunner({
           await api.post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
         })
 
-        it.only("should receive the return", async () => {
+        it("should receive the return", async () => {
           let inventoryLevel = (
             await api.get(
               `/admin/inventory-items/${inventoryItem.id}/location-levels?location_id[]=${location.id}`,
