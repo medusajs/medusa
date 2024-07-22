@@ -1,26 +1,31 @@
 import { ConfigModule } from "./types"
 import { deepCopy, isDefined } from "@medusajs/utils"
+import { Logger } from "@medusajs/types"
 
 export class ConfigManager {
   readonly #inputConfig: Partial<ConfigModule>
-  readonly #isProduction: boolean = true
+  readonly #isProduction: boolean
   readonly #envWorkMode?: ConfigModule["projectConfig"]["workerMode"]
+  readonly #logger: Logger
 
   #config!: ConfigModule
 
   constructor(
     rawConfig: Partial<ConfigModule> = {},
     {
-      isProduction,
+      logger,
+      isProduction = false,
       envWorkMode,
     }: {
+      logger: Logger
       isProduction?: boolean
       envWorkMode?: ConfigModule["projectConfig"]["workerMode"]
     }
   ) {
     this.#inputConfig = rawConfig
-    this.#isProduction = isProduction ?? false
+    this.#isProduction = isProduction
     this.#envWorkMode = envWorkMode
+    this.#logger = logger
   }
 
   protected rejectErrors(error: string): never | void {
@@ -28,7 +33,7 @@ export class ConfigManager {
       throw new Error(error)
     }
 
-    console.log(error)
+    this.#logger.log(error)
   }
 
   protected buildHttpConfig(
@@ -46,7 +51,7 @@ export class ConfigManager {
 
     if (!http.jwtSecret) {
       this.rejectErrors(
-        `[medusa-config] ⚠️ http.jwtSecret not found.${
+        `[config] ⚠️ http.jwtSecret not found.${
           this.#isProduction ? "" : "Using default 'supersecret'."
         }`
       )
@@ -59,7 +64,7 @@ export class ConfigManager {
 
     if (!http.cookieSecret) {
       this.rejectErrors(
-        `[medusa-config] ⚠️ http.cookieSecret not found.${
+        `[config] ⚠️ http.cookieSecret not found.${
           this.#isProduction ? "" : " Using default 'supersecret'."
         }`
       )
@@ -77,7 +82,7 @@ export class ConfigManager {
 
     if (!outputConfig?.redisUrl) {
       console.log(
-        `[medusa-config] ⚠️ redisUrl not found. A fake redis instance will be used.`
+        `[config] ⚠️ redisUrl not found. A fake redis instance will be used.`
       )
     }
 
