@@ -5407,6 +5407,7 @@ __metadata:
     expect-type: ^0.19.0
     express: ^4.18.2
     jest: ^29.7.0
+    json-2-csv: ^5.5.4
     jsonwebtoken: ^9.0.2
     knex: 2.4.2
     pluralize: ^8.0.0
@@ -16110,6 +16111,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deeks@npm:3.1.0":
+  version: 3.1.0
+  resolution: "deeks@npm:3.1.0"
+  checksum: 3173ca28466cf31d550248c034c5466d93c5aecb8ee8ca547a2c9f471e62af4ebed7456c3310503be901d982867071b4411030a6b724528739895aee1dc2b482
+  languageName: node
+  linkType: hard
+
 "deep-eql@npm:^4.1.3":
   version: 4.1.3
   resolution: "deep-eql@npm:4.1.3"
@@ -16392,6 +16400,13 @@ __metadata:
   version: 1.1.3
   resolution: "dlv@npm:1.1.3"
   checksum: 03eb4e769f19a027fd5b43b59e8a05e3fd2100ac239ebb0bf9a745de35d449e2f25cfaf3aa3934664551d72856f4ae8b7822016ce5c42c2d27c18ae79429ec42
+  languageName: node
+  linkType: hard
+
+"doc-path@npm:4.1.1":
+  version: 4.1.1
+  resolution: "doc-path@npm:4.1.1"
+  checksum: 5a908c4d0c8431fa60349cad1d5f0775cf9825d4d85e6bd7f55925c01d6278be8dd04f6858b8f8fdc8ea992a63545595ea77a2282551ff95538608f382b46f8a
   languageName: node
   linkType: hard
 
@@ -21431,6 +21446,16 @@ __metadata:
   bin:
     jsesc: bin/jsesc
   checksum: f93792440ae1d80f091b65f8ceddf8e55c4bb7f1a09dee5dcbdb0db5612c55c0f6045625aa6b7e8edb2e0a4feabd80ee48616dbe2d37055573a84db3d24f96d9
+  languageName: node
+  linkType: hard
+
+"json-2-csv@npm:^5.5.4":
+  version: 5.5.4
+  resolution: "json-2-csv@npm:5.5.4"
+  dependencies:
+    deeks: 3.1.0
+    doc-path: 4.1.1
+  checksum: 1ecfbdb93aa3079e943bcaad280547a17240a9ecf13915a843856378612899c7c612c26ae14272e2b3372f8bccc2ecfef54530e05bcda6ae8de1b616b4b0296a
   languageName: node
   linkType: hard
 
