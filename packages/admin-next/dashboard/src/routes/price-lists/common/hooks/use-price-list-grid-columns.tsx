@@ -1,13 +1,13 @@
-import { HttpTypes, StoreCurrencyDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Thumbnail } from "../../../../components/common/thumbnail"
 import { DataGridReadOnlyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
+import { getPriceColumns } from "../../../../components/data-grid/data-grid-columns/price-columns"
 import { createDataGridHelper } from "../../../../components/data-grid/utils"
 import { isProductRow } from "../utils"
-import { getPriceColumns } from "../../../../components/data-grid/data-grid-columns/price-columns"
 
 const columnHelper = createDataGridHelper<
   HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
@@ -18,7 +18,7 @@ export const usePriceListGridColumns = ({
   regions = [],
   pricePreferences = [],
 }: {
-  currencies?: StoreCurrencyDTO[]
+  currencies?: HttpTypes.AdminStoreCurrency[]
   regions?: HttpTypes.AdminRegion[]
   pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
@@ -55,7 +55,9 @@ export const usePriceListGridColumns = ({
         },
         disableHiding: true,
       }),
-      ...getPriceColumns({
+      ...getPriceColumns<
+        HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
+      >({
         currencies: currencies.map((c) => c.currency_code),
         regions,
         pricePreferences,

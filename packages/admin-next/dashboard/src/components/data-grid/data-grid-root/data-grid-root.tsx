@@ -24,7 +24,7 @@ import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
-import { PasteCommand, SortedSet, UpdateCommand } from "../models"
+import { Grid, PasteCommand, SortedSet, UpdateCommand } from "../models"
 import { CellCoords } from "../types"
 import {
   convertArrayToPrimitive,
@@ -53,11 +53,11 @@ const ROW_HEIGHT = 40
 
 /**
  * TODO:
- * - [Critical] Fix bug where the virtualizers will fail to scroll to the next/prev cell due to the element measurement not being part of the virtualizers memoized array of measurements.
  * - [Critical] Fix performing commands on cells that aren't currently rendered by the virtualizer.
  * - [Critical] Prevent action handlers from firing while editing a cell.
- * - [Important] Show field errors in the grid, and in topbar, possibly also an option to only show
+ * - [Important] Show field errors in the grid, and in topbar.
  * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
+ * - [Stretch] Add support for only showing rows with errors.
  */
 
 export const DataGridRoot = <
@@ -77,30 +77,19 @@ export const DataGridRoot = <
   const cols = useMemo(() => new SortedSet<number>(), [])
   const rows = useMemo(() => new SortedSet<number>(), [])
 
-  const [cells, setCells] = useState<Record<string, boolean>>({})
-
+  const [anchor, setAnchor] = useState<CellCoords | null>(null)
+  const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
   const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
 
-  const [isEditing, setIsEditing] = useState(false)
+  const [selection, setSelection] = useState<Record<string, boolean>>({})
+  const [dragSelection, setDragSelection] = useState<Record<string, boolean>>(
+    {}
+  )
 
-  const {
-    anchor,
-    rangeEnd,
-    selection,
-    dragSelection,
-    isSelecting,
-    isDragging,
-    moveAnchor,
-    clearRange,
-    setSingleRange,
-    updateSelection,
-    updateDragSelection,
-    startSelection,
-    endSelection,
-    startDragging,
-    endDragging,
-    setRangeEnd,
-  } = useDataGridSelection()
+  const [isSelecting, setIsSelecting] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const [isEditing, setIsEditing] = useState(false)
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -119,6 +108,21 @@ export const DataGridRoot = <
     },
   })
 
+  const onRegisterCell = useCallback(
+    (coordinates: CellCoords) => {
+      cols.insert(coordinates.col)
+      rows.insert(coordinates.row)
+    },
+    [cols, rows]
+  )
+
+  const onUnregisterCell = useCallback(
+    (coordinates: CellCoords) => {
+      cols.remove(coordinates.col)
+    },
+    [cols]
+  )
+
   const { flatRows } = grid.getRowModel()
 
   const rowVirtualizer = useVirtualizer({
@@ -129,7 +133,6 @@ export const DataGridRoot = <
   })
 
   const virtualRows = rowVirtualizer.getVirtualItems()
-
   const visibleColumns = grid.getVisibleLeafColumns()
 
   const columnVirtualizer = useVirtualizer({
@@ -152,37 +155,79 @@ export const DataGridRoot = <
       (virtualColumns[virtualColumns.length - 1]?.end ?? 0)
   }
 
-  const onRegisterCell = useCallback(
-    (coordinates: CellCoords) => {
-      cols.insert(coordinates.col)
-      rows.insert(coordinates.row)
+  const scrollToCell = useCallback(
+    (coords: [number, number]) => {
+      const [row, col] = coords
 
-      const id = generateCellId(coordinates)
+      columnVirtualizer.scrollToIndex(col, {
+        align: "center",
+        behavior: "auto",
+      })
 
-      setCells((prev) => {
-        return {
-          ...prev,
-          [id]: true,
-        }
+      rowVirtualizer.scrollToIndex(row, {
+        align: "center",
+        behavior: "auto",
       })
     },
-    [cols, rows]
+    [columnVirtualizer, rowVirtualizer]
   )
 
-  const onUnregisterCell = useCallback(
-    (coordinates: CellCoords) => {
-      cols.remove(coordinates.col)
-      rows.remove(coordinates.row)
+  const _grid = useMemo(
+    () => new Grid(flatRows.length, visibleColumns.length),
+    [flatRows, visibleColumns]
+  )
 
-      const id = generateCellId(coordinates)
+  function registerCell(coords: CellCoords) {
+    _grid.registerCell(coords.row, coords.col, true)
+  }
 
-      setCells((prev) => {
-        const next = { ...prev }
-        delete next[id]
-        return next
-      })
+  /**
+   * Moves the anchor to the specified point. Also attempts to blur
+   * the active element to reset the focus.
+   */
+  const moveAnchor = useCallback((point: CellCoords | null) => {
+    const activeElement = document.activeElement
+
+    if (activeElement instanceof HTMLElement) {
+      activeElement.blur()
+    }
+
+    setAnchor(point)
+  }, [])
+
+  /**
+   * Clears the start and end of current range.
+   */
+  const clearRange = useCallback(
+    (point?: CellCoords | null) => {
+      const keys = Object.keys(selection)
+      const anchorKey = anchor ? generateCellId(anchor) : null
+      const newKey = point ? generateCellId(point) : null
+
+      const isAnchorOnlySelected = keys.length === 1 && anchorKey === keys[0]
+      const isAnchorNewPoint = anchorKey && newKey && anchorKey === newKey
+
+      const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
+
+      if (!shouldIgnoreAnchor) {
+        moveAnchor(null)
+        setSelection({})
+        setRangeEnd(null)
+      }
+
+      setDragSelection({})
     },
-    [cols, rows]
+    [anchor, selection, moveAnchor]
+  )
+
+  const setSingleRange = useCallback(
+    (coordinates: CellCoords | null) => {
+      clearRange(coordinates)
+
+      moveAnchor(coordinates)
+      setRangeEnd(coordinates)
+    },
+    [clearRange, moveAnchor]
   )
 
   const getSelectionValues = useCallback(
@@ -272,11 +317,6 @@ export const DataGridRoot = <
       const basis =
         direction === "horizontal" ? anchor : e.shiftKey ? rangeEnd : anchor
 
-      const virtualizer =
-        direction === "horizontal" ? columnVirtualizer : rowVirtualizer
-
-      const colsOrRows = direction === "horizontal" ? cols : rows
-
       const updater =
         direction === "horizontal"
           ? setSingleRange
@@ -290,54 +330,27 @@ export const DataGridRoot = <
 
       const { row, col } = basis
 
-      const handleNavigation = (index: number | null) => {
-        if (index === null) {
-          return
-        }
-
+      const handleNavigation = (pos: [number, number]) => {
         e.preventDefault()
 
-        virtualizer.scrollToIndex(index, {
-          align: "center",
-          behavior: "auto",
-        })
+        const [row, col] = pos
 
-        const newRange =
-          direction === "horizontal" ? { row, col: index } : { row: index, col }
+        scrollToCell(pos)
+
+        const newRange = { row, col }
         updater(newRange)
       }
 
-      switch (e.key) {
-        case "ArrowLeft":
-        case "ArrowUp": {
-          const index =
-            e.metaKey || e.ctrlKey
-              ? colsOrRows.getFirst()
-              : colsOrRows.getPrev(direction === "horizontal" ? col : row)
-          handleNavigation(index)
-          break
-        }
-        case "ArrowRight":
-        case "ArrowDown": {
-          const index =
-            e.metaKey || e.ctrlKey
-              ? colsOrRows.getLast()
-              : colsOrRows.getNext(direction === "horizontal" ? col : row)
-          handleNavigation(index)
-          break
-        }
-      }
+      const next = _grid.getValidMovement(
+        row,
+        col,
+        e.key,
+        e.metaKey || e.ctrlKey
+      )
+
+      handleNavigation(next)
     },
-    [
-      isEditing,
-      anchor,
-      rangeEnd,
-      columnVirtualizer,
-      rowVirtualizer,
-      cols,
-      rows,
-      setSingleRange,
-    ]
+    [isEditing, anchor, rangeEnd, scrollToCell, setSingleRange, _grid]
   )
 
   const handleUndo = useCallback(
@@ -416,44 +429,28 @@ export const DataGridRoot = <
 
       if (isEditing) {
         if (e.shiftKey) {
-          const prevRow = rows.getPrev(anchor.row)
+          const pos = _grid.getValidMovement(
+            anchor.row,
+            anchor.col,
+            "ArrowUp",
+            false
+          )
 
-          if (prevRow) {
-            const prev = { row: prevRow, col: anchor.col }
-            setSingleRange(prev)
-            return
-          }
-
-          const prevCol = cols.getPrev(anchor.col)
-          const lastRow = rows.getLast()
-
-          if (prevCol === null || lastRow === null) {
-            return
-          }
-
-          const prev = { row: lastRow, col: prevCol }
-          setSingleRange(prev)
+          setSingleRange({ row: pos[0], col: pos[1] })
+          scrollToCell(pos)
 
           return
         }
 
-        const nextRow = rows.getNext(anchor.row)
+        const pos = _grid.getValidMovement(
+          anchor.row,
+          anchor.col,
+          "ArrowDown",
+          false
+        )
 
-        if (nextRow) {
-          const next = { row: nextRow, col: anchor.col }
-          setSingleRange(next)
-          return
-        }
-
-        const nextCol = cols.getNext(anchor.col)
-        const firstRow = rows.getFirst()
-
-        if (nextCol === null || firstRow === null) {
-          return
-        }
-
-        const next = { row: firstRow, col: nextCol }
-        setSingleRange(next)
+        setSingleRange({ row: pos[0], col: pos[1] })
+        scrollToCell(pos)
 
         return
       }
@@ -478,7 +475,7 @@ export const DataGridRoot = <
 
       input.focus()
     },
-    [anchor, cols, isEditing, rows, setSingleRange]
+    [_grid, anchor, isEditing, scrollToCell, setSingleRange]
   )
 
   const handleTabKey = useCallback(
@@ -647,7 +644,12 @@ export const DataGridRoot = <
 
     execute(command)
 
-    endDragging()
+    setIsDragging(false)
+    setDragEnd(null)
+    setDragSelection({})
+
+    // Select the dragged cells.
+    setSelection(dragSelection)
   }, [
     isDragging,
     anchor,
@@ -656,12 +658,12 @@ export const DataGridRoot = <
     getSelectionValues,
     setSelectionValues,
     execute,
-    endDragging,
   ])
 
   const handleMouseUpEvent = useCallback(() => {
-    endSelection()
-  }, [endSelection])
+    handleDragEnd()
+    setIsSelecting(false)
+  }, [handleDragEnd])
 
   const handleCopyEvent = useCallback(
     (e: ClipboardEvent) => {
@@ -737,10 +739,12 @@ export const DataGridRoot = <
           return
         }
 
-        startSelection(coords)
+        setIsSelecting(true)
+        clearRange(coords)
+        setAnchor(coords)
       }
     },
-    [setRangeEnd, startSelection]
+    [clearRange]
   )
 
   const getInputMouseDownHandler = useCallback((coords: CellCoords) => {
@@ -762,6 +766,7 @@ export const DataGridRoot = <
       }
 
       const cell = container.querySelector(`[data-cell-id="${id}"]`)
+      console.log("found", cell)
     }
   }, [])
 
@@ -787,7 +792,7 @@ export const DataGridRoot = <
         }
       }
     },
-    [anchor?.col, isDragging, isSelecting, setRangeEnd]
+    [anchor, isDragging, isSelecting]
   )
 
   const onInputFocus = useCallback(() => {
@@ -817,42 +822,121 @@ export const DataGridRoot = <
     [setValue, execute]
   )
 
-  const onDragToFillStart = useCallback(
-    (_e: MouseEvent<HTMLElement>) => {
-      startDragging()
-    },
-    [startDragging]
+  const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
+    setIsDragging(true)
+  }, [])
+
+  /** Effects */
+
+  /**
+   * If anchor and rangeEnd are set, then select all cells between them.
+   */
+  useEffect(() => {
+    if (!anchor || !rangeEnd) {
+      return
+    }
+
+    const range = getRange(anchor, rangeEnd)
+
+    setSelection(range)
+  }, [anchor, rangeEnd])
+
+  /**
+   * If anchor and dragEnd are set, then select all cells between them.
+   */
+  useEffect(() => {
+    if (!anchor || !dragEnd) {
+      return
+    }
+
+    const range = getRange(anchor, dragEnd)
+
+    setDragSelection(range)
+  }, [anchor, dragEnd])
+
+  /**
+   * Auto corrective effect for ensuring that the anchor is always
+   * part of the selected cells.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    setSelection((prev) => ({
+      ...prev,
+      [generateCellId(anchor)]: true,
+    }))
+  }, [anchor])
+
+  /**
+   * Auto corrective effect for ensuring we always
+   * have a range end.
+   */
+  useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    if (rangeEnd) {
+      return
+    }
+
+    setRangeEnd(anchor)
+  }, [anchor, rangeEnd])
+
+  const values = useMemo(
+    () => ({
+      register,
+      control,
+      anchor,
+      selection,
+      dragSelection,
+      getOverlayMouseDownHandler,
+      getInputMouseDownHandler,
+      getInputChangeHandler,
+      onInputFocus,
+      onInputBlur,
+      getWrapperMouseOverHandler,
+    }),
+    [
+      anchor,
+      control,
+      dragSelection,
+      getInputChangeHandler,
+      getInputMouseDownHandler,
+      getOverlayMouseDownHandler,
+      getWrapperMouseOverHandler,
+      onInputBlur,
+      onInputFocus,
+      register,
+      selection,
+    ]
   )
 
   return (
-    <DataGridContext.Provider
-      value={{
-        register,
-        control,
-        anchor,
-        onRegisterCell,
-        onUnregisterCell,
-        getOverlayMouseDownHandler,
-        getInputMouseDownHandler,
-        getInputChangeHandler,
-        onInputFocus,
-        onInputBlur,
-        getWrapperMouseOverHandler,
-      }}
-    >
+    <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
         <DataGridHeader grid={grid} />
         <div
           ref={containerRef}
           className="relative h-full select-none overflow-auto"
         >
-          <table className="text-ui-fg-subtle grid">
-            <thead className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid">
+          <div role="grid" className="text-ui-fg-subtle grid">
+            <div
+              role="rowgroup"
+              className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
+            >
               {grid.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="flex h-10 w-full">
+                <div
+                  role="row"
+                  key={headerGroup.id}
+                  className="flex h-10 w-full"
+                >
                   {virtualPaddingLeft ? (
                     // Empty columns to fill the virtual padding
-                    <th
+                    <div
+                      role="presentation"
                       style={{ display: "flex", width: virtualPaddingLeft }}
                     />
                   ) : null}
@@ -860,8 +944,9 @@ export const DataGridRoot = <
                     const header = headerGroup.headers[vc.index]
 
                     return (
-                      <th
+                      <div
                         key={header.id}
+                        role="columnheader"
                         data-column-index={vc.index}
                         style={{
                           width: header.getSize(),
@@ -874,19 +959,21 @@ export const DataGridRoot = <
                               header.column.columnDef.header,
                               header.getContext()
                             )}
-                      </th>
+                      </div>
                     )
                   })}
                   {virtualPaddingRight ? (
                     // Empty columns to fill the virtual padding
-                    <th
+                    <div
+                      role="presentation"
                       style={{ display: "flex", width: virtualPaddingRight }}
                     />
                   ) : null}
-                </tr>
+                </div>
               ))}
-            </thead>
-            <tbody
+            </div>
+            <div
+              role="rowgroup"
               className="relative grid"
               style={{
                 height: `${rowVirtualizer.getTotalSize()}px`,
@@ -903,16 +990,15 @@ export const DataGridRoot = <
                     visibleColumns={visibleColumns}
                     virtualColumns={virtualColumns}
                     anchor={anchor}
-                    dragSelection={dragSelection}
-                    selection={selection}
                     virtualPaddingLeft={virtualPaddingLeft}
                     virtualPaddingRight={virtualPaddingRight}
                     onDragToFillStart={onDragToFillStart}
+                    registerCell={registerCell}
                   />
                 )
               })}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
       </div>
     </DataGridContext.Provider>
@@ -964,9 +1050,8 @@ type DataGridCellProps<TData> = {
   columnIndex: number
   rowIndex: number
   anchor: CellCoords | null
-  selection: Record<string, boolean>
-  dragSelection: Record<string, boolean>
   onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+  registerCell: (coords: CellCoords) => void
 }
 
 const DataGridCell = <TData,>({
@@ -974,9 +1059,8 @@ const DataGridCell = <TData,>({
   columnIndex,
   rowIndex,
   anchor,
-  selection,
-  dragSelection,
   onDragToFillStart,
+  registerCell,
 }: DataGridCellProps<TData>) => {
   const coords: CellCoords = {
     row: rowIndex,
@@ -984,23 +1068,17 @@ const DataGridCell = <TData,>({
   }
 
   const isAnchor = isCellMatch(coords, anchor)
-  const isSelected = selection[generateCellId(coords)]
-  const isDragSelected = dragSelection[generateCellId(coords)]
 
   return (
-    <td
+    <div
+      role="gridcell"
       style={{
         width: cell.column.getSize(),
       }}
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "bg-ui-bg-base relative flex items-center border-b border-r p-0 outline-none",
-        {
-          "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
-            isSelected || isAnchor,
-          "bg-ui-bg-subtle": isDragSelected && !isAnchor,
-        }
+        "relative flex items-center border-b border-r p-0 outline-none"
       )}
       tabIndex={-1}
     >
@@ -1009,6 +1087,7 @@ const DataGridCell = <TData,>({
           ...cell.getContext(),
           columnIndex,
           rowIndex: rowIndex,
+          registerCell,
         } as CellContext<TData, any>)}
         {isAnchor && (
           <div
@@ -1017,21 +1096,20 @@ const DataGridCell = <TData,>({
           />
         )}
       </div>
-    </td>
+    </div>
   )
 }
 
 type DataGridRowProps<TData> = {
   row: Row<TData>
-  virtualRow: VirtualItem
+  virtualRow: VirtualItem<Element>
   virtualPaddingLeft?: number
   virtualPaddingRight?: number
-  virtualColumns: VirtualItem[]
+  virtualColumns: VirtualItem<Element>[]
   visibleColumns: ColumnDef<TData>[]
   anchor: CellCoords | null
-  selection: Record<string, boolean>
-  dragSelection: Record<string, boolean>
   onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+  registerCell: (coords: CellCoords) => void
 }
 
 const DataGridRow = <TData,>({
@@ -1042,15 +1120,14 @@ const DataGridRow = <TData,>({
   virtualColumns,
   visibleColumns,
   anchor,
-  selection,
-  dragSelection,
   onDragToFillStart,
+  registerCell,
 }: DataGridRowProps<TData>) => {
   const visibleCells = row.getVisibleCells()
 
   return (
-    <tr
-      key={row.id}
+    <div
+      role="row"
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}
@@ -1058,7 +1135,10 @@ const DataGridRow = <TData,>({
     >
       {virtualPaddingLeft ? (
         // Empty column to fill the virtual padding
-        <td style={{ display: "flex", width: virtualPaddingLeft }} />
+        <div
+          role="presentation"
+          style={{ display: "flex", width: virtualPaddingLeft }}
+        />
       ) : null}
       {virtualColumns.map((vc) => {
         const cell = visibleCells[vc.index]
@@ -1070,203 +1150,21 @@ const DataGridRow = <TData,>({
           <DataGridCell
             key={cell.id}
             cell={cell}
+            registerCell={registerCell}
             columnIndex={columnIndex}
             rowIndex={virtualRow.index}
             anchor={anchor}
-            selection={selection}
-            dragSelection={dragSelection}
             onDragToFillStart={onDragToFillStart}
           />
         )
       })}
       {virtualPaddingRight ? (
         // Empty column to fill the virtual padding
-        <td style={{ display: "flex", width: virtualPaddingRight }} />
+        <div
+          role="presentation"
+          style={{ display: "flex", width: virtualPaddingRight }}
+        />
       ) : null}
-    </tr>
-  )
-}
-
-export const useDataGridSelection = () => {
-  const [anchor, setAnchor] = useState<CellCoords | null>(null)
-  const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
-  const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
-  const [selection, setSelection] = useState<Record<string, boolean>>({})
-  const [dragSelection, setDragSelection] = useState<Record<string, boolean>>(
-    {}
-  )
-  const [isSelecting, setIsSelecting] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-
-  const moveAnchor = useCallback((point: CellCoords | null) => {
-    const activeElement = document.activeElement
-
-    if (activeElement instanceof HTMLElement) {
-      activeElement.blur()
-    }
-
-    setAnchor(point)
-  }, [])
-
-  const clearRange = useCallback(
-    (point?: CellCoords | null) => {
-      const keys = Object.keys(selection)
-      const anchorKey = anchor ? generateCellId(anchor) : null
-      const newKey = point ? generateCellId(point) : null
-
-      const isAnchorOnlySelected = keys.length === 1 && anchorKey === keys[0]
-      const isAnchorNewPoint = anchorKey && newKey && anchorKey === newKey
-
-      const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
-
-      if (!shouldIgnoreAnchor) {
-        moveAnchor(null)
-        setSelection({})
-        setRangeEnd(null)
-      }
-
-      setDragSelection({})
-    },
-    [anchor, selection, moveAnchor]
-  )
-
-  const setSingleRange = useCallback(
-    (coordinates: CellCoords | null) => {
-      clearRange(coordinates)
-      moveAnchor(coordinates)
-      setRangeEnd(coordinates)
-    },
-    [clearRange, moveAnchor]
-  )
-
-  const updateSelection = useCallback(() => {
-    if (!anchor || !rangeEnd) {
-      return
-    }
-    const range = getRange(anchor, rangeEnd)
-    setSelection(range)
-  }, [anchor, rangeEnd])
-
-  const updateDragSelection = useCallback(() => {
-    if (!anchor || !rangeEnd || !isDragging) {
-      return
-    }
-    const range = getRange(anchor, rangeEnd)
-    setDragSelection(range)
-  }, [anchor, rangeEnd, isDragging])
-
-  const startSelection = useCallback(
-    (coords: CellCoords) => {
-      setIsSelecting(true)
-      clearRange(coords)
-      setAnchor(coords)
-    },
-    [clearRange]
-  )
-
-  const endSelection = useCallback(() => {
-    setIsSelecting(false)
-    setIsDragging(false)
-  }, [])
-
-  const startDragging = useCallback(() => {
-    setIsDragging(true)
-  }, [])
-
-  const endDragging = useCallback(() => {
-    if (isDragging && anchor && rangeEnd) {
-      setSelection(dragSelection)
-    }
-    setIsDragging(false)
-    setDragSelection({})
-  }, [isDragging, anchor, rangeEnd, dragSelection])
-
-  useEffect(() => {
-    if (!anchor || !rangeEnd) {
-      return
-    }
-    const range = getRange(anchor, rangeEnd)
-
-    setSelection(range)
-  }, [anchor, rangeEnd])
-
-  useEffect(() => {
-    if (!anchor || !dragEnd) {
-      return
-    }
-
-    const range = getRange(anchor, dragEnd)
-
-    setDragSelection(range)
-  }, [anchor, dragEnd])
-
-  /**
-   * Auto corrective effect for ensuring that the anchor is always
-   * part of the selected cells.
-   */
-  useEffect(() => {
-    if (!anchor) {
-      return
-    }
-
-    setSelection((prev) => ({
-      ...prev,
-      [generateCellId(anchor)]: true,
-    }))
-  }, [anchor])
-
-  /**
-   * Auto corrective effect for ensuring we always
-   * have a range end.
-   */
-  useEffect(() => {
-    if (!anchor) {
-      return
-    }
-
-    if (rangeEnd) {
-      return
-    }
-
-    setRangeEnd(anchor)
-  }, [anchor, rangeEnd])
-
-  // Memoize the return value to prevent unnecessary re-renders
-  return useMemo(
-    () => ({
-      anchor,
-      rangeEnd,
-      selection,
-      dragSelection,
-      isSelecting,
-      isDragging,
-      moveAnchor,
-      clearRange,
-      setSingleRange,
-      updateSelection,
-      updateDragSelection,
-      startSelection,
-      endSelection,
-      startDragging,
-      endDragging,
-      setRangeEnd,
-    }),
-    [
-      anchor,
-      rangeEnd,
-      selection,
-      dragSelection,
-      isSelecting,
-      isDragging,
-      moveAnchor,
-      clearRange,
-      setSingleRange,
-      updateSelection,
-      updateDragSelection,
-      startSelection,
-      endSelection,
-      startDragging,
-      endDragging,
-    ]
+    </div>
   )
 }

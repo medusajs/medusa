@@ -3,11 +3,13 @@ import { Control, FieldValues, Path, UseFormRegister } from "react-hook-form"
 import { CellCoords } from "./types"
 
 type DataGridContextType<TForm extends FieldValues> = {
+  // Grid state
   anchor: CellCoords | null
+  selection: Record<string, boolean>
+  dragSelection: Record<string, boolean>
+  // Form state and handlers
   register: UseFormRegister<TForm>
   control: Control<TForm>
-  onRegisterCell: (coordinates: CellCoords) => void
-  onUnregisterCell: (coordinates: CellCoords) => void
   // Input handlers
   getInputMouseDownHandler: (
     coordinates: CellCoords

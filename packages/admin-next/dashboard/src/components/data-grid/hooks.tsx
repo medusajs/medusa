@@ -1,5 +1,5 @@
 import { CellContext } from "@tanstack/react-table"
-import { useContext, useEffect, useMemo } from "react"
+import { useContext, useMemo } from "react"
 import { DataGridContext } from "./context"
 import {
   CellCoords,
@@ -44,8 +44,8 @@ export const useDataGridCell = <TData, TValue>({
     register,
     control,
     anchor,
-    onRegisterCell,
-    onUnregisterCell,
+    selection,
+    dragSelection,
     getInputMouseDownHandler,
     getInputChangeHandler,
     onInputBlur,
@@ -54,16 +54,10 @@ export const useDataGridCell = <TData, TValue>({
     getWrapperMouseOverHandler,
   } = useDataGridContext()
 
-  useEffect(() => {
-    onRegisterCell(coords)
-
-    return () => {
-      onUnregisterCell(coords)
-    }
-  }, [coords, onRegisterCell, onUnregisterCell])
-
   const container: DataGridCellContainerProps = {
     isAnchor: anchor ? isCellMatch(coords, anchor) : false,
+    isSelected: selection[id] || false,
+    isDragSelected: dragSelection[id] || false,
     wrapper: {
       onMouseOver: getWrapperMouseOverHandler(coords),
     },
