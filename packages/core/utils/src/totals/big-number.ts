@@ -1,8 +1,8 @@
-import { BigNumberInput, BigNumberRawValue } from "@medusajs/types"
+import { BigNumberInput, BigNumberRawValue, IBigNumber } from "@medusajs/types"
 import { BigNumber as BigNumberJS } from "bignumber.js"
 import { isBigNumber, isString } from "../common"
 
-export class BigNumber {
+export class BigNumber implements IBigNumber {
   static DEFAULT_PRECISION = 20
 
   private numeric_: number
@@ -110,7 +110,7 @@ export class BigNumber {
     this.bignumber_ = newValue.bignumber_
   }
 
-  toJSON() {
+  toJSON(): number {
     return this.bignumber_
       ? this.bignumber_?.toNumber()
       : this.raw_
@@ -118,7 +118,7 @@ export class BigNumber {
       : this.numeric_
   }
 
-  valueOf() {
+  valueOf(): number {
     return this.numeric_
   }
 }

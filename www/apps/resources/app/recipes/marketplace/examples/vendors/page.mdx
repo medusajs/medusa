@@ -144,9 +144,6 @@ module.exports = defineConfig({
   modules: {
     marketplaceModuleService: {
       resolve: "./modules/marketplace",
-      definition: {
-        isQueryable: true,
-      },
     },
   },
 })
@@ -211,7 +208,7 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ---
 
-## Step 3: Generate and Run Migrations
+## Step 3: Run Migrations and Sync Links
 
 To create tables for the marketplace data models in the database, start by generating the migrations for the Marketplace Module with the following command:
 
@@ -221,10 +218,16 @@ npx medusa migrations generate marketplaceModuleService
 
 This generates a migration in the `src/modules/marketeplace/migrations` directory.
 
-Then, to reflect the migration and the module links in the database, run the following command:
+Then, to reflect the migration in the database, run the following command:
 
 ```bash
 npx medusa migrations run
+```
+
+Next, to reflect your links in the database, run the `links sync` command:
+
+```bash
+npx medusa links sync
 ```
 
 ---

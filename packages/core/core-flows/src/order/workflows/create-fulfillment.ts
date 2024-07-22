@@ -1,11 +1,12 @@
 import {
+  BigNumberInput,
   FulfillmentDTO,
   FulfillmentWorkflow,
   OrderDTO,
   OrderWorkflow,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
+import { MathBN, MedusaError, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -68,6 +69,7 @@ function prepareFulfillmentData({
   order,
   input,
   shippingOption,
+  shippingMethod,
   reservations,
 }: {
   order: OrderDTO
@@ -77,6 +79,7 @@ function prepareFulfillmentData({
     provider_id: string
     service_zone: { fulfillment_set: { location?: { id: string } } }
   }
+  shippingMethod: { data?: Record<string, unknown> | null }
   reservations: ReservationItemDTO[]
 }) {
   const inputItems = input.items
@@ -120,8 +123,9 @@ function prepareFulfillmentData({
       location_id: locationId,
       provider_id: shippingOption.provider_id,
       shipping_option_id: shippingOption.id,
+      data: shippingMethod.data,
       items: fulfillmentItems,
-      labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[], // TODO: shipping labels
+      labels: input.labels ?? [],
       delivery_address: shippingAddress as any,
     },
   }
@@ -136,13 +140,13 @@ function prepareInventoryUpdate({ reservations, order, input, inputItemsMap }) {
   const toDelete: string[] = []
   const toUpdate: {
     id: string
-    quantity: number // TODO: BigNumberInput
+    quantity: BigNumberInput
     location_id: string
   }[] = []
   const inventoryAdjustment: {
     inventory_item_id: string
     location_id: string
-    adjustment: number // TODO: BigNumberInput
+    adjustment: BigNumberInput
   }[] = []
 
   for (const item of order.items) {
@@ -163,7 +167,7 @@ function prepareInventoryUpdate({ reservations, order, input, inputItemsMap }) {
     inventoryAdjustment.push({
       inventory_item_id: reservation.inventory_item_id,
       location_id: input.location_id ?? reservation.location_id,
-      adjustment: -item.quantity, // TODO: MathBN.mul(-1, item.quantity)
+      adjustment: MathBN.mult(item.quantity, -1),
     })
 
     if (quantity === 0) {
@@ -201,6 +205,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "items.variant.manage_inventory",
         "shipping_address.*",
         "shipping_methods.shipping_option_id", // TODO: which shipping method to use when multiple?
+        "shipping_methods.data",
       ],
       variables: { id: input.order_id },
       list: false,
@@ -214,6 +219,10 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         acc[item.id] = item
         return acc
       }, {})
+    })
+
+    const shippingMethod = transform(order, (data) => {
+      return { data: data.shipping_methods?.[0].data }
     })
 
     const shippingOptionId = transform(order, (data) => {
@@ -250,7 +259,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     }).config({ name: "get-reservations" })
 
     const fulfillmentData = transform(
-      { order, input, shippingOption, reservations },
+      { order, input, shippingOption, shippingMethod, reservations },
       prepareFulfillmentData
     )
 
@@ -278,12 +287,12 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
+    adjustInventoryLevelsStep(inventoryAdjustment)
     parallelize(
       registerOrderFulfillmentStep(registerOrderFulfillmentData),
       createRemoteLinkStep(link),
       updateReservationsStep(toUpdate),
-      deleteReservationsStep(toDelete),
-      adjustInventoryLevelsStep(inventoryAdjustment)
+      deleteReservationsStep(toDelete)
     )
 
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED

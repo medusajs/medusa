@@ -9,8 +9,11 @@ import {
   Rel,
 } from "@mikro-orm/core"
 
+import { BigNumberRawValue } from "@medusajs/types"
 import {
+  BigNumber,
   DALUtils,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -24,16 +27,19 @@ const ReservationItemDeletedAtIndex = createPsqlIndexStatementHelper({
 const ReservationItemLineItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "line_item_id",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemInventoryItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "inventory_item_id",
+  where: "deleted_at IS NULL",
 })
 
 const ReservationItemLocationIdIndex = createPsqlIndexStatementHelper({
   tableName: "reservation_item",
   columns: "location_id",
+  where: "deleted_at IS NULL",
 })
 
 @Entity()
@@ -72,8 +78,11 @@ export class ReservationItem {
   @Property({ type: "text" })
   location_id: string
 
-  @Property({ columnType: "integer" })
-  quantity: number
+  @MikroOrmBigNumberProperty()
+  quantity: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_quantity: BigNumberRawValue
 
   @Property({ type: "text", nullable: true })
   external_id: string | null = null

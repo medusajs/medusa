@@ -12,7 +12,7 @@ export interface CreateOrderShipmentWorkflowInput {
   fulfillment_id: string
   created_by?: string // The id of the authenticated user
   items: CreateOrderShipmentItem[]
-  labels: CreateFulfillmentLabelWorkflowDTO[]
+  labels?: CreateFulfillmentLabelWorkflowDTO[]
   no_notification?: boolean
   metadata?: MetadataType
 }

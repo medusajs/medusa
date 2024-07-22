@@ -1,7 +1,11 @@
 import { Context } from "@medusajs/types"
-import { InventoryLevel } from "@models"
+import {
+  BigNumber,
+  MathBN,
+  mikroOrmBaseRepositoryFactory,
+} from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { mikroOrmBaseRepositoryFactory } from "@medusajs/utils"
+import { InventoryLevel } from "@models"
 
 export class InventoryLevelRepository extends mikroOrmBaseRepositoryFactory(
   InventoryLevel
@@ -10,42 +14,42 @@ export class InventoryLevelRepository extends mikroOrmBaseRepositoryFactory(
     inventoryItemId: string,
     locationIds: string[],
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
 
-    const [result] = (await manager
+    const result = await manager
       .getKnex()({ il: "inventory_level" })
-      .sum("reserved_quantity")
+      .select("raw_reserved_quantity")
       .whereIn("location_id", locationIds)
-      .andWhere("inventory_item_id", inventoryItemId)) as {
-      sum: string
-    }[]
+      .andWhere("inventory_item_id", inventoryItemId)
+      .andWhereRaw("deleted_at IS NULL")
 
-    return parseInt(result.sum)
+    return new BigNumber(
+      MathBN.sum(...result.map((r) => r.raw_reserved_quantity))
+    )
   }
 
   async getAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const knex = super.getActiveManager<SqlEntityManager>(context).getKnex()
 
-    const [result] = (await knex({
+    const result = await knex({
       il: "inventory_level",
     })
-      .sum({
-        stocked_quantity: "stocked_quantity",
-        reserved_quantity: "reserved_quantity",
-      })
+      .select("raw_stocked_quantity", "raw_reserved_quantity")
       .whereIn("location_id", locationIds)
-      .andWhere("inventory_item_id", inventoryItemId)) as {
-      reserved_quantity: string
-      stocked_quantity: string
-    }[]
+      .andWhere("inventory_item_id", inventoryItemId)
+      .andWhereRaw("deleted_at IS NULL")
 
-    return (
-      parseInt(result.stocked_quantity) - parseInt(result.reserved_quantity)
+    return new BigNumber(
+      MathBN.sum(
+        ...result.map((r) => {
+          return MathBN.sub(r.raw_stocked_quantity, r.raw_reserved_quantity)
+        })
+      )
     )
   }
 
@@ -53,20 +57,19 @@ export class InventoryLevelRepository extends mikroOrmBaseRepositoryFactory(
     inventoryItemId: string,
     locationIds: string[],
     context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     const knex = super.getActiveManager<SqlEntityManager>(context).getKnex()
 
-    const [result] = (await knex({
+    const result = await knex({
       il: "inventory_level",
     })
-      .sum({
-        stocked_quantity: "stocked_quantity",
-      })
+      .select("raw_stocked_quantity")
       .whereIn("location_id", locationIds)
-      .andWhere("inventory_item_id", inventoryItemId)) as {
-      stocked_quantity: string
-    }[]
+      .andWhere("inventory_item_id", inventoryItemId)
+      .andWhereRaw("deleted_at IS NULL")
 
-    return parseInt(result.stocked_quantity)
+    return new BigNumber(
+      MathBN.sum(...result.map((r) => r.raw_stocked_quantity))
+    )
   }
 }

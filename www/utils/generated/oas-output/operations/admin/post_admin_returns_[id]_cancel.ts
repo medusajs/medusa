@@ -89,7 +89,8 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostCancelReturnReqSchema"
  * 
 */
 

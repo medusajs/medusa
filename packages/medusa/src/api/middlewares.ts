@@ -11,6 +11,7 @@ import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/
 import { adminFulfillmentsRoutesMiddlewares } from "./admin/fulfillments/middlewares"
 import { adminInventoryRoutesMiddlewares } from "./admin/inventory-items/middlewares"
 import { adminInviteRoutesMiddlewares } from "./admin/invites/middlewares"
+import { adminNotificationRoutesMiddlewares } from "./admin/notifications/middlewares"
 import { adminOrderRoutesMiddlewares } from "./admin/orders/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
@@ -92,6 +93,7 @@ export const config: MiddlewaresConfig = {
     ...adminProductTagRoutesMiddlewares,
     ...adminUploadRoutesMiddlewares,
     ...adminFulfillmentSetsRoutesMiddlewares,
+    ...adminNotificationRoutesMiddlewares,
     ...adminOrderRoutesMiddlewares,
     ...adminReservationRoutesMiddlewares,
     ...adminProductCategoryRoutesMiddlewares,
