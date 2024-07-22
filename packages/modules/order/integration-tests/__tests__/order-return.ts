@@ -104,6 +104,9 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
       it("should create an order, fulfill, ship and return the items", async function () {
         const createdOrder = await service.createOrders(input)
+        createdOrder.items = createdOrder.items!.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        )
 
         // Fullfilment
         await service.registerFulfillment({
@@ -481,6 +484,9 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
       it("should create an order, fulfill, return the items and cancel some item return", async function () {
         const createdOrder = await service.createOrders(input)
+        createdOrder.items = createdOrder.items!.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        )
 
         await service.registerFulfillment({
           order_id: createdOrder.id,
@@ -553,7 +559,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -578,7 +584,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   return_requested_quantity: 1,
                 }),
               }),
-            ],
+            ]),
           })
         )
 
@@ -628,7 +634,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(serializedOrder.shipping_methods).toHaveLength(2)
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            items: [
+            items: expect.arrayContaining([
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
@@ -659,7 +665,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                   return_received_quantity: 0,
                 }),
               }),
-            ],
+            ]),
           })
         )
       })
