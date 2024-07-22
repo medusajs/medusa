@@ -590,6 +590,12 @@ export default class OrderModuleService<
           "shipping_methods.adjustments",
           "transactions",
         ],
+        order: {
+          id: "ASC",
+          items: {
+            id: "ASC",
+          },
+        } as any,
       },
       sharedContext
     )
