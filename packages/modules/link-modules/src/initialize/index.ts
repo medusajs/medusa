@@ -8,7 +8,6 @@ import {
   ExternalModuleDeclaration,
   ILinkModule,
   LinkModuleDefinition,
-  LoaderOptions,
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,
@@ -23,7 +22,7 @@ import {
   toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
-import { getMigration, getRevertMigration } from "../migration"
+import { MigrationsExecutionPlanner } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import {
   composeLinkName,
@@ -38,7 +37,7 @@ export const initialize = async (
     | ModuleServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
-  modulesDefinition?: ModuleJoinerConfig[],
+  pluginLinksDefinitions?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<{ [link: string]: ILinkModule }> => {
   const allLinks = {}
@@ -47,7 +46,7 @@ export const initialize = async (
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinitions ?? []
   )
 
   for (const linkDefinition of allLinksToLoad) {
@@ -186,20 +185,24 @@ export const initialize = async (
   return allLinks
 }
 
-async function applyMigrationUpOrDown(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[],
-  revert = false
+/**
+ * Prepare an execution plan and run the migrations accordingly.
+ * It includes creating, updating, deleting the tables according to the execution plan.
+ * If any unsafe sql is identified then we will notify the user to act manually.
+ *
+ * @param options
+ * @param pluginLinksDefinition
+ */
+export function getMigrationPlanner(
+  options: ModuleServiceInitializeOptions,
+  pluginLinksDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
   )
 
   const allLinksToLoad = Object.values(linkDefinitions).concat(
-    modulesDefinition ?? []
+    pluginLinksDefinition ?? []
   )
 
   const allLinks = new Set<string>()
@@ -237,30 +240,7 @@ async function applyMigrationUpOrDown(
     ) {
       continue
     }
-
-    const migrate = revert
-      ? getRevertMigration(definition, serviceKey, primary, foreign)
-      : getMigration(definition, serviceKey, primary, foreign)
-    await migrate({ options, logger })
   }
-}
 
-export async function runMigrations(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
-) {
-  await applyMigrationUpOrDown({ options, logger }, modulesDefinition)
-}
-
-export async function revertMigrations(
-  {
-    options,
-    logger,
-  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
-  modulesDefinition?: ModuleJoinerConfig[]
-) {
-  await applyMigrationUpOrDown({ options, logger }, modulesDefinition, true)
+  return new MigrationsExecutionPlanner(allLinksToLoad, options)
 }

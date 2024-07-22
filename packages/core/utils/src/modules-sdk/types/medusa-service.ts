@@ -41,7 +41,7 @@ export type ModelsConfigTemplate = { [key: string]: ModelDTOConfig }
 
 export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
   [Key in keyof T]: {
-    dto: T[Key] extends IDmlEntity<any, any>
+    dto: T[Key] extends DmlEntity<any, any>
       ? InferEntityType<T[Key]>
       : T[Key] extends Constructor<any>
       ? InstanceType<T[Key]>
@@ -261,7 +261,8 @@ type InferModelFromConfig<T> = {
     : never
 }
 
-export type MedusaServiceReturnType<ModelsConfig extends Record<any, any>> = {
-  new (...args: any[]): AbstractModuleService<ModelsConfig>
-  $modelObjects: InferModelFromConfig<ModelsConfig>
-}
+export type MedusaServiceReturnType<ModelsConfig extends Record<string, any>> =
+  {
+    new (...args: any[]): AbstractModuleService<ModelsConfig>
+    $modelObjects: InferModelFromConfig<ModelsConfig>
+  }
