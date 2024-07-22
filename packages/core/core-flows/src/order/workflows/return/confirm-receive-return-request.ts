@@ -114,7 +114,6 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
     }
   }
 
-  console.log(inventoryAdjustment, returnedQuantityMap)
   return inventoryAdjustment
 }
 
