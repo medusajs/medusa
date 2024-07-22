@@ -33,7 +33,7 @@ export class ConfigManager {
   get config(): ConfigModule {
     if (!this.#config) {
       this.rejectErrors(
-        `[config] ⚠️ Config not loaded. Make sure the config have been loaded first using the 'configLoader' or 'configManager.loadConfig'.`
+        `Config not loaded. Make sure the config have been loaded first using the 'configLoader' or 'configManager.loadConfig'.`
       )
     }
     return this.#config
@@ -50,7 +50,7 @@ export class ConfigManager {
    */
   protected rejectErrors(error: string): never | void {
     if (this.#isProduction) {
-      throw new Error(error)
+      throw new Error(`[config] ⚠️ ${error}`)
     }
 
     this.#logger.warn(error)
@@ -76,7 +76,7 @@ export class ConfigManager {
 
     if (!http.jwtSecret) {
       this.rejectErrors(
-        `[config] ⚠️ http.jwtSecret not found.${
+        `http.jwtSecret not found.${
           this.#isProduction ? "" : "Using default 'supersecret'."
         }`
       )
@@ -89,7 +89,7 @@ export class ConfigManager {
 
     if (!http.cookieSecret) {
       this.rejectErrors(
-        `[config] ⚠️ http.cookieSecret not found.${
+        `http.cookieSecret not found.${
           this.#isProduction ? "" : " Using default 'supersecret'."
         }`
       )
@@ -111,9 +111,7 @@ export class ConfigManager {
     const outputConfig: ConfigModule["projectConfig"] = deepCopy(projectConfig)
 
     if (!outputConfig?.redisUrl) {
-      console.log(
-        `[config] ⚠️ redisUrl not found. A fake redis instance will be used.`
-      )
+      console.log(`redisUrl not found. A fake redis instance will be used.`)
     }
 
     outputConfig.http = this.buildHttpConfig(projectConfig)
