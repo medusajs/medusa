@@ -34,5 +34,6 @@ export function configLoader(
     logger,
   })
 
+  // TODO: Later on we could store the config manager into the unique container
   return configManager.getConfig()
 }
