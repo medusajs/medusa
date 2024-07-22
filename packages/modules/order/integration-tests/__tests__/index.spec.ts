@@ -13,30 +13,25 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
+          "order",
           "address",
-          "adjustmentLine",
-          "claimItemImage",
-          "orderClaimItem",
-          "orderClaim",
-          "orderExchangeItem",
-          "orderExchange",
+          "lineItem",
           "lineItemAdjustment",
           "lineItemTaxLine",
-          "lineItem",
-          "orderChangeAction",
-          "orderChange",
-          "orderItem",
-          "orderShippingMethod",
-          "orderSummary",
-          "order",
-          "returnItem",
-          "returnReason",
-          "return",
+          "shippingMethod",
           "shippingMethodAdjustment",
           "shippingMethodTaxLine",
-          "shippingMethod",
-          "taxLine",
           "transaction",
+          "orderChange",
+          "orderChangeAction",
+          "orderItem",
+          "orderSummary",
+          "orderShippingMethod",
+          "returnReason",
+          "return",
+          "returnItem",
+          "orderClaim",
+          "orderExchange",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -44,6 +39,14 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         })
 
         expect(linkable).toEqual({
+          order: {
+            id: {
+              linkable: "order_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "order",
+            },
+          },
           address: {
             id: {
               linkable: "address_id",
@@ -52,52 +55,12 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "address",
             },
           },
-          adjustmentLine: {
+          lineItem: {
             id: {
-              linkable: "adjustment_line_id",
+              linkable: "line_item_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "adjustmentLine",
-            },
-          },
-          claimItemImage: {
-            id: {
-              linkable: "claim_item_image_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "claimItemImage",
-            },
-          },
-          orderClaimItem: {
-            id: {
-              linkable: "order_claim_item_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderClaimItem",
-            },
-          },
-          orderClaim: {
-            id: {
-              linkable: "order_claim_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderClaim",
-            },
-          },
-          orderExchangeItem: {
-            id: {
-              linkable: "order_exchange_item_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderExchangeItem",
-            },
-          },
-          orderExchange: {
-            id: {
-              linkable: "order_exchange_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderExchange",
+              field: "lineItem",
             },
           },
           lineItemAdjustment: {
@@ -116,84 +79,12 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "lineItemTaxLine",
             },
           },
-          lineItem: {
+          shippingMethod: {
             id: {
-              linkable: "line_item_id",
+              linkable: "shipping_method_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "lineItem",
-            },
-          },
-          orderChangeAction: {
-            id: {
-              linkable: "order_change_action_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderChangeAction",
-            },
-          },
-          orderChange: {
-            id: {
-              linkable: "order_change_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderChange",
-            },
-          },
-          orderItem: {
-            id: {
-              linkable: "order_item_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderItem",
-            },
-          },
-          orderShippingMethod: {
-            id: {
-              linkable: "order_shipping_method_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderShippingMethod",
-            },
-          },
-          orderSummary: {
-            id: {
-              linkable: "order_summary_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "orderSummary",
-            },
-          },
-          order: {
-            id: {
-              linkable: "order_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "order",
-            },
-          },
-          returnItem: {
-            id: {
-              linkable: "return_item_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "returnItem",
-            },
-          },
-          returnReason: {
-            id: {
-              linkable: "return_reason_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "returnReason",
-            },
-          },
-          return: {
-            id: {
-              linkable: "return_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "return",
+              field: "shippingMethod",
             },
           },
           shippingMethodAdjustment: {
@@ -212,28 +103,92 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "shippingMethodTaxLine",
             },
           },
-          shippingMethod: {
-            id: {
-              linkable: "shipping_method_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "shippingMethod",
-            },
-          },
-          taxLine: {
-            id: {
-              linkable: "tax_line_id",
-              primaryKey: "id",
-              serviceName: "order",
-              field: "taxLine",
-            },
-          },
           transaction: {
             id: {
               linkable: "transaction_id",
               primaryKey: "id",
               serviceName: "order",
               field: "transaction",
+            },
+          },
+          orderChange: {
+            id: {
+              linkable: "order_change_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderChange",
+            },
+          },
+          orderChangeAction: {
+            id: {
+              linkable: "order_change_action_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderChangeAction",
+            },
+          },
+          orderItem: {
+            id: {
+              linkable: "order_item_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderItem",
+            },
+          },
+          orderSummary: {
+            id: {
+              linkable: "order_summary_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderSummary",
+            },
+          },
+          orderShippingMethod: {
+            id: {
+              linkable: "order_shipping_method_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderShippingMethod",
+            },
+          },
+          returnReason: {
+            id: {
+              linkable: "return_reason_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "returnReason",
+            },
+          },
+          return: {
+            id: {
+              linkable: "return_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "return",
+            },
+          },
+          returnItem: {
+            id: {
+              linkable: "return_item_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "returnItem",
+            },
+          },
+          orderClaim: {
+            id: {
+              linkable: "order_claim_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderClaim",
+            },
+          },
+          orderExchange: {
+            id: {
+              linkable: "order_exchange_id",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderExchange",
             },
           },
         })
