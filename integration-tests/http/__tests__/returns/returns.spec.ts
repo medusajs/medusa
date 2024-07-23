@@ -380,6 +380,10 @@ medusaIntegrationTestRunner({
           {},
           adminHeaders
         )
+
+        result = (await api.get(`/admin/returns?fields=*items`, adminHeaders))
+          .data.returns
+        expect(result).toHaveLength(2)
       })
 
       // Simple lifecyle:
