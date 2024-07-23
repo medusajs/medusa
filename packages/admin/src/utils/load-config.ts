@@ -24,6 +24,12 @@ export const loadConfig = (isDev?: boolean): PluginOptions | null => {
     path: "/app",
     outDir: "build",
     backend: "/",
+    develop: {
+      open: true,
+      port: 7001,
+      host: "localhost",
+      allowedHosts: "auto",
+    },
   }
 
   if (isDev) {
@@ -32,12 +38,6 @@ export const loadConfig = (isDev?: boolean): PluginOptions | null => {
       serve: false,
       path: "/",
       backend: "http://localhost:9000",
-      develop: {
-        open: true,
-        port: 7001,
-        host: "localhost",
-        allowedHosts: "auto",
-      },
     }
   }
 
