@@ -30,6 +30,7 @@ import {
   ModelsConfigTemplate,
 } from "./types/medusa-service"
 import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
+import { DmlEntity } from "../dml"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -46,7 +47,7 @@ const methods: BaseMethods[] = [...readMethods, ...writeMethods]
  * @internal
  */
 function buildMethodNamesFromModel(
-  modelName: string,
+  defaultMethodName: string,
   model: ModelEntries[keyof ModelEntries]
 ): Record<string, string> {
   return methods.reduce((acc, method) => {
@@ -54,10 +55,14 @@ function buildMethodNamesFromModel(
 
     if (method === "retrieve") {
       normalizedModelName =
-        "singular" in model && model.singular ? model.singular : modelName
+        "singular" in model && model.singular
+          ? model.singular
+          : defaultMethodName
     } else {
       normalizedModelName =
-        "plural" in model && model.plural ? model.plural : pluralize(modelName)
+        "plural" in model && model.plural
+          ? model.plural
+          : pluralize(defaultMethodName)
     }
 
     const methodName = `${method}${upperCaseFirst(normalizedModelName)}`
@@ -406,11 +411,11 @@ export function MedusaService<
    */
 
   const modelsMethods: [
-    string,
-    TModels[keyof TModels],
-    Record<string, string>
+    string, // model name
+    TModels[keyof TModels], // configuration (dml, conf, entity)
+    Record<string, string> // method names
   ][] = Object.entries(models as {}).map(([name, config]) => [
-    name,
+    DmlEntity.isDmlEntity(config) ? config.name : name,
     config as TModels[keyof TModels],
     buildMethodNamesFromModel(name, config as TModels[keyof TModels]),
   ])
