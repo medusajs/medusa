@@ -1,10 +1,11 @@
 /**
  * @schema AdminPostCancelReturnReqSchema
  * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminPostCancelReturnReqSchema
  * required:
  *   - return_id
  *   - internal_note
- * x-schemaName: AdminPostCancelReturnReqSchema
  * properties:
  *   return_id:
  *     type: string
