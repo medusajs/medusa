@@ -4612,6 +4612,7 @@ __metadata:
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": "workspace:^"
     awilix: ^8.0.0
+    cross-env: ^7.0.3
     ioredis: ^5.2.5
     rimraf: ^3.0.2
     tsc-alias: ^1.8.6
