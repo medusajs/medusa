@@ -20,7 +20,7 @@ export const createReturnItemsStep = createStep(
 
     const returnItems = input.changes.map((item) => {
       return {
-        return_id: item.reference_id,
+        return_id: input.returnId,
         item_id: item.details?.reference_id,
         reason_id: item.details?.reason_id,
         quantity: item.details?.quantity as number,
