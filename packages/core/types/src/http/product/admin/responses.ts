@@ -35,6 +35,10 @@ export interface AdminExportProductResponse {
   workflow_id: string
 }
 
+export interface AdminImportProductResponse {
+  workflow_id: string
+}
+
 export interface AdminBatchProductVariantResponse
   extends BatchMethodResponse<AdminProductVariant> {}
 
