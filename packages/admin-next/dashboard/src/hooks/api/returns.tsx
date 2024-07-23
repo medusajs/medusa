@@ -32,6 +32,27 @@ export const useReturn = (
   return { ...data, ...rest }
 }
 
+export const useReturns = (
+  query?: HttpTypes.AdminReturnFilters,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminReturnFilters,
+      Error,
+      HttpTypes.AdminReturnsResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.return.list(query),
+    queryKey: returnsQueryKeys.list(query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useInitiateReturn = (
   orderId: string,
   options?: UseMutationOptions<

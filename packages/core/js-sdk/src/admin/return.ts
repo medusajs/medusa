@@ -1,8 +1,4 @@
-import {
-  AdminUpdateReturnShipping,
-  HttpTypes,
-  SelectParams,
-} from "@medusajs/types"
+import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -11,6 +7,16 @@ export class Return {
   private client: Client
   constructor(client: Client) {
     this.client = client
+  }
+
+  async list(query?: HttpTypes.AdminReturnFilters, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminReturnsResponse>(
+      `/admin/returns`,
+      {
+        query,
+        headers,
+      }
+    )
   }
 
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {

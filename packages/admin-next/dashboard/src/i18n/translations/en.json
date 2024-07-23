@@ -804,7 +804,8 @@
       "inboundShipping": "Inbound shipping",
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
-      "refundableAmountLabel": "Refundable amount"
+      "refundableAmountLabel": "Refundable amount",
+      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
     },
     "reservations": {
       "allocatedLabel": "Allocated",

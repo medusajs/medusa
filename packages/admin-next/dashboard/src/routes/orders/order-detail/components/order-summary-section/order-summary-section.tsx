@@ -1,8 +1,13 @@
+import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
+import { useMemo } from "react"
+
 import {
   AdminOrder,
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
+import { ArrowDownRightMini, ArrowUturnLeft } from "@medusajs/icons"
 import {
   Button,
   Container,
@@ -11,9 +16,6 @@ import {
   StatusBadge,
   Text,
 } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -21,8 +23,9 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { ArrowUturnLeft } from "@medusajs/icons"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
+import { useReturns } from "../../../../../hooks/api/returns"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -68,6 +71,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} />
       <ItemBreakdown order={order} />
+      <ReturnBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
 
@@ -267,6 +271,42 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         secondaryValue={order.shipping_methods.map((sm) => sm.name).join(", ")}
         value={getLocaleAmount(order.shipping_total, order.currency_code)}
       />
+    </div>
+  )
+}
+
+const ReturnBreakdown = ({ order }: { order: AdminOrder }) => {
+  const { t } = useTranslation()
+  const { getRelativeDate } = useDate()
+
+  const { returns } = useReturns({ order_id: order.id, fields: "*items" })
+
+  const activeReturn = useMemo(() => {
+    if (!returns?.length) {
+      return null
+    }
+
+    return returns.find((r) => r.status === "requested") // ONLY ONE REQUESTED RETURN SHOULD EXIST ON AN ORDER
+  }, [returns])
+
+  if (!activeReturn) {
+    return null
+  }
+
+  return (
+    <div className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4">
+      <div className="flex items-center gap-2">
+        <ArrowDownRightMini className="text-ui-fg-muted" />
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.returns.returnRequestedInfo", {
+            requestedItemsCount: activeReturn.items.length,
+          })}
+        </Text>
+      </div>
+
+      <Text size="small" leading="compact" className="text-ui-fg-muted">
+        {getRelativeDate(activeReturn.created_at)}
+      </Text>
     </div>
   )
 }
