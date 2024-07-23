@@ -27,6 +27,7 @@ jest.setTimeout(500000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const providerId = "manual_test-provider"
+const variantSkuWithInventory = "test-variant"
 let inventoryItem
 
 async function prepareDataFixtures({ container }) {
@@ -97,7 +98,7 @@ async function prepareDataFixtures({ container }) {
       variants: [
         {
           title: "Test variant",
-          sku: "test-variant",
+          sku: variantSkuWithInventory,
         },
         {
           title: "Test variant no inventory management",
@@ -353,7 +354,7 @@ medusaIntegrationTestRunner({
 
         const order = await createOrderFixture({ container, product, location })
         const itemWithInventory = order.items!.find(
-          (o) => o.variant_sku === "test-variant"
+          (o) => o.variant_sku === variantSkuWithInventory
         )!
 
         // Create a fulfillment
@@ -396,7 +397,7 @@ medusaIntegrationTestRunner({
         const [orderFulfill] = await remoteQuery(remoteQueryObject)
 
         let orderFulfillItemWithInventory = orderFulfill.items!.find(
-          (o) => o.variant_sku === "test-variant"
+          (o) => o.variant_sku === variantSkuWithInventory
         )!
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
@@ -447,7 +448,7 @@ medusaIntegrationTestRunner({
         )
 
         orderFulfillItemWithInventory = orderFulfillAfterCancelled.items!.find(
-          (o) => o.variant_sku === "test-variant"
+          (o) => o.variant_sku === variantSkuWithInventory
         )!
 
         expect(orderFulfillAfterCancelled.fulfillments).toHaveLength(1)

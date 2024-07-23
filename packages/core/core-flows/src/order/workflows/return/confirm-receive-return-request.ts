@@ -48,6 +48,7 @@ const validationStep = createStep(
   }
 )
 
+// Loop through the items in the return and prepare the inventory adjustment of items associated with each variant
 function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
   const inventoryAdjustment: {
     inventory_item_id: string
@@ -60,6 +61,7 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
 
   const productVariantInventoryItems = new Map<string, any>()
 
+  // Create the map of inventory item ids associated with each variant that have inventory management
   deepFlatMap(
     orderReturn.items,
     "item.variant.inventory_items.inventory.location_levels",
@@ -91,12 +93,12 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
   )
 
   if (hasManagedInventory && !hasStockLocation) {
-    // TODO: how to bypass this error?
     throw new Error(
       `Cannot receive the Return at location ${orderReturn.location_id}`
     )
   }
 
+  // Adjust the inventory of all inventory items of each variant in the return
   for (const [variantId, quantity] of Object.entries(returnedQuantityMap)) {
     const inventoryItemsByVariant = Array.from(
       productVariantInventoryItems.values()
@@ -199,9 +201,9 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
                 return
               }
 
-              const cur = returnedQuantityMap[variantId] ?? 0
+              const currentQuantity = returnedQuantityMap[variantId] ?? 0
               returnedQuantityMap[variantId] = MathBN.add(
-                cur,
+                currentQuantity,
                 act.details!.quantity as number
               )
             }

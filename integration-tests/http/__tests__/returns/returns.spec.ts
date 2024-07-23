@@ -148,18 +148,24 @@ medusaIntegrationTestRunner({
         )
       ).data.fulfillment_set
 
-      inventoryItem = await inventoryModule.createInventoryItems({
-        sku: "inv-1234",
-      })
+      inventoryItem = (
+        await api.post(
+          `/admin/inventory-items`,
+          { sku: "inv-1234" },
+          adminHeaders
+        )
+      ).data.inventory_item
 
-      await inventoryModule.createInventoryLevels([
+      await api.post(
+        `/admin/inventory-items/${inventoryItem.id}/location-levels`,
         {
           inventory_item_id: inventoryItem.id,
           location_id: location.id,
           stocked_quantity: 2,
           reserved_quantity: 0,
-        } as any,
-      ])
+        },
+        adminHeaders
+      )
 
       const remoteLink = container.resolve(
         ContainerRegistrationKeys.REMOTE_LINK
