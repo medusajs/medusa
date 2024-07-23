@@ -5,7 +5,7 @@ export async function configLoaderOverride(
   override: { clientUrl: string; debug?: boolean }
 ) {
   // in case it is not install as it is optional and required only when using this util
-  // ts-ignore
+  // @ts-ignore
   const { configManager } = await import("@medusajs/framework/config")
   const { configModule, error } = getConfigFile<
     ReturnType<typeof configManager.loadConfig>
