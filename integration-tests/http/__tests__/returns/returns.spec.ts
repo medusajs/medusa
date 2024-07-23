@@ -26,22 +26,27 @@ medusaIntegrationTestRunner({
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
-      const inventoryModule = container.resolve(
-        ModuleRegistrationName.INVENTORY
-      )
-      const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
-
-      const [product] = await productModule.createProducts([
-        {
-          title: "Test product",
-          variants: [
-            {
-              title: "Test variant",
-              sku: "test-variant",
-            },
-          ],
-        },
-      ])
+      const product = (
+        await api.post(
+          "/admin/products",
+          {
+            title: "Test product",
+            variants: [
+              {
+                title: "Test variant",
+                sku: "test-variant",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 10,
+                  },
+                ],
+              },
+            ],
+          },
+          adminHeaders
+        )
+      ).data.product
 
       returnReason = (
         await api.post(
