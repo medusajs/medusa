@@ -80,12 +80,12 @@ export const useInitiateReturn = (
   })
 }
 
-export const useCancelReturn = (
+export const useCancelReturnRequest = (
   id: string,
   options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.return.cancel(id),
+    mutationFn: () => sdk.admin.return.cancelRequest(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

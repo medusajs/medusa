@@ -34,6 +34,7 @@ import {
   useAddReturnItem,
   useAddReturnShipping,
   useCancelReturn,
+  useCancelReturnRequest,
   useConfirmReturnRequest,
   useDeleteReturnShipping,
   useRemoveReturnItem,
@@ -50,6 +51,8 @@ type ReturnCreateFormProps = {
 }
 
 let selectedItems: string[] = []
+
+let IS_CANCELING = false
 
 export const ReturnCreateForm = ({
   order,
@@ -88,7 +91,7 @@ export const ReturnCreateForm = ({
     useConfirmReturnRequest(activeReturn.id)
 
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
-    useCancelReturn(activeReturn.id)
+    useCancelReturnRequest(activeReturn.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id, order.id)
@@ -337,6 +340,18 @@ export const ReturnCreateForm = ({
       setInventoryMap(map)
     })
   }, [items])
+
+  useEffect(() => {
+    /**
+     * Unmount hook
+     */
+    return () => {
+      if (IS_CANCELING) {
+        cancelReturnRequest()
+        IS_CANCELING = false
+      }
+    }
+  }, [])
 
   const returnTotal = preview.return_requested_total
 
@@ -662,7 +677,7 @@ export const ReturnCreateForm = ({
               <RouteFocusModal.Close asChild>
                 <Button
                   type="button"
-                  // onClick={() => cancelReturnRequest()}
+                  onClick={() => (IS_CANCELING = true)}
                   variant="secondary"
                   size="small"
                 >
