@@ -32,17 +32,17 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_transaction_return_id" ON "order_transaction" (
         return_id
     )
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_transaction_claim_id" ON "order_transaction" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_transaction_exchange_id" ON "order_transaction" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NULL;
 
 
 
@@ -58,17 +58,17 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_shipping_return_id" ON "order_shipping" (
         return_id
     )
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_shipping_claim_id" ON "order_shipping" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_shipping_exchange_id" ON "order_shipping" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NULL;
 
 
 
@@ -85,17 +85,17 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_change_return_id" ON "order_change" (
         return_id
     )
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_claim_id" ON "order_change" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_exchange_id" ON "order_change" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NULL;
 
 
 
@@ -118,18 +118,17 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_change_action_return_id" ON "order_change_action" (
         return_id
     )
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_action_claim_id" ON "order_change_action" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_action_exchange_id" ON "order_change_action" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
-
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NULL;
 
     DO $$
       BEGIN
@@ -165,22 +164,22 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_return_order_id" ON "return" (
         order_id
     )
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_claim_id" ON "return" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_exchange_id" ON "return" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_display_id" ON "return" (
         display_id
     ) 
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
 
     CREATE TABLE IF NOT EXISTS "return_item" (
@@ -201,16 +200,16 @@ export class Migration20240604100512 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_return_item_deleted_at" ON "return_item" ("deleted_at")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_item_return_id" ON "return_item" ("return_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_item_item_id" ON "return_item" ("item_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_item_reason_id" ON "return_item" ("reason_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
 
 
@@ -233,16 +232,16 @@ export class Migration20240604100512 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_display_id" ON "order_exchange" ("display_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_deleted_at" ON "order_exchange" ("deleted_at")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_order_id" ON "order_exchange" ("order_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_return_id" ON "order_exchange" ("return_id")
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
 
     CREATE TABLE IF NOT EXISTS "order_exchange_item" (
@@ -260,13 +259,13 @@ export class Migration20240604100512 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_deleted_at" ON "order_exchange_item" ("deleted_at")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_exchange_id" ON "order_exchange_item" ("exchange_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_item_id" ON "order_exchange_item" ("item_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     DO $$
       BEGIN
@@ -297,20 +296,16 @@ export class Migration20240604100512 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_display_id" ON "order_claim" ("display_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_deleted_at" ON "order_claim" ("deleted_at")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_order_id" ON "order_claim" ("order_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_return_id" ON "order_claim" ("return_id")
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-
-
-
+    WHERE return_id IS NOT NULL AND deleted_at IS NULL;
 
     DO $$
         BEGIN
@@ -341,13 +336,13 @@ export class Migration20240604100512 extends Migration {
     );
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_item_deleted_at" ON "order_claim_item" ("deleted_at")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_item_claim_id" ON "order_claim_item" ("claim_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_item_item_id" ON "order_claim_item" ("item_id")
-    WHERE deleted_at IS NOT NULL;
+    WHERE deleted_at IS NULL;
 
     
     CREATE TABLE IF NOT EXISTS "order_claim_item_image" (
