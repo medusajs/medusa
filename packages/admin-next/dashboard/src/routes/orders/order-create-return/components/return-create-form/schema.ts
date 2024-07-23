@@ -5,8 +5,8 @@ export const ReturnCreateSchema = z.object({
     z.object({
       item_id: z.string(),
       quantity: z.number(),
-      reason_id: z.string().optional(),
-      note: z.string().optional(),
+      reason_id: z.string().optional().nullable(),
+      note: z.string().optional().nullable(),
     })
   ),
   location_id: z.string().optional(),
