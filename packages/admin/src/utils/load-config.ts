@@ -21,34 +21,35 @@ export const loadConfig = (isDev?: boolean): PluginOptions | null => {
   let config: PluginOptions = {
     serve: true,
     autoRebuild: false,
-    path: isDev ? "/" : "/app",
+    path: "/app",
     outDir: "build",
-    backend: isDev ? "http://localhost:9000" : "/",
-    develop: {
-      open: true,
-      port: 7001,
-      host: "localhost",
-      allowedHosts: "auto",
-    },
+    backend: "/",
+  }
+
+  if (isDev) {
+    config = {
+      ...config,
+      serve: false,
+      path: "/",
+      backend: "http://localhost:9000",
+      develop: {
+        open: true,
+        port: 7001,
+        host: "localhost",
+        allowedHosts: "auto",
+      },
+    }
   }
 
   if (typeof plugin !== "string") {
     const options = (plugin as { options: PluginOptions }).options ?? {}
 
-    const serve = options.serve !== undefined ? options.serve : config.serve
-
-    const serverUrl = serve
-      ? config.backend
-      : options.backend
-      ? options.backend
-      : "/"
-
     config = {
-      serve,
+      serve: isDev ? false : options.serve ?? config.serve,
       autoRebuild: options.autoRebuild ?? config.autoRebuild,
       path: options.path ?? config.path,
       outDir: options.outDir ?? config.outDir,
-      backend: serverUrl,
+      backend: options.backend ?? config.backend,
       develop: {
         open: options.develop?.open ?? config.develop.open,
         port: options.develop?.port ?? config.develop.port,
