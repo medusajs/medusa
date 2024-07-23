@@ -4,7 +4,7 @@ import { Logger } from "@medusajs/types"
 
 export class ConfigManager {
   /**
-   * A flag to secify if we are in product or not, determine weither an error would be critical and thrown or just logged as a warning in developement
+   * A flag to specify if we are in production or not, determine whether an error would be critical and thrown or just logged as a warning in developement
    * @private
    */
   readonly #isProduction: boolean = ["production", "prod"].includes(
@@ -116,23 +116,23 @@ export class ConfigManager {
 
     outputConfig.http = this.buildHttpConfig(projectConfig)
 
-    let workedMode = outputConfig?.workerMode!
+    let workerMode = outputConfig?.workerMode!
 
-    if (!isDefined(workedMode)) {
+    if (!isDefined(workerMode)) {
       const env = this.#envWorkMode
       if (isDefined(env)) {
         const workerModes = ["shared", "worker", "server"]
         if (workerModes.includes(env)) {
-          workedMode = env
+          workerMode = env
         }
       } else {
-        workedMode = "shared"
+        workerMode = "shared"
       }
     }
 
     return {
       ...outputConfig,
-      workerMode: workedMode,
+      workerMode,
     }
   }
 
