@@ -33,6 +33,8 @@ packages/*
 !packages/fulfillment
 !packages/fulfillment-manual
 
+!packages/framework
+
 
 **/models/*
 **/scripts/*

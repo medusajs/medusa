@@ -7,6 +7,7 @@ import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { initDb } from "./medusa-test-runner-utils/use-db"
+import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 
 const axios = require("axios").default
 
@@ -102,27 +103,6 @@ export function medusaIntegrationTestRunner({
     debug,
   }
 
-  const originalConfigLoader =
-    require("@medusajs/medusa/dist/loaders/config").default
-  require("@medusajs/medusa/dist/loaders/config").default = (
-    rootDirectory: string
-  ) => {
-    const config = originalConfigLoader(rootDirectory)
-    config.projectConfig.databaseUrl = dbConfig.clientUrl
-    config.projectConfig.databaseLogging = !!dbConfig.debug
-    config.projectConfig.databaseDriverOptions = dbConfig.clientUrl.includes(
-      "localhost"
-    )
-      ? {}
-      : {
-          connection: {
-            ssl: { rejectUnauthorized: false },
-          },
-          idle_in_transaction_session_timeout: 20000,
-        }
-    return config
-  }
-
   const cwd = process.cwd()
 
   let shutdown = async () => void 0
@@ -159,12 +139,13 @@ export function medusaIntegrationTestRunner({
   let isFirstTime = true
 
   const beforeAll_ = async () => {
+    await configLoaderOverride(cwd, dbConfig)
+
     console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)
 
     try {
       dbUtils.pgConnection_ = await initDb({
-        cwd,
         env,
       })
     } catch (error) {
