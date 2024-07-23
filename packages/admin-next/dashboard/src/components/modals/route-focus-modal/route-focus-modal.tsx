@@ -42,6 +42,9 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
       <RouteModalProvider prev={prev}>
         <StackedModalProvider onOpenChange={onStackedModalOpen}>
           <FocusModal.Content
+            onEscapeKeyDown={(e) => {
+              e.preventDefault()
+            }}
             className={clx({
               "!bg-ui-bg-disabled !inset-x-5 !inset-y-3": stackedModalOpen,
             })}

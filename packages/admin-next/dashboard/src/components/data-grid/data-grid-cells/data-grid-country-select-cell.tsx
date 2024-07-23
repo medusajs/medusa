@@ -12,10 +12,13 @@ export const DataGridCountrySelectCell = <TData, TValue = any>({
   field,
   context,
 }: DataGridCellProps<TData, TValue>) => {
-  const { control, attributes, container, onChange } = useDataGridCell({
+  const { control, renderProps } = useDataGridCell({
     field,
     context,
+    type: "select",
   })
+
+  const { container, input } = renderProps
 
   return (
     <Controller

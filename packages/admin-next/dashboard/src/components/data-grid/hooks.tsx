@@ -1,5 +1,12 @@
 import { CellContext } from "@tanstack/react-table"
-import { MouseEvent, useContext, useEffect, useMemo, useRef } from "react"
+import React, {
+  MouseEvent,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { DataGridContext } from "./context"
 import {
   CellCoords,
@@ -23,11 +30,16 @@ const useDataGridContext = () => {
 type UseDataGridCellProps<TData, TValue> = {
   field: string
   context: CellContext<TData, TValue>
+  type: "text" | "number" | "select"
 }
+
+const textCharacterRegex = /^.$/u
+const numberCharacterRegex = /^[0-9]$/u
 
 export const useDataGridCell = <TData, TValue>({
   field,
   context,
+  type,
 }: UseDataGridCellProps<TData, TValue>) => {
   const { rowIndex, columnIndex } = context as DataGridCellContext<
     TData,
@@ -46,59 +58,110 @@ export const useDataGridCell = <TData, TValue>({
     anchor,
     selection,
     dragSelection,
-    startEdit,
-    getInputMouseDownHandler,
-    getInputChangeHandler,
-    onInputBlur,
-    onInputFocus,
+    setIsEditing,
+    setIsSelecting,
+    setRangeEnd,
     getWrapperFocusHandler,
-    getOverlayMouseDownHandler,
     getWrapperMouseOverHandler,
   } = useDataGridContext()
+
+  const [showOverlay, setShowOverlay] = useState(true)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLElement>(null)
 
-  function handleOverlayMouseDown(e: MouseEvent) {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleOverlayMouseDown = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
 
-    if (e.detail === 2) {
-      inputRef.current?.focus()
-      startEdit()
+      if (e.detail === 2) {
+        if (inputRef.current) {
+          setShowOverlay(false)
 
-      return
-    }
+          inputRef.current.focus()
 
-    if (containerRef.current) {
-      containerRef.current.focus()
-    }
-  }
+          return
+        }
+      }
 
-  const showOverlay = useMemo(() => {
-    // return true if isAnchor and inputRef.current does not have focus
-    return anchor ? !inputRef.current?.contains(document.activeElement) : false
-  }, [anchor])
+      if (e.shiftKey) {
+        setRangeEnd(coords)
+        return
+      }
+
+      if (containerRef.current) {
+        setIsSelecting(true)
+        containerRef.current.focus()
+      }
+    },
+    [setIsSelecting, setRangeEnd, coords]
+  )
+
+  const handleInputBlur = useCallback(() => {
+    setShowOverlay(true)
+    setIsEditing(false)
+  }, [setIsEditing])
+
+  const handleInputFocus = useCallback(() => {
+    setShowOverlay(false)
+    setIsEditing(true)
+  }, [setIsEditing])
+
+  const validateKeyStroke = useCallback(
+    (key: string) => {
+      if (type === "number") {
+        return numberCharacterRegex.test(key)
+      }
+
+      return textCharacterRegex.test(key)
+    },
+    [type]
+  )
+
+  const handleContainerKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!inputRef.current || !validateKeyStroke(e.key) || !showOverlay) {
+        return
+      }
+
+      const event = new KeyboardEvent(e.type, e.nativeEvent)
+
+      inputRef.current.focus()
+      setShowOverlay(false)
+
+      // if the inputRef can use .select() then we can use it here
+      if (inputRef.current instanceof HTMLInputElement) {
+        inputRef.current.select()
+      }
+
+      inputRef.current.dispatchEvent(event)
+    },
+    [showOverlay, validateKeyStroke]
+  )
 
   const isAnchor = useMemo(() => {
     return anchor ? isCellMatch(coords, anchor) : false
   }, [anchor, coords])
 
-  useEffect(() => {
-    if (isAnchor && !containerRef.current?.contains(document.activeElement)) {
-      containerRef.current?.focus()
-    }
-  }, [isAnchor])
+  const isSelected = useMemo(() => {
+    return selection[id] || false
+  }, [selection, id])
+
+  const isDragSelected = useMemo(() => {
+    return dragSelection[id] || false
+  }, [dragSelection, id])
 
   const renderProps: DataGridCellRenderProps = {
     container: {
-      isAnchor: anchor ? isCellMatch(coords, anchor) : false,
-      isSelected: selection[id] || false,
-      isDragSelected: dragSelection[id] || false,
+      isAnchor,
+      isSelected,
+      isDragSelected,
       showOverlay,
       innerProps: {
         ref: containerRef,
         onMouseOver: getWrapperMouseOverHandler(coords),
+        onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
       },
       overlayProps: {
@@ -107,10 +170,8 @@ export const useDataGridCell = <TData, TValue>({
     },
     input: {
       ref: inputRef,
-      onMouseDown: getInputMouseDownHandler(coords),
-      // onChange: getInputChangeHandler(field),
-      // onBlur: onInputBlur,
-      // onFocus: onInputFocus,
+      onBlur: handleInputBlur,
+      onFocus: handleInputFocus,
       "data-row": coords.row,
       "data-col": coords.col,
       "data-cell-id": id,

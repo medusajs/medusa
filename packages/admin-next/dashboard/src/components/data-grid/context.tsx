@@ -7,21 +7,14 @@ type DataGridContextType<TForm extends FieldValues> = {
   anchor: CellCoords | null
   selection: Record<string, boolean>
   dragSelection: Record<string, boolean>
-  startEdit: () => void
+  // Grid handlers
+  setIsEditing: (value: boolean) => void
+  setIsSelecting: (value: boolean) => void
+  setRangeEnd: (coords: CellCoords) => void
   // Form state and handlers
   register: UseFormRegister<TForm>
   control: Control<TForm>
-  // Input handlers
-  getInputMouseDownHandler: (
-    coordinates: CellCoords
-  ) => (e: MouseEvent<HTMLElement>) => void
-  onInputFocus: () => void
-  onInputBlur: () => void
   getInputChangeHandler: (field: Path<TForm>) => (next: any, prev: any) => void
-  // Overlay handlers
-  getOverlayMouseDownHandler: (
-    coordinates: CellCoords
-  ) => (e: MouseEvent<HTMLElement>) => void
   // Wrapper handlers
   getWrapperFocusHandler: (
     coordinates: CellCoords

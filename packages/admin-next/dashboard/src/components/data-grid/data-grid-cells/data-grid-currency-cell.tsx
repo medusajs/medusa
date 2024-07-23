@@ -20,6 +20,7 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
   const { control, renderProps } = useDataGridCell({
     field,
     context,
+    type: "number",
   })
 
   const { container, input } = renderProps
@@ -50,8 +51,13 @@ const Inner = ({
   inputProps: InputProps
   currencyInfo: CurrencyInfo
 }) => {
-  const { value, onChange, ref, ...rest } = field
-  const { ref: inputRef, onMouseDown: _, ...attributes } = inputProps
+  const { value, onChange, onBlur, ref, ...rest } = field
+  const {
+    ref: inputRef,
+    onBlur: onInputBlur,
+    onFocus,
+    ...attributes
+  } = inputProps
 
   const combinedRed = useCombinedRefs(inputRef, ref)
 
@@ -72,6 +78,11 @@ const Inner = ({
         onValueChange={(_value, _name, values) => {
           onChange(values?.value)
         }}
+        onBlur={() => {
+          onBlur()
+          onInputBlur()
+        }}
+        onFocus={onFocus}
         decimalScale={currencyInfo.decimal_digits}
         decimalsLimit={currencyInfo.decimal_digits}
         tabIndex={-1}

@@ -1,11 +1,5 @@
 import { CellContext } from "@tanstack/react-table"
-import {
-  FocusEvent,
-  MouseEvent,
-  PropsWithChildren,
-  ReactNode,
-  RefObject,
-} from "react"
+import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 
 export type CellCoords = {
   row: number
@@ -42,7 +36,8 @@ export interface DataGridCellRenderProps {
 
 export interface InputProps {
   ref: RefObject<HTMLElement>
-  onMouseDown: (e: MouseEvent<HTMLElement>) => void
+  onBlur: () => void
+  onFocus: () => void
   "data-row": number
   "data-col": number
   "data-cell-id": string
@@ -51,12 +46,13 @@ export interface InputProps {
 
 interface InnerProps {
   ref: RefObject<HTMLDivElement>
-  onMouseOver: ((e: MouseEvent<HTMLElement>) => void) | undefined
-  onFocus: (e: FocusEvent<HTMLElement>) => void
+  onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
+  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void
+  onFocus: (e: React.FocusEvent<HTMLElement>) => void
 }
 
 interface OverlayProps {
-  onMouseDown: (e: MouseEvent<HTMLElement>) => void
+  onMouseDown: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 export interface DataGridCellContainerProps extends PropsWithChildren<{}> {

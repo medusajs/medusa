@@ -25,7 +25,7 @@ import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
-import { Grid, PasteCommand, SortedSet, UpdateCommand } from "../models"
+import { Grid, PasteCommand, UpdateCommand } from "../models"
 import { CellCoords } from "../types"
 import {
   convertArrayToPrimitive,
@@ -74,9 +74,6 @@ export const DataGridRoot = <
 
   const { redo, undo, execute } = useCommandHistory()
   const { register, control, getValues, setValue } = state
-
-  const cols = useMemo(() => new SortedSet<number>(), [])
-  const rows = useMemo(() => new SortedSet<number>(), [])
 
   const [anchor, setAnchor] = useState<CellCoords | null>(null)
   const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
@@ -494,8 +491,32 @@ export const DataGridRoot = <
     [anchor, execute, getValues, isEditing, setValue]
   )
 
+  const handleEscapeKey = useCallback(
+    (e: KeyboardEvent) => {
+      console.log("triggered", isEditing)
+
+      if (!isEditing) {
+        return
+      }
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      const activeElement = document.activeElement as HTMLElement | null
+
+      if (!activeElement) {
+        return
+      }
+
+      activeElement.blur()
+    },
+    [isEditing]
+  )
+
   const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
+      console.log("Keydown", e.key)
+
       if (ARROW_KEYS.includes(e.key)) {
         handleKeyboardNavigation(e)
         return
@@ -520,8 +541,14 @@ export const DataGridRoot = <
         handleEnterKey(e)
         return
       }
+
+      if (e.key === "Escape") {
+        handleEscapeKey(e)
+        return
+      }
     },
     [
+      handleEscapeKey,
       handleKeyboardNavigation,
       handleUndo,
       handleSpaceKey,
@@ -668,28 +695,6 @@ export const DataGridRoot = <
     [clearRange]
   )
 
-  const getInputMouseDownHandler = useCallback((coords: CellCoords) => {
-    return (e: MouseEvent<HTMLElement>) => {
-      e.stopPropagation()
-      e.preventDefault()
-
-      if (e.detail !== 2) {
-        return
-      }
-
-      const container = e.target as HTMLElement
-      const id = generateCellId(coords)
-
-      // checkt if the container has the attribute data-cell-id
-      if (container.hasAttribute("data-cell-id")) {
-        container.focus()
-        return
-      }
-
-      const cell = container.querySelector(`[data-cell-id="${id}"]`)
-    }
-  }, [])
-
   const getWrapperMouseOverHandler = useCallback(
     (coords: CellCoords) => {
       if (!isDragging && !isSelecting) {
@@ -714,14 +719,6 @@ export const DataGridRoot = <
     },
     [anchor, isDragging, isSelecting]
   )
-
-  const onInputFocus = useCallback(() => {
-    setIsEditing(true)
-  }, [])
-
-  const onInputBlur = useCallback(() => {
-    setIsEditing(false)
-  }, [])
 
   const getInputChangeHandler = useCallback(
     // Using `any` here as the generic type of Path<TFieldValues> will
@@ -805,40 +802,34 @@ export const DataGridRoot = <
     setRangeEnd(anchor)
   }, [anchor, rangeEnd])
 
-  const startEdit = useCallback(() => {
-    setIsEditing(true)
-  }, [])
-
   const values = useMemo(
     () => ({
-      register,
-      control,
       anchor,
+      control,
       selection,
       dragSelection,
-      startEdit,
+      setIsSelecting,
+      setIsEditing,
+      setRangeEnd,
       getWrapperFocusHandler,
-      getOverlayMouseDownHandler,
-      getInputMouseDownHandler,
       getInputChangeHandler,
-      onInputFocus,
-      onInputBlur,
+      getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
+      register,
     }),
     [
       anchor,
       control,
+      selection,
       dragSelection,
-      startEdit,
+      setIsSelecting,
+      setIsEditing,
+      setRangeEnd,
       getWrapperFocusHandler,
       getInputChangeHandler,
-      getInputMouseDownHandler,
       getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
-      onInputBlur,
-      onInputFocus,
       register,
-      selection,
     ]
   )
 

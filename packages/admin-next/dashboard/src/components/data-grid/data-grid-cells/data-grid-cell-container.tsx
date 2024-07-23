@@ -15,15 +15,12 @@ export const DataGridCellContainer = ({
 }: DataGridCellContainerProps) => {
   return (
     <div
-      className={clx(
-        "bg-ui-bg-base relative size-full outline-none focus:bg-red-400",
-        {
-          "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
-          "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
-            isSelected || isAnchor,
-          "bg-ui-bg-subtle": isDragSelected && !isAnchor,
-        }
-      )}
+      className={clx("bg-ui-bg-base relative size-full outline-none", {
+        "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
+        "bg-ui-bg-highlight  [&:has([data-field]:focus)]:bg-ui-bg-base":
+          isSelected || isAnchor,
+        "bg-ui-bg-subtle": isDragSelected && !isAnchor,
+      })}
       tabIndex={0}
       {...innerProps}
     >
