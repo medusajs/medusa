@@ -146,7 +146,6 @@ export function medusaIntegrationTestRunner({
 
     try {
       dbUtils.pgConnection_ = await initDb({
-        cwd,
         env,
       })
     } catch (error) {

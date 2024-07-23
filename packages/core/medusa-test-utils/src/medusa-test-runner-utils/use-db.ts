@@ -5,19 +5,15 @@ import {
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 
-export async function initDb({
-  cwd,
-  env = {},
-}: {
-  cwd: string
-  env?: Record<any, any>
-}) {
+export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   if (isObject(env)) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
   const container = createMedusaContainer()
 
+  // in case it is not install as it is optional and required only when using this util
+  // @ts-ignore
   const { configManager } = await import("@medusajs/framework/config")
   const configModule = configManager.config
 
