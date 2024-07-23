@@ -159,10 +159,8 @@ medusaIntegrationTestRunner({
       await api.post(
         `/admin/inventory-items/${inventoryItem.id}/location-levels`,
         {
-          inventory_item_id: inventoryItem.id,
           location_id: location.id,
           stocked_quantity: 2,
-          reserved_quantity: 0,
         },
         adminHeaders
       )
