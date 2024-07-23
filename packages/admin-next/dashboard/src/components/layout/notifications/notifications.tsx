@@ -6,10 +6,11 @@ import {
 import { Drawer, Heading, IconButton, Label, Text } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useNotifications } from "../../../hooks/api"
 import { HttpTypes } from "@medusajs/types"
 import { formatDistance } from "date-fns"
 import { Divider } from "../../common/divider"
+import { InfiniteList } from "../../common/infinite-list"
+import { sdk } from "../../../lib/client"
 
 interface NotificationData {
   title: string
@@ -24,12 +25,6 @@ interface NotificationData {
 export const Notifications = () => {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
-
-  // TODO: Make it infinitely scrollable
-  const { notifications } = useNotifications(
-    { channel: "feed", limit: 10 },
-    { enabled: open }
-  )
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -57,14 +52,32 @@ export const Notifications = () => {
       </Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>
-          <Heading>{t("notifications.domain")}</Heading>
+          <Drawer.Title asChild>
+            <Heading>{t("notifications.domain")}</Heading>
+          </Drawer.Title>
+          <Drawer.Description className="sr-only">
+            {t("notifications.accessibility.description")}
+          </Drawer.Description>
         </Drawer.Header>
-        <Drawer.Body className="overflow-y-auto">
-          {notifications?.map((notification) => {
-            return (
-              <Notification key={notification.id} notification={notification} />
-            )
-          })}
+        <Drawer.Body className="overflow-y-auto px-0">
+          <InfiniteList<
+            HttpTypes.AdminNotificationListResponse,
+            HttpTypes.AdminNotification,
+            HttpTypes.AdminNotificationListParams
+          >
+            responseKey="notifications"
+            queryKey={["notifications"]}
+            queryFn={(params) => sdk.admin.notification.list(params)}
+            queryOptions={{ enabled: open }}
+            renderItem={(notification) => {
+              return (
+                <Notification
+                  key={notification.id}
+                  notification={notification}
+                />
+              )
+            }}
+          />
         </Drawer.Body>
       </Drawer.Content>
     </Drawer>
@@ -85,7 +98,7 @@ const Notification = ({
 
   return (
     <>
-      <div className="align-center mt-2 flex flex-row justify-center">
+      <div className="align-center mt-2 flex flex-row justify-center px-5">
         <div className="text-ui-fg-muted mr-3">
           <InformationCircleSolid />
         </div>
