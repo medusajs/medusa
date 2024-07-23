@@ -1,9 +1,5 @@
-process.chdir(__dirname)
-
 module.exports = {
-  testEnvironment: `node`,
-  rootDir: "./",
-  transformIgnorePatterns: ["/dist", "/node_modules/"],
+  moduleNameMapper: {},
   transform: {
     "^.+\\.[jt]s$": [
       "@swc/jest",
@@ -11,10 +7,11 @@ module.exports = {
         jsc: {
           parser: { syntax: "typescript", decorators: true },
           transform: { decoratorMetadata: true },
-          target: "es2021",
         },
       },
     ],
   },
-  setupFiles: ["../setup-env.js"],
+  testEnvironment: `node`,
+  moduleFileExtensions: [`js`, `ts`],
+  modulePathIgnorePatterns: ["dist/"],
 }

@@ -1,24 +1,32 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "es2019"],
-    "target": "es2022",
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,
     "declaration": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+    },
   },
+
   "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }
