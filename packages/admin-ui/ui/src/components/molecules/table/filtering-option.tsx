@@ -3,6 +3,7 @@ import clsx from "clsx"
 import React, { useState } from "react"
 import CheckIcon from "../../fundamentals/icons/check-icon"
 import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
+import i18n from "../../../i18n"
 
 export type FilteringOptionProps = {
   title: string
@@ -30,7 +31,7 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
       {...props}
     >
       <span className="">{title}:</span>
-      <DropdownMenu.Root onOpenChange={setOpen}>
+      <DropdownMenu.Root dir={i18n.dir()} onOpenChange={setOpen}>
         <DropdownMenu.Trigger
           asChild
           className={clsx(

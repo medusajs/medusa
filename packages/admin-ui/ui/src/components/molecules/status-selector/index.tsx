@@ -2,6 +2,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import React from "react"
 import Button from "../../fundamentals/button"
 import StatusIndicator from "../../fundamentals/status-indicator"
+import i18n from "../../../i18n"
 
 type StatusSelectorProps = {
   isDraft: boolean
@@ -18,7 +19,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({
 }) => {
   return (
     <div>
-      <DropdownMenu.Root>
+      <DropdownMenu.Root dir={i18n.dir()}>
         <DropdownMenu.Trigger asChild>
           <Button variant="ghost" size="small">
             <StatusIndicator

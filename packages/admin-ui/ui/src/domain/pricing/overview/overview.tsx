@@ -50,6 +50,7 @@ import {
 } from "../../../utils/search-param-utils"
 import { PriceListStatus } from "../forms/price-list-details-form"
 import { PriceListNew } from "../new"
+import i18n from "../../../i18n"
 
 const PAGE_SIZE = 10
 const TABLE_HEIGHT = (PAGE_SIZE + 1) * 48
@@ -450,9 +451,8 @@ const PriceListTableRowActions = ({ row }: PriceListTableRowActionsProps) => {
     : false
 
   const isActive = row.original.status === "active"
-
   return (
-    <DropdownMenu>
+    <DropdownMenu dir={i18n.dir()}>
       <DropdownMenu.Trigger asChild>
         <IconButton variant="transparent">
           <EllipsisHorizontal className="text-ui-fg-subtle" />

@@ -40,6 +40,7 @@ import {
   type Point,
   type PriceListProductPricesSchema,
 } from "./types"
+import i18n from "../../../../i18n"
 
 type BulkEditorProps = {
   product: Product
@@ -1385,11 +1386,10 @@ const PriceListProductPricesForm = ({
 
     setAnchorRect(styles)
   }, [anchor])
-
   return (
     <div className="h-full">
       <div className="border-ui-border-base flex items-center justify-between border-b px-4 py-3">
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu dir={i18n.dir()} open={open} onOpenChange={setOpen}>
           <DropdownMenu.Trigger asChild>
             <Button variant="secondary" type="button">
               <Adjustments className="text-ui-fg-subtle" />

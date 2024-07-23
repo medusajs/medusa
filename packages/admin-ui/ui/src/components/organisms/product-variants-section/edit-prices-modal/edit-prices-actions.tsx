@@ -6,6 +6,7 @@ import { useAdminRegions, useAdminStore } from "medusa-react"
 import Button from "../../../fundamentals/button"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
 import CheckIcon from "../../../fundamentals/icons/check-icon"
+import i18n from "../../../../i18n"
 
 type EditPricesActionsProps = {
   selectedCurrencies: string[]
@@ -34,13 +35,12 @@ function EditPricesActions(props: EditPricesActionsProps) {
   const regions = useMemo(() => {
     return (_regions || []).sort((r1, r2) => r1.name.localeCompare(r2.name))
   }, [_regions])
-
   return (
     <div
       style={{ fontSize: 13 }}
       className="border-ui-border-base flex items-center gap-2 border-b border-t px-4 py-[12px]"
     >
-      <DropdownMenu.Root>
+      <DropdownMenu.Root dir={i18n.dir()}>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
             Currencies

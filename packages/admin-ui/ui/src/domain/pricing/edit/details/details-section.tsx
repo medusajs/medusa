@@ -29,6 +29,7 @@ import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { PriceListStatus } from "../../forms/price-list-details-form"
 import { EditDetailsDrawer } from "./details-drawer"
+import i18n from "../../../../i18n"
 
 type PriceListDetailsSectionProps = {
   priceList: PriceList
@@ -285,9 +286,8 @@ const PriceListStatusMenu = ({
       }
     )
   }
-
   return (
-    <DropdownMenu>
+    <DropdownMenu dir={i18n.dir()}>
       <DropdownMenu.Trigger asChild disabled={isExpired}>
         <Button
           variant="secondary"
@@ -328,7 +328,7 @@ const PriceListMenu = ({ onDelete, onOpenDrawer }: PriceListMenuProps) => {
   const { t } = useTranslation()
 
   return (
-    <DropdownMenu>
+    <DropdownMenu dir={i18n.dir()}>
       <DropdownMenu.Trigger asChild>
         <IconButton>
           <EllipsisHorizontal />

@@ -3,6 +3,7 @@ import Picker, { EmojiStyle, SkinTones } from "emoji-picker-react"
 import React from "react"
 import Button from "../../fundamentals/button"
 import HappyIcon from "../../fundamentals/icons/happy-icon"
+import i18n from "../../../i18n"
 
 type indexProps = {
   onEmojiClick: (emoji: string) => void
@@ -10,7 +11,7 @@ type indexProps = {
 
 const EmojiPicker: React.FC<indexProps> = ({ onEmojiClick }) => {
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root dir={i18n.dir()}>
       <DropdownMenu.Trigger asChild>
         <Button
           variant="ghost"

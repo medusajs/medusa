@@ -6,6 +6,7 @@ import PlusIcon from "../../fundamentals/icons/plus-icon"
 import Button from "../../fundamentals/button"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import Checkbox from "../../atoms/checkbox"
+import i18n from "../../../i18n"
 
 /** ****************** TYPES ********************/
 
@@ -125,9 +126,8 @@ function FieldsMenu(props: FieldsMenuProps) {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [contentRef])
-
   return (
-    <DropdownMenu.Root open={open}>
+    <DropdownMenu.Root dir={i18n.dir()} open={open}>
       <DropdownMenu.Trigger>
         <Button
           onClick={onTriggerClick}

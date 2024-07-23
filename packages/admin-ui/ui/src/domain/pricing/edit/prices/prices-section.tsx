@@ -51,6 +51,7 @@ import {
 import { ProductFilter, ProductFilterMenu } from "../../components"
 import { AddProductsModal } from "./add-products-modal"
 import { EditPricesModal } from "./edit-prices-modal"
+import i18n from "../../../../i18n"
 
 type PriceListPricesSectionProps = {
   priceList: PriceList
@@ -260,7 +261,6 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
     manualPagination: true,
     onPaginationChange: setPagination,
   })
-
   return (
     <Container className="p-0">
       <div className="flex items-center justify-between px-8 pb-4 pt-6">
@@ -292,7 +292,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <DropdownMenu>
+          <DropdownMenu dir={i18n.dir()}>
             <DropdownMenu.Trigger asChild>
               <IconButton>
                 <EllipsisHorizontal />
@@ -627,7 +627,7 @@ const PriceListProductRowActions = ({
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu dir={i18n.dir()}>
       <DropdownMenu.Trigger asChild>
         <IconButton variant="transparent">
           <EllipsisHorizontal />

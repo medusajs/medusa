@@ -11,7 +11,7 @@ import EllipsisVerticalIcon from "../../../fundamentals/icons/ellipsis-vertical-
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
 import WarningCircleIcon from "../../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../../fundamentals/icons/x-circle-icon"
-
+import i18n from "../../../../i18n"
 export type MetadataField = {
   key: string
   value: string
@@ -245,13 +245,12 @@ const MetadataRow = ({
 }: MetadataRowProps) => {
   const itemClasses =
     "px-base py-[6px] outline-none flex items-center gap-x-xsmall hover:bg-grey-5 focus:bg-grey-10 transition-colors cursor-pointer"
-
   return (
     <div className="last-of-type:rounded-b-rounded group/metadata relative">
       <div className="divide-grey-20 [&>div]:px-base [&>div]:py-xsmall grid grid-cols-[165px_1fr] divide-x rtl:divide-x-reverse  divide-solid">
         {children}
       </div>
-      <DropdownMenu.Root>
+      <DropdownMenu.Root dir={i18n.dir()}>
         <DropdownMenu.Trigger asChild>
           <Button
             variant="secondary"
