@@ -1,3 +1,5 @@
+import { BigNumberInput } from "../../totals/big-number"
+
 export interface CreateInventoryLevelInput {
   /**
    * The ID of the associated inventory item.
@@ -66,5 +68,5 @@ export type BulkAdjustInventoryLevelInput = {
   /**
    * The quantity to adjust the inventory level by.
    */
-  adjustment: number // TODO: BigNumberInput
+  adjustment: BigNumberInput
 } & UpdateInventoryLevelInput

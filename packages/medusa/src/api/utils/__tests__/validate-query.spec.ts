@@ -195,7 +195,7 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: ["id", "created_at"],
+        select: ["id"],
       })
     )
 
@@ -406,13 +406,13 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: ["store.name", "created_at", "id"],
+        select: ["store.name", "id"],
         relations: ["store"],
       })
     )
     expect(mockRequest.remoteQueryConfig).toEqual(
       expect.objectContaining({
-        fields: ["store.name", "created_at", "id"],
+        fields: ["store.name", "id"],
       })
     )
   })

@@ -706,15 +706,10 @@ medusaIntegrationTestRunner({
       // TODO: This doesn't work currently, but worked in v1
       it.skip("returns a list of ordered products by variants prices ASC", async () => {})
 
-      // BREAKING: It seems `id` and `created_at` is always returned, even if not in the fields params
       it("products contain only fields defined with `fields` param", async () => {
         const response = await api.get("/store/products?fields=handle")
         expect(response.status).toEqual(200)
-        expect(Object.keys(response.data.products[0])).toEqual([
-          "handle",
-          "created_at",
-          "id",
-        ])
+        expect(Object.keys(response.data.products[0])).toEqual(["handle", "id"])
       })
 
       it("returns a list of products in collection", async () => {

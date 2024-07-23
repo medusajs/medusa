@@ -92,7 +92,7 @@ export const createOrderShipmentWorkflow = createWorkflow(
     const fulfillmentData = transform({ input }, ({ input }) => {
       return {
         id: input.fulfillment_id,
-        labels: input.labels,
+        labels: input.labels ?? [],
       }
     })
 
