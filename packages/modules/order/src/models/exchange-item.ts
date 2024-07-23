@@ -105,12 +105,12 @@ export default class OrderExchangeItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "oexcitem")
-    this.exchange_id = this.exchange?.id
+    this.exchange_id ??= this.exchange?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "oexcitem")
-    this.exchange_id = this.exchange?.id
+    this.exchange_id ??= this.exchange?.id
   }
 }

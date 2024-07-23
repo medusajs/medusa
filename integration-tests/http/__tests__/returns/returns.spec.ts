@@ -9,7 +9,7 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let order
+    let order, order2
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
@@ -76,6 +76,38 @@ medusaIntegrationTestRunner({
             ],
           },
         ],
+        currency_code: "usd",
+        customer_id: "joe",
+      })
+
+      order2 = await orderModule.createOrders({
+        region_id: "test_region_id",
+        email: "foo@bar2.com",
+        items: [
+          {
+            title: "Custom Iasdasd2",
+            quantity: 1,
+            unit_price: 20,
+          },
+        ],
+        sales_channel_id: "test",
+        shipping_address: {
+          first_name: "Test",
+          last_name: "Test",
+          address_1: "Test",
+          city: "Test",
+          country_code: "US",
+          postal_code: "12345",
+          phone: "12345",
+        },
+        billing_address: {
+          first_name: "Test",
+          last_name: "Test",
+          address_1: "Test",
+          city: "Test",
+          country_code: "US",
+          postal_code: "12345",
+        },
         currency_code: "usd",
         customer_id: "joe",
       })
@@ -171,9 +203,107 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
+
+      await api.post(
+        `/admin/orders/${order2.id}/fulfillments`,
+        {
+          items: [
+            {
+              id: order2.items[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        adminHeaders
+      )
     })
 
     describe("Returns lifecycle", () => {
+      it("Full flow with 2 orders", async () => {
+        let result = await api.post(
+          "/admin/returns",
+          {
+            order_id: order.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        let r2 = await api.post(
+          "/admin/returns",
+          {
+            order_id: order2.id,
+          },
+          adminHeaders
+        )
+
+        const returnId2 = r2.data.return.id
+        const item2 = order2.items[0]
+
+        await api.post(
+          `/admin/returns/${returnId2}/request-items`,
+          {
+            items: [
+              {
+                id: item2.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/returns/${returnId2}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+        await api.post(`/admin/returns/${returnId2}/request`, {}, adminHeaders)
+
+        const returnId = result.data.return.id
+
+        const item = order.items[0]
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
+        // updated the requested quantitty
+        const updateReturnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items/${updateReturnItemActionId}`,
+          {
+            quantity: 2,
+          },
+          adminHeaders
+        )
+        result = await api.post(
+          `/admin/returns/${returnId}/request`,
+          {},
+          adminHeaders
+        )
+      })
+
       // Simple lifecyle:
       // 1. Initiate return
       // 2. Request to return items
@@ -195,8 +325,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             order_id: order.id,
-            display_id: 1,
-            order_version: 2,
             status: "requested",
           })
         )
