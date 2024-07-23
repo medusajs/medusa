@@ -41,7 +41,10 @@ export const CartPromotion: ModuleJoinerConfig = {
     {
       serviceName: Modules.CART,
       fieldAlias: {
-        promotions: "cart_link.promotions",
+        promotions: {
+          path: "cart_link.promotions",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.CartPromotion,

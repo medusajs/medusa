@@ -42,7 +42,10 @@ export const OrderFulfillment: ModuleJoinerConfig = {
     {
       serviceName: Modules.ORDER,
       fieldAlias: {
-        fulfillments: "fulfillment_link.fulfillments",
+        fulfillments: {
+          path: "fulfillment_link.fulfillments",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.OrderFulfillment,
