@@ -814,7 +814,7 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderLineItemAdjustmentDTO[]>
   createLineItemAdjustments(
     data: CreateOrderAdjustmentDTO
-  ): Promise<OrderLineItemAdjustmentDTO>
+  ): Promise<OrderLineItemAdjustmentDTO[]>
   createLineItemAdjustments(
     orderId: string,
     data: CreateOrderAdjustmentDTO[]
