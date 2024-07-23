@@ -99,9 +99,22 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderDTO>} The retrieved order.
    *
    * @example
+   * A simple example that retrieves an order change by its ID:
+   * 
    * ```ts
-   * const result = await orderModuleService.retrieveOrder(
+   * const order = await orderModuleService.retrieveOrder(
    *   "123"
+   * )
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const order = await orderModuleService.retrieveOrder(
+   *   "123",
+   *   {
+   *     relations: ["items"]
+   *   }
    * )
    * ```
    *
@@ -216,9 +229,24 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<ReturnDTO>} The retrieved return.
    *
    * @example
+   * A simple example that retrieves an order change by its ID:
+   * 
+   * ```ts
    * const orderReturn = await orderModuleService.retrieveReturn(
    *   "123"
    * )
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const orderReturn = await orderModuleService.retrieveReturn(
+   *   "123",
+   *   {
+   *     relations: ["order"]
+   *   }
+   * )
+   * ```
    */
   retrieveReturn(
     returnId: string,
@@ -328,9 +356,24 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderClaimDTO>} The retrieved order claim.
    *
    * @example
+   * A simple example that retrieves an order change by its ID:
+   * 
+   * ```ts
    * const claim = await orderModuleService.retrieveOrderClaim(
    *   "123"
    * )
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const claim = await orderModuleService.retrieveOrderClaim(
+   *   "123",
+   *   {
+   *     relations: ["order"]
+   *   }
+   * )
+   * ```
    */
   retrieveOrderClaim(
     claimId: string,
@@ -440,9 +483,24 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderExchangeDTO>} The retrieved order exchange.
    *
    * @example
+   * A simple example that retrieves an order change by its ID:
+   * 
+   * ```ts
    * const exchange = await orderModuleService.retrieveOrderExchange(
    *   "123"
    * )
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const exchange = await orderModuleService.retrieveOrderExchange(
+   *   "123",
+   *   {
+   *     relations: ["order"]
+   *   }
+   * )
+   * ```
    */
   retrieveOrderExchange(
     exchangeId: string,
@@ -904,8 +962,21 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO>} The retrieved line item.
    *
    * @example
-   * ```typescript
+   * A simple example that retrieves an order change by its ID:
+   * 
+   * ```ts
    * const lineItem = await orderModuleService.retrieveLineItem("123")
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const lineItem = await orderModuleService.retrieveLineItem(
+   *   "123",
+   *   {
+   *     relations: ["order"]
+   *   }
+   * )
    * ```
    *
    */
@@ -2710,9 +2781,24 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderChangeActionDTO>} The retrieved order change action.
    *
    * @example
+   * A simple example that retrieves an order change by its ID:
+   * 
+   * ```ts
    * const orderChangeAction = await orderModuleService.retrieveOrderChangeAction(
    *   "123"
    * )
+   * ```
+   *
+   * To specify relations that should be retrieved:
+   *
+   * ```ts
+   * const orderChangeAction = await orderModuleService.retrieveOrderChangeAction(
+   *   "123",
+   *   {
+   *     relations: ["order"]
+   *   }
+   * )
+   * ```
    *
    */
   retrieveOrderChangeAction(
