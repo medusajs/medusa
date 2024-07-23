@@ -470,6 +470,15 @@ export interface UpdateOrderExchangeDTO {
   metadata?: Record<string, unknown> | null
 }
 
+export interface CreateOrderReturnItemDTO {
+  return_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  reason_id?: string
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
 export interface UpdateOrderReturnWithSelectorDTO {
   selector: Partial<ReturnDTO>
   data: Partial<UpdateReturnDTO>

@@ -43,7 +43,7 @@ export function prepareLineItemData(data: Input) {
     product_title: variant.product.title,
     product_description: variant.product.description,
     product_subtitle: variant.product.subtitle,
-    product_type: variant.product.type?.[0].value ?? null,
+    product_type: variant.product.type?.[0]?.value ?? null,
     product_collection: variant.product.collection?.[0]?.value ?? null,
     product_handle: variant.product.handle,
 
