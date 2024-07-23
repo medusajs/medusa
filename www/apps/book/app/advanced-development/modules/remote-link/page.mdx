@@ -58,7 +58,7 @@ import { Modules } from "@medusajs/utils"
 // ...
 
 await remoteLink.create({
-  "hello": {
+  "helloModuleService": {
     my_custom_id: "mc_123",
   },
   [Modules.PRODUCT]: {
@@ -71,7 +71,7 @@ The `create` method accepts as a parameter an object. The object’s keys are th
 
 <Note title="Important">
 
-The keys must be in the same order you passed the linkable data models to `defineLink`.
+The keys (names of linked modules) must be in the same order you passed the linkable data models to `defineLink`.
 
 </Note>
 
@@ -93,7 +93,7 @@ import { Modules } from "@medusajs/utils"
 // ...
 
 await remoteLink.dismiss({
-  "hello": {
+  "helloModuleService": {
     my_custom_id: "mc_123",
   },
   [Modules.PRODUCT]: {
@@ -106,7 +106,7 @@ The `dismiss` method accepts the same parameter type as the [create method](#cre
 
 <Note title="Important">
 
-The keys must be in the same order you passed the linkable data models to `defineLink`.
+The keys (names of linked modules) must be in the same order you passed the linkable data models to `defineLink`.
 
 </Note>
 
