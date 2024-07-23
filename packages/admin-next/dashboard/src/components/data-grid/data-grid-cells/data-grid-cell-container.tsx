@@ -3,50 +3,42 @@ import { PropsWithChildren } from "react"
 
 import { DataGridCellContainerProps } from "../types"
 
-type ContainerProps = PropsWithChildren<DataGridCellContainerProps>
-
 export const DataGridCellContainer = ({
   isAnchor,
   isSelected,
   isDragSelected,
+  showOverlay,
   placeholder,
-  overlay,
-  input,
-  wrapper,
+  innerProps,
+  overlayProps,
   children,
-}: ContainerProps) => {
+}: DataGridCellContainerProps) => {
   return (
     <div
-      className={clx("bg-ui-bg-base static size-full", {
-        "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
-        "bg-ui-bg-highlight focus-within:bg-ui-bg-base": isSelected || isAnchor,
-        "bg-ui-bg-subtle": isDragSelected && !isAnchor,
-      })}
-      {...wrapper}
+      className={clx(
+        "bg-ui-bg-base relative size-full outline-none focus:bg-red-400",
+        {
+          "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
+          "bg-ui-bg-highlight focus-within:bg-ui-bg-base":
+            isSelected || isAnchor,
+          "bg-ui-bg-subtle": isDragSelected && !isAnchor,
+        }
+      )}
+      tabIndex={0}
+      {...innerProps}
     >
-      <div
-        className="relative flex size-full items-start outline-none"
-        tabIndex={-1}
-      >
-        <div className="relative size-full min-w-0 flex-1">
-          <div
-            className="relative z-[1] flex size-full items-center justify-center"
-            onMouseDown={input.onMouseDown}
-          >
-            <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
-              {children}
-            </RenderChildren>
-          </div>
-          {!isAnchor && (
-            <div
-              {...overlay}
-              data-cell-overlay="true"
-              tabIndex={-1}
-              className="absolute inset-0 z-[2] size-full"
-            />
-          )}
-        </div>
+      <div className="relative z-[1] flex size-full items-center justify-center">
+        <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
+          {children}
+        </RenderChildren>
       </div>
+      {showOverlay && (
+        <div
+          {...overlayProps}
+          data-cell-overlay="true"
+          className="absolute inset-0 z-[2] size-full"
+        />
+      )}
     </div>
   )
 }

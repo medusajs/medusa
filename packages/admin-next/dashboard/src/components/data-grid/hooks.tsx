@@ -1,10 +1,10 @@
 import { CellContext } from "@tanstack/react-table"
-import { useContext, useMemo } from "react"
+import { MouseEvent, useContext, useEffect, useMemo, useRef } from "react"
 import { DataGridContext } from "./context"
 import {
   CellCoords,
-  DataGridCellContainerProps,
   DataGridCellContext,
+  DataGridCellRenderProps,
 } from "./types"
 import { generateCellId, isCellMatch } from "./utils"
 
@@ -46,44 +46,82 @@ export const useDataGridCell = <TData, TValue>({
     anchor,
     selection,
     dragSelection,
+    startEdit,
     getInputMouseDownHandler,
     getInputChangeHandler,
     onInputBlur,
     onInputFocus,
+    getWrapperFocusHandler,
     getOverlayMouseDownHandler,
     getWrapperMouseOverHandler,
   } = useDataGridContext()
 
-  const container: DataGridCellContainerProps = {
-    isAnchor: anchor ? isCellMatch(coords, anchor) : false,
-    isSelected: selection[id] || false,
-    isDragSelected: dragSelection[id] || false,
-    wrapper: {
-      onMouseOver: getWrapperMouseOverHandler(coords),
-    },
-    overlay: {
-      onMouseDown: getOverlayMouseDownHandler(coords),
-    },
-    input: {
-      onMouseDown: getInputMouseDownHandler(coords),
-      onChange: getInputChangeHandler(field),
-      onBlur: onInputBlur,
-      onFocus: onInputFocus,
-    },
+  const containerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLElement>(null)
+
+  function handleOverlayMouseDown(e: MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (e.detail === 2) {
+      inputRef.current?.focus()
+      startEdit()
+
+      return
+    }
+
+    if (containerRef.current) {
+      containerRef.current.focus()
+    }
   }
 
-  const attributes = {
-    "data-row": coords.row,
-    "data-col": coords.col,
-    "data-cell-id": id,
-    "data-field": field,
+  const showOverlay = useMemo(() => {
+    // return true if isAnchor and inputRef.current does not have focus
+    return anchor ? !inputRef.current?.contains(document.activeElement) : false
+  }, [anchor])
+
+  const isAnchor = useMemo(() => {
+    return anchor ? isCellMatch(coords, anchor) : false
+  }, [anchor, coords])
+
+  useEffect(() => {
+    if (isAnchor && !containerRef.current?.contains(document.activeElement)) {
+      containerRef.current?.focus()
+    }
+  }, [isAnchor])
+
+  const renderProps: DataGridCellRenderProps = {
+    container: {
+      isAnchor: anchor ? isCellMatch(coords, anchor) : false,
+      isSelected: selection[id] || false,
+      isDragSelected: dragSelection[id] || false,
+      showOverlay,
+      innerProps: {
+        ref: containerRef,
+        onMouseOver: getWrapperMouseOverHandler(coords),
+        onFocus: getWrapperFocusHandler(coords),
+      },
+      overlayProps: {
+        onMouseDown: handleOverlayMouseDown,
+      },
+    },
+    input: {
+      ref: inputRef,
+      onMouseDown: getInputMouseDownHandler(coords),
+      // onChange: getInputChangeHandler(field),
+      // onBlur: onInputBlur,
+      // onFocus: onInputFocus,
+      "data-row": coords.row,
+      "data-col": coords.col,
+      "data-cell-id": id,
+      "data-field": field,
+    },
   }
 
   return {
     id,
     register,
     control,
-    attributes,
-    container,
+    renderProps,
   }
 }

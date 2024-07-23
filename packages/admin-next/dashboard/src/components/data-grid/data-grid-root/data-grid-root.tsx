@@ -1,4 +1,5 @@
 import {
+  FocusEvent,
   MouseEvent,
   useCallback,
   useEffect,
@@ -108,21 +109,6 @@ export const DataGridRoot = <
     },
   })
 
-  const onRegisterCell = useCallback(
-    (coordinates: CellCoords) => {
-      cols.insert(coordinates.col)
-      rows.insert(coordinates.row)
-    },
-    [cols, rows]
-  )
-
-  const onUnregisterCell = useCallback(
-    (coordinates: CellCoords) => {
-      cols.remove(coordinates.col)
-    },
-    [cols]
-  )
-
   const { flatRows } = grid.getRowModel()
 
   const rowVirtualizer = useVirtualizer({
@@ -182,20 +168,6 @@ export const DataGridRoot = <
   }
 
   /**
-   * Moves the anchor to the specified point. Also attempts to blur
-   * the active element to reset the focus.
-   */
-  const moveAnchor = useCallback((point: CellCoords | null) => {
-    const activeElement = document.activeElement
-
-    if (activeElement instanceof HTMLElement) {
-      activeElement.blur()
-    }
-
-    setAnchor(point)
-  }, [])
-
-  /**
    * Clears the start and end of current range.
    */
   const clearRange = useCallback(
@@ -210,24 +182,24 @@ export const DataGridRoot = <
       const shouldIgnoreAnchor = isAnchorOnlySelected && isAnchorNewPoint
 
       if (!shouldIgnoreAnchor) {
-        moveAnchor(null)
+        setAnchor(null)
         setSelection({})
         setRangeEnd(null)
       }
 
       setDragSelection({})
     },
-    [anchor, selection, moveAnchor]
+    [anchor, selection]
   )
 
   const setSingleRange = useCallback(
     (coordinates: CellCoords | null) => {
       clearRange(coordinates)
 
-      moveAnchor(coordinates)
+      setAnchor(coordinates)
       setRangeEnd(coordinates)
     },
-    [clearRange, moveAnchor]
+    [clearRange]
   )
 
   const getSelectionValues = useCallback(
@@ -416,45 +388,30 @@ export const DataGridRoot = <
     [anchor, isEditing, setValue, getValues, execute]
   )
 
-  const handleEnterKey = useCallback(
-    (e: KeyboardEvent) => {
-      if (!anchor) {
-        return
+  const handleEnterEditMode = useCallback(
+    (e: KeyboardEvent, anchor: { row: number; col: number }) => {
+      const direction = e.shiftKey ? "ArrowUp" : "ArrowDown"
+      const pos = _grid.getValidMovement(
+        anchor.row,
+        anchor.col,
+        direction,
+        false
+      )
+      const next = { row: pos[0], col: pos[1] }
+
+      if (anchor.row !== next.row || anchor.col !== next.col) {
+        setSingleRange(next)
+        scrollToCell(pos)
+        setIsEditing(false)
       }
+    },
+    [_grid, scrollToCell, setSingleRange]
+  )
 
-      e.preventDefault()
-
+  const handleEnterNonEditMode = useCallback(
+    (anchor: { row: number; col: number }) => {
       const id = generateCellId(anchor)
       const container = containerRef.current
-
-      if (isEditing) {
-        if (e.shiftKey) {
-          const pos = _grid.getValidMovement(
-            anchor.row,
-            anchor.col,
-            "ArrowUp",
-            false
-          )
-
-          setSingleRange({ row: pos[0], col: pos[1] })
-          scrollToCell(pos)
-
-          return
-        }
-
-        const pos = _grid.getValidMovement(
-          anchor.row,
-          anchor.col,
-          "ArrowDown",
-          false
-        )
-
-        setSingleRange({ row: pos[0], col: pos[1] })
-        scrollToCell(pos)
-
-        return
-      }
-
       if (!container) {
         return
       }
@@ -462,70 +419,31 @@ export const DataGridRoot = <
       const input = container.querySelector(
         `[data-cell-id="${id}"]`
       ) as HTMLElement
+      const field = input?.getAttribute("data-field")
 
-      if (!input) {
-        return
+      if (input && field) {
+        input.focus()
+        setIsEditing(true)
       }
-
-      const field = input.getAttribute("data-field")
-
-      if (!field) {
-        return
-      }
-
-      input.focus()
     },
-    [_grid, anchor, isEditing, scrollToCell, setSingleRange]
+    []
   )
 
-  const handleTabKey = useCallback(
+  const handleEnterKey = useCallback(
     (e: KeyboardEvent) => {
-      if (!anchor) {
+      if (!anchor || !containerRef.current) {
         return
       }
 
       e.preventDefault()
 
-      if (e.shiftKey) {
-        const prevCol = cols.getPrev(anchor.col)
-
-        if (prevCol === null) {
-          const prevRow = rows.getPrev(anchor.row)
-          const lastCol = cols.getLast()
-
-          if (prevRow === null || lastCol === null) {
-            return
-          }
-
-          const prev = { row: prevRow, col: lastCol }
-          setSingleRange(prev)
-          return
-        }
-
-        const prev = { row: anchor.row, col: prevCol }
-        setSingleRange(prev)
-        return
+      if (isEditing) {
+        handleEnterEditMode(e, anchor)
+      } else {
+        handleEnterNonEditMode(anchor)
       }
-
-      const nextCol = cols.getNext(anchor.col)
-
-      if (nextCol === null) {
-        const nextRow = rows.getNext(anchor.row)
-        const firstCol = cols.getFirst()
-
-        if (nextRow === null || firstCol === null) {
-          return
-        }
-
-        const next = { row: nextRow, col: firstCol }
-        setSingleRange(next)
-        return
-      }
-
-      const next = { row: anchor.row, col: nextCol }
-      setSingleRange(next)
     },
-    [anchor, cols, rows, setSingleRange]
+    [anchor, isEditing, handleEnterEditMode, handleEnterNonEditMode]
   )
 
   const handleDeleteKey = useCallback(
@@ -593,11 +511,6 @@ export const DataGridRoot = <
         return
       }
 
-      if (e.key === "Tab") {
-        handleTabKey(e)
-        return
-      }
-
       if (e.key === "Delete" || e.key === "Backspace") {
         handleDeleteKey(e)
         return
@@ -613,7 +526,6 @@ export const DataGridRoot = <
       handleUndo,
       handleSpaceKey,
       handleEnterKey,
-      handleTabKey,
       handleDeleteKey,
     ]
   )
@@ -728,6 +640,15 @@ export const DataGridRoot = <
     handlePasteEvent,
   ])
 
+  const getWrapperFocusHandler = useCallback(
+    (coords: CellCoords) => {
+      return (_e: FocusEvent<HTMLElement>) => {
+        setSingleRange(coords)
+      }
+    },
+    [setSingleRange]
+  )
+
   const getOverlayMouseDownHandler = useCallback(
     (coords: CellCoords) => {
       return (e: MouseEvent<HTMLElement>) => {
@@ -766,7 +687,6 @@ export const DataGridRoot = <
       }
 
       const cell = container.querySelector(`[data-cell-id="${id}"]`)
-      console.log("found", cell)
     }
   }, [])
 
@@ -885,6 +805,10 @@ export const DataGridRoot = <
     setRangeEnd(anchor)
   }, [anchor, rangeEnd])
 
+  const startEdit = useCallback(() => {
+    setIsEditing(true)
+  }, [])
+
   const values = useMemo(
     () => ({
       register,
@@ -892,6 +816,8 @@ export const DataGridRoot = <
       anchor,
       selection,
       dragSelection,
+      startEdit,
+      getWrapperFocusHandler,
       getOverlayMouseDownHandler,
       getInputMouseDownHandler,
       getInputChangeHandler,
@@ -903,6 +829,8 @@ export const DataGridRoot = <
       anchor,
       control,
       dragSelection,
+      startEdit,
+      getWrapperFocusHandler,
       getInputChangeHandler,
       getInputMouseDownHandler,
       getOverlayMouseDownHandler,

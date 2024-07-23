@@ -1,4 +1,4 @@
-import { MouseEvent, createContext } from "react"
+import { FocusEvent, MouseEvent, createContext } from "react"
 import { Control, FieldValues, Path, UseFormRegister } from "react-hook-form"
 import { CellCoords } from "./types"
 
@@ -7,6 +7,7 @@ type DataGridContextType<TForm extends FieldValues> = {
   anchor: CellCoords | null
   selection: Record<string, boolean>
   dragSelection: Record<string, boolean>
+  startEdit: () => void
   // Form state and handlers
   register: UseFormRegister<TForm>
   control: Control<TForm>
@@ -22,6 +23,9 @@ type DataGridContextType<TForm extends FieldValues> = {
     coordinates: CellCoords
   ) => (e: MouseEvent<HTMLElement>) => void
   // Wrapper handlers
+  getWrapperFocusHandler: (
+    coordinates: CellCoords
+  ) => (e: FocusEvent<HTMLElement>) => void
   getWrapperMouseOverHandler: (
     coordinates: CellCoords
   ) => ((e: MouseEvent<HTMLElement>) => void) | undefined
