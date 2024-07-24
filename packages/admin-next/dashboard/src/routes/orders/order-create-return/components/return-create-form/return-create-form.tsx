@@ -33,7 +33,6 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
   useAddReturnItem,
   useAddReturnShipping,
-  useCancelReturn,
   useCancelReturnRequest,
   useConfirmReturnRequest,
   useDeleteReturnShipping,

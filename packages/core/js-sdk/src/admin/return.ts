@@ -60,21 +60,6 @@ export class Return {
     )
   }
 
-  async request(
-    id: string,
-    query?: HttpTypes.SelectParams,
-    headers?: ClientHeaders
-  ) {
-    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
-      `/admin/returns/${id}/request`,
-      {
-        method: "POST",
-        headers,
-        query,
-      }
-    )
-  }
-
   async addReturnItem(
     id: string,
     body: HttpTypes.AdminAddReturnItems,
