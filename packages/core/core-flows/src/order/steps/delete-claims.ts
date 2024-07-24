@@ -2,7 +2,7 @@ import { IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-export const deleteClaimsStepId = "delete-return"
+export const deleteClaimsStepId = "delete-claims"
 export const deleteClaimsStep = createStep(
   deleteClaimsStepId,
   async (data: { ids: string[] }, { container }) => {
