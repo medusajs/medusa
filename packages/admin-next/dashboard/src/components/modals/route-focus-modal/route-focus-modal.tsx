@@ -2,6 +2,7 @@ import { FocusModal, clx } from "@medusajs/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { RouteModalForm } from "../route-modal-form"
+import { useRouteModal } from "../route-modal-provider"
 import { RouteModalProvider } from "../route-modal-provider/route-provider"
 import { StackedModalProvider } from "../stacked-modal-provider"
 
@@ -41,19 +42,37 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
     <FocusModal open={open} onOpenChange={handleOpenChange}>
       <RouteModalProvider prev={prev}>
         <StackedModalProvider onOpenChange={onStackedModalOpen}>
-          <FocusModal.Content
-            onEscapeKeyDown={(e) => {
-              e.preventDefault()
-            }}
-            className={clx({
-              "!bg-ui-bg-disabled !inset-x-5 !inset-y-3": stackedModalOpen,
-            })}
-          >
-            {children}
-          </FocusModal.Content>
+          <Content stackedModalOpen={stackedModalOpen}>{children}</Content>
         </StackedModalProvider>
       </RouteModalProvider>
     </FocusModal>
+  )
+}
+
+type ContentProps = PropsWithChildren<{
+  stackedModalOpen: boolean
+}>
+
+const Content = ({ stackedModalOpen, children }: ContentProps) => {
+  const { __internal } = useRouteModal()
+
+  const shouldPreventClose = !__internal.closeOnEscape
+
+  return (
+    <FocusModal.Content
+      onEscapeKeyDown={
+        shouldPreventClose
+          ? (e) => {
+              e.preventDefault()
+            }
+          : undefined
+      }
+      className={clx({
+        "!bg-ui-bg-disabled !inset-x-5 !inset-y-3": stackedModalOpen,
+      })}
+    >
+      {children}
+    </FocusModal.Content>
   )
 }
 

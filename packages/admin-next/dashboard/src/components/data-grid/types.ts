@@ -49,6 +49,7 @@ interface InnerProps {
   onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void
   onFocus: (e: React.FocusEvent<HTMLElement>) => void
+  "data-container-id": string
 }
 
 interface OverlayProps {

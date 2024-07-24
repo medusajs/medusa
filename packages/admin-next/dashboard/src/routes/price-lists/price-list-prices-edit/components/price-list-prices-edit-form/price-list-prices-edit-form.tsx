@@ -40,7 +40,7 @@ export const PriceListPricesEditForm = ({
   pricePreferences,
 }: PriceListPricesEditFormProps) => {
   const { t } = useTranslation()
-  const { handleSuccess } = useRouteModal()
+  const { handleSuccess, setCloseOnEscape } = useRouteModal()
 
   const initialValue = useRef(initRecord(priceList, products))
 
@@ -101,6 +101,7 @@ export const PriceListPricesEditForm = ({
               }
             }}
             state={form}
+            onEditingChange={(editing) => setCloseOnEscape(!editing)}
           />
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>

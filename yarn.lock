@@ -4492,6 +4492,7 @@ __metadata:
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
     date-fns: ^3.6.0
+    focus-trap-react: ^10.2.3
     framer-motion: ^11.0.3
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
@@ -18366,6 +18367,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"focus-trap-react@npm:^10.2.3":
+  version: 10.2.3
+  resolution: "focus-trap-react@npm:10.2.3"
+  dependencies:
+    focus-trap: ^7.5.4
+    tabbable: ^6.2.0
+  peerDependencies:
+    prop-types: ^15.8.1
+    react: ">=16.3.0"
+    react-dom: ">=16.3.0"
+  checksum: 18527771cacc1083ecdf472276a4c46581a6289dc98b6caf1c31641091732933cbffdec78e4c86c2c1568ac4f82a83c367d6a4d7e0e84dc96b239d2d4c12c071
+  languageName: node
+  linkType: hard
+
+"focus-trap@npm:^7.5.4":
+  version: 7.5.4
+  resolution: "focus-trap@npm:7.5.4"
+  dependencies:
+    tabbable: ^6.2.0
+  checksum: c09e12b957862b2608977ff90de782645f99c3555cc5d93977240c179befa8723b9b1183e93890b4ad9d364d52a1af36416e63a728522ecce656a447d9ddd945
+  languageName: node
+  linkType: hard
+
 "follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.4, follow-redirects@npm:^1.15.6":
   version: 1.15.6
   resolution: "follow-redirects@npm:1.15.6"
@@ -28922,6 +28946,13 @@ __metadata:
   version: 2.0.17
   resolution: "synchronous-promise@npm:2.0.17"
   checksum: 1babe643d8417789ef6e5a2f3d4b8abcda2de236acd09bbe2c98f6be82c0a2c92ed21a6e4f934845fa8de18b1435a9cba1e8c3d945032e8a532f076224c024b1
+  languageName: node
+  linkType: hard
+
+"tabbable@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "tabbable@npm:6.2.0"
+  checksum: ced8b38f05f2de62cd46836d77c2646c42b8c9713f5bd265daf0e78ff5ac73d3ba48a7ca45f348bafeef29b23da7187c72250742d37627883ef89cbd7fa76898
   languageName: node
   linkType: hard
 

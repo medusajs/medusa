@@ -1,15 +1,5 @@
-import {
-  FocusEvent,
-  MouseEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-
-import { Adjustments } from "@medusajs/icons"
-import { Button, DropdownMenu, clx } from "@medusajs/ui"
+import { Adjustments, Keyboard } from "@medusajs/icons"
+import { Button, DropdownMenu, IconButton, clx } from "@medusajs/ui"
 import {
   Cell,
   CellContext,
@@ -22,10 +12,21 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
+import FocusTrap from "focus-trap-react"
+import {
+  FocusEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
-import { Grid, PasteCommand, UpdateCommand } from "../models"
+import { Matrix, PasteCommand, UpdateCommand } from "../models"
 import { CellCoords } from "../types"
 import {
   convertArrayToPrimitive,
@@ -45,6 +46,7 @@ interface DataGridRootProps<
   columns: ColumnDef<TData>[]
   state: UseFormReturn<TFieldValues>
   getSubRows?: (row: TData) => TData[] | undefined
+  onEditingChange?: (isEditing: boolean) => void
 }
 
 const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
@@ -69,6 +71,7 @@ export const DataGridRoot = <
   columns,
   state,
   getSubRows,
+  onEditingChange,
 }: DataGridRootProps<TData, TFieldValues>) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -88,6 +91,17 @@ export const DataGridRoot = <
   const [isDragging, setIsDragging] = useState(false)
 
   const [isEditing, setIsEditing] = useState(false)
+
+  const onEditingChangeHandler = useCallback(
+    (value: boolean) => {
+      if (onEditingChange) {
+        onEditingChange(value)
+      }
+
+      setIsEditing(value)
+    },
+    [onEditingChange]
+  )
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -139,8 +153,8 @@ export const DataGridRoot = <
   }
 
   const scrollToCell = useCallback(
-    (coords: [number, number]) => {
-      const [row, col] = coords
+    (coords: CellCoords) => {
+      const { row, col } = coords
 
       columnVirtualizer.scrollToIndex(col, {
         align: "center",
@@ -155,13 +169,13 @@ export const DataGridRoot = <
     [columnVirtualizer, rowVirtualizer]
   )
 
-  const _grid = useMemo(
-    () => new Grid(flatRows.length, visibleColumns.length),
+  const matrix = useMemo(
+    () => new Matrix(flatRows.length, visibleColumns.length),
     [flatRows, visibleColumns]
   )
 
   function registerCell(coords: CellCoords) {
-    _grid.registerCell(coords.row, coords.col, true)
+    matrix.registerCell(coords.row, coords.col, true)
   }
 
   /**
@@ -299,18 +313,14 @@ export const DataGridRoot = <
 
       const { row, col } = basis
 
-      const handleNavigation = (pos: [number, number]) => {
+      const handleNavigation = (coords: CellCoords) => {
         e.preventDefault()
 
-        const [row, col] = pos
-
-        scrollToCell(pos)
-
-        const newRange = { row, col }
-        updater(newRange)
+        scrollToCell(coords)
+        updater(coords)
       }
 
-      const next = _grid.getValidMovement(
+      const next = matrix.getValidMovement(
         row,
         col,
         e.key,
@@ -319,7 +329,7 @@ export const DataGridRoot = <
 
       handleNavigation(next)
     },
-    [isEditing, anchor, rangeEnd, scrollToCell, setSingleRange, _grid]
+    [isEditing, anchor, rangeEnd, scrollToCell, setSingleRange, matrix]
   )
 
   const handleUndo = useCallback(
@@ -388,21 +398,20 @@ export const DataGridRoot = <
   const handleEnterEditMode = useCallback(
     (e: KeyboardEvent, anchor: { row: number; col: number }) => {
       const direction = e.shiftKey ? "ArrowUp" : "ArrowDown"
-      const pos = _grid.getValidMovement(
+      const pos = matrix.getValidMovement(
         anchor.row,
         anchor.col,
         direction,
         false
       )
-      const next = { row: pos[0], col: pos[1] }
 
-      if (anchor.row !== next.row || anchor.col !== next.col) {
-        setSingleRange(next)
+      if (anchor.row !== pos.row || anchor.col !== pos.col) {
+        setSingleRange(pos)
         scrollToCell(pos)
-        setIsEditing(false)
+        onEditingChangeHandler(false)
       }
     },
-    [_grid, scrollToCell, setSingleRange]
+    [matrix, scrollToCell, setSingleRange, onEditingChangeHandler]
   )
 
   const handleEnterNonEditMode = useCallback(
@@ -420,10 +429,10 @@ export const DataGridRoot = <
 
       if (input && field) {
         input.focus()
-        setIsEditing(true)
+        onEditingChangeHandler(true)
       }
     },
-    []
+    [onEditingChangeHandler]
   )
 
   const handleEnterKey = useCallback(
@@ -493,8 +502,6 @@ export const DataGridRoot = <
 
   const handleEscapeKey = useCallback(
     (e: KeyboardEvent) => {
-      console.log("triggered", isEditing)
-
       if (!isEditing) {
         return
       }
@@ -515,8 +522,6 @@ export const DataGridRoot = <
 
   const handleKeyDownEvent = useCallback(
     (e: KeyboardEvent) => {
-      console.log("Keydown", e.key)
-
       if (ARROW_KEYS.includes(e.key)) {
         handleKeyboardNavigation(e)
         return
@@ -647,18 +652,24 @@ export const DataGridRoot = <
   )
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDownEvent)
-    window.addEventListener("mouseup", handleMouseUpEvent)
+    const container = containerRef.current
 
-    window.addEventListener("copy", handleCopyEvent)
-    window.addEventListener("paste", handlePasteEvent)
+    if (!container || !container.contains(document.activeElement)) {
+      return
+    }
+
+    container.addEventListener("keydown", handleKeyDownEvent)
+    container.addEventListener("mouseup", handleMouseUpEvent)
+
+    container.addEventListener("copy", handleCopyEvent)
+    container.addEventListener("paste", handlePasteEvent)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDownEvent)
-      window.removeEventListener("mouseup", handleMouseUpEvent)
+      container.removeEventListener("keydown", handleKeyDownEvent)
+      container.removeEventListener("mouseup", handleMouseUpEvent)
 
-      window.removeEventListener("copy", handleCopyEvent)
-      window.removeEventListener("paste", handlePasteEvent)
+      container.removeEventListener("copy", handleCopyEvent)
+      container.removeEventListener("paste", handlePasteEvent)
     }
   }, [
     handleKeyDownEvent,
@@ -802,6 +813,16 @@ export const DataGridRoot = <
     setRangeEnd(anchor)
   }, [anchor, rangeEnd])
 
+  useEffect(() => {
+    if (!anchor && matrix) {
+      const coords = matrix.getFirstNavigableCell()
+
+      if (coords) {
+        setSingleRange(coords)
+      }
+    }
+  }, [anchor, matrix, setSingleRange])
+
   const values = useMemo(
     () => ({
       anchor,
@@ -809,7 +830,7 @@ export const DataGridRoot = <
       selection,
       dragSelection,
       setIsSelecting,
-      setIsEditing,
+      setIsEditing: onEditingChangeHandler,
       setRangeEnd,
       getWrapperFocusHandler,
       getInputChangeHandler,
@@ -823,7 +844,7 @@ export const DataGridRoot = <
       selection,
       dragSelection,
       setIsSelecting,
-      setIsEditing,
+      onEditingChangeHandler,
       setRangeEnd,
       getWrapperFocusHandler,
       getInputChangeHandler,
@@ -837,88 +858,128 @@ export const DataGridRoot = <
     <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
         <DataGridHeader grid={grid} />
-        <div
-          ref={containerRef}
-          className="relative h-full select-none overflow-auto"
+        <FocusTrap
+          focusTrapOptions={{
+            initialFocus: () => {
+              console.log("initial focus")
+
+              if (!anchor) {
+                const coords = matrix.getFirstNavigableCell()
+
+                if (!coords) {
+                  return undefined
+                }
+
+                const id = generateCellId(coords)
+
+                return containerRef.current?.querySelector(
+                  `[data-container-id="${id}"]`
+                )
+              }
+
+              const id = generateCellId(anchor)
+
+              const anchorContainer = containerRef.current?.querySelector(
+                `[data-container-id="${id}`
+              ) as HTMLElement | null
+
+              console.log("anchor container", anchorContainer)
+
+              return anchorContainer ?? undefined
+            },
+            allowOutsideClick: true,
+            escapeDeactivates: false,
+          }}
         >
-          <div role="grid" className="text-ui-fg-subtle grid">
+          <div className="size-full" tabIndex={-1}>
+            <div tabIndex={anchor ? -1 : 0} />
             <div
-              role="rowgroup"
-              className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
+              ref={containerRef}
+              className="relative h-full select-none overflow-auto"
             >
-              {grid.getHeaderGroups().map((headerGroup) => (
+              <div role="grid" className="text-ui-fg-subtle grid">
                 <div
-                  role="row"
-                  key={headerGroup.id}
-                  className="flex h-10 w-full"
+                  role="rowgroup"
+                  className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
                 >
-                  {virtualPaddingLeft ? (
-                    // Empty columns to fill the virtual padding
+                  {grid.getHeaderGroups().map((headerGroup) => (
                     <div
-                      role="presentation"
-                      style={{ display: "flex", width: virtualPaddingLeft }}
-                    />
-                  ) : null}
-                  {virtualColumns.map((vc) => {
-                    const header = headerGroup.headers[vc.index]
+                      role="row"
+                      key={headerGroup.id}
+                      className="flex h-10 w-full"
+                    >
+                      {virtualPaddingLeft ? (
+                        // Empty columns to fill the virtual padding
+                        <div
+                          role="presentation"
+                          style={{ display: "flex", width: virtualPaddingLeft }}
+                        />
+                      ) : null}
+                      {virtualColumns.map((vc) => {
+                        const header = headerGroup.headers[vc.index]
+
+                        return (
+                          <div
+                            key={header.id}
+                            role="columnheader"
+                            data-column-index={vc.index}
+                            style={{
+                              width: header.getSize(),
+                            }}
+                            className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                          </div>
+                        )
+                      })}
+                      {virtualPaddingRight ? (
+                        // Empty columns to fill the virtual padding
+                        <div
+                          role="presentation"
+                          style={{
+                            display: "flex",
+                            width: virtualPaddingRight,
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <div
+                  role="rowgroup"
+                  className="relative grid"
+                  style={{
+                    height: `${rowVirtualizer.getTotalSize()}px`,
+                  }}
+                >
+                  {virtualRows.map((virtualRow) => {
+                    const row = flatRows[virtualRow.index] as Row<TData>
 
                     return (
-                      <div
-                        key={header.id}
-                        role="columnheader"
-                        data-column-index={vc.index}
-                        style={{
-                          width: header.getSize(),
-                        }}
-                        className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </div>
+                      <DataGridRow
+                        key={row.id}
+                        row={row}
+                        virtualRow={virtualRow}
+                        visibleColumns={visibleColumns}
+                        virtualColumns={virtualColumns}
+                        anchor={anchor}
+                        virtualPaddingLeft={virtualPaddingLeft}
+                        virtualPaddingRight={virtualPaddingRight}
+                        onDragToFillStart={onDragToFillStart}
+                        registerCell={registerCell}
+                      />
                     )
                   })}
-                  {virtualPaddingRight ? (
-                    // Empty columns to fill the virtual padding
-                    <div
-                      role="presentation"
-                      style={{ display: "flex", width: virtualPaddingRight }}
-                    />
-                  ) : null}
                 </div>
-              ))}
-            </div>
-            <div
-              role="rowgroup"
-              className="relative grid"
-              style={{
-                height: `${rowVirtualizer.getTotalSize()}px`,
-              }}
-            >
-              {virtualRows.map((virtualRow) => {
-                const row = flatRows[virtualRow.index] as Row<TData>
-
-                return (
-                  <DataGridRow
-                    key={row.id}
-                    row={row}
-                    virtualRow={virtualRow}
-                    visibleColumns={visibleColumns}
-                    virtualColumns={virtualColumns}
-                    anchor={anchor}
-                    virtualPaddingLeft={virtualPaddingLeft}
-                    virtualPaddingRight={virtualPaddingRight}
-                    onDragToFillStart={onDragToFillStart}
-                    registerCell={registerCell}
-                  />
-                )
-              })}
+              </div>
             </div>
           </div>
-        </div>
+        </FocusTrap>
       </div>
     </DataGridContext.Provider>
   )
@@ -929,13 +990,15 @@ type DataGridHeaderProps<TData> = {
 }
 
 const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
+  const { t } = useTranslation()
+
   return (
     <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
           <Button size="small" variant="secondary">
             <Adjustments />
-            Edit columns
+            {t("dataGrid.editColumns")}
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -960,6 +1023,9 @@ const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
           })}
         </DropdownMenu.Content>
       </DropdownMenu>
+      <IconButton size="small" type="button">
+        <Keyboard />
+      </IconButton>
     </div>
   )
 }

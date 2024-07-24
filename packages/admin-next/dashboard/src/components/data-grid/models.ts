@@ -1,27 +1,30 @@
 import { Command } from "../../hooks/use-command-history"
+import { CellCoords } from "./types"
 
-export class Grid {
+export class Matrix {
   private cells: boolean[][]
 
   constructor(rows: number, cols: number) {
     this.cells = Array.from({ length: rows }, () => Array(cols).fill(false))
   }
 
-  // Register a cell when it is rendered and is not readonly
-  registerCell(row: number, col: number, isNavigable: boolean) {
-    if (this.isValidPosition(row, col)) {
-      this.cells[row][col] = isNavigable
+  getFirstNavigableCell(): CellCoords | null {
+    for (let row = 0; row < this.cells.length; row++) {
+      for (let col = 0; col < this.cells[0].length; col++) {
+        if (this.cells[row][col]) {
+          return { row, col }
+        }
+      }
     }
+
+    return null
   }
 
-  // Check if a position is valid within the grid
-  private isValidPosition(row: number, col: number): boolean {
-    return (
-      row >= 0 &&
-      row < this.cells.length &&
-      col >= 0 &&
-      col < this.cells[0].length
-    )
+  // Register a cell when it is rendered and is not readonly
+  registerCell(row: number, col: number, isNavigable: boolean) {
+    if (this._isValidPosition(row, col)) {
+      this.cells[row][col] = isNavigable
+    }
   }
 
   getValidMovement(
@@ -29,12 +32,12 @@ export class Grid {
     col: number,
     direction: string,
     metaKey: boolean = false
-  ): [number, number] {
-    const [dRow, dCol] = this.getDirectionDeltas(direction)
+  ): CellCoords {
+    const [dRow, dCol] = this._getDirectionDeltas(direction)
 
     if (metaKey) {
       // Move to the last valid cell in the given direction
-      return this.getLastValidCellInDirection(row, col, dRow, dCol)
+      return this._getLastValidCellInDirection(row, col, dRow, dCol)
     } else {
       // Move to the next valid cell in the given direction
       let newRow = row + dRow
@@ -61,7 +64,7 @@ export class Grid {
 
       // Validate new position and find next navigable cell
       while (
-        this.isValidPosition(newRow, newCol) &&
+        this._isValidPosition(newRow, newCol) &&
         !this.cells[newRow][newCol]
       ) {
         newRow += dRow
@@ -82,14 +85,24 @@ export class Grid {
         }
       }
 
-      return this.isValidPosition(newRow, newCol)
-        ? [newRow, newCol]
-        : [row, col]
+      return this._isValidPosition(newRow, newCol)
+        ? { row: newRow, col: newCol }
+        : { row, col }
     }
   }
 
+  // Check if a position is valid within the grid
+  private _isValidPosition(row: number, col: number): boolean {
+    return (
+      row >= 0 &&
+      row < this.cells.length &&
+      col >= 0 &&
+      col < this.cells[0].length
+    )
+  }
+
   // Get direction deltas based on the arrow key direction
-  private getDirectionDeltas(direction: string): [number, number] {
+  private _getDirectionDeltas(direction: string): [number, number] {
     switch (direction) {
       case "ArrowUp":
         return [-1, 0]
@@ -105,18 +118,18 @@ export class Grid {
   }
 
   // Get the last valid cell in a given direction
-  private getLastValidCellInDirection(
+  private _getLastValidCellInDirection(
     row: number,
     col: number,
     dRow: number,
     dCol: number
-  ): [number, number] {
+  ): CellCoords {
     let newRow = row
     let newCol = col
     let lastValidRow = row
     let lastValidCol = col
 
-    while (this.isValidPosition(newRow + dRow, newCol + dCol)) {
+    while (this._isValidPosition(newRow + dRow, newCol + dCol)) {
       newRow += dRow
       newCol += dCol
       if (this.cells[newRow][newCol]) {
@@ -125,95 +138,10 @@ export class Grid {
       }
     }
 
-    return [lastValidRow, lastValidCol]
-  }
-}
-
-/**
- * A sorted set implementation that uses binary search to find the insertion index.
- */
-export class SortedSet<T> {
-  private items: T[] = []
-
-  constructor(initialItems?: T[]) {
-    if (initialItems) {
-      this.insertMultiple(initialItems)
+    return {
+      row: lastValidRow,
+      col: lastValidCol,
     }
-  }
-
-  insert(value: T): void {
-    const insertionIndex = this.findInsertionIndex(value)
-
-    if (this.items[insertionIndex] !== value) {
-      this.items.splice(insertionIndex, 0, value)
-    }
-  }
-
-  remove(value: T): void {
-    const index = this.findInsertionIndex(value)
-
-    if (this.items[index] === value) {
-      this.items.splice(index, 1)
-    }
-  }
-
-  getPrev(value: T): T | null {
-    const index = this.findInsertionIndex(value)
-    if (index === 0) {
-      return null
-    }
-
-    return this.items[index - 1]
-  }
-
-  getNext(value: T): T | null {
-    const index = this.findInsertionIndex(value)
-
-    if (index === this.items.length - 1) {
-      return null
-    }
-
-    return this.items[index + 1]
-  }
-
-  getFirst(): T | null {
-    if (this.items.length === 0) {
-      return null
-    }
-
-    return this.items[0]
-  }
-
-  getLast(): T | null {
-    if (this.items.length === 0) {
-      return null
-    }
-
-    return this.items[this.items.length - 1]
-  }
-
-  toArray(): T[] {
-    return [...this.items]
-  }
-
-  private insertMultiple(values: T[]): void {
-    values.forEach((value) => this.insert(value))
-  }
-
-  private findInsertionIndex(value: T): number {
-    let left = 0
-    let right = this.items.length - 1
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2)
-      if (this.items[mid] === value) {
-        return mid
-      } else if (this.items[mid] < value) {
-        left = mid + 1
-      } else {
-        right = mid - 1
-      }
-    }
-    return left
   }
 }
 

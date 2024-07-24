@@ -3,6 +3,7 @@ import React, {
   MouseEvent,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -152,6 +153,12 @@ export const useDataGridCell = <TData, TValue>({
     return dragSelection[id] || false
   }, [dragSelection, id])
 
+  useEffect(() => {
+    if (isAnchor && containerRef.current) {
+      containerRef.current.focus()
+    }
+  }, [isAnchor])
+
   const renderProps: DataGridCellRenderProps = {
     container: {
       isAnchor,
@@ -163,6 +170,7 @@ export const useDataGridCell = <TData, TValue>({
         onMouseOver: getWrapperMouseOverHandler(coords),
         onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
+        "data-container-id": id,
       },
       overlayProps: {
         onMouseDown: handleOverlayMouseDown,

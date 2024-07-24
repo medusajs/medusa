@@ -97,7 +97,7 @@ export function getFieldsInRange(
 }
 
 export function convertArrayToPrimitive<
-  T extends "boolean" | "number" | "string"
+  T extends "boolean" | "number" | "string",
 >(values: string[], type: T) {
   const convertedValues: any[] = []
 

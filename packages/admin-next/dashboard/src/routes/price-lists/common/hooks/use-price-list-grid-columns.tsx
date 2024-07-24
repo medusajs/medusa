@@ -33,7 +33,6 @@ export const usePriceListGridColumns = ({
         header: t("fields.title"),
         cell: ({ row }) => {
           const entity = row.original
-
           if (isProductRow(entity)) {
             return (
               <DataGridReadOnlyCell>
