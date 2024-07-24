@@ -1296,6 +1296,14 @@ export const filesMap = [
     "pathname": "/references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider"
   },
   {
+    "filePath": "/www/apps/resources/references/cart/IBigNumber/methods/cart.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/cart/IBigNumber/methods/cart.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/IBigNumber/methods/cart.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/cart/IBigNumber/methods/cart.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.addLineItemAdjustments/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.addLineItemAdjustments"
   },
@@ -1626,6 +1634,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/cart/interfaces/cart.FindConfig/page.mdx",
     "pathname": "/references/cart/interfaces/cart.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/interfaces/cart.IBigNumber/page.mdx",
+    "pathname": "/references/cart/interfaces/cart.IBigNumber"
   },
   {
     "filePath": "/www/apps/resources/references/cart/interfaces/cart.ICartModuleService/page.mdx",
@@ -2408,6 +2420,14 @@ export const filesMap = [
     "pathname": "/references/file/classes/file.AbstractFileProviderService"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/IBigNumber/methods/fulfillment.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/fulfillment/IBigNumber/methods/fulfillment.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IBigNumber/methods/fulfillment.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/fulfillment/IBigNumber/methods/fulfillment.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment"
   },
@@ -2824,6 +2844,10 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.GeoZoneDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.IBigNumber/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.IBigNumber"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.IFulfillmentModuleService/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.IFulfillmentModuleService"
   },
@@ -3172,6 +3196,14 @@ export const filesMap = [
     "pathname": "/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService"
   },
   {
+    "filePath": "/www/apps/resources/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory/page.mdx",
     "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory"
   },
@@ -3368,6 +3400,10 @@ export const filesMap = [
     "pathname": "/references/inventory_next/interfaces/inventory_next.FindConfig"
   },
   {
+    "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IBigNumber/page.mdx",
+    "pathname": "/references/inventory_next/interfaces/inventory_next.IBigNumber"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IInventoryService/page.mdx",
     "pathname": "/references/inventory_next/interfaces/inventory_next.IInventoryService"
   },
@@ -3426,6 +3462,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.UpdateReservationItemInput/page.mdx",
     "pathname": "/references/inventory_next/interfaces/inventory_next.UpdateReservationItemInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.BigNumberInput/page.mdx",
+    "pathname": "/references/inventory_next/types/inventory_next.BigNumberInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.BigNumberRawValue/page.mdx",
+    "pathname": "/references/inventory_next/types/inventory_next.BigNumberRawValue"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.Event/page.mdx",
@@ -4472,6 +4516,14 @@ export const filesMap = [
     "pathname": "/references/notification/classes/notification.AbstractNotificationProviderService"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IBigNumber/methods/order.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/order/IBigNumber/methods/order.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IBigNumber/methods/order.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/order/IBigNumber/methods/order.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IMessageAggregator/methods/order.IMessageAggregator.clearMessages/page.mdx",
     "pathname": "/references/order/IMessageAggregator/methods/order.IMessageAggregator.clearMessages"
   },
@@ -4580,6 +4632,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons"
   },
@@ -4638,6 +4694,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons/page.mdx",
@@ -5048,6 +5108,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CreateOrderReturnDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderReturnItemDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnReasonDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderReturnReasonDTO"
   },
@@ -5136,6 +5200,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.FindConfig"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.IBigNumber/page.mdx",
+    "pathname": "/references/order/interfaces/order.IBigNumber"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.IMessageAggregator/page.mdx",
     "pathname": "/references/order/interfaces/order.IMessageAggregator"
   },
@@ -5210,6 +5278,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderLineItemTotalsDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderLineItemTotalsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderReturnItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderReturnItemDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderReturnReasonDTO/page.mdx",
@@ -5552,6 +5624,14 @@ export const filesMap = [
     "pathname": "/references/order_models/classes/order_models.Transaction"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IBigNumber/methods/payment.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/payment/IBigNumber/methods/payment.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/IBigNumber/methods/payment.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/payment/IBigNumber/methods/payment.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IMessageAggregator/methods/payment.IMessageAggregator.clearMessages/page.mdx",
     "pathname": "/references/payment/IMessageAggregator/methods/payment.IMessageAggregator.clearMessages"
   },
@@ -5726,6 +5806,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.FindConfig/page.mdx",
     "pathname": "/references/payment/interfaces/payment.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.IBigNumber/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.IBigNumber"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.IMessageAggregator/page.mdx",
@@ -5926,6 +6010,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment_provider/classes/payment_provider.AbstractPaymentProvider/page.mdx",
     "pathname": "/references/payment_provider/classes/payment_provider.AbstractPaymentProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/IBigNumber/methods/pricing.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/pricing/IBigNumber/methods/pricing.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/IBigNumber/methods/pricing.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/pricing/IBigNumber/methods/pricing.IBigNumber.valueOf"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IMessageAggregator/methods/pricing.IMessageAggregator.clearMessages/page.mdx",
@@ -6210,6 +6302,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FindConfig/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.IBigNumber/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.IBigNumber"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.IMessageAggregator/page.mdx",
@@ -7024,6 +7120,14 @@ export const filesMap = [
     "pathname": "/references/product_models/classes/product_models.ProductVariant"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/IBigNumber/methods/promotion.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/promotion/IBigNumber/methods/promotion.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/IBigNumber/methods/promotion.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/promotion/IBigNumber/methods/promotion.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/IMessageAggregator/methods/promotion.IMessageAggregator.clearMessages/page.mdx",
     "pathname": "/references/promotion/IMessageAggregator/methods/promotion.IMessageAggregator.clearMessages"
   },
@@ -7238,6 +7342,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.FindConfig/page.mdx",
     "pathname": "/references/promotion/interfaces/promotion.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.IBigNumber/page.mdx",
+    "pathname": "/references/promotion/interfaces/promotion.IBigNumber"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.IMessageAggregator/page.mdx",
@@ -8264,6 +8372,14 @@ export const filesMap = [
     "pathname": "/references/store_models/classes/store_models.StoreCurrency"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/IBigNumber/methods/tax.IBigNumber.toJSON/page.mdx",
+    "pathname": "/references/tax/IBigNumber/methods/tax.IBigNumber.toJSON"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/IBigNumber/methods/tax.IBigNumber.valueOf/page.mdx",
+    "pathname": "/references/tax/IBigNumber/methods/tax.IBigNumber.valueOf"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/IMessageAggregator/methods/tax.IMessageAggregator.clearMessages/page.mdx",
     "pathname": "/references/tax/IMessageAggregator/methods/tax.IMessageAggregator.clearMessages"
   },
@@ -8394,6 +8510,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/tax/interfaces/tax.FindConfig/page.mdx",
     "pathname": "/references/tax/interfaces/tax.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/interfaces/tax.IBigNumber/page.mdx",
+    "pathname": "/references/tax/interfaces/tax.IBigNumber"
   },
   {
     "filePath": "/www/apps/resources/references/tax/interfaces/tax.IMessageAggregator/page.mdx",
@@ -10124,6 +10244,14 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.GetUploadedFileType"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.IBigNumber/page.mdx",
+    "pathname": "/references/types/interfaces/types.IBigNumber"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.ILinkMigrationsPlanner/page.mdx",
+    "pathname": "/references/types/interfaces/types.ILinkMigrationsPlanner"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ILinkModule/page.mdx",
     "pathname": "/references/types/interfaces/types.ILinkModule"
   },
@@ -10300,6 +10428,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.LinkMigrationsPlannerAction/page.mdx",
+    "pathname": "/references/types/types/types.LinkMigrationsPlannerAction"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ModuleDeclaration/page.mdx",
     "pathname": "/references/types/types/types.ModuleDeclaration"
   },
@@ -10314,6 +10446,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.PascalCaseParser/page.mdx",
     "pathname": "/references/types/types/types.PascalCaseParser"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PlannerActionLinkDescriptor/page.mdx",
+    "pathname": "/references/types/types/types.PlannerActionLinkDescriptor"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.PrevLimit/page.mdx",

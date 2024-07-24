@@ -51,7 +51,11 @@ export const getLineItemActionsStep = createStep(
 
         itemsToUpdate.push({
           selector: { id: existingItem.id },
-          data: { id: existingItem.id, quantity: quantity },
+          data: {
+            id: existingItem.id,
+            quantity: quantity,
+            variant_id: item.variant_id!,
+          },
         })
       } else {
         itemsToCreate.push(item)

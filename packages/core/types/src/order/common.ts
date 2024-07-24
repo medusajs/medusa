@@ -162,7 +162,7 @@ export interface OrderShippingMethodAdjustmentDTO
   extends OrderAdjustmentLineDTO {
   /**
    * The associated shipping method.
-   * 
+   *
    * @expandable
    */
   shipping_method: OrderShippingMethodDTO
@@ -179,7 +179,7 @@ export interface OrderShippingMethodAdjustmentDTO
 export interface OrderLineItemAdjustmentDTO extends OrderAdjustmentLineDTO {
   /**
    * The associated line item.
-   * 
+   *
    * @expandable
    */
   item: OrderLineItemDTO
@@ -241,7 +241,7 @@ export interface OrderTaxLineDTO {
 export interface OrderShippingMethodTaxLineDTO extends OrderTaxLineDTO {
   /**
    * The associated shipping method.
-   * 
+   *
    * @expandable
    */
   shipping_method: OrderShippingMethodDTO
@@ -278,7 +278,7 @@ export interface OrderShippingMethodTaxLineDTO extends OrderTaxLineDTO {
 export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
   /**
    * The associated line item.
-   * 
+   *
    * @expandable
    */
   item: OrderLineItemDTO
@@ -863,7 +863,7 @@ export interface OrderItemDTO {
 
   /**
    * The associated line item.
-   * 
+   *
    * @expandable
    */
   item: OrderLineItemDTO
@@ -981,7 +981,7 @@ export interface OrderDTO {
 
   /**
    * The active order change, if any.
-   * 
+   *
    * @expandable
    */
   order_change?: OrderChangeDTO
@@ -1053,7 +1053,7 @@ export interface OrderDTO {
 
   /**
    * The summary of the order totals.
-   * 
+   *
    * @expandable
    */
   summary?: OrderSummaryDTO
@@ -1330,6 +1330,71 @@ export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
 }
 
 /**
+ * The order return item details.
+ */
+export interface OrderReturnItemDTO {
+  /**
+   * The ID of the order return item.
+   */
+  id: string
+
+  /**
+   * The associated return's ID.
+   */
+  return_id: string
+
+  /**
+   * The associated order's ID.
+   */
+  order_id: string
+
+  /**
+   * The associated line item's ID.
+   */
+  item_id: string
+
+  /**
+   * The associated reason's ID.
+   */
+  reason_id?: string | null
+
+  /**
+   * The quantity of the item to return.
+   */
+  quantity: number
+
+  /**
+   * The raw quantity of the item to return.
+   */
+  raw_quantity: BigNumberRawValue
+
+  /**
+   * The received quantity of the return item.
+   */
+  received_quantity?: number
+
+  /**
+   * The raw received quantity of the return item.
+   */
+  raw_received_quantity?: BigNumberRawValue
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * The creation date of the return item.
+   */
+  created_at?: Date | string
+
+  /**
+   * The update date of the return item.
+   */
+  updated_at?: Date | string
+}
+
+/**
  * The claim details.
  */
 export interface OrderClaimDTO
@@ -1386,7 +1451,7 @@ export interface OrderExchangeDTO
 
   /**
    * The difference due of the order exchange.
-   * 
+   *
    * - If less than `0`, the merchant owes the customer this amount.
    * - If greater than `0`, the customer owes the merchange this amount.
    * - If equal to `0`, no payment is required by either sides.
@@ -1443,7 +1508,7 @@ export type FulfillmentStatus =
 export interface OrderDetailDTO extends OrderDTO {
   /**
    * The associated payment collections.
-   * 
+   *
    * @expandable
    */
   payment_collections: PaymentCollectionDTO[]
@@ -1455,7 +1520,7 @@ export interface OrderDetailDTO extends OrderDTO {
 
   /**
    * The associated fulfillments.
-   * 
+   *
    * @expandable
    */
   fulfillments: FulfillmentDTO[]
@@ -2402,6 +2467,7 @@ export interface OrderChangeReturn {
      * The item's quantity that was written off.
      */
     written_off_quantity: BigNumberInput
+
     /**
      * Other details updated in an item.
      */

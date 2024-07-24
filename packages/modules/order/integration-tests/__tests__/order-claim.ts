@@ -104,6 +104,9 @@ moduleIntegrationTestRunner({
 
       it("should claim an item and add two new items to the order", async function () {
         const createdOrder = await service.createOrders(input)
+        createdOrder.items = createdOrder.items!.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        )
 
         // Fullfilment
         await service.registerFulfillment({

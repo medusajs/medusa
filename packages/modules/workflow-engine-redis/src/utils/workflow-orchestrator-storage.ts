@@ -395,7 +395,14 @@ export class RedisDistributedTransactionStorage
   }
 
   async remove(jobId: string): Promise<void> {
-    await this.queue.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
+    const repeatableJobs = await this.queue.getRepeatableJobs()
+    const job = repeatableJobs.find(
+      (job) => job.id === `${JobType.SCHEDULE}_${jobId}`
+    )
+
+    if (job) {
+      await this.queue.removeRepeatableByKey(job.key)
+    }
   }
 
   async removeAll(): Promise<void> {

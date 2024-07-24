@@ -1489,6 +1489,10 @@ export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
  */
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   /**
+   * The ID of the location to return the items to.
+   */
+  location_id?: string
+  /**
    * The items of the return.
    */
   items?: {
@@ -1558,6 +1562,11 @@ export interface UpdateReturnDTO {
    * The ID of the return.
    */
   id: string
+
+  /**
+   * The ID of the location to return the items to.
+   */
+  location_id?: string
 
   /**
    * The refund amount of the return.
@@ -1686,6 +1695,41 @@ export interface UpdateOrderExchangeDTO {
    * Whether backorders are allowed on the exchange's items.
    */
   allow_backorder?: boolean
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+/**
+ * The order return item to be created.
+ */
+export interface CreateOrderReturnItemDTO {
+  /**
+   * The ID of the associated return.
+   */
+  return_id: string
+
+  /**
+   * The ID of the associated line item.
+   */
+  item_id: string
+
+  /**
+   * The quantity to return.
+   */
+  quantity?: BigNumberInput
+
+  /**
+   * The ID of the associated return reason.
+   */
+  reason_id?: string
+
+  /**
+   * The note of the return.
+   */
+  note?: string
 
   /**
    * Holds custom data in key-value pairs.
