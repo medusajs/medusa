@@ -39,7 +39,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
-    "test": "jest --silent=false --bail --maxWorkers=50% --forceExit"
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",

@@ -53,7 +53,7 @@ describe("validateAndTransformBody", () => {
       return schema ? createLinkBody().merge(schema) : createLinkBody()
     }
 
-    let middleware = validateAndTransformBody(createLinkBody())
+    let middleware = validateAndTransformBody(validatorFactory)
     await middleware(mockRequest, mockResponse, nextFunction)
     expect(nextFunction).toHaveBeenCalledWith(
       new MedusaError(
