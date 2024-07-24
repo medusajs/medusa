@@ -1,10 +1,10 @@
 import {
-  StepResponse,
   createStep,
   createWorkflow,
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { glob } from "glob"
-import logger from "../logger"
+import { logger } from "@medusajs/framework"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 
 export const registerJobs = async (plugins) => {

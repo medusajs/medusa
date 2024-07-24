@@ -5,7 +5,7 @@ import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
 import path from "path"
 
-import Logger from "../loaders/logger"
+import { logger } from "@medusajs/framework"
 
 const defaultConfig = {
   padding: 5,
@@ -57,8 +57,8 @@ export default async function ({ port, directory }) {
         execArgv: argv,
       })
       this.childProcess.on("error", (error) => {
-        Logger.error("Dev server failed to start", error)
-        Logger.info("The server will restart automatically after your changes")
+        logger.error("Dev server failed to start", error)
+        logger.info("The server will restart automatically after your changes")
       })
     },
 
@@ -100,26 +100,26 @@ export default async function ({ port, directory }) {
       })
 
       this.watcher.on("add", (file) => {
-        Logger.info(
+        logger.info(
           `${path.relative(directory, file)} created: Restarting dev server`
         )
         this.restart()
       })
       this.watcher.on("change", (file) => {
-        Logger.info(
+        logger.info(
           `${path.relative(directory, file)} modified: Restarting dev server`
         )
         this.restart()
       })
       this.watcher.on("unlink", (file) => {
-        Logger.info(
+        logger.info(
           `${path.relative(directory, file)} removed: Restarting dev server`
         )
         this.restart()
       })
 
       this.watcher.on("ready", function () {
-        Logger.info(`Watching filesystem to reload dev server on file change`)
+        logger.info(`Watching filesystem to reload dev server on file change`)
       })
     },
   }
