@@ -12,11 +12,11 @@ import {
 } from "../loaders/helpers/routing/types"
 
 /**
- * A helper function to extend the router by defining custom middleware,
+ * A helper function to configure the routes by defining custom middleware,
  * bodyparser config and validators to be merged with the pre-existing
  * route validators.
  */
-export function extendRouter<
+export function defineRoutesConfig<
   Route extends {
     method?: MiddlewareVerb | MiddlewareVerb[]
     matcher: string | RegExp
