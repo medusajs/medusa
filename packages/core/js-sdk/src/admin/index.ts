@@ -25,6 +25,7 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
+import { ReturnReason } from "./return-reason"
 
 export class Admin {
   public invite: Invite
@@ -37,6 +38,7 @@ export class Admin {
   public productType: ProductType
   public upload: Upload
   public region: Region
+  public returnReason: ReturnReason
   public stockLocation: StockLocation
   public salesChannel: SalesChannel
   public fulfillmentSet: FulfillmentSet
@@ -47,12 +49,12 @@ export class Admin {
   public inventoryItem: InventoryItem
   public notification: Notification
   public order: Order
+  public return: Return
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
   public user: User
-  public return: Return
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -65,6 +67,7 @@ export class Admin {
     this.productType = new ProductType(client)
     this.upload = new Upload(client)
     this.region = new Region(client)
+    this.returnReason = new ReturnReason(client)
     this.stockLocation = new StockLocation(client)
     this.salesChannel = new SalesChannel(client)
     this.fulfillmentSet = new FulfillmentSet(client)
@@ -75,11 +78,11 @@ export class Admin {
     this.inventoryItem = new InventoryItem(client)
     this.notification = new Notification(client)
     this.order = new Order(client)
+    this.return = new Return(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
     this.user = new User(client)
-    this.return = new Return(client)
   }
 }
