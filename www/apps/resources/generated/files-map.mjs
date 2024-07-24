@@ -692,20 +692,12 @@ export const filesMap = [
     "pathname": "/integrations"
   },
   {
-    "filePath": "/www/apps/resources/app/js-client/page.mdx",
-    "pathname": "/js-client"
-  },
-  {
     "filePath": "/www/apps/resources/app/medusa-cli/page.mdx",
     "pathname": "/medusa-cli"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-container-resources/page.mdx",
     "pathname": "/medusa-container-resources"
-  },
-  {
-    "filePath": "/www/apps/resources/app/medusa-react/page.mdx",
-    "pathname": "/medusa-react"
   },
   {
     "filePath": "/www/apps/resources/app/nextjs-starter/page.mdx",
