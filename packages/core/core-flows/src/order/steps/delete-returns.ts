@@ -10,12 +10,14 @@ export const deleteReturnsStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const deleted = await service.softDeleteReturns(data.ids)
+    const ids = data.ids.filter(Boolean)
+
+    const deleted = ids.length ? await service.softDeleteReturns(ids) : []
 
     return new StepResponse(deleted, data.ids)
   },
   async (ids, { container }) => {
-    if (!ids) {
+    if (!ids?.length) {
       return
     }
 

@@ -1,3 +1,4 @@
+import { ClaimType } from "@medusajs/utils"
 import { z } from "zod"
 import {
   createFindParams,
@@ -38,16 +39,15 @@ export const AdminGetOrdersParams = createFindParams({
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
-export const AdminPostReturnsReqSchema = z.object({
+export const AdminPostOrderClaimsReqSchema = z.object({
+  type: z.nativeEnum(ClaimType),
   order_id: z.string(),
-  location_id: z.string().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
-  no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export type AdminPostReturnsReqSchemaType = z.infer<
-  typeof AdminPostReturnsReqSchema
+export type AdminPostOrderClaimsReqSchemaType = z.infer<
+  typeof AdminPostOrderClaimsReqSchema
 >
 
 export const AdminPostOrderExchangesReqSchema = z.object({
@@ -60,13 +60,13 @@ export type AdminPostOrderExchangesReqSchemaType = z.infer<
   typeof AdminPostOrderExchangesReqSchema
 >
 
-export const AdminPostReceiveReturnsReqSchema = z.object({
+export const AdminPostReceiveClaimsReqSchema = z.object({
   internal_note: z.string().optional(),
   description: z.string().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export type AdminPostReceiveReturnsReqSchemaType = z.infer<
-  typeof AdminPostReceiveReturnsReqSchema
+export type AdminPostReceiveClaimsReqSchemaType = z.infer<
+  typeof AdminPostReceiveClaimsReqSchema
 >
 
 const ReceiveItemSchema = z.object({
@@ -74,23 +74,23 @@ const ReceiveItemSchema = z.object({
   quantity: z.number().min(1),
   internal_note: z.string().optional(),
 })
-export const AdminPostReceiveReturnItemsReqSchema = z.object({
+export const AdminPostReceiveClaimItemsReqSchema = z.object({
   items: z.array(ReceiveItemSchema),
 })
-export type AdminPostReceiveReturnItemsReqSchemaType = z.infer<
-  typeof AdminPostReceiveReturnItemsReqSchema
+export type AdminPostReceiveClaimItemsReqSchemaType = z.infer<
+  typeof AdminPostReceiveClaimItemsReqSchema
 >
 
-export const AdminPostCancelReturnReqSchema = z.object({
+export const AdminPostCancelClaimReqSchema = z.object({
   return_id: z.string(),
   no_notification: z.boolean().optional(),
   internal_note: z.string().nullish(),
 })
-export type AdminPostCancelReturnReqSchemaType = z.infer<
-  typeof AdminPostCancelReturnReqSchema
+export type AdminPostCancelClaimReqSchemaType = z.infer<
+  typeof AdminPostCancelClaimReqSchema
 >
 
-export const AdminPostReturnsShippingReqSchema = z.object({
+export const AdminPostClaimsShippingReqSchema = z.object({
   shipping_option_id: z.string(),
   custom_price: z.number().optional(),
   description: z.string().optional(),
@@ -98,21 +98,37 @@ export const AdminPostReturnsShippingReqSchema = z.object({
   metadata: z.record(z.unknown()).optional(),
 })
 
-export type AdminPostReturnsShippingReqSchemaType = z.infer<
-  typeof AdminPostReturnsShippingReqSchema
+export type AdminPostClaimsShippingReqSchemaType = z.infer<
+  typeof AdminPostClaimsShippingReqSchema
 >
 
-export const AdminPostReturnsShippingActionReqSchema = z.object({
+export const AdminPostClaimsShippingActionReqSchema = z.object({
   custom_price: z.number().optional(),
   internal_note: z.string().nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
 
-export type AdminPostReturnsShippingActionReqSchemaType = z.infer<
-  typeof AdminPostReturnsShippingActionReqSchema
+export type AdminPostClaimsShippingActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsShippingActionReqSchema
 >
 
-export const AdminPostReturnsRequestItemsReqSchema = z.object({
+export const AdminPostClaimsAddItemsReqSchema = z.object({
+  items: z.array(
+    z.object({
+      variant_id: z.string(),
+      quantity: z.number(),
+      unit_price: z.number().optional(),
+      internal_note: z.string().optional(),
+      metadata: z.record(z.unknown()).optional(),
+    })
+  ),
+})
+
+export type AdminPostClaimsAddItemsReqSchemaType = z.infer<
+  typeof AdminPostClaimsAddItemsReqSchema
+>
+
+export const AdminPostClaimsRequestReturnItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
@@ -125,58 +141,59 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
   ),
 })
 
-export type AdminPostReturnsRequestItemsReqSchemaType = z.infer<
-  typeof AdminPostReturnsRequestItemsReqSchema
+export type AdminPostClaimsRequestReturnItemsReqSchemaType = z.infer<
+  typeof AdminPostClaimsRequestReturnItemsReqSchema
 >
 
-export const AdminPostReturnsReceiveItemsReqSchema = z.object({
+export const AdminPostClaimItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
       quantity: z.number(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
+      metadata: z.record(z.unknown()).optional(),
     })
   ),
 })
 
-export type AdminPostReturnsReceiveItemsReqSchemaType = z.infer<
-  typeof AdminPostReturnsReceiveItemsReqSchema
+export type AdminPostClaimItemsReqSchemaType = z.infer<
+  typeof AdminPostClaimItemsReqSchema
 >
 
-export const AdminPostReturnsRequestItemsActionReqSchema = z.object({
+export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
 
-export type AdminPostReturnsRequestItemsActionReqSchemaType = z.infer<
-  typeof AdminPostReturnsRequestItemsActionReqSchema
+export type AdminPostClaimsRequestItemsActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsRequestItemsActionReqSchema
 >
 
-export const AdminPostReturnsReceiveItemsActionReqSchema = z.object({
+export const AdminPostClaimsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 
-export type AdminPostReturnsReceiveItemsActionReqSchemaType = z.infer<
-  typeof AdminPostReturnsReceiveItemsActionReqSchema
+export type AdminPostClaimsItemsActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsItemsActionReqSchema
 >
 
-export const AdminPostReturnsDismissItemsActionReqSchema = z.object({
+export const AdminPostClaimsDismissItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 
-export type AdminPostReturnsDismissItemsActionReqSchemaType = z.infer<
-  typeof AdminPostReturnsDismissItemsActionReqSchema
+export type AdminPostClaimsDismissItemsActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsDismissItemsActionReqSchema
 >
 
-export const AdminPostReturnsConfirmRequestReqSchema = z.object({
+export const AdminPostClaimsConfirmRequestReqSchema = z.object({
   no_notification: z.boolean().optional(),
 })
 
-export type AdminPostReturnsConfirmRequestReqSchemaType = z.infer<
-  typeof AdminPostReturnsConfirmRequestReqSchema
+export type AdminPostClaimsConfirmRequestReqSchemaType = z.infer<
+  typeof AdminPostClaimsConfirmRequestReqSchema
 >

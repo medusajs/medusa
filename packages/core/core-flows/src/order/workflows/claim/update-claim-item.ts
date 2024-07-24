@@ -1,9 +1,9 @@
 import {
   OrderChangeActionDTO,
   OrderChangeDTO,
+  OrderClaimDTO,
   OrderDTO,
   OrderWorkflow,
-  ReturnDTO,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
@@ -21,26 +21,25 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
-import { validateReturnReasons } from "../../utils/validate-return-reason"
 
 const validationStep = createStep(
-  "update-request-item-return-validation",
+  "update-claim-item-validation",
   async function (
     {
       order,
       orderChange,
-      orderReturn,
+      orderClaim,
       input,
     }: {
       order: OrderDTO
-      orderReturn: ReturnDTO
+      orderClaim: OrderClaimDTO
       orderChange: OrderChangeDTO
-      input: OrderWorkflow.UpdateRequestItemReturnWorkflowInput
+      input: OrderWorkflow.UpdateClaimItemWorkflowInput
     },
     context
   ) {
     throwIfIsCancelled(order, "Order")
-    throwIfIsCancelled(orderReturn, "Return")
+    throwIfIsCancelled(orderClaim, "Claim")
     throwIfOrderChangeIsNotActive({ orderChange })
 
     const associatedAction = (orderChange.actions ?? []).find(
@@ -49,36 +48,24 @@ const validationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No request return found for return ${input.return_id} in order change ${orderChange.id}`
+        `No request claim found for claim ${input.claim_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.RETURN_ITEM) {
-      throw new Error(
-        `Action ${associatedAction.id} is not requesting item return`
-      )
-    }
-
-    if (input.data.reason_id) {
-      await validateReturnReasons(
-        {
-          orderId: order.id,
-          inputItems: [{ reason_id: input.data.reason_id }],
-        },
-        context
-      )
+    } else if (associatedAction.action !== ChangeActionType.WRITE_OFF_ITEM) {
+      throw new Error(`Action ${associatedAction.id} is not claiming the item`)
     }
   }
 )
 
-export const updateRequestItemReturnWorkflowId = "update-request-item-return"
-export const updateRequestItemReturnWorkflow = createWorkflow(
-  updateRequestItemReturnWorkflowId,
+export const updateClaimItemWorkflowId = "update-claim-item"
+export const updateClaimItemWorkflow = createWorkflow(
+  updateClaimItemWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.UpdateRequestItemReturnWorkflowInput>
+    input: WorkflowData<OrderWorkflow.UpdateClaimItemWorkflowInput>
   ): WorkflowData<OrderDTO> {
-    const orderReturn: ReturnDTO = useRemoteQueryStep({
-      entry_point: "return",
+    const orderClaim: OrderClaimDTO = useRemoteQueryStep({
+      entry_point: "claim",
       fields: ["id", "status", "order_id", "canceled_at"],
-      variables: { id: input.return_id },
+      variables: { id: input.claim_id },
       list: false,
       throw_if_key_not_found: true,
     })
@@ -86,7 +73,7 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "canceled_at", "items.*"],
-      variables: { id: orderReturn.order_id },
+      variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -96,15 +83,15 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
       fields: ["id", "status", "version", "actions.*"],
       variables: {
         filters: {
-          order_id: orderReturn.order_id,
-          return_id: orderReturn.id,
+          order_id: orderClaim.order_id,
+          claim_id: orderClaim.id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderReturn, orderChange })
+    validationStep({ order, input, orderClaim, orderChange })
 
     const updateData = transform(
       { orderChange, input },
@@ -118,7 +105,6 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
           id: input.action_id,
           details: {
             quantity: data.quantity ?? originalAction.details?.quantity,
-            reason_id: data.reason_id ?? originalAction.details?.reason_id,
           },
           internal_note: data.internal_note,
         }
