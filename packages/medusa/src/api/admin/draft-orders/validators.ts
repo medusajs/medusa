@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z, ZodObject } from "zod"
 import { AddressPayload, BigNumberInput } from "../../utils/common-validators"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 
@@ -49,8 +49,8 @@ const Item = z
     return true
   })
 
-export type AdminCreateDraftOrderType = z.infer<typeof AdminCreateDraftOrder>
-export const AdminCreateDraftOrder = z
+export type AdminCreateDraftOrderType = z.infer<typeof _AdminCreateDraftOrder>
+const _AdminCreateDraftOrder = z
   .object({
     status: z.nativeEnum(Status).optional(),
     sales_channel_id: z.string().nullish(),
@@ -67,7 +67,13 @@ export const AdminCreateDraftOrder = z
     metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
-  .refine(
+
+export const AdminCreateDraftOrder = (customSchema?: ZodObject<any, any>) => {
+  const schema = customSchema
+    ? _AdminCreateDraftOrder.merge(customSchema)
+    : _AdminCreateDraftOrder
+
+  return schema.refine(
     (data) => {
       if (!data.email && !data.customer_id) {
         return false
@@ -77,3 +83,4 @@ export const AdminCreateDraftOrder = z
     },
     { message: "Either email or customer_id must be provided" }
   )
+}

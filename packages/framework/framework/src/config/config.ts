@@ -108,7 +108,9 @@ export class ConfigManager {
   protected normalizeProjectConfig(
     projectConfig: Partial<ConfigModule["projectConfig"]>
   ): ConfigModule["projectConfig"] {
-    const outputConfig: ConfigModule["projectConfig"] = deepCopy(projectConfig)
+    const outputConfig = deepCopy(
+      projectConfig
+    ) as ConfigModule["projectConfig"]
 
     if (!outputConfig?.redisUrl) {
       console.log(`redisUrl not found. A fake redis instance will be used.`)
