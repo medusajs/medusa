@@ -53,13 +53,6 @@ export const InfiniteList = <
     },
     getPreviousPageParam: (firstPage) => {
       const moreItemsExist = firstPage.offset !== 0
-      console.log(
-        firstPage,
-        moreItemsExist
-          ? Math.max(firstPage.offset - firstPage.limit, 0)
-          : undefined
-      )
-
       return moreItemsExist
         ? Math.max(firstPage.offset - firstPage.limit, 0)
         : undefined
@@ -80,10 +73,6 @@ export const InfiniteList = <
       return
     }
 
-    // Clear the old observers
-    startObserver.current?.disconnect()
-    endObserver.current?.disconnect()
-
     // Define the new observers after we stop fetching
     if (!isFetching) {
       // Define the new observers after paginating
@@ -103,6 +92,12 @@ export const InfiniteList = <
       startObserver.current?.observe(parentRef.current!.firstChild as Element)
       endObserver.current?.observe(parentRef.current!.lastChild as Element)
     }
+
+    // Clear the old observers
+    return () => {
+      startObserver.current?.disconnect()
+      endObserver.current?.disconnect()
+    }
   }, [
     fetchNextPage,
     fetchPreviousPage,
@@ -119,7 +114,7 @@ export const InfiniteList = <
   }, [error])
 
   if (isPending) {
-    return <Skeleton className="h-[148x] w-full rounded-lg" />
+    return <Skeleton className="h-[148px] w-full rounded-lg" />
   }
 
   return (

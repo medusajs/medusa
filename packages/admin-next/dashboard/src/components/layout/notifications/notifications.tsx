@@ -11,6 +11,7 @@ import { formatDistance } from "date-fns"
 import { Divider } from "../../common/divider"
 import { InfiniteList } from "../../common/infinite-list"
 import { sdk } from "../../../lib/client"
+import { notificationQueryKeys } from "../../../hooks/api"
 
 interface NotificationData {
   title: string
@@ -66,7 +67,7 @@ export const Notifications = () => {
             HttpTypes.AdminNotificationListParams
           >
             responseKey="notifications"
-            queryKey={["notifications"]}
+            queryKey={notificationQueryKeys.all}
             queryFn={(params) => sdk.admin.notification.list(params)}
             queryOptions={{ enabled: open }}
             renderItem={(notification) => {
@@ -98,40 +99,40 @@ const Notification = ({
 
   return (
     <>
-      <div className="align-center mt-2 flex flex-row justify-center px-5">
-        <div className="text-ui-fg-muted mr-3">
+      <div className="flex items-start justify-center gap-3 border-b p-6">
+        <div className="text-ui-fg-muted flex size-5 items-center justify-center">
           <InformationCircleSolid />
         </div>
-        <div className="w-full">
-          {/* We set the line height to 1 so the icon and text are aligned */}
-          <div className="align-center mb-1 flex flex-row justify-between">
-            <Label weight="plus" className="leading-4">
-              {data.title}
-            </Label>
-            <Text
-              as={"span"}
-              className="text-ui-fg-subtle leading-4"
-              size="small"
-            >
-              {formatDistance(notification.created_at, new Date(), {
-                addSuffix: true,
-              })}
-            </Text>
+        <div className="flex w-full flex-col gap-y-3">
+          <div>
+            <div className="align-center flex flex-row justify-between">
+              <Text size="small" leading="compact" weight="plus">
+                {data.title}
+              </Text>
+              <Text
+                as={"span"}
+                className="text-ui-fg-subtle"
+                size="small"
+                leading="compact"
+                weight="plus"
+              >
+                {formatDistance(notification.created_at, new Date(), {
+                  addSuffix: true,
+                })}
+              </Text>
+            </div>
+            {!!data.description && (
+              <Text
+                className="text-ui-fg-subtle whitespace-pre-line"
+                size="small"
+              >
+                {data.description}
+              </Text>
+            )}
           </div>
-
-          {!!data.description && (
-            <Text
-              className="text-ui-fg-subtle whitespace-pre-line"
-              size="small"
-            >
-              {data.description}
-            </Text>
-          )}
           <NotificationFile file={data.file} />
         </div>
       </div>
-
-      <Divider className="my-4" />
     </>
   )
 }
@@ -142,20 +143,16 @@ const NotificationFile = ({ file }: { file: NotificationData["file"] }) => {
   }
 
   return (
-    <div className="my-3 flex flex-col">
-      <div className="shadow-elevation-card-rest bg-ui-bg-component transition-fg rounded-md px-4 py-2">
-        <div className="flex items-center gap-4">
-          <div className="flex w-full flex-row items-center justify-between">
-            <Text size="small" leading="compact">
-              {file?.filename ?? file.url}
-            </Text>
-            <IconButton variant="transparent" className="ml-2">
-              <a href={file.url} download={file.filename ?? `${Date.now()}`}>
-                <ArrowDownTray />
-              </a>
-            </IconButton>
-          </div>
-        </div>
+    <div className="shadow-elevation-card-rest bg-ui-bg-component transition-fg rounded-md px-3 py-2">
+      <div className="flex w-full flex-row items-center justify-between gap-2">
+        <Text size="small" leading="compact">
+          {file?.filename ?? file.url}
+        </Text>
+        <IconButton variant="transparent" asChild>
+          <a href={file.url} download={file.filename ?? `${Date.now()}`}>
+            <ArrowDownTray />
+          </a>
+        </IconButton>
       </div>
     </div>
   )
