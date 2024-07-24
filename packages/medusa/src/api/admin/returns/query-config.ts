@@ -4,6 +4,7 @@ export const defaultAdminReturnFields = [
   "exchange_id",
   "claim_id",
   "display_id",
+  "location_id",
   "order_version",
   "status",
   "refund_amount",

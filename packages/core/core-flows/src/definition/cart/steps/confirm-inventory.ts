@@ -1,5 +1,6 @@
 import { IInventoryService } from "@medusajs/types"
 import {
+  MathBN,
   MedusaError,
   ModuleRegistrationName,
   promiseAll,
@@ -30,7 +31,7 @@ export const confirmInventoryStep = createStep(
         return true
       }
 
-      const itemQuantity = item.required_quantity * item.quantity
+      const itemQuantity = MathBN.mult(item.quantity, item.required_quantity)
 
       return await inventoryService.confirmInventory(
         item.inventory_item_id,

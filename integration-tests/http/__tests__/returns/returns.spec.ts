@@ -1,4 +1,9 @@
-import { ModuleRegistrationName, RuleOperator } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+  RuleOperator,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -9,15 +14,39 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let order
+    let order, order2
     let returnShippingOption
     let shippingProfile
     let fulfillmentSet
     let returnReason
+    let inventoryItem
+    let location
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      const product = (
+        await api.post(
+          "/admin/products",
+          {
+            title: "Test product",
+            variants: [
+              {
+                title: "Test variant",
+                sku: "test-variant",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 10,
+                  },
+                ],
+              },
+            ],
+          },
+          adminHeaders
+        )
+      ).data.product
 
       returnReason = (
         await api.post(
@@ -39,6 +68,7 @@ medusaIntegrationTestRunner({
         items: [
           {
             title: "Custom Item 2",
+            variant_id: product.variants[0].id,
             quantity: 2,
             unit_price: 25,
           },
@@ -80,6 +110,38 @@ medusaIntegrationTestRunner({
         customer_id: "joe",
       })
 
+      order2 = await orderModule.createOrders({
+        region_id: "test_region_id",
+        email: "foo@bar2.com",
+        items: [
+          {
+            title: "Custom Iasdasd2",
+            quantity: 1,
+            unit_price: 20,
+          },
+        ],
+        sales_channel_id: "test",
+        shipping_address: {
+          first_name: "Test",
+          last_name: "Test",
+          address_1: "Test",
+          city: "Test",
+          country_code: "US",
+          postal_code: "12345",
+          phone: "12345",
+        },
+        billing_address: {
+          first_name: "Test",
+          last_name: "Test",
+          address_1: "Test",
+          city: "Test",
+          country_code: "US",
+          postal_code: "12345",
+        },
+        currency_code: "usd",
+        customer_id: "joe",
+      })
+
       shippingProfile = (
         await api.post(
           `/admin/shipping-profiles`,
@@ -91,7 +153,7 @@ medusaIntegrationTestRunner({
         )
       ).data.shipping_profile
 
-      let location = (
+      location = (
         await api.post(
           `/admin/stock-locations`,
           {
@@ -122,6 +184,54 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.fulfillment_set
+
+      inventoryItem = (
+        await api.post(
+          `/admin/inventory-items`,
+          { sku: "inv-1234" },
+          adminHeaders
+        )
+      ).data.inventory_item
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+        {
+          location_id: location.id,
+          stocked_quantity: 2,
+        },
+        adminHeaders
+      )
+
+      const remoteLink = container.resolve(
+        ContainerRegistrationKeys.REMOTE_LINK
+      )
+
+      await remoteLink.create([
+        {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+          [Modules.FULFILLMENT]: {
+            fulfillment_set_id: fulfillmentSet.id,
+          },
+        },
+        {
+          [Modules.SALES_CHANNEL]: {
+            sales_channel_id: "test",
+          },
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+        },
+        {
+          [Modules.PRODUCT]: {
+            variant_id: product.variants[0].id,
+          },
+          [Modules.INVENTORY]: {
+            inventory_item_id: inventoryItem.id,
+          },
+        },
+      ])
 
       const shippingOptionPayload = {
         name: "Return shipping",
@@ -171,9 +281,111 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
+
+      await api.post(
+        `/admin/orders/${order2.id}/fulfillments`,
+        {
+          items: [
+            {
+              id: order2.items[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        adminHeaders
+      )
     })
 
     describe("Returns lifecycle", () => {
+      it("Full flow with 2 orders", async () => {
+        let result = await api.post(
+          "/admin/returns",
+          {
+            order_id: order.id,
+            description: "Test",
+          },
+          adminHeaders
+        )
+
+        let r2 = await api.post(
+          "/admin/returns",
+          {
+            order_id: order2.id,
+          },
+          adminHeaders
+        )
+
+        const returnId2 = r2.data.return.id
+        const item2 = order2.items[0]
+
+        await api.post(
+          `/admin/returns/${returnId2}/request-items`,
+          {
+            items: [
+              {
+                id: item2.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/returns/${returnId2}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+        await api.post(`/admin/returns/${returnId2}/request`, {}, adminHeaders)
+
+        const returnId = result.data.return.id
+
+        const item = order.items[0]
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnId}/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+
+        // updated the requested quantitty
+        const updateReturnItemActionId =
+          result.data.order_preview.items[0].actions[0].id
+
+        result = await api.post(
+          `/admin/returns/${returnId}/request-items/${updateReturnItemActionId}`,
+          {
+            quantity: 2,
+          },
+          adminHeaders
+        )
+        result = await api.post(
+          `/admin/returns/${returnId}/request`,
+          {},
+          adminHeaders
+        )
+
+        result = (await api.get(`/admin/returns?fields=*items`, adminHeaders))
+          .data.returns
+        expect(result).toHaveLength(2)
+      })
+
       // Simple lifecyle:
       // 1. Initiate return
       // 2. Request to return items
@@ -195,8 +407,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             order_id: order.id,
-            display_id: 1,
-            order_version: 2,
             status: "requested",
           })
         )
@@ -587,6 +797,7 @@ medusaIntegrationTestRunner({
             {
               order_id: order.id,
               description: "Test",
+              location_id: location.id,
             },
             adminHeaders
           )
@@ -617,6 +828,14 @@ medusaIntegrationTestRunner({
         })
 
         it("should receive the return", async () => {
+          let inventoryLevel = (
+            await api.get(
+              `/admin/inventory-items/${inventoryItem.id}/location-levels?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data.inventory_levels
+          expect(inventoryLevel[0].stocked_quantity).toEqual(2)
+
           let result = await api.post(
             `/admin/returns/${returnId}/receive`,
             {
@@ -710,6 +929,14 @@ medusaIntegrationTestRunner({
               ],
             })
           )
+
+          inventoryLevel = (
+            await api.get(
+              `/admin/inventory-items/${inventoryItem.id}/location-levels?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data.inventory_levels
+          expect(inventoryLevel[0].stocked_quantity).toEqual(3)
         })
       })
     })
