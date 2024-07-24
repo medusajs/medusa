@@ -1,0 +1,21 @@
+import { TypeList } from "docs-ui"
+
+# ILinkMigrationsPlanner
+
+## Methods
+
+### createPlan
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LinkMigrationsPlannerAction](../../types/types.LinkMigrationsPlannerAction/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkMigrationsPlannerAction[]","type":"[LinkMigrationsPlannerAction](../../types/types.LinkMigrationsPlannerAction/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkMigrationsPlannerAction","type":"`object` \\| `object` \\| `object`","description":"A list of actions prepared and executed by\nthe \"ILinkMigrationsPlanner\".","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createPlan"/>
+
+### executePlan
+
+#### Parameters
+
+<TypeList types={[{"name":"actions","type":"[LinkMigrationsPlannerAction](../../types/types.LinkMigrationsPlannerAction/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"action","type":"`\"create\"` \\| `\"update\"` \\| `\"notify\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"linkDescriptor","type":"[PlannerActionLinkDescriptor](../../types/types.PlannerActionLinkDescriptor/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fromModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fromModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sql","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tableName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"`\"noop\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tableName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"linkDescriptor","type":"[PlannerActionLinkDescriptor](../../types/types.PlannerActionLinkDescriptor/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fromModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fromModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"action","type":"`\"delete\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"linkDescriptor","type":"[PlannerActionLinkDescriptor](../../types/types.PlannerActionLinkDescriptor/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fromModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModule","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fromModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"toModel","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"tableName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="executePlan"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="executePlan"/>

@@ -418,7 +418,7 @@ medusaIntegrationTestRunner({
           inventoryItem.id,
           [location.id]
         )
-        expect(stockAvailability).toEqual(1)
+        expect(stockAvailability.valueOf()).toEqual(1)
       })
     })
   },

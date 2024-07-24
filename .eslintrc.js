@@ -86,23 +86,18 @@ module.exports = {
           "./packages/admin-next/admin-shared/tsconfig.json",
           "./packages/admin-next/admin-vite-plugin/tsconfig.json",
 
-          "./packages/inventory/tsconfig.spec.json",
-          "./packages/stock-location/tsconfig.spec.json",
-
-          "./packages/core-flows/tsconfig.spec.json",
-
-          "./packages/cli/create-medusa-app/tsconfig.spec.json",
-          "./packages/cli/medusa-cli/tsconfig.spec/json",
+          "./packages/cli/create-medusa-app/tsconfig.json",
+          "./packages/cli/medusa-cli/tsconfig.spec.json",
           "./packages/cli/medusa-dev-cli/tsconfig.spec.json",
           "./packages/cli/oas/medusa-oas-cli/tsconfig.spec.json",
 
           "./packages/core/orchestration/tsconfig.json",
           "./packages/core/workflows-sdk/tsconfig.spec.json",
-          "./packages/core/modules-sdk/tsconfig.spec.json",
-          "./packages/core/js-sdk/tsconfig.spec.json",
-          "./packages/core/types/tsconfig.spec.json",
+          "./packages/core/modules-sdk/tsconfig.json",
+          "./packages/core/js-sdk/tsconfig.json",
+          "./packages/core/types/tsconfig.json",
           "./packages/core/utils/tsconfig.spec.json",
-          "./packages/core/medusa-test-utils/tsconfig.spec.json",
+          "./packages/core/medusa-test-utils/tsconfig.json",
 
           "./packages/modules/product/tsconfig.json",
           "./packages/modules/event-bus-local/tsconfig.spec.json",
@@ -137,6 +132,8 @@ module.exports = {
           "./packages/modules/providers/file-s3/tsconfig.spec.json",
           "./packages/modules/providers/fulfillment-manual/tsconfig.spec.json",
           "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
+
+          "./packages/framework/framework/tsconfig.json",
         ],
       },
       rules: {

@@ -1,5 +1,5 @@
 {
-	"id": 2447,
+	"id": 2455,
 	"name": "customer-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 2448,
+			"id": 2456,
 			"name": "Address",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 2449,
+					"id": 2457,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 2450,
+							"id": 2458,
 							"name": "new Address",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 2448,
+								"target": 2456,
 								"name": "Address",
 								"package": "@medusajs/customer",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 2474,
+					"id": 2482,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -64,7 +64,7 @@
 					}
 				},
 				{
-					"id": 2451,
+					"id": 2459,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -75,7 +75,7 @@
 					}
 				},
 				{
-					"id": 2452,
+					"id": 2460,
 					"name": "address_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -96,7 +96,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2453,
+					"id": 2461,
 					"name": "is_default_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -108,7 +108,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 2454,
+					"id": 2462,
 					"name": "is_default_billing",
 					"variant": "declaration",
 					"kind": 1024,
@@ -120,7 +120,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 2455,
+					"id": 2463,
 					"name": "customer_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -131,21 +131,21 @@
 					}
 				},
 				{
-					"id": 2456,
+					"id": 2464,
 					"name": "customer",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 2475,
+						"target": 2483,
 						"name": "Customer",
 						"package": "@medusajs/customer",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 2457,
+					"id": 2465,
 					"name": "company",
 					"variant": "declaration",
 					"kind": 1024,
@@ -166,176 +166,8 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2458,
-					"name": "first_name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2459,
-					"name": "last_name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2460,
-					"name": "address_1",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2461,
-					"name": "address_2",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2462,
-					"name": "city",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2463,
-					"name": "country_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2464,
-					"name": "province",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2465,
-					"name": "postal_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
 					"id": 2466,
-					"name": "phone",
+					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -356,809 +188,6 @@
 				},
 				{
 					"id": 2467,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2468,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2469,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2470,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2471,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 2472,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2473,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						2449
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						2474,
-						2451,
-						2452,
-						2453,
-						2454,
-						2455,
-						2456,
-						2457,
-						2458,
-						2459,
-						2460,
-						2461,
-						2462,
-						2463,
-						2464,
-						2465,
-						2466,
-						2467,
-						2468,
-						2469
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						2470,
-						2472
-					]
-				}
-			]
-		},
-		{
-			"id": 2513,
-			"name": "CustomerGroupCustomer",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 2514,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2515,
-							"name": "new CustomerGroupCustomer",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 2513,
-								"name": "CustomerGroupCustomer",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 2529,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-							"qualifiedName": "OptionalGroupProps"
-						},
-						"name": "OptionalGroupProps",
-						"package": "@medusajs/customer"
-					}
-				},
-				{
-					"id": 2516,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2517,
-					"name": "customer_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2518,
-					"name": "customer_group_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2519,
-					"name": "customer",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": 2475,
-						"name": "Customer",
-						"package": "@medusajs/customer",
-						"qualifiedName": "default"
-					}
-				},
-				{
-					"id": 2520,
-					"name": "customer_group",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": 2497,
-						"name": "CustomerGroup",
-						"package": "@medusajs/customer",
-						"qualifiedName": "default"
-					}
-				},
-				{
-					"id": 2521,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2522,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2523,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2524,
-					"name": "created_by",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2525,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2526,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 2527,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2528,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						2514
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						2529,
-						2516,
-						2517,
-						2518,
-						2519,
-						2520,
-						2521,
-						2522,
-						2523,
-						2524
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						2525,
-						2527
-					]
-				}
-			]
-		},
-		{
-			"id": 2497,
-			"name": "CustomerGroup",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 2498,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2499,
-							"name": "new CustomerGroup",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 2497,
-								"name": "CustomerGroup",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 2512,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
-							"qualifiedName": "SoftDeletableModelDateColumns"
-						},
-						"name": "SoftDeletableModelDateColumns",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 2500,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2501,
-					"name": "name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2502,
-					"name": "customers",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 2475,
-								"name": "Customer",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 2503,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2504,
-					"name": "created_by",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2505,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2506,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 2507,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2508,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2509,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 2510,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2511,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						2498
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						2512,
-						2500,
-						2501,
-						2502,
-						2503,
-						2504,
-						2505,
-						2506,
-						2507
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						2508,
-						2510
-					]
-				}
-			]
-		},
-		{
-			"id": 2475,
-			"name": "Customer",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 2476,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 2477,
-							"name": "new Customer",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 2475,
-								"name": "Customer",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 2496,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-							"qualifiedName": "OptionalCustomerProps"
-						},
-						"name": "OptionalCustomerProps",
-						"package": "@medusajs/customer"
-					}
-				},
-				{
-					"id": 2478,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 2479,
-					"name": "company_name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2480,
-					"name": "first_name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 2481,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1179,8 +208,8 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2482,
-					"name": "email",
+					"id": 2468,
+					"name": "address_1",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -1200,7 +229,112 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2483,
+					"id": 2469,
+					"name": "address_2",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2470,
+					"name": "city",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2471,
+					"name": "country_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2472,
+					"name": "province",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2473,
+					"name": "postal_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2474,
 					"name": "phone",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1221,19 +355,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2484,
-					"name": "has_account",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "false"
-				},
-				{
-					"id": 2485,
+					"id": 2475,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1269,67 +391,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 2486,
-					"name": "groups",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 2497,
-								"name": "CustomerGroup",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 2487,
-					"name": "addresses",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 2448,
-								"name": "Address",
-								"package": "@medusajs/customer",
-								"qualifiedName": "default"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 2488,
+					"id": 2476,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1345,7 +407,7 @@
 					}
 				},
 				{
-					"id": 2489,
+					"id": 2477,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1361,7 +423,544 @@
 					}
 				},
 				{
-					"id": 2490,
+					"id": 2478,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2479,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 2480,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2481,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2457
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2482,
+						2459,
+						2460,
+						2461,
+						2462,
+						2463,
+						2464,
+						2465,
+						2466,
+						2467,
+						2468,
+						2469,
+						2470,
+						2471,
+						2472,
+						2473,
+						2474,
+						2475,
+						2476,
+						2477
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						2478,
+						2480
+					]
+				}
+			]
+		},
+		{
+			"id": 2521,
+			"name": "CustomerGroupCustomer",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2522,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2523,
+							"name": "new CustomerGroupCustomer",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 2521,
+								"name": "CustomerGroupCustomer",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 2537,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+							"qualifiedName": "OptionalGroupProps"
+						},
+						"name": "OptionalGroupProps",
+						"package": "@medusajs/customer"
+					}
+				},
+				{
+					"id": 2524,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2525,
+					"name": "customer_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2526,
+					"name": "customer_group_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2527,
+					"name": "customer",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 2483,
+						"name": "Customer",
+						"package": "@medusajs/customer",
+						"qualifiedName": "default"
+					}
+				},
+				{
+					"id": 2528,
+					"name": "customer_group",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 2505,
+						"name": "CustomerGroup",
+						"package": "@medusajs/customer",
+						"qualifiedName": "default"
+					}
+				},
+				{
+					"id": 2529,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2530,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2531,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2532,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2533,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2534,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 2535,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2536,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2522
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2537,
+						2524,
+						2525,
+						2526,
+						2527,
+						2528,
+						2529,
+						2530,
+						2531,
+						2532
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						2533,
+						2535
+					]
+				}
+			]
+		},
+		{
+			"id": 2505,
+			"name": "CustomerGroup",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2506,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2507,
+							"name": "new CustomerGroup",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 2505,
+								"name": "CustomerGroup",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 2520,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableModelDateColumns"
+						},
+						"name": "SoftDeletableModelDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 2508,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2509,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2510,
+					"name": "customers",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 2483,
+								"name": "Customer",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 2511,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2512,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2513,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2514,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2515,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1387,8 +986,222 @@
 					"defaultValue": "null"
 				},
 				{
+					"id": 2516,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2517,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 2518,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2519,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						2506
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2520,
+						2508,
+						2509,
+						2510,
+						2511,
+						2512,
+						2513,
+						2514,
+						2515
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						2516,
+						2518
+					]
+				}
+			]
+		},
+		{
+			"id": 2483,
+			"name": "Customer",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 2484,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 2485,
+							"name": "new Customer",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 2483,
+								"name": "Customer",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 2504,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+							"qualifiedName": "OptionalCustomerProps"
+						},
+						"name": "OptionalCustomerProps",
+						"package": "@medusajs/customer"
+					}
+				},
+				{
+					"id": 2486,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 2487,
+					"name": "company_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2488,
+					"name": "first_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2489,
+					"name": "last_name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2490,
+					"name": "email",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
 					"id": 2491,
-					"name": "created_by",
+					"name": "phone",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -1409,13 +1222,200 @@
 				},
 				{
 					"id": 2492,
+					"name": "has_account",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 2493,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2494,
+					"name": "groups",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 2505,
+								"name": "CustomerGroup",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 2495,
+					"name": "addresses",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 2456,
+								"name": "Address",
+								"package": "@medusajs/customer",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 2496,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2497,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 2498,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2499,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 2500,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 2493,
+							"id": 2501,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1428,14 +1428,14 @@
 					]
 				},
 				{
-					"id": 2494,
+					"id": 2502,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 2495,
+							"id": 2503,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1452,34 +1452,34 @@
 				{
 					"title": "Constructors",
 					"children": [
-						2476
+						2484
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						2496,
-						2478,
-						2479,
-						2480,
-						2481,
-						2482,
-						2483,
-						2484,
-						2485,
+						2504,
 						2486,
 						2487,
 						2488,
 						2489,
 						2490,
-						2491
+						2491,
+						2492,
+						2493,
+						2494,
+						2495,
+						2496,
+						2497,
+						2498,
+						2499
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						2492,
-						2494
+						2500,
+						2502
 					]
 				}
 			]
@@ -1489,312 +1489,312 @@
 		{
 			"title": "Classes",
 			"children": [
-				2448,
-				2513,
-				2497,
-				2475
+				2456,
+				2521,
+				2505,
+				2483
 			]
 		}
 	],
 	"packageName": "@medusajs/customer",
 	"symbolIdMap": {
-		"2447": {
+		"2455": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"2448": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default"
-		},
-		"2451": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.id"
-		},
-		"2452": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.address_name"
-		},
-		"2453": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.is_default_shipping"
-		},
-		"2454": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.is_default_billing"
-		},
-		"2455": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.customer_id"
-		},
 		"2456": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.customer"
-		},
-		"2457": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.company"
-		},
-		"2458": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.first_name"
+			"qualifiedName": "default"
 		},
 		"2459": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.last_name"
+			"qualifiedName": "default.id"
 		},
 		"2460": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.address_1"
+			"qualifiedName": "default.address_name"
 		},
 		"2461": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.address_2"
+			"qualifiedName": "default.is_default_shipping"
 		},
 		"2462": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.city"
+			"qualifiedName": "default.is_default_billing"
 		},
 		"2463": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.country_code"
+			"qualifiedName": "default.customer_id"
 		},
 		"2464": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.province"
+			"qualifiedName": "default.customer"
 		},
 		"2465": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.postal_code"
+			"qualifiedName": "default.company"
 		},
 		"2466": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.phone"
+			"qualifiedName": "default.first_name"
 		},
 		"2467": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.metadata"
+			"qualifiedName": "default.last_name"
 		},
 		"2468": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.address_1"
 		},
 		"2469": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.address_2"
 		},
 		"2470": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.city"
 		},
 		"2471": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.country_code"
 		},
 		"2472": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.province"
 		},
 		"2473": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.postal_code"
 		},
 		"2474": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
-			"qualifiedName": "default.[OptionalProps]"
+			"qualifiedName": "default.phone"
 		},
 		"2475": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"2476": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"2477": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.updated_at"
 		},
 		"2478": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2479": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.company_name"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2480": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.first_name"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2481": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.last_name"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2482": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.email"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
+			"qualifiedName": "default.[OptionalProps]"
 		},
 		"2483": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.phone"
-		},
-		"2484": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.has_account"
-		},
-		"2485": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.metadata"
+			"qualifiedName": "default"
 		},
 		"2486": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.groups"
+			"qualifiedName": "default.id"
 		},
 		"2487": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.addresses"
+			"qualifiedName": "default.company_name"
 		},
 		"2488": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.first_name"
 		},
 		"2489": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.last_name"
 		},
 		"2490": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default.email"
 		},
 		"2491": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.created_by"
+			"qualifiedName": "default.phone"
 		},
 		"2492": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.has_account"
 		},
 		"2493": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.metadata"
 		},
 		"2494": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.groups"
 		},
 		"2495": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.addresses"
 		},
 		"2496": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
-			"qualifiedName": "default.[OptionalProps]"
+			"qualifiedName": "default.created_at"
 		},
 		"2497": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"2498": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"2499": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.created_by"
 		},
 		"2500": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2501": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.name"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2502": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.customers"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2503": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.metadata"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2504": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.created_by"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
+			"qualifiedName": "default.[OptionalProps]"
 		},
 		"2505": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"2506": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.updated_at"
-		},
-		"2507": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default"
 		},
 		"2508": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.id"
 		},
 		"2509": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.name"
 		},
 		"2510": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.customers"
 		},
 		"2511": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.metadata"
 		},
 		"2512": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
-			"qualifiedName": "default.[OptionalProps]"
+			"qualifiedName": "default.created_by"
 		},
 		"2513": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"2514": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"2515": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.deleted_at"
 		},
 		"2516": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2517": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.customer_id"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"2518": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.customer_group_id"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2519": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.customer"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"2520": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.customer_group"
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
+			"qualifiedName": "default.[OptionalProps]"
 		},
 		"2521": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.metadata"
-		},
-		"2522": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"2523": {
-			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default"
 		},
 		"2524": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.created_by"
+			"qualifiedName": "default.id"
 		},
 		"2525": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.customer_id"
 		},
 		"2526": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.customer_group_id"
 		},
 		"2527": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.customer"
 		},
 		"2528": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.customer_group"
 		},
 		"2529": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"2530": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"2531": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"2532": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"2533": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"2534": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"2535": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"2536": {
+			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"2537": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -1804,7 +1804,7 @@
 			"1": "../../../../packages/modules/customer/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 2447
+			"1": 2455
 		}
 	}
 }

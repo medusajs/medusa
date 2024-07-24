@@ -1139,6 +1139,21 @@ export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
   order_id: string
 }
 
+export interface OrderReturnItemDTO {
+  id: string
+  return_id: string
+  order_id: string
+  item_id: string
+  reason_id?: string | null
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  received_quantity?: number
+  raw_received_quantity?: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
 export interface OrderClaimDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
   claim_items: any[]

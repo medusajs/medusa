@@ -132,12 +132,12 @@ export default class ReturnItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "retitem")
-    this.return_id = this.return?.id
+    this.return_id ??= this.return?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "retitem")
-    this.return_id = this.return?.id
+    this.return_id ??= this.return?.id
   }
 }

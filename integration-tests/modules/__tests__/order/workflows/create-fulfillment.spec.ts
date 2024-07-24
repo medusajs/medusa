@@ -15,6 +15,7 @@ import {
   StockLocationDTO,
 } from "@medusajs/types"
 import {
+  BigNumber,
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
@@ -26,6 +27,7 @@ jest.setTimeout(500000)
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
 const providerId = "manual_test-provider"
+const variantSkuWithInventory = "test-variant"
 let inventoryItem
 
 async function prepareDataFixtures({ container }) {
@@ -96,7 +98,7 @@ async function prepareDataFixtures({ container }) {
       variants: [
         {
           title: "Test variant",
-          sku: "test-variant",
+          sku: variantSkuWithInventory,
         },
         {
           title: "Test variant no inventory management",
@@ -224,6 +226,7 @@ async function createOrderFixture({ container, product, location }) {
         title: "Custom Item 2",
         variant_sku: product.variants[0].sku,
         variant_title: product.variants[0].title,
+        variant_id: product.variants[0].id,
         quantity: 1,
         unit_price: 50,
         adjustments: [
@@ -345,7 +348,14 @@ medusaIntegrationTestRunner({
       })
 
       it("should create a order fulfillment and cancel it", async () => {
+        const inventoryModule = container.resolve(
+          ModuleRegistrationName.INVENTORY
+        )
+
         const order = await createOrderFixture({ container, product, location })
+        const itemWithInventory = order.items!.find(
+          (o) => o.variant_sku === variantSkuWithInventory
+        )!
 
         // Create a fulfillment
         const createOrderFulfillmentData: OrderWorkflow.CreateOrderFulfillmentWorkflowInput =
@@ -354,7 +364,7 @@ medusaIntegrationTestRunner({
             created_by: "user_1",
             items: [
               {
-                id: order.items![0].id,
+                id: itemWithInventory.id,
                 quantity: 1,
               },
             ],
@@ -386,14 +396,17 @@ medusaIntegrationTestRunner({
 
         const [orderFulfill] = await remoteQuery(remoteQueryObject)
 
-        expect(orderFulfill.fulfillments).toHaveLength(1)
-        expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
+        let orderFulfillItemWithInventory = orderFulfill.items!.find(
+          (o) => o.variant_sku === variantSkuWithInventory
+        )!
 
-        const inventoryModule = container.resolve(
-          ModuleRegistrationName.INVENTORY
+        expect(orderFulfill.fulfillments).toHaveLength(1)
+        expect(orderFulfillItemWithInventory.detail.fulfilled_quantity).toEqual(
+          1
         )
+
         const reservation = await inventoryModule.listReservationItems({
-          line_item_id: order.items![0].id,
+          line_item_id: itemWithInventory.id,
         })
         expect(reservation).toHaveLength(0)
 
@@ -401,7 +414,7 @@ medusaIntegrationTestRunner({
           inventoryItem.id,
           [location.id]
         )
-        expect(stockAvailability).toEqual(1)
+        expect(stockAvailability).toEqual(new BigNumber(1))
 
         // Cancel the fulfillment
         const cancelFulfillmentData: OrderWorkflow.CancelOrderFulfillmentWorkflowInput =
@@ -434,16 +447,20 @@ medusaIntegrationTestRunner({
           remoteQueryObjectFulfill
         )
 
+        orderFulfillItemWithInventory = orderFulfillAfterCancelled.items!.find(
+          (o) => o.variant_sku === variantSkuWithInventory
+        )!
+
         expect(orderFulfillAfterCancelled.fulfillments).toHaveLength(1)
-        expect(
-          orderFulfillAfterCancelled.items[0].detail.fulfilled_quantity
-        ).toEqual(0)
+        expect(orderFulfillItemWithInventory.detail.fulfilled_quantity).toEqual(
+          0
+        )
 
         const stockAvailabilityAfterCancelled =
           await inventoryModule.retrieveStockedQuantity(inventoryItem.id, [
             location.id,
           ])
-        expect(stockAvailabilityAfterCancelled).toEqual(2)
+        expect(stockAvailabilityAfterCancelled.valueOf()).toEqual(2)
       })
 
       it("should revert an order fulfillment when it fails and recreate it when tried again", async () => {
@@ -518,7 +535,7 @@ medusaIntegrationTestRunner({
           inventoryItem.id,
           [location.id]
         )
-        expect(stockAvailability).toEqual(1)
+        expect(stockAvailability.valueOf()).toEqual(1)
       })
     })
   },

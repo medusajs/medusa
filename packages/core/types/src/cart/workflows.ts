@@ -149,6 +149,12 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
     variant_id?: string
     quantity: BigNumberInput
   }[]
+  itemsToUpdate?: {
+    data: {
+      variant_id?: string
+      quantity?: BigNumberInput
+    }
+  }[]
 }
 
 export interface CartWorkflowDTO {

@@ -161,7 +161,7 @@ function prepareFulfillmentData({
       provider_id: returnShippingOption.provider_id,
       shipping_option_id: input.return_shipping?.option_id,
       items: fulfillmentItems,
-      labels: [] as FulfillmentWorkflow.CreateFulfillmentLabelWorkflowDTO[],
+      labels: input.return_shipping?.labels ?? [],
       delivery_address: order.shipping_address ?? ({} as any), // TODO: should it be the stock location address?
       order: order,
     },

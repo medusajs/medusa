@@ -28,6 +28,7 @@ import {
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
+  OrderReturnItemDTO,
   OrderReturnReasonDTO,
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
@@ -52,6 +53,7 @@ import {
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
+  CreateOrderReturnItemDTO,
   CreateOrderReturnReasonDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
@@ -1891,6 +1893,16 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  createReturnItems(
+    data: CreateOrderReturnItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderReturnItemDTO>
+
+  createReturnItems(
+    data: CreateOrderReturnItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderReturnItemDTO[]>
+
   createReturns(
     data: CreateOrderReturnDTO,
     sharedContext?: Context
@@ -1915,6 +1927,8 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<ReturnDTO>
 
   deleteReturns(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteReturnItems(ids: string[], sharedContext?: Context): Promise<void>
 
   softDeleteReturns<TReturnableLinkableKeys extends string = string>(
     ids: string[],
