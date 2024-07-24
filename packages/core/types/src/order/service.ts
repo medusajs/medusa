@@ -102,7 +102,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const order = await orderModuleService.retrieveOrder(
    *   "123"
@@ -232,7 +232,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const orderReturn = await orderModuleService.retrieveReturn(
    *   "123"
@@ -359,7 +359,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const claim = await orderModuleService.retrieveOrderClaim(
    *   "123"
@@ -486,7 +486,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const exchange = await orderModuleService.retrieveOrderExchange(
    *   "123"
@@ -968,7 +968,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const lineItem = await orderModuleService.retrieveLineItem("123")
    * ```
@@ -1960,7 +1960,7 @@ export interface IOrderModuleService extends IModuleService {
    * @example
    * const lineItemTaxLines = await orderModuleService
    *   .createLineItemTaxLines(
-   *     "123", 
+   *     "123",
    *     [
    *       {
    *         code: "123",
@@ -1987,7 +1987,7 @@ export interface IOrderModuleService extends IModuleService {
    * @example
    * const lineItemTaxLines = await orderModuleService
    *   .setLineItemTaxLines(
-   *     "123", 
+   *     "123",
    *     [
    *       {
    *         code: "123",
@@ -2782,7 +2782,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * A simple example that retrieves an order change by its ID:
-   * 
+   *
    * ```ts
    * const orderChangeAction = await orderModuleService.retrieveOrderChangeAction(
    *   "123"
@@ -3011,7 +3011,7 @@ export interface IOrderModuleService extends IModuleService {
    * property any of the address's relation attribute names.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were restored.
-   * The object's keys are the ID attribute names of the address entity's relations, 
+   * The object's keys are the ID attribute names of the address entity's relations,
    * and its value is an array of strings, each being the ID of the record associated with the address through this relation.
    *
    * If there are no related records restored, the promise resolves to `void`.
@@ -3424,13 +3424,13 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * To delete one transaction:
-   * 
+   *
    * ```ts
    * await orderModuleService.deleteTransactions("123")
    * ```
-   * 
+   *
    * To delete multiple transactions:
-   * 
+   *
    * ```ts
    * await orderModuleService.deleteTransactions(["123", "321"])
    * ```
@@ -3729,11 +3729,39 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  /**
+   * This method creates a return item.
+   *
+   * @param {CreateOrderReturnItemDTO} data - The return item to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderReturnItemDTO>} The created return item.
+   *
+   * @example
+   * const returnItem = await orderModuleService.createReturnItems({
+   *   return_id: "123",
+   *   item_id: "321",
+   *   quantity: 1
+   * })
+   */
   createReturnItems(
     data: CreateOrderReturnItemDTO,
     sharedContext?: Context
   ): Promise<OrderReturnItemDTO>
 
+  /**
+   * This method creates return items.
+   *
+   * @param {CreateOrderReturnItemDTO[]} data - The return items to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderReturnItemDTO[]>} The created return items.
+   *
+   * @example
+   * const returnItems = await orderModuleService.createReturnItems([{
+   *   return_id: "123",
+   *   item_id: "321",
+   *   quantity: 1
+   * }])
+   */
   createReturnItems(
     data: CreateOrderReturnItemDTO[],
     sharedContext?: Context
@@ -3862,6 +3890,16 @@ export interface IOrderModuleService extends IModuleService {
    */
   deleteReturns(ids: string[], sharedContext?: Context): Promise<void>
 
+  /**
+   * This method deletes return items by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the return items.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the return items are deleted successfully.
+   *
+   * @example
+   * await orderModuleService.deleteReturnItems(["123", "321"])
+   */
   deleteReturnItems(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
@@ -4266,7 +4304,10 @@ export interface IOrderModuleService extends IModuleService {
    *   "123", "321"
    * ])
    */
-  completeOrder(orderIds: string[], sharedContext?: Context): Promise<OrderDTO[]>
+  completeOrder(
+    orderIds: string[],
+    sharedContext?: Context
+  ): Promise<OrderDTO[]>
 
   /**
    * This method sets the status of an order to `completed`.
@@ -4303,16 +4344,15 @@ export interface IOrderModuleService extends IModuleService {
    * const orders = await orderModuleService.cancel("123")
    */
   cancel(orderId: string, sharedContext?: Context): Promise<OrderDTO>
-  
   // Bundled flows
-  
+
   /**
    * Register a fulfillment for an order, return, exchange, or claim.
-   * 
+   *
    * @param {RegisterOrderFulfillmentDTO} data - The fulfillment's details.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the fulfillment is registered successfully.
-   * 
+   *
    * @example
    * await orderModuleService.registerFulfillment({
    *   order_id: "123",
@@ -4426,7 +4466,7 @@ export interface IOrderModuleService extends IModuleService {
    *   items: [
    *     {
    *       id: "123",
-   *       quantity:1 
+   *       quantity:1
    *     }
    *   ]
    * })
