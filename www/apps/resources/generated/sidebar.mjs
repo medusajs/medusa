@@ -2517,6 +2517,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createReturnItems",
+                        "title": "createReturnItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createReturnReasons",
                         "title": "createReturnReasons",
                         "children": []
@@ -2617,6 +2624,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/deleteOrders",
                         "title": "deleteOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteReturnItems",
+                        "title": "deleteReturnItems",
                         "children": []
                       },
                       {

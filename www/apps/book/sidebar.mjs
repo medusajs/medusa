@@ -115,6 +115,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module Links",
             },
             {
+              path: "/advanced-development/modules/module-link-directions",
+              title: "Module Link Direction",
+            },
+            {
               path: "/advanced-development/modules/remote-link",
               title: "Remote Link",
             },

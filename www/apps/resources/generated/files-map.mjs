@@ -4632,6 +4632,10 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons"
   },
@@ -4690,6 +4694,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons/page.mdx",
@@ -5100,6 +5108,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CreateOrderReturnDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderReturnItemDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnReasonDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderReturnReasonDTO"
   },
@@ -5266,6 +5278,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderLineItemTotalsDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderLineItemTotalsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderReturnItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderReturnItemDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderReturnReasonDTO/page.mdx",

@@ -1,33 +1,33 @@
 {
-	"id": 13520,
+	"id": 13553,
 	"name": "user-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 13538,
+			"id": 13571,
 			"name": "Invite",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 13539,
+					"id": 13572,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13540,
+							"id": 13573,
 							"name": "new Invite",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 13538,
+								"target": 13571,
 								"name": "Invite",
 								"package": "@medusajs/user",
 								"qualifiedName": "default"
@@ -36,7 +36,7 @@
 					]
 				},
 				{
-					"id": 13554,
+					"id": 13587,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -52,7 +52,7 @@
 					}
 				},
 				{
-					"id": 13541,
+					"id": 13574,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -63,7 +63,7 @@
 					}
 				},
 				{
-					"id": 13542,
+					"id": 13575,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -74,7 +74,7 @@
 					}
 				},
 				{
-					"id": 13543,
+					"id": 13576,
 					"name": "accepted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -86,7 +86,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 13544,
+					"id": 13577,
 					"name": "token",
 					"variant": "declaration",
 					"kind": 1024,
@@ -97,7 +97,7 @@
 					}
 				},
 				{
-					"id": 13545,
+					"id": 13578,
 					"name": "expires_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -113,7 +113,7 @@
 					}
 				},
 				{
-					"id": 13546,
+					"id": 13579,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -149,7 +149,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13547,
+					"id": 13580,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -165,7 +165,7 @@
 					}
 				},
 				{
-					"id": 13548,
+					"id": 13581,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -181,7 +181,7 @@
 					}
 				},
 				{
-					"id": 13549,
+					"id": 13582,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -207,14 +207,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13550,
+					"id": 13583,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13551,
+							"id": 13584,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -227,14 +227,14 @@
 					]
 				},
 				{
-					"id": 13552,
+					"id": 13585,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13553,
+							"id": 13586,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -251,56 +251,56 @@
 				{
 					"title": "Constructors",
 					"children": [
-						13539
+						13572
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						13554,
-						13541,
-						13542,
-						13543,
-						13544,
-						13545,
-						13546,
-						13547,
-						13548,
-						13549
+						13587,
+						13574,
+						13575,
+						13576,
+						13577,
+						13578,
+						13579,
+						13580,
+						13581,
+						13582
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						13550,
-						13552
+						13583,
+						13585
 					]
 				}
 			]
 		},
 		{
-			"id": 13521,
+			"id": 13554,
 			"name": "User",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 13522,
+					"id": 13555,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13523,
+							"id": 13556,
 							"name": "new User",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 13521,
+								"target": 13554,
 								"name": "User",
 								"package": "@medusajs/user",
 								"qualifiedName": "default"
@@ -309,7 +309,7 @@
 					]
 				},
 				{
-					"id": 13537,
+					"id": 13570,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -327,7 +327,7 @@
 					}
 				},
 				{
-					"id": 13524,
+					"id": 13557,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -338,7 +338,7 @@
 					}
 				},
 				{
-					"id": 13525,
+					"id": 13558,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -359,7 +359,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13526,
+					"id": 13559,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -380,7 +380,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13527,
+					"id": 13560,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -391,7 +391,7 @@
 					}
 				},
 				{
-					"id": 13528,
+					"id": 13561,
 					"name": "avatar_url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -412,7 +412,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13529,
+					"id": 13562,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -448,7 +448,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13530,
+					"id": 13563,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -464,7 +464,7 @@
 					}
 				},
 				{
-					"id": 13531,
+					"id": 13564,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -480,7 +480,7 @@
 					}
 				},
 				{
-					"id": 13532,
+					"id": 13565,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -508,14 +508,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 13533,
+					"id": 13566,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13534,
+							"id": 13567,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -528,14 +528,14 @@
 					]
 				},
 				{
-					"id": 13535,
+					"id": 13568,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13536,
+							"id": 13569,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -552,29 +552,29 @@
 				{
 					"title": "Constructors",
 					"children": [
-						13522
+						13555
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						13537,
-						13524,
-						13525,
-						13526,
-						13527,
-						13528,
-						13529,
-						13530,
-						13531,
-						13532
+						13570,
+						13557,
+						13558,
+						13559,
+						13560,
+						13561,
+						13562,
+						13563,
+						13564,
+						13565
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						13533,
-						13535
+						13566,
+						13568
 					]
 				}
 			]
@@ -584,134 +584,134 @@
 		{
 			"title": "Classes",
 			"children": [
-				13538,
-				13521
+				13571,
+				13554
 			]
 		}
 	],
 	"packageName": "@medusajs/user",
 	"symbolIdMap": {
-		"13520": {
+		"13553": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"13521": {
+		"13554": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default"
 		},
-		"13524": {
+		"13557": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.id"
 		},
-		"13525": {
+		"13558": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.first_name"
 		},
-		"13526": {
+		"13559": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.last_name"
 		},
-		"13527": {
+		"13560": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.email"
 		},
-		"13528": {
+		"13561": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.avatar_url"
 		},
-		"13529": {
+		"13562": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"13530": {
+		"13563": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"13531": {
+		"13564": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"13532": {
+		"13565": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"13533": {
+		"13566": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"13534": {
+		"13567": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"13535": {
+		"13568": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"13536": {
+		"13569": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"13537": {
+		"13570": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"13538": {
+		"13571": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default"
 		},
-		"13541": {
+		"13574": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.id"
 		},
-		"13542": {
+		"13575": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.email"
 		},
-		"13543": {
+		"13576": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.accepted"
 		},
-		"13544": {
+		"13577": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.token"
 		},
-		"13545": {
+		"13578": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.expires_at"
 		},
-		"13546": {
+		"13579": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"13547": {
+		"13580": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"13548": {
+		"13581": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"13549": {
+		"13582": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"13550": {
+		"13583": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"13551": {
+		"13584": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"13552": {
+		"13585": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"13553": {
+		"13586": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"13554": {
+		"13587": {
 			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -721,7 +721,7 @@
 			"1": "../../../../packages/modules/user/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 13520
+			"1": 13553
 		}
 	}
 }
