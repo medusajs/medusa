@@ -252,10 +252,20 @@ export function MedusaInternalService<
       input: any | any[] | SelectorAndData | SelectorAndData[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
-      if (!isDefined(input) || (Array.isArray(input) && input.length === 0)) {
+      if (
+        !isDefined(input) ||
+        (Array.isArray(input) && input.length === 0) ||
+        (isObject(input) && Object.keys(input).length === 0)
+      ) {
         return (Array.isArray(input) ? [] : void 0) as
           | InferEntityType<TEntity>
           | InferEntityType<TEntity>[]
+      }
+
+      if (!isObject(input) && !Array.isArray(input)) {
+        throw new Error(
+          `Unable to update with input: ${input}. Please provide the following input: an object or an array of object to update or { selector: {}, data: {} } or an array of the same.`
+        )
       }
 
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
