@@ -7935,40 +7935,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Medusa Application",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/medusa-application",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/medusa-application/railway",
                 "title": "Railway",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/heroku",
-                "title": "Heroku",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/digitalocean",
-                "title": "DigitalOcean",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/microtica",
-                "title": "Microtica",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/general",
-                "title": "General Guide",
                 "children": []
               }
             ]
@@ -7978,19 +7951,20 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Medusa Admin",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/admin",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/admin/vercel",
-                "title": "Vercel",
+                "path": "/deployment/admin/general",
+                "title": "General Deployment Guide for the Medusa Admin",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/admin/general",
-                "title": "General Guide",
+                "path": "/deployment/admin/vercel",
+                "title": "Vercel",
                 "children": []
               }
             ]
@@ -8000,19 +7974,20 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Next.js Starter",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/storefront",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/storefront/vercel",
-                "title": "Vercel",
+                "path": "/deployment/storefront/general",
+                "title": "General Deployment Guide for the Next.js Starter",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/storefront/general",
-                "title": "General Guide",
+                "path": "/deployment/storefront/vercel",
+                "title": "Vercel",
                 "children": []
               }
             ]

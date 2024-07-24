@@ -656,22 +656,6 @@ export const filesMap = [
     "pathname": "/deployment/admin/vercel"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/medusa-application/digitalocean/page.mdx",
-    "pathname": "/deployment/medusa-application/digitalocean"
-  },
-  {
-    "filePath": "/www/apps/resources/app/deployment/medusa-application/general/page.mdx",
-    "pathname": "/deployment/medusa-application/general"
-  },
-  {
-    "filePath": "/www/apps/resources/app/deployment/medusa-application/heroku/page.mdx",
-    "pathname": "/deployment/medusa-application/heroku"
-  },
-  {
-    "filePath": "/www/apps/resources/app/deployment/medusa-application/microtica/page.mdx",
-    "pathname": "/deployment/medusa-application/microtica"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/medusa-application/railway/page.mdx",
     "pathname": "/deployment/medusa-application/railway"
   },

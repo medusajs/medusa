@@ -1,3 +1,7 @@
+---
+sidebar_label: "Railway"
+---
+
 export const metadata = {
   title: `Deploy Medusa Application to Railway`,
 }
@@ -14,15 +18,15 @@ As Medusa v2 is still in active development, it's highly recommended not to depl
 
 ## What You’ll Deploy
 
-1. PostgreSQL database
-2. Redis database
-3. Medusa application in server mode
-4. Medusa application in worker mode
-5. (Optional) Medusa Admin
+1. PostgreSQL database.
+2. Redis database.
+3. Medusa application in server mode.
+4. Medusa application in worker mode.
+5. (Optional) Medusa Admin.
 
 <Note>
 
-Learn more about the `worker_mode` configuration in [this document](/references/medusa-config#workermode).
+The same Medusa project is used to deploy the server and worker modes. Learn more about the `workerMode` configuration in [this document](/references/medusa-config#workermode).
 
 </Note>
 
@@ -52,7 +56,7 @@ module.exports = defineConfig({
 
 ```
 
-Later, you’ll set different values of the `MEDUSA_WORKER_MODE` environment variable for each Medusa application.
+Later, you’ll set different values of the `MEDUSA_WORKER_MODE` environment variable for each Medusa application deployment.
 
 ### Configure Medusa Admin
 
@@ -248,7 +252,7 @@ Where:
 - `AUTH_CORS`'s value is the URLs of any application authenticating users, customers, or other actor types, such as the storefront and admin URLs. The URLs are separated by commas. If you don’t have the URLs yet, you can set its value later.
 - Change `DISABLE_MEDUSA_ADMIN` to `false` if you’re hosting the admin with the Medusa application.
 
-Once you’re done, click the Update Variables button.
+Feel free to add any other relevant environment variables. Once you’re done, click the Update Variables button.
 
 ### Set Start Command
 
@@ -278,7 +282,7 @@ You can either generate a random domain name or set a custom one. To do that:
     1. Choose the `9000` port.
 5. Save the changes.
 
-### Changes if Deploying with Admin
+### Additional Configuration if Deploying with Admin
 
 If you’re deploying the Medusa application in server mode with the admin, you have to make some changes now that you’ve obtained the application’s URL.
 
@@ -354,7 +358,7 @@ Where:
 - The value of `COOKIE_SECRET` and `JWT_SECRET` must be a randomly generated secret.
 - Keep `DISABLE_MEDUSA_ADMIN`'s value set to `true`, even if you’re hosting the admin with the Medusa application.
 
-Once you’re done, click the Update Variables button.
+Feel free to add any other relevant environment variables. Once you’re done, click the Update Variables button.
 
 ### Set Start Command
 
