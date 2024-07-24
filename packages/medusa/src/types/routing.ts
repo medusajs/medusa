@@ -63,15 +63,13 @@ export interface MedusaRequest<Body = unknown>
    */
   context?: Record<string, any>
   /**
-   * A custom validator for the request body that will be merged with the original
-   * validator of the route
+   * Custom validators for the request body and query params that will be
+   * merged with the original validator of the route.
    */
-  bodyValidator?: ZodObject<any, any>
-  /**
-   * A custom validator for the URL query params that will be merged with the original
-   * validator of the route
-   */
-  queryParamsValidator?: ZodObject<any, any>
+  extendedValidators?: {
+    body?: ZodObject<any, any>
+    queryParams?: ZodObject<any, any>
+  }
 }
 
 export interface AuthContext {
