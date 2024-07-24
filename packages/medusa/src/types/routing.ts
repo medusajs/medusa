@@ -1,3 +1,4 @@
+import { ZodObject } from "zod"
 import type { NextFunction, Request, Response } from "express"
 
 import {
@@ -61,6 +62,16 @@ export interface MedusaRequest<Body = unknown>
    * A generic context object that can be used across the request lifecycle
    */
   context?: Record<string, any>
+  /**
+   * A custom validator for the request body that will be merged with the original
+   * validator of the route
+   */
+  bodyValidator?: ZodObject<any, any>
+  /**
+   * A custom validator for the URL query params that will be merged with the original
+   * validator of the route
+   */
+  queryParamsValidator?: ZodObject<any, any>
 }
 
 export interface AuthContext {
