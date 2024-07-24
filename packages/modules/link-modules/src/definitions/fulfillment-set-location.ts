@@ -49,7 +49,10 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
         isList: true,
       },
       fieldAlias: {
-        fulfillment_sets: "fulfillment_set_link.fulfillment_set",
+        fulfillment_sets: {
+          path: "fulfillment_set_link.fulfillment_set",
+          isList: true,
+        },
       },
     },
     {
