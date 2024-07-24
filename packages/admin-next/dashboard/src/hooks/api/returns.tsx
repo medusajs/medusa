@@ -218,6 +218,7 @@ export const useDeleteReturnShipping = (
 
 export const useConfirmReturnRequest = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
@@ -253,6 +254,7 @@ export const useConfirmReturnRequest = (
 
 export const useCancelReturnRequest = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
 ) => {
   return useMutation({

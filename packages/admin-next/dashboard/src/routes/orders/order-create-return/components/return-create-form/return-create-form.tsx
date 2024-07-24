@@ -87,10 +87,10 @@ export const ReturnCreateForm = ({
    * MUTATIONS
    */
   const { mutateAsync: confirmReturnRequest, isPending: isConfirming } =
-    useConfirmReturnRequest(activeReturn.id)
+    useConfirmReturnRequest(activeReturn.id, order.id)
 
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
-    useCancelReturnRequest(activeReturn.id)
+    useCancelReturnRequest(activeReturn.id, order.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id, order.id)
