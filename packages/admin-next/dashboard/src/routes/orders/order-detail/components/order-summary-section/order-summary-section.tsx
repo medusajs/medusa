@@ -279,22 +279,21 @@ const ReturnBreakdown = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
   const { getRelativeDate } = useDate()
 
-  const { returns } = useReturns({ order_id: order.id, fields: "*items" })
+  const { returns = [] } = useReturns({
+    order_id: order.id,
+    status: "requested",
+    fields: "*items",
+  })
 
-  const activeReturn = useMemo(() => {
-    if (!returns?.length) {
-      return null
-    }
-
-    return returns.find((r) => r.status === "requested") // ONLY ONE REQUESTED RETURN SHOULD EXIST ON AN ORDER
-  }, [returns])
-
-  if (!activeReturn) {
+  if (!returns.length) {
     return null
   }
 
-  return (
-    <div className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4">
+  return returns.map((activeReturn) => (
+    <div
+      key={activeReturn.id}
+      className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4"
+    >
       <div className="flex items-center gap-2">
         <ArrowDownRightMini className="text-ui-fg-muted" />
         <Text size="small" className="text-ui-fg-subtle">
@@ -308,7 +307,7 @@ const ReturnBreakdown = ({ order }: { order: AdminOrder }) => {
         {getRelativeDate(activeReturn.created_at)}
       </Text>
     </div>
-  )
+  ))
 }
 
 const Total = ({ order }: { order: AdminOrder }) => {
