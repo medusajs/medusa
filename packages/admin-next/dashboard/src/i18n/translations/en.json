@@ -925,7 +925,9 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return created"
+          "created": "Return created",
+          "items_one": "{{count}} item returned",
+          "items_other": "{{count}} items returned"
         },
         "note": {
           "comment": "Comment",
