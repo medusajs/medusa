@@ -4604,13 +4604,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@workspace:^, @medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@npm:^0.0.1-preview-20240724081425":
+  version: 0.0.1-preview-20240724081425
+  resolution: "@medusajs/framework@npm:0.0.1-preview-20240724081425"
+  dependencies:
+    "@medusajs/medusa-cli": "workspace:^"
+    "@medusajs/utils": "workspace:^"
+    awilix: ^8.0.0
+  checksum: 46485cc3de7d56ddf18cb6a596cccacdb0fb17908db2ded60e3653e8f809b0e8c30c525c1c2eef5317347530d757d7f8b9b2ff052a254073ffa36772e6e3dddd
+  languageName: node
+  linkType: hard
+
+"@medusajs/framework@workspace:packages/framework/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
     "@medusajs/medusa-cli": ^1.3.23
-    "@medusajs/types": ^1.11.17
-    "@medusajs/utils": ^1.11.10
+    "@medusajs/types": ^1.11.17-preview-20240510084332
+    "@medusajs/utils": ^1.12.0-preview-20240724081425
     awilix: ^8.0.0
     cross-env: ^7.0.3
     ioredis: ^5.2.5
@@ -4760,7 +4771,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.22, @medusajs/medusa-cli@workspace:packages/cli/medusa-cli":
+"@medusajs/medusa-cli@^1.3.22, @medusajs/medusa-cli@workspace:^, @medusajs/medusa-cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
@@ -4877,7 +4888,7 @@ __metadata:
     "@inquirer/checkbox": ^2.3.11
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
-    "@medusajs/framework": "workspace:^"
+    "@medusajs/framework": ^0.0.1-preview-20240724081425
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
@@ -5316,7 +5327,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@npm:^1.11.17":
+"@medusajs/types@npm:1.12.0-snapshot-20240723115023":
+  version: 1.12.0-snapshot-20240723115023
+  resolution: "@medusajs/types@npm:1.12.0-snapshot-20240723115023"
+  checksum: 676a9f359000fc688346b3e0a1bc4d9c13bba35e613e98fed8e47a8f6b50177ab4295c3cb2d404795c5ad7cd2b8c131e1bddd4a6e139bd82347a6388b688ac2f
+  languageName: node
+  linkType: hard
+
+"@medusajs/types@npm:^1.11.17, @medusajs/types@npm:^1.11.17-preview-20240510084332":
   version: 1.11.17
   resolution: "@medusajs/types@npm:1.11.17"
   checksum: 544099b215cd4de87682c2154696ff4849704f74290f15e3e383e6cf503a335767b399b9fe2a381ffa4405fa2ec7ed911a8a5eecff6c7f10d5ef95af802064b6
@@ -5477,6 +5495,26 @@ __metadata:
     knex: 2.4.2
     ulid: ^2.3.0
   checksum: 5f9c1e021a029c1176e8fb8e71257a2503e38aa033fb133cad5aa6ac0a73e46b715a2622269b44f6b65a7477e90c288b7b762ae012c65f143c3b6aa460ef3101
+  languageName: node
+  linkType: hard
+
+"@medusajs/utils@npm:^1.12.0-preview-20240724081425":
+  version: 1.12.0-snapshot-20240723115023
+  resolution: "@medusajs/utils@npm:1.12.0-snapshot-20240723115023"
+  dependencies:
+    "@medusajs/types": 1.12.0-snapshot-20240723115023
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
+    bignumber.js: ^9.1.2
+    dotenv: ^16.4.5
+    json-2-csv: ^5.5.4
+    jsonwebtoken: ^9.0.2
+    knex: 2.4.2
+    pluralize: ^8.0.0
+    ulid: ^2.3.0
+  checksum: ae0d42e4a937c5941c4365de6be3908a5d75b121b50d0ba9d93ce948babea43b8c3d9eaedc1cd22fd7455b984e3ba209feb9217b311c28d679a92e9715376542
   languageName: node
   linkType: hard
 
