@@ -347,6 +347,7 @@ export const ReturnCreateForm = ({
     return () => {
       if (IS_CANCELING) {
         cancelReturnRequest()
+        // TODO: add this on ESC press
         IS_CANCELING = false
       }
     }
@@ -354,7 +355,14 @@ export const ReturnCreateForm = ({
 
   const returnTotal = preview.return_requested_total
 
-  const shippingTotal = preview.shipping_total
+  const shippingTotal = useMemo(() => {
+    const method = preview.shipping_methods.find(
+      (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
+    )
+
+    return method?.total || 0
+  }, [preview.shipping_methods])
+
   const refundAmount = returnTotal - shippingTotal
 
   return (
