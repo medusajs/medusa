@@ -5,6 +5,8 @@ import {
 } from "@medusajs/workflows-sdk"
 import { WorkflowTypes } from "@medusajs/types"
 import { sendNotificationsStep } from "../../notification"
+import { groupProductsForBatchStep, parseProductCsvStep } from "../steps"
+import { batchProductsWorkflow } from "./batch-products"
 
 export const importProductsWorkflowId = "import-products"
 export const importProductsWorkflow = createWorkflow(
@@ -12,7 +14,12 @@ export const importProductsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowTypes.ProductWorkflow.ImportProductsDTO>
   ): WorkflowData<void> => {
-    // validateImportCsvStep(input.fileContent)
+    const products = parseProductCsvStep(input.fileContent)
+    const batchRequest = groupProductsForBatchStep(products)
+
+    // TODO: Add async confirmation step here
+
+    batchProductsWorkflow.runAsStep({ input: batchRequest })
 
     const notifications = transform({ input }, (data) => {
       return [
