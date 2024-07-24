@@ -359,7 +359,7 @@ medusaIntegrationTestRunner({
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
-                  isList: true,
+                  isList: false,
                 },
               },
               relationship: {
