@@ -222,7 +222,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     })
 
     const shippingMethod = transform(order, (data) => {
-      return { data: data.shipping_methods?.[0].data }
+      return { data: data.shipping_methods?.[0]?.data }
     })
 
     const shippingOptionId = transform(order, (data) => {

@@ -4,6 +4,7 @@ import {
   decorateCartTotals,
   deduplicate,
   isDefined,
+  isObject,
 } from "@medusajs/utils"
 
 // Reshape the order object to match the OrderDTO
@@ -99,10 +100,15 @@ export function formatOrder(
 }
 
 function cleanNestedRelations(obj) {
-  delete obj.order
-  delete obj.return
-  delete obj.claim
-  delete obj.exchange
+  if (!isObject(obj)) {
+    return
+  }
+
+  const obj_ = obj as any
+  delete obj_.order
+  delete obj_.return
+  delete obj_.claim
+  delete obj_.exchange
 }
 
 function formatOrderReturn(orderReturn, mainOrder) {

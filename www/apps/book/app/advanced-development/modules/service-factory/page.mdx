@@ -56,9 +56,9 @@ In the example above, since the `HelloModuleService` extends `MedusaService`, it
 
 The service factory generates data-management methods for each of the data models provided in the first parameter.
 
-The method's names are the operation's name, suffixed by the data model's name.
+The method's names are the operation's name, suffixed by the data model's key in the object parameter passed to `MedusaService`.
 
-For example, the following methods are generated for the code snippet above:
+For example, the following methods are generated for the service above:
 
 <Tabs defaultValue="listMyCustoms" layoutType="vertical" className="mt-2">
   <TabsList>

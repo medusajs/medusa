@@ -34,6 +34,15 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
 
       const salesChannelId = data.input.sales_channel_id
 
+      for (const updateItem of data.input.itemsToUpdate ?? []) {
+        const item = data.input.items.find(
+          (item) => item.variant_id === updateItem.data.variant_id
+        )
+        if (item && updateItem.data.quantity) {
+          item.quantity = updateItem.data.quantity!
+        }
+      }
+
       deepFlatMap(
         data.input,
         "variants.inventory_items.inventory.location_levels.stock_locations.sales_channels",
