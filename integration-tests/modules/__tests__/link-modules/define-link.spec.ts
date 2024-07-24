@@ -323,7 +323,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "currency",
               fieldAlias: {
-                regions: "region_link.region",
+                regions: {
+                  path: "region_link.region",
+                  isList: true,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -336,7 +339,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "region",
               fieldAlias: {
-                currency: "currency_link.currency",
+                currency: {
+                  path: "currency_link.currency",
+                  isList: true,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
