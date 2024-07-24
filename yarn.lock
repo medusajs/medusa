@@ -4604,7 +4604,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@workspace:^, @medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@npm:^0.0.1-preview-20240723180606":
+  version: 0.0.1-preview-20240724081425
+  resolution: "@medusajs/framework@npm:0.0.1-preview-20240724081425"
+  dependencies:
+    "@medusajs/medusa-cli": "workspace:^"
+    "@medusajs/utils": "workspace:^"
+    awilix: ^8.0.0
+  checksum: 46485cc3de7d56ddf18cb6a596cccacdb0fb17908db2ded60e3653e8f809b0e8c30c525c1c2eef5317347530d757d7f8b9b2ff052a254073ffa36772e6e3dddd
+  languageName: node
+  linkType: hard
+
+"@medusajs/framework@workspace:packages/framework/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
@@ -4839,7 +4850,7 @@ __metadata:
     "@inquirer/checkbox": ^2.3.11
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
-    "@medusajs/framework": "workspace:^"
+    "@medusajs/framework": ^0.0.1-preview-20240723180606
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
