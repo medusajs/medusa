@@ -450,6 +450,7 @@ export interface UpdateReturnDTO {
     internal_note?: string | null
     note?: string | null
     reason_id?: string | null
+    return_id?: string | null
     metadata?: Record<string, unknown> | null
   }[]
 }

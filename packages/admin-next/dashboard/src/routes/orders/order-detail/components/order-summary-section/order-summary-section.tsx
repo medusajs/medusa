@@ -1,8 +1,13 @@
+import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
+import { useMemo } from "react"
+
 import {
   AdminOrder,
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
+import { ArrowDownRightMini, ArrowUturnLeft } from "@medusajs/icons"
 import {
   Button,
   Container,
@@ -11,9 +16,6 @@ import {
   StatusBadge,
   Text,
 } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -22,6 +24,8 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
+import { useReturns } from "../../../../../hooks/api/returns"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -67,6 +71,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} />
       <ItemBreakdown order={order} />
+      <ReturnBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
 
@@ -104,11 +109,11 @@ const Header = ({ order }: { order: AdminOrder }) => {
               //   to: "#", // TODO: Open modal to allocate items
               //   icon: <Buildings />,
               // },
-              // {
-              //   label: t("orders.summary.requestReturn"),
-              //   to: `/orders/${order.id}/returns`,
-              //   icon: <ArrowUturnLeft />,
-              // },
+              {
+                label: t("orders.returns.create"),
+                to: `/orders/${order.id}/returns`,
+                icon: <ArrowUturnLeft />,
+              },
             ],
           },
         ]}
@@ -268,6 +273,41 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
       />
     </div>
   )
+}
+
+const ReturnBreakdown = ({ order }: { order: AdminOrder }) => {
+  const { t } = useTranslation()
+  const { getRelativeDate } = useDate()
+
+  const { returns = [] } = useReturns({
+    order_id: order.id,
+    status: "requested",
+    fields: "*items",
+  })
+
+  if (!returns.length) {
+    return null
+  }
+
+  return returns.map((activeReturn) => (
+    <div
+      key={activeReturn.id}
+      className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <ArrowDownRightMini className="text-ui-fg-muted" />
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.returns.returnRequestedInfo", {
+            requestedItemsCount: activeReturn.items.length,
+          })}
+        </Text>
+      </div>
+
+      <Text size="small" leading="compact" className="text-ui-fg-muted">
+        {getRelativeDate(activeReturn.created_at)}
+      </Text>
+    </div>
+  ))
 }
 
 const Total = ({ order }: { order: AdminOrder }) => {
