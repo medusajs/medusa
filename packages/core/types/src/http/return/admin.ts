@@ -1,4 +1,7 @@
-export interface BaseReturnItem {
+import { OperatorMap } from "../../dal"
+import { FindParams } from "../common"
+
+export interface AdminBaseReturnItem {
   id: string
   quantity: number
   received_quantity: number
@@ -9,7 +12,7 @@ export interface BaseReturnItem {
   metadata?: Record<string, unknown>
 }
 
-export interface AdminReturnResponse {
+export interface AdminReturn {
   id: string
   order_id: string
   status?: string
@@ -19,7 +22,15 @@ export interface AdminReturnResponse {
   display_id: number
   no_notification?: boolean
   refund_amount?: number
-  items: BaseReturnItem[]
+  items: AdminBaseReturnItem[]
+}
+
+export interface AdminReturnResponse {
+  return: AdminReturn
+}
+
+export interface AdminReturnsResponse {
+  returns: AdminReturn[]
 }
 
 export interface AdminInitiateReturnRequest {
@@ -42,6 +53,13 @@ export interface AdminAddReturnItem {
 export interface AdminAddReturnItems {
   items: AdminAddReturnItem[]
 }
+
+export interface AdminUpdateReturnItems {
+  quantity?: number
+  internal_note?: string
+  reason_id?: string
+}
+
 export interface AdminAddReturnShipping {
   shipping_option_id: string
   custom_price?: number
@@ -49,6 +67,25 @@ export interface AdminAddReturnShipping {
   internal_note?: string
   metadata?: Record<string, unknown>
 }
+
+export interface AdminUpdateReturnShipping {
+  custom_price?: number
+  internal_note?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface AdminConfirmReturnRequest {
   no_notification?: boolean
+}
+
+export interface AdminReturnFilters extends FindParams {
+  id?: string[] | string | OperatorMap<string | string[]>
+  order_id?: string[] | string | OperatorMap<string | string[]>
+  status?:
+    | string[]
+    | string
+    | Record<string, unknown>
+    | OperatorMap<Record<string, unknown>>
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
 }
