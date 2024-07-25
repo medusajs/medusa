@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response, raw } from "express"
-import { MiddlewaresConfig } from "../../types"
 import {
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
   storeGlobalMiddlewareMock,
 } from "../mocks"
+import { defineRoutesConfig } from "../../../../../utils/define-routes-config"
 
 const customersGlobalMiddleware = (
   req: Request,
@@ -29,26 +29,24 @@ const storeGlobal = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/customers",
-      middlewares: [customersGlobalMiddleware],
-    },
-    {
-      method: "POST",
-      matcher: "/customers",
-      middlewares: [customersCreateMiddleware],
-    },
-    {
-      matcher: "/store/*",
-      middlewares: [storeGlobal],
-    },
-    {
-      matcher: "/webhooks/*",
-      method: "POST",
-      bodyParser: false,
-      middlewares: [raw({ type: "application/json" })],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/customers",
+    middlewares: [customersGlobalMiddleware],
+  },
+  {
+    method: "POST",
+    matcher: "/customers",
+    middlewares: [customersCreateMiddleware],
+  },
+  {
+    matcher: "/store/*",
+    middlewares: [storeGlobal],
+  },
+  {
+    matcher: "/webhooks/*",
+    method: "POST",
+    bodyParser: false,
+    middlewares: [raw({ type: "application/json" })],
+  },
+])
