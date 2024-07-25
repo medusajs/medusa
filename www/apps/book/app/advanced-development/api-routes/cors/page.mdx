@@ -74,47 +74,45 @@ This disables the CORS middleware on API Routes at the path `/store/custom`.
 
 If you create a route that doesn’t start with `/store` or `/admin`, you must apply the CORS middleware manually. Otherwise, all requests to your API route lead to a CORS error.
 
-You can do that in the exported middlewares configurations in `src/api/middlewares.ts`.
+You can do that in the exported middlewares configurations in `src/api/routes-config.ts`.
 
 For example:
 
-export const highlights = [["25", "parseCorsOrigins", "A utility function that parses the CORS configurations in `medusa-config.js`"]]
+export const highlights = [["24", "parseCorsOrigins", "A utility function that parses the CORS configurations in `medusa-config.js`"]]
 
-```ts title="src/api/middlewares.ts" highlights={highlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import {
-  MiddlewaresConfig,
+```ts title="src/api/routes-config.ts" highlights={highlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { defineRoutesConfig } from "@medusajs/medusa"
+import type { 
   MedusaNextFunction, 
   MedusaRequest, 
-  MedusaResponse, 
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { ConfigModule } from "@medusajs/types"
 import { parseCorsOrigins } from "@medusajs/utils"
 import cors from "cors"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/custom*",
-      middlewares: [
-        (
-          req: MedusaRequest, 
-          res: MedusaResponse, 
-          next: MedusaNextFunction
-        ) => {
-          const configModule: ConfigModule =
-            req.scope.resolve("configModule")
+export default defineRoutesConfig([
+  {
+    matcher: "/custom*",
+    middlewares: [
+      (
+        req: MedusaRequest, 
+        res: MedusaResponse, 
+        next: MedusaNextFunction
+      ) => {
+        const configModule: ConfigModule =
+          req.scope.resolve("configModule")
 
-          return cors({
-            origin: parseCorsOrigins(
-              configModule.projectConfig.http.storeCors
-            ),
-            credentials: true,
-          })(req, res, next)
-        },
-      ],
-    },
-  ],
-}
+        return cors({
+          origin: parseCorsOrigins(
+            configModule.projectConfig.http.storeCors
+          ),
+          credentials: true,
+        })(req, res, next)
+      },
+    ],
+  },
+])
 ```
 
 This retrieves the configurations exported from `medusa-config.js` and applies the `storeCors` to routes starting with `/custom`.

@@ -128,32 +128,33 @@ For example:
 
 export const highlights = [
   [
-    "7",
+    "9",
     "authenticate",
     "Only authenticated admin users can access routes starting with `/custom/admin`",
   ],
   [
-    "11",
+    "13",
     "authenticate",
     "Only authenticated customers can access routes starting with `/custom/customers`",
   ],
 ]
 
-```ts title="src/api/middlewares.ts" highlights={highlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+```ts title="src/api/routes-config.ts" highlights={highlights}
+import { 
+  defineRoutesConfig,
+  authenticate
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/custom/admin*",
-      middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
-    },
-    {
-      matcher: "/custom/customer*",
-      middlewares: [authenticate("customer", ["session", "bearer"])],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/custom/admin*",
+    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+  },
+  {
+    matcher: "/custom/customer*",
+    middlewares: [authenticate("customer", ["session", "bearer"])],
+  },
+])
 ```
 
 The `authenticate` middleware function accepts three parameters:

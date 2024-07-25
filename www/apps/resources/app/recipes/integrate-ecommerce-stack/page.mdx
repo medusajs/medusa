@@ -344,22 +344,20 @@ For example, suppose an administrator changes the product data in the ERP system
     
     This creates a webhook listener for an ERP system. It receives the ID of a product and its updated data, assuming that’s how your ERP system sends the data.
     
-    Then, create the file `src/api/middlewares.ts` with the following content:
+    Then, create the file `src/api/routes-config.ts` with the following content:
 
-    ```ts title="src/api/middlewares.ts"
-    import { MiddlewaresConfig } from "@medusajs/medusa"
+    ```ts title="src/api/routes-config.ts"
+    import { defineRoutesConfig } from "@medusajs/medusa"
     import { raw } from "body-parser"
-    
-    export const config: MiddlewaresConfig = {
-      routes: [
-        {
-          method: ["POST", "PUT"],
-          matcher: "/webhooks/*",
-          bodyParser: false,
-          middlewares: [raw({ type: "application/json" })],
-        },
-      ],
-    }
+
+    export default defineRoutesConfig([
+      {
+        method: ["POST", "PUT"],
+        matcher: "/webhooks/*",
+        bodyParser: false,
+        middlewares: [raw({ type: "application/json" })],
+      },
+    ])
     ```
 
     This replaces the default JSON middleware with the raw middleware, which is useful for webhook routes.

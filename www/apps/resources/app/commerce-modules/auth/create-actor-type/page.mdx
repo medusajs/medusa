@@ -173,36 +173,37 @@ In the API route, you create the manager using the workflow from the previous se
 
 The last step is to apply the `authenticate` middleware on the API routes that require a manager’s authentication.
 
-To do that, create the file `src/api/middlewares.ts` with the following content:
+To do that, create the file `src/api/routes-config.ts` with the following content:
 
 export const middlewareHighlights = [
-  ["9", "authenticate", "Require the user to be authenticated to access the `/manager` API route when sending a `POST` request."],
-  ["10", "allowUnregistered", "The user doesn't need to be registered to access the API route."],
-  ["17", "authenticate", "Require the user to be authenticated as a manager when accessing `/manager/me` API routes."]
+  ["11", "authenticate", "Require the user to be authenticated to access the `/manager` API route when sending a `POST` request."],
+  ["12", "allowUnregistered", "The user doesn't need to be registered to access the API route."],
+  ["19", "authenticate", "Require the user to be authenticated as a manager when accessing `/manager/me` API routes."]
 ]
 
-```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+```ts title="src/api/routes-config.ts" highlights={middlewareHighlights}
+import { 
+  defineRoutesConfig,
+  authenticate
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/manager",
-      method: "POST",
-      middlewares: [
-        authenticate("manager", ["session", "bearer"], {
-          allowUnregistered: true,
-        }),
-      ],
-    },
-    {
-      matcher: "/manager/me*",
-      middlewares: [
-        authenticate("manager", ["session", "bearer"]),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/manager",
+    method: "POST",
+    middlewares: [
+      authenticate("manager", ["session", "bearer"], {
+        allowUnregistered: true,
+      }),
+    ],
+  },
+  {
+    matcher: "/manager/me*",
+    middlewares: [
+      authenticate("manager", ["session", "bearer"]),
+    ],
+  },
+])
 ```
 
 This applies middlewares on two route patterns:

@@ -452,30 +452,31 @@ This API route expects the request header to contain a new vendor admin’s auth
 
 The route handler creates a vendor using the Marketplace Module’s main service and then uses the `createVendorAdminWorkflow` to create an admin for the vendor.
 
-Next, create the file `src/api/middlewares.ts` with the following content:
+Next, create the file `src/api/routes-config.ts` with the following content:
 
-```ts title="src/api/middlewares.ts"
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+```ts title="src/api/routes-config.ts"
+import { 
+  defineRoutesConfig,
+  authenticate
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/vendors",
-      method: "POST",
-      middlewares: [
-        authenticate("vendor", ["session", "bearer"], {
-          allowUnregistered: true,
-        }),
-      ],
-    },
-    {
-      matcher: "/vendors/*",
-      middlewares: [
-        authenticate("vendor", ["session", "bearer"]),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/vendors",
+    method: "POST",
+    middlewares: [
+      authenticate("vendor", ["session", "bearer"], {
+        allowUnregistered: true,
+      }),
+    ],
+  },
+  {
+    matcher: "/vendors/*",
+    middlewares: [
+      authenticate("vendor", ["session", "bearer"]),
+    ],
+  },
+])
 ```
 
 This applies two middlewares:
@@ -701,11 +702,11 @@ In the route handler, you add the product to the default sales channel. You can,
 
 </Note>
 
-Finally, in `src/api/middlewares.ts`, apply a middleware on the create products route to validate the request body before executing the route handler:
+Finally, in `src/api/routes-config.ts`, apply a middleware on the create products route to validate the request body before executing the route handler:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/routes-config.ts"
 import { 
-  MiddlewaresConfig, 
+  defineRoutesConfig,
   authenticate
 } from "@medusajs/medusa"
 import { 
@@ -715,19 +716,17 @@ import {
   AdminCreateProduct
 } from "@medusajs/medusa/dist/api/admin/products/validators"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    // ...
-    {
-      matcher: "/vendors/products",
-      method: "POST",
-      middlewares: [
-        authenticate("vendor", ["session", "bearer"]),
-        validateAndTransformBody(AdminCreateProduct),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  // ...
+  {
+    matcher: "/vendors/products",
+    method: "POST",
+    middlewares: [
+      authenticate("vendor", ["session", "bearer"]),
+      validateAndTransformBody(AdminCreateProduct),
+    ],
+  },
+])
 ```
 
 ### Test it Out
@@ -1336,21 +1335,19 @@ The next steps of this example depend on your use case. This section provides so
 
 ### Use Existing Features
 
-You can use [Medusa’s admin API routes for orders](!api!/admin) to allow vendors to manage their orders. This requires you to add the following middleware in `src/api/middlewares.ts`:
+You can use [Medusa’s admin API routes for orders](!api!/admin) to allow vendors to manage their orders. This requires you to add the following middleware in `src/api/routes-config.ts`:
 
-```ts title="src/api/middlewares.ts"
-export const config: MiddlewaresConfig = {
-  routes: [
-	  // ...
-    {
-      matcher: "/admin/orders/*",
-      method: "POST",
-      middlewares: [
-        authenticate("vendor", ["session", "bearer"]),
-      ],
-    },
-  ],
-}
+```ts title="src/api/routes-config.ts"
+export default defineRoutesConfig([
+  // ...
+  {
+    matcher: "/admin/orders/*",
+    method: "POST",
+    middlewares: [
+      authenticate("vendor", ["session", "bearer"]),
+    ],
+  },
+])
 ```
 
 You can also re-create or override any of the existing API routes, similar to what you did with the complete cart API route.

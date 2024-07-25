@@ -27,22 +27,23 @@ When you protect routes with the `authenticate` middleware, you specify in its f
 For example:
 
 export const highlights = [
-  ["8", `"user"`, "The actor type that must be authenticated to access the specified routes."]
+  ["10", `"user"`, "The actor type that must be authenticated to access the specified routes."]
 ]
 
-```ts title="src/api/middlewares.ts" highlights={highlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+```ts title="src/api/routes-config.ts" highlights={highlights}
+import { 
+  defineRoutesConfig,
+  authenticate
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/custom/admin*",
-      middlewares: [
-        authenticate("user", ["session", "bearer", "api-key"]),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/custom/admin*",
+    middlewares: [
+      authenticate("user", ["session", "bearer", "api-key"]),
+    ],
+  },
+])
 ```
 
 By specifying `user` as the first parameter of `authenticate`, only authenticated users of actor type `user` can access API routes starting with `/custom/admin`.
