@@ -246,12 +246,39 @@ export function MedusaInternalService<
       selectorAndData: SelectorAndData[],
       sharedContext?: Context
     ): Promise<InferEntityType<TEntity>[]>
+    update(
+      idOrSelector: string | SelectorAndData["selector"],
+      data: any,
+      sharedContext?: Context
+    ): Promise<InferEntityType<TEntity>[]>
 
     @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
     async update(
       input: any | any[] | SelectorAndData | SelectorAndData[],
+      maybeDataOrContext?: any,
       @MedusaContext() sharedContext: Context = {}
     ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
+      if (arguments.length === 2) {
+        Object.assign(sharedContext, maybeDataOrContext)
+      } else if (arguments.length === 3) {
+        const input_ = {
+          selector: {},
+          data: {} as any,
+        }
+
+        if (isString(input)) {
+          const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+          input_.selector = {
+            [primaryKeys[0]]: input,
+          }
+          input_.data = maybeDataOrContext
+        } else {
+          input_.selector = input
+          input_.data = maybeDataOrContext
+        }
+        input = input_
+      }
+
       if (
         !isDefined(input) ||
         (Array.isArray(input) && input.length === 0) ||

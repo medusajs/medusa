@@ -114,6 +114,15 @@ export type ExtractKeysFromConfig<ModelsConfig> = ModelsConfig extends {
   ? string
   : keyof ModelsConfig
 
+export type InferReturnType<
+  TModelsDtoConfig extends ModelConfigurationsToConfigTemplate<any>,
+  TKey extends keyof TModelsDtoConfig
+> = TModelsDtoConfig[TKey]["dto"] extends never
+  ? TModelsDtoConfig[TKey]["model"] extends never
+    ? Record<any, any>
+    : TModelsDtoConfig[TKey]["model"]
+  : TModelsDtoConfig[TKey]["dto"]
+
 export type AbstractModuleService<
   TModelsDtoConfig extends Record<string, any>
 > = {
@@ -187,7 +196,39 @@ export type AbstractModuleService<
     TModelsDtoConfig,
     TModelName
   >}`]: {
-    (...args: any[]): Promise<any>
+    (
+      data: {
+        selector: object
+        data: object
+      },
+      sharedContext?: Context
+    ): Promise<InferReturnType<TModelsDtoConfig, TModelName>[]>
+
+    (
+      data: {
+        selector: object
+        data: object
+      }[],
+      sharedContext?: Context
+    ): Promise<InferReturnType<TModelsDtoConfig, TModelName>[]>
+
+    // TODO: This is a temporary fix to support the old way of updating a single entity
+    (id: string, data: any, sharedContext?: Context): Promise<
+      InferReturnType<TModelsDtoConfig, TModelName>
+    >
+
+    // TODO: This is a temporary fix to support the old way of updating a single entity
+    (selector: object, data: any, sharedContext?: Context): Promise<
+      InferReturnType<TModelsDtoConfig, TModelName>[]
+    >
+
+    (data: any[], sharedContext?: Context): Promise<
+      InferReturnType<TModelsDtoConfig, TModelName>[]
+    >
+
+    (data: any, sharedContext?: Context): Promise<
+      InferReturnType<TModelsDtoConfig, TModelName>
+    >
   }
 }
 

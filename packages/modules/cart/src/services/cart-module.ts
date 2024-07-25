@@ -9,16 +9,16 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   deduplicate,
+  InjectManager,
+  InjectTransactionManager,
   isObject,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import {
   Address,
@@ -303,11 +303,13 @@ export default class CartModuleService
   async updateCarts(
     data: CartTypes.UpdateCartDTO[]
   ): Promise<CartTypes.CartDTO[]>
+  // @ts-expect-error
   async updateCarts(
     cartId: string,
     data: CartTypes.UpdateCartDataDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO>
+  // @ts-expect-error
   async updateCarts(
     selector: Partial<CartTypes.CartDTO>,
     data: CartTypes.UpdateCartDataDTO,
@@ -315,6 +317,7 @@ export default class CartModuleService
   ): Promise<CartTypes.CartDTO[]>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateCarts(
     dataOrIdOrSelector:
       | CartTypes.UpdateCartDTO[]
@@ -447,15 +450,17 @@ export default class CartModuleService
     return await this.lineItemService_.create(data, sharedContext)
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   updateLineItems(
     data: CartTypes.UpdateLineItemWithSelectorDTO[]
   ): Promise<CartTypes.CartLineItemDTO[]>
+  // @ts-expect-error
   updateLineItems(
     selector: Partial<CartTypes.CartLineItemDTO>,
     data: CartTypes.UpdateLineItemDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
+  // @ts-expect-error
   updateLineItems(
     lineItemId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
@@ -463,6 +468,7 @@ export default class CartModuleService
   ): Promise<CartTypes.CartLineItemDTO>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateLineItems(
     lineItemIdOrDataOrSelector:
       | string
@@ -577,17 +583,19 @@ export default class CartModuleService
     return await this.addressService_.create(data, sharedContext)
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO,
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO>
+  // @ts-expect-error
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[],
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO[]>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[] | CartTypes.UpdateAddressDTO,
     @MedusaContext() sharedContext: Context = {}

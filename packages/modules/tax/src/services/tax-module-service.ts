@@ -146,11 +146,13 @@ export default class TaxModuleService
     data: TaxTypes.UpdateTaxRateDTO,
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO>
+  // @ts-expect-error
   async updateTaxRates(
     ids: string[],
     data: TaxTypes.UpdateTaxRateDTO,
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO[]>
+  // @ts-expect-error
   async updateTaxRates(
     selector: TaxTypes.FilterableTaxRateProps,
     data: TaxTypes.UpdateTaxRateDTO,
@@ -158,6 +160,7 @@ export default class TaxModuleService
   ): Promise<TaxTypes.TaxRateDTO[]>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateTaxRates(
     selector: string | string[] | TaxTypes.FilterableTaxRateProps,
     data: TaxTypes.UpdateTaxRateDTO,

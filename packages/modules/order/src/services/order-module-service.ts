@@ -120,6 +120,7 @@ const generateMethodForModels = {
 }
 
 // TODO: rm template args here, keep it for later to not collide with carlos work at least as little as possible
+// @ts-expect-error
 export default class OrderModuleService<
     TOrder extends Order = Order,
     TAddress extends Address = Address,
@@ -660,11 +661,13 @@ export default class OrderModuleService<
   async updateOrders(
     data: OrderTypes.UpdateOrderDTO[]
   ): Promise<OrderTypes.OrderDTO[]>
+  // @ts-expect-error
   async updateOrders(
     orderId: string,
     data: OrderTypes.UpdateOrderDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO>
+  // @ts-expect-error
   async updateOrders(
     selector: Partial<OrderTypes.FilterableOrderProps>,
     data: OrderTypes.UpdateOrderDTO,
@@ -672,6 +675,7 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderDTO[]>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateOrders(
     dataOrIdOrSelector:
       | OrderTypes.UpdateOrderDTO[]
@@ -851,15 +855,17 @@ export default class OrderModuleService<
     return lineItems
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   updateLineItems(
     data: OrderTypes.UpdateOrderLineItemWithSelectorDTO[]
   ): Promise<OrderTypes.OrderLineItemDTO[]>
+  // @ts-expect-error
   updateLineItems(
     selector: Partial<OrderTypes.FilterableOrderLineItemProps>,
     data: OrderTypes.UpdateOrderLineItemDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemDTO[]>
+  // @ts-expect-error
   updateLineItems(
     lineItemId: string,
     data: Partial<OrderTypes.UpdateOrderLineItemDTO>,
@@ -867,6 +873,7 @@ export default class OrderModuleService<
   ): Promise<OrderTypes.OrderLineItemDTO>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateLineItems(
     lineItemIdOrDataOrSelector:
       | string
@@ -1102,17 +1109,19 @@ export default class OrderModuleService<
     return await this.addressService_.create(data, sharedContext)
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   async updateAddresses(
     data: OrderTypes.UpdateOrderAddressDTO,
     sharedContext?: Context
   ): Promise<OrderTypes.OrderAddressDTO>
+  // @ts-expect-error
   async updateAddresses(
     data: OrderTypes.UpdateOrderAddressDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderAddressDTO[]>
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async updateAddresses(
     data: OrderTypes.UpdateOrderAddressDTO[] | OrderTypes.UpdateOrderAddressDTO,
     @MedusaContext() sharedContext: Context = {}

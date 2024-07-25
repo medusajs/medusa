@@ -12,19 +12,19 @@ import {
 } from "@medusajs/types"
 import { IInventoryService } from "@medusajs/types/dist/inventory"
 import {
+  arrayDifference,
   BigNumber,
   CommonEvents,
   EmitEvents,
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   MedusaService,
-  arrayDifference,
-  isDefined,
-  isString,
   partitionArray,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
@@ -425,6 +425,7 @@ export default class InventoryModuleService
     input: InventoryTypes.UpdateInventoryItemInput[],
     context?: Context
   ): Promise<InventoryTypes.InventoryItemDTO[]>
+  // @ts-expect-error
   updateInventoryItems(
     input: InventoryTypes.UpdateInventoryItemInput,
     context?: Context
@@ -432,6 +433,7 @@ export default class InventoryModuleService
 
   @InjectManager("baseRepository_")
   @EmitEvents()
+  // @ts-expect-error
   async updateInventoryItems(
     input:
       | InventoryTypes.UpdateInventoryItemInput
@@ -535,11 +537,12 @@ export default class InventoryModuleService
     return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   async updateInventoryLevels(
     updates: InventoryTypes.BulkUpdateInventoryLevelInput[],
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
+  // @ts-expect-error
   async updateInventoryLevels(
     updates: InventoryTypes.BulkUpdateInventoryLevelInput,
     context?: Context
@@ -547,6 +550,7 @@ export default class InventoryModuleService
 
   @InjectManager("baseRepository_")
   @EmitEvents()
+  // @ts-expect-error
   async updateInventoryLevels(
     updates:
       | InventoryTypes.BulkUpdateInventoryLevelInput[]
@@ -622,11 +626,12 @@ export default class InventoryModuleService
    * @param context
    * @return The updated inventory level
    */
-  // @ts-ignore
+  // @ts-expect-error
   async updateReservationItems(
     input: InventoryTypes.UpdateReservationItemInput[],
     context?: Context
   ): Promise<InventoryTypes.ReservationItemDTO[]>
+  // @ts-expect-error
   async updateReservationItems(
     input: InventoryTypes.UpdateReservationItemInput,
     context?: Context
@@ -634,6 +639,7 @@ export default class InventoryModuleService
 
   @InjectManager("baseRepository_")
   @EmitEvents()
+  // @ts-expect-error
   async updateReservationItems(
     input:
       | InventoryTypes.UpdateReservationItemInput

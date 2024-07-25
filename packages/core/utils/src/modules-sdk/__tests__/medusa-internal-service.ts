@@ -49,20 +49,6 @@ describe("Internal Module Service Factory", () => {
       instance = new IMedusaInternalService(containerMock)
     })
 
-    it("should throw on update with wrong arguments", async () => {
-      const entity = { id: "1", name: "Item" }
-      containerMock[modelRepositoryName].find.mockResolvedValueOnce([entity])
-
-      let err = await instance
-        // @ts-ignore
-        .update("fake_id", { prop: "fake_data" })
-        .catch((e) => e)
-
-      expect(err.message).toBe(
-        "Unable to update with input: fake_id. Please provide the following input: an object or an array of object to update or { selector: {}, data: {} } or an array of the same."
-      )
-    })
-
     it("should throw model id undefined error on retrieve if id is not defined", async () => {
       const err = await instance.retrieve().catch((e) => e)
       expect(err.message).toBe("model - id must be defined")
@@ -86,7 +72,7 @@ describe("Internal Module Service Factory", () => {
     })
 
     it("should throw NOT_FOUND error on retrieve if entity not found", async () => {
-      containerMock[modelRepositoryName].find.mockResolvedValueOnce([])
+      containerMock[modelRepositoryName].find.mockReturnValue([])
 
       const err = await instance.retrieve("1").catch((e) => e)
       expect(err.message).toBe("Model with id: 1 was not found")
