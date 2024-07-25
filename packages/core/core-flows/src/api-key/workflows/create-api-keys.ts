@@ -11,5 +11,3 @@ export const createApiKeysWorkflow = createWorkflow(
     return createApiKeysStep(input)
   }
 )
-
-type Test = ReturnType<typeof createApiKeysStep>
