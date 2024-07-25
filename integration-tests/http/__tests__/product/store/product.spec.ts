@@ -766,8 +766,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      // TODO: This test is flaky for some reason, reenable once that is resolved
-      it.skip("returns a list of products filtered by variant options", async () => {
+      it("returns a list of products filtered by variant options", async () => {
         const response = await api.get(
           `/store/products?variants.options[option_id]=${product.options[1].id}&variants.options[value]=large`
         )
