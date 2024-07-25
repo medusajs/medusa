@@ -8,7 +8,7 @@
       "packages/modules/providers/*",
       "packages/core/*",
       "packages/framework/*",
-      "packages/framework/framework",
+      "packages/framework/*",
       "packages/cli/*",
       "packages/cli/oas/*",
       "packages/*",
