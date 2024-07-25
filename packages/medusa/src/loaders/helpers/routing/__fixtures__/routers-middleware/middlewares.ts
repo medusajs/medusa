@@ -4,7 +4,7 @@ import {
   customersGlobalMiddlewareMock,
   storeGlobalMiddlewareMock,
 } from "../mocks"
-import { defineRoutesConfig } from "../../../../../utils/define-routes-config"
+import { defineMiddlewares } from "../../../../../utils/define-middlewares"
 
 const customersGlobalMiddleware = (
   req: Request,
@@ -29,7 +29,7 @@ const storeGlobal = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-export default defineRoutesConfig([
+export default defineMiddlewares([
   {
     matcher: "/customers",
     middlewares: [customersGlobalMiddleware],

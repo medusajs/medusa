@@ -16,7 +16,7 @@ import {
  * bodyparser config and validators to be merged with the pre-existing
  * route validators.
  */
-export function defineRoutesConfig<
+export function defineMiddlewares<
   Route extends {
     method?: MiddlewareVerb | MiddlewareVerb[]
     matcher: string | RegExp
