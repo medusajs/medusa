@@ -77,30 +77,29 @@ export const createOperatorMap = (
     type = z.string()
   }
 
-  let unionType: any = z.union([type, z.array(type)]).optional()
-  let arrayType: any = z.array(type).optional()
   let simpleType: any = type.optional()
-
   if (valueParser) {
-    unionType = z
-      .preprocess(valueParser, z.union([type, z.array(type)]))
-      .optional()
-    arrayType = z.preprocess(valueParser, z.array(type)).optional()
     simpleType = z.preprocess(valueParser, type).optional()
   }
 
-  return z.object({
-    $eq: unionType,
-    $ne: unionType,
-    $in: arrayType,
-    $nin: arrayType,
-    $like: simpleType,
-    $ilike: simpleType,
-    $re: simpleType,
-    $contains: simpleType,
-    $gt: simpleType,
-    $gte: simpleType,
-    $lt: simpleType,
-    $lte: simpleType,
-  })
+  const arrayType: any = z.array(type).optional()
+  const unionType: any = z.union([simpleType, arrayType]).optional()
+
+  return z.union([
+    unionType,
+    z.object({
+      $eq: unionType,
+      $ne: unionType,
+      $in: arrayType,
+      $nin: arrayType,
+      $like: simpleType,
+      $ilike: simpleType,
+      $re: simpleType,
+      $contains: simpleType,
+      $gt: simpleType,
+      $gte: simpleType,
+      $lt: simpleType,
+      $lte: simpleType,
+    }),
+  ])
 }
