@@ -6,7 +6,7 @@ export const LocationFulfillmentProvider: ModuleJoinerConfig = {
   isLink: true,
   databaseConfig: {
     tableName: "location_fulfillment_provider",
-    idPrefix: "locpr",
+    idPrefix: "locfp",
   },
   alias: [
     {
@@ -42,7 +42,7 @@ export const LocationFulfillmentProvider: ModuleJoinerConfig = {
         isList: true,
       },
       fieldAlias: {
-        providers: {
+        fulfillment_providers: {
           path: "fulfillment_provider_link.fulfillment_provider",
           isList: true,
         },
