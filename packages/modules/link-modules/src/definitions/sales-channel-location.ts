@@ -41,7 +41,10 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     {
       serviceName: Modules.SALES_CHANNEL,
       fieldAlias: {
-        stock_locations: "locations_link.location",
+        stock_locations: {
+          path: "locations_link.location",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.SalesChannelLocation,
@@ -54,7 +57,10 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     {
       serviceName: Modules.STOCK_LOCATION,
       fieldAlias: {
-        sales_channels: "sales_channels_link.sales_channel",
+        sales_channels: {
+          path: "sales_channels_link.sales_channel",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.SalesChannelLocation,

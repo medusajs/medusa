@@ -1,13 +1,17 @@
-import { IOrderModuleService, OrderChangeActionDTO } from "@medusajs/types"
+import {
+  CreateOrderReturnItemDTO,
+  IOrderModuleService,
+  OrderChangeActionDTO,
+} from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type CreateReturnItemsInput = {
   changes: OrderChangeActionDTO[]
   returnId: string
 }
 
-export const createReturnItems = createStep(
+export const createReturnItemsStep = createStep(
   "create-return-items",
   async (input: CreateReturnItemsInput, { container }) => {
     const orderModuleService = container.resolve<IOrderModuleService>(
@@ -16,30 +20,25 @@ export const createReturnItems = createStep(
 
     const returnItems = input.changes.map((item) => {
       return {
-        return_id: item.reference_id,
-        item_id: item.details?.reference_id,
+        return_id: input.returnId,
+        item_id: item.details?.reference_id! as string,
+        reason_id: item.details?.reason_id,
         quantity: item.details?.quantity as number,
         note: item.internal_note,
         metadata: (item.details?.metadata as Record<string, unknown>) ?? {},
-      }
+      } as CreateOrderReturnItemDTO
     })
-
-    const [prevReturn] = await orderModuleService.listReturns(
-      { id: input.returnId },
-      {
-        select: ["id"],
-        relations: ["items"],
-      }
+    const createdReturnItems = await orderModuleService.createReturnItems(
+      returnItems
     )
 
-    const createdReturnItems = await orderModuleService.updateReturns([
-      { selector: { id: input.returnId }, data: { items: returnItems } },
-    ])
-
-    return new StepResponse(createdReturnItems, prevReturn)
+    return new StepResponse(
+      createdReturnItems,
+      createdReturnItems.map((i) => i.id)
+    )
   },
-  async (prevData, { container }) => {
-    if (!prevData) {
+  async (ids, { container }) => {
+    if (!ids) {
       return
     }
 
@@ -47,9 +46,6 @@ export const createReturnItems = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await orderModuleService.updateReturns(
-      { id: prevData.id },
-      { items: prevData.items }
-    )
+    await orderModuleService.deleteReturnItems(ids)
   }
 )

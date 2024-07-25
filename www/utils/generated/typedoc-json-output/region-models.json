@@ -1,5 +1,5 @@
 {
-	"id": 11323,
+	"id": 11448,
 	"name": "region-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 11324,
+			"id": 11449,
 			"name": "Country",
 			"variant": "declaration",
 			"kind": 32,
@@ -36,14 +36,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11325,
+									"id": 11450,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 11326,
+											"id": 11451,
 											"name": "iso_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -71,7 +71,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11327,
+											"id": 11452,
 											"name": "iso_3",
 											"variant": "declaration",
 											"kind": 1024,
@@ -88,7 +88,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11328,
+											"id": 11453,
 											"name": "num_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -105,7 +105,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11329,
+											"id": 11454,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -122,7 +122,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11330,
+											"id": 11455,
 											"name": "display_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -139,7 +139,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11331,
+											"id": 11456,
 											"name": "region",
 											"variant": "declaration",
 											"kind": 1024,
@@ -155,7 +155,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11429,
+														"target": 11554,
 														"name": "Region"
 													}
 												],
@@ -165,7 +165,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11374,
+											"id": 11499,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -188,13 +188,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												11326,
-												11327,
-												11328,
-												11329,
-												11330,
-												11331,
-												11374
+												11451,
+												11452,
+												11453,
+												11454,
+												11455,
+												11456,
+												11499
 											]
 										}
 									]
@@ -203,14 +203,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11375,
+									"id": 11500,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 11376,
+											"id": 11501,
 											"name": "iso_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -238,7 +238,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11377,
+											"id": 11502,
 											"name": "iso_3",
 											"variant": "declaration",
 											"kind": 1024,
@@ -255,7 +255,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11378,
+											"id": 11503,
 											"name": "num_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -272,7 +272,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11379,
+											"id": 11504,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -289,7 +289,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11380,
+											"id": 11505,
 											"name": "display_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -306,7 +306,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11381,
+											"id": 11506,
 											"name": "region",
 											"variant": "declaration",
 											"kind": 1024,
@@ -323,14 +323,14 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 11403,
+															"id": 11528,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
 															"signatures": [
 																{
-																	"id": 11404,
+																	"id": 11529,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -348,14 +348,14 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11405,
+																							"id": 11530,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"children": [
 																								{
-																									"id": 11406,
+																									"id": 11531,
 																									"name": "id",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -383,7 +383,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11407,
+																									"id": 11532,
 																									"name": "name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -400,7 +400,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11408,
+																									"id": 11533,
 																									"name": "currency_code",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -417,7 +417,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11409,
+																									"id": 11534,
 																									"name": "automatic_taxes",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -434,7 +434,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11410,
+																									"id": 11535,
 																									"name": "countries",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -449,14 +449,14 @@
 																											{
 																												"type": "reflection",
 																												"declaration": {
-																													"id": 11411,
+																													"id": 11536,
 																													"name": "__type",
 																													"variant": "declaration",
 																													"kind": 65536,
 																													"flags": {},
 																													"signatures": [
 																														{
-																															"id": 11412,
+																															"id": 11537,
 																															"name": "__type",
 																															"variant": "signature",
 																															"kind": 4096,
@@ -476,7 +476,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11413,
+																									"id": 11538,
 																									"name": "metadata",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -499,12 +499,12 @@
 																								{
 																									"title": "Properties",
 																									"children": [
-																										11406,
-																										11407,
-																										11408,
-																										11409,
-																										11410,
-																										11413
+																										11531,
+																										11532,
+																										11533,
+																										11534,
+																										11535,
+																										11538
 																									]
 																								}
 																							]
@@ -513,14 +513,14 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11414,
+																							"id": 11539,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"children": [
 																								{
-																									"id": 11415,
+																									"id": 11540,
 																									"name": "id",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -548,7 +548,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11416,
+																									"id": 11541,
 																									"name": "name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -565,7 +565,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11417,
+																									"id": 11542,
 																									"name": "currency_code",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -582,7 +582,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11418,
+																									"id": 11543,
 																									"name": "automatic_taxes",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -599,7 +599,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11419,
+																									"id": 11544,
 																									"name": "countries",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -614,14 +614,14 @@
 																											{
 																												"type": "reflection",
 																												"declaration": {
-																													"id": 11420,
+																													"id": 11545,
 																													"name": "__type",
 																													"variant": "declaration",
 																													"kind": 65536,
 																													"flags": {},
 																													"signatures": [
 																														{
-																															"id": 11421,
+																															"id": 11546,
 																															"name": "__type",
 																															"variant": "signature",
 																															"kind": 4096,
@@ -641,7 +641,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11422,
+																									"id": 11547,
 																									"name": "metadata",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -664,12 +664,12 @@
 																								{
 																									"title": "Properties",
 																									"children": [
-																										11415,
-																										11416,
-																										11417,
-																										11418,
-																										11419,
-																										11422
+																										11540,
+																										11541,
+																										11542,
+																										11543,
+																										11544,
+																										11547
 																									]
 																								}
 																							]
@@ -678,7 +678,7 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11423,
+																							"id": 11548,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
@@ -715,7 +715,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11424,
+											"id": 11549,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -738,13 +738,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												11376,
-												11377,
-												11378,
-												11379,
-												11380,
-												11381,
-												11424
+												11501,
+												11502,
+												11503,
+												11504,
+												11505,
+												11506,
+												11549
 											]
 										}
 									]
@@ -753,7 +753,7 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11425,
+									"id": 11550,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
@@ -774,14 +774,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 11426,
+							"id": 11551,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 11427,
+									"id": 11552,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -795,7 +795,7 @@
 									"defaultValue": "\"Country\""
 								},
 								{
-									"id": 11428,
+									"id": 11553,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -813,8 +813,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										11427,
-										11428
+										11552,
+										11553
 									]
 								}
 							]
@@ -826,7 +826,7 @@
 			}
 		},
 		{
-			"id": 11429,
+			"id": 11554,
 			"name": "Region",
 			"variant": "declaration",
 			"kind": 32,
@@ -844,14 +844,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11430,
+									"id": 11555,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 11431,
+											"id": 11556,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -879,7 +879,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11432,
+											"id": 11557,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -896,7 +896,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11433,
+											"id": 11558,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -913,7 +913,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11434,
+											"id": 11559,
 											"name": "automatic_taxes",
 											"variant": "declaration",
 											"kind": 1024,
@@ -930,7 +930,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11435,
+											"id": 11560,
 											"name": "countries",
 											"variant": "declaration",
 											"kind": 1024,
@@ -944,7 +944,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 11324,
+														"target": 11449,
 														"name": "Country"
 													}
 												],
@@ -954,7 +954,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11466,
+											"id": 11591,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -977,12 +977,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												11431,
-												11432,
-												11433,
-												11434,
-												11435,
-												11466
+												11556,
+												11557,
+												11558,
+												11559,
+												11560,
+												11591
 											]
 										}
 									]
@@ -991,14 +991,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11467,
+									"id": 11592,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 11468,
+											"id": 11593,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1026,7 +1026,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11469,
+											"id": 11594,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1043,7 +1043,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11470,
+											"id": 11595,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1060,7 +1060,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11471,
+											"id": 11596,
 											"name": "automatic_taxes",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1077,7 +1077,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11472,
+											"id": 11597,
 											"name": "countries",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1092,14 +1092,14 @@
 													{
 														"type": "reflection",
 														"declaration": {
-															"id": 11473,
+															"id": 11598,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
 															"signatures": [
 																{
-																	"id": 11474,
+																	"id": 11599,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
@@ -1117,14 +1117,14 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11475,
+																							"id": 11600,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"children": [
 																								{
-																									"id": 11476,
+																									"id": 11601,
 																									"name": "iso_2",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1152,7 +1152,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11477,
+																									"id": 11602,
 																									"name": "iso_3",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1169,7 +1169,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11478,
+																									"id": 11603,
 																									"name": "num_code",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1186,7 +1186,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11479,
+																									"id": 11604,
 																									"name": "name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1203,7 +1203,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11480,
+																									"id": 11605,
 																									"name": "display_name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1220,7 +1220,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11481,
+																									"id": 11606,
 																									"name": "region",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1237,14 +1237,14 @@
 																											{
 																												"type": "reflection",
 																												"declaration": {
-																													"id": 11484,
+																													"id": 11609,
 																													"name": "__type",
 																													"variant": "declaration",
 																													"kind": 65536,
 																													"flags": {},
 																													"signatures": [
 																														{
-																															"id": 11485,
+																															"id": 11610,
 																															"name": "__type",
 																															"variant": "signature",
 																															"kind": 4096,
@@ -1264,7 +1264,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11486,
+																									"id": 11611,
 																									"name": "metadata",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1287,13 +1287,13 @@
 																								{
 																									"title": "Properties",
 																									"children": [
-																										11476,
-																										11477,
-																										11478,
-																										11479,
-																										11480,
-																										11481,
-																										11486
+																										11601,
+																										11602,
+																										11603,
+																										11604,
+																										11605,
+																										11606,
+																										11611
 																									]
 																								}
 																							]
@@ -1302,14 +1302,14 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11487,
+																							"id": 11612,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
 																							"flags": {},
 																							"children": [
 																								{
-																									"id": 11488,
+																									"id": 11613,
 																									"name": "iso_2",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1337,7 +1337,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11489,
+																									"id": 11614,
 																									"name": "iso_3",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1354,7 +1354,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11490,
+																									"id": 11615,
 																									"name": "num_code",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1371,7 +1371,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11491,
+																									"id": 11616,
 																									"name": "name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1388,7 +1388,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11492,
+																									"id": 11617,
 																									"name": "display_name",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1405,7 +1405,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11493,
+																									"id": 11618,
 																									"name": "region",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1422,14 +1422,14 @@
 																											{
 																												"type": "reflection",
 																												"declaration": {
-																													"id": 11496,
+																													"id": 11621,
 																													"name": "__type",
 																													"variant": "declaration",
 																													"kind": 65536,
 																													"flags": {},
 																													"signatures": [
 																														{
-																															"id": 11497,
+																															"id": 11622,
 																															"name": "__type",
 																															"variant": "signature",
 																															"kind": 4096,
@@ -1449,7 +1449,7 @@
 																									"defaultValue": "..."
 																								},
 																								{
-																									"id": 11498,
+																									"id": 11623,
 																									"name": "metadata",
 																									"variant": "declaration",
 																									"kind": 1024,
@@ -1472,13 +1472,13 @@
 																								{
 																									"title": "Properties",
 																									"children": [
-																										11488,
-																										11489,
-																										11490,
-																										11491,
-																										11492,
-																										11493,
-																										11498
+																										11613,
+																										11614,
+																										11615,
+																										11616,
+																										11617,
+																										11618,
+																										11623
 																									]
 																								}
 																							]
@@ -1487,7 +1487,7 @@
 																					{
 																						"type": "reflection",
 																						"declaration": {
-																							"id": 11499,
+																							"id": 11624,
 																							"name": "__type",
 																							"variant": "declaration",
 																							"kind": 65536,
@@ -1508,14 +1508,14 @@
 																			{
 																				"type": "reflection",
 																				"declaration": {
-																					"id": 11500,
+																					"id": 11625,
 																					"name": "__type",
 																					"variant": "declaration",
 																					"kind": 65536,
 																					"flags": {},
 																					"children": [
 																						{
-																							"id": 11501,
+																							"id": 11626,
 																							"name": "name",
 																							"variant": "declaration",
 																							"kind": 1024,
@@ -1529,7 +1529,7 @@
 																							"defaultValue": "\"Country\""
 																						},
 																						{
-																							"id": 11502,
+																							"id": 11627,
 																							"name": "tableName",
 																							"variant": "declaration",
 																							"kind": 1024,
@@ -1547,8 +1547,8 @@
 																						{
 																							"title": "Properties",
 																							"children": [
-																								11501,
-																								11502
+																								11626,
+																								11627
 																							]
 																						}
 																					]
@@ -1569,7 +1569,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11503,
+											"id": 11628,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1592,12 +1592,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												11468,
-												11469,
-												11470,
-												11471,
-												11472,
-												11503
+												11593,
+												11594,
+												11595,
+												11596,
+												11597,
+												11628
 											]
 										}
 									]
@@ -1606,7 +1606,7 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 11504,
+									"id": 11629,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
@@ -1638,548 +1638,48 @@
 		{
 			"title": "Variables",
 			"children": [
-				11324,
-				11429
+				11449,
+				11554
 			]
 		}
 	],
 	"packageName": "@medusajs/region",
 	"symbolIdMap": {
-		"11323": {
+		"11448": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"11324": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "default"
-		},
-		"11325": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object"
-		},
-		"11326": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_2"
-		},
-		"11327": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_3"
-		},
-		"11328": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.num_code"
-		},
-		"11329": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11330": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.display_name"
-		},
-		"11331": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.region"
-		},
-		"11332": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11333": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11334": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object"
-		},
-		"11335": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.id"
-		},
-		"11336": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11337": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"11338": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.automatic_taxes"
-		},
-		"11339": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.countries"
-		},
-		"11340": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11341": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11342": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11343": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11344": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "id"
-		},
-		"11345": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "name"
-		},
-		"11346": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "currency_code"
-		},
-		"11347": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "automatic_taxes"
-		},
-		"11348": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "countries"
-		},
-		"11349": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11350": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11351": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "metadata"
-		},
-		"11352": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11353": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11354": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11355": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object"
-		},
-		"11356": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.id"
-		},
-		"11357": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11358": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"11359": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.automatic_taxes"
-		},
-		"11360": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.countries"
-		},
-		"11361": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11362": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11363": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11364": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11365": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "id"
-		},
-		"11366": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "name"
-		},
-		"11367": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "currency_code"
-		},
-		"11368": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "automatic_taxes"
-		},
-		"11369": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "countries"
-		},
-		"11370": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11371": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11372": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "metadata"
-		},
-		"11373": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11374": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11375": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11376": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_2"
-		},
-		"11377": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_3"
-		},
-		"11378": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "num_code"
-		},
-		"11379": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "name"
-		},
-		"11380": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "display_name"
-		},
-		"11381": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "region"
-		},
-		"11382": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11383": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11384": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object"
-		},
-		"11385": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.id"
-		},
-		"11386": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11387": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"11388": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.automatic_taxes"
-		},
-		"11389": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.countries"
-		},
-		"11390": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11391": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11392": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11393": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11394": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "id"
-		},
-		"11395": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "name"
-		},
-		"11396": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "currency_code"
-		},
-		"11397": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "automatic_taxes"
-		},
-		"11398": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "countries"
-		},
-		"11399": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11400": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11401": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "metadata"
-		},
-		"11402": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11403": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11404": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11405": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object"
-		},
-		"11406": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.id"
-		},
-		"11407": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11408": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"11409": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.automatic_taxes"
-		},
-		"11410": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.countries"
-		},
-		"11411": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11412": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11413": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11414": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11415": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "id"
-		},
-		"11416": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "name"
-		},
-		"11417": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "currency_code"
-		},
-		"11418": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "automatic_taxes"
-		},
-		"11419": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "countries"
-		},
-		"11420": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11421": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11422": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "metadata"
-		},
-		"11423": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11424": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "metadata"
-		},
-		"11425": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11426": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object"
-		},
-		"11427": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11428": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"11429": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "default"
-		},
-		"11430": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object"
-		},
-		"11431": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.id"
-		},
-		"11432": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11433": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"11434": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.automatic_taxes"
-		},
-		"11435": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.countries"
-		},
-		"11436": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11437": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
-		},
-		"11438": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object"
-		},
-		"11439": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_2"
-		},
-		"11440": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_3"
-		},
-		"11441": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.num_code"
-		},
-		"11442": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11443": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.display_name"
-		},
-		"11444": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.region"
-		},
-		"11445": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11446": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11447": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11448": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
 		"11449": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "default"
 		},
 		"11450": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
 		},
 		"11451": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_2"
+			"qualifiedName": "__object.iso_2"
 		},
 		"11452": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_3"
+			"qualifiedName": "__object.iso_3"
 		},
 		"11453": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "num_code"
+			"qualifiedName": "__object.num_code"
 		},
 		"11454": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "name"
+			"qualifiedName": "__object.name"
 		},
 		"11455": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "display_name"
+			"qualifiedName": "__object.display_name"
 		},
 		"11456": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "region"
+			"qualifiedName": "__object.region"
 		},
 		"11457": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
@@ -2190,186 +1690,686 @@
 			"qualifiedName": "__function"
 		},
 		"11459": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11460": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11461": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "metadata"
-		},
-		"11462": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11463": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"11464": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"11460": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11461": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
+		"11462": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11463": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11464": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
 		"11465": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.tableName"
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
 		},
 		"11466": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__function"
 		},
 		"11467": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11468": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
 			"qualifiedName": "__type"
 		},
-		"11468": {
+		"11469": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "id"
 		},
-		"11469": {
+		"11470": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "name"
 		},
-		"11470": {
+		"11471": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "currency_code"
 		},
-		"11471": {
+		"11472": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "automatic_taxes"
 		},
-		"11472": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "countries"
-		},
 		"11473": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "countries"
 		},
 		"11474": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "__function"
 		},
 		"11475": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object"
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
 		},
 		"11476": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_2"
-		},
-		"11477": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.iso_3"
-		},
-		"11478": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.num_code"
-		},
-		"11479": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11480": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.display_name"
-		},
-		"11481": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.region"
-		},
-		"11482": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11483": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11484": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11485": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11486": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.metadata"
-		},
-		"11487": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11488": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_2"
-		},
-		"11489": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "iso_3"
-		},
-		"11490": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "num_code"
-		},
-		"11491": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "name"
-		},
-		"11492": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "display_name"
-		},
-		"11493": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "region"
-		},
-		"11494": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11495": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11496": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11497": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__function"
-		},
-		"11498": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "metadata"
-		},
-		"11499": {
-			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
-			"qualifiedName": "__type"
-		},
-		"11500": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object"
-		},
-		"11501": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.name"
-		},
-		"11502": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"11503": {
 			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
 			"qualifiedName": "metadata"
 		},
+		"11477": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11478": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11479": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11480": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11481": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11482": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11483": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11484": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11485": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11486": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11487": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11488": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11489": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11490": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11491": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11492": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11493": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11494": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11495": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11496": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11497": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11498": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11499": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11500": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11501": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11502": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11503": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
 		"11504": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11505": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11506": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11507": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11508": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11509": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11510": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11511": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11512": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11513": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11514": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11515": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11516": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11517": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11518": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11519": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11520": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11521": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11522": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11523": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11524": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11525": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11526": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11527": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11528": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11529": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11530": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11531": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11532": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11533": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11534": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11535": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11536": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11537": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11538": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11539": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11540": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11541": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11542": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11543": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11544": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11545": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11546": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11547": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11548": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11549": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11550": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11551": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11552": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11553": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"11554": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "default"
+		},
+		"11555": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11556": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11557": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11558": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11559": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11560": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11561": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11562": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11563": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11564": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_2"
+		},
+		"11565": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_3"
+		},
+		"11566": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.num_code"
+		},
+		"11567": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11568": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.display_name"
+		},
+		"11569": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.region"
+		},
+		"11570": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11571": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11572": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11573": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11574": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11575": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11576": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11577": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11578": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
+		"11579": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11580": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11581": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11582": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11583": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11584": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11585": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11586": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11587": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11588": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11589": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11590": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"11591": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11592": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11593": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11594": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11595": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11596": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11597": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11598": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11599": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11600": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11601": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_2"
+		},
+		"11602": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_3"
+		},
+		"11603": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.num_code"
+		},
+		"11604": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11605": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.display_name"
+		},
+		"11606": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.region"
+		},
+		"11607": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11608": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11609": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11610": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11611": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11612": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11613": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11614": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11615": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
+		"11616": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11617": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11618": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11619": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11620": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11621": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11622": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11623": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11624": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
+			"qualifiedName": "__type"
+		},
+		"11625": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11626": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11627": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"11628": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11629": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
 			"qualifiedName": "__type"
 		}
@@ -2379,7 +2379,7 @@
 			"1": "../../../../packages/modules/region/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 11323
+			"1": 11448
 		}
 	}
 }

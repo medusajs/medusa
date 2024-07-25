@@ -31,6 +31,8 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     const isRelatedEntity = entity !== Order
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
+    config.options ??= {}
+    config.options.populate ??= []
 
     let orderAlias = "o0"
     if (isRelatedEntity) {

@@ -29,6 +29,8 @@ export class RedisDistributedTransactionStorage
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private redisClient: Redis
+  private redisWorkerConnection: Redis
+  private queueName: string
   private queue: Queue
   private worker: Worker
 
@@ -47,12 +49,24 @@ export class RedisDistributedTransactionStorage
   }) {
     this.workflowExecutionService_ = workflowExecutionService
     this.logger_ = logger
-
     this.redisClient = redisConnection
-
+    this.redisWorkerConnection = redisWorkerConnection
+    this.queueName = redisQueueName
     this.queue = new Queue(redisQueueName, { connection: this.redisClient })
+  }
+
+  async onApplicationPrepareShutdown() {
+    // Close worker gracefully, i.e. wait for the current jobs to finish
+    await this.worker.close()
+  }
+
+  async onApplicationShutdown() {
+    await this.queue.close()
+  }
+
+  async onApplicationStart() {
     this.worker = new Worker(
-      redisQueueName,
+      this.queueName,
       async (job) => {
         const allJobs = [
           JobType.RETRY,
@@ -75,17 +89,8 @@ export class RedisDistributedTransactionStorage
           )
         }
       },
-      { connection: redisWorkerConnection }
+      { connection: this.redisWorkerConnection }
     )
-  }
-
-  async onApplicationPrepareShutdown() {
-    // Close worker gracefully, i.e. wait for the current jobs to finish
-    await this.worker.close()
-  }
-
-  async onApplicationShutdown() {
-    await this.queue.close()
   }
 
   setWorkflowOrchestratorService(workflowOrchestratorService) {
@@ -390,7 +395,14 @@ export class RedisDistributedTransactionStorage
   }
 
   async remove(jobId: string): Promise<void> {
-    await this.queue.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
+    const repeatableJobs = await this.queue.getRepeatableJobs()
+    const job = repeatableJobs.find(
+      (job) => job.id === `${JobType.SCHEDULE}_${jobId}`
+    )
+
+    if (job) {
+      await this.queue.removeRepeatableByKey(job.key)
+    }
   }
 
   async removeAll(): Promise<void> {

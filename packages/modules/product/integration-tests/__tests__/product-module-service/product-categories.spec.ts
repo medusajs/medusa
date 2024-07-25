@@ -681,7 +681,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: productCategoryOne.id },
-              eventName: "product-category.deleted",
+              name: "product-category.deleted",
               metadata: {
                 action: "",
                 object: "",

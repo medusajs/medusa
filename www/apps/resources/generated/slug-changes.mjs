@@ -2155,6 +2155,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems",
+    "newSlug": "/references/order/createReturnItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnItems/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons",
     "newSlug": "/references/order/createReturnReasons",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons/page.mdx"
@@ -2228,6 +2233,11 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders",
     "newSlug": "/references/order/deleteOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems",
+    "newSlug": "/references/order/deleteReturnItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnItems/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons",
@@ -2633,6 +2643,11 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturns",
     "newSlug": "/references/order/updateReturns",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturns/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods",
+    "newSlug": "/references/order/updateShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods/page.mdx"
   },
   {
     "origSlug": "/references/order/interfaces/order.IOrderModuleService",

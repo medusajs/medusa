@@ -292,16 +292,6 @@ medusaIntegrationTestRunner({
         })
 
         it("should fail to update the location level to negative quantity", async () => {
-          await api.post(
-            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
-            {
-              location_id: stockLocation1.id,
-              stocked_quantity: 17,
-              incoming_quantity: 2,
-            },
-            adminHeaders
-          )
-
           const res = await api
             .post(
               `/admin/inventory-items/${inventoryItem1.id}/location-levels/${stockLocation1.id}`,
@@ -581,7 +571,7 @@ medusaIntegrationTestRunner({
             })
           )
         })
-        
+
         it("should retrieve the inventory item with correct stocked quantity given location levels have been deleted", async () => {
           await api.post(
             `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
@@ -752,12 +742,6 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
-            { location_id: stockLocation1.id },
-            adminHeaders
-          )
-
-          await api.post(
             `/admin/reservations`,
             {
               line_item_id: "line-item-id-1",
@@ -784,7 +768,7 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           ).data
-          expect(levelsResponse.count).toEqual(2)
+          expect(levelsResponse.count).toEqual(1)
 
           const res = await api.delete(
             `/admin/inventory-items/${inventoryItem1.id}`,

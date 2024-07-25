@@ -11,20 +11,20 @@ const Link = React.forwardRef<SVGSVGElement, IconProps>(
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M7.056 5.568c-.313.15-.607.354-.865.614l-.01.009a3.14 3.14 0 0 0 0 4.444l1.934 1.933a3.14 3.14 0 0 0 4.445 0l.008-.008a3.14 3.14 0 0 0 0-4.445l-.827-.828"
-        />
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M7.944 9.432c.313-.15.607-.354.865-.614l.01-.009a3.14 3.14 0 0 0 0-4.444L6.884 2.432a3.14 3.14 0 0 0-4.445 0l-.008.009a3.14 3.14 0 0 0 0 4.444l.827.828"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="m6.44 3.965 1.59-1.591a3.25 3.25 0 1 1 4.597 4.596l-1.591 1.59M3.964 6.44l-1.59 1.59a3.25 3.25 0 1 0 4.596 4.597l1.59-1.591M5.909 9.09 9.091 5.91" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

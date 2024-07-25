@@ -1,5 +1,4 @@
 import {
-  AdminCreateOrderShipment,
   FindParams,
   HttpTypes,
   PaginatedResponse,
@@ -19,6 +18,15 @@ export class Order {
       `/admin/orders/${id}`,
       {
         query,
+        headers,
+      }
+    )
+  }
+
+  async retrievePreview(id: string, headers?: ClientHeaders) {
+    return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
+      `/admin/orders/${id}/preview`,
+      {
         headers,
       }
     )

@@ -1,5 +1,5 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { isObject, pluralize, toPascalCase } from "../common"
+import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
 import { composeLinkName } from "../link"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
@@ -34,7 +34,7 @@ type ExtraOptions = {
     [key: string]: string
   }
   database?: {
-    table: string
+    table?: string
     idPrefix?: string
     extraColumns?: LinkModulesExtraFields
   }
@@ -74,7 +74,7 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: false,
       deleteCascade: false,
@@ -87,7 +87,7 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: source.field,
+      alias: camelToSnakeCase(source.field),
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
@@ -106,6 +106,14 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
   return serviceConfig
 }
 
+/**
+ * Generate a ModuleJoinerConfig for the link definition on the fly.
+ * All naming, aliases etc are following our conventional naming.
+ *
+ * @param leftService
+ * @param rightService
+ * @param linkServiceOptions
+ */
 export function defineLink(
   leftService: DefineLinkInputSource,
   rightService: DefineLinkInputSource,
@@ -305,8 +313,10 @@ ${serviceBObj.module}: {
         {
           serviceName: serviceAObj.module,
           fieldAlias: {
-            [serviceBObj.isList ? pluralize(aliasB) : aliasB]:
-              aliasB + "_link." + aliasB,
+            [serviceBObj.isList ? pluralize(aliasB) : aliasB]: {
+              path: aliasB + "_link." + aliasB,
+              isList: serviceBObj.isList,
+            },
           },
           relationship: {
             serviceName: output.serviceName,
@@ -319,8 +329,10 @@ ${serviceBObj.module}: {
         {
           serviceName: serviceBObj.module,
           fieldAlias: {
-            [serviceAObj.isList ? pluralize(aliasA) : aliasA]:
-              aliasA + "_link." + aliasA,
+            [serviceAObj.isList ? pluralize(aliasA) : aliasA]: {
+              path: aliasA + "_link." + aliasA,
+              isList: serviceAObj.isList,
+            },
           },
           relationship: {
             serviceName: output.serviceName,

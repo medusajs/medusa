@@ -17,13 +17,14 @@ import {
   TransactionHandlerType,
   TransactionStepState,
 } from "@medusajs/utils"
-import { asValue } from "awilix"
+import { asFunction, asValue } from "awilix"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
 import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
+import Redis from "ioredis"
 
 jest.setTimeout(100000)
 
@@ -40,6 +41,24 @@ const afterEach_ = async () => {
   await TestDatabase.clearTables(sharedPgConnection)
 }
 
+function times(num) {
+  let resolver
+  let counter = 0
+  const promise = new Promise((resolve) => {
+    resolver = resolve
+  })
+
+  return {
+    next: () => {
+      counter += 1
+      if (counter === num) {
+        resolver()
+      }
+    },
+    promise,
+  }
+}
+
 describe("Workflow Orchestrator module", function () {
   let workflowOrcModule: IWorkflowEngineService
   let query: RemoteQueryFunction
@@ -49,11 +68,16 @@ describe("Workflow Orchestrator module", function () {
     const container = createMedusaContainer()
     container.register(ContainerRegistrationKeys.LOGGER, asValue(console))
 
+    // Clear any residual data in Redis
+    const redisClient = new Redis()
+    redisClient.flushall()
+
     const {
       runMigrations,
       query: remoteQuery,
       modules,
       sharedContainer,
+      onApplicationStart,
     } = await MedusaApp({
       sharedContainer: container,
       sharedResourcesConfig: {
@@ -77,6 +101,7 @@ describe("Workflow Orchestrator module", function () {
     sharedContainer_ = sharedContainer!
 
     await runMigrations()
+    await onApplicationStart()
 
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
   })
@@ -346,33 +371,44 @@ describe("Workflow Orchestrator module", function () {
   // Mocking bullmq, however, would make the tests close to useless, so we can keep them very minimal and serve as smoke tests.
   describe("Scheduled workflows", () => {
     it("should execute a scheduled workflow", async () => {
-      const spy = createScheduled("standard")
-      await setTimeout(3100)
-      expect(spy).toHaveBeenCalledTimes(3)
+      const wait = times(2)
+      const spy = createScheduled("standard", wait.next)
+
+      await wait.promise
+      expect(spy).toHaveBeenCalledTimes(2)
+      WorkflowManager.unregister("standard")
     })
 
     it("should stop executions after the set number of executions", async () => {
-      const spy = await createScheduled("num-executions", {
+      const wait = times(2)
+      const spy = await createScheduled("num-executions", wait.next, {
         cron: "* * * * * *",
         numberOfExecutions: 2,
       })
-      await setTimeout(3100)
+
+      await wait.promise
       expect(spy).toHaveBeenCalledTimes(2)
+
+      // Make sure that on the next tick it doesn't execute again
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(2)
+
+      WorkflowManager.unregister("num-execution")
     })
 
     it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const wait = times(1)
       const logger = sharedContainer_.resolve<Logger>(
         ContainerRegistrationKeys.LOGGER
       )
 
-      const spy = await createScheduled("remove-scheduled", {
+      const spy = await createScheduled("remove-scheduled", wait.next, {
         cron: "* * * * * *",
       })
       const logSpy = jest.spyOn(logger, "warn")
 
-      await setTimeout(1100)
+      await wait.promise
       expect(spy).toHaveBeenCalledTimes(1)
-
       WorkflowManager["workflows"].delete("remove-scheduled")
 
       await setTimeout(1100)
@@ -380,6 +416,26 @@ describe("Workflow Orchestrator module", function () {
       expect(logSpy).toHaveBeenCalledWith(
         "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
       )
+    })
+
+    it("the scheduled workflow should have access to the shared container", async () => {
+      const wait = times(1)
+      sharedContainer_.register(
+        "test-value",
+        asFunction(() => "test")
+      )
+
+      const spy = await createScheduled("shared-container-job", wait.next, {
+        cron: "* * * * * *",
+      })
+
+      await wait.promise
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      expect(spy).toHaveReturnedWith(
+        expect.objectContaining({ output: { testValue: "test" } })
+      )
+      WorkflowManager.unregister("shared-container-job")
     })
   })
 })

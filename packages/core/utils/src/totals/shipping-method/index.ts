@@ -115,7 +115,7 @@ export function getShippingMethodTotals(
   const isTaxInclusive = context.includeTax ?? shippingMethod.is_tax_inclusive
 
   if (isTaxInclusive) {
-    const subtotal = MathBN.add(shippingMethod.amount, taxTotal)
+    const subtotal = MathBN.sub(shippingMethod.amount, originalTaxTotal)
     totals.subtotal = new BigNumber(subtotal)
   } else {
     const originalTotal = MathBN.add(

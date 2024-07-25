@@ -38,6 +38,7 @@
     "awilix": "^8.0.1",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
+    "json-2-csv": "^5.5.4",
     "jsonwebtoken": "^9.0.2",
     "knex": "2.4.2",
     "pluralize": "^8.0.0",

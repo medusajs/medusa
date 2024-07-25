@@ -36,13 +36,7 @@ export type OrderSummaryDTO = {
   net_subtotal: BigNumberValue
   net_total_tax: BigNumberValue
 
-  future_total: BigNumberValue
-  future_subtotal: BigNumberValue
-  future_total_tax: BigNumberValue
-  future_projected_total: BigNumberValue
-
   balance: BigNumberValue
-  future_balance: BigNumberValue
 
   paid_total: BigNumberValue
   refunded_total: BigNumberValue
@@ -1143,6 +1137,21 @@ export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
   status: ReturnStatus
   refund_amount?: BigNumberValue
   order_id: string
+}
+
+export interface OrderReturnItemDTO {
+  id: string
+  return_id: string
+  order_id: string
+  item_id: string
+  reason_id?: string | null
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  received_quantity?: number
+  raw_received_quantity?: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
 }
 
 export interface OrderClaimDTO

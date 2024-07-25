@@ -1,3 +1,5 @@
+import { BigNumberInput } from "../../totals"
+
 /**
  * @interface
  *
@@ -8,7 +10,7 @@ export interface UpdateReservationItemInput {
   /**
    * The reserved quantity.
    */
-  quantity?: number
+  quantity?: BigNumberInput
   /**
    * The ID of the associated location.
    */
@@ -48,7 +50,7 @@ export interface CreateReservationItemInput {
   /**
    * The reserved quantity.
    */
-  quantity: number
+  quantity: BigNumberInput
   /**
    * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
    */

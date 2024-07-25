@@ -35,9 +35,9 @@ type WorkflowInput = {
   is_active: boolean
 }
 
-const workflow = createWorkflow
-  <WorkflowInput, any>
-  ("workflow", function (input) {
+const workflow = createWorkflow(
+  "workflow", 
+  function (input: WorkflowInput) {
     const result = when(
       input, 
       (input) => {

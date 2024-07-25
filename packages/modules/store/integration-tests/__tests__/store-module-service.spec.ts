@@ -15,27 +15,27 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           service: StoreModuleService,
         }).linkable
 
-        expect(Object.keys(linkable)).toEqual(["storeCurrency", "store"])
+        expect(Object.keys(linkable)).toEqual(["store", "storeCurrency"])
 
         Object.keys(linkable).forEach((key) => {
           delete linkable[key].toJSON
         })
 
         expect(linkable).toEqual({
-          storeCurrency: {
-            id: {
-              linkable: "store_currency_id",
-              primaryKey: "id",
-              serviceName: "store",
-              field: "storeCurrency",
-            },
-          },
           store: {
             id: {
               linkable: "store_id",
               primaryKey: "id",
               serviceName: "store",
               field: "store",
+            },
+          },
+          storeCurrency: {
+            id: {
+              linkable: "store_currency_id",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "storeCurrency",
             },
           },
         })

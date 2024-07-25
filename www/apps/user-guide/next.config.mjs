@@ -22,33 +22,24 @@ const withMDX = mdx({
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
             docs: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_DOCS_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_DOCS_URL,
             },
             resources: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_RESOURCES_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "resources",
             },
             ui: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_UI_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_UI_URL,
               path: "ui",
             },
             api: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_API_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_API_URL,
               path: "v2/api",
             },
           },
+          useBaseUrl:
+            process.env.NODE_ENV === "production" ||
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [brokenLinkCheckerPlugin],
@@ -91,21 +82,7 @@ const nextConfig = {
 
   transpilePackages: ["docs-ui"],
   // TODO uncomment if we decide on baes path
-  // basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/user-guide",
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/user-guide",
-  async rewrites() {
-    return {
-      fallback: [
-        {
-          source: "/:path*",
-          destination: `${
-            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
-          }/:path*`,
-          basePath: false,
-        },
-      ],
-    }
-  },
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/user-guide",
 }
 
 export default withMDX(nextConfig)

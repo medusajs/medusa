@@ -8,6 +8,7 @@ import {
   NotificationTypes,
 } from "@medusajs/types"
 import {
+  EmitEvents,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -17,6 +18,7 @@ import {
 } from "@medusajs/utils"
 import { Notification } from "@models"
 import NotificationProviderService from "./notification-provider"
+import { eventBuilders } from "@utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -64,6 +66,7 @@ export default class NotificationModuleService
   ): Promise<NotificationTypes.NotificationDTO>
 
   @InjectManager("baseRepository_")
+  @EmitEvents()
   async createNotifications(
     data:
       | NotificationTypes.CreateNotificationDTO
@@ -82,6 +85,11 @@ export default class NotificationModuleService
     const serialized = await this.baseRepository_.serialize<
       NotificationTypes.NotificationDTO[]
     >(createdNotifications)
+
+    eventBuilders.createdNotification({
+      data: serialized,
+      sharedContext,
+    })
 
     return Array.isArray(data) ? serialized : serialized[0]
   }

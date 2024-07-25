@@ -57,7 +57,7 @@ export function applyChangesToOrder(
         return_requested_quantity: orderItem.return_requested_quantity ?? 0,
         return_received_quantity: orderItem.return_received_quantity ?? 0,
         return_dismissed_quantity: orderItem.return_dismissed_quantity ?? 0,
-        written_off_quantity: orderItem.written_off_quantity,
+        written_off_quantity: orderItem.written_off_quantity ?? 0,
         metadata: orderItem.metadata,
       } as OrderItem)
     }

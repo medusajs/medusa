@@ -1,3 +1,5 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -5,11 +7,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { UpdateUserReq } from "../../types/api-payloads"
-import { UserDeleteRes, UserListRes, UserRes } from "../../types/api-responses"
 
 const USERS_QUERY_KEY = "users" as const
 const usersQueryKeys = {
@@ -18,10 +18,16 @@ const usersQueryKeys = {
 }
 
 export const useMe = (
-  options?: UseQueryOptions<UserRes, Error, UserRes, QueryKey>
+  query?: HttpTypes.AdminUserParams,
+  options?: UseQueryOptions<
+    HttpTypes.AdminUserResponse,
+    FetchError,
+    HttpTypes.AdminUserResponse,
+    QueryKey
+  >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.users.me(),
+    queryFn: () => sdk.admin.user.me(query),
     queryKey: usersQueryKeys.me(),
     ...options,
   })
@@ -34,14 +40,19 @@ export const useMe = (
 
 export const useUser = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminUserParams,
   options?: Omit<
-    UseQueryOptions<UserRes, Error, UserRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminUserResponse,
+      FetchError,
+      HttpTypes.AdminUserResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.users.retrieve(id, query),
+    queryFn: () => sdk.admin.user.retrieve(id, query),
     queryKey: usersQueryKeys.detail(id),
     ...options,
   })
@@ -50,14 +61,19 @@ export const useUser = (
 }
 
 export const useUsers = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminUserListParams,
   options?: Omit<
-    UseQueryOptions<UserListRes, Error, UserListRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminUserListResponse,
+      FetchError,
+      HttpTypes.AdminUserListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.users.list(query),
+    queryFn: () => sdk.admin.user.list(query),
     queryKey: usersQueryKeys.list(query),
     ...options,
   })
@@ -65,12 +81,38 @@ export const useUsers = (
   return { ...data, ...rest }
 }
 
-export const useUpdateUser = (
-  id: string,
-  options?: UseMutationOptions<UserRes, Error, UpdateUserReq>
+export const useCreateUser = (
+  query?: HttpTypes.AdminUserParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminUserResponse,
+    FetchError,
+    HttpTypes.AdminCreateUser,
+    QueryKey
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.users.update(id, payload),
+    mutationFn: (payload) => sdk.admin.user.create(payload, query),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateUser = (
+  id: string,
+  query?: HttpTypes.AdminUserParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminUserResponse,
+    FetchError,
+    HttpTypes.AdminUpdateUser,
+    QueryKey
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.user.update(id, payload, query),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
@@ -86,10 +128,14 @@ export const useUpdateUser = (
 
 export const useDeleteUser = (
   id: string,
-  options?: UseMutationOptions<UserDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminUserDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.users.delete(id),
+    mutationFn: () => sdk.admin.user.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })

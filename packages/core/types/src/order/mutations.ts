@@ -326,7 +326,6 @@ export interface CreateOrderChangeActionDTO {
 export interface UpdateOrderChangeActionDTO {
   id: string
   internal_note?: string | null
-  metadata?: Record<string, unknown> | null
 }
 
 /** ORDER TRANSACTION START */
@@ -388,7 +387,7 @@ export interface UpdateOrderItemWithSelectorDTO {
 interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
-  internal_note?: string | null
+  internal_note?: string
   note?: string | null
   metadata?: Record<string, unknown> | null
   [key: string]: any
@@ -400,7 +399,7 @@ interface BaseOrderBundledActionsDTO {
   exchange_id?: string
 
   description?: string
-  internal_note?: string | null
+  internal_note?: string
   reference?: string
   reference_id?: string
   created_by?: string | null
@@ -422,6 +421,7 @@ export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
+  location_id?: string
   items?: {
     id: string
     quantity: BigNumberInput
@@ -439,6 +439,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
 
 export interface UpdateReturnDTO {
   id: string
+  location_id?: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   claim_id?: string
@@ -449,6 +450,7 @@ export interface UpdateReturnDTO {
     internal_note?: string | null
     note?: string | null
     reason_id?: string | null
+    return_id?: string | null
     metadata?: Record<string, unknown> | null
   }[]
 }
@@ -468,6 +470,15 @@ export interface UpdateOrderExchangeDTO {
   no_notification?: boolean
   return_id?: string
   allow_backorder?: boolean
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderReturnItemDTO {
+  return_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  reason_id?: string
+  note?: string
   metadata?: Record<string, unknown> | null
 }
 

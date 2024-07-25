@@ -91,10 +91,8 @@ export function decorateCartTotals(
   let shippingOriginalSubtotal = MathBN.convert(0)
 
   let shippingTaxTotal = MathBN.convert(0)
-  let shippingTaxSubTotal = MathBN.convert(0)
 
   let shippingOriginalTaxTotal = MathBN.convert(0)
-  let shippingOriginalTaxSubtotal = MathBN.convert(0)
 
   const cartItems = items.map((item, index) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
@@ -147,6 +145,8 @@ export function decorateCartTotals(
 
     const methodSubtotal = MathBN.convert(methodTotals.subtotal)
 
+    subtotal = MathBN.add(subtotal, methodSubtotal)
+
     const methodTotal = MathBN.convert(methodTotals.total)
     const methodOriginalTotal = MathBN.convert(methodTotals.original_total)
     const methodTaxTotal = MathBN.convert(methodTotals.tax_total)
@@ -175,11 +175,6 @@ export function decorateCartTotals(
       shippingOriginalTaxTotal,
       methodOriginalTaxTotal
     )
-    shippingOriginalTaxSubtotal = MathBN.add(
-      shippingOriginalTaxSubtotal,
-      methodSubtotal
-    )
-
     discountTotal = MathBN.add(discountTotal, methodDiscountTotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, methodDiscountTaxTotal)
 
@@ -202,7 +197,7 @@ export function decorateCartTotals(
   )
   const originalTotal = MathBN.sub(originalTempTotal, discountTotal)
   // TODO: subtract (cart.gift_card_total + cart.gift_card_tax_total)
-  const tempTotal = MathBN.add(subtotal, shippingTotal, taxTotal)
+  const tempTotal = MathBN.add(subtotal, taxTotal)
   const total = MathBN.sub(tempTotal, discountTotal)
 
   const cart = cartLike as any
@@ -245,9 +240,7 @@ export function decorateCartTotals(
     cart.shipping_tax_total = new BigNumber(shippingTaxTotal)
 
     cart.original_shipping_tax_total = new BigNumber(shippingOriginalTaxTotal)
-    cart.original_shipping_tax_subtotal = new BigNumber(
-      shippingOriginalTaxSubtotal
-    )
+    cart.original_shipping_subtotal = new BigNumber(shippingOriginalSubtotal)
     cart.original_shipping_total = new BigNumber(shippingOriginalTotal)
   }
 

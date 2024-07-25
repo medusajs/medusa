@@ -8,14 +8,14 @@ type SerializedBuffer = {
 }
 
 export default async function paymentWebhookhandler({
-  data,
+  event,
   container,
 }: SubscriberArgs<ProviderWebhookPayload>) {
   const paymentService: IPaymentModuleService = container.resolve(
     ModuleRegistrationName.PAYMENT
   )
 
-  const input = "data" in data ? data.data : data
+  const input = event.data
 
   if (
     (input.payload.rawData as unknown as SerializedBuffer).type === "Buffer"

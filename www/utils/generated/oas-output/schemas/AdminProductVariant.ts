@@ -95,6 +95,10 @@
  *     type: number
  *     title: width
  *     description: The updated's width.
+ *   variant_rank:
+ *     type: number
+ *     title: variant_rank
+ *     description: The updated's variant rank.
  *   options:
  *     type: array
  *     description: The updated's options.
@@ -106,10 +110,8 @@
  *     type: string
  *     title: product_id
  *     description: The updated's product id.
- *   variant_rank:
- *     type: number
- *     title: variant_rank
- *     description: The updated's variant rank.
+ *   calculated_price:
+ *     $ref: "#/components/schemas/BaseCalculatedPriceSet"
  *   created_at:
  *     type: string
  *     format: date-time

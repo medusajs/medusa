@@ -5,7 +5,7 @@ import {
   PropertyType,
 } from "@medusajs/types"
 import * as path from "path"
-import { dirname, join } from "path"
+import { dirname, join, normalize } from "path"
 import {
   camelToSnakeCase,
   deduplicate,
@@ -77,11 +77,16 @@ export function defineJoinerConfig(
         break
       }
 
+      fullPath = normalize(fullPath)
+      const integrationTestPotentialPath = normalize(
+        "integration-tests/__tests__"
+      )
+
       /**
        * Handle integration-tests/__tests__ path based on conventional naming
        */
-      if (fullPath.includes("integration-tests/__tests__")) {
-        const sourcePath = fullPath.split("integration-tests/__tests__")[0]
+      if (fullPath.includes(integrationTestPotentialPath)) {
+        const sourcePath = fullPath.split(integrationTestPotentialPath)[0]
         fullPath = path.join(sourcePath, "src")
       }
 
@@ -90,7 +95,8 @@ export function defineJoinerConfig(
 
       let basePath = splitPath[0] + srcDir
 
-      const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
+      const potentialModulesDirPathSegment = normalize(`${srcDir}/modules/`)
+      const isMedusaProject = fullPath.includes(potentialModulesDirPathSegment)
       if (isMedusaProject) {
         basePath = dirname(fullPath)
       }

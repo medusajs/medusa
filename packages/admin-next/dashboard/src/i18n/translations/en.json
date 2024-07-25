@@ -90,12 +90,6 @@
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
   },
-  "nav": {
-    "general": "General",
-    "developer": "Developer",
-    "extensions": "Extensions",
-    "settings": "Settings"
-  },
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
@@ -113,9 +107,12 @@
     "close": "Close",
     "showMore": "Show more",
     "continue": "Continue",
+    "addReason": "Add Reason",
+    "addNote": "Add Note",
     "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
+    "addItems": "Add items",
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
@@ -130,6 +127,7 @@
   },
   "app": {
     "search": {
+      "label": "Search",
       "allAreas": "All areas",
       "navigation": "Navigation",
       "openResult": "Open result",
@@ -139,27 +137,74 @@
       "pageShortcut": "Jump to",
       "settingShortcut": "Settings",
       "commandShortcut": "Commands",
-      "goToOrders": "Go to orders",
-      "goToProducts": "Go to products",
-      "goToCollections": "Go to collections",
-      "goToCategories": "Go to categories",
-      "goToCustomers": "Go to customers",
-      "goToCustomerGroups": "Go to customer groups",
-      "goToInventory": "Go to inventory",
-      "goToReservations": "Go to reservations",
-      "goToPriceLists": "Go to price lists",
-      "goToPromotions": "Go to promotions",
-      "goToCampaigns": "Go to campaigns",
-      "goToStore": "Go to store",
-      "goToUsers": "Go to users",
-      "goToRegions": "Go to regions",
-      "goToTaxRegions": "Go to tax region",
-      "goToSalesChannels": "Go to sales channels",
-      "goToProductTypes": "Go to product types",
-      "goToLocations": "Go to locations",
-      "goToPublishableApiKeys": "Go to publishable API keys",
-      "goToSecretApiKeys": "Go to secret API keys",
-      "goToWorkflows": "Go to workflows"
+      "then": "then",
+      "navigation": {
+        "goToOrders": "Orders",
+        "goToProducts": "Products",
+        "goToCollections": "Collections",
+        "goToCategories": "Categories",
+        "goToCustomers": "Customers",
+        "goToCustomerGroups": "Customer Groups",
+        "goToInventory": "Inventory",
+        "goToReservations": "Reservations",
+        "goToPriceLists": "Price Lists",
+        "goToPromotions": "Promotions",
+        "goToCampaigns": "Campaigns"
+      },
+      "settings": {
+        "goToSettings": "Settings",
+        "goToStore": "Store",
+        "goToUsers": "Users",
+        "goToRegions": "Regions",
+        "goToTaxRegions": "Tax Regions",
+        "goToSalesChannels": "Sales Channels",
+        "goToProductTypes": "Product Types",
+        "goToLocations": "Locations",
+        "goToPublishableApiKeys": "Publishable API Keys",
+        "goToSecretApiKeys": "Secret API Keys",
+        "goToWorkflows": "Workflows",
+        "goToProfile": "Profile"
+      }
+    },
+    "menus": {
+      "user": {
+        "documentation": "Documentation",
+        "changelog": "Changelog",
+        "shortcuts": "Shortcuts",
+        "profileSettings": "Profile settings",
+        "theme": {
+          "label": "Theme",
+          "dark": "Dark",
+          "light": "Light",
+          "system": "System"
+        }
+      },
+      "store": {
+        "label": "Store",
+        "storeSettings": "Store settings"
+      },
+      "actions": {
+        "logout": "Log out"
+      }
+    },
+    "nav": {
+      "accessibility": {
+        "title": "Navigation",
+        "description": "Navigation menu for the dashboard."
+      },
+      "common": {
+        "extensions": "Extensions"
+      },
+      "main": {
+        "store": "Store",
+        "storeSettings": "Store settings"
+      },
+      "settings": {
+        "header": "Settings",
+        "general": "General",
+        "developer": "Developer",
+        "myAccount": "My Account"
+      }
     }
   },
   "filters": {
@@ -730,6 +775,7 @@
         "requiresAction": "Requires action"
       }
     },
+
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -741,26 +787,25 @@
       "differenceDue": "Difference due"
     },
     "returns": {
-      "details": "Details",
-      "chooseItems": "Choose items",
-      "refundAmount": "Refund amount",
-      "locationDescription": "Choose which location you want to return the items to.",
-      "shippingDescription": "Choose which method you want to use for this return.",
-      "noInventoryLevel": "No inventory level",
+      "create": "Create Return",
+      "inbound": "Inbound",
       "sendNotification": "Send notification",
-      "sendNotificationHint": "Notify customer of created return.",
-      "customRefund": "Custom refund",
-      "shippingPriceTooltip1": "Custom refund is enabled",
-      "noShippingOptions": "There are no shipping options for the region",
-      "shippingPriceTooltip2": "Shipping needs to be selected",
-      "customRefundHint": "If you want to refund something else instead of the total refund.",
-      "customShippingPrice": "Custom shipping",
-      "customShippingPriceHint": "Custom shipping cost.",
+      "sendNotificationHint": "Notify customer about return.",
+      "returnTotal": "Return total",
+      "refundAmount": "Refund amount",
+      "reason": "Reason",
+      "reasonHint": "Choose why the customer want to return items.",
+      "note": "Note",
+      "noInventoryLevel": "No inventory level",
       "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
-      "refundableAmountLabel": "Refundable amount",
-      "refundableAmountHeader": "Refundable Amount",
+      "noteHint": "You can type freely if you want to specify something.",
+      "location": "Location",
+      "locationHint": "Choose which location you want to return the items to.",
+      "inboundShipping": "Inbound shipping",
+      "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
-      "returnableQuantityHeader": "Returnable Quantity"
+      "refundableAmountLabel": "Refundable amount",
+      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -880,7 +925,9 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return created"
+          "created": "Return created",
+          "items_one": "{{count}} item returned",
+          "items_other": "{{count}} items returned"
         },
         "note": {
           "comment": "Comment",
@@ -2214,6 +2261,7 @@
     "inStock": "In stock",
     "location": "Location",
     "quantity": "Quantity",
+    "qty": "Qty",
     "variant": "Variant",
     "id": "ID",
     "parent": "Parent",

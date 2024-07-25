@@ -4,6 +4,7 @@ export const defaultAdminReturnFields = [
   "exchange_id",
   "claim_id",
   "display_id",
+  "location_id",
   "order_version",
   "status",
   "refund_amount",
@@ -11,8 +12,14 @@ export const defaultAdminReturnFields = [
   "updated_at",
 ]
 
+export const defaultAdminDetailsReturnFields = [
+  ...defaultAdminReturnFields,
+  "items.*",
+  "items.reason.*",
+]
+
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminReturnFields,
+  defaultFields: defaultAdminDetailsReturnFields,
   isList: false,
 }
 

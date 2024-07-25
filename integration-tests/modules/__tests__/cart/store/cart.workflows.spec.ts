@@ -778,8 +778,7 @@ medusaIntegrationTestRunner({
               action: "use-remote-query",
               handlerType: "invoke",
               error: expect.objectContaining({
-                // TODO: Implement error message handler for Remote Query throw_if_key_not_found
-                message: `productService id not found: prva_foo`,
+                message: `ProductVariant id not found: prva_foo`,
               }),
             },
           ])

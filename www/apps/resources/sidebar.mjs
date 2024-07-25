@@ -698,6 +698,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Prices Calculation",
               },
               {
+                path: "/commerce-modules/pricing/tax-inclusive-pricing",
+                title: "Tax-Inclusive Pricing",
+              },
+              {
                 path: "/commerce-modules/pricing/relations-to-other-modules",
                 title: "Relation to Modules",
               },
@@ -1841,6 +1845,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
+            children: [
+              {
+                path: "/storefront-development/products/price/examples/show-price",
+                title: "Example: Show Variant Price",
+              },
+              {
+                path: "/storefront-development/products/price/examples/sale-price",
+                title: "Example: Show Sale Price",
+              },
+            ],
           },
           {
             path: "/storefront-development/products/categories",
@@ -1999,56 +2013,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             title: "Medusa Application",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/medusa-application/railway",
-                title: "Railway",
-              },
-              {
-                path: "/deployment/medusa-application/heroku",
-                title: "Heroku",
-              },
-              {
-                path: "/deployment/medusa-application/digitalocean",
-                title: "DigitalOcean",
-              },
-              {
-                path: "/deployment/medusa-application/microtica",
-                title: "Microtica",
-              },
-              {
-                path: "/deployment/medusa-application/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/medusa-application",
           },
           {
             title: "Medusa Admin",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/admin/vercel",
-                title: "Vercel",
-              },
-              {
-                path: "/deployment/admin/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/admin",
           },
           {
             title: "Next.js Starter",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/storefront/vercel",
-                title: "Vercel",
-              },
-              {
-                path: "/deployment/storefront/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/storefront",
           },
         ],
       },

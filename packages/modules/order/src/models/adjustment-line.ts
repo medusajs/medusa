@@ -49,4 +49,7 @@ export default abstract class AdjustmentLine {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 }

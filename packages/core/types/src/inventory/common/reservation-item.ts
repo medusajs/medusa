@@ -2,6 +2,7 @@ import {
   NumericalComparisonOperator,
   StringComparisonOperator,
 } from "../../common"
+import { BigNumberInput } from "../../totals/big-number"
 
 /**
  * The reservation item details.
@@ -25,7 +26,7 @@ export interface ReservationItemDTO {
   /**
    * The quantity of the reservation item.
    */
-  quantity: number
+  quantity: BigNumberInput
 
   /**
    * The associated line item's ID.

@@ -10,7 +10,7 @@ This method is used to upload a file
 
 #### Parameters
 
-<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The contents and metadata of the file.\nAmong the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The file content as a binary-encoded string","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The contents and metadata of the file.\nAmong the file’s details, you can access the file’s path in the `path` property of the file object.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The file content as a binary-encoded string","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"access","type":"`\"public\"` \\| `\"private\"`","description":"The access level of the file. Defaults to private if not passed","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
 
 #### Returns
 
@@ -36,7 +36,7 @@ If your file service doesn’t perform or offer a similar functionality, you can
 
 #### Parameters
 
-<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 

@@ -1,5 +1,6 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
+  BigNumberInput,
   Context,
   DAL,
   InventoryTypes,
@@ -11,19 +12,20 @@ import {
 } from "@medusajs/types"
 import { IInventoryService } from "@medusajs/types/dist/inventory"
 import {
-  arrayDifference,
+  BigNumber,
   CommonEvents,
   EmitEvents,
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
-  isDefined,
-  isString,
+  MathBN,
   MedusaContext,
   MedusaError,
   MedusaService,
+  arrayDifference,
+  isDefined,
+  isString,
   partitionArray,
-  promiseAll,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
 import { joinerConfig } from "../joiner-config"
@@ -34,6 +36,14 @@ type InjectedDependencies = {
   inventoryItemService: ModulesSdkTypes.IMedusaInternalService<any>
   inventoryLevelService: InventoryLevelService
   reservationItemService: ModulesSdkTypes.IMedusaInternalService<any>
+}
+
+type InventoryItemCheckLevel = {
+  id?: string
+  location_id: string
+  inventory_item_id: string
+  quantity?: BigNumberInput
+  allow_backorder?: boolean
 }
 
 export default class InventoryModuleService
@@ -84,14 +94,23 @@ export default class InventoryModuleService
   }
 
   private async ensureInventoryLevels(
-    data: (
-      | { location_id: string; inventory_item_id: string }
-      | { id: string }
-    )[],
-    context: Context
+    data: InventoryItemCheckLevel[],
+    options?: {
+      validateQuantityAtLocation?: boolean
+    },
+    context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]> {
+    options ??= {}
+    const validateQuantityAtLocation =
+      options.validateQuantityAtLocation ?? false
+
+    const data_ = data.map((dt: any) => ({
+      location_id: dt.location_id,
+      inventory_item_id: dt.inventory_item_id,
+    })) as InventoryItemCheckLevel[]
+
     const [idData, itemLocationData] = partitionArray(
-      data,
+      data_,
       ({ id }) => !!id
     ) as [
       { id: string }[],
@@ -122,13 +141,14 @@ export default class InventoryModuleService
       return acc
     }, new Map())
 
-    const missing = data.filter((i) => {
-      if ("id" in i) {
-        return !inventoryLevelIdMap.has(i.id)
+    const missing = data.filter((item) => {
+      if (item.id) {
+        return !inventoryLevelIdMap.has(item.id!)
       }
+
       return !inventoryLevelItemLocationMap
-        .get(i.inventory_item_id)
-        ?.has(i.location_id)
+        .get(item.inventory_item_id)
+        ?.has(item.location_id)
     })
 
     if (missing.length) {
@@ -144,6 +164,27 @@ export default class InventoryModuleService
       throw new MedusaError(MedusaError.Types.NOT_FOUND, error)
     }
 
+    if (validateQuantityAtLocation) {
+      for (const item of data) {
+        if (!!item.allow_backorder) {
+          continue
+        }
+
+        const locations = inventoryLevelItemLocationMap.get(
+          item.inventory_item_id
+        )!
+
+        const level = locations?.get(item.location_id)!
+
+        if (MathBN.lt(level.available_quantity, item.quantity!)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
+          )
+        }
+      }
+    }
+
     return inventoryLevels
   }
 
@@ -151,7 +192,7 @@ export default class InventoryModuleService
   // We sanitize the inputs here to prevent that from being used to update it
   private sanitizeInventoryLevelInput<TDTO = unknown>(
     input: (TDTO & {
-      reserved_quantity?: number
+      reserved_quantity?: BigNumberInput
     })[]
   ): TDTO[] {
     return input.map((input) => {
@@ -171,37 +212,6 @@ export default class InventoryModuleService
 
       return validInput as TDTO
     })
-  }
-
-  private async ensureInventoryAvailability(
-    data: {
-      allow_backorder: boolean
-      inventory_item_id: string
-      location_id: string
-      quantity: number
-    }[],
-    context: Context
-  ) {
-    const checkLevels = data.map(async (reservation) => {
-      if (!!reservation.allow_backorder) {
-        return
-      }
-
-      const available = await this.retrieveAvailableQuantity(
-        reservation.inventory_item_id,
-        [reservation.location_id],
-        context
-      )
-
-      if (available < reservation.quantity) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Not enough stock available for item ${reservation.inventory_item_id} at location ${reservation.location_id}`
-        )
-      }
-    })
-
-    await promiseAll(checkLevels)
   }
 
   // @ts-ignore
@@ -225,13 +235,6 @@ export default class InventoryModuleService
     InventoryTypes.ReservationItemDTO[] | InventoryTypes.ReservationItemDTO
   > {
     const toCreate = Array.isArray(input) ? input : [input]
-    const sanitized = toCreate.map((d) => ({
-      ...d,
-      allow_backorder: d.allow_backorder || false,
-    }))
-
-    await this.ensureInventoryAvailability(sanitized, context)
-
     const created = await this.createReservationItems_(toCreate, context)
 
     context.messageAggregator?.saveRawMessageData(
@@ -262,10 +265,17 @@ export default class InventoryModuleService
     @MedusaContext() context: Context = {}
   ): Promise<ReservationItem[]> {
     const inventoryLevels = await this.ensureInventoryLevels(
-      input.map(({ location_id, inventory_item_id }) => ({
-        location_id,
-        inventory_item_id,
-      })),
+      input.map(
+        ({ location_id, inventory_item_id, quantity, allow_backorder }) => ({
+          location_id,
+          inventory_item_id,
+          quantity,
+          allow_backorder,
+        })
+      ),
+      {
+        validateQuantityAtLocation: true,
+      },
       context
     )
     const created = await this.reservationItemService_.create(input, context)
@@ -275,7 +285,7 @@ export default class InventoryModuleService
         const locationMap = acc.get(curr.inventory_item_id) ?? new Map()
 
         const adjustment = locationMap.get(curr.location_id) ?? 0
-        locationMap.set(curr.location_id, adjustment + curr.quantity)
+        locationMap.set(curr.location_id, MathBN.add(adjustment, curr.quantity))
 
         acc.set(curr.inventory_item_id, locationMap)
         return acc
@@ -294,7 +304,7 @@ export default class InventoryModuleService
 
       return {
         id: level.id,
-        reserved_quantity: level.reserved_quantity + adjustment,
+        reserved_quantity: MathBN.add(level.reserved_quantity, adjustment),
       }
     })
 
@@ -581,6 +591,7 @@ export default class InventoryModuleService
         location_id,
         inventory_item_id,
       })),
+      undefined,
       context
     )
 
@@ -682,21 +693,6 @@ export default class InventoryModuleService
       reservationItems.map((r) => [r.id, r])
     )
 
-    const availabilityData = input.map((data) => {
-      const reservation = reservationMap.get(data.id)!
-
-      return {
-        ...data,
-        quantity: data.quantity ?? reservation.quantity,
-        allow_backorder:
-          data.allow_backorder || reservation.allow_backorder || false,
-        inventory_item_id: reservation.inventory_item_id,
-        location_id: data.location_id ?? reservation.location_id,
-      }
-    })
-
-    await this.ensureInventoryAvailability(availabilityData, context)
-
     const adjustments: Map<string, Map<string, number>> = input.reduce(
       (acc, update) => {
         const reservation = reservationMap.get(update.id)!
@@ -711,7 +707,7 @@ export default class InventoryModuleService
 
           locationMap.set(
             reservation.location_id,
-            reservationLocationAdjustment - reservation.quantity
+            MathBN.sub(reservationLocationAdjustment, reservation.quantity)
           )
 
           const updateLocationAdjustment =
@@ -719,18 +715,24 @@ export default class InventoryModuleService
 
           locationMap.set(
             update.location_id,
-            updateLocationAdjustment + (update.quantity || reservation.quantity)
+            MathBN.add(
+              updateLocationAdjustment,
+              update.quantity || reservation.quantity
+            )
           )
         } else if (
           isDefined(update.quantity) &&
-          update.quantity !== reservation.quantity
+          !MathBN.eq(update.quantity, reservation.quantity)
         ) {
           const locationAdjustment =
             locationMap.get(reservation.location_id) ?? 0
 
           locationMap.set(
             reservation.location_id,
-            locationAdjustment + (update.quantity! - reservation.quantity)
+            MathBN.add(
+              locationAdjustment,
+              MathBN.sub(update.quantity!, reservation.quantity)
+            )
           )
         }
 
@@ -740,16 +742,27 @@ export default class InventoryModuleService
       },
       new Map()
     )
+    const availabilityData = input.map((data) => {
+      const reservation = reservationMap.get(data.id)!
 
-    const result = await this.reservationItemService_.update(input, context)
+      return {
+        inventory_item_id: reservation.inventory_item_id,
+        location_id: data.location_id ?? reservation.location_id,
+        quantity: data.quantity ?? reservation.quantity,
+        allow_backorder:
+          data.allow_backorder || reservation.allow_backorder || false,
+      }
+    })
 
     const inventoryLevels = await this.ensureInventoryLevels(
-      reservationItems.map((r) => ({
-        inventory_item_id: r.inventory_item_id,
-        location_id: r.location_id,
-      })),
+      availabilityData,
+      {
+        validateQuantityAtLocation: true,
+      },
       context
     )
+
+    const result = await this.reservationItemService_.update(input, context)
 
     const levelAdjustmentUpdates = inventoryLevels
       .map((level) => {
@@ -763,7 +776,7 @@ export default class InventoryModuleService
 
         return {
           id: level.id,
-          reserved_quantity: level.reserved_quantity + adjustment,
+          reserved_quantity: MathBN.add(level.reserved_quantity, adjustment),
         }
       })
       .filter(Boolean)
@@ -932,7 +945,7 @@ export default class InventoryModuleService
   adjustInventory(
     inventoryItemId: string,
     locationId: string,
-    adjustment: number,
+    adjustment: BigNumberInput,
     context: Context
   ): Promise<InventoryTypes.InventoryLevelDTO>
 
@@ -940,7 +953,7 @@ export default class InventoryModuleService
     data: {
       inventoryItemId: string
       locationId: string
-      adjustment: number
+      adjustment: BigNumberInput
     }[],
     context: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
@@ -950,7 +963,7 @@ export default class InventoryModuleService
   async adjustInventory(
     inventoryItemIdOrData: string | any,
     locationId?: string | Context,
-    adjustment?: number,
+    adjustment?: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<
     InventoryTypes.InventoryLevelDTO | InventoryTypes.InventoryLevelDTO[]
@@ -1000,7 +1013,7 @@ export default class InventoryModuleService
   async adjustInventory_(
     inventoryItemId: string,
     locationId: string,
-    adjustment: number,
+    adjustment: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<InventoryLevel> {
     const inventoryLevel = await this.retrieveInventoryLevelByItemAndLocation(
@@ -1012,7 +1025,10 @@ export default class InventoryModuleService
     const result = await this.inventoryLevelService_.update(
       {
         id: inventoryLevel.id,
-        stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
+        stocked_quantity: MathBN.add(
+          inventoryLevel.stocked_quantity,
+          adjustment
+        ),
       },
       context
     )
@@ -1026,9 +1042,9 @@ export default class InventoryModuleService
     locationId: string,
     @MedusaContext() context: Context = {}
   ): Promise<InventoryTypes.InventoryLevelDTO> {
-    const [inventoryLevel] = await this.listInventoryLevels(
+    const inventoryLevel = await this.listInventoryLevels(
       { inventory_item_id: inventoryItemId, location_id: locationId },
-      { take: 1 },
+      { take: null },
       context
     )
 
@@ -1039,7 +1055,7 @@ export default class InventoryModuleService
       )
     }
 
-    return inventoryLevel
+    return inventoryLevel[0]
   }
 
   /**
@@ -1055,9 +1071,9 @@ export default class InventoryModuleService
     inventoryItemId: string,
     locationIds: string[],
     @MedusaContext() context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     if (locationIds.length === 0) {
-      return 0
+      return new BigNumber(0)
     }
 
     await this.inventoryItemService_.retrieve(
@@ -1091,9 +1107,9 @@ export default class InventoryModuleService
     inventoryItemId: string,
     locationIds: string[],
     @MedusaContext() context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     if (locationIds.length === 0) {
-      return 0
+      return new BigNumber(0)
     }
 
     // Throws if item does not exist
@@ -1128,7 +1144,7 @@ export default class InventoryModuleService
     inventoryItemId: string,
     locationIds: string[],
     @MedusaContext() context: Context = {}
-  ): Promise<number> {
+  ): Promise<BigNumber> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
       inventoryItemId,
@@ -1139,7 +1155,7 @@ export default class InventoryModuleService
     )
 
     if (locationIds.length === 0) {
-      return 0
+      return new BigNumber(0)
     }
 
     const reservedQuantity =
@@ -1164,7 +1180,7 @@ export default class InventoryModuleService
   async confirmInventory(
     inventoryItemId: string,
     locationIds: string[],
-    quantity: number,
+    quantity: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<boolean> {
     const availableQuantity = await this.retrieveAvailableQuantity(
@@ -1172,7 +1188,7 @@ export default class InventoryModuleService
       locationIds,
       context
     )
-    return availableQuantity >= quantity
+    return MathBN.gte(availableQuantity, quantity)
   }
 
   private async adjustInventoryLevelsForReservationsDeletion(
@@ -1208,6 +1224,7 @@ export default class InventoryModuleService
         inventory_item_id: r.inventory_item_id,
         location_id: r.location_id,
       })),
+      undefined,
       context
     )
 
@@ -1218,8 +1235,11 @@ export default class InventoryModuleService
       const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
 
       const adjustment = inventoryLevelMap.has(curr.location_id)
-        ? inventoryLevelMap.get(curr.location_id) + curr.quantity * multiplier
-        : curr.quantity * multiplier
+        ? MathBN.add(
+            inventoryLevelMap.get(curr.location_id),
+            MathBN.mult(curr.quantity, multiplier)
+          )
+        : MathBN.mult(curr.quantity, multiplier)
 
       inventoryLevelMap.set(curr.location_id, adjustment)
       acc.set(curr.inventory_item_id, inventoryLevelMap)
@@ -1237,7 +1257,7 @@ export default class InventoryModuleService
 
       return {
         id: level.id,
-        reserved_quantity: level.reserved_quantity + adjustment,
+        reserved_quantity: MathBN.add(level.reserved_quantity, adjustment),
       }
     })
 

@@ -21,6 +21,7 @@ import {
 } from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { WorkflowsModuleService } from "@services"
+import { asFunction } from "awilix"
 
 jest.setTimeout(100000)
 
@@ -364,6 +365,25 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(spy).toHaveBeenCalledTimes(1)
           expect(logSpy).toHaveBeenCalledWith(
             "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+          )
+        })
+
+        it("the scheduled workflow should have access to the shared container", async () => {
+          const sharedContainer =
+            workflowOrcModule["workflowOrchestratorService_"]["container_"]
+
+          sharedContainer.register(
+            "test-value",
+            asFunction(() => "test")
+          )
+
+          const spy = await createScheduled("shared-container-job", {
+            cron: "* * * * * *",
+          })
+          await jest.runOnlyPendingTimersAsync()
+          expect(spy).toHaveBeenCalledTimes(1)
+          expect(spy).toHaveReturnedWith(
+            expect.objectContaining({ output: { testValue: "test" } })
           )
         })
 
