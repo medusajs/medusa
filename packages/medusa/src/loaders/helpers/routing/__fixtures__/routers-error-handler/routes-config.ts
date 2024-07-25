@@ -1,6 +1,6 @@
-import { MiddlewaresConfig } from "../../types"
+import { defineRoutesConfig } from "../../../../../utils/define-routes-config"
 
-export const config: MiddlewaresConfig = {
+export default defineRoutesConfig({
   errorHandler: (err, _req, res, _next) => {
     const { code, message } = err
 
@@ -36,4 +36,4 @@ export const config: MiddlewaresConfig = {
         })
     }
   },
-}
+})

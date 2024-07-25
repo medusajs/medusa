@@ -32,8 +32,16 @@ export function defineRoutesConfig<
       next: MedusaNextFunction
     ) => any)[]
   }
->(routes: Route[]): MiddlewaresConfig {
+>(
+  config:
+    | Route[]
+    | { routes?: Route[]; errorHandler?: MiddlewaresConfig["errorHandler"] }
+): MiddlewaresConfig {
+  const routes = Array.isArray(config) ? config : config.routes || []
+  const errorHandler = Array.isArray(config) ? undefined : config.errorHandler
+
   return {
+    errorHandler,
     routes: routes.map((route) => {
       const { middlewares, extendedValidators, ...rest } = route
       const customMiddleware: MedusaRequestHandler[] = []
