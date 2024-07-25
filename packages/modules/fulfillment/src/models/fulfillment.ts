@@ -142,6 +142,12 @@ export default class Fulfillment {
   labels = new Collection<Rel<FulfillmentLabel>>(this)
 
   @Property({
+    columnType: "boolean",
+    default: false,
+  })
+  is_return: boolean = false
+
+  @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",

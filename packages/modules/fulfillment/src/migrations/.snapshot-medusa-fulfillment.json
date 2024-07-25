@@ -1341,6 +1341,16 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "is_return": {
+          "name": "is_return",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",

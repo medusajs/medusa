@@ -34,9 +34,11 @@ export const OrderFulfillmentSection = ({
   return (
     <div className="flex flex-col gap-y-3">
       <UnfulfilledItemBreakdown order={order} />
-      {fulfillments.map((f, index) => (
-        <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
-      ))}
+      {fulfillments
+        .filter((f) => !f.is_return)
+        .map((f, index) => (
+          <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
+        ))}
     </div>
   )
 }

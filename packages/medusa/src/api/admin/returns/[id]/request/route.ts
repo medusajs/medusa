@@ -21,7 +21,7 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { result } = await confirmReturnRequestWorkflow(req.scope).run({
-    input: { return_id: id },
+    input: { return_id: id, ...req.validatedBody },
   })
 
   const queryObject = remoteQueryObjectFromString({

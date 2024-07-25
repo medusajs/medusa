@@ -76,6 +76,7 @@ export interface AdminUpdateReturnShipping {
 
 export interface AdminConfirmReturnRequest {
   no_notification?: boolean
+  location_id: string
 }
 
 export interface AdminReturnFilters extends FindParams {

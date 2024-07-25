@@ -303,6 +303,7 @@ medusaIntegrationTestRunner({
           {
             order_id: order.id,
             description: "Test",
+            location_id: location.id,
           },
           adminHeaders
         )
@@ -311,6 +312,7 @@ medusaIntegrationTestRunner({
           "/admin/returns",
           {
             order_id: order2.id,
+            location_id: location.id,
           },
           adminHeaders
         )
@@ -397,6 +399,7 @@ medusaIntegrationTestRunner({
           {
             order_id: order.id,
             description: "Test",
+            location_id: location.id,
           },
           adminHeaders
         )

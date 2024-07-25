@@ -658,13 +658,12 @@ export default class FulfillmentModuleService
     const { order, ...fulfillmentDataToCreate } = data
 
     const fulfillment = await this.fulfillmentService_.create(
-      fulfillmentDataToCreate,
+      { ...fulfillmentDataToCreate, is_return: true },
       sharedContext
     )
 
-    let fulfillmentThirdPartyData!: any
     try {
-      fulfillmentThirdPartyData =
+      const providerResult =
         await this.fulfillmentProviderService_.createReturn(
           fulfillment.provider_id,
           fulfillment as Record<any, any>
@@ -672,7 +671,8 @@ export default class FulfillmentModuleService
       await this.fulfillmentService_.update(
         {
           id: fulfillment.id,
-          data: fulfillmentThirdPartyData ?? {},
+          data: providerResult.data ?? {},
+          labels: providerResult.labels ?? [],
         },
         sharedContext
       )

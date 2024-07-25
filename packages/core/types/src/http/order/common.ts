@@ -221,6 +221,7 @@ export interface BaseOrderTransaction {
 export interface BaseOrderFulfillment {
   id: string
   location_id: string
+  is_return: boolean
   packed_at: Date | null
   shipped_at: Date | null
   delivered_at: Date | null
