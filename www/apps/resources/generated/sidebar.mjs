@@ -4235,6 +4235,21 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "title": "Guides",
+            "autogenerate_path": "/commerce-modules/product/guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/guides/price",
+                "title": "Get Product Variant Prices",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "References",
             "children": [
               {
@@ -7957,7 +7972,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/admin/general",
-                "title": "General Deployment Guide for the Medusa Admin",
+                "title": "General Guide",
                 "children": []
               },
               {
@@ -7980,7 +7995,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/storefront/general",
-                "title": "General Deployment Guide for the Next.js Starter",
+                "title": "General Guide",
                 "children": []
               },
               {
