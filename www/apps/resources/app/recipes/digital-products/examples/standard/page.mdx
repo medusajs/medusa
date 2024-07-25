@@ -691,28 +691,24 @@ export const createDigitalProductsSchema = z.object({
 
 This defines the expected request body schema.
 
-Finally, create the file `src/api/middlewares.ts` with the following content:
+Finally, create the file `src/api/routes-config.ts` with the following content:
 
-```ts title="src/api/middlewares.ts"
-import { 
-  MiddlewaresConfig, 
-} from "@medusajs/medusa"
+```ts title="src/api/routes-config.ts"
+import { defineRoutesConfig } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
 } from "@medusajs/medusa/dist/api/utils/validate-body"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/admin/digital-products",
-      method: "POST",
-      middlewares: [
-        validateAndTransformBody(createDigitalProductsSchema),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  {
+    matcher: "/admin/digital-products",
+    method: "POST",
+    middlewares: [
+      validateAndTransformBody(createDigitalProductsSchema),
+    ],
+  },
+])
 ```
 
 This adds a validation middleware to ensure that the body of `POST` requests sent to `/admin/digital-products` match the `createDigitalProductsSchema`.
@@ -790,26 +786,24 @@ This adds a `POST` API route at `/admin/digital-products/upload/[type]` where `[
 
 In the route handler, you use the `uploadFilesWorkflow` imported from `@medusajs/core-flows` to upload the file. If the file type is `main`, it’s uploaded with private access, as only customers who purchased it can download it. Otherwise, it’s uploaded with `public` access.
 
-Next, add to the file `src/api/middlewares.ts` the `multer` middleware on this API route:
+Next, add to the file `src/api/routes-config.ts` the `multer` middleware on this API route:
 
-```ts title="src/api/middlewares.ts"
+```ts title="src/api/routes-config.ts"
 // other imports...
 import multer from "multer"
 
 const upload = multer({ storage: multer.memoryStorage() })
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    // ...
-    {
-      matcher: "/admin/digital-products/upload**",
-      method: "POST",
-      middlewares: [
-        upload.array("files"),
-      ],
-    },
-  ],
-}
+export default defineRoutesConfig([
+  // ...
+  {
+    matcher: "/admin/digital-products/upload**",
+    method: "POST",
+    middlewares: [
+      upload.array("files"),
+    ],
+  },
+])
 ```
 
 You’ll test out this API route in the next step as you use these API routes in the admin customizations.
