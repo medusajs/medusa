@@ -43,6 +43,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
   createReturnShippingMethodWorkflowId,
   function (input: {
     return_id: string
+    claim_id?: string
+    exchange_id?: string
     shipping_option_id: string
     custom_price?: BigNumberInput
   }): WorkflowData<OrderDTO> {
@@ -99,6 +101,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         shippingOptions,
         customPrice: input.custom_price,
         orderChange,
+        input,
       },
       (data) => {
         const option = data.shippingOptions[0]
@@ -114,6 +117,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
           version: orderChange.version,
           order_id: data.orderReturn.order_id,
           return_id: data.orderReturn.id,
+          claim_id: data.input.claim_id,
+          exchange_id: data.input.exchange_id,
         }
       }
     )
@@ -130,6 +135,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         createdMethods,
         customPrice: input.custom_price,
         orderChange,
+        input,
       },
       ({
         shippingOptions,
@@ -138,6 +144,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         createdMethods,
         customPrice,
         orderChange,
+        input,
       }) => {
         const shippingOption = shippingOptions[0]
         const createdMethod = createdMethods[0]
@@ -152,6 +159,8 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
           amount: methodPrice,
           order_id: order.id,
           return_id: orderReturn.id,
+          claim_id: input.claim_id,
+          exchange_id: input.exchange_id,
         }
       }
     )

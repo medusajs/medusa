@@ -17,7 +17,6 @@ import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 
@@ -32,7 +31,7 @@ const validationStep = createStep(
     orderClaim: OrderClaimDTO
     orderChange: OrderChangeDTO
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderClaim, "Claim")
     throwIfOrderChangeIsNotActive({ orderChange })
   }

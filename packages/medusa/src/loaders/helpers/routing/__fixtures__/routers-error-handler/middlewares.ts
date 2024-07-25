@@ -1,6 +1,6 @@
-import { defineRoutesConfig } from "../../../../../utils/define-routes-config"
+import { defineMiddlewares } from "../../../../../utils/define-middlewares"
 
-export default defineRoutesConfig({
+export default defineMiddlewares({
   errorHandler: (err, _req, res, _next) => {
     const { code, message } = err
 

@@ -1,4 +1,3 @@
-import { OrderTypes } from "@medusajs/types"
 import {
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
@@ -9,13 +8,13 @@ import {
 
 // Reshape the order object to match the OrderDTO
 // This function is used to format the order object before returning to the main module methods
-export function formatOrder(
+export function formatOrder<T = any>(
   order,
   options: {
     entity: any
     includeTotals?: boolean
   }
-): Partial<OrderTypes.OrderDTO> | Partial<OrderTypes.OrderDTO>[] {
+): T {
   const isArray = Array.isArray(order)
   const orders = [...(isArray ? order : [order])]
 

@@ -3,12 +3,14 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
+  OrderReturnItemDTO,
   ReturnDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
   MathBN,
   OrderChangeStatus,
+  ReturnStatus,
   deepFlatMap,
 } from "@medusajs/utils"
 import {
@@ -20,7 +22,11 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { adjustInventoryLevelsStep } from "../../../inventory/steps"
-import { previewOrderChangeStep, updateReturnItemsStep } from "../../steps"
+import {
+  previewOrderChangeStep,
+  updateReturnItemsStep,
+  updateReturnsStep,
+} from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
   throwIfIsCancelled,
@@ -173,12 +179,12 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    const { updateReturnItem, returnedQuantityMap } = transform(
+    const { updateReturnItem, returnedQuantityMap, updateReturn } = transform(
       { orderChange, orderReturn },
       (data) => {
         const returnedQuantityMap: Record<string, BigNumberInput> = {}
 
-        const retItems = data.orderReturn.items ?? []
+        const retItems: OrderReturnItemDTO[] = data.orderReturn.items ?? []
         const received: OrderChangeActionDTO[] = []
 
         data.orderChange.actions.forEach((act) => {
@@ -232,9 +238,26 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
           }
         })
 
+        const hasReceivedAllItems = retItems.every((item) => {
+          const received = itemUpdates[item.item_id]
+            ? itemUpdates[item.item_id].received_quantity
+            : item.received_quantity
+
+          return MathBN.eq(received, item.quantity)
+        })
+        const updateReturnData = hasReceivedAllItems
+          ? { status: ReturnStatus.RECEIVED, received_at: new Date() }
+          : { status: ReturnStatus.PARTIALLY_RECEIVED }
+
+        const updateReturn = {
+          id: data.orderReturn.id,
+          ...updateReturnData,
+        }
+
         return {
           updateReturnItem: Object.values(itemUpdates) as any,
           returnedQuantityMap,
+          updateReturn,
         }
       }
     )
@@ -247,6 +270,7 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
     validationStep({ order, orderReturn, orderChange })
 
     parallelize(
+      updateReturnsStep([updateReturn]),
       updateReturnItemsStep(updateReturnItem),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id }),
       adjustInventoryLevelsStep(inventoryAdjustment)
