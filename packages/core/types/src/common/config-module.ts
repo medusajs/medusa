@@ -372,19 +372,30 @@ export type ProjectConfigOptions = {
   jobsBatchSize?: number
 
   /**
-   * Configure the application's worker mode. Default is `shared`.
+   * Configure the application's worker mode.
+   * 
+   * Workers are processes running separately from the main application. They're useful for executing long-running or resource-heavy tasks in the background, such as importing products.
+   * 
+   * With a worker, these tasks are offloaded to a separate process. So, they won't affect the performance of the main application.
+   * 
+   * ![Diagram showcasing how the server and worker work together](https://res.cloudinary.com/dza7lstvk/image/upload/fl_lossy/f_auto/r_16/ar_16:9,c_pad/v1/Medusa%20Book/medusa-worker_klkbch.jpg?_a=BATFJtAA0)
+   * 
+   * Medusa has three runtime modes:
    *
    * - Use `shared` to run the application in a single process.
    * - Use `worker` to run the a worker process only.
    * - Use `server` to run the application server only.
    *
-   * Learn more in [this guide](https://docs.medusajs.com/development/medusa-worker).
+   * In production, it's recommended to deploy two instances:
+   * 
+   * 1. One having the `workerMode` configuration set to `server`.
+   * 2. Another having the `workerMode` configuration set to `worker`.
    *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
    *   projectConfig: {
-   *     workerMode: "shared"
+   *     workerMode: process.env.WORKER_MODE || "shared"
    *     // ...
    *   },
    *   // ...
