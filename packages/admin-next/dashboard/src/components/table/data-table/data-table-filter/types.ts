@@ -3,6 +3,7 @@ export interface IFilter {
     key: string
     label: string
   }
+  readonly?: boolean
   openOnMount?: boolean
   prefix?: string
 }
