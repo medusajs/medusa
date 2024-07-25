@@ -7956,13 +7956,6 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/admin/general",
-                "title": "General Deployment Guide for the Medusa Admin",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
                 "path": "/deployment/admin/vercel",
                 "title": "Vercel",
                 "children": []
@@ -7976,13 +7969,6 @@ export const generatedSidebar = [
             "hasTitleStyling": true,
             "autogenerate_path": "/deployment/storefront",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/storefront/general",
-                "title": "General Deployment Guide for the Next.js Starter",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
