@@ -4,6 +4,12 @@ import { Logger } from "@medusajs/types"
 
 export class ConfigManager {
   /**
+   * Root dir from where to start
+   * @private
+   */
+  #rootDirectory: string
+
+  /**
    * A flag to specify if we are in production or not, determine whether an error would be critical and thrown or just logged as a warning in developement
    * @private
    */
@@ -37,6 +43,14 @@ export class ConfigManager {
       )
     }
     return this.#config
+  }
+
+  get rootDirectory(): string {
+    return this.#rootDirectory
+  }
+
+  get isProduction(): boolean {
+    return this.#isProduction
   }
 
   constructor({ logger }: { logger: Logger }) {
@@ -139,7 +153,12 @@ export class ConfigManager {
   /**
    * Prepare the full configuration after validation and normalization
    */
-  loadConfig(rawConfig: Partial<ConfigModule> = {}): ConfigModule {
+  loadConfig(
+    rawConfig: Partial<ConfigModule> = {},
+    rootDir: string
+  ): ConfigModule {
+    this.#rootDirectory = rootDir
+
     const projectConfig = this.normalizeProjectConfig(
       rawConfig.projectConfig ?? {}
     )

@@ -1,4 +1,3 @@
-import { ConfigModule } from "@medusajs/types"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express } from "express"
@@ -6,27 +5,22 @@ import session from "express-session"
 import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
+import { configManager } from "../config"
+import * as process from "process"
 
-type Options = {
-  app: Express
-  configModule: ConfigModule
-  rootDirectory: string
-}
-
-export default async ({
-  app,
-  configModule,
-  rootDirectory,
-}: Options): Promise<{
+export async function expressLoader({ app }: { app: Express }): Promise<{
   app: Express
   shutdown: () => Promise<void>
-}> => {
+}> {
+  const rootDirectory = configManager.rootDirectory
+  const configModule = configManager.config
+  const isProduction = configManager.isProduction
+  const isStaging = process.env.NODE_ENV === "staging"
+  const isTest = process.env.NODE_ENV === "test"
+
   let sameSite: string | boolean = false
   let secure = false
-  if (
-    process.env.NODE_ENV === "production" ||
-    process.env.NODE_ENV === "staging"
-  ) {
+  if (isProduction || isStaging) {
     secure = true
     sameSite = "none"
   }
@@ -64,7 +58,7 @@ export default async ({
   app.set("trust proxy", 1)
   app.use(
     morgan("combined", {
-      skip: () => process.env.NODE_ENV === "test",
+      skip: () => isTest,
     })
   )
   app.use(cookieParser())

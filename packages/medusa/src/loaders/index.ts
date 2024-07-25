@@ -12,8 +12,7 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import { configLoader, logger } from "@medusajs/framework"
-import expressLoader from "./express"
+import { configLoader, expressLoader, logger } from "@medusajs/framework"
 import featureFlagsLoader from "./feature-flags"
 import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
@@ -93,9 +92,8 @@ async function loadEntrypoints(
 
   const { shutdown } = await expressLoader({
     app: expressApp,
-    configModule,
-    rootDirectory,
   })
+
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     req.scope = container.createScope() as MedusaContainer
     req.requestId = (req.headers["x-request-id"] as string) ?? v4()

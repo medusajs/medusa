@@ -27,5 +27,5 @@ export async function configLoaderOverride(
           idle_in_transaction_session_timeout: 20000,
         }
 
-  configManager.loadConfig(configModule)
+  configManager.loadConfig(configModule, entryDirectory)
 }

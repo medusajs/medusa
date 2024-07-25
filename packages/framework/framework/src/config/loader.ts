@@ -35,5 +35,5 @@ export function configLoader(
     handleConfigError(error)
   }
 
-  return configManager.loadConfig(configModule)
+  return configManager.loadConfig(configModule, entryDirectory)
 }
