@@ -18,10 +18,9 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
-import { addOrderLineItemsWorkflow } from "../add-line-items"
 
 const validationStep = createStep(
-  "claim-add-new-item-validation",
+  "claim-item-validation",
   async function ({
     order,
     orderChange,
@@ -37,11 +36,11 @@ const validationStep = createStep(
   }
 )
 
-export const orderClaimAddNewItemWorkflowId = "claim-add-new-item"
-export const orderClaimAddNewItemWorkflow = createWorkflow(
-  orderClaimAddNewItemWorkflowId,
+export const orderClaimItemWorkflowId = "claim-item"
+export const orderClaimItemWorkflow = createWorkflow(
+  orderClaimItemWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.OrderClaimAddNewItemWorkflowInput>
+    input: WorkflowData<OrderWorkflow.OrderClaimItemWorkflowInput>
   ): WorkflowData<OrderDTO> {
     const orderClaim = useRemoteQueryStep({
       entry_point: "order_claim",
@@ -78,30 +77,21 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
       orderChange,
     })
 
-    const lineItems = addOrderLineItemsWorkflow.runAsStep({
-      input: {
-        order_id: order.id,
-        items: input.items,
-      },
-    })
-
     const orderChangeActionInput = transform(
-      { order, orderChange, orderClaim, items: input.items, lineItems },
-      ({ order, orderChange, orderClaim, items, lineItems }) => {
+      { order, orderChange, orderClaim, items: input.items },
+      ({ order, orderChange, orderClaim, items }) => {
         return items.map((item, index) => ({
           order_change_id: orderChange.id,
           order_id: order.id,
           claim_id: orderClaim.id,
           version: orderChange.version,
-          action: ChangeActionType.ITEM_ADD,
+          action: ChangeActionType.WRITE_OFF_ITEM,
           internal_note: item.internal_note,
           reference: "order_claim",
           reference_id: orderClaim.id,
           details: {
-            reference_id: lineItems[index].id,
+            reference_id: item.id,
             quantity: item.quantity,
-            unit_price: item.unit_price,
-            metadata: item.metadata,
           },
         }))
       }
