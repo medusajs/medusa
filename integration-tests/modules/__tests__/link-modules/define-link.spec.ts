@@ -66,7 +66,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "currency",
               fieldAlias: {
-                region: "region_link.region",
+                region: {
+                  path: "region_link.region",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -79,7 +82,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "region",
               fieldAlias: {
-                currency: "currency_link.currency",
+                currency: {
+                  path: "currency_link.currency",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -151,7 +157,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "productService",
               fieldAlias: {
-                region: "region_link.region",
+                region: {
+                  path: "region_link.region",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "productProductVariantRegionRegionLink",
@@ -164,7 +173,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "region",
               fieldAlias: {
-                product_variant: "product_variant_link.product_variant",
+                product_variant: {
+                  path: "product_variant_link.product_variant",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "productProductVariantRegionRegionLink",
@@ -239,7 +251,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "currency",
               fieldAlias: {
-                region: "region_link.region",
+                region: {
+                  path: "region_link.region",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -252,7 +267,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "region",
               fieldAlias: {
-                currency: "currency_link.currency",
+                currency: {
+                  path: "currency_link.currency",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -323,7 +341,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "currency",
               fieldAlias: {
-                regions: "region_link.region",
+                regions: {
+                  path: "region_link.region",
+                  isList: true,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
@@ -336,7 +357,10 @@ medusaIntegrationTestRunner({
             {
               serviceName: "region",
               fieldAlias: {
-                currency: "currency_link.currency",
+                currency: {
+                  path: "currency_link.currency",
+                  isList: false,
+                },
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",

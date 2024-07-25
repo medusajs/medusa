@@ -12,7 +12,7 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
   app: Express
   shutdown: () => Promise<void>
 }> {
-  const rootDirectory = configManager.rootDirectory
+  const baseDir = configManager.baseDir
   const configModule = configManager.config
   const isProduction = configManager.isProduction
   const isStaging = process.env.NODE_ENV === "staging"
@@ -65,7 +65,7 @@ export async function expressLoader({ app }: { app: Express }): Promise<{
   app.use(session(sessionOpts))
 
   // Currently we don't allow configuration of static files, but this can be revisited as needed.
-  app.use("/static", express.static(path.join(rootDirectory, "static")))
+  app.use("/static", express.static(path.join(baseDir, "static")))
 
   app.get("/health", (req, res) => {
     res.status(200).send("OK")

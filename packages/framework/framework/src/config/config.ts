@@ -1,13 +1,13 @@
 import { ConfigModule } from "./types"
 import { deepCopy, isDefined } from "@medusajs/utils"
-import { Logger } from "@medusajs/types"
+import { logger } from "../logger"
 
 export class ConfigManager {
   /**
    * Root dir from where to start
    * @private
    */
-  #rootDirectory: string
+  #baseDir: string
 
   /**
    * A flag to specify if we are in production or not, determine whether an error would be critical and thrown or just logged as a warning in developement
@@ -25,12 +25,6 @@ export class ConfigManager {
     .env.MEDUSA_WORKER_MODE as ConfigModule["projectConfig"]["workerMode"]
 
   /**
-   * The logger instance to use
-   * @private
-   */
-  readonly #logger: Logger
-
-  /**
    * The config object after loading it
    * @private
    */
@@ -45,17 +39,15 @@ export class ConfigManager {
     return this.#config
   }
 
-  get rootDirectory(): string {
-    return this.#rootDirectory
+  get baseDir(): string {
+    return this.#baseDir
   }
 
   get isProduction(): boolean {
     return this.#isProduction
   }
 
-  constructor({ logger }: { logger: Logger }) {
-    this.#logger = logger
-  }
+  constructor() {}
 
   /**
    * Rejects an error either by throwing when in production or by logging the error as a warning
@@ -67,7 +59,7 @@ export class ConfigManager {
       throw new Error(`[config] ⚠️ ${error}`)
     }
 
-    this.#logger.warn(error)
+    logger.warn(error)
   }
 
   /**
@@ -122,7 +114,9 @@ export class ConfigManager {
   protected normalizeProjectConfig(
     projectConfig: Partial<ConfigModule["projectConfig"]>
   ): ConfigModule["projectConfig"] {
-    const outputConfig: ConfigModule["projectConfig"] = deepCopy(projectConfig)
+    const outputConfig = deepCopy(
+      projectConfig
+    ) as ConfigModule["projectConfig"]
 
     if (!outputConfig?.redisUrl) {
       console.log(`redisUrl not found. A fake redis instance will be used.`)
@@ -153,22 +147,25 @@ export class ConfigManager {
   /**
    * Prepare the full configuration after validation and normalization
    */
-  loadConfig(
-    rawConfig: Partial<ConfigModule> = {},
-    rootDir: string
-  ): ConfigModule {
-    this.#rootDirectory = rootDir
+  loadConfig({
+    projectConfig = {},
+    baseDir,
+  }: {
+    projectConfig: Partial<ConfigModule>
+    baseDir: string
+  }): ConfigModule {
+    this.#baseDir = baseDir
 
-    const projectConfig = this.normalizeProjectConfig(
-      rawConfig.projectConfig ?? {}
+    const normalizedProjectConfig = this.normalizeProjectConfig(
+      projectConfig.projectConfig ?? {}
     )
 
     this.#config = {
-      projectConfig,
-      admin: rawConfig.admin ?? {},
-      modules: rawConfig.modules ?? {},
-      featureFlags: rawConfig.featureFlags ?? {},
-      plugins: rawConfig.plugins ?? [],
+      projectConfig: normalizedProjectConfig,
+      admin: projectConfig.admin ?? {},
+      modules: projectConfig.modules ?? {},
+      featureFlags: projectConfig.featureFlags ?? {},
+      plugins: projectConfig.plugins ?? [],
     }
 
     return this.#config

@@ -2007,56 +2007,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             title: "Medusa Application",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/medusa-application/railway",
-                title: "Railway",
-              },
-              {
-                path: "/deployment/medusa-application/heroku",
-                title: "Heroku",
-              },
-              {
-                path: "/deployment/medusa-application/digitalocean",
-                title: "DigitalOcean",
-              },
-              {
-                path: "/deployment/medusa-application/microtica",
-                title: "Microtica",
-              },
-              {
-                path: "/deployment/medusa-application/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/medusa-application",
           },
           {
             title: "Medusa Admin",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/admin/vercel",
-                title: "Vercel",
-              },
-              {
-                path: "/deployment/admin/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/admin",
           },
           {
             title: "Next.js Starter",
             hasTitleStyling: true,
-            children: [
-              {
-                path: "/deployment/storefront/vercel",
-                title: "Vercel",
-              },
-              {
-                path: "/deployment/storefront/general",
-                title: "General Guide",
-              },
-            ],
+            autogenerate_path: "/deployment/storefront",
           },
         ],
       },

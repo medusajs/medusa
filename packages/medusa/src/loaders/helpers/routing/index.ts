@@ -49,7 +49,7 @@ const AUTHTHENTICATE = "AUTHENTICATE"
 /**
  * File name for the global middlewares file
  */
-const MIDDLEWARES_NAME = "middlewares"
+const ROUTES_CONFIG_FILENAME = "routes-config"
 
 const pathSegmentReplacer = {
   "\\[\\.\\.\\.\\]": () => `*`,
@@ -216,7 +216,7 @@ export class RoutesLoader {
     if (!config?.routes && !config?.errorHandler) {
       log({
         activityId: this.activityId,
-        message: `Empty middleware config. Skipping middleware application.`,
+        message: `Empty routes config. Skipping configuration.`,
       })
 
       return
@@ -419,7 +419,7 @@ export class RoutesLoader {
   }) {
     const files = await readdir(dirPath)
 
-    const middlewareFilePath = files
+    const routesConfigFiles = files
       .filter((path) => {
         if (
           this.excludes.length &&
@@ -431,29 +431,29 @@ export class RoutesLoader {
         return true
       })
       .find((file) => {
-        return file.replace(/\.[^/.]+$/, "") === MIDDLEWARES_NAME
+        return file.replace(/\.[^/.]+$/, "") === ROUTES_CONFIG_FILENAME
       })
 
-    if (!middlewareFilePath) {
+    if (!routesConfigFiles) {
       log({
         activityId: this.activityId,
-        message: `No middleware files found in ${dirPath}. Skipping middleware configuration.`,
+        message: `No routes config file found in ${dirPath}. Skipping configuration.`,
       })
       return
     }
 
-    const absolutePath = join(dirPath, middlewareFilePath)
+    const absolutePath = join(dirPath, routesConfigFiles)
 
     try {
       await import(absolutePath).then((import_) => {
-        const middlewaresConfig = import_.config as
+        const middlewaresConfig = import_.default as
           | MiddlewaresConfig
           | undefined
 
         if (!middlewaresConfig) {
           log({
             activityId: this.activityId,
-            message: `No middleware configuration found in ${absolutePath}. Skipping middleware configuration.`,
+            message: `No routes config file found in ${absolutePath}. Skipping configuration.`,
           })
           return
         }
@@ -476,7 +476,7 @@ export class RoutesLoader {
     } catch (error) {
       log({
         activityId: this.activityId,
-        message: `Failed to load middleware configuration in ${absolutePath}. Skipping middleware configuration.`,
+        message: `Failed to load routes configuration from ${absolutePath}. Skipping configuration.`,
       })
 
       return
