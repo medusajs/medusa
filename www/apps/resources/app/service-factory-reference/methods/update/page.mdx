@@ -1,0 +1,109 @@
+---
+sidebar_label: "update"
+---
+
+export const metadata = {
+  title: `update Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method updates one or more records of the data model.
+
+## Update One Record
+
+```ts
+const post = await customModuleService.updatePosts({
+  id: "123",
+  name: "My Post"
+})
+```
+
+To update one record, pass an object that at least has an `id` property, identifying the ID of the record to update.
+
+You can pass in the same object any other properties to update.
+
+The method returns the updated record as an object.
+
+---
+
+## Update Multiple Records
+
+```ts
+const posts = await customModuleService.updatePosts([
+  {
+    id: "123",
+    name: "My Post"
+  },
+  {
+    id: "321",
+    published_at: new Date()
+  }
+])
+```
+
+To update multiple records, pass an array of objects. Each object has at least an `id` property, identifying the ID of the record to update.
+
+You can pass in each object any other properties to update.
+
+The method returns an array of objects of updated records.
+
+---
+
+## Update Records Matching a Filter
+
+```ts
+const posts = await customModuleService.updatePosts({
+  selector: {
+    name: "My Post"
+  },
+  data: {
+    published_at: new Date()
+  }
+})
+```
+
+To update records that match specified filters, pass an object having two properties:
+
+{/* TODO add a link to filtering */}
+
+- `selector`: An object of filters that a record must match to be updated.
+- `data`: An object of the properties to update in every record that match the filters in `selector`.
+
+The method returns an array of objects of updated records.
+
+---
+
+## Multiple Record Updates with Filters
+
+```ts
+const posts = await customModuleService.updatePosts([
+  {
+    selector: {
+      name: "My Post"
+    },
+    data: {
+      published_at: new Date()
+    }
+  },
+  {
+    selector: {
+      name: "Another Post"
+    },
+    data: {
+      metadata: {
+        external_id: "123"
+      }
+    }
+  }
+])
+```
+
+To update records matching different set of filters, pass an array of objects, each having two properties:
+
+{/* TODO add a link to filtering */}
+
+- `selector`: An object of filters that a record must match to be updated.
+- `data`: An object of the properties to update in every record that match the filters in `selector`.
+
+The method returns an array of objects of updated records.

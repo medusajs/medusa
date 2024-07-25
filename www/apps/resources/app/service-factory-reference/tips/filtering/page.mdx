@@ -1,0 +1,143 @@
+---
+sidebar_label: "Filtering"
+---
+
+export const metadata = {
+  title: `Filter Records - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+Many of the service factory's generated methods allow passing filters to perform an operation, such as update or delete records matching the filters.
+
+This guide provides examples of using filters.
+
+<Note>
+
+The `list` method is used in the example snippets of this reference, but you can use the same filtering mechanism with any method that accepts filters.
+
+</Note>
+
+---
+
+## Match Exact Value
+
+```ts
+const posts = await customModuleService.listPosts({
+  name: "My Post 2",
+})
+```
+
+To filter a record's property by an exact value, pass it as the property's value.
+
+In the example above, only posts having the name `My Post 2` are retrieved.
+
+---
+
+## Match Multiple Values
+
+```ts
+const posts = await customModuleService.listPosts({
+  views: [
+    50,
+    100
+  ]
+})
+```
+
+To find records with a property matching multiple values, pass an array of those values as the property's value in the filter.
+
+In the example above, only posts having either `50` or `100` views are retrieved.
+
+---
+
+## Don't Match Values
+
+```ts
+const posts = await customModuleService.listPosts({
+  name: {
+    $nin: [
+      "My Post"
+    ]
+  }
+})
+```
+
+To find records with a property that doesn't match one or more values, pass an object with a `$nin` property. Its value is an array of multiple values that a recorder's property shouldn't match.
+
+In the example above, only posts that don't have the name `My Post` are retrieved.
+
+---
+
+## Match Text Like Value
+
+<Note>
+
+This filter only applies to text-like properties, including `id` and `enum` properties.
+
+</Note>
+
+```ts
+const posts = await customModuleService.listPosts({
+  name: {
+    $like: "My%"
+  }
+})
+```
+
+To perform a `like` filter on a record's property, pass an object with a `$like` property. Its value is the string to use when applying the `like` filter.
+
+The example above matches all posts whose name starts with `My`.
+
+---
+
+## Apply Range Filters
+
+<Note>
+
+This filter only applies to the `number` and `dateTime` properties.
+
+</Note>
+
+```ts
+const posts = await customModuleService.listPosts({
+  published_at: {
+    $lt: new Date()
+  }
+})
+```
+
+To filter a record's property to be within a range, pass an object with any of the following properties:
+
+1. `$lt`: The property's value must be less than the supplied value.
+2. `$lte`: The property's value must be less than or equal to the supplied value.
+3. `$gt`: The property's value must be greater than the supplied value.
+4. `$gte`: The property's value must be greater than or equal the supplied value.
+
+In the example above, only posts whose `published_at` property is before the current date and time are retrieved.
+
+---
+
+## Apply Or Condition
+
+```ts
+const posts = await customModuleService.listPosts({
+  $or: [
+    {
+      name: "My Post",
+    },
+    {
+      published_at: {
+        $lt: new Date()
+      }
+    }
+  ]
+})
+```
+
+To use an `or` condition, use the `$or` property, whose value is an array of filters.
+
+In the example above, posts whose name is `My Post` or their `published_at` date is less than the current date and time are retrieved.
+
+---
+

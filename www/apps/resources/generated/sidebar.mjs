@@ -7957,7 +7957,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/admin/general",
-                "title": "General Deployment Guide for the Medusa Admin",
+                "title": "General Guide",
                 "children": []
               },
               {
@@ -7980,7 +7980,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/storefront/general",
-                "title": "General Deployment Guide for the Next.js Starter",
+                "title": "General Guide",
                 "children": []
               },
               {
@@ -8111,7 +8111,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "title": "API References",
+    "title": "References",
     "hasTitleStyling": true,
     "children": [
       {
@@ -8352,6 +8352,80 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/references/data-model/property-configuration/unique",
                 "title": "unique",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/service-factory-reference",
+        "title": "Service Factory Reference",
+        "isChildSidebar": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/create",
+                "title": "create Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/delete",
+                "title": "delete Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/list",
+                "title": "list Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/listAndCount",
+                "title": "listAndCount Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/restore",
+                "title": "restore Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/retrieve",
+                "title": "retrieve Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/soft-delete",
+                "title": "softDelete Method",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/update",
+                "title": "update Method",
                 "children": []
               }
             ]

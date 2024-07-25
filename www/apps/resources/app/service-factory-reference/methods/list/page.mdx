@@ -1,0 +1,87 @@
+---
+sidebar_label: "list"
+---
+
+export const metadata = {
+  title: `list Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method retrieves a list of records.
+
+## Retrieve List of Records
+
+```ts
+const posts = await customModuleService.listPosts()
+```
+
+If no parameters are passed, the method returns an array of the first `15` records.
+
+---
+
+## Filter Records
+
+```ts
+const posts = await customModuleService.listPosts({
+  id: ["123", "321"]
+})
+```
+
+To retrieve records matching a set of filters, pass an object of the filters as a first parameter.
+
+{/* TODO add a link to filtering */}
+
+The method returns an array of the first `15` records matching the filters.
+
+---
+
+## Retrieve Relations
+
+<Note>
+
+This applies to relations between data models of the same module. To retrieve linked records of different modules, use [remote query](!docs!/advanced-development/modules/remote-query).
+
+</Note>
+
+```ts
+const posts = await customModuleService.listPosts({}, {
+  relations: ["author"]
+})
+```
+
+To retrieve records with their relations, pass as a second parameter an object having a `relations` property. `relations`'s value is an array of relation names.
+
+The method returns an array of the first `15` records matching the filters.
+
+---
+
+## Select Fields
+
+```ts
+const posts = await customModuleService.listPosts({}, {
+  select: ["id", "name"]
+})
+```
+
+By default, retrieved records have all their properties. To select specific properties to retrieve, pass in the second object parameter a `select` property.
+
+`select`'s value is an array of property names to retrieve.
+
+---
+
+## Paginate Relations
+
+```ts
+const posts = await customModuleService.listPosts({}, {
+  take: 20,
+  skip: 10
+})
+```
+
+To paginate the returned records, the second object parameter accepts the following properties:
+
+- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
+
+The method returns an array of records. The number of records is less than or equal to `take`'s value.
