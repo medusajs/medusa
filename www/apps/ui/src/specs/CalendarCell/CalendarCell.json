@@ -1,19 +1,19 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "TimeSegment",
+  "displayName": "CalendarCell",
   "props": {
-    "segment": {
+    "date": {
       "required": true,
       "tsType": {
-        "name": "DateSegment"
+        "name": "CalendarDate"
       },
       "description": ""
     },
     "state": {
       "required": true,
       "tsType": {
-        "name": "DateFieldState"
+        "name": "CalendarState"
       },
       "description": ""
     }
