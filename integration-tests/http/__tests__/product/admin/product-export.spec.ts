@@ -168,8 +168,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
 
         await subscriberExecution
         const notifications = (
@@ -214,8 +214,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
 
         await subscriberExecution
         const notifications = (
