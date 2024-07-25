@@ -78,6 +78,16 @@ export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }
 
+export interface AdminInitiateReceiveReturn {
+  internal_note?: string
+  description?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface AdminReceiveItems {
+  items: { id: string; quantity: number; internal_note?: string }[]
+}
+
 export interface AdminReturnFilters extends FindParams {
   id?: string[] | string | OperatorMap<string | string[]>
   order_id?: string[] | string | OperatorMap<string | string[]>

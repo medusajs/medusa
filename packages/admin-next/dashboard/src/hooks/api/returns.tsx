@@ -53,6 +53,10 @@ export const useReturns = (
   return { ...data, ...rest }
 }
 
+/**
+ * REQUEST RETURN
+ */
+
 export const useInitiateReturn = (
   orderId: string,
   options?: UseMutationOptions<
@@ -74,6 +78,73 @@ export const useInitiateReturn = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useConfirmReturnRequest = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminConfirmReturnRequest
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminConfirmReturnRequest) =>
+      sdk.admin.return.confirmRequest(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCancelReturnRequest = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.return.cancelRequest(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -216,18 +287,22 @@ export const useDeleteReturnShipping = (
   })
 }
 
-export const useConfirmReturnRequest = (
+/**
+ * RECEIVE RETURN
+ */
+
+export const useInitiateReceiveReturn = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
     Error,
-    HttpTypes.AdminConfirmReturnRequest
+    HttpTypes.AdminInitiateReceiveReturn
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminConfirmReturnRequest) =>
-      sdk.admin.return.confirmRequest(id, payload),
+    mutationFn: (payload: HttpTypes.AdminInitiateReceiveReturn) =>
+      sdk.admin.return.initiateReceive(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -238,13 +313,6 @@ export const useConfirmReturnRequest = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: returnsQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: returnsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -252,30 +320,21 @@ export const useConfirmReturnRequest = (
   })
 }
 
-export const useCancelReturnRequest = (
+export const useAddReceiveItems = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminReceiveItems
+  >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.return.cancelRequest(id),
+    mutationFn: (payload: HttpTypes.AdminReceiveItems) =>
+      sdk.admin.return.receiveItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
-
-      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: returnsQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: returnsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

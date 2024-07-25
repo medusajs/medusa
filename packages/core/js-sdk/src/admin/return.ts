@@ -178,4 +178,38 @@ export class Return {
       }
     )
   }
+
+  async initiateReceive(
+    id: string,
+    body: HttpTypes.AdminInitiateReceiveReturn,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async receiveItems(
+    id: string,
+    body: HttpTypes.AdminReceiveItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive-items`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
 }

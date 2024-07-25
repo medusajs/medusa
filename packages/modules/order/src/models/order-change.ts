@@ -21,7 +21,6 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import {} from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"
