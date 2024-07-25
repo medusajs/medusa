@@ -1,7 +1,7 @@
 import {
+  CreateOrderReturnItemDTO,
   IOrderModuleService,
   OrderChangeActionDTO,
-  UpdateReturnDTO,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -20,34 +20,25 @@ export const createReturnItemsStep = createStep(
 
     const returnItems = input.changes.map((item) => {
       return {
-        return_id: item.reference_id,
-        item_id: item.details?.reference_id,
+        return_id: input.returnId,
+        item_id: item.details?.reference_id! as string,
         reason_id: item.details?.reason_id,
         quantity: item.details?.quantity as number,
         note: item.internal_note,
         metadata: (item.details?.metadata as Record<string, unknown>) ?? {},
-      }
+      } as CreateOrderReturnItemDTO
     })
-
-    const [prevReturn] = await orderModuleService.listReturns(
-      { id: input.returnId },
-      {
-        select: ["id"],
-        relations: ["items"],
-      }
+    const createdReturnItems = await orderModuleService.createReturnItems(
+      returnItems
     )
 
-    const createdReturnItems = await orderModuleService.updateReturns([
-      {
-        selector: { id: input.returnId },
-        data: { items: returnItems as UpdateReturnDTO["items"] },
-      },
-    ])
-
-    return new StepResponse(createdReturnItems, prevReturn)
+    return new StepResponse(
+      createdReturnItems,
+      createdReturnItems.map((i) => i.id)
+    )
   },
-  async (prevData, { container }) => {
-    if (!prevData) {
+  async (ids, { container }) => {
+    if (!ids) {
       return
     }
 
@@ -55,9 +46,6 @@ export const createReturnItemsStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await orderModuleService.updateReturns(
-      { id: prevData.id },
-      { items: prevData.items }
-    )
+    await orderModuleService.deleteReturnItems(ids)
   }
 )

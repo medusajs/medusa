@@ -5477,6 +5477,21 @@ components:
           type: string
           title: fields
           description: The upload's fields.
+    AdminImportProductRequest:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminImportProductRequest
+    AdminImportProductResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminImportProductResponse
+      required:
+        - workflow_id
+      properties:
+        workflow_id:
+          type: string
+          title: workflow_id
+          description: The product's workflow id.
     AdminOrderCancelFulfillment:
       type: object
       description: SUMMARY
@@ -5582,15 +5597,11 @@ components:
           description: The order's metadata.
     AdminPostCancelReturnReqSchema:
       type: object
-      required:
-        - return_id
-        - internal_note
+      description: SUMMARY
       x-schemaName: AdminPostCancelReturnReqSchema
+      required:
+        - internal_note
       properties:
-        return_id:
-          type: string
-          title: return_id
-          description: The return's return id.
         no_notification:
           type: boolean
           title: no_notification

@@ -35,6 +35,7 @@ export const beginReturnOrderWorkflow = createWorkflow(
     const created = createReturnsStep([
       {
         order_id: input.order_id,
+        location_id: input.location_id,
         metadata: input.metadata,
       },
     ])

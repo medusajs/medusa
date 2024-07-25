@@ -26,7 +26,7 @@ export const AdminGetCampaignsParams = createFindParams({
   )
   .strict()
 
-export const CreateCampaignBudget = z
+const CreateCampaignBudget = z
   .object({
     type: z.nativeEnum(CampaignBudgetType),
     limit: z.number().nullish(),

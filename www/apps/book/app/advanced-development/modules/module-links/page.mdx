@@ -51,8 +51,8 @@ import ProductModule from "@medusajs/product"
 import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
-  HelloModule.linkable.myCustom,
-  ProductModule.linkable.product
+  ProductModule.linkable.product,
+  HelloModule.linkable.myCustom
 )
 ```
 
@@ -86,11 +86,11 @@ import ProductModule from "@medusajs/product"
 import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
+  ProductModule.linkable.product,
   {
     linkable: HelloModule.linkable.myCustom,
     isList: true,
-  },
-  ProductModule.linkable.product
+  }
 )
 ```
 
@@ -132,11 +132,11 @@ import ProductModule from "@medusajs/product"
 import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
+  ProductModule.linkable.product,
   {
     linkable: HelloModule.linkable.myCustom,
     deleteCascades: true,
-  },
-  ProductModule.linkable.product
+  }
 )
 ```
 

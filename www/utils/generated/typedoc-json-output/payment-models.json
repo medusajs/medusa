@@ -1,5 +1,5 @@
 {
-	"id": 8346,
+	"id": 8443,
 	"name": "payment-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 8347,
+			"id": 8444,
 			"name": "Capture",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8348,
+					"id": 8445,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8349,
+							"id": 8446,
 							"name": "new Capture",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8347,
+								"target": 8444,
 								"name": "Capture",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 8362,
+					"id": 8459,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -61,7 +61,7 @@
 					}
 				},
 				{
-					"id": 8350,
+					"id": 8447,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -72,7 +72,7 @@
 					}
 				},
 				{
-					"id": 8351,
+					"id": 8448,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -97,7 +97,7 @@
 					}
 				},
 				{
-					"id": 8352,
+					"id": 8449,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -113,21 +113,21 @@
 					}
 				},
 				{
-					"id": 8353,
+					"id": 8450,
 					"name": "payment",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8363,
+						"target": 8460,
 						"name": "Payment",
 						"package": "@medusajs/payment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8354,
+					"id": 8451,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -143,7 +143,7 @@
 					}
 				},
 				{
-					"id": 8355,
+					"id": 8452,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -159,7 +159,7 @@
 					}
 				},
 				{
-					"id": 8356,
+					"id": 8453,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -185,7 +185,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8357,
+					"id": 8454,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -206,14 +206,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8358,
+					"id": 8455,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8359,
+							"id": 8456,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -226,14 +226,14 @@
 					]
 				},
 				{
-					"id": 8360,
+					"id": 8457,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8361,
+							"id": 8458,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -250,55 +250,55 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8348
+						8445
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8362,
-						8350,
-						8351,
-						8352,
-						8353,
-						8354,
-						8355,
-						8356,
-						8357
+						8459,
+						8447,
+						8448,
+						8449,
+						8450,
+						8451,
+						8452,
+						8453,
+						8454
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8358,
-						8360
+						8455,
+						8457
 					]
 				}
 			]
 		},
 		{
-			"id": 8391,
+			"id": 8488,
 			"name": "PaymentCollection",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8392,
+					"id": 8489,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8393,
+							"id": 8490,
 							"name": "new PaymentCollection",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8391,
+								"target": 8488,
 								"name": "PaymentCollection",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -307,7 +307,7 @@
 					]
 				},
 				{
-					"id": 8418,
+					"id": 8515,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -325,7 +325,7 @@
 					}
 				},
 				{
-					"id": 8394,
+					"id": 8491,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -336,7 +336,7 @@
 					}
 				},
 				{
-					"id": 8395,
+					"id": 8492,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -347,7 +347,7 @@
 					}
 				},
 				{
-					"id": 8396,
+					"id": 8493,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -372,7 +372,7 @@
 					}
 				},
 				{
-					"id": 8397,
+					"id": 8494,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -388,7 +388,7 @@
 					}
 				},
 				{
-					"id": 8398,
+					"id": 8495,
 					"name": "authorized_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -418,7 +418,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8399,
+					"id": 8496,
 					"name": "raw_authorized_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -444,7 +444,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8400,
+					"id": 8497,
 					"name": "captured_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -474,7 +474,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8401,
+					"id": 8498,
 					"name": "raw_captured_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -500,7 +500,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8402,
+					"id": 8499,
 					"name": "refunded_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -530,7 +530,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8403,
+					"id": 8500,
 					"name": "raw_refunded_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -556,7 +556,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8404,
+					"id": 8501,
 					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -567,7 +567,7 @@
 					}
 				},
 				{
-					"id": 8405,
+					"id": 8502,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -583,7 +583,7 @@
 					}
 				},
 				{
-					"id": 8406,
+					"id": 8503,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -599,7 +599,7 @@
 					}
 				},
 				{
-					"id": 8407,
+					"id": 8504,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -625,7 +625,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8408,
+					"id": 8505,
 					"name": "completed_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -651,7 +651,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8409,
+					"id": 8506,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -668,7 +668,7 @@
 					"defaultValue": "PaymentCollectionStatus.NOT_PAID"
 				},
 				{
-					"id": 8410,
+					"id": 8507,
 					"name": "payment_providers",
 					"variant": "declaration",
 					"kind": 1024,
@@ -682,7 +682,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8436,
+								"target": 8533,
 								"name": "PaymentProvider",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -698,7 +698,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8411,
+					"id": 8508,
 					"name": "payment_sessions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -712,7 +712,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8442,
+								"target": 8539,
 								"name": "PaymentSession",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -728,7 +728,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8412,
+					"id": 8509,
 					"name": "payments",
 					"variant": "declaration",
 					"kind": 1024,
@@ -742,7 +742,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8363,
+								"target": 8460,
 								"name": "Payment",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -758,7 +758,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8413,
+					"id": 8510,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -794,14 +794,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8414,
+					"id": 8511,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8415,
+							"id": 8512,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -814,14 +814,14 @@
 					]
 				},
 				{
-					"id": 8416,
+					"id": 8513,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8417,
+							"id": 8514,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -838,67 +838,67 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8392
+						8489
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8418,
-						8394,
-						8395,
-						8396,
-						8397,
-						8398,
-						8399,
-						8400,
-						8401,
-						8402,
-						8403,
-						8404,
-						8405,
-						8406,
-						8407,
-						8408,
-						8409,
-						8410,
-						8411,
-						8412,
-						8413
+						8515,
+						8491,
+						8492,
+						8493,
+						8494,
+						8495,
+						8496,
+						8497,
+						8498,
+						8499,
+						8500,
+						8501,
+						8502,
+						8503,
+						8504,
+						8505,
+						8506,
+						8507,
+						8508,
+						8509,
+						8510
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8414,
-						8416
+						8511,
+						8513
 					]
 				}
 			]
 		},
 		{
-			"id": 8419,
+			"id": 8516,
 			"name": "PaymentMethodToken",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8420,
+					"id": 8517,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8421,
+							"id": 8518,
 							"name": "new PaymentMethodToken",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8419,
+								"target": 8516,
 								"name": "PaymentMethodToken",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -907,7 +907,7 @@
 					]
 				},
 				{
-					"id": 8422,
+					"id": 8519,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -918,7 +918,7 @@
 					}
 				},
 				{
-					"id": 8423,
+					"id": 8520,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -929,7 +929,7 @@
 					}
 				},
 				{
-					"id": 8424,
+					"id": 8521,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -965,7 +965,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8425,
+					"id": 8522,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -976,7 +976,7 @@
 					}
 				},
 				{
-					"id": 8426,
+					"id": 8523,
 					"name": "type_detail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -997,7 +997,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8427,
+					"id": 8524,
 					"name": "description_detail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1018,7 +1018,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8428,
+					"id": 8525,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1034,7 +1034,7 @@
 					}
 				},
 				{
-					"id": 8429,
+					"id": 8526,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1050,7 +1050,7 @@
 					}
 				},
 				{
-					"id": 8430,
+					"id": 8527,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1076,7 +1076,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8431,
+					"id": 8528,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1112,14 +1112,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8432,
+					"id": 8529,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8433,
+							"id": 8530,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1132,14 +1132,14 @@
 					]
 				},
 				{
-					"id": 8434,
+					"id": 8531,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8435,
+							"id": 8532,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1156,56 +1156,56 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8420
+						8517
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8422,
-						8423,
-						8424,
-						8425,
-						8426,
-						8427,
-						8428,
-						8429,
-						8430,
-						8431
+						8519,
+						8520,
+						8521,
+						8522,
+						8523,
+						8524,
+						8525,
+						8526,
+						8527,
+						8528
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8432,
-						8434
+						8529,
+						8531
 					]
 				}
 			]
 		},
 		{
-			"id": 8436,
+			"id": 8533,
 			"name": "PaymentProvider",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8437,
+					"id": 8534,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8438,
+							"id": 8535,
 							"name": "new PaymentProvider",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8436,
+								"target": 8533,
 								"name": "PaymentProvider",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -1214,7 +1214,7 @@
 					]
 				},
 				{
-					"id": 8441,
+					"id": 8538,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1227,7 +1227,7 @@
 					}
 				},
 				{
-					"id": 8439,
+					"id": 8536,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1238,7 +1238,7 @@
 					}
 				},
 				{
-					"id": 8440,
+					"id": 8537,
 					"name": "is_enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1254,42 +1254,42 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8437
+						8534
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8441,
-						8439,
-						8440
+						8538,
+						8536,
+						8537
 					]
 				}
 			]
 		},
 		{
-			"id": 8442,
+			"id": 8539,
 			"name": "PaymentSession",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8443,
+					"id": 8540,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8444,
+							"id": 8541,
 							"name": "new PaymentSession",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8442,
+								"target": 8539,
 								"name": "PaymentSession",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -1298,7 +1298,7 @@
 					]
 				},
 				{
-					"id": 8464,
+					"id": 8561,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1320,7 +1320,7 @@
 					}
 				},
 				{
-					"id": 8445,
+					"id": 8542,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1331,7 +1331,7 @@
 					}
 				},
 				{
-					"id": 8446,
+					"id": 8543,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1342,7 +1342,7 @@
 					}
 				},
 				{
-					"id": 8447,
+					"id": 8544,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1367,7 +1367,7 @@
 					}
 				},
 				{
-					"id": 8448,
+					"id": 8545,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1383,7 +1383,7 @@
 					}
 				},
 				{
-					"id": 8449,
+					"id": 8546,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1394,7 +1394,7 @@
 					}
 				},
 				{
-					"id": 8450,
+					"id": 8547,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1421,7 +1421,7 @@
 					"defaultValue": "{}"
 				},
 				{
-					"id": 8451,
+					"id": 8548,
 					"name": "context",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1456,7 +1456,7 @@
 					}
 				},
 				{
-					"id": 8452,
+					"id": 8549,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1473,7 +1473,7 @@
 					"defaultValue": "PaymentSessionStatus.PENDING"
 				},
 				{
-					"id": 8453,
+					"id": 8550,
 					"name": "authorized_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1499,21 +1499,21 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8454,
+					"id": 8551,
 					"name": "payment_collection",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8391,
+						"target": 8488,
 						"name": "PaymentCollection",
 						"package": "@medusajs/payment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8455,
+					"id": 8552,
 					"name": "payment_collection_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1524,7 +1524,7 @@
 					}
 				},
 				{
-					"id": 8456,
+					"id": 8553,
 					"name": "payment",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1540,7 +1540,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 8363,
+								"target": 8460,
 								"name": "Payment",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -1549,7 +1549,7 @@
 					}
 				},
 				{
-					"id": 8457,
+					"id": 8554,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1565,7 +1565,7 @@
 					}
 				},
 				{
-					"id": 8458,
+					"id": 8555,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1581,7 +1581,7 @@
 					}
 				},
 				{
-					"id": 8459,
+					"id": 8556,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1607,14 +1607,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8460,
+					"id": 8557,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8461,
+							"id": 8558,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1627,14 +1627,14 @@
 					]
 				},
 				{
-					"id": 8462,
+					"id": 8559,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8463,
+							"id": 8560,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1651,62 +1651,62 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8443
+						8540
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8464,
-						8445,
-						8446,
-						8447,
-						8448,
-						8449,
-						8450,
-						8451,
-						8452,
-						8453,
-						8454,
-						8455,
-						8456,
-						8457,
-						8458,
-						8459
+						8561,
+						8542,
+						8543,
+						8544,
+						8545,
+						8546,
+						8547,
+						8548,
+						8549,
+						8550,
+						8551,
+						8552,
+						8553,
+						8554,
+						8555,
+						8556
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8460,
-						8462
+						8557,
+						8559
 					]
 				}
 			]
 		},
 		{
-			"id": 8363,
+			"id": 8460,
 			"name": "Payment",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8364,
+					"id": 8461,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8365,
+							"id": 8462,
 							"name": "new Payment",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8363,
+								"target": 8460,
 								"name": "Payment",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -1715,7 +1715,7 @@
 					]
 				},
 				{
-					"id": 8390,
+					"id": 8487,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1733,7 +1733,7 @@
 					}
 				},
 				{
-					"id": 8366,
+					"id": 8463,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1744,7 +1744,7 @@
 					}
 				},
 				{
-					"id": 8367,
+					"id": 8464,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1769,7 +1769,7 @@
 					}
 				},
 				{
-					"id": 8368,
+					"id": 8465,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1785,7 +1785,7 @@
 					}
 				},
 				{
-					"id": 8369,
+					"id": 8466,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1796,7 +1796,7 @@
 					}
 				},
 				{
-					"id": 8370,
+					"id": 8467,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1807,7 +1807,7 @@
 					}
 				},
 				{
-					"id": 8371,
+					"id": 8468,
 					"name": "cart_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1828,7 +1828,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8372,
+					"id": 8469,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1849,7 +1849,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8373,
+					"id": 8470,
 					"name": "customer_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1870,7 +1870,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8374,
+					"id": 8471,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1906,7 +1906,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8375,
+					"id": 8472,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1942,7 +1942,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8376,
+					"id": 8473,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1958,7 +1958,7 @@
 					}
 				},
 				{
-					"id": 8377,
+					"id": 8474,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1974,7 +1974,7 @@
 					}
 				},
 				{
-					"id": 8378,
+					"id": 8475,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2000,7 +2000,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8379,
+					"id": 8476,
 					"name": "captured_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2026,7 +2026,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8380,
+					"id": 8477,
 					"name": "canceled_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2052,7 +2052,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8381,
+					"id": 8478,
 					"name": "refunds",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2066,7 +2066,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8465,
+								"target": 8562,
 								"name": "Refund",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -2082,7 +2082,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8382,
+					"id": 8479,
 					"name": "captures",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2096,7 +2096,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8347,
+								"target": 8444,
 								"name": "Capture",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -2112,21 +2112,21 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8383,
+					"id": 8480,
 					"name": "payment_collection",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8391,
+						"target": 8488,
 						"name": "PaymentCollection",
 						"package": "@medusajs/payment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8384,
+					"id": 8481,
 					"name": "payment_collection_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2137,28 +2137,28 @@
 					}
 				},
 				{
-					"id": 8385,
+					"id": 8482,
 					"name": "payment_session",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8442,
+						"target": 8539,
 						"name": "PaymentSession",
 						"package": "@medusajs/payment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8386,
+					"id": 8483,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8387,
+							"id": 8484,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2171,14 +2171,14 @@
 					]
 				},
 				{
-					"id": 8388,
+					"id": 8485,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8389,
+							"id": 8486,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2195,67 +2195,67 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8364
+						8461
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8390,
-						8366,
-						8367,
-						8368,
-						8369,
-						8370,
-						8371,
-						8372,
-						8373,
-						8374,
-						8375,
-						8376,
-						8377,
-						8378,
-						8379,
-						8380,
-						8381,
-						8382,
-						8383,
-						8384,
-						8385
+						8487,
+						8463,
+						8464,
+						8465,
+						8466,
+						8467,
+						8468,
+						8469,
+						8470,
+						8471,
+						8472,
+						8473,
+						8474,
+						8475,
+						8476,
+						8477,
+						8478,
+						8479,
+						8480,
+						8481,
+						8482
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8386,
-						8388
+						8483,
+						8485
 					]
 				}
 			]
 		},
 		{
-			"id": 8465,
+			"id": 8562,
 			"name": "Refund",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8466,
+					"id": 8563,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8467,
+							"id": 8564,
 							"name": "new Refund",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8465,
+								"target": 8562,
 								"name": "Refund",
 								"package": "@medusajs/payment",
 								"qualifiedName": "default"
@@ -2264,7 +2264,7 @@
 					]
 				},
 				{
-					"id": 8468,
+					"id": 8565,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2275,7 +2275,7 @@
 					}
 				},
 				{
-					"id": 8469,
+					"id": 8566,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2300,7 +2300,7 @@
 					}
 				},
 				{
-					"id": 8470,
+					"id": 8567,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2316,21 +2316,21 @@
 					}
 				},
 				{
-					"id": 8471,
+					"id": 8568,
 					"name": "payment",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8363,
+						"target": 8460,
 						"name": "Payment",
 						"package": "@medusajs/payment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8472,
+					"id": 8569,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2346,7 +2346,7 @@
 					}
 				},
 				{
-					"id": 8473,
+					"id": 8570,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2362,7 +2362,7 @@
 					}
 				},
 				{
-					"id": 8474,
+					"id": 8571,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2388,7 +2388,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8475,
+					"id": 8572,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2409,7 +2409,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8476,
+					"id": 8573,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2445,14 +2445,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8477,
+					"id": 8574,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8478,
+							"id": 8575,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2465,14 +2465,14 @@
 					]
 				},
 				{
-					"id": 8479,
+					"id": 8576,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8480,
+							"id": 8577,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2489,28 +2489,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8466
+						8563
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8468,
-						8469,
-						8470,
-						8471,
-						8472,
-						8473,
-						8474,
-						8475,
-						8476
+						8565,
+						8566,
+						8567,
+						8568,
+						8569,
+						8570,
+						8571,
+						8572,
+						8573
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8477,
-						8479
+						8574,
+						8576
 					]
 				}
 			]
@@ -2520,499 +2520,499 @@
 		{
 			"title": "Classes",
 			"children": [
-				8347,
-				8391,
-				8419,
-				8436,
-				8442,
-				8363,
-				8465
+				8444,
+				8488,
+				8516,
+				8533,
+				8539,
+				8460,
+				8562
 			]
 		}
 	],
 	"packageName": "@medusajs/payment",
 	"symbolIdMap": {
-		"8346": {
+		"8443": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"8347": {
+		"8444": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default"
 		},
-		"8350": {
+		"8447": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.id"
 		},
-		"8351": {
+		"8448": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8352": {
+		"8449": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8353": {
+		"8450": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.payment"
 		},
-		"8354": {
+		"8451": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8355": {
+		"8452": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8356": {
+		"8453": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8357": {
+		"8454": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"8358": {
+		"8455": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8359": {
+		"8456": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8360": {
+		"8457": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8361": {
+		"8458": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8362": {
+		"8459": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/capture.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8363": {
+		"8460": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default"
 		},
-		"8366": {
+		"8463": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.id"
 		},
-		"8367": {
+		"8464": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8368": {
+		"8465": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8369": {
+		"8466": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"8370": {
+		"8467": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.provider_id"
 		},
-		"8371": {
+		"8468": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.cart_id"
 		},
-		"8372": {
+		"8469": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.order_id"
 		},
-		"8373": {
+		"8470": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.customer_id"
 		},
-		"8374": {
+		"8471": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.data"
 		},
-		"8375": {
+		"8472": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"8376": {
+		"8473": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8377": {
+		"8474": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8378": {
+		"8475": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8379": {
+		"8476": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.captured_at"
 		},
-		"8380": {
+		"8477": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.canceled_at"
 		},
-		"8381": {
+		"8478": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.refunds"
 		},
-		"8382": {
+		"8479": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.captures"
 		},
-		"8383": {
+		"8480": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.payment_collection"
 		},
-		"8384": {
+		"8481": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.payment_collection_id"
 		},
-		"8385": {
+		"8482": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.payment_session"
 		},
-		"8386": {
+		"8483": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8387": {
+		"8484": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8388": {
+		"8485": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8389": {
+		"8486": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8390": {
+		"8487": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8391": {
+		"8488": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default"
 		},
-		"8394": {
+		"8491": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.id"
 		},
-		"8395": {
+		"8492": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"8396": {
+		"8493": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8397": {
+		"8494": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8398": {
+		"8495": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.authorized_amount"
 		},
-		"8399": {
+		"8496": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.raw_authorized_amount"
 		},
-		"8400": {
+		"8497": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.captured_amount"
 		},
-		"8401": {
+		"8498": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.raw_captured_amount"
 		},
-		"8402": {
+		"8499": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.refunded_amount"
 		},
-		"8403": {
+		"8500": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.raw_refunded_amount"
 		},
-		"8404": {
+		"8501": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.region_id"
 		},
-		"8405": {
+		"8502": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8406": {
+		"8503": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8407": {
+		"8504": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8408": {
+		"8505": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.completed_at"
 		},
-		"8409": {
+		"8506": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.status"
 		},
-		"8410": {
+		"8507": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.payment_providers"
 		},
-		"8411": {
+		"8508": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.payment_sessions"
 		},
-		"8412": {
+		"8509": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.payments"
 		},
-		"8413": {
+		"8510": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"8414": {
+		"8511": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8415": {
+		"8512": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8416": {
+		"8513": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8417": {
+		"8514": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8418": {
+		"8515": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-collection.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8419": {
+		"8516": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default"
 		},
-		"8422": {
+		"8519": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.id"
 		},
-		"8423": {
+		"8520": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.provider_id"
 		},
-		"8424": {
+		"8521": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.data"
 		},
-		"8425": {
+		"8522": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.name"
 		},
-		"8426": {
+		"8523": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.type_detail"
 		},
-		"8427": {
+		"8524": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.description_detail"
 		},
-		"8428": {
+		"8525": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8429": {
+		"8526": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8430": {
+		"8527": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8431": {
+		"8528": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"8432": {
+		"8529": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8433": {
+		"8530": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8434": {
+		"8531": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8435": {
+		"8532": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-method-token.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8436": {
+		"8533": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-provider.ts",
 			"qualifiedName": "default"
 		},
-		"8439": {
+		"8536": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-provider.ts",
 			"qualifiedName": "default.id"
 		},
-		"8440": {
+		"8537": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-provider.ts",
 			"qualifiedName": "default.is_enabled"
 		},
-		"8441": {
+		"8538": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-provider.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8442": {
+		"8539": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default"
 		},
-		"8445": {
+		"8542": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.id"
 		},
-		"8446": {
+		"8543": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"8447": {
+		"8544": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8448": {
+		"8545": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8449": {
+		"8546": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.provider_id"
 		},
-		"8450": {
+		"8547": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.data"
 		},
-		"8451": {
+		"8548": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.context"
 		},
-		"8452": {
+		"8549": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.status"
 		},
-		"8453": {
+		"8550": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.authorized_at"
 		},
-		"8454": {
+		"8551": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.payment_collection"
 		},
-		"8455": {
+		"8552": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.payment_collection_id"
 		},
-		"8456": {
+		"8553": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.payment"
 		},
-		"8457": {
+		"8554": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8458": {
+		"8555": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8459": {
+		"8556": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8460": {
+		"8557": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8461": {
+		"8558": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8462": {
+		"8559": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8463": {
+		"8560": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8464": {
+		"8561": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/payment-session.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8465": {
+		"8562": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default"
 		},
-		"8468": {
+		"8565": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.id"
 		},
-		"8469": {
+		"8566": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8470": {
+		"8567": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8471": {
+		"8568": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.payment"
 		},
-		"8472": {
+		"8569": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8473": {
+		"8570": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8474": {
+		"8571": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8475": {
+		"8572": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"8476": {
+		"8573": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"8477": {
+		"8574": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8478": {
+		"8575": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8479": {
+		"8576": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8480": {
+		"8577": {
 			"sourceFileName": "../../../../packages/modules/payment/src/models/refund.ts",
 			"qualifiedName": "default.onInit"
 		}
@@ -3022,7 +3022,7 @@
 			"1": "../../../../packages/modules/payment/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 8346
+			"1": 8443
 		}
 	}
 }

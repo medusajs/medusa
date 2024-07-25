@@ -26,5 +26,6 @@ export * from "./shipping"
 export * from "./totals"
 export * from "./totals/big-number"
 export * from "./user"
+export * from "./csv"
 
 export const MedusaModuleType = Symbol.for("MedusaModule")

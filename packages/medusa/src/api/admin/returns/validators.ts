@@ -29,6 +29,7 @@ export const AdminGetOrdersParams = createFindParams({
 }).merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
+    order_id: z.union([z.string(), z.array(z.string())]).optional(),
     status: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
@@ -93,10 +94,10 @@ export type AdminPostReceiveReturnItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostCancelReturnReqSchema = z.object({
-  return_id: z.string(),
   no_notification: z.boolean().optional(),
   internal_note: z.string().nullish(),
 })
+
 export type AdminPostCancelReturnReqSchemaType = z.infer<
   typeof AdminPostCancelReturnReqSchema
 >

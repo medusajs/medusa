@@ -421,6 +421,7 @@ export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
+  location_id?: string
   items?: {
     id: string
     quantity: BigNumberInput
@@ -438,6 +439,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
 
 export interface UpdateReturnDTO {
   id: string
+  location_id?: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   claim_id?: string
@@ -448,6 +450,7 @@ export interface UpdateReturnDTO {
     internal_note?: string | null
     note?: string | null
     reason_id?: string | null
+    return_id?: string | null
     metadata?: Record<string, unknown> | null
   }[]
 }
@@ -467,6 +470,15 @@ export interface UpdateOrderExchangeDTO {
   no_notification?: boolean
   return_id?: string
   allow_backorder?: boolean
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderReturnItemDTO {
+  return_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  reason_id?: string
+  note?: string
   metadata?: Record<string, unknown> | null
 }
 

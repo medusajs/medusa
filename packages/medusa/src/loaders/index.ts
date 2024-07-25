@@ -12,7 +12,7 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import loadConfig from "./config"
+import { configLoader, logger } from "@medusajs/framework"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerJobs } from "./helpers/register-jobs"
@@ -20,7 +20,6 @@ import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 import { SubscriberLoader } from "./helpers/subscribers"
-import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
 
@@ -124,11 +123,11 @@ async function loadEntrypoints(
 
 export async function initializeContainer(rootDirectory: string) {
   const container = createMedusaContainer()
-  const configModule = loadConfig(rootDirectory)
-  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+  const configModule = configLoader(rootDirectory, "medusa-config.js")
+  const featureFlagRouter = featureFlagsLoader(configModule, logger)
 
   container.register({
-    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
+    [ContainerRegistrationKeys.LOGGER]: asValue(logger),
     [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
     [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),

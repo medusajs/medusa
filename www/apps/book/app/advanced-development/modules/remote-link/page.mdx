@@ -61,13 +61,19 @@ await remoteLink.create({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "hello": {
+  "helloModuleService": {
     my_custom_id: "mc_123",
   },
 })
 ```
 
 The `create` method accepts as a parameter an object. The object’s keys are the names of the linked modules.
+
+<Note title="Important">
+
+The keys (names of linked modules) must be in the same direction of the link definition.
+
+</Note>
 
 The value of each module’s property is an object, whose keys are of the format `{data_model_snake_name}_id`, and values are the IDs of the linked record.
 
@@ -90,13 +96,19 @@ await remoteLink.dismiss({
   [Modules.PRODUCT]: {
     product_id: "prod_123",
   },
-  "hello": {
+  "helloModuleService": {
     my_custom_id: "mc_123",
   },
 })
 ```
 
 The `dismiss` method accepts the same parameter type as the [create method](#create-link).
+
+<Note title="Important">
+
+The keys (names of linked modules) must be in the same direction of the link definition.
+
+</Note>
 
 ---
 
