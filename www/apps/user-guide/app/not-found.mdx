@@ -1,0 +1,47 @@
+import { CardList } from "docs-ui"
+import {
+  BookOpen,
+  AcademicCapSolid,
+  ComputerDesktopSolid,
+  BuildingStorefront
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Page Not Found`,
+}
+
+# {metadata.title}
+
+The page you were looking for isn't available.
+
+If you think this is a mistake, please [report this issue on GitHub](https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml).
+
+<CardList
+  itemsPerRow={2}
+  items={[
+    {
+      title: "Get Started Docs",
+      href: "/",
+      showLinkIcon: false,
+      startIcon: <BookOpen />
+    },
+    {
+      title: "Learning Resources",
+      href: "!resources!",
+      showLinkIcon: false,
+      startIcon: <AcademicCapSolid />
+    },
+    {
+      title: "Admin API reference",
+      href: "!api!/admin",
+      showLinkIcon: false,
+      startIcon: <ComputerDesktopSolid />
+    },
+    {
+      title: "Store API reference",
+      href: "!api!/store",
+      showLinkIcon: false,
+      startIcon: <BuildingStorefront />
+    }
+  ]}
+/>

@@ -232,6 +232,11 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/orders/order-create-shipment"),
                   },
+                  {
+                    path: "returns",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-return"),
+                  },
                 ],
               },
             ],

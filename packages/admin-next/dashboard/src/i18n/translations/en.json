@@ -50,7 +50,8 @@
     "unsavedChangesTitle": "Are you sure you want to leave this form?",
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
-    "excludesTaxTooltip": "Prices in this column are tax exclusive."
+    "excludesTaxTooltip": "Prices in this column are tax exclusive.",
+    "noMoreData": "No more data"
   },
   "json": {
     "header": "JSON",
@@ -107,9 +108,12 @@
     "close": "Close",
     "showMore": "Show more",
     "continue": "Continue",
+    "addReason": "Add Reason",
+    "addNote": "Add Note",
     "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
+    "addItems": "Add items",
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
@@ -772,6 +776,7 @@
         "requiresAction": "Requires action"
       }
     },
+
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -783,26 +788,25 @@
       "differenceDue": "Difference due"
     },
     "returns": {
-      "details": "Details",
-      "chooseItems": "Choose items",
-      "refundAmount": "Refund amount",
-      "locationDescription": "Choose which location you want to return the items to.",
-      "shippingDescription": "Choose which method you want to use for this return.",
-      "noInventoryLevel": "No inventory level",
+      "create": "Create Return",
+      "inbound": "Inbound",
       "sendNotification": "Send notification",
-      "sendNotificationHint": "Notify customer of created return.",
-      "customRefund": "Custom refund",
-      "shippingPriceTooltip1": "Custom refund is enabled",
-      "noShippingOptions": "There are no shipping options for the region",
-      "shippingPriceTooltip2": "Shipping needs to be selected",
-      "customRefundHint": "If you want to refund something else instead of the total refund.",
-      "customShippingPrice": "Custom shipping",
-      "customShippingPriceHint": "Custom shipping cost.",
+      "sendNotificationHint": "Notify customer about return.",
+      "returnTotal": "Return total",
+      "refundAmount": "Refund amount",
+      "reason": "Reason",
+      "reasonHint": "Choose why the customer want to return items.",
+      "note": "Note",
+      "noInventoryLevel": "No inventory level",
       "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
-      "refundableAmountLabel": "Refundable amount",
-      "refundableAmountHeader": "Refundable Amount",
+      "noteHint": "You can type freely if you want to specify something.",
+      "location": "Location",
+      "locationHint": "Choose which location you want to return the items to.",
+      "inboundShipping": "Inbound shipping",
+      "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
-      "returnableQuantityHeader": "Returnable Quantity"
+      "refundableAmountLabel": "Refundable amount",
+      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
     },
     "receiveReturn" : {
       "title": "Receive Return"
@@ -925,7 +929,9 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return created"
+          "created": "Return created",
+          "items_one": "{{count}} item returned",
+          "items_other": "{{count}} items returned"
         },
         "note": {
           "comment": "Comment",
@@ -2107,6 +2113,12 @@
       "value": "Value"
     }
   },
+  "notifications": {
+    "domain": "Notifications",
+    "accessibility": {
+      "description": "notifications about Medusa activities will be listed here."
+    }
+  },
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
@@ -2259,6 +2271,7 @@
     "inStock": "In stock",
     "location": "Location",
     "quantity": "Quantity",
+    "qty": "Qty",
     "variant": "Variant",
     "id": "ID",
     "parent": "Parent",

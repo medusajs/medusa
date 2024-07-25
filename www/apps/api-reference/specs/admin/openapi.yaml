@@ -245,6 +245,8 @@ paths:
     $ref: paths/admin_products_batch.yaml
   /admin/products/export:
     $ref: paths/admin_products_export.yaml
+  /admin/products/import:
+    $ref: paths/admin_products_import.yaml
   /admin/products/{id}:
     $ref: paths/admin_products_{id}.yaml
   /admin/products/{id}/options:

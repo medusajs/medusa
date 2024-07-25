@@ -41,7 +41,10 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
     {
       serviceName: Modules.PRODUCT,
       fieldAlias: {
-        sales_channels: "sales_channels_link.sales_channel",
+        sales_channels: {
+          path: "sales_channels_link.sales_channel",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.ProductSalesChannel,
