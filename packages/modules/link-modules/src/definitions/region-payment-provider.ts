@@ -39,7 +39,10 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
     {
       serviceName: Modules.REGION,
       fieldAlias: {
-        payment_providers: "payment_provider_link.payment_provider",
+        payment_providers: {
+          path: "payment_provider_link.payment_provider",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.RegionPaymentProvider,
@@ -52,7 +55,10 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
     {
       serviceName: Modules.PAYMENT,
       fieldAlias: {
-        regions: "region_link.region",
+        regions: {
+          path: "region_link.region",
+          isList: true,
+        },
       },
       relationship: {
         serviceName: LINKS.RegionPaymentProvider,

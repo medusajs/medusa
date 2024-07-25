@@ -11,12 +11,16 @@ const DEFAULT_PROPERTIES = [
   "subtotal",
   "discounts_total",
   "shipping_total",
+  "shipping_tax_total",
   "tax_total",
+  "refundable_total",
 ]
 
 const DEFAULT_RELATIONS = [
   "*customer",
   "*items", // -> we get LineItem here with added `quantity` and `detail` which is actually an OrderItem (which is a parent object to LineItem in the DB)
+  "*items.variant",
+  "*items.variant.product",
   "*items.variant.options",
   "+items.variant.manage_inventory",
   "*shipping_address",

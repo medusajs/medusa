@@ -1619,6 +1619,11 @@ export interface UpdateReturnDTO {
     reason_id?: string | null
 
     /**
+     * The associated return's ID.
+     */
+    return_id?: string | null
+
+    /**
      * Holds custom data in key-value pairs.
      */
     metadata?: Record<string, unknown> | null

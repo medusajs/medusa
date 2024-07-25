@@ -29,19 +29,6 @@ const nextConfig = {
   transpilePackages: ["docs-ui"],
 
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2/resources",
-  async rewrites() {
-    return {
-      fallback: [
-        {
-          source: "/:path*",
-          destination: `${
-            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
-          }/:path*`,
-          basePath: false,
-        },
-      ],
-    }
-  },
   async redirects() {
     // redirect original file paths to the rewrite
     return slugChanges.map((item) => ({

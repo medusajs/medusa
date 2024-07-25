@@ -1,4 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
+import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
+
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -6,6 +7,26 @@ export class Return {
   private client: Client
   constructor(client: Client) {
     this.client = client
+  }
+
+  async list(query?: HttpTypes.AdminReturnFilters, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminReturnsResponse>(
+      `/admin/returns`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
+  async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}`,
+      {
+        query,
+        headers,
+      }
+    )
   }
 
   async initiateRequest(
@@ -19,6 +40,21 @@ export class Return {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  async cancelRequest(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/request`,
+      {
+        method: "DELETE",
+        headers,
         query,
       }
     )
@@ -41,6 +77,40 @@ export class Return {
     )
   }
 
+  async updateReturnItem(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminUpdateReturnItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/request-items/${actionId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async removeReturnItem(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/request-items/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
+        query,
+      }
+    )
+  }
+
   async addReturnShipping(
     id: string,
     body: HttpTypes.AdminAddReturnShipping,
@@ -53,6 +123,40 @@ export class Return {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  async updateReturnShipping(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminAddReturnShipping,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/shipping-method/${actionId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async deleteReturnShipping(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/shipping-method/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
         query,
       }
     )
