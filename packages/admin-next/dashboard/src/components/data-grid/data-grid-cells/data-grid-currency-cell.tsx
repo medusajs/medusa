@@ -56,6 +56,7 @@ const Inner = ({
     ref: inputRef,
     onBlur: onInputBlur,
     onFocus,
+    onChange: _,
     ...attributes
   } = inputProps
 
@@ -85,6 +86,7 @@ const Inner = ({
         onFocus={onFocus}
         decimalScale={currencyInfo.decimal_digits}
         decimalsLimit={currencyInfo.decimal_digits}
+        autoComplete="off"
         tabIndex={-1}
       />
     </div>

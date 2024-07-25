@@ -64,7 +64,13 @@ export const useDataGridCell = <TData, TValue>({
     setRangeEnd,
     getWrapperFocusHandler,
     getWrapperMouseOverHandler,
+    getInputChangeHandler,
+    registerCell,
   } = useDataGridContext()
+
+  useEffect(() => {
+    registerCell(coords)
+  }, [coords, registerCell])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -115,7 +121,12 @@ export const useDataGridCell = <TData, TValue>({
         return numberCharacterRegex.test(key)
       }
 
-      return textCharacterRegex.test(key)
+      if (type === "text") {
+        return textCharacterRegex.test(key)
+      }
+
+      // KeyboardEvents should not be forwareded to other types of cells
+      return false
     },
     [type]
   )
@@ -123,6 +134,11 @@ export const useDataGridCell = <TData, TValue>({
   const handleContainerKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (!inputRef.current || !validateKeyStroke(e.key) || !showOverlay) {
+        return
+      }
+
+      // Allow the user to undo/redo
+      if (e.key.toLowerCase() === "z" && (e.ctrlKey || e.metaKey)) {
         return
       }
 
@@ -154,8 +170,8 @@ export const useDataGridCell = <TData, TValue>({
   }, [dragSelection, id])
 
   useEffect(() => {
-    if (isAnchor && containerRef.current) {
-      containerRef.current.focus()
+    if (isAnchor && !containerRef.current?.contains(document.activeElement)) {
+      containerRef.current?.focus()
     }
   }, [isAnchor])
 
@@ -180,6 +196,7 @@ export const useDataGridCell = <TData, TValue>({
       ref: inputRef,
       onBlur: handleInputBlur,
       onFocus: handleInputFocus,
+      onChange: getInputChangeHandler(field),
       "data-row": coords.row,
       "data-col": coords.col,
       "data-cell-id": id,

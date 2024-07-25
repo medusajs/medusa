@@ -7,6 +7,7 @@ import { getPriceColumns } from "../../../components/data-grid/data-grid-columns
 import { DataGridRoot } from "../../../components/data-grid/data-grid-root/data-grid-root"
 import { createDataGridHelper } from "../../../components/data-grid/utils.ts"
 import { ReadonlyCell } from "../../../components/grid/grid-cells/common/readonly-cell"
+import { useRouteModal } from "../../../components/modals/index.ts"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
 import { useRegions } from "../../../hooks/api/regions.tsx"
 import { useStore } from "../../../hooks/api/store"
@@ -19,6 +20,7 @@ type VariantPricingFormProps = {
 export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   const { store } = useStore()
   const { regions } = useRegions({ limit: 9999 })
+  const { setCloseOnEscape } = useRouteModal()
 
   const { price_preferences: pricePreferences } = usePricePreferences({})
 
@@ -34,15 +36,18 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   }) as any
 
   return (
-    <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGridRoot columns={columns} data={variants} state={form} />
-    </div>
+    <DataGridRoot
+      columns={columns}
+      data={variants}
+      state={form}
+      onEditingChange={(editing) => setCloseOnEscape(!editing)}
+    />
   )
 }
 
 const columnHelper = createDataGridHelper<HttpTypes.AdminProductVariant>()
 
-export const useVariantPriceGridColumns = ({
+const useVariantPriceGridColumns = ({
   currencies = [],
   regions = [],
   pricePreferences = [],
@@ -70,7 +75,7 @@ export const useVariantPriceGridColumns = ({
         },
         disableHiding: true,
       }),
-      ...getPriceColumns({
+      ...getPriceColumns<HttpTypes.AdminProductVariant>({
         currencies: currencies.map((c) => c.currency_code),
         regions,
         pricePreferences,

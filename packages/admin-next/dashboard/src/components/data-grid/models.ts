@@ -43,23 +43,14 @@ export class Matrix {
       let newRow = row + dRow
       let newCol = col + dCol
 
-      // Handle edge wrapping
-      if (newCol < 0) {
-        // Wrap to previous row, last column
-        newRow -= 1
-        newCol = this.cells[0].length - 1
-      } else if (newCol >= this.cells[0].length) {
-        // Wrap to next row, first column
-        newRow += 1
-        newCol = 0
-      } else if (newRow < 0) {
-        // Wrap to previous column, last row
-        newCol -= 1
-        newRow = this.cells.length - 1
-      } else if (newRow >= this.cells.length) {
-        // Wrap to next column, first row
-        newCol += 1
-        newRow = 0
+      // Stop at the grid boundaries, don't wrap around
+      if (
+        newRow < 0 ||
+        newRow >= this.cells.length ||
+        newCol < 0 ||
+        newCol >= this.cells[0].length
+      ) {
+        return { row, col }
       }
 
       // Validate new position and find next navigable cell
@@ -69,19 +60,15 @@ export class Matrix {
       ) {
         newRow += dRow
         newCol += dCol
-        // Adjust for edge wrapping again
-        if (newCol < 0) {
-          newRow -= 1
-          newCol = this.cells[0].length - 1
-        } else if (newCol >= this.cells[0].length) {
-          newRow += 1
-          newCol = 0
-        } else if (newRow < 0) {
-          newCol -= 1
-          newRow = this.cells.length - 1
-        } else if (newRow >= this.cells.length) {
-          newCol += 1
-          newRow = 0
+
+        // Check for boundary conditions again and stop if we hit the edge
+        if (
+          newRow < 0 ||
+          newRow >= this.cells.length ||
+          newCol < 0 ||
+          newCol >= this.cells[0].length
+        ) {
+          return { row, col }
         }
       }
 

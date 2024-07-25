@@ -78,6 +78,8 @@ export const DataGridRoot = <
   const { redo, undo, execute } = useCommandHistory()
   const { register, control, getValues, setValue } = state
 
+  const [active, setActive] = useState(true)
+
   const [anchor, setAnchor] = useState<CellCoords | null>(null)
   const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
   const [dragEnd, setDragEnd] = useState<CellCoords | null>(null)
@@ -127,6 +129,24 @@ export const DataGridRoot = <
     estimateSize: () => ROW_HEIGHT,
     getScrollElement: () => containerRef.current,
     overscan: 5,
+    rangeExtractor: (range) => {
+      const toRender = new Set(
+        Array.from(
+          { length: range.endIndex - range.startIndex + 1 },
+          (_, i) => range.startIndex + i
+        )
+      )
+
+      if (anchor) {
+        toRender.add(anchor.row)
+      }
+
+      if (rangeEnd) {
+        toRender.add(rangeEnd.row)
+      }
+
+      return Array.from(toRender)
+    },
   })
 
   const virtualRows = rowVirtualizer.getVirtualItems()
@@ -138,6 +158,27 @@ export const DataGridRoot = <
     getScrollElement: () => containerRef.current,
     horizontal: true,
     overscan: 3,
+    rangeExtractor: (range) => {
+      const startIndex = range.startIndex
+      const endIndex = range.endIndex
+
+      const toRender = new Set(
+        Array.from(
+          { length: endIndex - startIndex + 1 },
+          (_, i) => startIndex + i
+        )
+      )
+
+      if (anchor) {
+        toRender.add(anchor.col)
+      }
+
+      if (rangeEnd) {
+        toRender.add(rangeEnd.col)
+      }
+
+      return Array.from(toRender)
+    },
   })
 
   const virtualColumns = columnVirtualizer.getVirtualItems()
@@ -153,18 +194,22 @@ export const DataGridRoot = <
   }
 
   const scrollToCell = useCallback(
-    (coords: CellCoords) => {
+    (coords: CellCoords, direction: "horizontal" | "vertical") => {
       const { row, col } = coords
 
-      columnVirtualizer.scrollToIndex(col, {
-        align: "center",
-        behavior: "auto",
-      })
+      if (direction === "horizontal") {
+        columnVirtualizer.scrollToIndex(col, {
+          align: "auto",
+          behavior: "auto",
+        })
+      }
 
-      rowVirtualizer.scrollToIndex(row, {
-        align: "center",
-        behavior: "auto",
-      })
+      if (direction === "vertical") {
+        rowVirtualizer.scrollToIndex(row, {
+          align: "auto",
+          behavior: "auto",
+        })
+      }
     },
     [columnVirtualizer, rowVirtualizer]
   )
@@ -174,9 +219,12 @@ export const DataGridRoot = <
     [flatRows, visibleColumns]
   )
 
-  function registerCell(coords: CellCoords) {
-    matrix.registerCell(coords.row, coords.col, true)
-  }
+  const registerCell = useCallback(
+    (coords: CellCoords) => {
+      matrix.registerCell(coords.row, coords.col, true)
+    },
+    [matrix]
+  )
 
   /**
    * Clears the start and end of current range.
@@ -316,7 +364,7 @@ export const DataGridRoot = <
       const handleNavigation = (coords: CellCoords) => {
         e.preventDefault()
 
-        scrollToCell(coords)
+        scrollToCell(coords, direction)
         updater(coords)
       }
 
@@ -407,7 +455,7 @@ export const DataGridRoot = <
 
       if (anchor.row !== pos.row || anchor.col !== pos.col) {
         setSingleRange(pos)
-        scrollToCell(pos)
+        scrollToCell(pos, "vertical")
         onEditingChangeHandler(false)
       }
     },
@@ -502,22 +550,48 @@ export const DataGridRoot = <
 
   const handleEscapeKey = useCallback(
     (e: KeyboardEvent) => {
-      if (!isEditing) {
+      if (!anchor || !isEditing) {
         return
       }
 
       e.preventDefault()
       e.stopPropagation()
 
-      const activeElement = document.activeElement as HTMLElement | null
+      // Restore focus to the container element
+      const anchorContainer = containerRef.current?.querySelector(
+        `[data-container-id="${generateCellId(anchor)}"]`
+      ) as HTMLElement | null
 
-      if (!activeElement) {
+      if (!anchorContainer) {
         return
       }
 
-      activeElement.blur()
+      anchorContainer.focus()
     },
-    [isEditing]
+    [isEditing, anchor]
+  )
+
+  const handleTabKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor || isEditing) {
+        return
+      }
+
+      e.preventDefault()
+
+      const direction = e.shiftKey ? "ArrowLeft" : "ArrowRight"
+
+      const next = matrix.getValidMovement(
+        anchor.row,
+        anchor.col,
+        direction,
+        e.metaKey || e.ctrlKey
+      )
+
+      setSingleRange(next)
+      scrollToCell(next, "horizontal")
+    },
+    [anchor, isEditing, scrollToCell, setSingleRange, matrix]
   )
 
   const handleKeyDownEvent = useCallback(
@@ -551,6 +625,11 @@ export const DataGridRoot = <
         handleEscapeKey(e)
         return
       }
+
+      if (e.key === "Tab") {
+        handleTabKey(e)
+        return
+      }
     },
     [
       handleEscapeKey,
@@ -559,6 +638,7 @@ export const DataGridRoot = <
       handleSpaceKey,
       handleEnterKey,
       handleDeleteKey,
+      handleTabKey,
     ]
   )
 
@@ -654,7 +734,7 @@ export const DataGridRoot = <
   useEffect(() => {
     const container = containerRef.current
 
-    if (!container || !container.contains(document.activeElement)) {
+    if (!container || !container.contains(document.activeElement) || !active) {
       return
     }
 
@@ -672,6 +752,7 @@ export const DataGridRoot = <
       container.removeEventListener("paste", handlePasteEvent)
     }
   }, [
+    active,
     handleKeyDownEvent,
     handleMouseUpEvent,
     handleCopyEvent,
@@ -837,6 +918,7 @@ export const DataGridRoot = <
       getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
       register,
+      registerCell,
     }),
     [
       anchor,
@@ -851,18 +933,18 @@ export const DataGridRoot = <
       getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
       register,
+      registerCell,
     ]
   )
 
   return (
     <DataGridContext.Provider value={values}>
-      <div className="bg-ui-bg-subtle flex size-full flex-col overflow-hidden">
+      <div className="bg-ui-bg-subtle flex size-full flex-col">
         <DataGridHeader grid={grid} />
         <FocusTrap
+          active={active}
           focusTrapOptions={{
             initialFocus: () => {
-              console.log("initial focus")
-
               if (!anchor) {
                 const coords = matrix.getFirstNavigableCell()
 
@@ -883,16 +965,49 @@ export const DataGridRoot = <
                 `[data-container-id="${id}`
               ) as HTMLElement | null
 
-              console.log("anchor container", anchorContainer)
-
               return anchorContainer ?? undefined
+            },
+            onActivate: () => setActive(true),
+            onDeactivate: () => setActive(false),
+            fallbackFocus: () => {
+              if (!anchor) {
+                const coords = matrix.getFirstNavigableCell()
+
+                if (!coords) {
+                  return containerRef.current!
+                }
+
+                const id = generateCellId(coords)
+
+                const firstCell = containerRef.current?.querySelector(
+                  `[data-container-id="${id}"]`
+                ) as HTMLElement | null
+
+                if (firstCell) {
+                  return firstCell
+                }
+
+                return containerRef.current!
+              }
+
+              const id = generateCellId(anchor)
+
+              const anchorContainer = containerRef.current?.querySelector(
+                `[data-container-id="${id}`
+              ) as HTMLElement | null
+
+              if (anchorContainer) {
+                return anchorContainer
+              }
+
+              return containerRef.current!
             },
             allowOutsideClick: true,
             escapeDeactivates: false,
           }}
         >
-          <div className="size-full" tabIndex={-1}>
-            <div tabIndex={anchor ? -1 : 0} />
+          <div className="size-full overflow-hidden outline-none" tabIndex={-1}>
+            <div tabIndex={0} className="outline-none focus:ring-2" />
             <div
               ref={containerRef}
               className="relative h-full select-none overflow-auto"
@@ -1057,6 +1172,8 @@ const DataGridCell = <TData,>({
   return (
     <div
       role="gridcell"
+      aria-rowindex={rowIndex}
+      aria-colindex={columnIndex}
       style={{
         width: cell.column.getSize(),
       }}
@@ -1113,6 +1230,7 @@ const DataGridRow = <TData,>({
   return (
     <div
       role="row"
+      aria-rowindex={virtualRow.index}
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}

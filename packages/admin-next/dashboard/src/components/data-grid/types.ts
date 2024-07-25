@@ -38,6 +38,7 @@ export interface InputProps {
   ref: RefObject<HTMLElement>
   onBlur: () => void
   onFocus: () => void
+  onChange: (next: any, prev: any) => void
   "data-row": number
   "data-col": number
   "data-cell-id": string

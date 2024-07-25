@@ -73,8 +73,8 @@ export const ProductCreateForm = ({
     return regions.reduce((acc, reg) => {
       acc[reg.id] = reg.currency_code
       return acc
-    }, {})
-  }, regions)
+    }, {} as Record<string, string>)
+  }, [regions])
 
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
@@ -205,20 +205,20 @@ export const ProductCreateForm = ({
     <RouteFocusModal>
       <RouteFocusModal.Form form={form}>
         <form
-          onKeyDown={(e) => {
-            // We want to continue to the next tab on enter instead of saving as draft immediately
-            if (e.key === "Enter") {
-              if (tab !== Tab.VARIANTS) {
-                e.preventDefault()
-                e.stopPropagation()
-                onNext(tab)
-              } else {
-                e.preventDefault()
-                e.stopPropagation()
-                handleSubmit(e)
-              }
-            }
-          }}
+          // onKeyDown={(e) => {
+          //   // We want to continue to the next tab on enter instead of saving as draft immediately
+          //   if (e.key === "Enter") {
+          //     if (tab !== Tab.VARIANTS) {
+          //       e.preventDefault()
+          //       e.stopPropagation()
+          //       onNext(tab)
+          //     } else {
+          //       e.preventDefault()
+          //       e.stopPropagation()
+          //       handleSubmit(e)
+          //     }
+          //   }
+          // }}
           onSubmit={handleSubmit}
           className="flex h-full flex-col"
         >
@@ -236,59 +236,39 @@ export const ProductCreateForm = ({
             className="flex h-full flex-col overflow-hidden"
           >
             <RouteFocusModal.Header>
-              <div className="flex w-full items-center justify-between gap-x-4">
-                <div className="-my-2 w-fit border-l">
-                  <ProgressTabs.List className="grid w-full grid-cols-4">
-                    <ProgressTabs.Trigger
-                      status={tabState[Tab.DETAILS]}
-                      value={Tab.DETAILS}
-                    >
-                      {t("products.create.tabs.details")}
-                    </ProgressTabs.Trigger>
-                    <ProgressTabs.Trigger
-                      status={tabState[Tab.ORGANIZE]}
-                      value={Tab.ORGANIZE}
-                    >
-                      {t("products.create.tabs.organize")}
-                    </ProgressTabs.Trigger>
-                    <ProgressTabs.Trigger
-                      status={tabState[Tab.VARIANTS]}
-                      value={Tab.VARIANTS}
-                    >
-                      {t("products.create.tabs.variants")}
-                    </ProgressTabs.Trigger>
-                    {showInventoryTab && (
-                      <ProgressTabs.Trigger
-                        status={tabState[Tab.INVENTORY]}
-                        value={Tab.INVENTORY}
-                      >
-                        {t("products.create.tabs.inventory")}
-                      </ProgressTabs.Trigger>
-                    )}
-                  </ProgressTabs.List>
-                </div>
-                <div className="flex items-center justify-end gap-x-2">
-                  <RouteFocusModal.Close asChild>
-                    <Button variant="secondary" size="small">
-                      {t("actions.cancel")}
-                    </Button>
-                  </RouteFocusModal.Close>
-                  <Button
-                    data-name={SAVE_DRAFT_BUTTON}
-                    size="small"
-                    type="submit"
-                    isLoading={isPending}
-                    className="whitespace-nowrap"
+              <div className="-my-2 w-full border-l">
+                <ProgressTabs.List className="justify-start-start flex w-full items-center">
+                  <ProgressTabs.Trigger
+                    status={tabState[Tab.DETAILS]}
+                    value={Tab.DETAILS}
+                    className="max-w-[200px] truncate"
                   >
-                    {t("actions.saveAsDraft")}
-                  </Button>
-                  <PrimaryButton
-                    tab={tab}
-                    next={onNext}
-                    isLoading={isPending}
-                    showInventoryTab={showInventoryTab}
-                  />
-                </div>
+                    {t("products.create.tabs.details")}
+                  </ProgressTabs.Trigger>
+                  <ProgressTabs.Trigger
+                    status={tabState[Tab.ORGANIZE]}
+                    value={Tab.ORGANIZE}
+                    className="max-w-[200px] truncate"
+                  >
+                    {t("products.create.tabs.organize")}
+                  </ProgressTabs.Trigger>
+                  <ProgressTabs.Trigger
+                    status={tabState[Tab.VARIANTS]}
+                    value={Tab.VARIANTS}
+                    className="max-w-[200px] truncate"
+                  >
+                    {t("products.create.tabs.variants")}
+                  </ProgressTabs.Trigger>
+                  {showInventoryTab && (
+                    <ProgressTabs.Trigger
+                      status={tabState[Tab.INVENTORY]}
+                      value={Tab.INVENTORY}
+                      className="max-w-[200px] truncate"
+                    >
+                      {t("products.create.tabs.inventory")}
+                    </ProgressTabs.Trigger>
+                  )}
+                </ProgressTabs.List>
               </div>
             </RouteFocusModal.Header>
             <RouteFocusModal.Body className="size-full overflow-hidden">
@@ -320,6 +300,30 @@ export const ProductCreateForm = ({
               )}
             </RouteFocusModal.Body>
           </ProgressTabs>
+          <RouteFocusModal.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteFocusModal.Close asChild>
+                <Button variant="secondary" size="small">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteFocusModal.Close>
+              <Button
+                data-name={SAVE_DRAFT_BUTTON}
+                size="small"
+                type="submit"
+                isLoading={isPending}
+                className="whitespace-nowrap"
+              >
+                {t("actions.saveAsDraft")}
+              </Button>
+              <PrimaryButton
+                tab={tab}
+                next={onNext}
+                isLoading={isPending}
+                showInventoryTab={showInventoryTab}
+              />
+            </div>
+          </RouteFocusModal.Footer>
         </form>
       </RouteFocusModal.Form>
     </RouteFocusModal>

@@ -1,11 +1,12 @@
 import { TrianglesMini } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
 import { ComponentPropsWithoutRef, forwardRef, memo } from "react"
-import { Controller } from "react-hook-form"
+import { Controller, ControllerRenderProps } from "react-hook-form"
 
+import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { countries } from "../../../lib/data/countries"
 import { useDataGridCell } from "../hooks"
-import { DataGridCellProps } from "../types"
+import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export const DataGridCountrySelectCell = <TData, TValue = any>({
@@ -46,6 +47,33 @@ export const DataGridCountrySelectCell = <TData, TValue = any>({
           </DataGridCellContainer>
         )
       }}
+    />
+  )
+}
+
+const Inner = ({
+  field,
+  inputProps,
+}: {
+  field: ControllerRenderProps<any, string>
+  inputProps: InputProps
+}) => {
+  const { value, onChange, onBlur, ref, ...rest } = field
+  const { ref: inputRef, onBlur: onInputBlur, ...input } = inputProps
+
+  const combinedRefs = useCombinedRefs(inputRef, ref)
+
+  return (
+    <MemoizedDataGridCountryCell
+      value={value}
+      onChange={(e) => onChange(e.target.value, value)}
+      onBlur={() => {
+        onBlur()
+        onInputBlur()
+      }}
+      ref={combinedRefs}
+      {...input}
+      {...rest}
     />
   )
 }

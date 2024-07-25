@@ -48,14 +48,6 @@ export const getPriceColumns = <TData,>({
             return <DataGridReadOnlyCell />
           }
 
-          const { registerCell, rowIndex, columnIndex } =
-            context as DataGridCellContext<TData, unknown>
-
-          registerCell({
-            row: rowIndex,
-            col: columnIndex,
-          })
-
           return (
             <DataGridCurrencyCell
               code={currency}
