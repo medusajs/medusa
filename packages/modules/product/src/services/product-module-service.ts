@@ -1630,14 +1630,24 @@ export default class ProductModuleService
     }
 
     if (productData.options?.length) {
+      const dbOptions = await this.productOptionService_.list(
+        { product_id: productData.id },
+        { take: null, relations: ["values"] },
+        sharedContext
+      )
+
       ;(productData as any).options = productData.options?.map((option) => {
+        const dbOption = dbOptions.find((o) => o.title === option.title)
         return {
           title: option.title,
           values: option.values?.map((value) => {
+            const dbValue = dbOption?.values?.find((val) => val.value === value)
             return {
               value: value,
+              ...(dbValue ? { id: dbValue.id } : {}),
             }
           }),
+          ...(dbOption ? { id: dbOption.id } : {}),
         }
       })
     }
