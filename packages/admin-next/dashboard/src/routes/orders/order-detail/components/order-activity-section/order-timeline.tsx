@@ -179,8 +179,7 @@ const useActivityItems = (order: AdminOrder) => {
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
           title: t("orders.activity.events.return.received"),
-          // TODO: add return.received_at
-          timestamp: ret.created_at,
+          timestamp: ret.received_at,
           children: <ReturnBody orderReturn={ret} />,
         })
       }
