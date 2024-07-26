@@ -6,7 +6,6 @@ import winston from "winston"
 
 import * as Transport from "winston-transport"
 import { panicHandler } from "./panic-handler"
-import { isObject } from "@medusajs/utils"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "info"
 const LOG_FILE = process.env.LOG_FILE || ""
@@ -176,7 +175,7 @@ export class Reporter {
   error(messageOrError: string | Error, error?: Error) {
     let message = messageOrError as string
 
-    if (isObject(messageOrError)) {
+    if (typeof messageOrError === "object") {
       message = messageOrError.message
       error = messageOrError
     }
