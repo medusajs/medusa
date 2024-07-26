@@ -13,7 +13,7 @@ This method creates one or more records of the data model.
 ## Create One Record
 
 ```ts
-const post = await customModuleService.createPosts({
+const post = await postModuleService.createPosts({
   name: "My Post",
   published_at: new Date(),
   metadata: {
@@ -29,7 +29,7 @@ If an object is passed of the method, an object of the created record is also re
 ## Create Multiple Records
 
 ```ts
-const posts = await customModuleService.createPosts([
+const posts = await postModuleService.createPosts([
   {
     name: "My Post",
     published_at: new Date()

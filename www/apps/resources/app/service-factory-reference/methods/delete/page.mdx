@@ -13,7 +13,7 @@ This method deletes one or more records.
 ## Delete One Record
 
 ```ts
-await customModuleService.deletePosts("123")
+await postModuleService.deletePosts("123")
 ```
 
 To delete one record, pass its ID as a parameter of the method.
@@ -23,7 +23,7 @@ To delete one record, pass its ID as a parameter of the method.
 ## Delete Multiple Records
 
 ```ts
-await customModuleService.deletePosts([
+await postModuleService.deletePosts([
   "123",
   "321"
 ])
@@ -36,7 +36,7 @@ To delete multiple records, pass an array of IDs as a parameter of the method.
 ## Delete Records Matching Filters
 
 ```ts
-await customModuleService.deletePosts({
+await postModuleService.deletePosts({
   name: "My Post"
 })
 ```

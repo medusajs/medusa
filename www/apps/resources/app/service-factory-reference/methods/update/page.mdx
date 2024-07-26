@@ -13,7 +13,7 @@ This method updates one or more records of the data model.
 ## Update One Record
 
 ```ts
-const post = await customModuleService.updatePosts({
+const post = await postModuleService.updatePosts({
   id: "123",
   name: "My Post"
 })
@@ -34,7 +34,7 @@ The method returns the updated record as an object.
 ## Update Multiple Records
 
 ```ts
-const posts = await customModuleService.updatePosts([
+const posts = await postModuleService.updatePosts([
   {
     id: "123",
     name: "My Post"
@@ -61,7 +61,7 @@ The method returns an array of objects of updated records.
 ## Update Records Matching a Filter
 
 ```ts
-const posts = await customModuleService.updatePosts({
+const posts = await postModuleService.updatePosts({
   selector: {
     name: "My Post"
   },
@@ -95,7 +95,7 @@ The method returns an array of objects of updated records.
 ## Multiple Record Updates with Filters
 
 ```ts
-const posts = await customModuleService.updatePosts([
+const posts = await postModuleService.updatePosts([
   {
     selector: {
       name: "My Post"

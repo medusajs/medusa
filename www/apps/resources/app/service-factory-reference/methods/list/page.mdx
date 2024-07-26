@@ -13,7 +13,7 @@ This method retrieves a list of records.
 ## Retrieve List of Records
 
 ```ts
-const posts = await customModuleService.listPosts()
+const posts = await postModuleService.listPosts()
 ```
 
 If no parameters are passed, the method returns an array of the first `15` records.
@@ -23,7 +23,7 @@ If no parameters are passed, the method returns an array of the first `15` recor
 ## Filter Records
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   id: ["123", "321"]
 })
 ```
@@ -53,7 +53,7 @@ This applies to relations between data models of the same module. To retrieve li
 </Note>
 
 ```ts
-const posts = await customModuleService.listPosts({}, {
+const posts = await postModuleService.listPosts({}, {
   relations: ["author"]
 })
 ```
@@ -71,7 +71,7 @@ The method returns an array of the first `15` records matching the filters.
 ## Select Properties
 
 ```ts
-const posts = await customModuleService.listPosts({}, {
+const posts = await postModuleService.listPosts({}, {
   select: ["id", "name"]
 })
 ```
@@ -91,7 +91,7 @@ The method returns an array of the first `15` records matching the filters.
 ## Paginate Relations
 
 ```ts
-const posts = await customModuleService.listPosts({}, {
+const posts = await postModuleService.listPosts({}, {
   take: 20,
   skip: 10
 })
@@ -113,7 +113,7 @@ The method returns an array of records. The number of records is less than or eq
 ## Sort Records
 
 ```ts
-const posts = await customModuleService.listPosts({}, {
+const posts = await postModuleService.listPosts({}, {
   order: {
     name: "ASC"
   }

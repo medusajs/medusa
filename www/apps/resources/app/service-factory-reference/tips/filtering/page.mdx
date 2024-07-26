@@ -23,7 +23,7 @@ The `list` method is used in the example snippets of this reference, but you can
 ## Match Exact Value
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   name: "My Post 2",
 })
 ```
@@ -37,7 +37,7 @@ In the example above, only posts having the name `My Post 2` are retrieved.
 ## Match Multiple Values
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   views: [
     50,
     100
@@ -54,7 +54,7 @@ In the example above, only posts having either `50` or `100` views are retrieved
 ## Don't Match Values
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   name: {
     $nin: [
       "My Post"
@@ -78,7 +78,7 @@ This filter only applies to text-like properties, including `id` and `enum` prop
 </Note>
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   name: {
     $like: "My%"
   }
@@ -100,7 +100,7 @@ This filter only applies to the `number` and `dateTime` properties.
 </Note>
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   published_at: {
     $lt: new Date()
   }
@@ -125,7 +125,7 @@ startToday.setHours(0, 0, 0, 0)
 const endToday = new Date()
 endToday.setHours(23, 59, 59, 59)
 
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   published_at: {
     $gte: startToday,
     $lte: endToday
@@ -142,7 +142,7 @@ In this example, you retrieve the current date twice: once to set its time to `0
 ## Apply Or Condition
 
 ```ts
-const posts = await customModuleService.listPosts({
+const posts = await postModuleService.listPosts({
   $or: [
     {
       name: "My Post",

@@ -13,7 +13,7 @@ This method retrieves one record of the data model by its ID.
 ## Retrieve a Record
 
 ```ts
-const post = await customModuleService.retrievePost("123")
+const post = await postModuleService.retrievePost("123")
 ```
 
 ### Parameters
@@ -35,7 +35,7 @@ This applies to relations between data models of the same module. To retrieve li
 </Note>
 
 ```ts
-const post = await customModuleService.retrievePost("123", {
+const post = await postModuleService.retrievePost("123", {
   relations: ["author"]
 })
 ```
@@ -53,7 +53,7 @@ The method returns the record as an object.
 ## Select Properties to Retrieve
 
 ```ts
-const post = await customModuleService.retrievePost("123", {
+const post = await postModuleService.retrievePost("123", {
   select: ["id", "name"]
 })
 ```

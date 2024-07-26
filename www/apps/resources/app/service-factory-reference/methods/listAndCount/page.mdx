@@ -13,7 +13,7 @@ This method retrieves a list of records with the total count.
 ## Retrieve List of Records
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts()
+const [posts, count] = await postModuleService.listAndCountPosts()
 ```
 
 If no parameters are passed, the method returns an array with two items:
@@ -26,7 +26,7 @@ If no parameters are passed, the method returns an array with two items:
 ## Filter Records
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts({
+const [posts, count] = await postModuleService.listAndCountPosts({
   id: ["123", "321"]
 })
 ```
@@ -59,7 +59,7 @@ This applies to relations between data models of the same module. To retrieve li
 </Note>
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts({}, {
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
   relations: ["author"]
 })
 ```
@@ -80,7 +80,7 @@ The method returns an array with two items:
 ## Select Properties
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts({}, {
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
   select: ["id", "name"]
 })
 ```
@@ -103,7 +103,7 @@ The method returns an array with two items:
 ## Paginate Relations
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts({}, {
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
   take: 20,
   skip: 10
 })
@@ -128,7 +128,7 @@ The method returns an array with two items:
 ## Sort Records
 
 ```ts
-const [posts, count] = await customModuleService.listAndCountPosts({}, {
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
   order: {
     name: "ASC"
   }

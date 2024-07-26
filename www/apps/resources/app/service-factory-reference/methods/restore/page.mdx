@@ -13,7 +13,7 @@ This method restores one or more records of the data model that were [soft-delet
 ## Restore One Record
 
 ```ts
-const restoredPosts = await customModuleService.restorePosts("123")
+const restoredPosts = await postModuleService.restorePosts("123")
 ```
 
 ### Parameters
@@ -37,7 +37,7 @@ restoredPosts = {
 ## Restore Multiple Records
 
 ```ts
-const restoredPosts = await customModuleService.restorePosts([
+const restoredPosts = await postModuleService.restorePosts([
   "123",
   "321"
 ])
@@ -67,7 +67,7 @@ restoredPosts = {
 ## Restore Records Matching Filters
 
 ```ts
-const restoredPosts = await customModuleService.restorePosts({
+const restoredPosts = await postModuleService.restorePosts({
   name: "My Post"
 })
 ```

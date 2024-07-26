@@ -13,7 +13,7 @@ This method soft deletes one or more records of the data model.
 ## Soft Delete One Record
 
 ```ts
-const deletedPosts = await customModuleService.softDeletePosts(
+const deletedPosts = await postModuleService.softDeletePosts(
   "123"
 )
 ```
@@ -39,7 +39,7 @@ deletedPosts = {
 ## Soft Delete Multiple Records
 
 ```ts
-const deletedPosts = await customModuleService.softDeletePosts([
+const deletedPosts = await postModuleService.softDeletePosts([
   "123",
   "321"
 ])
@@ -69,7 +69,7 @@ deletedPosts = {
 ## Soft Delete Records Matching Filters
 
 ```ts
-const deletedPosts = await customModuleService.softDeletePosts({
+const deletedPosts = await postModuleService.softDeletePosts({
   name: "My Post"
 })
 ```
