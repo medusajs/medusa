@@ -1,19 +1,18 @@
 import { useTranslation } from "react-i18next"
-
-import { AdminOrder, AdminReturn } from "@medusajs/types"
+import { AdminOrder, AdminOrderLineItem, AdminReturn } from "@medusajs/types"
 import {
   Alert,
   Button,
-  CurrencyInput,
   IconButton,
   Input,
   Switch,
   Text,
   toast,
 } from "@medusajs/ui"
+import React, { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrrowRight, Heart, PencilSquare } from "@medusajs/icons"
+import { ArrrowRight, Heart } from "@medusajs/icons"
 import * as zod from "zod"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -21,10 +20,8 @@ import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useStockLocation } from "../../../../../hooks/api"
 import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
-import { Divider } from "../../../../../components/common/divider"
-import React, { useMemo } from "react"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers.ts"
-import { currencies } from "../../../../../lib/data/currencies.ts"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { useUpdateReceiveItem } from "../../../../../hooks/api/returns.tsx"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -39,6 +36,11 @@ export function OrderReceiveReturnForm({
 }: OrderAllocateItemsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const { mutateAsync: updateReceiveItem } = useUpdateReceiveItem(
+    orderReturn.id,
+    order.id
+  )
 
   const { stock_location } = useStockLocation(
     orderReturn.location_id,
@@ -65,6 +67,10 @@ export function OrderReceiveReturnForm({
     resolver: zodResolver(ReceiveReturnSchema),
   })
 
+  /**
+   * HANDLERS
+   */
+
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       handleSuccess(`/orders/${order.id}`)
@@ -80,6 +86,20 @@ export function OrderReceiveReturnForm({
       })
     }
   })
+
+  const handleQuantityChange = async (itemId: string, value: number | null) => {
+    const action = preview.items
+      ?.find((i) => i.id === itemId)
+      ?.actions.find((a) => a.action === "RECEIVE_RETURN_ITEM")
+
+    if (action) {
+      try {
+        await updateReceiveItem({ actionId: action.id, quantity: value })
+      } catch (e) {
+        toast.error(e.message)
+      }
+    }
+  }
 
   return (
     <RouteDrawer.Form form={form}>
@@ -149,13 +169,14 @@ export function OrderReceiveReturnForm({
                               value={value}
                               className="bg-ui-bg-field-component text-right"
                               onChange={(e) => {
-                                const value = e.target.value
+                                const value =
+                                  e.target.value === ""
+                                    ? null
+                                    : parseFloat(e.target.value)
 
-                                if (value === "") {
-                                  onChange(null)
-                                } else {
-                                  onChange(parseFloat(value))
-                                }
+                                onChange(value)
+
+                                handleQuantityChange(item.id, value)
                               }}
                               {...field}
                             />

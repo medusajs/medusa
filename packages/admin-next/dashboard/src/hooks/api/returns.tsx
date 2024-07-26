@@ -5,7 +5,7 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
+import { AdminUpdateReceiveItems, HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
@@ -332,6 +332,32 @@ export const useAddReceiveItems = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminReceiveItems) =>
       sdk.admin.return.receiveItems(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateReceiveItem = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminUpdateReceiveItems & { actionId: string }
+  >
+) => {
+  return useMutation({
+    mutationFn: ({
+      actionId,
+      ...payload
+    }: HttpTypes.AdminUpdateReceiveItems & { actionId: string }) => {
+      return sdk.admin.return.updateReceiveItem(id, actionId, payload)
+    },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),

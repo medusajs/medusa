@@ -1,4 +1,9 @@
-import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
+import {
+  AdminUpdateReceiveItems,
+  FindParams,
+  HttpTypes,
+  SelectParams,
+} from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -204,6 +209,24 @@ export class Return {
   ) {
     return await this.client.fetch<HttpTypes.AdminReturnResponse>(
       `/admin/returns/${id}/receive-items`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async updateReceiveItem(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminUpdateReceiveItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive-items/${actionId}`,
       {
         method: "POST",
         headers,

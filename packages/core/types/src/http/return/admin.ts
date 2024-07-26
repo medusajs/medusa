@@ -88,6 +88,13 @@ export interface AdminReceiveItems {
   items: { id: string; quantity: number; internal_note?: string }[]
 }
 
+export interface AdminUpdateReceiveItems {
+  quantity?: number
+  internal_note?: string
+  reason_id?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface AdminReturnFilters extends FindParams {
   id?: string[] | string | OperatorMap<string | string[]>
   order_id?: string[] | string | OperatorMap<string | string[]>
