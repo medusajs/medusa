@@ -14,7 +14,7 @@ import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
 import { getResolvedPlugins } from "../../../../helpers/resolve-plugins"
-import featureFlagLoader, { featureFlagRouter } from "../../../../feature-flags"
+import featureFlagsLoader, { featureFlagRouter } from "../../../../feature-flags"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
@@ -87,7 +87,7 @@ export const createServer = async (rootDir) => {
 
   const plugins = getResolvedPlugins(rootDir, config) || []
 
-  featureFlagLoader(config)
+  featureFlagsLoader(config)
   await moduleLoader({ container, moduleResolutions })
 
   app.use((req, res, next) => {
