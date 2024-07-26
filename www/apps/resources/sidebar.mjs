@@ -764,6 +764,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
+            title: "Guides",
+            autogenerate_path: "/commerce-modules/product/guides",
+          },
+          {
             title: "References",
             children: [
               {
