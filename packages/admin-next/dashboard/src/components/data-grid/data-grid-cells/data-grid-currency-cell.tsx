@@ -62,9 +62,12 @@ const Inner = ({
   } = inputProps
 
   const formatter = useCallback(
-    (value: string) => {
+    (value?: string | number) => {
+      const ensuredValue =
+        typeof value === "number" ? value.toString() : value || ""
+
       return formatValue({
-        value,
+        value: ensuredValue,
         decimalScale: currencyInfo.decimal_digits,
       })
     },

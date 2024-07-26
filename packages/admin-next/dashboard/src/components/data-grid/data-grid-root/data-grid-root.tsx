@@ -1,5 +1,5 @@
-import { Adjustments, Keyboard } from "@medusajs/icons"
-import { Button, DropdownMenu, IconButton, clx } from "@medusajs/ui"
+import { Adjustments } from "@medusajs/icons"
+import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
   Cell,
   CellContext,
@@ -57,6 +57,7 @@ const ROW_HEIGHT = 40
  * TODO:
  * - [Important] Show field errors in the grid, and in topbar.
  * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
+ * - [Minor] Add shortcuts overview modal.
  * - [Stretch] Add support for only showing rows with errors.
  * - [Stretch] Calculate all viable cells without having to render them first.
  */
@@ -1167,9 +1168,6 @@ const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
           })}
         </DropdownMenu.Content>
       </DropdownMenu>
-      <IconButton size="small" type="button">
-        <Keyboard />
-      </IconButton>
     </div>
   )
 }
