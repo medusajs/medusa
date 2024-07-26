@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       ).data.stock_location
     })
 
-    describe("POST /admin/stock-locations/:id/fulfillment-providers/batch", () => {
+    describe("POST /admin/stock-locations/:id/fulfillment-providers", () => {
       it("should add a fulfillment provider to a stock location successfully", async () => {
         const response = await api.post(
           `/admin/stock-locations/${location.id}/fulfillment-providers?fields=id,*fulfillment_providers`,
