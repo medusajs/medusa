@@ -216,6 +216,14 @@ medusaIntegrationTestRunner({
           },
         },
         {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+          [Modules.FULFILLMENT]: {
+            fulfillment_provider_id: "manual_test-provider",
+          },
+        },
+        {
           [Modules.SALES_CHANNEL]: {
             sales_channel_id: "test",
           },
