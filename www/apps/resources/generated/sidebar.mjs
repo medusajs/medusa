@@ -8376,56 +8376,72 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/create",
-                "title": "create Method",
+                "title": "create",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/delete",
-                "title": "delete Method",
+                "title": "delete",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/list",
-                "title": "list Method",
+                "title": "list",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/listAndCount",
-                "title": "listAndCount Method",
+                "title": "listAndCount",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/restore",
-                "title": "restore Method",
+                "title": "restore",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/retrieve",
-                "title": "retrieve Method",
+                "title": "retrieve",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/soft-delete",
-                "title": "softDelete Method",
+                "title": "softDelete",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/service-factory-reference/methods/update",
-                "title": "update Method",
+                "title": "update",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Tips",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/tips",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/tips/filtering",
+                "title": "Filtering",
                 "children": []
               }
             ]

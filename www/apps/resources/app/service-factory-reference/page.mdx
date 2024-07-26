@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This document provides a reference of the methods generated for a service that extends the service factory (`MedusaService`), and how to use them.
+This section of the documentation provides a reference of the methods generated for services extending the service factory (`MedusaService`), and how to use them.
 
 <Note title="Tip">
 
@@ -19,7 +19,7 @@ Learn more about the service factory in [this documentation](!docs!/advanced-dev
 Generated method names are of the format `{operationName}_{dataModelName}`, where:
 
 - `{operationName}` is the name of the operation. For example, `create`.
-- `{dataModelName}` is the pascal-case version of the data model's key that's passed in the object parameter of `MedusaService`. Except for the `retrieve` operation, the name is pluralized for other methods.
+- `{dataModelName}` is the pascal-case version of the data model's key that's passed in the object parameter of `MedusaService`. The name is pluralized for all operations except for the `retrieve` operation.
 
 Some examples of method names:
 

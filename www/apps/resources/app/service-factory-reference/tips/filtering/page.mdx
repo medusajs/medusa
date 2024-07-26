@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-Many of the service factory's generated methods allow passing filters to perform an operation, such as update or delete records matching the filters.
+Many of the service factory's generated methods allow passing filters to perform an operation, such as to update or delete records matching the filters.
 
 This guide provides examples of using filters.
 
@@ -28,7 +28,7 @@ const posts = await customModuleService.listPosts({
 })
 ```
 
-To filter a record's property by an exact value, pass it as the property's value.
+If you pass a property with its value, only records whose properties exactly match the value are selected.
 
 In the example above, only posts having the name `My Post 2` are retrieved.
 
@@ -63,7 +63,7 @@ const posts = await customModuleService.listPosts({
 })
 ```
 
-To find records with a property that doesn't match one or more values, pass an object with a `$nin` property. Its value is an array of multiple values that a recorder's property shouldn't match.
+To find records with a property that doesn't match one or more values, pass an object with a `$nin` property. Its value is an array of multiple values that a record's property shouldn't match.
 
 In the example above, only posts that don't have the name `My Post` are retrieved.
 
@@ -85,7 +85,7 @@ const posts = await customModuleService.listPosts({
 })
 ```
 
-To perform a `like` filter on a record's property, pass an object with a `$like` property. Its value is the string to use when applying the `like` filter.
+To perform a `like` filter on a record's property, set the property's value to an object with a `$like` property. Its value is the string to use when applying the `like` filter.
 
 The example above matches all posts whose name starts with `My`.
 
@@ -107,7 +107,7 @@ const posts = await customModuleService.listPosts({
 })
 ```
 
-To filter a record's property to be within a range, pass an object with any of the following properties:
+To filter a record's property to be within a range, set the property's value to an object with any of the following properties:
 
 1. `$lt`: The property's value must be less than the supplied value.
 2. `$lte`: The property's value must be less than or equal to the supplied value.
@@ -115,6 +115,27 @@ To filter a record's property to be within a range, pass an object with any of t
 4. `$gte`: The property's value must be greater than or equal the supplied value.
 
 In the example above, only posts whose `published_at` property is before the current date and time are retrieved.
+
+### Example: Retrieve Posts Published Today
+
+```ts
+const startToday = new Date()
+startToday.setHours(0, 0, 0, 0)
+
+const endToday = new Date()
+endToday.setHours(23, 59, 59, 59)
+
+const posts = await customModuleService.listPosts({
+  published_at: {
+    $gte: startToday,
+    $lte: endToday
+  }
+})
+```
+
+The `dateTime` property also stores the time. So, when matching for an exact day, you must set a range filter to be between the beginning and end of the day.
+
+In this example, you retrieve the current date twice: once to set its time to `00:00:00`, and another to set its time `23:59:59`. Then, you retrieve posts whose `published_at` property is between `00:00:00` and `23:59:59` of today.
 
 ---
 
@@ -135,6 +156,6 @@ const posts = await customModuleService.listPosts({
 })
 ```
 
-To use an `or` condition, use the `$or` property, whose value is an array of filters.
+To use an `or` condition, pass to the filter object the `$or` property, whose value is an array of filters.
 
 In the example above, posts whose name is `My Post` or their `published_at` date is less than the current date and time are retrieved.

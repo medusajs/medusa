@@ -18,9 +18,21 @@ const deletedPosts = await customModuleService.softDeletePosts(
 )
 ```
 
+### Parameters
+
 To soft delete a record, pass its ID as a parameter of the method.
 
-The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id` (for example, `post_id`), and their values are arrays of soft-deleted records' IDs.
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: ["123"]
+}
+```
 
 ---
 
@@ -33,9 +45,24 @@ const deletedPosts = await customModuleService.softDeletePosts([
 ])
 ```
 
+### Parameters
+
 To soft delete multiple records, pass an array of IDs as a parameter of the method.
 
-The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id` (for example, `post_id`), and their values are arrays of soft-deleted records' IDs.
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: [
+    "123",
+    "321"
+  ]
+}
+```
 
 ---
 
@@ -47,8 +74,24 @@ const deletedPosts = await customModuleService.softDeletePosts({
 })
 ```
 
+### Parameters
+
 To soft delete records matching a set of filters, pass an object of filters as a parameter.
 
-{/* TODO add a link to filters */}
+<Note>
 
-The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id` (for example, `post_id`), and their values are arrays of soft-deleted records' IDs.
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of soft-deleted records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+deletedPosts = {
+  post_id: ["123"]
+}
+```

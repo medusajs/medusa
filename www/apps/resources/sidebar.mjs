@@ -2164,6 +2164,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             hasTitleStyling: true,
             autogenerate_path: "/service-factory-reference/methods",
           },
+          {
+            title: "Tips",
+            hasTitleStyling: true,
+            autogenerate_path: "/service-factory-reference/tips",
+          },
         ],
       },
     ],

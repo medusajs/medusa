@@ -792,6 +792,10 @@ export const filesMap = [
     "pathname": "/service-factory-reference"
   },
   {
+    "filePath": "/www/apps/resources/app/service-factory-reference/tips/filtering/page.mdx",
+    "pathname": "/service-factory-reference/tips/filtering"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
     "pathname": "/storefront-development/cart/context"
   },

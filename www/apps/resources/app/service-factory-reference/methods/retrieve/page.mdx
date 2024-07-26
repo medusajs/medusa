@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This method retrieves one record of the data model.
+This method retrieves one record of the data model by its ID.
 
 ## Retrieve a Record
 
@@ -16,7 +16,11 @@ This method retrieves one record of the data model.
 const post = await customModuleService.retrievePost("123")
 ```
 
-To retrieve a record of the data model, pass its ID as a parameter of the method.
+### Parameters
+
+Pass the ID of the record to retrieve.
+
+### Returns
 
 The method returns the record as an object.
 
@@ -36,7 +40,11 @@ const post = await customModuleService.retrievePost("123", {
 })
 ```
 
+### Parameters
+
 To retrieve the data model with relations, pass as a second parameter of the method an object with the property `relations`. `relations`'s value is an array of relation names.
+
+### Returns
 
 The method returns the record as an object.
 
@@ -50,6 +58,10 @@ const post = await customModuleService.retrievePost("123", {
 })
 ```
 
+### Parameters
+
 By default, all of the record's properties are retrieved. To select specific ones, pass in the second object parameter a `select` property. Its value is an array of property names.
+
+### Returns
 
 The method returns the record as an object.
