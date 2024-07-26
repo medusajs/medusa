@@ -169,11 +169,21 @@ const useActivityItems = (order: AdminOrder) => {
     }
 
     for (const ret of returns) {
-      items.push({
-        title: t("orders.activity.events.return.created"),
-        timestamp: ret.created_at,
-        children: <ReturnCreatedBody orderReturn={ret} />,
-      })
+      if (ret.status === "requested") {
+        items.push({
+          title: t("orders.activity.events.return.created"),
+          timestamp: ret.created_at,
+          children: <ReturnBody orderReturn={ret} />,
+        })
+      }
+      if (ret.status === "received" || ret.status === "partially_received") {
+        items.push({
+          title: t("orders.activity.events.return.received"),
+          // TODO: add return.received_at
+          timestamp: ret.created_at,
+          children: <ReturnBody orderReturn={ret} />,
+        })
+      }
     }
 
     // for (const note of notes || []) {
@@ -392,7 +402,7 @@ const FulfillmentCreatedBody = ({
   )
 }
 
-const ReturnCreatedBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
   const { t } = useTranslation()
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {

@@ -940,6 +940,7 @@
         },
         "return": {
           "created": "Return created",
+          "received": "Return received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"
         },
