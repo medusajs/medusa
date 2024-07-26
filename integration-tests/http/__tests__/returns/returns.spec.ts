@@ -202,19 +202,17 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      await api.post(
+        `/admin/stock-locations/${location.id}/fulfillment-providers`,
+        { add: ["manual_test-provider"] },
+        adminHeaders
+      )
+
       const remoteLink = container.resolve(
         ContainerRegistrationKeys.REMOTE_LINK
       )
 
       await remoteLink.create([
-        {
-          [Modules.STOCK_LOCATION]: {
-            stock_location_id: location.id,
-          },
-          [Modules.FULFILLMENT]: {
-            fulfillment_set_id: fulfillmentSet.id,
-          },
-        },
         {
           [Modules.SALES_CHANNEL]: {
             sales_channel_id: "test",

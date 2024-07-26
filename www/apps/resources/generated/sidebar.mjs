@@ -7152,7 +7152,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "title": "API References",
+    "title": "References",
     "hasTitleStyling": true,
     "children": [
       {
@@ -7393,6 +7393,96 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/references/data-model/property-configuration/unique",
                 "title": "unique",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/service-factory-reference",
+        "title": "Service Factory Reference",
+        "isChildSidebar": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/create",
+                "title": "create",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/delete",
+                "title": "delete",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/list",
+                "title": "list",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/listAndCount",
+                "title": "listAndCount",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/restore",
+                "title": "restore",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/retrieve",
+                "title": "retrieve",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/soft-delete",
+                "title": "softDelete",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/update",
+                "title": "update",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Tips",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/tips",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/tips/filtering",
+                "title": "Filtering",
                 "children": []
               }
             ]

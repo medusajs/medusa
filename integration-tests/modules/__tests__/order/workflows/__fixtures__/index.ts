@@ -130,6 +130,17 @@ export async function prepareDataFixtures({ container }) {
     },
   ])
 
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+  ])
+
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
     {
       name: "Shipping option",

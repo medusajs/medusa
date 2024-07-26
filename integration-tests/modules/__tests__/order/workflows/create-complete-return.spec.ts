@@ -42,6 +42,7 @@ async function prepareDataFixtures({ container }) {
   const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
   const pricingModule = container.resolve(ModuleRegistrationName.PRICING)
   const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+  const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
   const shippingProfile = await fulfillmentService.createShippingProfiles({
     name: "test",
@@ -92,6 +93,17 @@ async function prepareDataFixtures({ container }) {
       },
     })
 
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+  ])
+
   const [product] = await productModule.createProducts([
     {
       title: "Test product",
@@ -116,8 +128,6 @@ async function prepareDataFixtures({ container }) {
       reserved_quantity: 0,
     },
   ])
-
-  const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
   await remoteLink.create([
     {

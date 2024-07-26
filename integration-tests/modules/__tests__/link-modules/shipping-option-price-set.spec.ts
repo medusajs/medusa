@@ -8,6 +8,10 @@ import {
   Modules,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -15,13 +19,12 @@ const env = { MEDUSA_FF_MEDUSA_V2: true }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer }) => {
+  testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Region and Payment Providers", () => {
       let appContainer
       let fulfillmentModule: IFulfillmentModuleService
       let pricingModule: IPricingModuleService
       let remoteQuery
-      let remoteLink
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -32,7 +35,7 @@ medusaIntegrationTestRunner({
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
-        remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+        await createAdminUser(dbConnection, adminHeaders, getContainer())
       })
 
       it("should query shipping option and price set link with remote query", async () => {
@@ -44,6 +47,34 @@ medusaIntegrationTestRunner({
           name: "Test",
           type: "test-type",
         })
+        const remoteLink = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+        const location = (
+          await api.post(
+            `/admin/stock-locations`,
+            { name: "Test location" },
+            adminHeaders
+          )
+        ).data.stock_location
+
+        await remoteLink.create([
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
+            },
+          },
+        ])
+
+        await api.post(
+          `/admin/stock-locations/${location.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
+
         const serviceZone = await fulfillmentModule.createServiceZones({
           name: "Test",
           fulfillment_set_id: fulfillmentSet.id,
