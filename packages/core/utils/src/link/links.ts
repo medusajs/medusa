@@ -110,4 +110,10 @@ export const LINKS = {
     Modules.FULFILLMENT,
     "fulfillment_id"
   ),
+  ReturnFulfillment: composeLinkName(
+    Modules.ORDER,
+    "return_id",
+    Modules.FULFILLMENT,
+    "fulfillment_id"
+  ),
 }

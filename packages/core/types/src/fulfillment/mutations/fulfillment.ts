@@ -65,7 +65,7 @@ export interface CreateFulfillmentDTO {
   /**
    * The labels associated with the fulfillment.
    */
-  labels: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
+  labels?: Omit<CreateFulfillmentLabelDTO, "fulfillment_id">[]
 
   /**
    * The associated order to be sent to the provider.
