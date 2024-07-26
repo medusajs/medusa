@@ -73,12 +73,7 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  *   })
  * }
  */
-
-export function createWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function> = Record<string, Function>
->(
+export function createWorkflow<TData, TResult>(
   /**
    * The name of the workflow or its configuration.
    */
@@ -97,7 +92,7 @@ export function createWorkflow<
           | WorkflowDataProperties<TResult[K]>
           | TResult[K]
       }
-): ReturnWorkflow<TData, TResult, THooks> {
+): ReturnWorkflow<TData, TResult> {
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig
 
@@ -222,5 +217,5 @@ export function createWorkflow<
     )(input) as ReturnType<StepFunction<TData, TResult>>
   }
 
-  return mainFlow as ReturnWorkflow<TData, TResult, THooks>
+  return mainFlow as ReturnWorkflow<TData, TResult>
 }

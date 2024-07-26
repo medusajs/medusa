@@ -1,8 +1,10 @@
 import {
   createStep,
   createWorkflow,
+  createWorkflowWithHooks,
   StepResponse,
   transform,
+  UseHook,
   when,
   WorkflowData,
 } from "./composer"
@@ -42,9 +44,9 @@ const workflow2 = createWorkflow("workflow", function () {
     console.log(step3Res)
   })
 
-  const workflowRes = workflow.asStep({ outsideWorkflowData: step1Res.step1 })
+  /*const workflowRes = workflow.runAsStep({ outsideWorkflowData: step1Res.step1 })*/
 
-  return workflowRes
+  return step3Res
 })
 
 workflow2()
@@ -52,6 +54,28 @@ workflow2()
   .then((res) => {
     console.log(res.result)
   })
+
+type MyWorkflowHooks = {
+  beforeCreate: (id: string) => string
+}
+
+const workflowWithHooks = createWorkflowWithHooks(
+  (useHook: UseHook<MyWorkflowHooks>) => {
+    return createWorkflow(
+      "sub-workflow",
+      function (input: WorkflowData<{ outsideWorkflowData: string }>) {
+        step1()
+        step3()
+        const res = useHook("beforeCreate", "id")
+        return step2({ filters: { id: input.outsideWorkflowData } })
+      }
+    )
+  }
+)
+
+workflowWithHooks.beforeCreate((id) => {
+  return "test"
+})
 
 /*const step1 = createStep("step1", async (input: {}, context) => {
   return new StepResponse({ step1: ["step1"] })

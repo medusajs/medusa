@@ -8,10 +8,11 @@ import {
 import {
   createStep,
   createWorkflow,
-  hook,
+  createWorkflowWithHooks,
   parallelize,
   StepResponse,
   transform,
+  UseHook,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
 import { asValue } from "awilix"
@@ -893,24 +894,34 @@ describe("Workflow composer", function () {
       const getData = createStep("step1", mockStep1Fn)
       const saveProduct = createStep("step2", mockStep2Fn)
 
-      const workflow = createWorkflow("workflow1", function (input) {
-        const data = getData({ input })
+      type Workflow1Hooks = {
+        changeProduct: (input: {
+          opinionatedPropertyName: any
+        }) => Record<string, any>
+      }
 
-        const hookReturn = hook("changeProduct", {
-          opinionatedPropertyName: data,
-        })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
+      const workflow = createWorkflowWithHooks(
+        (useHook: UseHook<Workflow1Hooks>) => {
+          return createWorkflow("workflow1", function (input) {
+            const data = getData({ input })
 
-        return saveProduct({ product: transformedData })
-      })
+            const hookReturn = useHook("changeProduct", {
+              opinionatedPropertyName: data,
+            })
+            const transformedData = transform(
+              { data, hookReturn },
+              ({ data, hookReturn }: { data: any; hookReturn: any }) => {
+                return {
+                  ...data,
+                  ...hookReturn,
+                }
+              }
+            )
+
+            return saveProduct({ product: transformedData })
+          })
+        }
+      )
 
       workflow.changeProduct(({ opinionatedPropertyName }) => {
         return {
@@ -1801,24 +1812,34 @@ describe("Workflow composer", function () {
       const getData = createStep("step1", mockStep1Fn)
       const saveProduct = createStep("step2", mockStep2Fn)
 
-      const workflow = createWorkflow("workflow1", function (input) {
-        const data = getData({ input })
+      type Workflow1Hooks = {
+        changeProduct: (input: {
+          opinionatedPropertyName: any
+        }) => Record<string, any>
+      }
 
-        const hookReturn = hook("changeProduct", {
-          opinionatedPropertyName: data,
-        })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
+      const workflow = createWorkflowWithHooks(
+        (useHook: UseHook<Workflow1Hooks>) => {
+          return createWorkflow("workflow1", function (input) {
+            const data = getData({ input })
 
-        return saveProduct({ product: transformedData })
-      })
+            const hookReturn = useHook("changeProduct", {
+              opinionatedPropertyName: data,
+            })
+            const transformedData = transform(
+              { data, hookReturn },
+              ({ data, hookReturn }: { data: any; hookReturn: any }) => {
+                return {
+                  ...data,
+                  ...hookReturn,
+                }
+              }
+            )
+
+            return saveProduct({ product: transformedData })
+          })
+        }
+      )
 
       workflow.changeProduct(({ opinionatedPropertyName }) => {
         return {

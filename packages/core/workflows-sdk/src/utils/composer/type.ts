@@ -193,11 +193,7 @@ export type WorkflowTransactionContext = StepExecutionContext &
  * }
  * ```
  */
-export type ReturnWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function>
-> = {
+export type ReturnWorkflow<TData, TResult> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
@@ -205,22 +201,22 @@ export type ReturnWorkflow<
     "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
-} & THooks & {
-    runAsStep: ({
-      input,
-    }: {
-      input: TData | WorkflowData<TData>
-    }) => ReturnType<StepFunction<TData, TResult>>
-    run: <TDataOverride = undefined, TResultOverride = undefined>(
-      ...args: Parameters<
-        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
-      >
-    ) => ReturnType<
+} & {
+  runAsStep: ({
+    input,
+  }: {
+    input: TData | WorkflowData<TData>
+  }) => ReturnType<StepFunction<TData, TResult>>
+  run: <TDataOverride = undefined, TResultOverride = undefined>(
+    ...args: Parameters<
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
     >
-    getName: () => string
-    config: (config: TransactionModelOptions) => void
-  }
+  ) => ReturnType<
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+  >
+  getName: () => string
+  config: (config: TransactionModelOptions) => void
+}
 
 /**
  * Extract the raw type of the expected input data of a workflow.
@@ -228,6 +224,5 @@ export type ReturnWorkflow<
  * @example
  * type WorkflowInputData = UnwrapWorkflowInputDataType<typeof myWorkflow>
  */
-export type UnwrapWorkflowInputDataType<
-  T extends ReturnWorkflow<any, any, any>
-> = T extends ReturnWorkflow<infer TData, infer R, infer THooks> ? TData : never
+export type UnwrapWorkflowInputDataType<T extends ReturnWorkflow<any, any>> =
+  T extends ReturnWorkflow<infer TData, any> ? TData : never
