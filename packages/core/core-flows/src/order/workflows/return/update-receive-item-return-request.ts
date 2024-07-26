@@ -51,7 +51,7 @@ const validationStep = createStep(
         `No request return found for return ${input.return_id} in order change ${orderChange.id}`
       )
     } else if (
-      [
+      ![
         ChangeActionType.RECEIVE_RETURN_ITEM,
         ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM,
       ].includes(associatedAction.action as ChangeActionType)
