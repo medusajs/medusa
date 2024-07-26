@@ -134,15 +134,13 @@ medusaIntegrationTestRunner({
               fulfillment_set_id: fulfillmentSet.id,
             },
           },
-          {
-            [Modules.STOCK_LOCATION]: {
-              stock_location_id: stockLocation.id,
-            },
-            [Modules.FULFILLMENT]: {
-              fulfillment_provider_id: "manual_test-provider",
-            },
-          },
         ])
+
+        await api.post(
+          `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
 
         shippingOption = (
           await api.post(
