@@ -4,7 +4,6 @@ import { TFunction } from "i18next"
 import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge"
 import { DataGridCurrencyCell } from "../data-grid-cells/data-grid-currency-cell"
 import { DataGridReadOnlyCell } from "../data-grid-cells/data-grid-readonly-cell"
-import { DataGridCellContext } from "../types"
 import { createDataGridHelper } from "../utils"
 
 export const getPriceColumns = <TData,>({
@@ -56,6 +55,7 @@ export const getPriceColumns = <TData,>({
             />
           )
         },
+        type: "string",
       })
     }) ?? []),
     ...(regions?.map((region) => {
@@ -86,14 +86,6 @@ export const getPriceColumns = <TData,>({
             return null
           }
 
-          const { registerCell, rowIndex, columnIndex } =
-            context as DataGridCellContext<TData, unknown>
-
-          registerCell({
-            row: rowIndex,
-            col: columnIndex,
-          })
-
           return (
             <DataGridCurrencyCell
               code={region.currency_code}
@@ -102,6 +94,7 @@ export const getPriceColumns = <TData,>({
             />
           )
         },
+        type: "string",
       })
     }) ?? []),
   ]

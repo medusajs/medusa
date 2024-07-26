@@ -26,7 +26,6 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
    * The index of the row in the grid.
    */
   rowIndex: number
-  registerCell: (coords: CellCoords) => void
 }
 
 export interface DataGridCellRenderProps {

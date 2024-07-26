@@ -69,8 +69,8 @@ export const useDataGridCell = <TData, TValue>({
   } = useDataGridContext()
 
   useEffect(() => {
-    registerCell(coords)
-  }, [coords, registerCell])
+    registerCell(coords, field)
+  }, [coords, field, registerCell])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -139,6 +139,17 @@ export const useDataGridCell = <TData, TValue>({
 
       // Allow the user to undo/redo
       if (e.key.toLowerCase() === "z" && (e.ctrlKey || e.metaKey)) {
+        return
+      }
+
+      // Allow the user to copy
+      if (e.key.toLowerCase() === "c" && (e.ctrlKey || e.metaKey)) {
+        console.log("I am copying")
+        return
+      }
+
+      // Allow the user to paste
+      if (e.key.toLowerCase() === "v" && (e.ctrlKey || e.metaKey)) {
         return
       }
 

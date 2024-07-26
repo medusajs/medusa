@@ -1,5 +1,9 @@
+import { clx } from "@medusajs/ui"
+import { useEffect, useState } from "react"
+import { Controller, ControllerRenderProps } from "react-hook-form"
+import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { useDataGridCell } from "../hooks"
-import { DataGridCellProps } from "../types"
+import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export const DataGridNumberCell = <TData, TValue = any>({
@@ -11,32 +15,82 @@ export const DataGridNumberCell = <TData, TValue = any>({
   max?: number
   placeholder?: string
 }) => {
-  const { register, attributes, container } = useDataGridCell({
+  const { control, renderProps } = useDataGridCell({
     field,
     context,
+    type: "number",
   })
 
-  return (
-    <DataGridCellContainer {...container}>
-      <input
-        {...attributes}
-        type="number"
-        {...register(field, {
-          valueAsNumber: true,
-          onChange: (e) => {
-            if (e.target.value) {
-              const parsedValue = Number(e.target.value)
-              if (Number.isNaN(parsedValue)) {
-                return undefined
-              }
+  const { container, input } = renderProps
 
-              return parsedValue
-            }
-          },
-        })}
-        className="h-full w-full bg-transparent p-2 text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        {...rest}
+  return (
+    <Controller
+      control={control}
+      name={field}
+      render={({ field }) => {
+        return (
+          <DataGridCellContainer {...container}>
+            <Inner field={field} inputProps={input} {...rest} />
+          </DataGridCellContainer>
+        )
+      }}
+    />
+  )
+}
+
+const Inner = ({
+  field,
+  inputProps,
+  ...props
+}: {
+  field: ControllerRenderProps<any, string>
+  inputProps: InputProps
+  min?: number
+  max?: number
+  placeholder?: string
+}) => {
+  const { ref, value, onChange: _, onBlur, ...fieldProps } = field
+  const {
+    ref: inputRef,
+    onChange,
+    onBlur: onInputBlur,
+    onFocus,
+    ...attributes
+  } = inputProps
+
+  const [localValue, setLocalValue] = useState(value)
+
+  useEffect(() => {
+    setLocalValue(value)
+  }, [value])
+
+  const combinedRefs = useCombinedRefs(inputRef, ref)
+
+  return (
+    <div className="size-full">
+      <input
+        ref={combinedRefs}
+        value={localValue}
+        onChange={(e) => setLocalValue(e.target.value)}
+        onBlur={() => {
+          onBlur()
+          onInputBlur()
+
+          // We propagate the change to the field only when the input is blurred
+          onChange(localValue, value)
+        }}
+        onFocus={onFocus}
+        type="number"
+        inputMode="decimal"
+        className={clx(
+          "txt-compact-small size-full bg-transparent px-4 py-2.5 outline-none",
+          "placeholder:text-ui-fg-muted"
+        )}
+        tabIndex={-1}
+        {...props}
+        {...fieldProps}
+        {...attributes}
       />
-    </DataGridCellContainer>
+    </div>
   )
 }

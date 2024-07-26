@@ -1,6 +1,7 @@
 import { clx } from "@medusajs/ui"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
+import { useEffect, useState } from "react"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { useDataGridCell } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
@@ -40,8 +41,14 @@ const Inner = ({
   field: ControllerRenderProps<any, string>
   inputProps: InputProps
 }) => {
-  const { onChange, onBlur, ref, ...rest } = field
-  const { ref: inputRef, onBlur: onInputBlur, ...input } = inputProps
+  const { onChange: _, onBlur, ref, value, ...rest } = field
+  const { ref: inputRef, onBlur: onInputBlur, onChange, ...input } = inputProps
+
+  const [localValue, setLocalValue] = useState(value)
+
+  useEffect(() => {
+    setLocalValue(value)
+  }, [value])
 
   const combinedRefs = useCombinedRefs(inputRef, ref)
 
@@ -53,11 +60,15 @@ const Inner = ({
       )}
       autoComplete="off"
       tabIndex={-1}
-      onChange={(e) => onChange(e.target.value)}
+      value={localValue}
+      onChange={(e) => setLocalValue(e.target.value)}
       ref={combinedRefs}
       onBlur={() => {
         onBlur()
         onInputBlur()
+
+        // We propagate the change to the field only when the input is blurred
+        onChange(localValue, value)
       }}
       {...input}
       {...rest}

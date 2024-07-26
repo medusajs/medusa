@@ -222,10 +222,10 @@ export function getColumnName(column: Column<any, any>): string {
 }
 
 export function getColumnType(
-  cellId: string,
+  cell: CellCoords,
   columns: Column<any, any>[]
 ): DataGridColumnType {
-  const { col } = parseCellId(cellId)
+  const { col } = cell
 
   const column = columns[col]
 

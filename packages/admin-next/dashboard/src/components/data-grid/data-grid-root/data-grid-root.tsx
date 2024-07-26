@@ -26,14 +26,13 @@ import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
-import { Matrix, PasteCommand, UpdateCommand } from "../models"
+import { BulkUpdateCommand, Matrix, UpdateCommand } from "../models"
 import { CellCoords } from "../types"
 import {
   convertArrayToPrimitive,
   generateCellId,
   getColumnName,
   getColumnType,
-  getFieldsInRange,
   getRange,
   isCellMatch,
 } from "../utils"
@@ -56,11 +55,10 @@ const ROW_HEIGHT = 40
 
 /**
  * TODO:
- * - [Critical] Fix performing commands on cells that aren't currently rendered by the virtualizer.
- * - [Critical] Prevent action handlers from firing while editing a cell.
  * - [Important] Show field errors in the grid, and in topbar.
  * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
  * - [Stretch] Add support for only showing rows with errors.
+ * - [Stretch] Calculate all viable cells without having to render them first.
  */
 
 export const DataGridRoot = <
@@ -220,8 +218,8 @@ export const DataGridRoot = <
   )
 
   const registerCell = useCallback(
-    (coords: CellCoords) => {
-      matrix.registerCell(coords.row, coords.col, true)
+    (coords: CellCoords, key: string) => {
+      matrix.registerField(coords.row, coords.col, key)
     },
     [matrix]
   )
@@ -262,14 +260,10 @@ export const DataGridRoot = <
   )
 
   const getSelectionValues = useCallback(
-    (selection: Record<string, boolean>): string[] => {
-      const ids = Object.keys(selection)
-
-      if (!ids.length) {
+    (fields: string[]): string[] => {
+      if (!fields.length) {
         return []
       }
-
-      const fields = getFieldsInRange(selection, containerRef.current)
 
       return fields.map((field) => {
         if (!field) {
@@ -285,17 +279,36 @@ export const DataGridRoot = <
     [getValues]
   )
 
-  const setSelectionValues = useCallback(
-    (selection: Record<string, boolean>, values: string[]) => {
-      const ids = Object.keys(selection)
+  const getIsCellSelected = useCallback(
+    (cell: CellCoords | null) => {
+      if (!cell || !anchor || !rangeEnd) {
+        return false
+      }
 
-      if (!ids.length) {
+      return matrix.getIsCellSelected(cell, anchor, rangeEnd)
+    },
+    [anchor, rangeEnd, matrix]
+  )
+
+  const getIsCellDragSelected = useCallback(
+    (cell: CellCoords | null) => {
+      if (!cell || !anchor || !dragEnd) {
+        return false
+      }
+
+      return matrix.getIsCellSelected(cell, anchor, dragEnd)
+    },
+    [anchor, dragEnd, matrix]
+  )
+
+  const setSelectionValues = useCallback(
+    (fields: string[], values: string[]) => {
+      if (!fields.length || !anchor) {
         return
       }
 
-      const type = getColumnType(ids[0], visibleColumns)
+      const type = getColumnType(anchor, visibleColumns)
       const convertedValues = convertArrayToPrimitive(values, type)
-      const fields = getFieldsInRange(selection, containerRef.current)
 
       fields.forEach((field, index) => {
         if (!field) {
@@ -311,7 +324,7 @@ export const DataGridRoot = <
         setValue(field as Path<TFieldValues>, value)
       })
     },
-    [setValue, visibleColumns]
+    [anchor, setValue, visibleColumns]
   )
 
   /**
@@ -456,8 +469,19 @@ export const DataGridRoot = <
       if (anchor.row !== pos.row || anchor.col !== pos.col) {
         setSingleRange(pos)
         scrollToCell(pos, "vertical")
-        onEditingChangeHandler(false)
+      } else {
+        // If the the user is at the last cell, we want to focus the container of the cell.
+        const id = generateCellId(anchor)
+        const container = containerRef.current
+
+        const cellContainer = container?.querySelector(
+          `[data-container-id="${id}"]`
+        ) as HTMLElement | null
+
+        cellContainer?.focus()
       }
+
+      onEditingChangeHandler(false)
     },
     [matrix, scrollToCell, setSingleRange, onEditingChangeHandler]
   )
@@ -502,50 +526,34 @@ export const DataGridRoot = <
 
   const handleDeleteKey = useCallback(
     (e: KeyboardEvent) => {
-      if (!anchor || isEditing) {
+      if (!anchor || !rangeEnd || isEditing) {
         return
       }
 
       e.preventDefault()
 
-      const id = generateCellId(anchor)
-      const container = containerRef.current
+      const fields = matrix.getFieldsInSelection(anchor, rangeEnd)
+      const prev = getSelectionValues(fields)
+      const next = Array.from({ length: prev.length }, () => "")
 
-      if (!container) {
-        return
-      }
-
-      const input = container.querySelector(
-        `[data-cell-id="${id}"]`
-      ) as HTMLElement
-
-      if (!input) {
-        return
-      }
-
-      const field = input.getAttribute("data-field")
-
-      if (!field) {
-        return
-      }
-
-      const current = getValues(field as Path<TFieldValues>)
-      const next = "" as PathValue<TFieldValues, Path<TFieldValues>>
-
-      const command = new UpdateCommand({
+      const command = new BulkUpdateCommand({
+        fields,
         next,
-        prev: current,
-        setter: (value) => {
-          setValue(field as Path<TFieldValues>, value, {
-            shouldDirty: true,
-            shouldTouch: true,
-          })
-        },
+        prev,
+        setter: setSelectionValues,
       })
 
       execute(command)
     },
-    [anchor, execute, getValues, isEditing, setValue]
+    [
+      anchor,
+      rangeEnd,
+      isEditing,
+      matrix,
+      getSelectionValues,
+      setSelectionValues,
+      execute,
+    ]
   )
 
   const handleEscapeKey = useCallback(
@@ -647,20 +655,24 @@ export const DataGridRoot = <
       return
     }
 
-    if (!anchor || !dragEnd || !Object.keys(dragSelection).length) {
+    if (!anchor || !dragEnd) {
+      return
+    }
+    const dragSelection = matrix.getFieldsInSelection(anchor, dragEnd)
+    const anchorField = matrix.getCellKey(anchor)
+
+    if (!anchorField || !dragSelection.length) {
       return
     }
 
-    const anchorId = generateCellId(anchor)
-    const anchorValue = getSelectionValues({ [anchorId]: true })
+    const anchorValue = getSelectionValues([anchorField])
+    const fields = dragSelection.filter((field) => field !== anchorField)
 
-    const { [anchorId]: _, ...selection } = dragSelection
-
-    const prev = getSelectionValues(selection)
+    const prev = getSelectionValues(fields)
     const next = Array.from({ length: prev.length }, () => anchorValue[0])
 
-    const command = new PasteCommand({
-      selection,
+    const command = new BulkUpdateCommand({
+      fields,
       prev,
       next,
       setter: setSelectionValues,
@@ -670,15 +682,13 @@ export const DataGridRoot = <
 
     setIsDragging(false)
     setDragEnd(null)
-    setDragSelection({})
 
-    // Select the dragged cells.
-    setSelection(dragSelection)
+    setRangeEnd(dragEnd)
   }, [
     isDragging,
     anchor,
     dragEnd,
-    dragSelection,
+    matrix,
     getSelectionValues,
     setSelectionValues,
     execute,
@@ -691,23 +701,28 @@ export const DataGridRoot = <
 
   const handleCopyEvent = useCallback(
     (e: ClipboardEvent) => {
-      if (!selection) {
+      if (isEditing || !anchor || !rangeEnd) {
         return
       }
 
       e.preventDefault()
 
-      const values = getSelectionValues(selection)
+      const fields = matrix.getFieldsInSelection(anchor, rangeEnd)
+      const values = getSelectionValues(fields)
 
       const text = values.map((value) => value ?? "").join("\t")
 
       e.clipboardData?.setData("text/plain", text)
     },
-    [selection, getSelectionValues]
+    [isEditing, anchor, rangeEnd, matrix, getSelectionValues]
   )
 
   const handlePasteEvent = useCallback(
     (e: ClipboardEvent) => {
+      if (isEditing || !anchor || !rangeEnd) {
+        return
+      }
+
       e.preventDefault()
 
       const text = e.clipboardData?.getData("text/plain")
@@ -717,10 +732,12 @@ export const DataGridRoot = <
       }
 
       const next = text.split("\t")
-      const prev = getSelectionValues(selection)
 
-      const command = new PasteCommand({
-        selection,
+      const fields = matrix.getFieldsInSelection(anchor, rangeEnd)
+      const prev = getSelectionValues(fields)
+
+      const command = new BulkUpdateCommand({
+        fields,
         next,
         prev,
         setter: setSelectionValues,
@@ -728,7 +745,15 @@ export const DataGridRoot = <
 
       execute(command)
     },
-    [selection, getSelectionValues, setSelectionValues, execute]
+    [
+      isEditing,
+      anchor,
+      rangeEnd,
+      matrix,
+      getSelectionValues,
+      setSelectionValues,
+      execute,
+    ]
   )
 
   useEffect(() => {
@@ -741,15 +766,16 @@ export const DataGridRoot = <
     container.addEventListener("keydown", handleKeyDownEvent)
     container.addEventListener("mouseup", handleMouseUpEvent)
 
-    container.addEventListener("copy", handleCopyEvent)
-    container.addEventListener("paste", handlePasteEvent)
+    // Copy and paste event listeners need to be added to the window
+    window.addEventListener("copy", handleCopyEvent)
+    window.addEventListener("paste", handlePasteEvent)
 
     return () => {
       container.removeEventListener("keydown", handleKeyDownEvent)
       container.removeEventListener("mouseup", handleMouseUpEvent)
 
-      container.removeEventListener("copy", handleCopyEvent)
-      container.removeEventListener("paste", handlePasteEvent)
+      window.removeEventListener("copy", handleCopyEvent)
+      window.removeEventListener("paste", handlePasteEvent)
     }
   }, [
     active,
@@ -919,6 +945,8 @@ export const DataGridRoot = <
       getWrapperMouseOverHandler,
       register,
       registerCell,
+      getIsCellSelected,
+      getIsCellDragSelected,
     }),
     [
       anchor,
@@ -934,6 +962,8 @@ export const DataGridRoot = <
       getWrapperMouseOverHandler,
       register,
       registerCell,
+      getIsCellSelected,
+      getIsCellDragSelected,
     ]
   )
 
@@ -1086,7 +1116,6 @@ export const DataGridRoot = <
                         virtualPaddingLeft={virtualPaddingLeft}
                         virtualPaddingRight={virtualPaddingRight}
                         onDragToFillStart={onDragToFillStart}
-                        registerCell={registerCell}
                       />
                     )
                   })}
@@ -1151,7 +1180,6 @@ type DataGridCellProps<TData> = {
   rowIndex: number
   anchor: CellCoords | null
   onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
-  registerCell: (coords: CellCoords) => void
 }
 
 const DataGridCell = <TData,>({
@@ -1160,7 +1188,6 @@ const DataGridCell = <TData,>({
   rowIndex,
   anchor,
   onDragToFillStart,
-  registerCell,
 }: DataGridCellProps<TData>) => {
   const coords: CellCoords = {
     row: rowIndex,
@@ -1189,7 +1216,6 @@ const DataGridCell = <TData,>({
           ...cell.getContext(),
           columnIndex,
           rowIndex: rowIndex,
-          registerCell,
         } as CellContext<TData, any>)}
         {isAnchor && (
           <div
@@ -1211,7 +1237,6 @@ type DataGridRowProps<TData> = {
   visibleColumns: ColumnDef<TData>[]
   anchor: CellCoords | null
   onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
-  registerCell: (coords: CellCoords) => void
 }
 
 const DataGridRow = <TData,>({
@@ -1223,7 +1248,6 @@ const DataGridRow = <TData,>({
   visibleColumns,
   anchor,
   onDragToFillStart,
-  registerCell,
 }: DataGridRowProps<TData>) => {
   const visibleCells = row.getVisibleCells()
 
@@ -1253,7 +1277,6 @@ const DataGridRow = <TData,>({
           <DataGridCell
             key={cell.id}
             cell={cell}
-            registerCell={registerCell}
             columnIndex={columnIndex}
             rowIndex={virtualRow.index}
             anchor={anchor}

@@ -131,14 +131,14 @@ const SettingsSidebar = () => {
   const { t } = useTranslation()
 
   return (
-    <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
-      <div className="flex flex-1 flex-col">
-        <div className="bg-ui-bg-subtle sticky top-0 z-[1]">
-          <Header />
-          <div className="flex items-center justify-center px-3">
-            <Divider variant="dashed" />
-          </div>
+    <aside className="relative flex flex-1 flex-col justify-between overflow-y-auto">
+      <div className="bg-ui-bg-subtle sticky top-0">
+        <Header />
+        <div className="flex items-center justify-center px-3">
+          <Divider variant="dashed" />
         </div>
+      </div>
+      <div className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col overflow-y-auto">
           <CollapsibleSection
             label={t("app.nav.settings.general")}
@@ -229,7 +229,7 @@ const CollapsibleSection = ({
             {label}
           </Text>
           <Collapsible.Trigger asChild>
-            <IconButton size="2xsmall" variant="transparent">
+            <IconButton size="2xsmall" variant="transparent" className="static">
               <MinusMini className="text-ui-fg-muted" />
             </IconButton>
           </Collapsible.Trigger>

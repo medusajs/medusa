@@ -8,7 +8,9 @@ type DataGridContextType<TForm extends FieldValues> = {
   selection: Record<string, boolean>
   dragSelection: Record<string, boolean>
   // Cell handlers
-  registerCell: (coords: CellCoords) => void
+  registerCell: (coords: CellCoords, key: string) => void
+  getIsCellSelected: (coords: CellCoords) => boolean
+  getIsCellDragSelected: (coords: CellCoords) => boolean
   // Grid handlers
   setIsEditing: (value: boolean) => void
   setIsSelecting: (value: boolean) => void

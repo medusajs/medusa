@@ -2,16 +2,16 @@ import { Command } from "../../hooks/use-command-history"
 import { CellCoords } from "./types"
 
 export class Matrix {
-  private cells: boolean[][]
+  private cells: (string | null)[][]
 
   constructor(rows: number, cols: number) {
-    this.cells = Array.from({ length: rows }, () => Array(cols).fill(false))
+    this.cells = Array.from({ length: rows }, () => Array(cols).fill(null))
   }
 
   getFirstNavigableCell(): CellCoords | null {
     for (let row = 0; row < this.cells.length; row++) {
       for (let col = 0; col < this.cells[0].length; col++) {
-        if (this.cells[row][col]) {
+        if (this.cells[row][col] !== null) {
           return { row, col }
         }
       }
@@ -20,11 +20,66 @@ export class Matrix {
     return null
   }
 
-  // Register a cell when it is rendered and is not readonly
-  registerCell(row: number, col: number, isNavigable: boolean) {
+  // Register a navigable cell with a unique key
+  registerField(row: number, col: number, key: string) {
     if (this._isValidPosition(row, col)) {
-      this.cells[row][col] = isNavigable
+      this.cells[row][col] = key
     }
+  }
+
+  getFieldsInSelection(
+    start: CellCoords | null,
+    end: CellCoords | null
+  ): string[] {
+    const keys: string[] = []
+
+    if (!start || !end) {
+      return keys
+    }
+
+    if (start.col !== end.col) {
+      throw new Error("Selection must be in the same column")
+    }
+
+    const startRow = Math.min(start.row, end.row)
+    const endRow = Math.max(start.row, end.row)
+    const col = start.col
+
+    for (let row = startRow; row <= endRow; row++) {
+      if (this._isValidPosition(row, col) && this.cells[row][col] !== null) {
+        keys.push(this.cells[row][col] as string)
+      }
+    }
+
+    return keys
+  }
+
+  getCellKey(cell: CellCoords): string | null {
+    if (this._isValidPosition(cell.row, cell.col)) {
+      return this.cells[cell.row][cell.col]
+    }
+
+    return null
+  }
+
+  getIsCellSelected(
+    cell: CellCoords | null,
+    start: CellCoords | null,
+    end: CellCoords | null
+  ): boolean {
+    if (!cell || !start || !end) {
+      return false
+    }
+
+    if (start.col !== end.col) {
+      throw new Error("Selection must be in the same column")
+    }
+
+    const startRow = Math.min(start.row, end.row)
+    const endRow = Math.max(start.row, end.row)
+    const col = start.col
+
+    return cell.col === col && cell.row >= startRow && cell.row <= endRow
   }
 
   getValidMovement(
@@ -36,14 +91,11 @@ export class Matrix {
     const [dRow, dCol] = this._getDirectionDeltas(direction)
 
     if (metaKey) {
-      // Move to the last valid cell in the given direction
       return this._getLastValidCellInDirection(row, col, dRow, dCol)
     } else {
-      // Move to the next valid cell in the given direction
       let newRow = row + dRow
       let newCol = col + dCol
 
-      // Stop at the grid boundaries, don't wrap around
       if (
         newRow < 0 ||
         newRow >= this.cells.length ||
@@ -53,15 +105,13 @@ export class Matrix {
         return { row, col }
       }
 
-      // Validate new position and find next navigable cell
       while (
         this._isValidPosition(newRow, newCol) &&
-        !this.cells[newRow][newCol]
+        this.cells[newRow][newCol] === null
       ) {
         newRow += dRow
         newCol += dCol
 
-        // Check for boundary conditions again and stop if we hit the edge
         if (
           newRow < 0 ||
           newRow >= this.cells.length ||
@@ -78,7 +128,6 @@ export class Matrix {
     }
   }
 
-  // Check if a position is valid within the grid
   private _isValidPosition(row: number, col: number): boolean {
     return (
       row >= 0 &&
@@ -88,7 +137,6 @@ export class Matrix {
     )
   }
 
-  // Get direction deltas based on the arrow key direction
   private _getDirectionDeltas(direction: string): [number, number] {
     switch (direction) {
       case "ArrowUp":
@@ -104,7 +152,6 @@ export class Matrix {
     }
   }
 
-  // Get the last valid cell in a given direction
   private _getLastValidCellInDirection(
     row: number,
     col: number,
@@ -119,7 +166,7 @@ export class Matrix {
     while (this._isValidPosition(newRow + dRow, newCol + dCol)) {
       newRow += dRow
       newCol += dCol
-      if (this.cells[newRow][newCol]) {
+      if (this.cells[newRow][newCol] !== null) {
         lastValidRow = newRow
         lastValidCol = newCol
       }
@@ -132,36 +179,33 @@ export class Matrix {
   }
 }
 
-export type PasteCommandArgs = {
-  selection: Record<string, boolean>
+export type BulkUpdateCommandArgs = {
+  fields: string[]
   next: string[]
   prev: string[]
-  setter: (selection: Record<string, boolean>, values: string[]) => void
+  setter: (fields: string[], values: string[]) => void
 }
 
-export class PasteCommand implements Command {
-  private _selection: Record<string, boolean>
+export class BulkUpdateCommand implements Command {
+  private _fields: string[]
 
   private _prev: string[]
   private _next: string[]
 
-  private _setter: (
-    selection: Record<string, boolean>,
-    values: string[]
-  ) => void
+  private _setter: (string: string[], values: string[]) => void
 
-  constructor({ selection, prev, next, setter }: PasteCommandArgs) {
-    this._selection = selection
+  constructor({ fields, prev, next, setter }: BulkUpdateCommandArgs) {
+    this._fields = fields
     this._prev = prev
     this._next = next
     this._setter = setter
   }
 
   execute(): void {
-    this._setter(this._selection, this._next)
+    this._setter(this._fields, this._next)
   }
   undo(): void {
-    this._setter(this._selection, this._prev)
+    this._setter(this._fields, this._prev)
   }
   redo(): void {
     this.execute()
