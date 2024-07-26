@@ -652,10 +652,6 @@ export const filesMap = [
     "pathname": "/create-medusa-app"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/admin/general/page.mdx",
-    "pathname": "/deployment/admin/general"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/admin/vercel/page.mdx",
     "pathname": "/deployment/admin/vercel"
   },
@@ -666,10 +662,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/deployment/page.mdx",
     "pathname": "/deployment"
-  },
-  {
-    "filePath": "/www/apps/resources/app/deployment/storefront/general/page.mdx",
-    "pathname": "/deployment/storefront/general"
   },
   {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",

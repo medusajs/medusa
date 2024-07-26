@@ -7011,13 +7011,6 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/deployment/admin/general",
-                "title": "General Guide",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
                 "path": "/deployment/admin/vercel",
                 "title": "Vercel",
                 "children": []
@@ -7031,13 +7024,6 @@ export const generatedSidebar = [
             "hasTitleStyling": true,
             "autogenerate_path": "/deployment/storefront",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/storefront/general",
-                "title": "General Guide",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
