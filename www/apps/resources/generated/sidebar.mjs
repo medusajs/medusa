@@ -7957,7 +7957,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/admin/general",
-                "title": "General Deployment Guide for the Medusa Admin",
+                "title": "General Guide",
                 "children": []
               },
               {
@@ -7980,7 +7980,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/storefront/general",
-                "title": "General Deployment Guide for the Next.js Starter",
+                "title": "General Guide",
                 "children": []
               },
               {

@@ -2904,6 +2904,10 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemTotalsDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderReturnItemDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderReturnItemDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderShippingMethodAdjustmentDTO/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderShippingMethodAdjustmentDTO"
   },
