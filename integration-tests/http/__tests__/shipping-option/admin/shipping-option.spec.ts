@@ -407,7 +407,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it.only("should throw an error when provider does not belong to service location", async () => {
+        it("should throw an error when provider does not belong to service location", async () => {
           const shippingOptionPayload = {
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
