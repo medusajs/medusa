@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.9.4",
-    "@types/pluralize": "^0.0.33"
+    "@types/pluralize": "^0.0.33",
+    "types": "*"
   }
 }

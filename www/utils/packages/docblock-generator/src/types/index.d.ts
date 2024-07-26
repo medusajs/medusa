@@ -28,12 +28,3 @@ export declare interface OpenApiTagObject extends OpenAPIV3.TagObject {
 export declare interface OpenApiDocument extends OpenAPIV3.Document {
   tags?: OpenApiTagObject[]
 }
-
-export declare type DmlObject = Record<string, string>
-
-export declare type DmlFile = {
-  [k: string]: {
-    filePath: string
-    properties: DmlObject
-  }
-}
