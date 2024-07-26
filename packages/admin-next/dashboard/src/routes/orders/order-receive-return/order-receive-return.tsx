@@ -23,7 +23,7 @@ export function OrderReceiveReturn() {
    * HOOKS
    */
 
-  const { order, isLoading } = useOrder(id!)
+  const { order } = useOrder(id!, { fields: "+currency_code,*items" })
   const { order: preview } = useOrderPreview(id!)
   const { return: orderReturn } = useReturn(return_id, {
     fields: "*items.item,*items.item.variant,*items.item.variant.product",
