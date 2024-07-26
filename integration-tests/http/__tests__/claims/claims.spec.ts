@@ -342,8 +342,6 @@ medusaIntegrationTestRunner({
         )
         await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
 
-        console.log("Claim 2 requested")
-
         const claimId = result.data.claim.id
 
         const item = order.items[0]
@@ -362,8 +360,6 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        console.log("Claim item requested")
-
         await api.post(
           `/admin/claims/${claimId}/inbound/shipping-method`,
           {
@@ -371,8 +367,6 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
-
-        console.log("Claim shipping method requested")
 
         // updated the requested quantity
         const updateReturnItemActionId =
@@ -386,15 +380,12 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        console.log("BEFORE CLAIM requested")
-
         result = await api.post(
           `/admin/claims/${claimId}/request`,
           {},
           adminHeaders
         )
 
-        console.log("AFTER CLAIM requested")
         result = (
           await api.get(
             `/admin/claims?fields=*claim_items,*additional_items`,
@@ -402,7 +393,8 @@ medusaIntegrationTestRunner({
           )
         ).data.claims
         expect(result).toHaveLength(2)
-        console.log("CLAIMS", result)
+
+        console.log(result.data)
       })
 
       // Simple lifecyle:
