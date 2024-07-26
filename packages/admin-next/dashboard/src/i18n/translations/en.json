@@ -794,6 +794,7 @@
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
       "refundAmount": "Refund amount",
+      "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
       "reasonHint": "Choose why the customer want to return items.",
       "note": "Note",

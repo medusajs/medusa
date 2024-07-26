@@ -1,10 +1,19 @@
 import { useTranslation } from "react-i18next"
 
 import { AdminOrder, AdminReturn } from "@medusajs/types"
-import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
+import {
+  Alert,
+  Button,
+  CurrencyInput,
+  IconButton,
+  Input,
+  Switch,
+  Text,
+  toast,
+} from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrrowRight } from "@medusajs/icons"
+import { ArrrowRight, Heart, PencilSquare } from "@medusajs/icons"
 import * as zod from "zod"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -13,7 +22,9 @@ import { useStockLocation } from "../../../../../hooks/api"
 import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
 import { Divider } from "../../../../../components/common/divider"
-import { useMemo } from "react"
+import React, { useMemo } from "react"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers.ts"
+import { currencies } from "../../../../../lib/data/currencies.ts"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -29,7 +40,7 @@ export function OrderReceiveReturnForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { stock_location = { name: "Flagship" } } = useStockLocation(
+  const { stock_location } = useStockLocation(
     orderReturn.location_id,
     undefined,
     {
@@ -45,6 +56,10 @@ export function OrderReceiveReturnForm({
 
   const form = useForm<zod.infer<typeof ReceiveReturnSchema>>({
     defaultValues: {
+      items: preview.items?.map((i) => ({
+        item_id: i.id,
+        quantity: i.detail.return_received_quantity,
+      })),
       send_notification: false,
     },
     resolver: zodResolver(ReceiveReturnSchema),
@@ -87,76 +102,100 @@ export function OrderReceiveReturnForm({
             {t("orders.returns.receive.itemsLabel")}
           </span>
         </div>
-        {preview.items
-          // .filter((i) => i.detail.return_received_quantity)
-          .map((item) => {
-            const originalItem = itemsMap[item.id]
-            return (
-              <div
-                key={item.id}
-                className="bg-ui-bg-subtle shadow-elevation-card-rest mt-2 rounded-xl"
-              >
-                <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
-                  <div className="flex flex-1 items-center gap-x-3">
-                    <Text size="small" className="text-ui-fg-subtle">
-                      {item.quantity}x
-                    </Text>
+        {preview.items.map((item, ind) => {
+          const originalItem = itemsMap[item.id]
+          return (
+            <div
+              key={item.id}
+              className="bg-ui-bg-subtle shadow-elevation-card-rest mt-2 rounded-xl"
+            >
+              <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
+                <div className="flex flex-1 items-center gap-x-3">
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {item.quantity}x
+                  </Text>
 
-                    <Thumbnail src={item.thumbnail} />
-                    <div className="flex flex-col">
-                      <div>
-                        <Text className="txt-small" as="span" weight="plus">
-                          {item.title}{" "}
-                        </Text>
-                        {originalItem.variant.sku && (
-                          <span>({originalItem.variant.sku})</span>
-                        )}
-                      </div>
-                      <Text as="div" className="text-ui-fg-subtle txt-small">
-                        {originalItem.variant.product.title}
+                  <Thumbnail src={item.thumbnail} />
+                  <div className="flex flex-col">
+                    <div>
+                      <Text className="txt-small" as="span" weight="plus">
+                        {item.title}{" "}
                       </Text>
+                      {originalItem.variant.sku && (
+                        <span>({originalItem.variant.sku})</span>
+                      )}
                     </div>
-                  </div>
-
-                  <div className="flex flex-1 flex-row items-center gap-2">
-                    <Form.Field
-                      control={form.control}
-                      name="quantity"
-                      render={({ field: { onChange, value, ...field } }) => {
-                        return (
-                          <Form.Item className="w-full">
-                            <Form.Control>
-                              <Input
-                                min={0}
-                                max={item.quantity}
-                                type="number"
-                                value={item.detail.return_received_quantity}
-                                className="bg-ui-bg-field-component text-right"
-                                onChange={(e) => {
-                                  const value = e.target.value
-
-                                  if (value === "") {
-                                    onChange(null)
-                                  } else {
-                                    onChange(parseFloat(value))
-                                  }
-                                }}
-                                {...field}
-                              />
-                            </Form.Control>
-                          </Form.Item>
-                        )
-                      }}
-                    />
+                    <Text as="div" className="text-ui-fg-subtle txt-small">
+                      {originalItem.variant.product.title}
+                    </Text>
                   </div>
                 </div>
+
+                <div className="flex flex-1 flex-row items-center gap-2">
+                  <IconButton disabled type="button">
+                    <Heart />
+                  </IconButton>
+                  <Form.Field
+                    control={form.control}
+                    name={`items.${ind}.quantity`}
+                    render={({ field: { onChange, value, ...field } }) => {
+                      return (
+                        <Form.Item className="w-full">
+                          <Form.Control>
+                            <Input
+                              min={0}
+                              max={item.quantity}
+                              type="number"
+                              value={value}
+                              className="bg-ui-bg-field-component text-right"
+                              onChange={(e) => {
+                                const value = e.target.value
+
+                                if (value === "") {
+                                  onChange(null)
+                                } else {
+                                  onChange(parseFloat(value))
+                                }
+                              }}
+                              {...field}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
               </div>
-            )
-          })}
+            </div>
+          )
+        })}
 
-        <Divider className="my-6" />
+        {/*TOTALS*/}
 
-        <Alert className="mb-4 rounded-xl" variant="warning">
+        <div className="my-6 border-b border-t border-dashed py-4">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="txt-small text-ui-fg-subtle">
+              {t("fields.total")}
+            </span>
+            <span className="txt-small text-ui-fg-subtle">
+              {getStylizedAmount(preview.total, order.currency_code)}
+            </span>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between border-t border-dotted pt-4">
+            <span className="txt-small font-medium">
+              {t("orders.returns.outstandingAmount")}
+            </span>
+            <span className="txt-small font-medium">
+              {getStylizedAmount(
+                preview.summary.difference_sum || 0,
+                order.currency_code
+              )}
+            </span>
+          </div>
+        </div>
+
+        <Alert className="rounded-xl" variant="warning">
           {t("orders.returns.receive.inventoryWarning")}
         </Alert>
 
