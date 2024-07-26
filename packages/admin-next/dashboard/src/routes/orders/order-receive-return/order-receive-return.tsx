@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { Heading } from "@medusajs/ui"
+import { Heading, toast } from "@medusajs/ui"
 import { useEffect } from "react"
 
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
@@ -52,14 +52,18 @@ export function OrderReceiveReturn() {
 
       IS_REQUEST_RUNNING = true
 
-      await initiateReceiveReturn({})
+      try {
+        await initiateReceiveReturn({})
 
-      await addReceiveItems({
-        items: orderReturn.items.map((i) => ({
-          id: i.item_id,
-          quantity: i.quantity,
-        })),
-      })
+        await addReceiveItems({
+          items: orderReturn.items.map((i) => ({
+            id: i.item_id,
+            quantity: i.quantity,
+          })),
+        })
+      } catch (e) {
+        toast.error(e.message)
+      }
 
       IS_REQUEST_RUNNING = false
     })()

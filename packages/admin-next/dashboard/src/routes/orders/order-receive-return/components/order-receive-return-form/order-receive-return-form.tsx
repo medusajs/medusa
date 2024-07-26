@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next"
-import { AdminOrder, AdminOrderLineItem, AdminReturn } from "@medusajs/types"
+import { AdminOrder, AdminReturn } from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -9,7 +9,7 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrrowRight, Heart } from "@medusajs/icons"
@@ -72,14 +72,28 @@ export function OrderReceiveReturnForm({
 
   const form = useForm<zod.infer<typeof ReceiveReturnSchema>>({
     defaultValues: {
-      items: preview.items?.map((i) => ({
-        item_id: i.id,
-        quantity: i.detail.return_received_quantity,
-      })),
+      items: preview.items
+        ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
+        .map((i) => ({
+          item_id: i.id,
+          quantity: i.detail.return_received_quantity,
+        })),
       send_notification: false,
     },
     resolver: zodResolver(ReceiveReturnSchema),
   })
+
+  useEffect(() => {
+    preview.items
+      ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
+      .forEach((item, index) => {
+        form.setValue(
+          `items.${index}.quantity`,
+          item.detail.return_received_quantity,
+          { shouldTouch: true, shouldDirty: true }
+        )
+      })
+  }, [preview.items])
 
   /**
    * HANDLERS
@@ -106,7 +120,7 @@ export function OrderReceiveReturnForm({
   const handleQuantityChange = async (itemId: string, value: number | null) => {
     const action = preview.items
       ?.find((i) => i.id === itemId)
-      ?.actions.find((a) => a.action === "RECEIVE_RETURN_ITEM")
+      ?.actions?.find((a) => a.action === "RECEIVE_RETURN_ITEM")
 
     if (action) {
       try {

@@ -808,6 +808,7 @@
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
+      "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
       "receive" : {
         "action": "Receive items",
         "receive": "Return {{label}}",

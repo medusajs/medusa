@@ -245,7 +245,6 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
 
   const { returns } = useReturns({
     order_id: order.id,
-    status: "requested",
     fields: "*items",
   })
 
@@ -346,6 +345,16 @@ const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
   const { t } = useTranslation()
   const { getRelativeDate } = useDate()
 
+  if (
+    !["requested", "received", "partially_received"].includes(
+      orderReturn.status
+    )
+  ) {
+    return null
+  }
+
+  const isRequested = orderReturn.statu === "requested"
+
   return (
     <div
       key={orderReturn.id}
@@ -354,15 +363,23 @@ const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
       <div className="flex items-center gap-2">
         <ArrowDownRightMini className="text-ui-fg-muted" />
         <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.returns.returnRequestedInfo", {
-            requestedItemsCount: orderReturn.items.length,
-          })}
+          {t(
+            `orders.returns.${
+              isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
+            }`,
+            {
+              requestedItemsCount: orderReturn.items.length,
+            }
+          )}
         </Text>
       </div>
 
-      <Text size="small" leading="compact" className="text-ui-fg-muted">
-        {getRelativeDate(orderReturn.created_at)}
-      </Text>
+      {isRequested && (
+        <Text size="small" leading="compact" className="text-ui-fg-muted">
+          {/*// TODO: we don't have `received_at`*/}
+          {getRelativeDate(orderReturn.created_at)}
+        </Text>
+      )}
     </div>
   )
 }
