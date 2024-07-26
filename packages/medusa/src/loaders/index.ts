@@ -120,7 +120,7 @@ async function loadEntrypoints(
   return shutdown
 }
 
-export async function initializeContainer(rootDirectory: string) {
+export function initializeContainer(rootDirectory: string): MedusaContainer {
   const configModule = configLoader(rootDirectory, "medusa-config.js")
   const featureFlagRouter = featureFlagsLoader(configModule, logger)
 
@@ -131,7 +131,7 @@ export async function initializeContainer(rootDirectory: string) {
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  await pgConnectionLoader()
+  pgConnectionLoader()
   return container
 }
 
@@ -143,7 +143,7 @@ export default async ({
   app: Express
   shutdown: () => Promise<void>
 }> => {
-  const container = await initializeContainer(rootDirectory)
+  const container = initializeContainer(rootDirectory)
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )

@@ -57,6 +57,7 @@ export default async function ({ port, directory }) {
         execArgv: argv,
       })
       this.childProcess.on("error", (error) => {
+        // @ts-ignore
         logger.error("Dev server failed to start", error)
         logger.info("The server will restart automatically after your changes")
       })

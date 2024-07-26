@@ -3,8 +3,11 @@ import { asValue } from "awilix"
 import { container } from "../container"
 import { configManager } from "../config"
 
-export async function pgConnectionLoader(): Promise<
-  ReturnType<typeof ModulesSdkUtils.createPgConnection>
+/**
+ * Initialize a knex connection that can then be shared to any resources if needed
+ */
+export function pgConnectionLoader(): ReturnType<
+  typeof ModulesSdkUtils.createPgConnection
 > {
   if (container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
     return container.resolve(ContainerRegistrationKeys.PG_CONNECTION)

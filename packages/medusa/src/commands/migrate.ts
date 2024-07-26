@@ -45,7 +45,7 @@ const main = async function ({ directory }) {
 
   validateInputArgs({ action, modules })
 
-  const container = await initializeContainer(directory)
+  const container = initializeContainer(directory)
 
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE

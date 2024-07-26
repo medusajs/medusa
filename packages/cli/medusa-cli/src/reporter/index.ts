@@ -6,6 +6,7 @@ import winston from "winston"
 
 import * as Transport from "winston-transport"
 import { panicHandler } from "./panic-handler"
+import { isObject } from "@medusajs/utils"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "info"
 const LOG_FILE = process.env.LOG_FILE || ""
@@ -60,7 +61,7 @@ export class Reporter {
     this.ora_ = activityLogger
   }
 
-  panic = (data) => {
+  panic(data) {
     const parsedPanic = panicHandler(data)
 
     this.loggerInstance_.log({
@@ -81,17 +82,17 @@ export class Reporter {
    * @param {string} level - the level to check if logger is configured for
    * @return {boolean} whether we should log
    */
-  shouldLog = (level) => {
-    level = this.loggerInstance_.levels[level]
+  shouldLog = (level: string) => {
+    const levelValue = this.loggerInstance_.levels[level]
     const logLevel = this.loggerInstance_.levels[this.loggerInstance_.level]
-    return level <= logLevel
+    return levelValue <= logLevel
   }
 
   /**
    * Sets the log level of the logger.
    * @param {string} level - the level to set the logger to
    */
-  setLogLevel = (level) => {
+  setLogLevel(level: string) {
     this.loggerInstance_.level = level
   }
 
@@ -99,7 +100,7 @@ export class Reporter {
    * Resets the logger to the value specified by the LOG_LEVEL env var. If no
    * LOG_LEVEL is set it defaults to "silly".
    */
-  unsetLogLevel = () => {
+  unsetLogLevel() {
     this.loggerInstance_.level = LOG_LEVEL
   }
 
@@ -111,7 +112,7 @@ export class Reporter {
    * @returns {string} the id of the activity; this should be passed to do
    *   further operations on the activity such as success, failure, progress.
    */
-  activity = (message, config = {}) => {
+  activity(message: string, config: any = {}) {
     const id = ulid()
     if (IS_DEV && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
@@ -146,13 +147,13 @@ export class Reporter {
    * @param {string} activityId - the id of the activity as returned by activity
    * @param {string} message - the message to log
    */
-  progress = (activityId, message) => {
+  progress(activityId: string, message: string) {
     const toLog = {
       level: "info",
       message,
     }
 
-    if (typeof activityId === "string" && this.activities_[activityId]) {
+    if (this.activities_[activityId]) {
       const activity = this.activities_[activityId]
       if (activity.activity) {
         activity.text = message
@@ -172,9 +173,10 @@ export class Reporter {
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
    */
-  error = (messageOrError, error: any = null) => {
-    let message = messageOrError
-    if (typeof messageOrError === "object") {
+  error(messageOrError: string | Error, error?: Error) {
+    let message = messageOrError as string
+
+    if (isObject(messageOrError)) {
       message = messageOrError.message
       error = messageOrError
     }
@@ -204,14 +206,14 @@ export class Reporter {
    * @param {string} message - the message to log
    * @returns {object} data about the activity
    */
-  failure = (activityId, message) => {
+  failure(activityId: string, message: string) {
     const time = Date.now()
     const toLog = {
       level: "error",
       message,
     }
 
-    if (typeof activityId === "string" && this.activities_[activityId]) {
+    if (this.activities_[activityId]) {
       const activity = this.activities_[activityId]
       if (activity.activity) {
         activity.activity.fail(`${message} – ${time - activity.start}`)
@@ -243,14 +245,14 @@ export class Reporter {
    * @param {string} message - the message to log
    * @returns {Record<string, any>} data about the activity
    */
-  success = (activityId, message) => {
+  success(activityId: string, message: string) {
     const time = Date.now()
     const toLog = {
       level: "info",
       message,
     }
 
-    if (typeof activityId === "string" && this.activities_[activityId]) {
+    if (this.activities_[activityId]) {
       const activity = this.activities_[activityId]
       if (activity.activity) {
         activity.activity.succeed(`${message} – ${time - activity.start}ms`)
@@ -278,7 +280,7 @@ export class Reporter {
    * Logs a message at the info level.
    * @param {string} message - the message to log
    */
-  debug = (message) => {
+  debug(message: string) {
     this.loggerInstance_.log({
       level: "debug",
       message,
@@ -289,7 +291,7 @@ export class Reporter {
    * Logs a message at the info level.
    * @param {string} message - the message to log
    */
-  info = (message) => {
+  info(message: string) {
     this.loggerInstance_.log({
       level: "info",
       message,
@@ -300,7 +302,7 @@ export class Reporter {
    * Logs a message at the warn level.
    * @param {string} message - the message to log
    */
-  warn = (message) => {
+  warn = (message: string) => {
     this.loggerInstance_.warn({
       level: "warn",
       message,
@@ -310,7 +312,7 @@ export class Reporter {
   /**
    * A wrapper around winston's log method.
    */
-  log = (...args) => {
+  log(...args) {
     if (args.length > 1) {
       // @ts-ignore
       this.loggerInstance_.log(...args)
