@@ -11,6 +11,7 @@ servers:
 tags:
   - name: Api Keys
   - name: Campaigns
+  - name: Claims
   - name: Collections
     x-associatedSchema:
       $ref: ./components/schemas/AdminCollection.yaml
@@ -121,6 +122,28 @@ paths:
     $ref: paths/admin_campaigns_{id}.yaml
   /admin/campaigns/{id}/promotions:
     $ref: paths/admin_campaigns_{id}_promotions.yaml
+  /admin/claims:
+    $ref: paths/admin_claims.yaml
+  /admin/claims/{id}/claim-items:
+    $ref: paths/admin_claims_{id}_claim-items.yaml
+  /admin/claims/{id}/claim-items/{action_id}:
+    $ref: paths/admin_claims_{id}_claim-items_{action_id}.yaml
+  /admin/claims/{id}/inbound/items:
+    $ref: paths/admin_claims_{id}_inbound_items.yaml
+  /admin/claims/{id}/inbound/items/{action_id}:
+    $ref: paths/admin_claims_{id}_inbound_items_{action_id}.yaml
+  /admin/claims/{id}/inbound/shipping-method:
+    $ref: paths/admin_claims_{id}_inbound_shipping-method.yaml
+  /admin/claims/{id}/inbound/shipping-method/{action_id}:
+    $ref: paths/admin_claims_{id}_inbound_shipping-method_{action_id}.yaml
+  /admin/claims/{id}/outbound/items:
+    $ref: paths/admin_claims_{id}_outbound_items.yaml
+  /admin/claims/{id}/outbound/items/{action_id}:
+    $ref: paths/admin_claims_{id}_outbound_items_{action_id}.yaml
+  /admin/claims/{id}/outbound/shipping-method:
+    $ref: paths/admin_claims_{id}_outbound_shipping-method.yaml
+  /admin/claims/{id}/outbound/shipping-method/{action_id}:
+    $ref: paths/admin_claims_{id}_outbound_shipping-method_{action_id}.yaml
   /admin/collections:
     $ref: paths/admin_collections.yaml
   /admin/collections/{id}:
@@ -247,6 +270,8 @@ paths:
     $ref: paths/admin_products_export.yaml
   /admin/products/import:
     $ref: paths/admin_products_import.yaml
+  /admin/products/import/{transaction_id}/confirm:
+    $ref: paths/admin_products_import_{transaction_id}_confirm.yaml
   /admin/products/{id}:
     $ref: paths/admin_products_{id}.yaml
   /admin/products/{id}/options:

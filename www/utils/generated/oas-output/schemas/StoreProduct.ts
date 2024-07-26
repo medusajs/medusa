@@ -66,13 +66,13 @@
  *     type: string
  *     title: id
  *     description: The product's ID.
+ *   metadata:
+ *     type: object
+ *     description: The product's metadata.
  *   handle:
  *     type: string
  *     title: handle
  *     description: The product's handle.
- *   metadata:
- *     type: object
- *     description: The product's metadata.
  *   hs_code:
  *     type: string
  *     title: hs_code

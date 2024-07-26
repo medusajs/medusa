@@ -213,7 +213,7 @@
  *     description: The product's created at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's created at.
  *       required:
  *         - $eq
@@ -241,12 +241,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: The product's updated at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's updated at.
  *       required:
  *         - $eq
@@ -274,12 +275,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: The product's deleted at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's deleted at.
  *       required:
  *         - $eq
@@ -307,6 +309,7 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: deleted_at
  *   - name: country_code
  *     in: query
  *     description: The product's country code.
