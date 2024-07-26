@@ -313,8 +313,10 @@ ${serviceBObj.module}: {
         {
           serviceName: serviceAObj.module,
           fieldAlias: {
-            [serviceBObj.isList ? pluralize(aliasB) : aliasB]:
-              aliasB + "_link." + aliasB,
+            [serviceBObj.isList ? pluralize(aliasB) : aliasB]: {
+              path: aliasB + "_link." + aliasB,
+              isList: serviceBObj.isList,
+            },
           },
           relationship: {
             serviceName: output.serviceName,
@@ -327,8 +329,10 @@ ${serviceBObj.module}: {
         {
           serviceName: serviceBObj.module,
           fieldAlias: {
-            [serviceAObj.isList ? pluralize(aliasA) : aliasA]:
-              aliasA + "_link." + aliasA,
+            [serviceAObj.isList ? pluralize(aliasA) : aliasA]: {
+              path: aliasA + "_link." + aliasA,
+              isList: serviceAObj.isList,
+            },
           },
           relationship: {
             serviceName: output.serviceName,

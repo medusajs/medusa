@@ -115,37 +115,37 @@ export class Migration20240219102530 extends Migration {
       CREATE INDEX IF NOT EXISTS "IDX_order_display_id" ON "order" (
           display_id
       ) 
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_region_id" ON "order" (
           region_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_customer_id" ON "order" (
           customer_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_customer_id" ON "order" (
           customer_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_currency_code" ON "order" (
           currency_code
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_address_id" ON "order" (
           shipping_address_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_billing_address_id" ON "order" (
           billing_address_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_deleted_at" ON "order" (
           deleted_at
@@ -154,7 +154,7 @@ export class Migration20240219102530 extends Migration {
       CREATE INDEX IF NOT EXISTS "IDX_order_is_draft_order" ON "order" (
           is_draft_order
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
 
       CREATE TABLE IF NOT EXISTS "order_summary" (
@@ -172,7 +172,7 @@ export class Migration20240219102530 extends Migration {
           order_id,
           version
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE TABLE IF NOT EXISTS "order_change" (
           "id" TEXT NOT NULL,
@@ -276,18 +276,18 @@ export class Migration20240219102530 extends Migration {
       CREATE INDEX IF NOT EXISTS "IDX_order_item_order_id" ON "order_item" (
           order_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_item_order_id_version" ON "order_item" (
           order_id,
           version
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_item_item_id" ON "order_item" (
           item_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE TABLE IF NOT EXISTS "order_shipping" (
           "id" TEXT NOT NULL,
@@ -303,18 +303,18 @@ export class Migration20240219102530 extends Migration {
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_order_id" ON "order_shipping" (
           order_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_order_id_version" ON "order_shipping" (
           order_id,
           version
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_shipping_item_id" ON "order_shipping" (
           shipping_method_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE TABLE IF NOT EXISTS "order_line_item" (
           "id" TEXT NOT NULL,
@@ -461,17 +461,17 @@ export class Migration20240219102530 extends Migration {
           order_id,
           version
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_currency_code" ON "order_transaction" (
           currency_code
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
       CREATE INDEX IF NOT EXISTS "IDX_order_transaction_reference_id" ON "order_transaction" (
           reference_id
       )
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
       
       CREATE TABLE IF NOT EXISTS "return_reason"
       (
@@ -492,7 +492,7 @@ export class Migration20240219102530 extends Migration {
       );
 
       CREATE UNIQUE INDEX IF NOT EXISTS "IDX_return_reason_value" ON "return_reason" USING btree (value ASC NULLS LAST)
-      WHERE deleted_at IS NOT NULL;
+      WHERE deleted_at IS NULL;
 
 
       ALTER TABLE if exists "order"

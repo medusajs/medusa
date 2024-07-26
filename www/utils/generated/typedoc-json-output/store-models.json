@@ -1,5 +1,5 @@
 {
-	"id": 12648,
+	"id": 12712,
 	"name": "store-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 12667,
+			"id": 12731,
 			"name": "StoreCurrency",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 12668,
+					"id": 12732,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12669,
+							"id": 12733,
 							"name": "new StoreCurrency",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12667,
+								"target": 12731,
 								"name": "StoreCurrency",
 								"package": "@medusajs/store",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 12670,
+					"id": 12734,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -59,7 +59,7 @@
 					}
 				},
 				{
-					"id": 12671,
+					"id": 12735,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -70,7 +70,7 @@
 					}
 				},
 				{
-					"id": 12672,
+					"id": 12736,
 					"name": "is_default",
 					"variant": "declaration",
 					"kind": 1024,
@@ -83,7 +83,7 @@
 					}
 				},
 				{
-					"id": 12673,
+					"id": 12737,
 					"name": "store_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -103,7 +103,7 @@
 					}
 				},
 				{
-					"id": 12674,
+					"id": 12738,
 					"name": "store",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117,7 +117,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 12649,
+								"target": 12713,
 								"name": "Store",
 								"package": "@medusajs/store",
 								"qualifiedName": "default"
@@ -126,7 +126,7 @@
 					}
 				},
 				{
-					"id": 12675,
+					"id": 12739,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -142,7 +142,7 @@
 					}
 				},
 				{
-					"id": 12676,
+					"id": 12740,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -158,7 +158,7 @@
 					}
 				},
 				{
-					"id": 12677,
+					"id": 12741,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -184,14 +184,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12678,
+					"id": 12742,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12679,
+							"id": 12743,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -204,14 +204,14 @@
 					]
 				},
 				{
-					"id": 12680,
+					"id": 12744,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12681,
+							"id": 12745,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -228,54 +228,54 @@
 				{
 					"title": "Constructors",
 					"children": [
-						12668
+						12732
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						12670,
-						12671,
-						12672,
-						12673,
-						12674,
-						12675,
-						12676,
-						12677
+						12734,
+						12735,
+						12736,
+						12737,
+						12738,
+						12739,
+						12740,
+						12741
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						12678,
-						12680
+						12742,
+						12744
 					]
 				}
 			]
 		},
 		{
-			"id": 12649,
+			"id": 12713,
 			"name": "Store",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 12650,
+					"id": 12714,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12651,
+							"id": 12715,
 							"name": "new Store",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12649,
+								"target": 12713,
 								"name": "Store",
 								"package": "@medusajs/store",
 								"qualifiedName": "default"
@@ -284,7 +284,7 @@
 					]
 				},
 				{
-					"id": 12666,
+					"id": 12730,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -302,7 +302,7 @@
 					}
 				},
 				{
-					"id": 12652,
+					"id": 12716,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -313,7 +313,7 @@
 					}
 				},
 				{
-					"id": 12653,
+					"id": 12717,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -324,7 +324,7 @@
 					}
 				},
 				{
-					"id": 12654,
+					"id": 12718,
 					"name": "supported_currencies",
 					"variant": "declaration",
 					"kind": 1024,
@@ -338,7 +338,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 12667,
+								"target": 12731,
 								"name": "StoreCurrency",
 								"package": "@medusajs/store",
 								"qualifiedName": "default"
@@ -354,7 +354,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 12655,
+					"id": 12719,
 					"name": "default_sales_channel_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -375,7 +375,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12656,
+					"id": 12720,
 					"name": "default_region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -396,7 +396,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12657,
+					"id": 12721,
 					"name": "default_location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -417,7 +417,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12658,
+					"id": 12722,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -453,7 +453,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12659,
+					"id": 12723,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -469,7 +469,7 @@
 					}
 				},
 				{
-					"id": 12660,
+					"id": 12724,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -485,7 +485,7 @@
 					}
 				},
 				{
-					"id": 12661,
+					"id": 12725,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -511,14 +511,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 12662,
+					"id": 12726,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12663,
+							"id": 12727,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -531,14 +531,14 @@
 					]
 				},
 				{
-					"id": 12664,
+					"id": 12728,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12665,
+							"id": 12729,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -555,30 +555,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						12650
+						12714
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						12666,
-						12652,
-						12653,
-						12654,
-						12655,
-						12656,
-						12657,
-						12658,
-						12659,
-						12660,
-						12661
+						12730,
+						12716,
+						12717,
+						12718,
+						12719,
+						12720,
+						12721,
+						12722,
+						12723,
+						12724,
+						12725
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						12662,
-						12664
+						12726,
+						12728
 					]
 				}
 			]
@@ -588,130 +588,130 @@
 		{
 			"title": "Classes",
 			"children": [
-				12667,
-				12649
+				12731,
+				12713
 			]
 		}
 	],
 	"packageName": "@medusajs/store",
 	"symbolIdMap": {
-		"12648": {
+		"12712": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"12649": {
+		"12713": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default"
 		},
-		"12652": {
+		"12716": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.id"
 		},
-		"12653": {
+		"12717": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.name"
 		},
-		"12654": {
+		"12718": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.supported_currencies"
 		},
-		"12655": {
+		"12719": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_sales_channel_id"
 		},
-		"12656": {
+		"12720": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_region_id"
 		},
-		"12657": {
+		"12721": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_location_id"
 		},
-		"12658": {
+		"12722": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"12659": {
+		"12723": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"12660": {
+		"12724": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"12661": {
+		"12725": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"12662": {
+		"12726": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"12663": {
+		"12727": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"12664": {
+		"12728": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"12665": {
+		"12729": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"12666": {
+		"12730": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"12667": {
+		"12731": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default"
 		},
-		"12670": {
+		"12734": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.id"
 		},
-		"12671": {
+		"12735": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"12672": {
+		"12736": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.is_default"
 		},
-		"12673": {
+		"12737": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.store_id"
 		},
-		"12674": {
+		"12738": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.store"
 		},
-		"12675": {
+		"12739": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"12676": {
+		"12740": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"12677": {
+		"12741": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"12678": {
+		"12742": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"12679": {
+		"12743": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"12680": {
+		"12744": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"12681": {
+		"12745": {
 			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
 			"qualifiedName": "default.onInit"
 		}
@@ -721,7 +721,7 @@
 			"1": "../../../../packages/modules/store/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 12648
+			"1": 12712
 		}
 	}
 }

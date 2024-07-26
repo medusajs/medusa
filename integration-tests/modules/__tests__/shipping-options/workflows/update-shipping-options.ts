@@ -14,6 +14,7 @@ import {
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
+  Modules,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -61,6 +62,37 @@ medusaIntegrationTestRunner({
             },
           ],
         })
+
+        const stockLocationModule = container.resolve(
+          ModuleRegistrationName.STOCK_LOCATION
+        )
+
+        const location = await stockLocationModule.createStockLocations({
+          name: "Europe",
+        })
+
+        const remoteLink = container.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        await remoteLink.create([
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_set_id: fulfillmentSet.id,
+            },
+          },
+          {
+            [Modules.STOCK_LOCATION]: {
+              stock_location_id: location.id,
+            },
+            [Modules.FULFILLMENT]: {
+              fulfillment_provider_id: "manual_test-provider",
+            },
+          },
+        ])
       })
 
       it("should update shipping options", async () => {

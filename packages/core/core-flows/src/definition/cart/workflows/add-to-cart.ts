@@ -26,9 +26,6 @@ import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
 
-// TODO: The AddToCartWorkflow are missing the following steps:
-// - Refresh/delete shipping methods (fulfillment module)
-
 export const addToCartWorkflowId = "add-to-cart"
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
@@ -60,14 +57,6 @@ export const addToCartWorkflow = createWorkflow(
 
     validateVariantPricesStep({ variants })
 
-    confirmVariantInventoryWorkflow.runAsStep({
-      input: {
-        sales_channel_id: input.cart.sales_channel_id as string,
-        variants,
-        items: input.items,
-      },
-    })
-
     const lineItems = transform({ input, variants }, (data) => {
       const items = (data.input.items ?? []).map((item) => {
         const variant = data.variants.find((v) => v.id === item.variant_id)!
@@ -89,6 +78,15 @@ export const addToCartWorkflow = createWorkflow(
     const { itemsToCreate = [], itemsToUpdate = [] } = getLineItemActionsStep({
       id: input.cart.id,
       items: lineItems,
+    })
+
+    confirmVariantInventoryWorkflow.runAsStep({
+      input: {
+        sales_channel_id: input.cart.sales_channel_id as string,
+        variants,
+        items: input.items,
+        itemsToUpdate,
+      },
     })
 
     const [createdItems, updatedItems] = parallelize(

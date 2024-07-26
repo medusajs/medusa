@@ -1,4 +1,3 @@
-import { ClaimType } from "@medusajs/utils"
 import { z } from "zod"
 import {
   createFindParams,
@@ -51,17 +50,6 @@ export type AdminPostReturnsReqSchemaType = z.infer<
   typeof AdminPostReturnsReqSchema
 >
 
-export const AdminPostOrderClaimsReqSchema = z.object({
-  type: z.nativeEnum(ClaimType),
-  order_id: z.string(),
-  description: z.string().optional(),
-  internal_note: z.string().optional(),
-  metadata: z.record(z.unknown()).nullish(),
-})
-export type AdminPostOrderClaimsReqSchemaType = z.infer<
-  typeof AdminPostOrderClaimsReqSchema
->
-
 export const AdminPostOrderExchangesReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
@@ -94,10 +82,10 @@ export type AdminPostReceiveReturnItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostCancelReturnReqSchema = z.object({
-  return_id: z.string(),
   no_notification: z.boolean().optional(),
   internal_note: z.string().nullish(),
 })
+
 export type AdminPostCancelReturnReqSchemaType = z.infer<
   typeof AdminPostCancelReturnReqSchema
 >

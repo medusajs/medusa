@@ -60,7 +60,7 @@ export type ParserConfigArgs = {
   preserveRawBody?: boolean
 }
 
-type ParserConfig = false | ParserConfigArgs
+export type ParserConfig = false | ParserConfigArgs
 
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]

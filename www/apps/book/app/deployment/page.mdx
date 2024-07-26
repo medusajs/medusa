@@ -4,7 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you’ll learn about the different methods to deploy your Medusa application.
+In this chapter, you’ll learn about the approach to deploy your Medusa application.
+
+<Note title="Important">
+
+As Medusa v2 is still in active development, it's highly recommended not to deploy it for production purposes.
+
+</Note>
 
 ## Medusa Project Components
 
@@ -15,7 +21,7 @@ A standard Medusa project is made up of:
     
 ![Diagram showcasing the connection between the three deployed components](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600807/Medusa%20Book/deployment-options_ceuuvo.jpg)
 
-You can either deploy the Medusa application fully (server along with the admin), or deploy the Medusa Admin separately. As for the storefront, it's always deployed separately.
+You can either deploy the Medusa application fully (server with the admin), or deploy the Medusa Admin separately. The storefront is always deployed separately.
 
 ---
 
@@ -33,7 +39,7 @@ For optimal experience, make sure that the hosting provider and plan offer at le
 
 </Note>
 
-Your server connects to a PostgreSQL database and, optionally, Redis or other services. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean).
+Your server connects to a PostgreSQL database, Redis, and other services relevant for your setup. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean).
 
 Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
 
@@ -51,7 +57,7 @@ In this scenario, make sure the hosting provider and plan of your choice provide
 
 <Note title="Tip">
 
-The server deployment guides mention details on how to deploy the admin along with the backend.
+The server deployment guides mention details on how to deploy the admin with the Medusa server.
 
 </Note>
 
@@ -73,7 +79,7 @@ Refer to [this reference](!resources!/deployment) to find how-to deployment guid
 
 The storefront is deployed separately from the Medusa application, and the hosting options depend on the tools and frameworks you use to create the storefront.
 
-If you’re using the Next.js starter, you may deploy the storefront to any hosting provider that supports frontend frameworks, such as Vercel.
+If you’re using the Next.js Starter storefront, you may deploy the storefront to any hosting provider that supports frontend frameworks, such as Vercel.
 
 <Note title="Important">
 

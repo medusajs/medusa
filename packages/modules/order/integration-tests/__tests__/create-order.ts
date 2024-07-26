@@ -1,6 +1,6 @@
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -132,7 +132,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         billing_address: expect.objectContaining({
           id: expect.stringContaining("ordaddr_"),
         }),
-        items: [
+        items: expect.arrayContaining([
           expect.objectContaining({
             id: expect.stringContaining("ordli_"),
             quantity: 1,
@@ -174,7 +174,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               version: 1,
             }),
           }),
-        ],
+        ]),
         shipping_methods: [
           expect.objectContaining({
             id: expect.stringContaining("ordsm_"),

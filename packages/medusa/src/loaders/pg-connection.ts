@@ -1,4 +1,4 @@
-import { ConfigModule } from "@medusajs/types"
+import { ConfigModule } from "@medusajs/framework"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { asValue, AwilixContainer } from "awilix"
 

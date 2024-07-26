@@ -1,0 +1,61 @@
+export const metadata = {
+  title: `${pageNumber} Module Link Direction`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about difference in module link directions, and which to use based on your use case.
+
+## Link Direction
+
+The module link's direction depends on the order you pass the data model configuration parameters to `defineLink`.
+
+For example, the following defines a link from the `helloModuleService`'s `myCustom` data model to the Product Module's `product` data model:
+
+```ts
+export default defineLink(
+  HelloModule.linkable.myCustom,
+  ProductModule.linkable.product
+)
+```
+
+Whereas the following defines a link from the Product Module's `product` data model to the `helloModuleService`'s `myCustom` data model:
+
+```ts
+export default defineLink(
+  ProductModule.linkable.product,
+  HelloModule.linkable.myCustom
+)
+```
+
+The above links are two different links that serve different purposes.
+
+---
+
+## Which Link Direction to Use?
+
+### Extend Data Models
+
+If you're adding a link to a data model to extend it and add new fields, define the link from the main data model to the custom data model.
+
+For example, if the `myCustom` data model adds new fields to the `product` data model, define the link from `product` to `myCustom`:
+
+```ts
+export default defineLink(
+  ProductModule.linkable.product,
+  HelloModule.linkable.myCustom
+)
+```
+
+### Associate Data Models
+
+If you're linking data models to indicate an association between them, define the link from the custom data model to the main data model.
+
+For example, if the `myCustom` data model is associated to the `product` data model, define the link from `myCustom` to `product`:
+
+```ts
+export default defineLink(
+  HelloModule.linkable.myCustom,
+  ProductModule.linkable.product
+)
+```

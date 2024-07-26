@@ -156,7 +156,7 @@ export default class OrderChange {
   change_type: OrderChangeType | null = null
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
-    cascade: [Cascade.PERSIST, "sotf-remove" as Cascade],
+    cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   actions = new Collection<Rel<OrderChangeAction>>(this)
 

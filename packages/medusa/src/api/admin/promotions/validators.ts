@@ -5,7 +5,7 @@ import {
   PromotionRuleOperator,
   PromotionType,
 } from "@medusajs/utils"
-import { z } from "zod"
+import { z, ZodObject } from "zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -155,8 +155,8 @@ const promoRefinement = (promo) => {
   return true
 }
 
-export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
-export const AdminCreatePromotion = z
+export type AdminCreatePromotionType = z.infer<typeof _AdminCreatePromotion>
+const _AdminCreatePromotion = z
   .object({
     code: z.string(),
     is_automatic: z.boolean().optional(),
@@ -167,14 +167,21 @@ export const AdminCreatePromotion = z
     rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()
+
+export const AdminCreatePromotion = (customSchema?: ZodObject<any, any>) => {
+  const schema = customSchema
+    ? _AdminCreatePromotion.merge(customSchema)
+    : _AdminCreatePromotion
+
   // In the case of a buyget promotion, we require at least one buy rule and quantities
-  .refine(promoRefinement, {
+  return schema.refine(promoRefinement, {
     message:
       "Buyget promotions require at least one buy rule and quantities to be defined",
   })
+}
 
-export type AdminUpdatePromotionType = z.infer<typeof AdminUpdatePromotion>
-export const AdminUpdatePromotion = z
+export type AdminUpdatePromotionType = z.infer<typeof _AdminUpdatePromotion>
+const _AdminUpdatePromotion = z
   .object({
     code: z.string().optional(),
     is_automatic: z.boolean().optional(),
@@ -185,8 +192,15 @@ export const AdminUpdatePromotion = z
     rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()
+
+export const AdminUpdatePromotion = (customSchema?: ZodObject<any, any>) => {
+  const schema = customSchema
+    ? _AdminUpdatePromotion.merge(customSchema)
+    : _AdminUpdatePromotion
+
   // In the case of a buyget promotion, we require at least one buy rule and quantities
-  .refine(promoRefinement, {
+  return schema.refine(promoRefinement, {
     message:
       "Buyget promotions require at least one buy rule and quantities to be defined",
   })
+}
