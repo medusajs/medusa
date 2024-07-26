@@ -448,6 +448,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product/examples"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/guides/price/page.mdx",
+    "pathname": "/commerce-modules/product/guides/price"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/page.mdx",
     "pathname": "/commerce-modules/product"
   },
@@ -648,10 +652,6 @@ export const filesMap = [
     "pathname": "/create-medusa-app"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/admin/general/page.mdx",
-    "pathname": "/deployment/admin/general"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/admin/vercel/page.mdx",
     "pathname": "/deployment/admin/vercel"
   },
@@ -664,10 +664,6 @@ export const filesMap = [
     "pathname": "/deployment"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/storefront/general/page.mdx",
-    "pathname": "/deployment/storefront/general"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
     "pathname": "/deployment/storefront/vercel"
   },
@@ -676,20 +672,12 @@ export const filesMap = [
     "pathname": "/integrations"
   },
   {
-    "filePath": "/www/apps/resources/app/js-client/page.mdx",
-    "pathname": "/js-client"
-  },
-  {
     "filePath": "/www/apps/resources/app/medusa-cli/page.mdx",
     "pathname": "/medusa-cli"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-container-resources/page.mdx",
     "pathname": "/medusa-container-resources"
-  },
-  {
-    "filePath": "/www/apps/resources/app/medusa-react/page.mdx",
-    "pathname": "/medusa-react"
   },
   {
     "filePath": "/www/apps/resources/app/nextjs-starter/page.mdx",
