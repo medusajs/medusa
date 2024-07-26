@@ -5,7 +5,11 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { AdminUpdateReceiveItems, HttpTypes } from "@medusajs/types"
+import {
+  AdminConfirmReceiveReturn,
+  AdminUpdateReceiveItems,
+  HttpTypes,
+} from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
@@ -361,6 +365,73 @@ export const useUpdateReceiveItem = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useConfirmReturnReceive = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminConfirmReceiveReturn
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminConfirmReceiveReturn) =>
+      sdk.admin.return.confirmReceive(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCancelReceiveReturn = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.return.cancelReceive(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

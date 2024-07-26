@@ -1,4 +1,5 @@
 import {
+  AdminConfirmReceiveReturn,
   AdminUpdateReceiveItems,
   FindParams,
   HttpTypes,
@@ -231,6 +232,38 @@ export class Return {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  async confirmReceive(
+    id: string,
+    body: HttpTypes.AdminConfirmReceiveReturn,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive/confirm`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async cancelReceive(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive`,
+      {
+        method: "DELETE",
+        headers,
         query,
       }
     )

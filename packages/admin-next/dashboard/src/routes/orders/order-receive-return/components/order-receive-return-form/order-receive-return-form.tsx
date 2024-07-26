@@ -21,7 +21,11 @@ import { useStockLocation } from "../../../../../hooks/api"
 import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { useUpdateReceiveItem } from "../../../../../hooks/api/returns.tsx"
+import {
+  useCancelReceiveReturn,
+  useConfirmReturnReceive,
+  useUpdateReceiveItem,
+} from "../../../../../hooks/api/returns"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -36,6 +40,16 @@ export function OrderReceiveReturnForm({
 }: OrderAllocateItemsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const { mutateAsync: confirmReturnReceive } = useConfirmReturnReceive(
+    orderReturn.id,
+    order.id
+  )
+
+  const { mutateAsync: cancelReceiveReturn } = useCancelReceiveReturn(
+    orderReturn.id,
+    order.id
+  )
 
   const { mutateAsync: updateReceiveItem } = useUpdateReceiveItem(
     orderReturn.id,
@@ -73,6 +87,8 @@ export function OrderReceiveReturnForm({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      await confirmReturnReceive({ no_notification: !data.send_notification })
+
       handleSuccess(`/orders/${order.id}`)
 
       toast.success(t("general.success"), {
@@ -98,6 +114,14 @@ export function OrderReceiveReturnForm({
       } catch (e) {
         toast.error(e.message)
       }
+    }
+  }
+
+  const handleCancel = async () => {
+    try {
+      await cancelReceiveReturn(orderReturn.id)
+    } catch (e) {
+      toast.error(e.message)
     }
   }
 

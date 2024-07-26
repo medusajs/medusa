@@ -78,6 +78,10 @@ export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }
 
+export interface AdminConfirmReceiveReturn {
+  no_notification?: boolean
+}
+
 export interface AdminInitiateReceiveReturn {
   internal_note?: string
   description?: string
