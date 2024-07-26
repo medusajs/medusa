@@ -20,7 +20,7 @@ export const featureFlagRouter = new FlagRouter({})
 
 container.register(
   ContainerRegistrationKeys.FEATURE_FLAG_ROUTER,
-  asFunction(() => featureFlagsLoader)
+  asFunction(() => featureFlagRouter)
 )
 
 const excludedFiles = ["index.js", "index.ts"]
@@ -74,15 +74,13 @@ function registerFlag(
   if (flagConfig[flag.key]) {
     trackFeatureFlag(flag.key)
   }
-
-  featureFlagRouter.setFlag(flag.key, flagConfig[flag.key])
 }
 
 /**
- * Load feature flags from a directory and from the already loaded config under the hood
+ * Load feature flags from a directory
  * @param sourcePath
  */
-export async function featureFlagsLoader(
+export async function featureFlagLoader(
   sourcePath: string
 ): Promise<FlagRouter> {
   const { featureFlags: projectConfigFlags = {} } = configManager.config
@@ -97,7 +95,7 @@ export async function featureFlagsLoader(
 
       files.map(async (file) => {
         if (file.isDirectory()) {
-          return await featureFlagsLoader(join(flagDir, file.name))
+          return await featureFlagLoader(join(flagDir, file.name))
         }
 
         if (file.name.endsWith(".d.ts") || excludedFiles.includes(file.name)) {
