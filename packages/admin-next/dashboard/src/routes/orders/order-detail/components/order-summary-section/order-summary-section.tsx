@@ -49,6 +49,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { returns = [] } = useReturns({
     status: "requested",
     order_id: order.id,
+    fields: "+received_at",
   })
 
   const showReturns = !!returns.length

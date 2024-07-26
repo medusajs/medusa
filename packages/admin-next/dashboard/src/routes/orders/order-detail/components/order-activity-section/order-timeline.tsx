@@ -81,7 +81,10 @@ type Activity = {
 const useActivityItems = (order: AdminOrder) => {
   const { t } = useTranslation()
 
-  const { returns = [] } = useReturns({ order_id: order.id, fields: "*items" })
+  const { returns = [] } = useReturns({
+    order_id: order.id,
+    fields: "+received_at,*items",
+  })
 
   const notes = []
   const isLoading = false
@@ -251,13 +254,19 @@ const OrderActivityItem = ({
           <Text size="small" leading="compact" weight="plus">
             {title}
           </Text>
-          <Tooltip
-            content={getFullDate({ date: timestamp, includeTime: true })}
-          >
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {getRelativeDate(timestamp)}
-            </Text>
-          </Tooltip>
+          {timestamp && (
+            <Tooltip
+              content={getFullDate({ date: timestamp, includeTime: true })}
+            >
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                {getRelativeDate(timestamp)}
+              </Text>
+            </Tooltip>
+          )}
         </div>
         <div>{children}</div>
       </div>
