@@ -1930,6 +1930,28 @@ medusaIntegrationTestRunner({
             )
           ).data.product
 
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: stockLocation.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: stockLocation.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+          ])
+
           shippingOption = (
             await api.post(
               `/admin/shipping-options`,

@@ -1,5 +1,6 @@
 export * from "./cart-payment-collection"
 export * from "./cart-promotion"
+export * from "./fulfillment-provider-location"
 export * from "./fulfillment-set-location"
 export * from "./order-cart"
 export * from "./order-fulfillment"
@@ -13,4 +14,3 @@ export * from "./readonly"
 export * from "./region-payment-provider"
 export * from "./sales-channel-location"
 export * from "./shipping-option-price-set"
-

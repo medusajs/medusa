@@ -101,8 +101,18 @@ medusaIntegrationTestRunner({
         // BREAKING: The batch endpoints moved to the domain routes (admin/batch-jobs -> /admin/products/import). The payload and response changed as well.
         const batchJobRes = await api.post("/admin/products/import", form, meta)
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 1,
+          toUpdate: 1,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
 
         await subscriberExecution
         const notifications = (
