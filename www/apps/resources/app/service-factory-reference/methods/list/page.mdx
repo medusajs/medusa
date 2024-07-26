@@ -56,7 +56,7 @@ The method returns an array of the first `15` records matching the filters.
 
 ---
 
-## Select Fields
+## Select Properties
 
 ```ts
 const posts = await customModuleService.listPosts({}, {
@@ -67,6 +67,8 @@ const posts = await customModuleService.listPosts({}, {
 By default, retrieved records have all their properties. To select specific properties to retrieve, pass in the second object parameter a `select` property.
 
 `select`'s value is an array of property names to retrieve.
+
+The method returns an array of the first `15` records matching the filters.
 
 ---
 
@@ -85,3 +87,22 @@ To paginate the returned records, the second object parameter accepts the follow
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 The method returns an array of records. The number of records is less than or equal to `take`'s value.
+
+---
+
+## Sort Records
+
+```ts
+const posts = await customModuleService.listPosts({}, {
+  order: {
+    name: "ASC"
+  }
+})
+```
+
+To sort records by one or more properties, pass to the second object parameter the `order` property. Its value is an object whose keys are the property names, and values can either be:
+
+- `ASC` to sort by this property in the ascending order.
+- `DESC` to sort by this property in the descending order.
+
+The method returns an array of the first `15` records matching the filters.

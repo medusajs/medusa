@@ -102,3 +102,25 @@ The method returns an array with two items:
 
 1. The first is an array of the records retrieved. The number of records is less than or equal to `take`'s value.
 2. The second is the total count of records.
+
+---
+
+## Sort Records
+
+```ts
+const [posts, count] = await customModuleService.listAndCountPosts({}, {
+  order: {
+    name: "ASC"
+  }
+})
+```
+
+To sort records by one or more properties, pass to the second object parameter the `order` property. Its value is an object whose keys are the property names, and values can either be:
+
+- `ASC` to sort by this property in the ascending order.
+- `DESC` to sort by this property in the descending order.
+
+The method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved.
+2. The second is the total count of records.
