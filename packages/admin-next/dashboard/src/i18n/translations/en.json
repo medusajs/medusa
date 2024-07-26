@@ -350,7 +350,22 @@
     },
     "import": {
       "header": "Import Product List",
-      "description": "Import products by providing a CSV file in a pre-defined format"
+      "description": "Import products by providing a CSV file in a pre-defined format",
+      "template": {
+        "title": "Unsure about how to arrange your list?",
+        "description": "Download the template below to ensure you are following the correct format."
+      },
+      "upload": {
+        "title": "Upload a CSV file",
+        "description": "Through imports you can add or update products. To update existing products you must use the existing handle and ID, to update existing variants you must use the existing ID. You will be asked for confirmation before we import products.",
+        "preprocessing": "Preprocessing...",
+        "productsToCreate": "Products will be created",
+        "productsToUpdate": "Products will be updated"
+      },
+      "success": {
+        "title": "We are processing your import",
+        "description": "Importing data may take a while. We will notify you when we are done."
+      }
     },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",

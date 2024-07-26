@@ -2,7 +2,9 @@ import { BatchMethodRequest } from "../../../common"
 import { ProductStatus } from "../common"
 
 export interface AdminExportProductRequest {}
-export interface AdminImportProductRequest {}
+export interface AdminImportProductRequest {
+  file: File
+}
 export interface AdminBatchProductRequest
   extends BatchMethodRequest<AdminCreateProduct, AdminUpdateProduct> {}
 
