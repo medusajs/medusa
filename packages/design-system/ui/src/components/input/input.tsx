@@ -16,7 +16,7 @@ const inputBaseStyles = clx(
 const inputVariants = cva({
   base: clx(
     inputBaseStyles,
-    "[&::--webkit-search-cancel-button]:hidden [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+    "[&::--webkit-search-cancel-button)]:hidden [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
   ),
   variants: {
     size: {
