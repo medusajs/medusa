@@ -1,15 +1,14 @@
 import { QueryKey, useInfiniteQuery } from "@tanstack/react-query"
 import { ReactNode, useEffect, useMemo, useRef } from "react"
-import { Skeleton } from "../skeleton"
 import { toast } from "@medusajs/ui"
 import { Spinner } from "@medusajs/icons"
-import { useTranslation } from "react-i18next"
 
 type InfiniteListProps<TResponse, TEntity, TParams> = {
   queryKey: QueryKey
   queryFn: (params: TParams) => Promise<TResponse>
   queryOptions?: { enabled?: boolean }
   renderItem: (item: TEntity) => ReactNode
+  renderEmpty: () => ReactNode
   responseKey: keyof TResponse
   pageSize?: number
 }
@@ -23,11 +22,10 @@ export const InfiniteList = <
   queryFn,
   queryOptions,
   renderItem,
+  renderEmpty,
   responseKey,
   pageSize = 20,
 }: InfiniteListProps<TResponse, TEntity, TParams>) => {
-  const { t } = useTranslation()
-
   const {
     data,
     error,
@@ -114,18 +112,22 @@ export const InfiniteList = <
   }, [error])
 
   if (isPending) {
-    return <Skeleton className="h-[148px] w-full rounded-lg" />
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <Spinner className="animate-spin" />
+      </div>
+    )
   }
 
   return (
-    <div ref={parentRef}>
-      {items &&
-        items.map((item) => <div key={item.id}>{renderItem(item)}</div>)}
+    <div ref={parentRef} className="h-full">
+      {items?.length
+        ? items.map((item) => <div key={item.id}>{renderItem(item)}</div>)
+        : renderEmpty()}
 
-      {(isFetching || !hasNextPage) && (
-        <div className="my-4 flex flex-col items-center justify-center">
-          {isFetching && <Spinner className="animate-spin" />}
-          {!hasNextPage && <p className="m-2">{t("general.noMoreData")}</p>}
+      {isFetching && (
+        <div className="flex flex-col items-center justify-center py-4">
+          <Spinner className="animate-spin" />
         </div>
       )}
     </div>

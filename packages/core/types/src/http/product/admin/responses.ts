@@ -32,11 +32,15 @@ export interface AdminProductVariantDeleteResponse
   extends DeleteResponse<"variant", AdminProduct> {}
 
 export interface AdminExportProductResponse {
-  workflow_id: string
+  transaction_id: string
 }
 
 export interface AdminImportProductResponse {
-  workflow_id: string
+  transaction_id: string
+  summary: {
+    toCreate: number
+    toUpdate: number
+  }
 }
 
 export interface AdminBatchProductVariantResponse

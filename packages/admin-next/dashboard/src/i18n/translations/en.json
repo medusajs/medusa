@@ -2112,6 +2112,10 @@
   },
   "notifications": {
     "domain": "Notifications",
+    "emptyState": {
+      "title": "No notifications",
+      "description": "You don't have any notifications at the moment, but once you do they will live here."
+    },
     "accessibility": {
       "description": "notifications about Medusa activities will be listed here."
     }

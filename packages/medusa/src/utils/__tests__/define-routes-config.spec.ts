@@ -1,10 +1,10 @@
 import zod from "zod"
-import { defineRoutesConfig } from "../define-routes-config"
+import { defineMiddlewares } from "../define-middlewares"
 import { MedusaRequest, MedusaResponse } from "../../types/routing"
 
-describe("defineRoutesConfig", function () {
+describe("defineMiddlewares", function () {
   test("define custom middleware for a route", () => {
-    const config = defineRoutesConfig([
+    const config = defineMiddlewares([
       {
         matcher: "/admin/products",
         middlewares: [() => {}],
@@ -31,7 +31,7 @@ describe("defineRoutesConfig", function () {
       brand_id: zod.string(),
     })
 
-    const config = defineRoutesConfig([
+    const config = defineMiddlewares([
       {
         matcher: "/admin/products",
         extendedValidators: {
@@ -65,7 +65,7 @@ describe("defineRoutesConfig", function () {
       brand_id: zod.string(),
     })
 
-    const config = defineRoutesConfig([
+    const config = defineMiddlewares([
       {
         matcher: "/admin/products",
         extendedValidators: {

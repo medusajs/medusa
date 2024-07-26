@@ -1,17 +1,18 @@
 import {
   ArrowDownTray,
   BellAlert,
+  BellAlertDone,
   InformationCircleSolid,
 } from "@medusajs/icons"
-import { Drawer, Heading, IconButton, Label, Text } from "@medusajs/ui"
+import { Drawer, Heading, IconButton, Text } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { formatDistance } from "date-fns"
-import { Divider } from "../../common/divider"
 import { InfiniteList } from "../../common/infinite-list"
 import { sdk } from "../../../lib/client"
 import { notificationQueryKeys } from "../../../hooks/api"
+import { TFunction } from "i18next"
 
 interface NotificationData {
   title: string
@@ -70,6 +71,7 @@ export const Notifications = () => {
             queryKey={notificationQueryKeys.all}
             queryFn={(params) => sdk.admin.notification.list(params)}
             queryOptions={{ enabled: open }}
+            renderEmpty={() => <NotificationsEmptyState t={t} />}
             renderItem={(notification) => {
               return (
                 <Notification
@@ -154,6 +156,23 @@ const NotificationFile = ({ file }: { file: NotificationData["file"] }) => {
           </a>
         </IconButton>
       </div>
+    </div>
+  )
+}
+
+const NotificationsEmptyState = ({ t }: { t: TFunction }) => {
+  return (
+    <div className="flex h-full flex-col items-center justify-center">
+      <BellAlertDone />
+      <Text size="small" leading="compact" weight="plus" className="mt-3">
+        {t("notifications.emptyState.title")}
+      </Text>
+      <Text
+        size="small"
+        className="text-ui-fg-muted mt-1 max-w-[294px] text-center"
+      >
+        {t("notifications.emptyState.description")}
+      </Text>
     </div>
   )
 }
