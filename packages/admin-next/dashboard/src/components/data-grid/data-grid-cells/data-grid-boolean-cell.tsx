@@ -69,7 +69,3 @@ const Inner = ({
     />
   )
 }
-
-// const Placeholder = ({ disabled }: { disabled?: boolean }) => {
-
-// }

@@ -1,6 +1,7 @@
-import CurrencyInput from "react-currency-input-field"
+import CurrencyInput, { formatValue } from "react-currency-input-field"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
+import { useCallback, useEffect, useState } from "react"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { CurrencyInfo, currencies } from "../../../lib/data/currencies"
 import { useDataGridCell } from "../hooks"
@@ -51,14 +52,30 @@ const Inner = ({
   inputProps: InputProps
   currencyInfo: CurrencyInfo
 }) => {
-  const { value, onChange, onBlur, ref, ...rest } = field
+  const { value, onChange: _, onBlur, ref, ...rest } = field
   const {
     ref: inputRef,
     onBlur: onInputBlur,
     onFocus,
-    onChange: _,
+    onChange,
     ...attributes
   } = inputProps
+
+  const formatter = useCallback(
+    (value: string) => {
+      return formatValue({
+        value,
+        decimalScale: currencyInfo.decimal_digits,
+      })
+    },
+    [currencyInfo]
+  )
+
+  const [localValue, setLocalValue] = useState(formatter(value))
+
+  useEffect(() => {
+    setLocalValue(formatter(value))
+  }, [value, formatter])
 
   const combinedRed = useCombinedRefs(inputRef, ref)
 
@@ -75,13 +92,15 @@ const Inner = ({
         {...attributes}
         ref={combinedRed}
         className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
-        value={value}
+        value={localValue}
         onValueChange={(_value, _name, values) => {
-          onChange(values?.value)
+          setLocalValue(values?.value || "")
         }}
         onBlur={() => {
           onBlur()
           onInputBlur()
+
+          onChange(localValue, value)
         }}
         onFocus={onFocus}
         decimalScale={currencyInfo.decimal_digits}
