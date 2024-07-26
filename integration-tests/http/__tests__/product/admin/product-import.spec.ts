@@ -60,7 +60,6 @@ medusaIntegrationTestRunner({
           "/admin/products",
           getProductFixture({
             title: "Base product",
-            type_id: baseType.id,
           }),
           adminHeaders
         )
@@ -72,7 +71,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("POST /admin/products/export", () => {
-      it("should import a products CSV file", async () => {
+      it("should import a previously exported products CSV file", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
           "notification.notification.created",
           eventBus
@@ -83,6 +82,17 @@ medusaIntegrationTestRunner({
           { encoding: "utf-8" }
         )
 
+        fileContent = fileContent.replace(
+          /prod_01J3CRPNVGRZ01A8GH8FQYK10Z/g,
+          baseProduct.id
+        )
+        fileContent = fileContent.replace(
+          /variant_01J3CRPNW5J6EBVVQP1TN33A58/g,
+          baseProduct.variants[0].id
+        )
+        fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
+        fileContent = fileContent.replace(/ptyp_\w*\d*/g, baseType.id)
+
         const { form, meta } = getUploadReq({
           name: "test.csv",
           content: fileContent,
@@ -91,8 +101,18 @@ medusaIntegrationTestRunner({
         // BREAKING: The batch endpoints moved to the domain routes (admin/batch-jobs -> /admin/products/import). The payload and response changed as well.
         const batchJobRes = await api.post("/admin/products/import", form, meta)
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 1,
+          toUpdate: 1,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
 
         await subscriberExecution
         const notifications = (
@@ -108,7 +128,189 @@ medusaIntegrationTestRunner({
             }),
           })
         )
+
+        const dbProducts = (await api.get("/admin/products", adminHeaders)).data
+          .products
+
+        expect(dbProducts).toHaveLength(2)
+        expect(dbProducts).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: baseProduct.id,
+              handle: "base-product",
+              is_giftcard: false,
+              thumbnail: "test-image.png",
+              status: "draft",
+              description: "test-product-description\ntest line 2",
+              options: [
+                expect.objectContaining({
+                  title: "size",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "small",
+                    }),
+                    expect.objectContaining({
+                      value: "large",
+                    }),
+                  ]),
+                }),
+                expect.objectContaining({
+                  title: "color",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ]),
+                }),
+              ],
+              images: expect.arrayContaining([
+                expect.objectContaining({
+                  url: "test-image.png",
+                }),
+                expect.objectContaining({
+                  url: "test-image-2.png",
+                }),
+              ]),
+              tags: [
+                expect.objectContaining({
+                  value: "123",
+                }),
+                expect.objectContaining({
+                  value: "456",
+                }),
+              ],
+              type: expect.objectContaining({
+                id: baseType.id,
+              }),
+              collection: expect.objectContaining({
+                id: baseCollection.id,
+              }),
+              variants: [
+                expect.objectContaining({
+                  title: "Test variant",
+                  allow_backorder: false,
+                  manage_inventory: true,
+                  prices: [
+                    expect.objectContaining({
+                      currency_code: "usd",
+                      amount: 100,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "eur",
+                      amount: 45,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "dkk",
+                      amount: 30,
+                    }),
+                  ],
+                  options: [
+                    expect.objectContaining({
+                      value: "large",
+                    }),
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ],
+                }),
+                expect.objectContaining({
+                  title: "Test variant 2",
+                  allow_backorder: false,
+                  manage_inventory: true,
+                  // TODO: Since we are doing a product update, there won't be any prices created for the variant
+                  options: [
+                    expect.objectContaining({
+                      value: "small",
+                    }),
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ],
+                }),
+              ],
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              handle: "proposed-product",
+              is_giftcard: false,
+              thumbnail: "test-image.png",
+              status: "proposed",
+              description: "test-product-description",
+              options: [
+                expect.objectContaining({
+                  title: "size",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "large",
+                    }),
+                  ]),
+                }),
+                expect.objectContaining({
+                  title: "color",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ]),
+                }),
+              ],
+              images: expect.arrayContaining([
+                expect.objectContaining({
+                  url: "test-image.png",
+                }),
+                expect.objectContaining({
+                  url: "test-image-2.png",
+                }),
+              ]),
+              tags: [
+                expect.objectContaining({
+                  value: "new-tag",
+                }),
+              ],
+              type: expect.objectContaining({
+                id: baseType.id,
+              }),
+              collection: null,
+              variants: [
+                expect.objectContaining({
+                  title: "Test variant",
+                  allow_backorder: false,
+                  manage_inventory: true,
+                  prices: [
+                    expect.objectContaining({
+                      currency_code: "usd",
+                      amount: 100,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "eur",
+                      amount: 45,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "dkk",
+                      amount: 30,
+                    }),
+                  ],
+                  options: [
+                    expect.objectContaining({
+                      value: "large",
+                    }),
+                    expect.objectContaining({
+                      value: "green",
+                    }),
+                  ],
+                }),
+              ],
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+          ])
+        )
       })
+
+      it("should fail on invalid prices being present in the CSV", async () => {})
+      it("should fail on non-existent fields being present in the CSV", async () => {})
     })
   },
 })

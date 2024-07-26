@@ -8,12 +8,12 @@ import {
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderClaimsStep } from "../../steps/create-claims"
 import { createOrderChangeStep } from "../../steps/create-order-change"
-import { throwIfOrderIsCancelled } from "../../utils/order-validation"
+import { throwIfIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(
   "begin-claim-order-validation",
   async function ({ order }: { order: OrderDTO }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
   }
 )
 

@@ -17,5 +17,5 @@ export const POST = async (
     input,
   })
 
-  res.status(202).json({ workflow_id: transaction.transactionId })
+  res.status(202).json({ transaction_id: transaction.transactionId })
 }
