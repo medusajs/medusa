@@ -15,6 +15,7 @@ import {
   createStep,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
@@ -116,7 +117,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
   function (input: WorkflowInput): WorkflowData<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
-      fields: ["id", "status", "order_id", "canceled_at"],
+      fields: ["id", "status", "order_id", "location_id", "canceled_at"],
       variables: { id: input.return_id },
       list: false,
       throw_if_key_not_found: true,
@@ -192,46 +193,54 @@ export const confirmReturnRequestWorkflow = createWorkflow(
     const returnShippingOptionId = transform(
       { returnModified },
       ({ returnModified }) => {
+        if (!returnModified.shipping_methods?.length) {
+          return
+        }
+
         return returnModified.shipping_methods[0].shipping_option_id
       }
     )
 
-    const returnShippingOption = useRemoteQueryStep({
-      entry_point: "shipping_options",
-      fields: [
-        "id",
-        "provider_id",
-        "service_zone.fulfillment_set.location.id",
-        "service_zone.fulfillment_set.location.address.*",
-      ],
-      variables: {
-        id: returnShippingOptionId,
-      },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "return-shipping-option" })
+    when({ returnShippingOptionId }, ({ returnShippingOptionId }) => {
+      return !!returnShippingOptionId
+    }).then(() => {
+      const returnShippingOption = useRemoteQueryStep({
+        entry_point: "shipping_options",
+        fields: [
+          "id",
+          "provider_id",
+          "service_zone.fulfillment_set.location.id",
+          "service_zone.fulfillment_set.location.address.*",
+        ],
+        variables: {
+          id: returnShippingOptionId,
+        },
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "return-shipping-option" })
 
-    const fulfillmentData = transform(
-      { order, items: createdReturnItems, returnShippingOption },
-      prepareFulfillmentData
-    )
+      const fulfillmentData = transform(
+        { order, items: createdReturnItems, returnShippingOption },
+        prepareFulfillmentData
+      )
 
-    const returnFulfillment =
-      createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
+      const returnFulfillment =
+        createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
 
-    const link = transform(
-      { orderReturn, fulfillment: returnFulfillment },
-      (data) => {
-        return [
-          {
-            [Modules.ORDER]: { return_id: data.orderReturn.id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      }
-    )
+      const link = transform(
+        { orderReturn, fulfillment: returnFulfillment },
+        (data) => {
+          return [
+            {
+              [Modules.ORDER]: { return_id: data.orderReturn.id },
+              [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+            },
+          ]
+        }
+      )
 
-    createRemoteLinkStep(link)
+      createRemoteLinkStep(link)
+    })
 
     return previewOrderChangeStep(order.id)
   }
