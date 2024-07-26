@@ -1,4 +1,8 @@
-import { RuleOperator } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  RuleOperator,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -14,6 +18,9 @@ medusaIntegrationTestRunner({
       let shippingProfile
       let fulfillmentSet
       let region
+      let appContainer
+      let location
+      let location2
 
       const shippingOptionRule = {
         operator: RuleOperator.EQ,
@@ -22,7 +29,8 @@ medusaIntegrationTestRunner({
       }
 
       beforeEach(async () => {
-        const appContainer = getContainer()
+        appContainer = getContainer()
+
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         shippingProfile = (
@@ -36,7 +44,7 @@ medusaIntegrationTestRunner({
           )
         ).data.shipping_profile
 
-        let location = (
+        location = (
           await api.post(
             `/admin/stock-locations`,
             {
@@ -103,6 +111,22 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a shipping option successfully", async () => {
+          const remoteLink = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          // TODO: move this to an endpoint when available
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+          ])
+
           const shippingOptionPayload = {
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
@@ -173,6 +197,41 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should throw error when provider does not exist on a location", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "does-not-exist",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1000,
+              },
+            ],
+            rules: [shippingOptionRule],
+          }
+
+          const error = await api
+            .post(
+              `/admin/shipping-options`,
+              shippingOptionPayload,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Providers (does-not-exist) are not enabled for the service location"
+          )
+        })
       })
 
       describe("POST /admin/shipping-options/:id", () => {
@@ -211,6 +270,22 @@ medusaIntegrationTestRunner({
               },
             ],
           }
+
+          const remoteLink = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          // TODO: move this to an endpoint when available
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+          ])
 
           const response = await api.post(
             `/admin/shipping-options`,
@@ -331,6 +406,73 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it.only("should throw an error when provider does not belong to service location", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1000,
+              },
+              {
+                region_id: region.id,
+                amount: 1000,
+              },
+            ],
+            rules: [shippingOptionRule],
+          }
+
+          const remoteLink = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          // TODO: move this to an endpoint when available
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+          ])
+
+          const response = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          const shippingOptionId = response.data.shipping_option.id
+
+          const updateShippingOptionPayload = {
+            provider_id: "another_test-provider",
+          }
+
+          const error = await api
+            .post(
+              `/admin/shipping-options/${shippingOptionId}`,
+              updateShippingOptionPayload,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Providers (another_test-provider) are not enabled for the service location"
+          )
+        })
       })
 
       describe("DELETE /admin/shipping-options/:id", () => {
@@ -358,6 +500,22 @@ medusaIntegrationTestRunner({
             ],
             rules: [shippingOptionRule],
           }
+
+          const remoteLink = appContainer.resolve(
+            ContainerRegistrationKeys.REMOTE_LINK
+          )
+
+          // TODO: move this to an endpoint when available
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+          ])
 
           const response = await api.post(
             `/admin/shipping-options`,
