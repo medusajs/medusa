@@ -6,7 +6,6 @@ import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
-import * as process from "process"
 
 export async function expressLoader({ app }: { app: Express }): Promise<{
   app: Express
