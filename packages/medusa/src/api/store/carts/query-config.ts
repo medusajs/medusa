@@ -95,6 +95,7 @@ export const defaultStoreCartFields = [
   "billing_address.postal_code",
   "billing_address.country_code",
   "billing_address.region_code",
+  "billing_address.province",
   "billing_address.phone",
   "region.id",
   "region.name",
