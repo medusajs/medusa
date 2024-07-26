@@ -448,6 +448,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product/examples"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/guides/price/page.mdx",
+    "pathname": "/commerce-modules/product/guides/price"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/page.mdx",
     "pathname": "/commerce-modules/product"
   },
@@ -648,10 +652,6 @@ export const filesMap = [
     "pathname": "/create-medusa-app"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/admin/general/page.mdx",
-    "pathname": "/deployment/admin/general"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/admin/vercel/page.mdx",
     "pathname": "/deployment/admin/vercel"
   },
@@ -664,10 +664,6 @@ export const filesMap = [
     "pathname": "/deployment"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/storefront/general/page.mdx",
-    "pathname": "/deployment/storefront/general"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
     "pathname": "/deployment/storefront/vercel"
   },
@@ -676,20 +672,12 @@ export const filesMap = [
     "pathname": "/integrations"
   },
   {
-    "filePath": "/www/apps/resources/app/js-client/page.mdx",
-    "pathname": "/js-client"
-  },
-  {
     "filePath": "/www/apps/resources/app/medusa-cli/page.mdx",
     "pathname": "/medusa-cli"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-container-resources/page.mdx",
     "pathname": "/medusa-container-resources"
-  },
-  {
-    "filePath": "/www/apps/resources/app/medusa-react/page.mdx",
-    "pathname": "/medusa-react"
   },
   {
     "filePath": "/www/apps/resources/app/nextjs-starter/page.mdx",
@@ -754,6 +742,46 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
     "pathname": "/recipes/subscriptions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/create/page.mdx",
+    "pathname": "/service-factory-reference/methods/create"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/delete/page.mdx",
+    "pathname": "/service-factory-reference/methods/delete"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/list/page.mdx",
+    "pathname": "/service-factory-reference/methods/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/listAndCount/page.mdx",
+    "pathname": "/service-factory-reference/methods/listAndCount"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/restore/page.mdx",
+    "pathname": "/service-factory-reference/methods/restore"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/retrieve/page.mdx",
+    "pathname": "/service-factory-reference/methods/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/soft-delete/page.mdx",
+    "pathname": "/service-factory-reference/methods/soft-delete"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/update/page.mdx",
+    "pathname": "/service-factory-reference/methods/update"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/page.mdx",
+    "pathname": "/service-factory-reference"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/tips/filtering/page.mdx",
+    "pathname": "/service-factory-reference/tips/filtering"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
@@ -2902,6 +2930,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderLineItemTotalsDTO/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemTotalsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderReturnItemDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderReturnItemDTO"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderShippingMethodAdjustmentDTO/page.mdx",

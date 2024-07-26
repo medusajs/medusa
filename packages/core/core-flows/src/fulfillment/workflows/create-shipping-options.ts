@@ -9,6 +9,7 @@ import {
   upsertShippingOptionsStep,
 } from "../steps"
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
+import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
 
 export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
@@ -19,6 +20,8 @@ export const createShippingOptionsWorkflow = createWorkflow(
       FulfillmentWorkflow.CreateShippingOptionsWorkflowInput[]
     >
   ): WorkflowData<FulfillmentWorkflow.CreateShippingOptionsWorkflowOutput> => {
+    validateFulfillmentProvidersStep(input)
+
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
         const prices = option.prices
