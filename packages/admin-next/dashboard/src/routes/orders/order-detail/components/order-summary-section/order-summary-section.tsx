@@ -376,8 +376,9 @@ const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
 
       {isRequested && (
         <Text size="small" leading="compact" className="text-ui-fg-muted">
-          {/*// TODO: we don't have `received_at`*/}
-          {getRelativeDate(orderReturn.created_at)}
+          {getRelativeDate(
+            isRequested ? orderReturn.created_at : orderReturn.received_at
+          )}
         </Text>
       )}
     </div>
