@@ -1,8 +1,4 @@
-import {
-  ContainerRegistrationKeys,
-  createMedusaContainer,
-  isObject,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
 
 export async function initDb({ env = {} }: { env?: Record<any, any> }) {
@@ -10,18 +6,14 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  const container = createMedusaContainer()
-
   // in case it is not install as it is optional and required only when using this util
   // @ts-ignore
-  const { configManager } = await import("@medusajs/framework/config")
+  const { configManager, pgConnectionLoader, container } = await import(
+    "@medusajs/framework"
+  )
   const configModule = configManager.config
 
-  const pgConnection =
-    await require("@medusajs/medusa/dist/loaders/pg-connection").default({
-      configModule,
-      container,
-    })
+  const pgConnection = pgConnectionLoader()
 
   const featureFlagRouter =
     require("@medusajs/medusa/dist/loaders/feature-flags").default(configModule)

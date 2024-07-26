@@ -2,11 +2,7 @@ const path = require("path")
 
 const { getConfigFile } = require("@medusajs/utils")
 const { asValue } = require("awilix")
-const {
-  isObject,
-  createMedusaContainer,
-  MedusaV2Flag,
-} = require("@medusajs/utils")
+const { isObject, MedusaV2Flag } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -52,7 +48,7 @@ const DbTestUtil = {
     this.pgConnection_ = pgConnection
   },
 
-  clear: async function () {
+  clear: function () {
     this.db_.synchronize(true)
   },
 
@@ -161,17 +157,16 @@ module.exports = {
       force_modules_migration ||
       featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
     ) {
-      const pgConnectionLoader =
-        require("@medusajs/medusa/dist/loaders/pg-connection").default
+      const { container, pgConnectionLoader } = await import(
+        "@medusajs/framework"
+      )
 
       const featureFlagLoader =
         require("@medusajs/medusa/dist/loaders/feature-flags").default
 
-      const container = createMedusaContainer()
-
       const featureFlagRouter = await featureFlagLoader(configModule)
 
-      const pgConnection = await pgConnectionLoader({ configModule, container })
+      const pgConnection = pgConnectionLoader()
 
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
