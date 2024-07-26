@@ -63,6 +63,8 @@ function registerFlag(
     }
   }
 
+  console.log(">>>>>", flag.key, flagConfig[flag.key])
+
   if (logger && from) {
     logger.info(
       `Using flag ${flag.env_key} from ${from} with value ${
@@ -74,13 +76,15 @@ function registerFlag(
   if (flagConfig[flag.key]) {
     trackFeatureFlag(flag.key)
   }
+
+  featureFlagRouter.setFlag(flag.key, flagConfig[flag.key])
 }
 
 /**
- * Load feature flags from a directory
+ * Load feature flags from a directory and from the already loaded config under the hood
  * @param sourcePath
  */
-export async function featureFlagLoader(
+export async function featureFlagsLoader(
   sourcePath: string
 ): Promise<FlagRouter> {
   const { featureFlags: projectConfigFlags = {} } = configManager.config
@@ -95,7 +99,7 @@ export async function featureFlagLoader(
 
       files.map(async (file) => {
         if (file.isDirectory()) {
-          return await featureFlagLoader(join(flagDir, file.name))
+          return await featureFlagsLoader(join(flagDir, file.name))
         }
 
         if (file.name.endsWith(".d.ts") || excludedFiles.includes(file.name)) {
