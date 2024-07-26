@@ -25,7 +25,7 @@ export const DataGridBooleanCell = <TData, TValue = any>({
       render={({ field }) => {
         return (
           <DataGridCellContainer {...container}>
-            <Inner field={field} inputProps={input} />
+            <Inner field={field} inputProps={input} disabled={disabled} />
           </DataGridCellContainer>
         )
       }}
@@ -65,6 +65,7 @@ const Inner = ({
         onInputBlur()
       }}
       ref={combinedRefs}
+      tabIndex={-1}
       {...attributes}
     />
   )
