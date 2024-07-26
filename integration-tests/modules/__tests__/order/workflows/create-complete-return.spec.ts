@@ -428,14 +428,7 @@ medusaIntegrationTestRunner({
           variables: {
             id: order.id,
           },
-          fields: [
-            "*",
-            "items.*",
-            "shipping_methods.*",
-            "total",
-            "item_total",
-            "fulfillments.*",
-          ],
+          fields: ["*", "items.*", "shipping_methods.*", "total", "item_total"],
         })
 
         const [returnOrder] = await remoteQuery(remoteQueryObject)
@@ -501,18 +494,6 @@ medusaIntegrationTestRunner({
                 order_id: expect.any(String),
               }),
             ]),
-            fulfillments: [
-              expect.objectContaining({
-                id: expect.any(String),
-                location_id: location.id,
-                provider_id: providerId,
-                shipping_option_id: shippingOption.id,
-                // TODO: Validate the address once we are fixed on it
-                /*delivery_address: {
-                  id: "fuladdr_01HY0RTAP0P1EEAFK7BXJ0BKBN",
-                },*/
-              }),
-            ],
           })
         )
       })

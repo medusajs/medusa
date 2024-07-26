@@ -208,27 +208,17 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      await api.post(
+        `/admin/stock-locations/${location.id}/fulfillment-providers`,
+        { add: ["manual_test-provider"] },
+        adminHeaders
+      )
+
       const remoteLink = container.resolve(
         ContainerRegistrationKeys.REMOTE_LINK
       )
 
       await remoteLink.create([
-        {
-          [Modules.STOCK_LOCATION]: {
-            stock_location_id: location.id,
-          },
-          [Modules.FULFILLMENT]: {
-            fulfillment_set_id: fulfillmentSet.id,
-          },
-        },
-        {
-          [Modules.STOCK_LOCATION]: {
-            stock_location_id: location.id,
-          },
-          [Modules.FULFILLMENT]: {
-            fulfillment_provider_id: "manual_test-provider",
-          },
-        },
         {
           [Modules.SALES_CHANNEL]: {
             sales_channel_id: "test",
@@ -435,6 +425,25 @@ medusaIntegrationTestRunner({
             description: "Test",
             status: "pending",
             order_id: order.id,
+          })
+        )
+
+        result = await api.post(
+          `/admin/returns/${returnId}`,
+          {
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
+          },
+          adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: returnId,
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
           })
         )
 

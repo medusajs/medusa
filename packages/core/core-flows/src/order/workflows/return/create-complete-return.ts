@@ -298,11 +298,11 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     })
 
     const link = transform(
-      { order_id: input.order_id, fulfillment: returnFulfillment },
+      { returnCreated, fulfillment: returnFulfillment },
       (data) => {
         return [
           {
-            [Modules.ORDER]: { return_id: returnCreated.id },
+            [Modules.ORDER]: { return_id: data.returnCreated.id },
             [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
           },
         ]
