@@ -6,6 +6,7 @@ import runGitChanges from "./commands/run-git-changes.js"
 import runGitCommit from "./commands/run-git-commit.js"
 import runRelease from "./commands/run-release.js"
 import cleanOas from "./commands/clean-oas.js"
+import cleanDml from "./commands/clean-dml.js"
 
 const program = new Command()
 
@@ -13,7 +14,7 @@ program.name("docblock-generator").description("Generate TSDoc doc-blocks")
 
 // define common options
 const typeOption = new Option("--type <type>", "The type of docs to generate.")
-  .choices(["all", "docs", "oas"])
+  .choices(["all", "docs", "oas", "dml"])
   .default("all")
 
 const generateExamplesOption = new Option(
@@ -67,5 +68,12 @@ program
     "Check generated OAS under the `oas-output/operations` directory and remove any OAS that no longer exists."
   )
   .action(cleanOas)
+
+program
+  .command("clean:dml")
+  .description(
+    "Check generated DML files under the `dml-output` directory and remove any data models that no longer exists."
+  )
+  .action(cleanDml)
 
 program.parse()

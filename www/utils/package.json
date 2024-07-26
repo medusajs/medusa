@@ -9,7 +9,8 @@
     "watch": "turbo run watch",
     "lint": "turbo run lint",
     "generate:references": "turbo run generate:references",
-    "generate:oas": "turbo run generate:oas"
+    "generate:oas": "turbo run generate:oas",
+    "generate:dml": "turbo run generate:dml"
   },
   "dependencies": {
     "@babel/core": "^7.23.0",

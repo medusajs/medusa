@@ -15,7 +15,7 @@ import OasKindGenerator, { OasArea } from "../classes/kinds/oas.js"
 import { DEFAULT_OAS_RESPONSES } from "../constants.js"
 import { OpenApiDocument, OpenApiSchema } from "../types/index.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import getOasOutputBasePath from "../utils/get-oas-output-base-path.js"
+import { getOasOutputBasePath } from "../utils/get-output-base-paths.js"
 import parseOas from "../utils/parse-oas.js"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
