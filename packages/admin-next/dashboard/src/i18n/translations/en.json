@@ -809,6 +809,8 @@
       "refundableAmountLabel": "Refundable amount",
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
       "receive" : {
+        "action": "Receive items",
+        "receive": "Return {{label}}",
         "restockAll": "Restock all items",
         "itemsLabel": "Items received",
         "sendNotificationHint": "Notify customer about received return.",

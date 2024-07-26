@@ -7,12 +7,17 @@ import {
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { ArrowDownRightMini, ArrowUturnLeft } from "@medusajs/icons"
+import {
+  ArrowDownRightMini,
+  ArrowLongRight,
+  ArrowUturnLeft,
+} from "@medusajs/icons"
 import {
   Button,
   Container,
   Copy,
   Heading,
+  IconButton,
   StatusBadge,
   Text,
 } from "@medusajs/ui"
@@ -26,6 +31,7 @@ import {
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -38,6 +44,13 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { reservations } = useReservationItems({
     line_item_id: order.items.map((i) => i.id),
   })
+
+  const { returns = [] } = useReturns({
+    status: "requested",
+    order_id: order.id,
+  })
+
+  const showReturns = !!returns.length
 
   /**
    * Show Allocation button only if there are unfulfilled items that don't have reservations
@@ -75,16 +88,38 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {showAllocateButton && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
-          <Button
-            onClick={() => navigate(`./allocate-items`)}
-            variant="secondary"
-          >
-            {t("orders.allocateItems.action")}
-          </Button>
-        </div>
-      )}
+      {showAllocateButton ||
+        (showReturns && (
+          <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
+            {showReturns && (
+              <ButtonMenu
+                groups={[
+                  {
+                    actions: returns.map((r) => ({
+                      label: t("orders.returns.receive.receive", {
+                        label: `#${r.id.slice(-7)}`,
+                      }),
+                      icon: <ArrowLongRight />,
+                      to: `/orders/${order.id}/returns/${r.id}/receive`,
+                    })),
+                  },
+                ]}
+              >
+                <Button variant="secondary" size="small">
+                  {t("orders.returns.receive.action")}
+                </Button>
+              </ButtonMenu>
+            )}
+            {showAllocateButton && (
+              <Button
+                onClick={() => navigate(`./allocate-items`)}
+                variant="secondary"
+              >
+                {t("orders.allocateItems.action")}
+              </Button>
+            )}
+          </div>
+        ))}
     </Container>
   )
 }
