@@ -22,19 +22,18 @@ export const validateFulfillmentProvidersStep = createStep(
       service_zone_id: string
       provider_id: string
     }[] = []
-    const shippingOptionIds = input.map((d) => d.id).filter(Boolean) as string[]
     const fulfillmentService = container.resolve(
       ModuleRegistrationName.FULFILLMENT
     )
+
     const shippingOptions = await fulfillmentService.listShippingOptions({
-      id: shippingOptionIds,
+      id: input.map((d) => d.id).filter(Boolean) as string[],
     })
 
     const shippingOptionsMap = new Map<string, ShippingOptionDTO>(
       shippingOptions.map((so) => [so.id, so])
     )
 
-    const invalidProviders: string[] = []
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
@@ -55,8 +54,8 @@ export const validateFulfillmentProvidersStep = createStep(
 
       if (data.service_zone_id && data.provider_id) {
         dataToValidate.push({
-          service_zone_id: data.service_zone_id!,
-          provider_id: data.provider_id!,
+          service_zone_id: data.service_zone_id,
+          provider_id: data.provider_id,
         })
 
         continue
@@ -70,7 +69,7 @@ export const validateFulfillmentProvidersStep = createStep(
 
     const serviceZoneQuery = remoteQueryObjectFromString({
       entryPoint: "service_zone",
-      fields: ["id", "fulfillment_set.locations.fulfillment_providers.*"],
+      fields: ["id", "fulfillment_set.locations.fulfillment_providers.id"],
     })
 
     const serviceZones = await remoteQuery(serviceZoneQuery, {
@@ -85,6 +84,8 @@ export const validateFulfillmentProvidersStep = createStep(
         }
       }
     >(serviceZones.map((sz) => [sz.id, sz]))
+
+    const invalidProviders: string[] = []
 
     for (const data of dataToValidate) {
       const serviceZone = serviceZonesMap.get(data.service_zone_id)!
