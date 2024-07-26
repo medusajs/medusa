@@ -1,8 +1,4 @@
-import {
-  ContainerRegistrationKeys,
-  Modules,
-  RuleOperator,
-} from "@medusajs/utils"
+import { RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -65,6 +61,12 @@ medusaIntegrationTestRunner({
           )
         ).data.stock_location
 
+        await api.post(
+          `/admin/stock-locations/${location.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
+
         fulfillmentSet = (
           await api.post(
             `/admin/fulfillment-sets/${location.fulfillment_sets[0].id}/service-zones`,
@@ -111,22 +113,6 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a shipping option successfully", async () => {
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_LINK
-          )
-
-          // TODO: move this to an endpoint when available
-          await remoteLink.create([
-            {
-              [Modules.STOCK_LOCATION]: {
-                stock_location_id: location.id,
-              },
-              [Modules.FULFILLMENT]: {
-                fulfillment_provider_id: "manual_test-provider",
-              },
-            },
-          ])
-
           const shippingOptionPayload = {
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
@@ -270,22 +256,6 @@ medusaIntegrationTestRunner({
               },
             ],
           }
-
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_LINK
-          )
-
-          // TODO: move this to an endpoint when available
-          await remoteLink.create([
-            {
-              [Modules.STOCK_LOCATION]: {
-                stock_location_id: location.id,
-              },
-              [Modules.FULFILLMENT]: {
-                fulfillment_provider_id: "manual_test-provider",
-              },
-            },
-          ])
 
           const response = await api.post(
             `/admin/shipping-options`,
@@ -432,22 +402,6 @@ medusaIntegrationTestRunner({
             rules: [shippingOptionRule],
           }
 
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_LINK
-          )
-
-          // TODO: move this to an endpoint when available
-          await remoteLink.create([
-            {
-              [Modules.STOCK_LOCATION]: {
-                stock_location_id: location.id,
-              },
-              [Modules.FULFILLMENT]: {
-                fulfillment_provider_id: "manual_test-provider",
-              },
-            },
-          ])
-
           const response = await api.post(
             `/admin/shipping-options`,
             shippingOptionPayload,
@@ -500,22 +454,6 @@ medusaIntegrationTestRunner({
             ],
             rules: [shippingOptionRule],
           }
-
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.REMOTE_LINK
-          )
-
-          // TODO: move this to an endpoint when available
-          await remoteLink.create([
-            {
-              [Modules.STOCK_LOCATION]: {
-                stock_location_id: location.id,
-              },
-              [Modules.FULFILLMENT]: {
-                fulfillment_provider_id: "manual_test-provider",
-              },
-            },
-          ])
 
           const response = await api.post(
             `/admin/shipping-options`,

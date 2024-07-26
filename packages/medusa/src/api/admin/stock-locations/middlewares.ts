@@ -82,4 +82,15 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/fulfillment-providers",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
 ]
