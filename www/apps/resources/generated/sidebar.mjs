@@ -4235,6 +4235,21 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "title": "Guides",
+            "autogenerate_path": "/commerce-modules/product/guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/guides/price",
+                "title": "Get Product Variant Prices",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "title": "References",
             "children": [
               {

@@ -1,4 +1,4 @@
-import { defineRoutesConfig } from "../utils/define-routes-config"
+import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
@@ -50,7 +50,7 @@ import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middl
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
 import { adminReturnRoutesMiddlewares } from "./admin/returns/middlewares"
 
-export default defineRoutesConfig([
+export default defineMiddlewares([
   ...adminCustomerGroupRoutesMiddlewares,
   ...adminCustomerRoutesMiddlewares,
   ...adminPromotionRoutesMiddlewares,
