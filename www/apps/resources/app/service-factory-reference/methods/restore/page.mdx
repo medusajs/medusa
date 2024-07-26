@@ -1,0 +1,97 @@
+---
+sidebar_label: "restore"
+---
+
+export const metadata = {
+  title: `restore Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method restores one or more records of the data model that were [soft-deleted](../soft-delete/page.mdx).
+
+## Restore One Record
+
+```ts
+const restoredPosts = await postModuleService.restorePosts("123")
+```
+
+### Parameters
+
+To restore one record, pass its ID as a parameter of the method.
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of restored records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+restoredPosts = {
+  post_id: ["123"]
+}
+```
+
+---
+
+## Restore Multiple Records
+
+```ts
+const restoredPosts = await postModuleService.restorePosts([
+  "123",
+  "321"
+])
+```
+
+### Parameters
+
+To restore multiple records, pass an array of IDs as a parameter of the method.
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of restored records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+restoredPosts = {
+  post_id: [
+    "123",
+    "321"
+  ]
+}
+```
+
+---
+
+## Restore Records Matching Filters
+
+```ts
+const restoredPosts = await postModuleService.restorePosts({
+  name: "My Post"
+})
+```
+
+### Parameters
+
+To restore records matching a set of filters, pass an object of fitlers as a parameter of the method.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an object, whose keys are of the format `{camel_case_data_model_name}_id`, and their values are arrays of restored records' IDs.
+
+For example, the returned object of the above example is:
+
+```ts
+restoredPosts = {
+  post_id: [
+    "123"
+  ]
+}
+```
