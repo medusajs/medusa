@@ -144,7 +144,7 @@ get:
       description: The shipping option's created at.
       required: false
       schema:
-        type: object
+        type: string
         description: The shipping option's created at.
         required:
           - $eq
@@ -172,12 +172,13 @@ get:
           $gte: {}
           $lt: {}
           $lte: {}
+        title: created_at
     - name: updated_at
       in: query
       description: The shipping option's updated at.
       required: false
       schema:
-        type: object
+        type: string
         description: The shipping option's updated at.
         required:
           - $eq
@@ -205,12 +206,13 @@ get:
           $gte: {}
           $lt: {}
           $lte: {}
+        title: updated_at
     - name: deleted_at
       in: query
       description: The shipping option's deleted at.
       required: false
       schema:
-        type: object
+        type: string
         description: The shipping option's deleted at.
         required:
           - $eq
@@ -238,6 +240,7 @@ get:
           $gte: {}
           $lt: {}
           $lte: {}
+        title: deleted_at
   security:
     - api_token: []
     - cookie_auth: []
