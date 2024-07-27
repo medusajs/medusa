@@ -121,7 +121,6 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
       }
     }
   }
-
   return returnShippingMethod.shipping_option_id
 }
 
