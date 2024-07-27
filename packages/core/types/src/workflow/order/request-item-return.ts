@@ -14,6 +14,8 @@ export interface DeleteRequestItemReturnWorkflowInput {
 
 export interface UpdateRequestItemReturnWorkflowInput {
   return_id: string
+  claim_id?: string
+  exchange_id?: string
   action_id: string
   data: {
     quantity?: BigNumberInput
