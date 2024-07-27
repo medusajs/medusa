@@ -815,7 +815,10 @@
         "restockAll": "Restock all items",
         "itemsLabel": "Items received",
         "sendNotificationHint": "Notify customer about received return.",
-        "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above."
+        "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
+        "toast": {
+          "success": "Return received successfully."
+        }
       }
     },
     "receiveReturn" : {

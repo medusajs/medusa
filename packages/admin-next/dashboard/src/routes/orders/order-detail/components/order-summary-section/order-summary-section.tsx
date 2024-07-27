@@ -377,7 +377,7 @@ const ReturnBreakdown = ({
             {
               requestedItemsCount: orderReturn.items.find(
                 (ri) => ri.item_id === itemId
-              ).quantity,
+              )[isRequested ? "quantity" : "received_quantity"],
             }
           )}
         </Text>
