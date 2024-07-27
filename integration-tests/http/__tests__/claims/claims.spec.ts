@@ -510,7 +510,18 @@ medusaIntegrationTestRunner({
         ).data.claims
         expect(result).toHaveLength(2)
 
-        // console.log(JSON.stringify(result, null, 2))
+        console.log(
+          JSON.stringify(
+            (
+              await api.get(
+                `/admin/orders?fields=*items,total,summary`,
+                adminHeaders
+              )
+            ).data.orders[0],
+            null,
+            2
+          )
+        )
       })
     })
   },
