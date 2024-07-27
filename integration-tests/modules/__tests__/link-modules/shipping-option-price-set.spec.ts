@@ -69,16 +69,12 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        await remoteLink.create([
-          {
-            [Modules.STOCK_LOCATION]: {
-              stock_location_id: location.id,
-            },
-            [Modules.FULFILLMENT]: {
-              fulfillment_provider_id: "manual_test-provider",
-            },
-          },
-        ])
+        await api.post(
+          `/admin/stock-locations/${location.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
+
         const serviceZone = await fulfillmentModule.createServiceZones({
           name: "Test",
           fulfillment_set_id: fulfillmentSet.id,
