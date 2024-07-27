@@ -46,6 +46,8 @@ export * from "./return/remove-return-shipping-method"
 export * from "./return/request-item-return"
 export * from "./return/update-receive-item-return-request"
 export * from "./return/update-request-item-return"
+export * from "./return/update-return"
 export * from "./return/update-return-shipping-method"
 export * from "./update-order-change-actions"
 export * from "./update-tax-lines"
+

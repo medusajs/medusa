@@ -420,6 +420,25 @@ medusaIntegrationTestRunner({
           })
         )
 
+        result = await api.post(
+          `/admin/returns/${returnId}`,
+          {
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
+          },
+          adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: returnId,
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
+          })
+        )
+
         const item = order.items[0]
 
         result = await api.post(

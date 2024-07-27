@@ -744,6 +744,46 @@ export const filesMap = [
     "pathname": "/recipes/subscriptions"
   },
   {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/create/page.mdx",
+    "pathname": "/service-factory-reference/methods/create"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/delete/page.mdx",
+    "pathname": "/service-factory-reference/methods/delete"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/list/page.mdx",
+    "pathname": "/service-factory-reference/methods/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/listAndCount/page.mdx",
+    "pathname": "/service-factory-reference/methods/listAndCount"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/restore/page.mdx",
+    "pathname": "/service-factory-reference/methods/restore"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/retrieve/page.mdx",
+    "pathname": "/service-factory-reference/methods/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/soft-delete/page.mdx",
+    "pathname": "/service-factory-reference/methods/soft-delete"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/methods/update/page.mdx",
+    "pathname": "/service-factory-reference/methods/update"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/page.mdx",
+    "pathname": "/service-factory-reference"
+  },
+  {
+    "filePath": "/www/apps/resources/app/service-factory-reference/tips/filtering/page.mdx",
+    "pathname": "/service-factory-reference/tips/filtering"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
     "pathname": "/storefront-development/cart/context"
   },
