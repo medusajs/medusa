@@ -1,18 +1,22 @@
 import {
+  FulfillmentWorkflow,
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderClaimDTO,
   OrderDTO,
 } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create-fulfillment"
+import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createOrderClaimItemsStep } from "../../steps/create-claim-items"
@@ -43,6 +47,65 @@ const validationStep = createStep(
   }
 )
 
+function prepareFulfillmentData({
+  order,
+  items,
+  shippingOption,
+  deliveryAddress,
+}: {
+  order: OrderDTO
+  items: any[]
+  shippingOption: {
+    id: string
+    provider_id: string
+    service_zone: {
+      fulfillment_set: {
+        location?: {
+          id: string
+          address: Record<string, any>
+        }
+      }
+    }
+  }
+  deliveryAddress?: Record<string, any>
+}) {
+  const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
+    order.items!.map((i) => [i.id, i])
+  )
+  const fulfillmentItems = items.map((i) => {
+    const orderItem = orderItemsMap.get(i.item_id)!
+    return {
+      line_item_id: i.item_id,
+      quantity: i.quantity,
+      return_quantity: i.quantity,
+      title: orderItem.variant_title ?? orderItem.title,
+      sku: orderItem.variant_sku || "",
+      barcode: orderItem.variant_barcode || "",
+    } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
+  })
+
+  const locationId = shippingOption.service_zone.fulfillment_set.location?.id!
+
+  // delivery address is the stock location address
+  const address =
+    deliveryAddress ??
+    shippingOption.service_zone.fulfillment_set.location?.address ??
+    {}
+
+  delete address.id
+
+  return {
+    input: {
+      location_id: locationId,
+      provider_id: shippingOption.provider_id,
+      shipping_option_id: shippingOption.id,
+      items: fulfillmentItems,
+      delivery_address: address,
+      order: order,
+    },
+  }
+}
+
 function transformActionsToItems({ orderChange }) {
   const claimItems: OrderChangeActionDTO[] = []
   const returnItems: OrderChangeActionDTO[] = []
@@ -62,12 +125,42 @@ function transformActionsToItems({ orderChange }) {
   return {
     claimItems: {
       changes: claimItems,
-      claimId: orderChange.claim_id,
+      claimId: claimItems?.[0]?.claim_id!,
     },
     returnItems: {
       changes: returnItems,
       returnId: returnItems?.[0]?.return_id!,
     },
+  }
+}
+
+function extractShippingOption({ orderPreview, orderClaim, returnId }) {
+  if (!orderPreview.shipping_methods?.length) {
+    return
+  }
+
+  let returnShippingMethod
+  let claimShippingMethod
+  for (const shippingMethod of orderPreview.shipping_methods) {
+    const modifiedShippingMethod_ = shippingMethod as any
+    if (!modifiedShippingMethod_.actions) {
+      continue
+    }
+
+    for (const action of modifiedShippingMethod_.actions) {
+      if (action.action === ChangeActionType.SHIPPING_ADD) {
+        if (action.return_id === returnId) {
+          returnShippingMethod = shippingMethod
+        } else if (action.claim_id === orderClaim.id) {
+          claimShippingMethod = shippingMethod
+        }
+      }
+    }
+  }
+
+  return {
+    returnShippingMethod,
+    claimShippingMethod,
   }
 }
 
@@ -85,7 +178,17 @@ export const confirmClaimRequestWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "version", "canceled_at"],
+      fields: [
+        "id",
+        "version",
+        "canceled_at",
+        "items.id",
+        "items.title",
+        "items.variant_title",
+        "items.variant_sku",
+        "items.variant_barcode",
+        "shipping_address.*",
+      ],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -121,12 +224,138 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       transformActionsToItems
     )
 
-    parallelize(
+    const orderPreview = previewOrderChangeStep(order.id)
+
+    const [createClaimItems, createdReturnItems] = parallelize(
       createOrderClaimItemsStep(claimItems),
       createReturnItemsStep(returnItems),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
 
-    return previewOrderChangeStep(order.id)
+    const returnId = transform(
+      { createdReturnItems },
+      ({ createdReturnItems }) => {
+        return createdReturnItems?.[0]?.return_id
+      }
+    )
+
+    const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
+      return createClaimItems?.[0]?.claim_id
+    })
+
+    const { returnShippingMethod, claimShippingMethod } = transform(
+      { orderPreview, orderClaim, returnId },
+      extractShippingOption
+    )
+
+    when({ claimShippingMethod }, ({ claimShippingMethod }) => {
+      return !!claimShippingMethod
+    }).then(() => {
+      const claim: OrderClaimDTO = useRemoteQueryStep({
+        entry_point: "order_claim",
+        fields: [
+          "id",
+          "version",
+          "canceled_at",
+          "additional_items.id",
+          "additional_items.title",
+          "additional_items.variant_title",
+          "additional_items.variant_sku",
+          "additional_items.variant_barcode",
+        ],
+        variables: { id: claimId },
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "claim-query" })
+
+      const claimShippingOption = useRemoteQueryStep({
+        entry_point: "shipping_options",
+        fields: [
+          "id",
+          "provider_id",
+          "service_zone.fulfillment_set.location.id",
+          "service_zone.fulfillment_set.location.address.*",
+        ],
+        variables: {
+          id: claimShippingMethod.shipping_option_id,
+        },
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "claim-shipping-option" })
+
+      const fulfillmentData = transform(
+        {
+          order,
+          items: claim.additional_items! ?? [],
+          shippingOption: claimShippingOption,
+          deliveryAddress: order.shipping_address,
+        },
+        prepareFulfillmentData
+      )
+
+      const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
+
+      const link = transform({ fulfillment, order }, (data) => {
+        return [
+          {
+            [Modules.ORDER]: { order_id: data.order.id },
+            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+          },
+        ]
+      })
+
+      createRemoteLinkStep(link).config({
+        name: "claim-shipping-fulfillment-link",
+      })
+    })
+
+    when({ returnShippingMethod }, ({ returnShippingMethod }) => {
+      return !!returnShippingMethod
+    }).then(() => {
+      const returnShippingOption = useRemoteQueryStep({
+        entry_point: "shipping_options",
+        fields: [
+          "id",
+          "provider_id",
+          "service_zone.fulfillment_set.location.id",
+          "service_zone.fulfillment_set.location.address.*",
+        ],
+        variables: {
+          id: returnShippingMethod.shipping_option_id,
+        },
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "claim-return-shipping-option" })
+
+      const fulfillmentData = transform(
+        {
+          order,
+          items: order.items!,
+          shippingOption: returnShippingOption,
+        },
+        prepareFulfillmentData
+      )
+
+      const returnFulfillment =
+        createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
+
+      const returnLink = transform(
+        { returnId, fulfillment: returnFulfillment },
+        (data) => {
+          return [
+            {
+              [Modules.ORDER]: { return_id: data.returnId },
+              [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
+            },
+          ]
+        }
+      )
+
+      createRemoteLinkStep(returnLink).config({
+        name: "claim-return-shipping-fulfillment-link",
+      })
+    })
+
+    return orderPreview
   }
 )

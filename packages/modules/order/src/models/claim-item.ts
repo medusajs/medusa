@@ -123,7 +123,7 @@ export default class OrderClaimItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "claitem")
-    this.claim_id = this.claim?.id
+    this.claim_id ??= this.claim?.id
   }
 
   @OnInit()

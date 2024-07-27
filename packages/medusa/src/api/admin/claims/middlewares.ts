@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminPostClaimItemsReqSchema,
   AdminPostClaimsAddItemsReqSchema,
   AdminPostClaimsRequestItemsActionReqSchema,
   AdminPostClaimsRequestReturnItemsReqSchema,
@@ -50,7 +51,7 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/claims/:id/claim-items",
     middlewares: [
-      validateAndTransformBody(AdminPostClaimsRequestReturnItemsReqSchema),
+      validateAndTransformBody(AdminPostClaimItemsReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

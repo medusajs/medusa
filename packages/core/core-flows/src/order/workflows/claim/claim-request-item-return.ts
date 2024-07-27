@@ -129,7 +129,6 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
       const createdReturnId = transform(
         { createdReturn },
         ({ createdReturn }) => {
-          console.log("UPDATEING", createdReturn?.[0]!.id)
           return createdReturn?.[0]!.id
         }
       )

@@ -1,4 +1,5 @@
 import {
+  ClaimReason,
   ClaimType,
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -21,11 +22,46 @@ medusaIntegrationTestRunner({
     let fulfillmentSet
     let returnReason
     let inventoryItem
+    let inventoryItemExtra
     let location
+    let productExtra
+    const shippingProviderId = "manual_test-provider"
 
     beforeEach(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      const region = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "test-region",
+            currency_code: "usd",
+          },
+          adminHeaders
+        )
+      ).data.region
+
+      const customer = (
+        await api.post(
+          "/admin/customers",
+          {
+            first_name: "joe",
+            email: "joe@admin.com",
+          },
+          adminHeaders
+        )
+      ).data.customer
+
+      const salesChannel = (
+        await api.post(
+          "/admin/sales-channels",
+          {
+            name: "Test channel",
+          },
+          adminHeaders
+        )
+      ).data.sales_channel
 
       const product = (
         await api.post(
@@ -49,6 +85,28 @@ medusaIntegrationTestRunner({
         )
       ).data.product
 
+      productExtra = (
+        await api.post(
+          "/admin/products",
+          {
+            title: "Extra product",
+            variants: [
+              {
+                title: "my variant",
+                sku: "variant-sku",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 123456.1234657890123456789,
+                  },
+                ],
+              },
+            ],
+          },
+          adminHeaders
+        )
+      ).data.product
+
       returnReason = (
         await api.post(
           "/admin/return-reasons",
@@ -63,7 +121,7 @@ medusaIntegrationTestRunner({
       const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
       order = await orderModule.createOrders({
-        region_id: "test_region_id",
+        region_id: region.id,
         email: "foo@bar.com",
         items: [
           {
@@ -73,7 +131,7 @@ medusaIntegrationTestRunner({
             unit_price: 25,
           },
         ],
-        sales_channel_id: "test",
+        sales_channel_id: salesChannel.id,
         shipping_address: {
           first_name: "Test",
           last_name: "Test",
@@ -107,11 +165,11 @@ medusaIntegrationTestRunner({
           },
         ],
         currency_code: "usd",
-        customer_id: "joe",
+        customer_id: customer.id,
       })
 
       order2 = await orderModule.createOrders({
-        region_id: "test_region_id",
+        region_id: region.id,
         email: "foo@bar2.com",
         items: [
           {
@@ -120,7 +178,7 @@ medusaIntegrationTestRunner({
             unit_price: 20,
           },
         ],
-        sales_channel_id: "test",
+        sales_channel_id: salesChannel.id,
         shipping_address: {
           first_name: "Test",
           last_name: "Test",
@@ -139,7 +197,7 @@ medusaIntegrationTestRunner({
           postal_code: "12345",
         },
         currency_code: "usd",
-        customer_id: "joe",
+        customer_id: customer.id,
       })
 
       shippingProfile = (
@@ -202,6 +260,19 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      inventoryItemExtra = (
+        await api.get(`/admin/inventory-items?sku=variant-sku`, adminHeaders)
+      ).data.inventory_items[0]
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemExtra.id}/location-levels`,
+        {
+          location_id: location.id,
+          stocked_quantity: 4,
+        },
+        adminHeaders
+      )
+
       const remoteLink = container.resolve(
         ContainerRegistrationKeys.REMOTE_LINK
       )
@@ -212,12 +283,20 @@ medusaIntegrationTestRunner({
             stock_location_id: location.id,
           },
           [Modules.FULFILLMENT]: {
+            fulfillment_provider_id: shippingProviderId,
+          },
+        },
+        {
+          [Modules.STOCK_LOCATION]: {
+            stock_location_id: location.id,
+          },
+          [Modules.FULFILLMENT]: {
             fulfillment_set_id: fulfillmentSet.id,
           },
         },
         {
           [Modules.SALES_CHANNEL]: {
-            sales_channel_id: "test",
+            sales_channel_id: salesChannel.id,
           },
           [Modules.STOCK_LOCATION]: {
             stock_location_id: location.id,
@@ -231,13 +310,21 @@ medusaIntegrationTestRunner({
             inventory_item_id: inventoryItem.id,
           },
         },
+        {
+          [Modules.PRODUCT]: {
+            variant_id: productExtra.variants[0].id,
+          },
+          [Modules.INVENTORY]: {
+            inventory_item_id: inventoryItemExtra.id,
+          },
+        },
       ])
 
       const shippingOptionPayload = {
         name: "Return shipping",
         service_zone_id: fulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
-        provider_id: "manual_test-provider",
+        provider_id: shippingProviderId,
         price_type: "flat",
         type: {
           label: "Test type",
@@ -353,7 +440,7 @@ medusaIntegrationTestRunner({
               {
                 id: item.id,
                 reason_id: returnReason.id,
-                quantity: 1,
+                quantity: 2,
               },
             ],
           },
@@ -375,7 +462,36 @@ medusaIntegrationTestRunner({
         result = await api.post(
           `/admin/claims/${claimId}/inbound/items/${updateReturnItemActionId}`,
           {
-            quantity: 2,
+            quantity: 1,
+          },
+          adminHeaders
+        )
+
+        // New Items
+        await api.post(
+          `/admin/claims/${claimId}/outbound/items`,
+          {
+            items: [
+              {
+                variant_id: productExtra.variants[0].id,
+                quantity: 2,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        // Claim Items
+        await api.post(
+          `/admin/claims/${claimId}/claim-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                reason: ClaimReason.PRODUCTION_FAILURE,
+                quantity: 1,
+              },
+            ],
           },
           adminHeaders
         )
@@ -394,7 +510,7 @@ medusaIntegrationTestRunner({
         ).data.claims
         expect(result).toHaveLength(2)
 
-        console.log(result.data)
+        console.log(JSON.stringify(result, null, 2))
       })
 
       // Simple lifecyle:

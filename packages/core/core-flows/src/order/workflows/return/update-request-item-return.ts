@@ -39,11 +39,6 @@ const validationStep = createStep(
     },
     context
   ) {
-    console.log({
-      order,
-      orderChange,
-      orderReturn,
-    })
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
