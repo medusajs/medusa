@@ -37,6 +37,7 @@ import {
   useConfirmReturnRequest,
   useDeleteReturnShipping,
   useRemoveReturnItem,
+  useUpdateReturn,
   useUpdateReturnItem,
   useUpdateReturnShipping,
 } from "../../../../../hooks/api/returns"
@@ -91,6 +92,8 @@ export const ReturnCreateForm = ({
 
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
     useCancelReturnRequest(activeReturn.id, order.id)
+  const { mutateAsync: updateReturnRequest, isPending: isUpdating } =
+    useUpdateReturn(activeReturn.id, order.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id, order.id)
@@ -122,7 +125,8 @@ export const ReturnCreateForm = ({
     isDeletingReturnShipping ||
     isAddingReturnItem ||
     isRemovingReturnItem ||
-    isUpdatingReturnItem
+    isUpdatingReturnItem ||
+    isUpdating
 
   /**
    * FORM
@@ -252,6 +256,10 @@ export const ReturnCreateForm = ({
     })
 
     setIsOpen("items", false)
+  }
+
+  const onLocationChange = async (selectedLocationId: string) => {
+    await updateReturnRequest({ location_id: selectedLocationId })
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
@@ -477,6 +485,7 @@ export const ReturnCreateForm = ({
                               value={value}
                               onChange={(v) => {
                                 onChange(v)
+                                onLocationChange(v)
                               }}
                               {...field}
                               options={(stock_locations ?? []).map(

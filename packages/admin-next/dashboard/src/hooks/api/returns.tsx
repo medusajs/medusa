@@ -226,6 +226,29 @@ export const useRemoveReturnItem = (
   })
 }
 
+export const useUpdateReturn = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    Error,
+    HttpTypes.AdminUpdateReturnRequest
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminUpdateReturnRequest) => {
+      return sdk.admin.return.updateRequest(id, payload)
+    },
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useAddReturnShipping = (
   id: string,
   orderId: string,

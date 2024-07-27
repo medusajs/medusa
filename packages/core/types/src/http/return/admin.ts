@@ -78,6 +78,12 @@ export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }
 
+export interface AdminUpdateReturnRequest {
+  location_id?: string
+  no_notification?: boolean
+  metadata?: Record<string, unknown> | null
+}
+
 export interface AdminConfirmReceiveReturn {
   no_notification?: boolean
 }

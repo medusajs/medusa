@@ -1,10 +1,4 @@
-import {
-  AdminConfirmReceiveReturn,
-  AdminUpdateReceiveItems,
-  FindParams,
-  HttpTypes,
-  SelectParams,
-} from "@medusajs/types"
+import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -168,6 +162,23 @@ export class Return {
     )
   }
 
+  async updateRequest(
+    id: string,
+    body: HttpTypes.AdminUpdateReturnRequest,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async confirmRequest(
     id: string,
     body: HttpTypes.AdminConfirmReturnRequest,
@@ -268,4 +279,5 @@ export class Return {
       }
     )
   }
+
 }
