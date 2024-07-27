@@ -1,7 +1,7 @@
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { IOrderModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { OrderModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
@@ -31,7 +31,10 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           "return",
           "returnItem",
           "orderClaim",
+          "orderClaimItem",
+          "orderClaimItemImage",
           "orderExchange",
+          "orderExchangeItem",
         ])
 
         Object.keys(linkable).forEach((key) => {
