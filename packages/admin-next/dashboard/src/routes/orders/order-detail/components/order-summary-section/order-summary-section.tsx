@@ -233,7 +233,7 @@ const Item = ({
         </div>
       </div>
       {returns.map((r) => (
-        <ReturnBreakdown key={r.id} orderReturn={r} />
+        <ReturnBreakdown key={r.id} orderReturn={r} itemId={item.id} />
       ))}
     </>
   )
@@ -342,7 +342,13 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   )
 }
 
-const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBreakdown = ({
+  orderReturn,
+  itemId,
+}: {
+  orderReturn: AdminReturn
+  itemId: string
+}) => {
   const { t } = useTranslation()
   const { getRelativeDate } = useDate()
 
@@ -354,7 +360,7 @@ const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
     return null
   }
 
-  const isRequested = orderReturn.statu === "requested"
+  const isRequested = orderReturn.status === "requested"
 
   return (
     <div
@@ -369,7 +375,9 @@ const ReturnBreakdown = ({ orderReturn }: { orderReturn: AdminReturn }) => {
               isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
             }`,
             {
-              requestedItemsCount: orderReturn.items.length,
+              requestedItemsCount: orderReturn.items.find(
+                (ri) => ri.item_id === itemId
+              ).quantity,
             }
           )}
         </Text>
