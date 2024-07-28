@@ -186,12 +186,36 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "orderClaim",
             },
           },
+          orderClaimItem: {
+            id: {
+              field: "orderClaimItem",
+              linkable: "order_claim_item_id",
+              primaryKey: "id",
+              serviceName: "order",
+            },
+          },
+          orderClaimItemImage: {
+            id: {
+              field: "orderClaimItemImage",
+              linkable: "order_claim_item_image_id",
+              primaryKey: "id",
+              serviceName: "order",
+            },
+          },
           orderExchange: {
             id: {
               linkable: "order_exchange_id",
               primaryKey: "id",
               serviceName: "order",
               field: "orderExchange",
+            },
+          },
+          orderExchangeItem: {
+            id: {
+              field: "orderExchangeItem",
+              linkable: "order_exchange_item_id",
+              primaryKey: "id",
+              serviceName: "order",
             },
           },
         })
