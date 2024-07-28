@@ -162,7 +162,6 @@
  *     description: The inventory item's weight.
  *     required: false
  *     schema:
- *       type: object
  *       description: The inventory item's weight.
  *       required:
  *         - $eq
@@ -195,7 +194,6 @@
  *     description: The inventory item's length.
  *     required: false
  *     schema:
- *       type: object
  *       description: The inventory item's length.
  *       required:
  *         - $eq
@@ -228,7 +226,6 @@
  *     description: The inventory item's height.
  *     required: false
  *     schema:
- *       type: object
  *       description: The inventory item's height.
  *       required:
  *         - $eq
@@ -261,7 +258,6 @@
  *     description: The inventory item's width.
  *     required: false
  *     schema:
- *       type: object
  *       description: The inventory item's width.
  *       required:
  *         - $eq
