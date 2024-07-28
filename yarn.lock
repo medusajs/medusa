@@ -4604,18 +4604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@npm:^0.0.1-preview-20240724081425":
-  version: 0.0.1-snapshot-20240728083710
-  resolution: "@medusajs/framework@npm:0.0.1-snapshot-20240728083710"
-  dependencies:
-    "@medusajs/medusa-cli": 1.3.23-snapshot-20240728083710
-    "@medusajs/utils": 1.12.0-snapshot-20240728083710
-    awilix: ^8.0.0
-  checksum: 6fcb2520f37de77657ef381906298d8c7ee4e80bddc48dfee6d399ee51839136c0212d980e600745e9dda7a4a441cbb6d83e07573b9d14c80fa893257d1213dc
-  languageName: node
-  linkType: hard
-
-"@medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@*, @medusajs/framework@workspace:packages/framework/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
@@ -4820,43 +4809,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@npm:1.3.23-snapshot-20240728083710":
-  version: 1.3.23-snapshot-20240728083710
-  resolution: "@medusajs/medusa-cli@npm:1.3.23-snapshot-20240728083710"
-  dependencies:
-    "@medusajs/utils": 1.12.0-snapshot-20240728083710
-    axios: ^0.21.4
-    chalk: ^4.0.0
-    configstore: 5.0.1
-    core-js: ^3.6.5
-    dotenv: ^16.4.5
-    execa: ^5.1.1
-    fs-exists-cached: ^1.0.0
-    fs-extra: ^10.0.0
-    glob: ^7.1.6
-    hosted-git-info: ^4.0.2
-    inquirer: ^8.0.0
-    is-valid-path: ^0.1.1
-    meant: ^1.0.3
-    medusa-telemetry: 0.0.18-snapshot-20240728083710
-    open: ^8.0.6
-    ora: ^5.4.1
-    pg: ^8.11.0
-    pg-god: ^1.0.12
-    prompts: ^2.4.2
-    regenerator-runtime: ^0.13.11
-    resolve-cwd: ^3.0.0
-    semver: ^7.3.8
-    stack-trace: ^0.0.10
-    ulid: ^2.3.0
-    winston: ^3.8.2
-    yargs: ^15.3.1
-  bin:
-    medusa: cli.js
-  checksum: b304213c21f6c3fa7e35d6c7ea6ef618c0b729d3f52ebcdb4e44691645ec96292bbf1983697e13b2647c6d523e7b7fcab8ca4d6679e5c176b69e34280f70da52
-  languageName: node
-  linkType: hard
-
 "@medusajs/medusa-cli@npm:^1.3.23":
   version: 1.3.23
   resolution: "@medusajs/medusa-cli@npm:1.3.23"
@@ -4931,7 +4883,7 @@ __metadata:
     "@inquirer/checkbox": ^2.3.11
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
-    "@medusajs/framework": ^0.0.1-preview-20240724081425
+    "@medusajs/framework": "*"
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
@@ -5377,13 +5329,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/types@npm:1.12.0-snapshot-20240728083710":
-  version: 1.12.0-snapshot-20240728083710
-  resolution: "@medusajs/types@npm:1.12.0-snapshot-20240728083710"
-  checksum: d5b2837f30ce79e2d1f6648284ccf7c60dac7a34a10331dc24851d0375870850ab5504bb1c19b05ebe34186115b55454b80bcea3fbcee55c48dad4a6f9450edc
-  languageName: node
-  linkType: hard
-
 "@medusajs/types@npm:^1.11.17, @medusajs/types@npm:^1.11.17-preview-20240510084332":
   version: 1.11.17
   resolution: "@medusajs/types@npm:1.11.17"
@@ -5531,26 +5476,6 @@ __metadata:
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
-
-"@medusajs/utils@npm:1.12.0-snapshot-20240728083710":
-  version: 1.12.0-snapshot-20240728083710
-  resolution: "@medusajs/utils@npm:1.12.0-snapshot-20240728083710"
-  dependencies:
-    "@medusajs/types": 1.12.0-snapshot-20240728083710
-    "@mikro-orm/core": 5.9.7
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
-    awilix: ^8.0.1
-    bignumber.js: ^9.1.2
-    dotenv: ^16.4.5
-    json-2-csv: ^5.5.4
-    jsonwebtoken: ^9.0.2
-    knex: 2.4.2
-    pluralize: ^8.0.0
-    ulid: ^2.3.0
-  checksum: c5779bc6a93a5a04a193223359b84c72d5f8038ba81f2b7c20ac060d84f00d863d18c8f259fceae4d71d70e9340d20844d2797ced159f6d9e671496376764354
-  languageName: node
-  linkType: hard
 
 "@medusajs/utils@npm:^1.11.10":
   version: 1.11.10
@@ -22876,24 +22801,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@npm:0.0.18-snapshot-20240728083710":
-  version: 0.0.18-snapshot-20240728083710
-  resolution: "medusa-telemetry@npm:0.0.18-snapshot-20240728083710"
-  dependencies:
-    "@babel/runtime": ^7.22.10
-    axios: ^0.21.4
-    axios-retry: ^3.1.9
-    boxen: ^5.0.1
-    ci-info: ^3.2.0
-    configstore: 5.0.1
-    global: ^4.4.0
-    is-docker: ^2.2.1
-    remove-trailing-slash: ^0.1.1
-    uuid: ^8.3.2
-  checksum: dc238983e3507a01b30966dc689ac9c695fbfa3ea79d3bd6525376c3637af646c7e1cad1a83274477f48a77eb6898f7382ee69b03ecfb44a77524fa1c3d6f5da
-  languageName: node
-  linkType: hard
-
 "medusa-telemetry@npm:^0.0.18":
   version: 0.0.18
   resolution: "medusa-telemetry@npm:0.0.18"
@@ -22926,7 +22833,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    "@medusajs/framework": "workspace:^"
+    "@medusajs/framework": "*"
     "@medusajs/medusa": ">1.19"
     "@medusajs/modules-sdk": ^1.12.10
     axios: ^0.28.0
