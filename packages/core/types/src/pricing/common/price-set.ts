@@ -5,6 +5,7 @@ import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,
   MoneyAmountDTO,
+  UpdateMoneyAmountDTO,
 } from "./money-amount"
 
 export interface PricingRepositoryService {
@@ -221,6 +222,18 @@ export interface CreatePriceSetPriceRules extends Record<string, string> {}
  * The prices to create part of a price set.
  */
 export interface CreatePricesDTO extends CreateMoneyAmountDTO {
+  /**
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
+   */
+  rules?: CreatePriceSetPriceRules
+}
+
+/**
+ * @interface
+ *
+ * The prices to create part of a price set.
+ */
+export interface UpdatePricesDTO extends UpdateMoneyAmountDTO {
   /**
    * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */

@@ -38,11 +38,6 @@ export const groupProductsForBatchStep = createStep(
             )
           }
 
-          // TODO: Currently the update product workflow doesn't update variant pricing, but we should probably add support for it.
-          product.variants?.forEach((variant: any) => {
-            delete variant.prices
-          })
-
           acc.toUpdate.push(
             product as HttpTypes.AdminUpdateProduct & { id: string }
           )

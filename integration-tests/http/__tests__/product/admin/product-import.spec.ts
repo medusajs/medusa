@@ -217,7 +217,20 @@ medusaIntegrationTestRunner({
                   title: "Test variant 2",
                   allow_backorder: false,
                   manage_inventory: true,
-                  // TODO: Since we are doing a product update, there won't be any prices created for the variant
+                  prices: [
+                    expect.objectContaining({
+                      currency_code: "usd",
+                      amount: 200,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "eur",
+                      amount: 65,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "dkk",
+                      amount: 50,
+                    }),
+                  ],
                   options: [
                     expect.objectContaining({
                       value: "small",

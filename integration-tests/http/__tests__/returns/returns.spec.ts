@@ -909,6 +909,24 @@ medusaIntegrationTestRunner({
             })
           )
 
+          const receiveItemActionId =
+            result.data.order_preview.items[0].actions[0].id
+
+          // invalid update (quantity 0)
+          result = await api
+            .post(
+              `/admin/returns/${returnId}/receive-items/${receiveItemActionId}`,
+              {
+                quantity: 0,
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(result.response.data.message).toEqual(
+            `Quantity to receive return of item ${item.id} is required.`
+          )
+
           result = await api.post(
             `/admin/returns/${returnId}/dismiss-items`,
             {
