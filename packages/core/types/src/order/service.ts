@@ -22,12 +22,15 @@ import {
   OrderChangeDTO,
   OrderChangeReturn,
   OrderClaimDTO,
+  OrderClaimItemDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderExchangeItemDTO,
   OrderItemDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
+  OrderReturnItemDTO,
   OrderReturnReasonDTO,
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
@@ -47,12 +50,14 @@ import {
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
+  CreateOrderClaimItemDTO,
   CreateOrderDTO,
   CreateOrderExchangeDTO,
+  CreateOrderExchangeItemDTO,
   CreateOrderLineItemDTO,
-  CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
+  CreateOrderReturnItemDTO,
   CreateOrderReturnReasonDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
@@ -75,12 +80,13 @@ import {
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
-  UpdateOrderReturnDTO,
   UpdateOrderReturnReasonDTO,
   UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
+  UpdateOrderShippingMethodDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
@@ -278,7 +284,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  updateOrders(data: UpdateOrderDTO[]): Promise<OrderDTO[]>
+  updateOrders(
+    data: UpdateOrderDTO[],
+    sharedContext?: Context
+  ): Promise<OrderDTO[]>
 
   /**
    * This method updates existing {return type}(s).
@@ -560,10 +569,12 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderLineItemDTO[]>
 
   createLineItems(
-    data: CreateOrderLineItemForOrderDTO
+    data: CreateOrderLineItemDTO,
+    sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
   createLineItems(
-    data: CreateOrderLineItemForOrderDTO[]
+    data: CreateOrderLineItemDTO[],
+    sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
   createLineItems(
     orderId: string,
@@ -597,7 +608,8 @@ export interface IOrderModuleService extends IModuleService {
    *
    */
   updateLineItems(
-    data: UpdateOrderLineItemWithSelectorDTO[]
+    data: UpdateOrderLineItemWithSelectorDTO[],
+    sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
 
   /**
@@ -758,16 +770,28 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodDTO[]>
 
   createShippingMethods(
-    data: CreateOrderShippingMethodDTO
+    data: CreateOrderShippingMethodDTO,
+    sharedContext?: Context
   ): Promise<OrderShippingMethodDTO>
   createShippingMethods(
-    data: CreateOrderShippingMethodDTO[]
+    data: CreateOrderShippingMethodDTO[],
+    sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
   createShippingMethods(
     orderId: string,
     methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
+
+  updateShippingMethods(
+    data: UpdateOrderShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<OrderShippingMethodDTO[]>
+
+  updateShippingMethods(
+    data: UpdateOrderShippingMethodDTO,
+    sharedContext?: Context
+  ): Promise<OrderShippingMethodDTO>
 
   deleteShippingMethods(
     methodIds: string[],
@@ -804,14 +828,17 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
   createLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO[]
+    data: CreateOrderAdjustmentDTO[],
+    sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
   createLineItemAdjustments(
-    data: CreateOrderAdjustmentDTO
+    data: CreateOrderAdjustmentDTO,
+    sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
   createLineItemAdjustments(
     orderId: string,
-    data: CreateOrderAdjustmentDTO[]
+    data: CreateOrderAdjustmentDTO[],
+    sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
   /**
@@ -876,10 +903,12 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
 
   createShippingMethodAdjustments(
-    data: CreateOrderShippingMethodAdjustmentDTO[]
+    data: CreateOrderShippingMethodAdjustmentDTO[],
+    sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
   createShippingMethodAdjustments(
-    data: CreateOrderShippingMethodAdjustmentDTO
+    data: CreateOrderShippingMethodAdjustmentDTO,
+    sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO>
   createShippingMethodAdjustments(
     orderId: string,
@@ -951,10 +980,12 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderLineItemTaxLineDTO[]>
 
   createLineItemTaxLines(
-    taxLines: CreateOrderLineItemTaxLineDTO[]
+    taxLines: CreateOrderLineItemTaxLineDTO[],
+    sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
   createLineItemTaxLines(
-    taxLine: CreateOrderLineItemTaxLineDTO
+    taxLine: CreateOrderLineItemTaxLineDTO,
+    sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO>
   createLineItemTaxLines(
     orderId: string,
@@ -1031,10 +1062,12 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
   createShippingMethodTaxLines(
-    taxLines: CreateOrderShippingMethodTaxLineDTO[]
+    taxLines: CreateOrderShippingMethodTaxLineDTO[],
+    sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
   createShippingMethodTaxLines(
-    taxLine: CreateOrderShippingMethodTaxLineDTO
+    taxLine: CreateOrderShippingMethodTaxLineDTO,
+    sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO>
   createShippingMethodTaxLines(
     orderId: string,
@@ -1250,42 +1283,6 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<void>
 
   /**
-   * This method deletes order change by its ID.
-   *
-   * @param {string[]} orderChangeId - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.deleteOrderChanges(["orderChangeId1", "orderChangeId2"]);
-   * ```
-   *
-   */
-  deleteOrderChanges(
-    orderChangeId: string[],
-    sharedContext?: Context
-  ): Promise<void>
-
-  /**
-   * This method deletes order change by its ID.
-   *
-   * @param {string} orderChangeId - The order's ID.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.deleteOrderChanges("orderChangeId");
-   * ```
-   *
-   */
-  deleteOrderChanges(
-    orderChangeId: string,
-    sharedContext?: Context
-  ): Promise<void>
-
-  /**
    * This method Represents the completion of an asynchronous operation
    *
    * @param {string} orderId - The order's ID.
@@ -1394,7 +1391,7 @@ export interface IOrderModuleService extends IModuleService {
   confirmOrderChange(
     orderChangeId: string[],
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<OrderChangeReturn>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1414,7 +1411,7 @@ export interface IOrderModuleService extends IModuleService {
   confirmOrderChange(
     data: ConfirmOrderChangeDTO,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<OrderChangeReturn>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1436,7 +1433,7 @@ export interface IOrderModuleService extends IModuleService {
   confirmOrderChange(
     data: ConfirmOrderChangeDTO[],
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<OrderChangeReturn>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1855,7 +1852,8 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderReturnReasonDTO[]>
 
   updateReturnReasons(
-    data: UpdateOrderReturnReasonWithSelectorDTO[]
+    data: UpdateOrderReturnReasonWithSelectorDTO[],
+    sharedContext?: Context
   ): Promise<OrderReturnReasonDTO[]>
   updateReturnReasons(
     selector: Partial<FilterableOrderReturnReasonProps>,
@@ -1885,6 +1883,36 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
+  createReturnItems(
+    data: CreateOrderReturnItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderReturnItemDTO>
+
+  createReturnItems(
+    data: CreateOrderReturnItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderReturnItemDTO[]>
+
+  createOrderClaimItems(
+    data: CreateOrderClaimItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderClaimItemDTO>
+
+  createOrderClaimItems(
+    data: CreateOrderClaimItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderClaimItemDTO[]>
+
+  createOrderExchangeItems(
+    data: CreateOrderExchangeItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeItemDTO>
+
+  createOrderExchangeItems(
+    data: CreateOrderExchangeItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderExchangeItemDTO[]>
+
   createReturns(
     data: CreateOrderReturnDTO,
     sharedContext?: Context
@@ -1895,20 +1923,25 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ReturnDTO[]>
 
-  updateReturns(data: UpdateOrderReturnWithSelectorDTO[]): Promise<ReturnDTO[]>
+  updateReturns(
+    data: UpdateOrderReturnWithSelectorDTO[],
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
 
   updateReturns(
     selector: Partial<FilterableReturnProps>,
-    data: Partial<UpdateOrderReturnDTO>,
+    data: Partial<UpdateReturnDTO>,
     sharedContext?: Context
   ): Promise<ReturnDTO[]>
   updateReturns(
     id: string,
-    data: Partial<UpdateOrderReturnDTO>,
+    data: Partial<UpdateReturnDTO>,
     sharedContext?: Context
   ): Promise<ReturnDTO>
 
   deleteReturns(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteReturnItems(ids: string[], sharedContext?: Context): Promise<void>
 
   softDeleteReturns<TReturnableLinkableKeys extends string = string>(
     ids: string[],
@@ -1933,7 +1966,8 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderClaimDTO[]>
 
   updateOrderClaims(
-    data: UpdateOrderClaimWithSelectorDTO[]
+    data: UpdateOrderClaimWithSelectorDTO[],
+    sharedContext?: Context
   ): Promise<OrderClaimDTO[]>
 
   updateOrderClaims(
@@ -1948,6 +1982,13 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderClaimDTO>
 
   deleteOrderClaims(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteOrderClaimItems(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteOrderClaimItemImages(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   softDeleteOrderClaims<TReturnableLinkableKeys extends string = string>(
     ids: string[],
@@ -1972,7 +2013,8 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderExchangeDTO[]>
 
   updateOrderExchanges(
-    data: UpdateOrderExchangeWithSelectorDTO[]
+    data: UpdateOrderExchangeWithSelectorDTO[],
+    sharedContext?: Context
   ): Promise<OrderExchangeDTO[]>
 
   updateOrderExchanges(
@@ -1987,6 +2029,11 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderExchangeDTO>
 
   deleteOrderExchanges(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteOrderExchangeItems(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   softDeleteOrderExchanges<TReturnableLinkableKeys extends string = string>(
     ids: string[],

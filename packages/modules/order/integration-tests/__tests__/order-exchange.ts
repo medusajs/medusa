@@ -104,6 +104,9 @@ moduleIntegrationTestRunner({
 
       it("should exchange an item and add two new items to the order", async function () {
         const createdOrder = await service.createOrders(input)
+        createdOrder.items = createdOrder.items!.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        )
 
         // Fullfilment
         await service.registerFulfillment({
@@ -211,7 +214,7 @@ moduleIntegrationTestRunner({
                 }),
               }),
             ]),
-            shipping_methods: [
+            shipping_methods: expect.arrayContaining([
               expect.objectContaining({
                 name: "return shipping method",
                 amount: 10,
@@ -220,7 +223,7 @@ moduleIntegrationTestRunner({
                 name: "Exchange method",
                 amount: 35,
               }),
-            ],
+            ]),
             difference_due: 14,
           })
         )

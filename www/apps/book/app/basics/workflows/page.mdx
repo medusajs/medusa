@@ -60,13 +60,9 @@ import {
 
 // ...
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>(
+const myWorkflow = createWorkflow(
   "hello-world",
-  function (input) {
+  function (input: WorkflowInput) {
     const str1 = step1()
     // to pass input
     const str2 = step2(input)
@@ -130,10 +126,10 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
     import { IUserModuleService } from "@medusajs/types"
 
     export default async function handleCustomerCreate({
-      data,
+      event: { data },
       container,
     }: SubscriberArgs<{ id: string }>) {
-      const userId = data.data.id
+      const userId = data.id
       const userModuleService: IUserModuleService = container.resolve(
         ModuleRegistrationName.USER
       )
@@ -227,9 +223,9 @@ Each step in the workflow receives as a second parameter a `context` object. The
 For example:
 
 export const highlights = [
-  ["15", "resolve", "Resolve the Product Module's main service."],
+  ["11", "resolve", "Resolve the Product Module's main service."],
   [
-    "15",
+    "11",
     "ModuleRegistrationName.PRODUCT",
     "The resource registration name imported from `@medusajs/modules-sdk`.",
   ],
@@ -244,10 +240,6 @@ import {
 import { IProductModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
-type WorkflowOutput = {
-  count: number
-}
-
 const step1 = createStep("step-1", async (_, context) => {
   const productModuleService: IProductModuleService =
     context.container.resolve(ModuleRegistrationName.PRODUCT)
@@ -257,7 +249,7 @@ const step1 = createStep("step-1", async (_, context) => {
   return new StepResponse(count)
 })
 
-const myWorkflow = createWorkflow<unknown, WorkflowOutput>(
+const myWorkflow = createWorkflow(
   "product-count",
   function () {
     const count = step1()

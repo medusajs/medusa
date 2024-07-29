@@ -5,11 +5,12 @@ import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { XMarkMini } from "@medusajs/icons"
-import { AdminFulfillment, AdminOrder } from "@medusajs/types"
+import { AdminFulfillment, AdminOrder, AdminReturn } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { useReturns } from "../../../../../hooks/api/returns"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -79,6 +80,8 @@ type Activity = {
 
 const useActivityItems = (order: AdminOrder) => {
   const { t } = useTranslation()
+
+  const { returns = [] } = useReturns({ order_id: order.id, fields: "*items" })
 
   const notes = []
   const isLoading = false
@@ -165,16 +168,13 @@ const useActivityItems = (order: AdminOrder) => {
       }
     }
 
-    /**
-     * TODO: revisit when API is fixed to fetch returns of an order
-     */
-
-    // for (const ret of order.returns) {
-    //   items.push({
-    //     title: t("orders.activity.events.return.created"),
-    //     timestamp: ret.created_at,
-    //   })
-    // }
+    for (const ret of returns) {
+      items.push({
+        title: t("orders.activity.events.return.created"),
+        timestamp: ret.created_at,
+        children: <ReturnCreatedBody orderReturn={ret} />,
+      })
+    }
 
     // for (const note of notes || []) {
     //   items.push({
@@ -385,6 +385,24 @@ const FulfillmentCreatedBody = ({
     <div>
       <Text size="small" className="text-ui-fg-subtle">
         {t("orders.activity.events.fulfillment.items", {
+          count: numberOfItems,
+        })}
+      </Text>
+    </div>
+  )
+}
+
+const ReturnCreatedBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+  const { t } = useTranslation()
+
+  const numberOfItems = orderReturn.items.reduce((acc, item) => {
+    return acc + item.quantity
+  }, 0)
+
+  return (
+    <div>
+      <Text size="small" className="text-ui-fg-subtle">
+        {t("orders.activity.events.return.items", {
           count: numberOfItems,
         })}
       </Text>

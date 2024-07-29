@@ -1930,6 +1930,23 @@ medusaIntegrationTestRunner({
             )
           ).data.product
 
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: stockLocation.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+            },
+          ])
+
+          await api.post(
+            `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+            { add: ["manual_test-provider"] },
+            adminHeaders
+          )
+
           shippingOption = (
             await api.post(
               `/admin/shipping-options`,
@@ -2030,7 +2047,7 @@ medusaIntegrationTestRunner({
               shipping_subtotal: 0,
               shipping_tax_total: 0,
               original_shipping_tax_total: 0,
-              original_shipping_tax_subtotal: 0,
+              original_shipping_subtotal: 0,
               original_shipping_total: 0,
               items: [
                 expect.objectContaining({

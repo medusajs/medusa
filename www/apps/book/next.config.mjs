@@ -20,34 +20,25 @@ const withMDX = mdx({
           baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
           projectUrls: {
             resources: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_RESOURCES_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "v2/resources",
             },
             "user-guide": {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_USER_GUIDE_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "v2/user-guide",
             },
             ui: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_UI_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "ui",
             },
             api: {
-              url:
-                process.env.VERCEL_ENV !== "production"
-                  ? process.env.NEXT_PUBLIC_API_URL
-                  : undefined,
+              url: process.env.NEXT_PUBLIC_RESOURCES_URL,
               path: "v2/api",
             },
           },
+          useBaseUrl:
+            process.env.NODE_ENV === "production" ||
+            process.env.VERCEL_ENV === "production",
         },
       ],
       [brokenLinkCheckerPlugin],

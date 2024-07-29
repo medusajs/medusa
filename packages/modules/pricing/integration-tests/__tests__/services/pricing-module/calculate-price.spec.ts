@@ -57,6 +57,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const priceSetsData = [
             { id: "price-set-EUR" },
             { id: "price-set-PLN" },
+            { id: "price-set-ETH" },
           ] as unknown as CreatePriceSetDTO[]
 
           const pricesData = [
@@ -66,6 +67,18 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               price_set_id: "price-set-PLN",
               currency_code: "PLN",
               amount: 1000,
+              min_quantity: 1,
+              max_quantity: 10,
+              rules_count: 0,
+            },
+            {
+              id: "price-ETH",
+              title: "price ETH",
+              price_set_id: "price-set-ETH",
+              currency_code: "ETH",
+              amount: {
+                value: "12345678988754.00000010000000085",
+              },
               min_quantity: 1,
               max_quantity: 10,
               rules_count: 0,
@@ -321,9 +334,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -334,6 +355,50 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               },
               original_price: {
                 id: "price-PLN",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 1,
+                max_quantity: 10,
+              },
+            },
+          ])
+        })
+
+        it("should return filled prices when 1 context is present and price is setup for ETH", async () => {
+          const priceSetsResult = await service.calculatePrices(
+            { id: ["price-set-ETH"] },
+            {
+              context: { currency_code: "ETH" },
+            }
+          )
+
+          expect(priceSetsResult).toEqual([
+            {
+              id: "price-set-ETH",
+              is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
+              calculated_amount: 12345678988754.000000100000001,
+              raw_calculated_amount: {
+                value: "12345678988754.00000010000000085",
+                precision: 20,
+              },
+              is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
+              original_amount: 12345678988754.000000100000001,
+              raw_original_amount: {
+                value: "12345678988754.00000010000000085",
+                precision: 20,
+              },
+              currency_code: "ETH",
+              calculated_price: {
+                id: "price-ETH",
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: 1,
+                max_quantity: 10,
+              },
+              original_price: {
+                id: "price-ETH",
                 price_list_id: null,
                 price_list_type: null,
                 min_quantity: 1,
@@ -357,9 +422,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -393,9 +466,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -440,9 +521,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -476,9 +565,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -512,9 +609,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 250,
+              raw_calculated_amount: {
+                value: "250",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 250,
+              raw_original_amount: {
+                value: "250",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN-5-qty",
@@ -553,9 +658,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -595,9 +708,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 100,
+              raw_calculated_amount: {
+                value: "100",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 100,
+              raw_original_amount: {
+                value: "100",
+                precision: 20,
+              },
               currency_code: "EUR",
               calculated_price: {
                 id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -637,9 +758,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -679,9 +808,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 1000,
+              raw_calculated_amount: {
+                value: "1000",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 1000,
+              raw_original_amount: {
+                value: "1000",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-PLN",
@@ -730,9 +867,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               is_calculated_price_price_list: false,
               is_calculated_price_tax_inclusive: false,
               calculated_amount: 300,
+              raw_calculated_amount: {
+                value: "300",
+                precision: 20,
+              },
               is_original_price_price_list: false,
               is_original_price_tax_inclusive: false,
               original_amount: 300,
+              raw_original_amount: {
+                value: "300",
+                precision: 20,
+              },
               currency_code: "PLN",
               calculated_price: {
                 id: "price-region_id-PLN",
@@ -774,9 +919,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -825,9 +978,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -868,9 +1029,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -908,9 +1077,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 1000,
+                raw_original_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -951,9 +1128,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: true,
                 is_original_price_tax_inclusive: false,
                 original_amount: 232,
+                raw_original_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -993,9 +1178,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: false,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-region_id-PLN",
@@ -1035,9 +1228,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: false,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1090,9 +1291,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1146,9 +1355,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: false,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
+                raw_calculated_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-company_id-PLN",
@@ -1201,9 +1418,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: false,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 400,
+                raw_calculated_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: "price-company_id-PLN",
@@ -1258,9 +1483,14 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 200,
+                raw_calculated_amount: {
+                  value: "200",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: null,
+                raw_original_amount: null,
                 currency_code: "EUR",
                 calculated_price: {
                   id: expect.any(String),
@@ -1311,9 +1541,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 111,
+                raw_calculated_amount: {
+                  value: "111",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1364,9 +1602,17 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 is_calculated_price_price_list: true,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 400,
+                raw_original_amount: {
+                  value: "400",
+                  precision: 20,
+                },
                 currency_code: "PLN",
                 calculated_price: {
                   id: expect.any(String),
@@ -1409,8 +1655,16 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 id: "price-set-PLN",
                 is_calculated_price_tax_inclusive: true,
                 calculated_amount: 1000,
+                raw_calculated_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
                 is_original_price_tax_inclusive: true,
                 original_amount: 1000,
+                raw_original_amount: {
+                  value: "1000",
+                  precision: 20,
+                },
                 currency_code: "PLN",
               }),
             ])
@@ -1442,8 +1696,16 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 id: "price-set-PLN",
                 is_calculated_price_tax_inclusive: true,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_tax_inclusive: true,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
               }),
             ])
@@ -1475,8 +1737,16 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 id: "price-set-PLN",
                 is_calculated_price_tax_inclusive: true,
                 calculated_amount: 300,
+                raw_calculated_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 is_original_price_tax_inclusive: true,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
               }),
             ])
@@ -1512,8 +1782,16 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 id: "price-set-PLN",
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 232,
+                raw_calculated_amount: {
+                  value: "232",
+                  precision: 20,
+                },
                 is_original_price_tax_inclusive: true,
                 original_amount: 300,
+                raw_original_amount: {
+                  value: "300",
+                  precision: 20,
+                },
                 currency_code: "PLN",
               }),
             ])

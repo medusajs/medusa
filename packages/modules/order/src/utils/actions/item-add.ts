@@ -6,10 +6,7 @@ import {
 } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { OrderChangeProcessing } from "../calculate-order-change"
-import {
-  setActionReference,
-  unsetActionReference,
-} from "../set-action-reference"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
   operation({ action, currentOrder, options }) {
@@ -30,9 +27,9 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
       existing = {
         id: action.details.reference_id!,
         order_id: currentOrder.id,
-        return_id: action.details.return_id,
-        claim_id: action.details.claim_id,
-        exchange_id: action.details.exchange_id,
+        return_id: action.return_id,
+        claim_id: action.claim_id,
+        exchange_id: action.exchange_id,
 
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,
@@ -44,26 +41,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
     setActionReference(existing, action, options)
 
     return MathBN.mult(action.details.unit_price, action.details.quantity)
-  },
-  revert({ action, currentOrder }) {
-    const existingIndex = currentOrder.items.findIndex(
-      (item) => item.id === action.details.reference_id
-    )
-
-    if (existingIndex > -1) {
-      const existing = currentOrder.items[existingIndex]
-      existing.quantity = MathBN.sub(existing.quantity, action.details.quantity)
-      existing.detail.quantity = MathBN.sub(
-        existing.detail.quantity,
-        action.details.quantity
-      )
-
-      if (MathBN.lte(existing.quantity, 0)) {
-        currentOrder.items.splice(existingIndex, 1)
-      }
-
-      unsetActionReference(existing, action)
-    }
   },
   validate({ action }) {
     const refId = action.details?.reference_id

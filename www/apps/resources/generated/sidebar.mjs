@@ -2489,6 +2489,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createOrderClaims",
+                        "title": "createOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createOrderExchanges",
+                        "title": "createOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createOrders",
                         "title": "createOrders",
                         "children": []
@@ -2503,8 +2517,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createReturnItems",
+                        "title": "createReturnItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createReturnReasons",
                         "title": "createReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createReturns",
+                        "title": "createReturns",
                         "children": []
                       },
                       {
@@ -2580,6 +2608,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaims",
+                        "title": "deleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderExchanges",
+                        "title": "deleteOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrders",
                         "title": "deleteOrders",
                         "children": []
@@ -2587,8 +2629,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteReturnItems",
+                        "title": "deleteReturnItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteReturnReasons",
                         "title": "deleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteReturns",
+                        "title": "deleteReturns",
                         "children": []
                       },
                       {
@@ -2673,6 +2729,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/listLineItems",
                         "title": "listLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listOrderChangeActions",
+                        "title": "listOrderChangeActions",
                         "children": []
                       },
                       {
@@ -2811,6 +2874,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/restoreOrderClaims",
+                        "title": "restoreOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreOrderExchanges",
+                        "title": "restoreOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/restoreOrders",
                         "title": "restoreOrders",
                         "children": []
@@ -2820,6 +2897,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/restoreReturnReasons",
                         "title": "restoreReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreReturns",
+                        "title": "restoreReturns",
                         "children": []
                       },
                       {
@@ -2869,6 +2953,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/retrieveOrderChange",
                         "title": "retrieveOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrderChangeAction",
+                        "title": "retrieveOrderChangeAction",
                         "children": []
                       },
                       {
@@ -2979,6 +3070,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderClaims",
+                        "title": "softDeleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteOrderExchanges",
+                        "title": "softDeleteOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/softDeleteOrders",
                         "title": "softDeleteOrders",
                         "children": []
@@ -2988,6 +3093,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/softDeleteReturnReasons",
                         "title": "softDeleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteReturns",
+                        "title": "softDeleteReturns",
                         "children": []
                       },
                       {
@@ -3035,8 +3147,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/updateOrderChangeActions",
+                        "title": "updateOrderChangeActions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/updateOrderChanges",
                         "title": "updateOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrderClaims",
+                        "title": "updateOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrderExchanges",
+                        "title": "updateOrderExchanges",
                         "children": []
                       },
                       {
@@ -3058,6 +3191,20 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/updateReturnReasons",
                         "title": "updateReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateReturns",
+                        "title": "updateReturns",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateShippingMethods",
+                        "title": "updateShippingMethods",
                         "children": []
                       }
                     ]
@@ -3647,6 +3794,13 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/commerce-modules/pricing/tax-inclusive-pricing",
+                "title": "Tax-Inclusive Pricing",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/commerce-modules/pricing/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -4074,6 +4228,21 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/product/relations-to-other-modules",
                 "title": "Relation to Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "autogenerate_path": "/commerce-modules/product/guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/guides/price",
+                "title": "Get Product Variant Prices",
                 "children": []
               }
             ]
@@ -6281,966 +6450,6 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/js-client",
-        "title": "Medusa JS Client",
-        "isChildSidebar": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/js-client/AddressesResource",
-            "title": "admin",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminAuthResource",
-                "title": "auth",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminBatchJobsResource",
-                "title": "batchJobs",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminCollectionsResource",
-                "title": "collections",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminCurrenciesResource",
-                "title": "currencies",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminCustomResource",
-                "title": "custom",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminCustomerGroupsResource",
-                "title": "customerGroups",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminCustomersResource",
-                "title": "customers",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminDiscountsResource",
-                "title": "discounts",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminDraftOrdersResource",
-                "title": "draftOrders",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminGiftCardsResource",
-                "title": "giftCards",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminInventoryItemsResource",
-                "title": "inventoryItems",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminInvitesResource",
-                "title": "invites",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminNotesResource",
-                "title": "notes",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminNotificationsResource",
-                "title": "notifications",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminOrderEditsResource",
-                "title": "orderEdits",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminOrdersResource",
-                "title": "orders",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminPaymentCollectionsResource",
-                "title": "paymentCollections",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminPaymentsResource",
-                "title": "payments",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminPriceListResource",
-                "title": "priceLists",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminProductCategoriesResource",
-                "title": "productCategories",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminProductTagsResource",
-                "title": "productTags",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminProductTypesResource",
-                "title": "productTypes",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminProductsResource",
-                "title": "products",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminPublishableApiKeyResource",
-                "title": "publishableApiKeys",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminRegionsResource",
-                "title": "regions",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminReservationsResource",
-                "title": "reservations",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminReturnReasonsResource",
-                "title": "returnReasons",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminReturnsResource",
-                "title": "returns",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminSalesChannelsResource",
-                "title": "salesChannels",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminShippingOptionsResource",
-                "title": "shippingOptions",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminShippingProfilesResource",
-                "title": "shippingProfiles",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminStockLocationsResource",
-                "title": "stockLocations",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminStoresResource",
-                "title": "store",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminSwapsResource",
-                "title": "swaps",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminTaxRatesResource",
-                "title": "taxRates",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminUploadsResource",
-                "title": "uploads",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminUsersResource",
-                "title": "users",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AdminVariantsResource",
-                "title": "variants",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "title": "Store",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/AuthResource",
-                "title": "auth",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "title": "carts",
-                "path": "/references/js-client/CartsResource",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/js-client/LineItemsResource",
-                    "title": "lineItems",
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/CollectionsResource",
-                "title": "collections",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/CustomersResource",
-                "title": "customers",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/js-client/AddressesResource",
-                    "title": "addresses",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/js-client/PaymentMethodsResource",
-                    "title": "paymentMethods",
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/GiftCardsResource",
-                "title": "giftCards",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/OrderEditsResource",
-                "title": "orderEdits",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/OrdersResource",
-                "title": "orders",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/PaymentCollectionsResource",
-                "title": "paymentCollections",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/PaymentMethodsResource",
-                "title": "paymentMethods",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ProductCategoriesResource",
-                "title": "productCategories",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ProductTagsResource",
-                "title": "productTags",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ProductTypesResource",
-                "title": "productTypes",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ProductTypesResource",
-                "title": "productTypes",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ProductsResource",
-                "title": "products",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/js-client/ProductVariantsResource",
-                    "title": "variants",
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/RegionsResource",
-                "title": "regions",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ReturnReasonsResource",
-                "title": "returnReasons",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ReturnsResource",
-                "title": "returns",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/ShippingOptionsResource",
-                "title": "shippingOptions",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/js-client/SwapsResource",
-                "title": "swaps",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/medusa-react",
-        "title": "Medusa React",
-        "isChildSidebar": true,
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/medusa-react/hooks",
-            "title": "Hooks",
-            "hasTitleStyling": true,
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/hooks/admin",
-                "title": "Admin",
-                "autogenerate_path": "/references/medusa_react/Hooks/Admin",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/auth",
-                    "title": "Auth",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/batch_jobs",
-                    "title": "Batch Jobs",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/claims",
-                    "title": "Claims",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/currencies",
-                    "title": "Currencies",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/custom",
-                    "title": "Custom",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/customer_groups",
-                    "title": "Customer Groups",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/customers",
-                    "title": "Customers",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/discounts",
-                    "title": "Discounts",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/draft_orders",
-                    "title": "Draft Orders",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/gift_cards",
-                    "title": "Gift Cards",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/inventory_items",
-                    "title": "Inventory Items",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/invites",
-                    "title": "Invites",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/notes",
-                    "title": "Notes",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/notifications",
-                    "title": "Notifications",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/order_edits",
-                    "title": "Order Edits",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/orders",
-                    "title": "Orders",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/payment_collections",
-                    "title": "Payment Collections",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/payments",
-                    "title": "Payments",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/price_lists",
-                    "title": "Price Lists",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/product_categories",
-                    "title": "Product Categories",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/product_collections",
-                    "title": "Product Collections",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/product_tags",
-                    "title": "Product Tags",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/product_types",
-                    "title": "Product Types",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/product_variants",
-                    "title": "Product Variants",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/products",
-                    "title": "Products",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/publishable_api_keys",
-                    "title": "Publishable API Keys",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/regions",
-                    "title": "Regions",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/reservations",
-                    "title": "Reservations",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/return_reasons",
-                    "title": "Return Reasons",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/returns",
-                    "title": "Returns",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/sales_channels",
-                    "title": "Sales Channels",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/shipping_options",
-                    "title": "Shipping Options",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/shipping_profiles",
-                    "title": "Shipping Profiles",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/stock_locations",
-                    "title": "Stock Locations",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/stores",
-                    "title": "Stores",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/swaps",
-                    "title": "Swaps",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/tax_rates",
-                    "title": "Tax Rates",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/uploads",
-                    "title": "Uploads",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/admin/users",
-                    "title": "Users",
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/hooks/store",
-                "title": "Store",
-                "autogenerate_path": "/references/medusa_react/Hooks/Store",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/carts",
-                    "title": "Carts",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/customers",
-                    "title": "Customers",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/gift_cards",
-                    "title": "Gift Cards",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/line_items",
-                    "title": "Line Items",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/order_edits",
-                    "title": "Order Edits",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/orders",
-                    "title": "Orders",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/payment_collections",
-                    "title": "Payment Collections",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/product_categories",
-                    "title": "Product Categories",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/product_collections",
-                    "title": "Product Collections",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/product_tags",
-                    "title": "Product Tags",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/product_types",
-                    "title": "Product Types",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/products",
-                    "title": "Products",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/regions",
-                    "title": "Regions",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/return_reasons",
-                    "title": "Return Reasons",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/returns",
-                    "title": "Returns",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/shipping_options",
-                    "title": "Shipping Options",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "path": "/references/medusa-react/hooks/store/swaps",
-                    "title": "Swaps",
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/medusa-react/providers",
-            "title": "Providers",
-            "hasTitleStyling": true,
-            "autogenerate_path": "/references/medusa_react/Providers",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/providers/cart",
-                "title": "Cart",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/providers/medusa",
-                "title": "Medusa",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/providers/session_cart",
-                "title": "Session_Cart",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/references/medusa-react/utilities",
-            "title": "Utilities",
-            "hasTitleStyling": true,
-            "autogenerate_path": "/references/medusa_react/Utilities/functions",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/utilities/computeAmount",
-                "title": "computeAmount",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/utilities/computeVariantPrice",
-                "title": "computeVariantPrice",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/utilities/formatAmount",
-                "title": "formatAmount",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/utilities/formatVariantPrice",
-                "title": "formatVariantPrice",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/references/medusa-react/utilities/getVariantPrice",
-                "title": "getVariantPrice",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
         "path": "/nextjs-starter",
         "title": "Next.js Starter",
         "children": []
@@ -7511,7 +6720,22 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/show-price",
+                "title": "Example: Show Variant Price",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/sale-price",
+                "title": "Example: Show Sale Price",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -7766,40 +6990,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Medusa Application",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/medusa-application",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/medusa-application/railway",
                 "title": "Railway",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/heroku",
-                "title": "Heroku",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/digitalocean",
-                "title": "DigitalOcean",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/microtica",
-                "title": "Microtica",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/medusa-application/general",
-                "title": "General Guide",
                 "children": []
               }
             ]
@@ -7809,19 +7006,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Medusa Admin",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/admin",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/admin/vercel",
                 "title": "Vercel",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/admin/general",
-                "title": "General Guide",
                 "children": []
               }
             ]
@@ -7831,19 +7022,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "title": "Next.js Starter",
             "hasTitleStyling": true,
+            "autogenerate_path": "/deployment/storefront",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/deployment/storefront/vercel",
                 "title": "Vercel",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/deployment/storefront/general",
-                "title": "General Guide",
                 "children": []
               }
             ]
@@ -7967,7 +7152,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
-    "title": "API References",
+    "title": "References",
     "hasTitleStyling": true,
     "children": [
       {
@@ -8208,6 +7393,96 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/references/data-model/property-configuration/unique",
                 "title": "unique",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/service-factory-reference",
+        "title": "Service Factory Reference",
+        "isChildSidebar": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/create",
+                "title": "create",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/delete",
+                "title": "delete",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/list",
+                "title": "list",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/listAndCount",
+                "title": "listAndCount",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/restore",
+                "title": "restore",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/retrieve",
+                "title": "retrieve",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/soft-delete",
+                "title": "softDelete",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/methods/update",
+                "title": "update",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Tips",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/service-factory-reference/tips",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/service-factory-reference/tips/filtering",
+                "title": "Filtering",
                 "children": []
               }
             ]

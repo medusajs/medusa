@@ -706,15 +706,10 @@ medusaIntegrationTestRunner({
       // TODO: This doesn't work currently, but worked in v1
       it.skip("returns a list of ordered products by variants prices ASC", async () => {})
 
-      // BREAKING: It seems `id` and `created_at` is always returned, even if not in the fields params
       it("products contain only fields defined with `fields` param", async () => {
         const response = await api.get("/store/products?fields=handle")
         expect(response.status).toEqual(200)
-        expect(Object.keys(response.data.products[0])).toEqual([
-          "handle",
-          "created_at",
-          "id",
-        ])
+        expect(Object.keys(response.data.products[0])).toEqual(["handle", "id"])
       })
 
       it("returns a list of products in collection", async () => {
@@ -771,8 +766,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      // TODO: This test is flaky for some reason, reenable once that is resolved
-      it.skip("returns a list of products filtered by variant options", async () => {
+      it("returns a list of products filtered by variant options", async () => {
         const response = await api.get(
           `/store/products?variants.options[option_id]=${product.options[1].id}&variants.options[value]=large`
         )
@@ -921,9 +915,17 @@ medusaIntegrationTestRunner({
                   is_calculated_price_price_list: false,
                   is_calculated_price_tax_inclusive: false,
                   calculated_amount: 3000,
+                  raw_calculated_amount: {
+                    value: "3000",
+                    precision: 20,
+                  },
                   is_original_price_price_list: false,
                   is_original_price_tax_inclusive: false,
                   original_amount: 3000,
+                  raw_original_amount: {
+                    value: "3000",
+                    precision: 20,
+                  },
                   currency_code: "usd",
                   calculated_price: {
                     id: expect.any(String),
@@ -1227,9 +1229,17 @@ medusaIntegrationTestRunner({
                 is_calculated_price_price_list: false,
                 is_calculated_price_tax_inclusive: false,
                 calculated_amount: 3000,
+                raw_calculated_amount: {
+                  value: "3000",
+                  precision: 20,
+                },
                 is_original_price_price_list: false,
                 is_original_price_tax_inclusive: false,
                 original_amount: 3000,
+                raw_original_amount: {
+                  value: "3000",
+                  precision: 20,
+                },
                 currency_code: "usd",
                 calculated_price: {
                   id: expect.any(String),

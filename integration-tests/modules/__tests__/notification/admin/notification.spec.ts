@@ -173,7 +173,7 @@ medusaIntegrationTestRunner({
           const logSpy = jest.spyOn(logger, "info")
 
           await eventBus.emit({
-            eventName: "order.created",
+            name: "order.created",
             data: {
               order: {
                 id: "1234",
@@ -185,7 +185,7 @@ medusaIntegrationTestRunner({
 
           const notifications = await service.listNotifications()
 
-          expect(logSpy).toHaveBeenLastCalledWith(
+          expect(logSpy).toHaveBeenCalledWith(
             `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created-template' and data: '{\"order_id\":\"1234\"}'`
           )
           expect(notifications).toHaveLength(1)

@@ -1,6 +1,7 @@
 import {
   beginClaimOrderWorkflow,
   createShippingOptionsWorkflow,
+  orderClaimRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import {
   FulfillmentWorkflow,
@@ -122,6 +123,14 @@ async function prepareDataFixtures({ container }) {
         stock_location_id: location.id,
       },
       [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
         fulfillment_set_id: fulfillmentSet.id,
       },
     },
@@ -232,7 +241,7 @@ async function createOrderFixture({ container, product }) {
     ModuleRegistrationName.ORDER
   )
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {
@@ -360,7 +369,7 @@ medusaIntegrationTestRunner({
       it("should begin a claim order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createClaimOrderData: OrderWorkflow.beginOrderClaimWorkflowInput =
+        const createClaimOrderData: OrderWorkflow.BeginOrderClaimWorkflowInput =
           {
             type: ClaimType.REFUND,
             order_id: order.id,
@@ -382,11 +391,54 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "type"],
         })
 
-        const [returnOrder] = await remoteQuery(remoteQueryObject)
+        const [claimOrder] = await remoteQuery(remoteQueryObject)
 
-        expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.type).toEqual("refund")
-        expect(returnOrder.id).toBeDefined()
+        expect(claimOrder.order_id).toEqual(order.id)
+        expect(claimOrder.type).toEqual("refund")
+        expect(claimOrder.id).toBeDefined()
+
+        // Request itemm to return
+        const { result: preview } =
+          await orderClaimRequestItemReturnWorkflow.run({
+            throwOnError: true,
+            container,
+            input: {
+              claim_id: claimOrder.id,
+              items: [
+                {
+                  id: order.items![0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+
+        expect(preview.items[0]).toEqual(
+          expect.objectContaining({
+            quantity: 1,
+            id: order.items![0].id,
+            detail: expect.objectContaining({
+              quantity: 1,
+              fulfilled_quantity: 1,
+              return_requested_quantity: 1,
+            }),
+            actions: [
+              expect.objectContaining({
+                order_id: order.id,
+                claim_id: claimOrder.id,
+                version: 2,
+                order_change_id: expect.any(String),
+                reference: "return",
+                reference_id: expect.stringContaining("return_"),
+                action: "RETURN_ITEM",
+                details: expect.objectContaining({
+                  quantity: 1,
+                  reference_id: order.items![0].id,
+                }),
+              }),
+            ],
+          })
+        )
       })
     })
   },

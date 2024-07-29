@@ -7,6 +7,7 @@ type WorkflowInput = {
     filename: string
     mimeType: string
     content: string
+    access: "public" | "private"
   }[]
 }
 

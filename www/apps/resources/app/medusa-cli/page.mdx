@@ -8,12 +8,6 @@ export const metadata = {
 
 The Medusa CLI tool provides commands that facilitate your development.
 
-<Note type="soon">
-
-Medusa's CLI tool doesn't fully support Medusa v2 yet.
-
-</Note>
-
 <Note type="check">
 
 - [Node.js v16+](https://nodejs.org/en/download)
@@ -23,17 +17,12 @@ Medusa's CLI tool doesn't fully support Medusa v2 yet.
 
 ## Usage
 
-In your Medusa application's directory, you can use the Medusa CLI tool using NPX. For example:
+In your Medusa application's directory, you can use the Medusa CLI tool using NPX.
+
+For example:
 
 ```bash
 npx medusa --help
-```
-
-Alternatively, you can install the CLI tool globally:
-
-```bash npm2yarn
-npm install @medusajs/medusa-cli -g
-medusa --help
 ```
 
 ---
@@ -348,7 +337,7 @@ Run the latest migrations to reflect changes on the database.
 npx medusa migrations run
 ```
 
-### migration revert
+### migrations revert
 
 Revert the last migrations ran on one or more modules.
 
@@ -375,7 +364,7 @@ npx medusa migrations revert <module_names...>
       </Table.Cell>
       <Table.Cell>
 
-      The name of one or more module, separated by spaces. For example, `helloModuleService`.
+      The name of one or more module (separated by spaces) to rever their migrations. For example, `helloModuleService`.
       
       </Table.Cell>
       <Table.Cell>
@@ -387,35 +376,34 @@ npx medusa migrations revert <module_names...>
   </Table.Body>
 </Table>
 
-### seed
+### migrations generate
 
-Runs latest migrations and populates the database with data from a provided JSON file.
+Generate a migration file for the latest changes in one or more modules.
 
 ```bash
-npx medusa seed --seed-file=<file_path>
+npx medusa migrations generate <module_names...>
 ```
 
-#### Options
+#### Arguments
 
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
       <Table.HeaderCell>Description</Table.HeaderCell>
       <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
       <Table.Cell>
       
-      `-f=<file_path>`, `--seed-file=<file_path>`
+      `module_names`
       
       </Table.Cell>
       <Table.Cell>
 
-      Path to the file holding the data to seed.
+      The name of one or more module (separated by spaces) to generate migrations for. For example, `helloModuleService`.
       
       </Table.Cell>
       <Table.Cell>
@@ -423,32 +411,40 @@ npx medusa seed --seed-file=<file_path>
       Yes
 
       </Table.Cell>
-      <Table.Cell>
-
-      \-
-
-      </Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+
+### links
+
+Manage module links in the database.
+
+```bash
+npx medusa links <action>
+```
+
+#### Actions
+
+The `links` command receive an action name as an argument.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Name</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
       
-      `-m=<value>`, `--migrate=<value>`
+      `sync`
       
       </Table.Cell>
       <Table.Cell>
 
-      Whether to run migrations before seeding the database.
+      Add, update, or delete links based on the definitions in the `src/links` directory of your project.
       
-      </Table.Cell>
-      <Table.Cell>
-
-      No
-
-      </Table.Cell>
-      <Table.Cell>
-
-      `true`
-
       </Table.Cell>
     </Table.Row>
   </Table.Body>

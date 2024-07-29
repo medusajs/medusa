@@ -54,7 +54,7 @@ describe("Order Exchange - Actions", function () {
     shipping_methods: [
       {
         id: "ship_123",
-        price: 0,
+        amount: 0,
       },
     ],
     total: 270,
@@ -104,8 +104,6 @@ describe("Order Exchange - Actions", function () {
       original_order_total: 270,
       current_order_total: 312.5,
       temporary_difference: 62.5,
-      future_difference: 0,
-      future_temporary_difference: 0,
       pending_difference: 312.5,
       difference_sum: 42.5,
       paid_total: 0,
@@ -171,7 +169,6 @@ describe("Order Exchange - Actions", function () {
         id: "item_555",
         unit_price: 50,
         quantity: 1,
-        detail: {},
         actions: [
           {
             action: "ITEM_ADD",
@@ -189,12 +186,11 @@ describe("Order Exchange - Actions", function () {
     expect(changes.order.shipping_methods).toEqual([
       {
         id: "ship_123",
-        price: 0,
+        amount: 0,
       },
       {
         id: "shipping_345",
-        price: 5,
-        detail: {},
+        amount: 5,
         actions: [
           {
             action: "SHIPPING_ADD",
@@ -205,8 +201,7 @@ describe("Order Exchange - Actions", function () {
       },
       {
         id: "return_shipping_345",
-        price: 7.5,
-        detail: {},
+        amount: 7.5,
         actions: [
           {
             action: "SHIPPING_ADD",

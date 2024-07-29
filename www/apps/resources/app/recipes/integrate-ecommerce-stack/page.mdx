@@ -264,12 +264,13 @@ export const workflowHighlights = [
     import createProductWorkflow from "../workflows/create-product"
 
     export default async function handleProductUpdate({ 
-      data, container 
+      event: { data }, 
+      container 
     }: SubscriberArgs<{id: string}>) {
       createProductWorkflow(container)
         .run({
           input: {
-            productId: data.data.id
+            productId: data.id
           }
         })
         .then(() => {
@@ -346,10 +347,10 @@ For example, suppose an administrator changes the product data in the ERP system
     Then, create the file `src/api/middlewares.ts` with the following content:
 
     ```ts title="src/api/middlewares.ts"
-    import { MiddlewaresConfig } from "@medusajs/medusa"
+    import { defineMiddlewares } from "@medusajs/medusa"
     import { raw } from "body-parser"
-    
-    export const config: MiddlewaresConfig = {
+
+    export default defineMiddlewares({
       routes: [
         {
           method: ["POST", "PUT"],
@@ -358,7 +359,7 @@ For example, suppose an administrator changes the product data in the ERP system
           middlewares: [raw({ type: "application/json" })],
         },
       ],
-    }
+    })
     ```
 
     This replaces the default JSON middleware with the raw middleware, which is useful for webhook routes.

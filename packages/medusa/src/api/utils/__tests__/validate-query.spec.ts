@@ -1,7 +1,10 @@
+import zod from "zod"
+import { MedusaError } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
+
 import { createFindParams } from "../validators"
 import { validateAndTransformQuery } from "../validate-query"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 describe("validateAndTransformQuery", () => {
   afterEach(() => {
@@ -195,7 +198,7 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: ["id", "created_at"],
+        select: ["id"],
       })
     )
 
@@ -406,13 +409,13 @@ describe("validateAndTransformQuery", () => {
 
     expect(mockRequest.listConfig).toEqual(
       expect.objectContaining({
-        select: ["store.name", "created_at", "id"],
+        select: ["store.name", "id"],
         relations: ["store"],
       })
     )
     expect(mockRequest.remoteQueryConfig).toEqual(
       expect.objectContaining({
-        fields: ["store.name", "created_at", "id"],
+        fields: ["store.name", "id"],
       })
     )
   })
@@ -689,6 +692,58 @@ describe("validateAndTransformQuery", () => {
       new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Requested fields [product] are not valid`
+      )
+    )
+  })
+
+  it("should merge a custom validators schema", async () => {
+    let mockRequest = {
+      query: {},
+    } as MedusaRequest
+
+    const mockResponse = {} as MedusaResponse
+    const nextFunction = jest.fn()
+
+    mockRequest.extendedValidators = {
+      queryParams: zod.object({
+        page: zod.number(),
+      }),
+    }
+
+    let middleware = validateAndTransformQuery(createFindParams(), {})
+    await middleware(mockRequest, mockResponse, nextFunction)
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        "invalid_data",
+        `Invalid request: Field 'page' is required`
+      )
+    )
+  })
+
+  it("should pass schema to merge to the original validator factory", async () => {
+    let mockRequest = {
+      query: {},
+    } as MedusaRequest
+
+    const mockResponse = {} as MedusaResponse
+    const nextFunction = jest.fn()
+
+    mockRequest.extendedValidators = {
+      queryParams: zod.object({
+        page: zod.number(),
+      }),
+    }
+
+    const validatorFactory = (schema?: Zod.ZodObject<any, any>) => {
+      return schema ? createFindParams().merge(schema) : createFindParams()
+    }
+
+    let middleware = validateAndTransformQuery(validatorFactory, {})
+    await middleware(mockRequest, mockResponse, nextFunction)
+    expect(nextFunction).toHaveBeenCalledWith(
+      new MedusaError(
+        "invalid_data",
+        `Invalid request: Field 'page' is required`
       )
     )
   })

@@ -17,18 +17,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: >-
- *       Comma-separated fields that should be included in the returned data.
- *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *        * without prefix it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: >-
- *         Comma-separated fields that should be included in the returned data.
- *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *          * without prefix it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -114,7 +114,7 @@
  *     description: The sales channel's created at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The sales channel's created at.
  *       required:
  *         - $eq
@@ -142,12 +142,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: The sales channel's updated at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The sales channel's updated at.
  *       required:
  *         - $eq
@@ -175,12 +176,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: The sales channel's deleted at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The sales channel's deleted at.
  *       required:
  *         - $eq
@@ -208,6 +210,7 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: deleted_at
  *   - name: location_id
  *     in: query
  *     required: false
@@ -257,8 +260,6 @@
  * tags:
  *   - Sales Channels
  * responses:
- *   "200":
- *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -12,6 +12,14 @@ export interface AdminOrderFilters extends BaseOrderFilters {}
 export interface AdminOrderAddress extends BaseOrderAddress {}
 export interface AdminOrderShippingMethod extends BaseOrderShippingMethod {}
 
+export interface AdminOrderResponse {
+  order: AdminOrder
+}
+
+export interface AdminOrdersResponse {
+  orders: AdminOrder[]
+}
+
 export interface AdminCreateOrderFulfillment {
   items: { id: string; quantity: number }[]
   location_id?: string

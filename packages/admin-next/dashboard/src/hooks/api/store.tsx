@@ -11,6 +11,7 @@ import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { pricePreferencesQueryKeys } from "./price-preferences"
 
 const STORE_QUERY_KEY = "store" as const
 export const storeQueryKeys = queryKeysFactory(STORE_QUERY_KEY)
@@ -67,7 +68,14 @@ export const useUpdateStore = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.store.update(id, payload),
     onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.list(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: pricePreferencesQueryKeys.details(),
+      })
       queryClient.invalidateQueries({ queryKey: storeQueryKeys.details() })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

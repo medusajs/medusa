@@ -20,6 +20,11 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "generate:dml": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }

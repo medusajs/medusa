@@ -4,7 +4,11 @@ import { MedusaRequest, MedusaResponse } from "../../types/routing"
 import { zodValidator } from "./zod-helper"
 
 export function validateAndTransformBody(
-  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>
+  zodSchema:
+    | z.ZodObject<any, any>
+    | ((
+        customSchema?: z.ZodObject<any, any>
+      ) => z.ZodObject<any, any> | z.ZodEffects<any, any>)
 ): (
   req: MedusaRequest,
   res: MedusaResponse,
@@ -12,7 +16,18 @@ export function validateAndTransformBody(
 ) => Promise<void> {
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
-      req.validatedBody = await zodValidator(zodSchema, req.body)
+      let schema: z.ZodObject<any, any> | z.ZodEffects<any, any>
+      const { body: bodyValidatorToMerge } = req.extendedValidators ?? {}
+
+      if (typeof zodSchema === "function") {
+        schema = zodSchema(bodyValidatorToMerge)
+      } else if (bodyValidatorToMerge) {
+        schema = zodSchema.merge(bodyValidatorToMerge)
+      } else {
+        schema = zodSchema
+      }
+
+      req.validatedBody = await zodValidator(schema, req.body)
       next()
     } catch (e) {
       next(e)

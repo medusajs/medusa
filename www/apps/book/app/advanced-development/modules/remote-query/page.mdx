@@ -14,12 +14,6 @@ The remote query fetches data across modules. It’s a function registered in th
 
 In your resources, such as API routes or workflows, you can resolve the remote query to fetch data across custom modules and Medusa’s commerce modules.
 
-<Note type="check">
-
-- [Enable the isQueryable configuration of the module](../module-links/page.mdx#prerequisite-isqueryable-configuration)
-
-</Note>
-
 ---
 
 ## Remote Query Example
@@ -89,7 +83,7 @@ const query = remoteQueryObjectFromString({
   fields: [
     "id", 
     "name",
-    "product.*"
+    "product.*",
   ],
 })
 ```
@@ -112,7 +106,7 @@ const query = remoteQueryObjectFromString({
   fields: [
     "id", 
     "name",
-    "products.*"
+    "products.*",
   ],
 })
 ```

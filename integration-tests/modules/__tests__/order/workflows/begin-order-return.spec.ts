@@ -121,6 +121,17 @@ async function prepareDataFixtures({ container }) {
         stock_location_id: location.id,
       },
       [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+  ])
+
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
         fulfillment_set_id: fulfillmentSet.id,
       },
     },
@@ -231,7 +242,7 @@ async function createOrderFixture({ container, product }) {
     ModuleRegistrationName.ORDER
   )
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {
@@ -359,7 +370,7 @@ medusaIntegrationTestRunner({
       it("should begin a return order", async () => {
         const order = await createOrderFixture({ container, product })
 
-        const createReturnOrderData: OrderWorkflow.beginOrderReturnWorkflowInput =
+        const createReturnOrderData: OrderWorkflow.BeginOrderReturnWorkflowInput =
           {
             order_id: order.id,
           }

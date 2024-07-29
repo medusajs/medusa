@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { BigNumberInput, BigNumberValue } from "../../totals"
+import { PriceRuleDTO } from "./price-rule"
 
 /**
  * @interface
@@ -27,6 +28,16 @@ export interface MoneyAmountDTO {
    * The maximum quantity required to be purchased for this price to be applied.
    */
   max_quantity?: BigNumberValue
+  /**
+   * The number of rules that apply to this price
+   */
+  rules_count?: number
+
+  /**
+   * The price rules that apply to this price
+   */
+  price_rules?: PriceRuleDTO[]
+
   /**
    * When the money_amount was created.
    */

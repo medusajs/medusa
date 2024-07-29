@@ -60,6 +60,60 @@ jobs:
           base: "develop"
           title: "chore(docs): Updated API Reference (v2)"
           labels: "type: chore"
-          add-paths: www/apps/api-reference/specs
+          add-paths: |
+            www/apps/api-reference/specs
+            www/utils/generated/oas-output
           branch: "docs/generate-api-ref"
           branch-suffix: "timestamp"
+  preview-dml:
+    name: Generate DML JSON files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build www/utils packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Run docblock generator
+        run: "yarn generate:dml"
+        working-directory: www/utils
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: "chore(docs): Generated DML JSON files"
+          body: "This PR holds all generated DML JSON files for the upcoming release."
+          branch: "chore/generate-dml-json"
+          branch-suffix: "timestamp"
+          add-paths: www/utils/generated/dml-output/**

@@ -1,6 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { Context } from "../../shared-context"
-import { BigNumberInput, BigNumberValue } from "../../totals"
+import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../../totals"
 import {
   CreateMoneyAmountDTO,
   FilterableMoneyAmountProps,
@@ -83,7 +83,8 @@ export interface CalculatedPriceSetDTO {
   /**
    * The calculated amount. It can possibly be `null` if there's no price set up for the provided context.
    */
-  amount: string | null
+  amount: BigNumberValue | null
+  raw_amount: BigNumberRawValue | null
   /**
    * The currency code of the calculated price. It can possibly be `null`.
    */
@@ -129,6 +130,7 @@ export interface CalculatedPriceSet {
    * The amount of the calculated price, or `null` if there isn't a calculated price.
    */
   calculated_amount: BigNumberValue | null
+  raw_calculated_amount: BigNumberRawValue | null
 
   /**
    * Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override,
@@ -143,6 +145,7 @@ export interface CalculatedPriceSet {
    * The amount of the original price, or `null` if there isn't a calculated price.
    */
   original_amount: BigNumberValue | null
+  raw_original_amount: BigNumberRawValue | null
 
   /**
    * The currency code of the calculated price, or null if there isn't a calculated price.

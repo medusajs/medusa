@@ -22,17 +22,21 @@ Similarly to your custom module, a commerce module's main service is registered 
 
 For example, you saw this code snippet in the [Medusa container chapter](../medusa-container/page.mdx):
 
-```ts highlights={[["13"]]}
+```ts highlights={[["10"]]}
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   const productModuleService: IProductModuleService = req.scope.resolve(
     ModuleRegistrationName.PRODUCT
   )
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,

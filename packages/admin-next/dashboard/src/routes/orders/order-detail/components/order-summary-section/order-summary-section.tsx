@@ -1,10 +1,21 @@
+import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
+import { useMemo } from "react"
+
 import {
   AdminOrder,
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
+import { ArrowDownRightMini, ArrowUturnLeft } from "@medusajs/icons"
+import {
+  Button,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Text,
+} from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -12,18 +23,68 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
+import { useReturns } from "../../../../../hooks/api/returns"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
+
+  /**
+   * Show Allocation button only if there are unfulfilled items that don't have reservations
+   */
+  const showAllocateButton = useMemo(() => {
+    if (!reservations) {
+      return false
+    }
+
+    const reservationsMap = new Map(
+      reservations.map((r) => [r.line_item_id, r.id])
+    )
+
+    for (const item of order.items) {
+      // Inventory is managed
+      if (item.variant?.manage_inventory) {
+        // There are items that are unfulfilled
+        if (item.quantity - item.detail.fulfilled_quantity > 0) {
+          // Reservation for this item doesn't exist
+          if (!reservationsMap.has(item.id)) {
+            return true
+          }
+        }
+      }
+    }
+
+    return false
+  }, [reservations])
+
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} />
       <ItemBreakdown order={order} />
+      <ReturnBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
+
+      {showAllocateButton && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
+          <Button
+            onClick={() => navigate(`./allocate-items`)}
+            variant="secondary"
+          >
+            {t("orders.allocateItems.action")}
+          </Button>
+        </div>
+      )}
     </Container>
   )
 }
@@ -48,11 +109,11 @@ const Header = ({ order }: { order: AdminOrder }) => {
               //   to: "#", // TODO: Open modal to allocate items
               //   icon: <Buildings />,
               // },
-              // {
-              //   label: t("orders.summary.requestReturn"),
-              //   to: `/orders/${order.id}/returns`,
-              //   icon: <ArrowUturnLeft />,
-              // },
+              {
+                label: t("orders.returns.create"),
+                to: `/orders/${order.id}/returns`,
+                icon: <ArrowUturnLeft />,
+              },
             ],
           },
         ]}
@@ -71,6 +132,7 @@ const Item = ({
   reservation?: ReservationItemDTO | null
 }) => {
   const { t } = useTranslation()
+  const isInventoryManaged = item.variant.manage_inventory
 
   return (
     <div
@@ -112,14 +174,16 @@ const Item = ({
             </Text>
           </div>
           <div className="overflow-visible">
-            <StatusBadge
-              color={reservation ? "green" : "orange"}
-              className="text-nowrap"
-            >
-              {reservation
-                ? t("orders.reservations.allocatedLabel")
-                : t("orders.reservations.notAllocatedLabel")}
-            </StatusBadge>
+            {isInventoryManaged && (
+              <StatusBadge
+                color={reservation ? "green" : "orange"}
+                className="text-nowrap"
+              >
+                {reservation
+                  ? t("orders.reservations.allocatedLabel")
+                  : t("orders.reservations.notAllocatedLabel")}
+              </StatusBadge>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-end">
@@ -133,27 +197,23 @@ const Item = ({
 }
 
 const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
-  // const { reservations, isError, error } = useAdminReservations({
-  //   line_item_id: order.items.map((i) => i.id),
-  // })
-
-  // if (isError) {
-  //   throw error
-  // }
+  const { reservations } = useReservationItems({
+    line_item_id: order.items.map((i) => i.id),
+  })
 
   return (
     <div>
       {order.items.map((item) => {
-        // const reservation = reservations
-        //   ? reservations.find((r) => r.line_item_id === item.id)
-        //   : null
+        const reservation = reservations
+          ? reservations.find((r) => r.line_item_id === item.id)
+          : null
 
         return (
           <Item
             key={item.id}
             item={item}
             currencyCode={order.currency_code}
-            reservation={null /* TODO: fetch reservation for this item */}
+            reservation={reservation}
           />
         )
       })}
@@ -213,6 +273,41 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
       />
     </div>
   )
+}
+
+const ReturnBreakdown = ({ order }: { order: AdminOrder }) => {
+  const { t } = useTranslation()
+  const { getRelativeDate } = useDate()
+
+  const { returns = [] } = useReturns({
+    order_id: order.id,
+    status: "requested",
+    fields: "*items",
+  })
+
+  if (!returns.length) {
+    return null
+  }
+
+  return returns.map((activeReturn) => (
+    <div
+      key={activeReturn.id}
+      className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <ArrowDownRightMini className="text-ui-fg-muted" />
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.returns.returnRequestedInfo", {
+            requestedItemsCount: activeReturn.items.length,
+          })}
+        </Text>
+      </div>
+
+      <Text size="small" leading="compact" className="text-ui-fg-muted">
+        {getRelativeDate(activeReturn.created_at)}
+      </Text>
+    </div>
+  ))
 }
 
 const Total = ({ order }: { order: AdminOrder }) => {

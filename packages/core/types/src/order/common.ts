@@ -3,6 +3,7 @@ import { OperatorMap } from "../dal/utils"
 import { FulfillmentDTO } from "../fulfillment"
 import { PaymentCollectionDTO } from "../payment"
 import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
+import { ClaimReason } from "./mutations"
 
 export type ChangeActionType =
   | "CANCEL"
@@ -36,13 +37,7 @@ export type OrderSummaryDTO = {
   net_subtotal: BigNumberValue
   net_total_tax: BigNumberValue
 
-  future_total: BigNumberValue
-  future_subtotal: BigNumberValue
-  future_total_tax: BigNumberValue
-  future_projected_total: BigNumberValue
-
   balance: BigNumberValue
-  future_balance: BigNumberValue
 
   paid_total: BigNumberValue
   refunded_total: BigNumberValue
@@ -1138,28 +1133,84 @@ export interface OrderDTO {
 
 type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
 
-export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
+export interface ReturnDTO
+  extends Omit<OrderDTO, "status" | "version" | "items"> {
+  id: string
   status: ReturnStatus
   refund_amount?: BigNumberValue
   order_id: string
+  items: OrderReturnItemDTO[]
+}
+
+export interface OrderReturnItemDTO {
+  id: string
+  return_id: string
+  order_id: string
+  item_id: string
+  reason_id?: string | null
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  received_quantity?: number
+  raw_received_quantity?: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderClaimItemDTO {
+  id: string
+  claim_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  reason: ClaimReason
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderClaimItemImageDTO {
+  id: string
+  claim_item_id: string
+  url: string
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderExchangeItemDTO {
+  id: string
+  exchange_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
 }
 
 export interface OrderClaimDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
+  order_id: string
   claim_items: any[]
   additional_items: any[]
   return?: ReturnDTO
+  return_id?: string
   no_notification?: boolean
   refund_amount?: BigNumberValue
 }
 
 export interface OrderExchangeDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
+  order_id: string
   return_items: any[]
   additional_items: any[]
   no_notification?: boolean
   difference_due?: BigNumberValue
   return?: ReturnDTO
+  return_id?: string
 }
 
 export type PaymentStatus =
@@ -1325,6 +1376,9 @@ export interface OrderChangeActionDTO {
    * The ID of the associated order
    */
   order_id: string | null
+  return_id: string | null
+  claim_id: string | null
+  exchange_id: string | null
   /**
    * The associated order
    *

@@ -5,6 +5,7 @@ import { FulfillmentProvider } from "./fulfillment-provider"
 import { FulfillmentSet } from "./fulfillment-set"
 import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
+import { Notification } from "./notification"
 import { Order } from "./order"
 import { PriceList } from "./price-list"
 import { PricePreference } from "./price-preference"
@@ -14,6 +15,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
+import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
 import { ShippingProfile } from "./shipping-profile"
@@ -22,6 +24,8 @@ import { Store } from "./store"
 import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
+import { User } from "./user"
+import { ReturnReason } from "./return-reason"
 
 export class Admin {
   public invite: Invite
@@ -34,6 +38,7 @@ export class Admin {
   public productType: ProductType
   public upload: Upload
   public region: Region
+  public returnReason: ReturnReason
   public stockLocation: StockLocation
   public salesChannel: SalesChannel
   public fulfillmentSet: FulfillmentSet
@@ -42,11 +47,14 @@ export class Admin {
   public shippingOption: ShippingOption
   public shippingProfile: ShippingProfile
   public inventoryItem: InventoryItem
+  public notification: Notification
   public order: Order
+  public return: Return
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
+  public user: User
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -59,6 +67,7 @@ export class Admin {
     this.productType = new ProductType(client)
     this.upload = new Upload(client)
     this.region = new Region(client)
+    this.returnReason = new ReturnReason(client)
     this.stockLocation = new StockLocation(client)
     this.salesChannel = new SalesChannel(client)
     this.fulfillmentSet = new FulfillmentSet(client)
@@ -67,10 +76,13 @@ export class Admin {
     this.shippingOption = new ShippingOption(client)
     this.shippingProfile = new ShippingProfile(client)
     this.inventoryItem = new InventoryItem(client)
+    this.notification = new Notification(client)
     this.order = new Order(client)
+    this.return = new Return(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
+    this.user = new User(client)
   }
 }

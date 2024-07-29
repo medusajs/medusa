@@ -126,11 +126,11 @@ export const runIsolatedModulesMigration = async (configModule) => {
       continue
     }
 
-    await MedusaModule.migrateUp(
-      moduleResolution.definition.key,
-      moduleResolution.resolutionPath,
-      moduleResolution.options
-    )
+    await MedusaModule.migrateUp({
+      moduleKey: moduleResolution.definition.key,
+      modulePath: moduleResolution.resolutionPath,
+      options: moduleResolution.options,
+    })
   }
 }
 
@@ -151,10 +151,10 @@ export const revertIsolatedModulesMigration = async (configModule) => {
       continue
     }
 
-    await MedusaModule.migrateDown(
-      moduleResolution.definition.key,
-      moduleResolution.resolutionPath,
-      moduleResolution.options
-    )
+    await MedusaModule.migrateDown({
+      moduleKey: moduleResolution.definition.key,
+      modulePath: moduleResolution.resolutionPath,
+      options: moduleResolution.options,
+    })
   }
 }

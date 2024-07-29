@@ -387,7 +387,7 @@ export interface UpdateOrderItemWithSelectorDTO {
 interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
-  internal_note?: string | null
+  internal_note?: string
   note?: string | null
   metadata?: Record<string, unknown> | null
   [key: string]: any
@@ -399,7 +399,7 @@ interface BaseOrderBundledActionsDTO {
   exchange_id?: string
 
   description?: string
-  internal_note?: string | null
+  internal_note?: string
   reference?: string
   reference_id?: string
   created_by?: string | null
@@ -421,6 +421,7 @@ export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
+  location_id?: string
   items?: {
     id: string
     quantity: BigNumberInput
@@ -436,15 +437,26 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   exchange_id?: string
 }
 
-export interface UpdateOrderReturnDTO {
+export interface UpdateReturnDTO {
+  id: string
+  location_id?: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   claim_id?: string
   exchange_id?: string
   metadata?: Record<string, unknown> | null
+  items?: {
+    quantity: BigNumberInput
+    internal_note?: string | null
+    note?: string | null
+    reason_id?: string | null
+    return_id?: string | null
+    metadata?: Record<string, unknown> | null
+  }[]
 }
 
 export interface UpdateOrderClaimDTO {
+  id: string
   refund_amount?: BigNumberInput
   no_notification?: boolean
   return_id?: string
@@ -453,6 +465,7 @@ export interface UpdateOrderClaimDTO {
 }
 
 export interface UpdateOrderExchangeDTO {
+  id: string
   difference_due?: BigNumberInput
   no_notification?: boolean
   return_id?: string
@@ -460,9 +473,44 @@ export interface UpdateOrderExchangeDTO {
   metadata?: Record<string, unknown> | null
 }
 
+export interface CreateOrderReturnItemDTO {
+  return_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  reason_id?: string
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderClaimItemDTO {
+  claim_id: string
+  item_id: string
+  reason?: ClaimReason
+  is_additional_item?: boolean
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
 export interface UpdateOrderReturnWithSelectorDTO {
   selector: Partial<ReturnDTO>
-  data: Partial<UpdateOrderReturnDTO>
+  data: Partial<UpdateReturnDTO>
 }
 
 export interface UpdateOrderClaimWithSelectorDTO {
@@ -488,7 +536,7 @@ export type ClaimReason =
 export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   type: OrderClaimType
   claim_items?: (BaseOrderBundledItemActionsDTO & {
-    reason: ClaimReason
+    reason?: ClaimReason
     images?: {
       url: string
       metadata?: Record<string, unknown> | null

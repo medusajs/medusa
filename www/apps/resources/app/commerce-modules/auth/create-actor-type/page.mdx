@@ -37,10 +37,10 @@ Start by creating a workflow that does two things:
 For example, create the file `src/workflows/create-manager.ts`. with the following content:
 
 export const workflowHighlights = [
-  ["27", "createManagerStep", "Thi step creates a manager."],
-  ["44", "createManagerWorkflow", "The workflow used to create a manager and set its auth identity's actor type."],
-  ["53", "setAuthAppMetadataStep", "Set the actor type of the manager's associated auth identity."],
-  ["55", '"manager"', "The actor type of the manager."]
+  ["20", "createManagerStep", "Thi step creates a manager."],
+  ["37", "createManagerWorkflow", "The workflow used to create a manager and set its auth identity's actor type."],
+  ["44", "setAuthAppMetadataStep", "Set the actor type of the manager's associated auth identity."],
+  ["46", '"manager"', "The actor type of the manager."]
 ]
 
 ```ts title="src/workflows/create-manager.ts" highlights={workflowHighlights}
@@ -63,13 +63,6 @@ type CreateManagerWorkflowInput = {
   authIdentityId: string
 }
 
-type CreateManagerWorkflowOutput = {
-  id: string
-  first_name: string
-  last_name: string
-  email: string
-}
-
 const createManagerStep = createStep(
   "create-manager-step",
   async ({ 
@@ -87,11 +80,9 @@ const createManagerStep = createStep(
   }
 )
 
-const createManagerWorkflow = createWorkflow<
-  CreateManagerWorkflowInput, CreateManagerWorkflowOutput
->(
+const createManagerWorkflow = createWorkflow(
   "create-manager",
-  function (input) {
+  function (input: CreateManagerWorkflowInput) {
     const manager = createManagerStep({
       manager: input.manager,
     })
@@ -185,15 +176,18 @@ The last step is to apply the `authenticate` middleware on the API routes that r
 To do that, create the file `src/api/middlewares.ts` with the following content:
 
 export const middlewareHighlights = [
-  ["9", "authenticate", "Require the user to be authenticated to access the `/manager` API route when sending a `POST` request."],
-  ["10", "allowUnregistered", "The user doesn't need to be registered to access the API route."],
-  ["17", "authenticate", "Require the user to be authenticated as a manager when accessing `/manager/me` API routes."]
+  ["12", "authenticate", "Require the user to be authenticated to access the `/manager` API route when sending a `POST` request."],
+  ["13", "allowUnregistered", "The user doesn't need to be registered to access the API route."],
+  ["20", "authenticate", "Require the user to be authenticated as a manager when accessing `/manager/me` API routes."]
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+import { 
+  defineMiddlewares,
+  authenticate
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
+export default defineMiddlewares({
   routes: [
     {
       matcher: "/manager",
@@ -211,7 +205,7 @@ export const config: MiddlewaresConfig = {
       ],
     },
   ],
-}
+})
 ```
 
 This applies middlewares on two route patterns:

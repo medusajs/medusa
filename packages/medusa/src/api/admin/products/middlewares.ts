@@ -16,6 +16,7 @@ import {
   AdminCreateProductOption,
   AdminCreateProductVariant,
   AdminCreateVariantInventoryItem,
+  AdminExportProduct,
   AdminGetProductOptionParams,
   AdminGetProductOptionsParams,
   AdminGetProductParams,
@@ -27,6 +28,12 @@ import {
   AdminUpdateProductVariant,
   AdminUpdateVariantInventoryItem,
 } from "./validators"
+import multer from "multer"
+
+// TODO: For now we keep the files in memory, as that's how they get passed to the workflows
+// This will need revisiting once we are closer to prod-ready v2, since with workflows and potentially
+// services on other machines using streams is not as simple as it used to be.
+const upload = multer({ storage: multer.memoryStorage() })
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -70,11 +77,32 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/products/export",
+    middlewares: [
+      validateAndTransformBody(AdminExportProduct),
+      validateAndTransformQuery(
+        AdminGetProductsParams,
+        QueryConfig.listProductQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products/import",
+    middlewares: [upload.single("file")],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products/import/:transaction_id/confirm",
+    middlewares: [],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export|import)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig
@@ -87,11 +115,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export|import)/,
         validateAndTransformBody(AdminUpdateProduct)
       ),
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export|import)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig
@@ -104,7 +132,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id",
     middlewares: [
       unlessPath(
-        /.*\/products\/batch/,
+        /.*\/products\/(batch|export|import)/,
         validateAndTransformQuery(
           AdminGetProductParams,
           QueryConfig.retrieveProductQueryConfig

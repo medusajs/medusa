@@ -21,7 +21,7 @@ export function LocationServiceZoneShippingOptionCreate() {
     ?.find((f) => f.id === fset_id)
     ?.service_zones?.find((z) => z.id === zone_id)
 
-  if (!zone) {
+  if (!isPending && !zone) {
     throw json(
       { message: `Service zone with ID ${zone_id} was not found` },
       404

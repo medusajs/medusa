@@ -22,7 +22,6 @@
  *   - material
  *   - collection_id
  *   - type_id
- *   - tags
  *   - variants
  *   - options
  *   - images

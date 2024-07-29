@@ -5,6 +5,8 @@ import { ReservationActions } from "./reservation-actions"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
+import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
 
 /**
  * Adds missing properties to the InventoryItemDTO type.
@@ -81,21 +83,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
       }),
       columnHelper.accessor("created_at", {
         header: t("fields.createdAt"),
-        cell: ({ getValue }) => {
-          const createdAt = getValue()
-
-          if (!createdAt) {
-            return <PlaceholderCell />
-          }
-
-          return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">
-                {createdAt instanceof Date ? createdAt.toString() : createdAt}
-              </span>
-            </div>
-          )
-        },
+        cell: ({ getValue }) => <CreatedAtCell date={getValue()} />,
       }),
       columnHelper.display({
         id: "actions",

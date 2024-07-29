@@ -120,9 +120,17 @@ describe("Workflow composer", () => {
         }
       )
 
-      const { result } = await workflow.run({ input: { callSubFlow: true } })
+      const { result } = await workflow.run({
+        input: { callSubFlow: true },
+      })
 
       expect(result).toEqual({ result: "hi from outside" })
+
+      const { result: res2 } = await workflow.run({
+        input: { callSubFlow: false },
+      })
+
+      expect(res2).toEqual({ result: "default response" })
     })
 
     it("should revert the workflow and sub workflow on failure", async function () {

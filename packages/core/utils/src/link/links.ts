@@ -44,6 +44,12 @@ export const LINKS = {
     Modules.STOCK_LOCATION,
     "location_id"
   ),
+  LocationFulfillmentProvider: composeLinkName(
+    Modules.STOCK_LOCATION,
+    "stock_location_id",
+    Modules.FULFILLMENT,
+    "fulfillment_provider_id"
+  ),
   LocationFulfillmentSet: composeLinkName(
     Modules.STOCK_LOCATION,
     "stock_location_id",
@@ -101,6 +107,12 @@ export const LINKS = {
   OrderFulfillment: composeLinkName(
     Modules.ORDER,
     "order_id",
+    Modules.FULFILLMENT,
+    "fulfillment_id"
+  ),
+  ReturnFulfillment: composeLinkName(
+    Modules.ORDER,
+    "return_id",
     Modules.FULFILLMENT,
     "fulfillment_id"
   ),

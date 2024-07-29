@@ -1,7 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper, TypeList } from "docs-ui"
 
 export const metadata = {
-  title: `Prices Calculation Strategy`,
+  title: `Prices Calculation`,
 }
 
 # {metadata.title}
@@ -60,7 +60,7 @@ Both prices are returned in an object along with the following properties:
     {
       name: "calculated_amount",
       type: "`number`",
-      description: "The amount of the calculated price, or `null` if there isn't a calculated price."
+      description: "The amount of the calculated price, or `null` if there isn't a calculated price. This is the amount shown to the customer."
     },
     {
       name: "is_original_price_price_list",
@@ -70,12 +70,22 @@ Both prices are returned in an object along with the following properties:
     {
       name: "original_amount",
       type: "`number`",
-      description: "The amount of the original price, or `null` if there isn't an original price."
+      description: "The amount of the original price, or `null` if there isn't an original price. This amount is useful to compare with the `calculated_amount`, such as to check for discounted value."
     },
     {
       name: "currency_code",
       type: "`string`",
       description: "The currency code of the calculated price, or `null` if there isn't a calculated price."
+    },
+    {
+      name: "is_calculated_price_tax_inclusive",
+      type: "`boolean`",
+      description: "Whether the calculated price is tax inclusive. Learn more about tax-inclusivity in [this document](../tax-inclusive-pricing/page.mdx)"
+    },
+    {
+      name: "is_original_price_tax_inclusive",
+      type: "`boolean`",
+      description: "Whether the original price is tax inclusive. Learn more about tax-inclusivity in [this document](../tax-inclusive-pricing/page.mdx)"
     },
     {
       name: "calculated_price",
@@ -95,7 +105,7 @@ Both prices are returned in an object along with the following properties:
         {
           name: "price_list_type",
           type: "`string`",
-          description: "The price list's type."
+          description: "The price list's type. For example, `sale`."
         },
         {
           name: "min_quantity",
@@ -127,7 +137,7 @@ Both prices are returned in an object along with the following properties:
         {
           name: "price_list_type",
           type: "`string`",
-          description: "The price list's type."
+          description: "The price list's type. For example, `sale`."
         },
         {
           name: "min_quantity",
@@ -224,6 +234,9 @@ const priceSet = await pricingModuleService.createPriceSets({
 
       currency_code: "EUR",
 
+      is_calculated_price_tax_inclusive: false,
+      is_original_price_tax_inclusive: false,
+
       calculated_price: {
         price_id: "<DEFAULT_PRICE_ID>",
         price_list_id: null,
@@ -287,6 +300,9 @@ const priceSet = await pricingModuleService.createPriceSets({
       original_amount: 500,
 
       currency_code: "EUR",
+
+      is_calculated_price_tax_inclusive: false,
+      is_original_price_tax_inclusive: false,
 
       calculated_price: {
         price_id: "<FOURTH_PRICE_ID>",
@@ -374,6 +390,9 @@ const priceSet = await pricingModuleService.createPriceSets({
       original_amount: 500,
 
       currency_code: "EUR",
+
+      is_calculated_price_tax_inclusive: false,
+      is_original_price_tax_inclusive: false,
 
       calculated_price: {
         price_id: "<FOURTH_PRICE_ID>",

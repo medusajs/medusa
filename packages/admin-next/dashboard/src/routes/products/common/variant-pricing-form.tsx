@@ -78,7 +78,9 @@ export const useVariantPriceGridColumns = ({
           return (
             <ReadonlyCell>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-                <span className="truncate">{entity.title}</span>
+                <span title={entity.title} className="truncate">
+                  {entity.title}
+                </span>
               </div>
             </ReadonlyCell>
           )

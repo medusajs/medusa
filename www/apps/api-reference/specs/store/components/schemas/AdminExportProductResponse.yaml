@@ -1,0 +1,10 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminExportProductResponse
+required:
+  - transaction_id
+properties:
+  transaction_id:
+    type: string
+    title: transaction_id
+    description: The product's transaction id.

@@ -13,6 +13,22 @@ export class Product {
     this.client = client
   }
 
+  async export(
+    body: HttpTypes.AdminExportProductRequest,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminExportProductResponse>(
+      `/admin/products/export`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async batch(
     body: HttpTypes.AdminBatchProductRequest,
     query?: SelectParams,
@@ -28,6 +44,7 @@ export class Product {
       }
     )
   }
+
   async create(
     body: HttpTypes.AdminCreateProduct,
     query?: SelectParams,

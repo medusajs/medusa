@@ -13,7 +13,7 @@ type ConditionFunction<T extends object | WorkflowData> = (
 type ThenFunc = <ThenResolver extends () => any>(
   resolver: ThenResolver
 ) => ReturnType<ThenResolver> extends WorkflowData<infer ReturnedWorkflowData>
-  ? Partial<WorkflowData<ReturnedWorkflowData>>
+  ? WorkflowData<ReturnedWorkflowData> | undefined
   : ReturnType<ThenResolver>
 
 export function when<T extends object | WorkflowData, Then extends Function>(

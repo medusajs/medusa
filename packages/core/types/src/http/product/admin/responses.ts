@@ -31,6 +31,18 @@ export type AdminProductVariantListResponse = PaginatedResponse<{
 export interface AdminProductVariantDeleteResponse
   extends DeleteResponse<"variant", AdminProduct> {}
 
+export interface AdminExportProductResponse {
+  transaction_id: string
+}
+
+export interface AdminImportProductResponse {
+  transaction_id: string
+  summary: {
+    toCreate: number
+    toUpdate: number
+  }
+}
+
 export interface AdminBatchProductVariantResponse
   extends BatchMethodResponse<AdminProductVariant> {}
 

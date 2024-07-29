@@ -1,20 +1,20 @@
-import { OrderTypes } from "@medusajs/types"
 import {
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   deduplicate,
   isDefined,
+  isObject,
 } from "@medusajs/utils"
 
 // Reshape the order object to match the OrderDTO
 // This function is used to format the order object before returning to the main module methods
-export function formatOrder(
+export function formatOrder<T = any>(
   order,
   options: {
     entity: any
     includeTotals?: boolean
   }
-): Partial<OrderTypes.OrderDTO> | Partial<OrderTypes.OrderDTO>[] {
+): T {
   const isArray = Array.isArray(order)
   const orders = [...(isArray ? order : [order])]
 
@@ -33,6 +33,11 @@ export function formatOrder(
     }
 
     mainOrder.items = mainOrder.items?.map((orderItem) => {
+      const isFormatted = isDefined(orderItem.detail?.fulfilled_quantity)
+      if (isFormatted) {
+        return orderItem
+      }
+
       const detail = { ...orderItem }
       delete detail.order
       delete detail.item
@@ -62,6 +67,10 @@ export function formatOrder(
 
     if (order.shipping_methods) {
       order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
+        if (shippingMethod.detail) {
+          return shippingMethod
+        }
+
         const sm = { ...shippingMethod.shipping_method }
 
         delete shippingMethod.shipping_method
@@ -90,14 +99,19 @@ export function formatOrder(
 }
 
 function cleanNestedRelations(obj) {
-  delete obj.order
-  delete obj.return
-  delete obj.claim
-  delete obj.exchange
+  if (!isObject(obj)) {
+    return
+  }
+
+  const obj_ = obj as any
+  delete obj_.order
+  delete obj_.return
+  delete obj_.claim
+  delete obj_.exchange
 }
 
 function formatOrderReturn(orderReturn, mainOrder) {
-  orderReturn.items.forEach((orderItem) => {
+  orderReturn.items?.forEach((orderItem) => {
     const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
 
     orderItem.detail = item?.detail

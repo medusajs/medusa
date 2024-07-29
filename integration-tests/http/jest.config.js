@@ -11,6 +11,7 @@ module.exports = {
         jsc: {
           parser: { syntax: "typescript", decorators: true },
           transform: { decoratorMetadata: true },
+          target: "es2021",
         },
       },
     ],

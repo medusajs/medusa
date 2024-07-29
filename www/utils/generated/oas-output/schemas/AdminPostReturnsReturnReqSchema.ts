@@ -1,0 +1,22 @@
+/**
+ * @schema AdminPostReturnsReturnReqSchema
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminPostReturnsReturnReqSchema
+ * required:
+ *   - metadata
+ * properties:
+ *   location_id:
+ *     type: string
+ *     title: location_id
+ *     description: The return's location id.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: The return's no notification.
+ *   metadata:
+ *     type: object
+ *     description: The return's metadata.
+ * 
+*/
+

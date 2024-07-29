@@ -17,18 +17,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: >-
- *       Comma-separated fields that should be included in the returned data.
- *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *        * without prefix it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned
+ *       data. if a field is prefixed with `+` it will be added to the default
+ *       fields, using `-` will remove it from the default fields. without prefix
+ *       it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: >-
- *         Comma-separated fields that should be included in the returned data.
- *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *          * without prefix it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned
+ *         data. if a field is prefixed with `+` it will be added to the default
+ *         fields, using `-` will remove it from the default fields. without prefix
+ *         it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -140,7 +140,7 @@
  *     description: The shipping option's created at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The shipping option's created at.
  *       required:
  *         - $eq
@@ -168,12 +168,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: The shipping option's updated at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The shipping option's updated at.
  *       required:
  *         - $eq
@@ -201,12 +202,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: The shipping option's deleted at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The shipping option's deleted at.
  *       required:
  *         - $eq
@@ -234,6 +236,7 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: deleted_at
  * security:
  *   - api_token: []
  *   - cookie_auth: []

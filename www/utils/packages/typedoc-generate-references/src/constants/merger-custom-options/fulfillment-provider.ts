@@ -39,14 +39,13 @@ Create the file \`src/modules/my-fulfillment/index.ts\` with the following conte
 
 \`\`\`ts title="src/modules/my-fulfillment/index.ts"
 import MyFulfillmentProviderService from "./service"
-import { Module } from "@medusajs/utils"
 
-export default Module("my-fulfillment", {
-  service: MyFulfillmentProviderService,
-})
+export default {
+  services: [MyFulfillmentProviderService],
+}
 \`\`\`
 
-This exports the module's definition, indicating that the \`MyFulfillmentProviderService\` is the main service of the module.`,
+This exports the module's definition, indicating that the \`MyFulfillmentProviderService\` is the module's service.`,
       `## 4. Use Module
 
 To use your Fulfillment Provider Module, add it to the \`providers\` array of the Fulfillment Module:

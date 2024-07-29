@@ -31,6 +31,9 @@ tags:
   - name: Product Categories
     x-associatedSchema:
       $ref: ./components/schemas/StoreProductCategory.yaml
+  - name: Products
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreProduct.yaml
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -92,6 +95,10 @@ paths:
     $ref: paths/store_product-categories.yaml
   /store/product-categories/{id}:
     $ref: paths/store_product-categories_{id}.yaml
+  /store/products:
+    $ref: paths/store_products.yaml
+  /store/products/{id}:
+    $ref: paths/store_products_{id}.yaml
   /store/regions:
     $ref: paths/store_regions.yaml
   /store/regions/{id}:

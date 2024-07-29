@@ -42,8 +42,10 @@
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "dependencies": {
+    "@inquirer/checkbox": "^2.3.11",
     "@medusajs/admin-sdk": "0.0.1",
     "@medusajs/core-flows": "^0.0.9",
+    "@medusajs/framework": "^0.0.1-preview-20240724081425",
     "@medusajs/link-modules": "^0.2.11",
     "@medusajs/medusa-cli": "^1.3.22",
     "@medusajs/modules-sdk": "^1.12.11",
@@ -55,6 +57,7 @@
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
+    "chalk": "^4.0.0",
     "chokidar": "^3.4.2",
     "compression": "^1.7.4",
     "connect-redis": "^5.0.0",

@@ -31,6 +31,8 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     const isRelatedEntity = entity !== Order
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
+    config.options ??= {}
+    config.options.populate ??= []
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
@@ -69,6 +71,13 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (isRelatedEntity) {
       popWhere.order ??= {}
+
+      popWhere.shipping_methods ??= {}
+      popWhere.shipping_methods.version = version
+      popWhere.shipping_methods.deleted_at ??= null
+
+      popWhere.shipping_methods.shipping_method ??= {}
+      popWhere.shipping_methods.shipping_method.deleted_at ??= null
     }
 
     const orderWhere = isRelatedEntity ? popWhere.order : popWhere
@@ -80,9 +89,12 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     orderWhere.items.version = version
     orderWhere.items.deleted_at ??= null
 
-    popWhere.shipping_methods ??= {}
-    popWhere.shipping_methods.version = version
-    popWhere.shipping_methods.deleted_at ??= null
+    orderWhere.shipping_methods ??= {}
+    orderWhere.shipping_methods.version = version
+    orderWhere.shipping_methods.deleted_at ??= null
+
+    orderWhere.shipping_methods.shipping_method ??= {}
+    orderWhere.shipping_methods.shipping_method.deleted_at ??= null
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }

@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { Logger, Message, MessageBody } from "@medusajs/types"
+import { Logger, Message, Event } from "@medusajs/types"
 import {
   AbstractEventBusModuleService,
   isPresent,
@@ -14,9 +14,7 @@ type InjectedDependencies = {
   eventBusRedisConnection: Redis
 }
 
-type IORedisEventType<T = unknown> = {
-  name: string
-  data: MessageBody<T>
+type IORedisEventType<T = unknown> = Event<T> & {
   opts: BulkJobOptions
 }
 
@@ -98,8 +96,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       const { options, ...eventBody } = eventData
 
       return {
-        name: eventData.eventName,
-        data: eventBody,
+        ...eventBody,
         opts: {
           // options for event group
           ...opts,

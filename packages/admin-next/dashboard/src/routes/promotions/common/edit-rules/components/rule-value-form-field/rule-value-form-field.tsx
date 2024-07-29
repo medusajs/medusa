@@ -84,6 +84,7 @@ export const RuleValueFormField = ({
                   className="bg-ui-bg-base"
                   ref={valuesRef}
                   min={1}
+                  disabled={!fieldRule.attribute}
                 />
               </Form.Control>
               <Form.ErrorMessage />
@@ -97,6 +98,7 @@ export const RuleValueFormField = ({
                   {...field}
                   onChange={onChange}
                   className="bg-ui-bg-base"
+                  disabled={!fieldRule.attribute}
                 />
               </Form.Control>
               <Form.ErrorMessage />
@@ -112,6 +114,7 @@ export const RuleValueFormField = ({
                     Array.isArray(field.value) ? field.value[0] : field.value
                   }
                   onValueChange={onChange}
+                  disabled={!fieldRule.attribute}
                 >
                   <Select.Trigger ref={ref} className="bg-ui-bg-base">
                     <Select.Value placeholder="Select Value" />
@@ -144,6 +147,7 @@ export const RuleValueFormField = ({
                   options={options}
                   onChange={onChange}
                   className="bg-ui-bg-base"
+                  disabled={!fieldRule.attribute}
                 />
               </Form.Control>
 

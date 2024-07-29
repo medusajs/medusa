@@ -1,16 +1,44 @@
 import { PropsWithChildren, useEffect, useState } from "react"
-import { Theme, ThemeContext } from "./theme-context"
+import { ThemeContext, ThemeOption, ThemeValue } from "./theme-context"
 
 const THEME_KEY = "medusa_admin_theme"
 
-export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const [state, setState] = useState<Theme>(
-    (localStorage?.getItem(THEME_KEY) as Theme) || "light"
-  )
+function getDefaultValue(): ThemeOption {
+  const persisted = localStorage?.getItem(THEME_KEY) as ThemeOption
 
-  const setTheme = (theme: Theme) => {
+  if (persisted) {
+    return persisted
+  }
+
+  return "system"
+}
+
+function getThemeValue(selected: ThemeOption): ThemeValue {
+  if (selected === "system") {
+    if (window !== undefined) {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+    }
+
+    // Default to light theme if we can't detect the system preference
+    return "light"
+  }
+
+  return selected
+}
+
+export const ThemeProvider = ({ children }: PropsWithChildren) => {
+  const [state, setState] = useState<ThemeOption>(getDefaultValue())
+  const [value, setValue] = useState<ThemeValue>(getThemeValue(state))
+
+  const setTheme = (theme: ThemeOption) => {
     localStorage.setItem(THEME_KEY, theme)
+
+    const themeValue = getThemeValue(theme)
+
     setState(theme)
+    setValue(themeValue)
   }
 
   useEffect(() => {
@@ -34,8 +62,8 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
       )
       document.head.appendChild(css)
 
-      html.classList.remove(state === "light" ? "dark" : "light")
-      html.classList.add(state)
+      html.classList.remove(value === "light" ? "dark" : "light")
+      html.classList.add(value)
 
       /**
        * Re-enable transitions after the theme has been set,
@@ -44,7 +72,7 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
       window.getComputedStyle(css).opacity
       document.head.removeChild(css)
     }
-  }, [state])
+  }, [value])
 
   return (
     <ThemeContext.Provider value={{ theme: state, setTheme }}>

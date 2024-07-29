@@ -1,7 +1,7 @@
 import { IInventoryService, InventoryTypes } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { MathBN, ModuleRegistrationName } from "@medusajs/utils"
 
 export const adjustInventoryLevelsStepId = "adjust-inventory-levels-step"
 export const adjustInventoryLevelsStep = createStep(
@@ -30,7 +30,7 @@ export const adjustInventoryLevelsStep = createStep(
       input.map((item) => {
         return {
           ...item,
-          adjustment: item.adjustment * -1,
+          adjustment: MathBN.mult(item.adjustment, -1),
         }
       })
     )

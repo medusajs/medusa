@@ -115,6 +115,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module Links",
             },
             {
+              path: "/advanced-development/modules/module-link-directions",
+              title: "Module Link Direction",
+            },
+            {
               path: "/advanced-development/modules/remote-link",
               title: "Remote Link",
             },
@@ -163,6 +167,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/data-models/searchable-property",
               title: "Searchable Property",
+            },
+            {
+              path: "/advanced-development/data-models/write-migration",
+              title: "Write Migration",
             },
           ],
         },
@@ -218,6 +226,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/workflows/long-running-workflow",
               title: "Long-Running Workflow",
+            },
+            {
+              path: "/advanced-development/workflows/execute-another-workflow",
+              title: "Execute Another Workflow",
             },
             {
               path: "/advanced-development/workflows/advanced-example",

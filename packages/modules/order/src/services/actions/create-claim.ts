@@ -6,13 +6,13 @@ import {
 import {
   ChangeActionType,
   ClaimType,
+  OrderChangeType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { ClaimItem, OrderClaim, Return, ReturnItem } from "@models"
-import { OrderChangeType } from "@types"
+import { OrderClaim, OrderClaimItem, Return, ReturnItem } from "@models"
 
 function createClaimAndReturnEntities(em, data, order) {
   const claimReference = em.create(OrderClaim, {
@@ -89,7 +89,7 @@ function createClaimAndReturnItems(
         : undefined
     )
 
-    return em.create(ClaimItem, {
+    return em.create(OrderClaimItem, {
       item_id: item.id,
       reason: item.reason,
       quantity: item.quantity,
@@ -111,8 +111,8 @@ async function processAdditionalItems(
   sharedContext
 ) {
   const itemsToAdd: any[] = []
-  const additionalNewItems: ClaimItem[] = []
-  const additionalItems: ClaimItem[] = []
+  const additionalNewItems: OrderClaimItem[] = []
+  const additionalItems: OrderClaimItem[] = []
   data.additional_items?.forEach((item) => {
     const hasItem = item.id
       ? order.items.find((o) => o.item.id === item.id)
@@ -134,7 +134,7 @@ async function processAdditionalItems(
       })
 
       additionalItems.push(
-        em.create(ClaimItem, {
+        em.create(OrderClaimItem, {
           item_id: item.id,
           quantity: item.quantity,
           note: item.note,
@@ -146,7 +146,7 @@ async function processAdditionalItems(
       itemsToAdd.push(item)
 
       additionalNewItems.push(
-        em.create(ClaimItem, {
+        em.create(OrderClaimItem, {
           quantity: item.quantity,
           note: item.note,
           metadata: item.metadata,

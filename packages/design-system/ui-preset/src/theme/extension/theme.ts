@@ -124,9 +124,6 @@ export const theme = {
               "DEFAULT": "var(--bg-subtle-pressed)"
             }
           },
-          "overlay": {
-            "DEFAULT": "var(--bg-overlay)"
-          },
           "field": {
             "component": {
               "hover": {
@@ -168,6 +165,9 @@ export const theme = {
           },
           "disabled": {
             "DEFAULT": "var(--bg-disabled)"
+          },
+          "overlay": {
+            "DEFAULT": "var(--bg-overlay)"
           }
         },
         "border": {
@@ -199,17 +199,6 @@ export const theme = {
           }
         },
         "contrast": {
-          "border": {
-            "top": {
-              "DEFAULT": "var(--contrast-border-top)"
-            },
-            "base": {
-              "DEFAULT": "var(--contrast-border-base)"
-            },
-            "bot": {
-              "DEFAULT": "var(--contrast-border-bot)"
-            }
-          },
           "fg": {
             "primary": {
               "DEFAULT": "var(--contrast-fg-primary)"
@@ -231,14 +220,22 @@ export const theme = {
             "subtle": {
               "DEFAULT": "var(--contrast-bg-subtle)"
             }
+          },
+          "border": {
+            "base": {
+              "DEFAULT": "var(--contrast-border-base)"
+            },
+            "bot": {
+              "DEFAULT": "var(--contrast-border-bot)"
+            },
+            "top": {
+              "DEFAULT": "var(--contrast-border-top)"
+            }
           }
         },
         "fg": {
           "disabled": {
             "DEFAULT": "var(--fg-disabled)"
-          },
-          "base": {
-            "DEFAULT": "var(--fg-base)"
           },
           "muted": {
             "DEFAULT": "var(--fg-muted)"
@@ -262,6 +259,9 @@ export const theme = {
           },
           "subtle": {
             "DEFAULT": "var(--fg-subtle)"
+          },
+          "base": {
+            "DEFAULT": "var(--fg-base)"
           }
         },
         "button": {

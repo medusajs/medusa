@@ -130,6 +130,17 @@ export async function prepareDataFixtures({ container }) {
     },
   ])
 
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+  ])
+
   const shippingOptionData: FulfillmentWorkflow.CreateShippingOptionsWorkflowInput =
     {
       name: "Shipping option",
@@ -205,7 +216,7 @@ export async function createOrderFixture({
   )
 
   let order = await orderService.createOrders({
-    region_id: "test_region_idclear",
+    region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {

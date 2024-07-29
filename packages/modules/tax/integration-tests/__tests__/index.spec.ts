@@ -16,10 +16,10 @@ moduleIntegrationTestRunner<ITaxModuleService>({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "taxProvider",
-          "taxRateRule",
           "taxRate",
           "taxRegion",
+          "taxRateRule",
+          "taxProvider",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -27,22 +27,6 @@ moduleIntegrationTestRunner<ITaxModuleService>({
         })
 
         expect(linkable).toEqual({
-          taxProvider: {
-            id: {
-              linkable: "tax_provider_id",
-              primaryKey: "id",
-              serviceName: "tax",
-              field: "taxProvider",
-            },
-          },
-          taxRateRule: {
-            id: {
-              linkable: "tax_rate_rule_id",
-              primaryKey: "id",
-              serviceName: "tax",
-              field: "taxRateRule",
-            },
-          },
           taxRate: {
             id: {
               linkable: "tax_rate_id",
@@ -57,6 +41,22 @@ moduleIntegrationTestRunner<ITaxModuleService>({
               primaryKey: "id",
               serviceName: "tax",
               field: "taxRegion",
+            },
+          },
+          taxRateRule: {
+            id: {
+              linkable: "tax_rate_rule_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxRateRule",
+            },
+          },
+          taxProvider: {
+            id: {
+              linkable: "tax_provider_id",
+              primaryKey: "id",
+              serviceName: "tax",
+              field: "taxProvider",
             },
           },
         })
@@ -214,15 +214,19 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           },
         })
 
-        const error = await service.createTaxRegions({
-          country_code: "US",
-          default_tax_rate: {
-            name: "Test Rate",
-            rate: 0.2,
-          },
-        }).catch(e => e)
+        const error = await service
+          .createTaxRegions({
+            country_code: "US",
+            default_tax_rate: {
+              name: "Test Rate",
+              rate: 0.2,
+            },
+          })
+          .catch((e) => e)
 
-        expect(error.message).toEqual("Tax region with country_code: us, already exists.")
+        expect(error.message).toEqual(
+          "Tax region with country_code: us, already exists."
+        )
       })
 
       it("should throw when creating a tax region with a country code and province code of an existing region", async () => {
@@ -235,18 +239,22 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           },
         })
 
-        const error = await service.createTaxRegions({
-          country_code: "US",
-          province_code: "CA",
-          default_tax_rate: {
-            name: "Test Rate",
-            rate: 0.2,
-          },
-        }).catch(e => e)
+        const error = await service
+          .createTaxRegions({
+            country_code: "US",
+            province_code: "CA",
+            default_tax_rate: {
+              name: "Test Rate",
+              rate: 0.2,
+            },
+          })
+          .catch((e) => e)
 
-        expect(error.message).toEqual("Tax region with country_code: us, province_code: ca, already exists.")
+        expect(error.message).toEqual(
+          "Tax region with country_code: us, province_code: ca, already exists."
+        )
       })
-      
+
       it("should create tax rates and update them", async () => {
         const region = await service.createTaxRegions({
           country_code: "US",

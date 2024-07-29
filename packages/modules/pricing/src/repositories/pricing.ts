@@ -63,6 +63,7 @@ export class PricingRepository
       .select({
         id: "price.id",
         amount: "price.amount",
+        raw_amount: "price.raw_amount",
         min_quantity: "price.min_quantity",
         max_quantity: "price.max_quantity",
         currency_code: "price.currency_code",
@@ -152,6 +153,7 @@ export class PricingRepository
         id: "price.id",
         price_set_id: "ps.id",
         amount: "price.amount",
+        raw_amount: "price.raw_amount",
         min_quantity: "price.min_quantity",
         max_quantity: "price.max_quantity",
         currency_code: "price.currency_code",

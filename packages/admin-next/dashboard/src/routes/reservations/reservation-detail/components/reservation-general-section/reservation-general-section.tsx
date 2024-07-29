@@ -1,4 +1,4 @@
-import { AdminReservationResponse, StockLocationDTO } from "@medusajs/types"
+import { AdminReservationResponse } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -8,6 +8,7 @@ import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
+import { useOrder } from "../../../../../hooks/api"
 
 type ReservationGeneralSectionProps = {
   reservation: AdminReservationResponse["reservation"]
@@ -61,8 +62,8 @@ export const ReservationGeneralSection = ({
         />
       </div>
       <SectionRow
-        title={t("inventory.reservation.orderID")}
-        value={reservation.line_item_id} // TODO fetch order
+        title={t("inventory.reservation.lineItemId")}
+        value={reservation.line_item_id} // TODO fetch order instead + add link
       />
       <SectionRow
         title={t("inventory.reservation.description")}

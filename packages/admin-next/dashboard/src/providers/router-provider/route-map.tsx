@@ -218,9 +218,19 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/orders/order-create-fulfillment"),
                   },
                   {
+                    path: "allocate-items",
+                    lazy: () =>
+                      import("../../routes/orders/order-allocate-items"),
+                  },
+                  {
                     path: ":f_id/create-shipment",
                     lazy: () =>
                       import("../../routes/orders/order-create-shipment"),
+                  },
+                  {
+                    path: "returns",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-return"),
                   },
                 ],
               },
@@ -619,6 +629,9 @@ export const RouteMap: RouteObject[] = [
     children: [
       {
         path: "/settings",
+        handle: {
+          crumb: () => "Settings",
+        },
         element: <SettingsLayout />,
         children: [
           {

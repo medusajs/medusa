@@ -87,6 +87,8 @@ export type ModuleDefinition = {
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   dependencies?: string[]
+  /** @internal only used in exceptional cases - relying on the shared contrainer breaks encapsulation */
+  __passSharedContainer?: boolean
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
@@ -232,6 +234,10 @@ export type ModuleExports<T = Constructor<any>> = {
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
   revertMigration?(
+    options: LoaderOptions<any>,
+    moduleDeclaration?: InternalModuleDeclaration
+  ): Promise<void>
+  generateMigration?(
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>

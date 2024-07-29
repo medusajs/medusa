@@ -2343,9 +2343,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docblock-generator@workspace:packages/docblock-generator":
+"docs-generator@workspace:packages/docs-generator":
   version: 0.0.0-use.local
-  resolution: "docblock-generator@workspace:packages/docblock-generator"
+  resolution: "docs-generator@workspace:packages/docs-generator"
   dependencies:
     "@faker-js/faker": ^8.4.0
     "@octokit/core": ^5.0.2
@@ -2360,6 +2360,7 @@ __metadata:
     pluralize: ^8.0.0
     prettier: ^3.2.4
     ts-node: ^10.9.1
+    types: "*"
     typescript: 5.5
     utils: "*"
     yaml: ^2.3.4
@@ -5346,6 +5347,7 @@ __metadata:
     "@types/node": ^16.11.10
     eslint: ^8.53.0
     glob: ^10.3.10
+    types: "*"
     typescript: 5.5
     utils: "*"
     yaml: ^2.3.3
