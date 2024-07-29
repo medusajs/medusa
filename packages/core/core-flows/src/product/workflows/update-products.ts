@@ -67,7 +67,7 @@ function prepareUpdateProductInput({
     update: {
       ...input.update,
       sales_channels: undefined,
-      variants: input.update.variants?.map((v) => ({
+      variants: input.update?.variants?.map((v) => ({
         ...v,
         prices: undefined,
       })),

@@ -1,4 +1,8 @@
-import { CreateMoneyAmountDTO, ProductTypes } from "@medusajs/types"
+import {
+  CreatePricesDTO,
+  UpdatePricesDTO,
+  CreatePriceSetDTO,
+} from "@medusajs/types"
 import { Modules, arrayDifference } from "@medusajs/utils"
 import {
   WorkflowData,
@@ -13,7 +17,7 @@ type WorkflowInput = {
   variantPrices: {
     variant_id: string
     product_id: string
-    prices?: CreateMoneyAmountDTO[]
+    prices?: (CreatePricesDTO | UpdatePricesDTO)[]
   }[]
   previousVariantIds: string[]
 }
@@ -34,9 +38,7 @@ export const upsertVariantPricesWorkflow = createWorkflow(
     }).config({ name: "remove-variant-link-step" })
 
     const { newVariants, existingVariants } = transform({ input }, (data) => {
-      const previousMap = new Map(
-        data.input.previousVariantIds.map((v) => [v, true])
-      )
+      const previousMap = new Set(data.input.previousVariantIds.map((v) => v))
 
       return {
         existingVariants: data.input.variantPrices.filter((v) =>
@@ -67,7 +69,7 @@ export const upsertVariantPricesWorkflow = createWorkflow(
 
         return {
           price_sets: data.existingVariants
-            .map((v, i) => {
+            .map((v) => {
               const priceSetId = linksMap.get(v.variant_id)
 
               if (!priceSetId) {
@@ -91,7 +93,7 @@ export const upsertVariantPricesWorkflow = createWorkflow(
       data.newVariants.map((v) => {
         return {
           prices: v.prices,
-        }
+        } as CreatePriceSetDTO
       })
     )
 
