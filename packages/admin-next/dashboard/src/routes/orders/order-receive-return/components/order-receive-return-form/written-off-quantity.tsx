@@ -4,27 +4,77 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { AdminOrderLineItem } from "@medusajs/types"
-import { IconButton, Input, Popover } from "@medusajs/ui"
+import { Button, IconButton, Input, Popover, toast } from "@medusajs/ui"
 
 import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
+import {
+  useAddDismissItems,
+  useRemoveDismissItem,
+  useUpdateDismissItem,
+} from "../../../../../hooks/api/returns"
 
 type WriteOffQuantityProps = {
+  returnId: string
+  orderId: string
+  returnItemId: string
   index: number
   item: AdminOrderLineItem
   form: UseFormReturn<typeof ReceiveReturnSchema>
 }
 
-function WrittenOffQuantity({ form, item, index }: WriteOffQuantityProps) {
+function WrittenOffQuantity({
+  form,
+  item,
+  index,
+  returnId,
+  orderId,
+  returnItemId,
+}: WriteOffQuantityProps) {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
+
+  const { mutateAsync: addDismissedItems } = useAddDismissItems(
+    returnId,
+    orderId
+  )
+
+  const { mutateAsync: updateDismissedItems } = useUpdateDismissItem(
+    returnId,
+    orderId
+  )
+
+  const { mutateAsync: removeDismissedItems } = useRemoveDismissItem(
+    returnId,
+    orderId
+  )
+
+  const onDismissedQuantityChanged = async (value: number | null) => {
+    // TODO: if out of bounds prevent sending and notify user
+
+    if (value) {
+      try {
+        // TODO: look into actions to see if the item is already added
+        await addDismissedItems({
+          items: [{ id: returnItemId, quantity: value }],
+        })
+      } catch (e) {
+        toast.error(e.message)
+      }
+    }
+  }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <Popover.Trigger asChild>
-        <IconButton type="button">
-          <Heart />
-        </IconButton>
+        <Button className="flex gap-2 px-2" variant="secondary" type="button">
+          <div>
+            <Heart />
+          </div>
+          {!!item.detail.written_off_quantity && (
+            <span>item.detail.written_off_quantity</span>
+          )}
+        </Button>
       </Popover.Trigger>
       <Popover.Content align="center">
         <div className="flex flex-col p-2">
@@ -51,10 +101,12 @@ function WrittenOffQuantity({ form, item, index }: WriteOffQuantityProps) {
                             : parseFloat(e.target.value)
 
                         onChange(value)
-
-                        // handleQuantityChange(item.id, value)
                       }}
                       {...field}
+                      onBlur={() => {
+                        field.onBlur()
+                        onDismissedQuantityChanged(value)
+                      }}
                     />
                   </Form.Control>
                 </Form.Item>
