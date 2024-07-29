@@ -8,6 +8,7 @@ info:
 tags:
   - name: Api Keys
   - name: Campaigns
+  - name: Claims
   - name: Collections
     x-associatedSchema:
       $ref: "#/components/schemas/AdminCollection"

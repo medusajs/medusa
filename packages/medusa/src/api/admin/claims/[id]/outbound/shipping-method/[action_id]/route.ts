@@ -29,7 +29,7 @@ export const POST = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claim",
+    entryPoint: "order_claim",
     variables: {
       id,
       filters: {
@@ -65,7 +65,7 @@ export const DELETE = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claim",
+    entryPoint: "order_claim",
     variables: {
       id,
       filters: {

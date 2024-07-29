@@ -259,3 +259,12 @@ export declare module "typedoc" {
     normalizeDmlTypes: boolean
   }
 }
+
+export declare type DmlObject = Record<string, string>
+
+export declare type DmlFile = {
+  [k: string]: {
+    filePath: string
+    properties: DmlObject
+  }
+}

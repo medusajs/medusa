@@ -28,6 +28,7 @@ export const createReturnItemsStep = createStep(
         metadata: (item.details?.metadata as Record<string, unknown>) ?? {},
       } as CreateOrderReturnItemDTO
     })
+
     const createdReturnItems = await orderModuleService.createReturnItems(
       returnItems
     )

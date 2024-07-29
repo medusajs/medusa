@@ -7,18 +7,18 @@
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The return's quantity.
+ *     description: The claim's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The return's internal note.
+ *     description: The claim's internal note.
  *   reason_id:
  *     type: string
  *     title: reason_id
- *     description: The return's reason id.
+ *     description: The claim's reason id.
  *   metadata:
  *     type: object
- *     description: The return's metadata.
+ *     description: The claim's metadata.
  * 
 */
 
