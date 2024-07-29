@@ -1480,6 +1480,31 @@ medusaIntegrationTestRunner({
         })
 
         it("should add shipping method to cart", async () => {
+          const stockLocation = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "test location" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          await remoteLink.create([
+            {
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: stockLocation.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+            },
+          ])
+
+          await api.post(
+            `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+            { add: ["manual_test-provider"] },
+            adminHeaders
+          )
+
           const shippingOption = await fulfillmentModule.createShippingOptions({
             name: "Test shipping option",
             service_zone_id: fulfillmentSet.service_zones[0].id,
