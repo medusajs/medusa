@@ -1,5 +1,5 @@
 {
-  "name": "docblock-generator",
+  "name": "docs-generator",
   "license": "MIT",
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",

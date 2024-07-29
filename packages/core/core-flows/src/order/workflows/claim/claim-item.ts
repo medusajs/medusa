@@ -91,6 +91,7 @@ export const orderClaimItemWorkflow = createWorkflow(
           reference_id: orderClaim.id,
           details: {
             reference_id: item.id,
+            reason: item.reason,
             quantity: item.quantity,
           },
         }))

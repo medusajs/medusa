@@ -20,7 +20,7 @@ import {
   Rel,
 } from "@mikro-orm/core"
 import Claim from "./claim"
-import ClaimItemImage from "./claim-item-image"
+import OrderClaimItemImage from "./claim-item-image"
 import LineItem from "./line-item"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
@@ -50,10 +50,10 @@ export default class OrderClaimItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @OneToMany(() => ClaimItemImage, (ci) => ci.item, {
+  @OneToMany(() => OrderClaimItemImage, (ci) => ci.item, {
     cascade: [Cascade.PERSIST, Cascade.REMOVE],
   })
-  images = new Collection<Rel<ClaimItemImage>>(this)
+  images = new Collection<Rel<OrderClaimItemImage>>(this)
 
   @Enum({ items: () => ClaimReason, nullable: true })
   reason: Rel<ClaimReason> | null = null
@@ -123,7 +123,7 @@ export default class OrderClaimItem {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "claitem")
-    this.claim_id = this.claim?.id
+    this.claim_id ??= this.claim?.id
   }
 
   @OnInit()

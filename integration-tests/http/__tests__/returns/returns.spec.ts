@@ -140,6 +140,12 @@ medusaIntegrationTestRunner({
         },
         currency_code: "usd",
         customer_id: "joe",
+        transactions: [
+          {
+            amount: 20,
+            currency_code: "usd",
+          },
+        ],
       })
 
       shippingProfile = (
@@ -328,6 +334,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(
           `/admin/returns/${returnId2}/shipping-method`,
           {
@@ -335,6 +342,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(`/admin/returns/${returnId2}/request`, {}, adminHeaders)
 
         const returnId = result.data.return.id

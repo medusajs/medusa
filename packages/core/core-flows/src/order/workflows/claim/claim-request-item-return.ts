@@ -156,6 +156,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
           details: {
             reference_id: item.id,
             quantity: item.quantity,
+            reason_id: item.reason_id,
             metadata: item.metadata,
           },
         }))

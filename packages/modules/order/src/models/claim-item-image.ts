@@ -33,7 +33,7 @@ const ClaimItemIdIndex = createPsqlIndexStatementHelper({
 
 @Entity({ tableName: "order_claim_item_image" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class ClaimItemImage {
+export default class OrderClaimItemImage {
   [OptionalProps]?: OptionalClaimItemImageProps
 
   @PrimaryKey({ columnType: "text" })

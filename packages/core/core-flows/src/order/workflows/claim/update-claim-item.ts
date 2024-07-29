@@ -63,7 +63,7 @@ export const updateClaimItemWorkflow = createWorkflow(
     input: WorkflowData<OrderWorkflow.UpdateClaimItemWorkflowInput>
   ): WorkflowData<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
-      entry_point: "claim",
+      entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
       variables: { id: input.claim_id },
       list: false,

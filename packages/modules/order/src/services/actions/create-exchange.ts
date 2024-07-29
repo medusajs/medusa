@@ -11,7 +11,7 @@ import {
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { ExchangeItem, OrderExchange, Return, ReturnItem } from "@models"
+import { OrderExchange, OrderExchangeItem, Return, ReturnItem } from "@models"
 
 function createExchangeAndReturnEntities(em, data, order) {
   const exchangeReference = em.create(OrderExchange, {
@@ -77,8 +77,8 @@ async function processAdditionalItems(
   sharedContext
 ) {
   const itemsToAdd: any[] = []
-  const additionalNewItems: ExchangeItem[] = []
-  const additionalItems: ExchangeItem[] = []
+  const additionalNewItems: OrderExchangeItem[] = []
+  const additionalItems: OrderExchangeItem[] = []
   data.additional_items?.forEach((item) => {
     const hasItem = item.id
       ? order.items.find((o) => o.item.id === item.id)
@@ -100,7 +100,7 @@ async function processAdditionalItems(
       })
 
       additionalItems.push(
-        em.create(ExchangeItem, {
+        em.create(OrderExchangeItem, {
           item_id: item.id,
           quantity: item.quantity,
           note: item.note,
@@ -112,7 +112,7 @@ async function processAdditionalItems(
       itemsToAdd.push(item)
 
       additionalNewItems.push(
-        em.create(ExchangeItem, {
+        em.create(OrderExchangeItem, {
           quantity: item.quantity,
           note: item.note,
           metadata: item.metadata,
