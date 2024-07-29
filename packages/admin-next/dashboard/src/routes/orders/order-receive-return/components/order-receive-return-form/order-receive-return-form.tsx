@@ -1,18 +1,10 @@
 import { useTranslation } from "react-i18next"
 import { AdminOrder, AdminReturn } from "@medusajs/types"
-import {
-  Alert,
-  Button,
-  IconButton,
-  Input,
-  Switch,
-  Text,
-  toast,
-} from "@medusajs/ui"
+import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
 import React, { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrrowRight, Heart } from "@medusajs/icons"
+import { ArrrowRight } from "@medusajs/icons"
 import * as zod from "zod"
 
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -26,6 +18,7 @@ import {
   useConfirmReturnReceive,
   useUpdateReceiveItem,
 } from "../../../../../hooks/api/returns"
+import WrittenOffQuantity from "./written-off-quantity"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -77,6 +70,7 @@ export function OrderReceiveReturnForm({
         .map((i) => ({
           item_id: i.id,
           quantity: i.detail.return_received_quantity,
+          written_off_quantity: i.detail.written_off_quantity,
         })),
       send_notification: false,
     },
@@ -90,6 +84,11 @@ export function OrderReceiveReturnForm({
         form.setValue(
           `items.${index}.quantity`,
           item.detail.return_received_quantity,
+          { shouldTouch: true, shouldDirty: true }
+        )
+        form.setValue(
+          `items.${index}.written_off_quantity`,
+          item.detail.written_off_quantity,
           { shouldTouch: true, shouldDirty: true }
         )
       })
@@ -193,9 +192,7 @@ export function OrderReceiveReturnForm({
                   </div>
 
                   <div className="flex flex-1 flex-row items-center gap-2">
-                    <IconButton disabled type="button">
-                      <Heart />
-                    </IconButton>
+                    <WrittenOffQuantity form={form} item={item} index={ind} />
                     <Form.Field
                       control={form.control}
                       name={`items.${ind}.quantity`}

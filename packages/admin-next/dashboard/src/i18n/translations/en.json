@@ -816,6 +816,7 @@
         "itemsLabel": "Items received",
         "sendNotificationHint": "Notify customer about received return.",
         "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
+        "writeOffInputLabel": "How many of the items are damaged?",
         "toast": {
           "success": "Return received successfully."
         }

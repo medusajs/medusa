@@ -1,4 +1,4 @@
-import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
 
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -248,6 +248,73 @@ export class Return {
     )
   }
 
+  async removeReceiveItem(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/receive-items/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
+        query,
+      }
+    )
+  }
+
+  async dismissItems(
+    id: string,
+    body: HttpTypes.AdminDismissItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/dismiss-items`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async updateDismissItem(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminUpdateDismissItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/dismiss-items/${actionId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async removeDismissItem(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/dismiss-items/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
+        query,
+      }
+    )
+  }
+
   async confirmReceive(
     id: string,
     body: HttpTypes.AdminConfirmReceiveReturn,
@@ -279,5 +346,4 @@ export class Return {
       }
     )
   }
-
 }

@@ -98,7 +98,18 @@ export interface AdminReceiveItems {
   items: { id: string; quantity: number; internal_note?: string }[]
 }
 
+export interface AdminDismissItems {
+  items: { id: string; quantity: number; internal_note?: string }[]
+}
+
 export interface AdminUpdateReceiveItems {
+  quantity?: number
+  internal_note?: string
+  reason_id?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface AdminUpdateDismissItems {
   quantity?: number
   internal_note?: string
   reason_id?: string
