@@ -118,7 +118,7 @@ export function createWorkflow<
     hooksCallback_: {},
     hookBinder: (name, fn) => {
       context.hooks_.push(name)
-      fn.bind(context)()
+      context.hooksCallback_[name] = fn.bind(context)()
     },
     stepBinder: (fn) => {
       return fn.bind(context)()

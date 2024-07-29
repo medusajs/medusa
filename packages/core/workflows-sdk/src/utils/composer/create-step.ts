@@ -380,27 +380,23 @@ export function createStep<
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (
-    this: CreateWorkflowComposerContext,
     input:
       | {
           [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
         }
       | undefined
   ): WorkflowData<TInvokeResultOutput> {
-    const context = (
-      this?.__type === OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-        ? this
-        : global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
-    ) as CreateWorkflowComposerContext
+    const context = global[
+      OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+    ] as CreateWorkflowComposerContext
+
     if (!context) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
     }
 
-    const stepBinder = context.stepBinder
-
-    return stepBinder<TInvokeResultOutput>(
+    return context.stepBinder<TInvokeResultOutput>(
       applyStep<
         TInvokeInput,
         { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },
