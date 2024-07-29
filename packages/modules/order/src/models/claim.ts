@@ -2,6 +2,7 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
   ClaimType,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
@@ -12,6 +13,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -54,6 +56,7 @@ const ReturnIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_claim" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class OrderClaim {
   [OptionalProps]?: OptionalOrderClaimProps
 

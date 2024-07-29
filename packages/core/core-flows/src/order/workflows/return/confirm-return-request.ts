@@ -16,7 +16,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsStep } from "../../steps/create-return-items"
+import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -111,15 +111,12 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
       continue
     }
 
-    for (const action of modifiedShippingMethod_.actions) {
-      if (
+    returnShippingMethod = modifiedShippingMethod_.actions.find((action) => {
+      return (
         action.action === ChangeActionType.SHIPPING_ADD &&
         action.return_id === orderReturn.id
-      ) {
-        returnShippingMethod = shippingMethod
-        break
-      }
-    }
+      )
+    })
   }
   return returnShippingMethod.shipping_option_id
 }
@@ -184,7 +181,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    const createdReturnItems = createReturnItemsStep({
+    const createdReturnItems = createReturnItemsFromActionsStep({
       returnId: orderReturn.id,
       changes: returnItemActions,
     })
