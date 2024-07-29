@@ -131,16 +131,18 @@ export function OrderReceiveReturnForm({
     }
   }
 
-  const handleCancel = async () => {
+  const onFormClose = async (isSubmitSuccessful: boolean) => {
     try {
-      await cancelReceiveReturn(orderReturn.id)
+      if (!isSubmitSuccessful) {
+        await cancelReceiveReturn()
+      }
     } catch (e) {
       toast.error(e.message)
     }
   }
 
   return (
-    <RouteDrawer.Form form={form}>
+    <RouteDrawer.Form form={form} onClose={onFormClose}>
       <form
         onSubmit={handleSubmit}
         className="flex size-full flex-col overflow-hidden"

@@ -52,8 +52,6 @@ type ReturnCreateFormProps = {
 
 let selectedItems: string[] = []
 
-let IS_CANCELING = false
-
 export const ReturnCreateForm = ({
   order,
   preview,
@@ -348,19 +346,6 @@ export const ReturnCreateForm = ({
     })
   }, [items])
 
-  useEffect(() => {
-    /**
-     * Unmount hook
-     */
-    return () => {
-      if (IS_CANCELING) {
-        cancelReturnRequest()
-        // TODO: add this on ESC press
-        IS_CANCELING = false
-      }
-    }
-  }, [])
-
   const returnTotal = preview.return_requested_total
 
   const shippingTotal = useMemo(() => {
@@ -374,7 +359,14 @@ export const ReturnCreateForm = ({
   const refundAmount = returnTotal - shippingTotal
 
   return (
-    <RouteFocusModal.Form form={form}>
+    <RouteFocusModal.Form
+      form={form}
+      onClose={(isSubmitSuccessful) => {
+        if (!isSubmitSuccessful) {
+          cancelReturnRequest()
+        }
+      }}
+    >
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
 
@@ -691,12 +683,7 @@ export const ReturnCreateForm = ({
           <div className="flex w-full items-center justify-end gap-x-4">
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
-                <Button
-                  type="button"
-                  onClick={() => (IS_CANCELING = true)}
-                  variant="secondary"
-                  size="small"
-                >
+                <Button type="button" variant="secondary" size="small">
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>

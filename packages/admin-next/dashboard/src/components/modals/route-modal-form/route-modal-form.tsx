@@ -8,12 +8,14 @@ import { Form } from "../../common/form"
 type RouteModalFormProps<TFieldValues extends FieldValues> = PropsWithChildren<{
   form: UseFormReturn<TFieldValues>
   blockSearch?: boolean
+  onClose?: (isSubmitSuccessful: boolean) => void
 }>
 
 export const RouteModalForm = <TFieldValues extends FieldValues = any>({
   form,
   blockSearch = false,
   children,
+  onClose,
 }: RouteModalFormProps<TFieldValues>) => {
   const { t } = useTranslation()
 
@@ -25,6 +27,7 @@ export const RouteModalForm = <TFieldValues extends FieldValues = any>({
     const { isSubmitSuccessful } = nextLocation.state || {}
 
     if (isSubmitSuccessful) {
+      onClose?.(true)
       return false
     }
 
@@ -44,6 +47,7 @@ export const RouteModalForm = <TFieldValues extends FieldValues = any>({
 
   const handleContinue = () => {
     blocker?.proceed?.()
+    onClose?.(false)
   }
 
   return (
