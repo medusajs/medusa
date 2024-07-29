@@ -50,6 +50,7 @@ export function when(input, condition) {
       }
 
       delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+
       return ret
     },
   }
