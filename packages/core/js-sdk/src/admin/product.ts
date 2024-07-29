@@ -15,7 +15,7 @@ export class Product {
 
   async export(
     body: HttpTypes.AdminExportProductRequest,
-    query?: SelectParams,
+    query?: HttpTypes.AdminProductListParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminExportProductResponse>(

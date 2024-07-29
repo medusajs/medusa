@@ -12,7 +12,8 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 jest.setTimeout(50000)
 
 const compareCSVs = async (filePath, expectedFilePath) => {
-  let fileContent = await fs.readFile(filePath, { encoding: "utf-8" })
+  const asLocalPath = filePath.replace("http://localhost:9000", process.cwd())
+  let fileContent = await fs.readFile(asLocalPath, { encoding: "utf-8" })
   let fixturesContent = await fs.readFile(expectedFilePath, {
     encoding: "utf-8",
   })
