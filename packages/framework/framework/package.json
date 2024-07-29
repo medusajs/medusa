@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/framework",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

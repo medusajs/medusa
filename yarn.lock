@@ -4604,18 +4604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@medusajs/framework@npm:0.0.1"
-  dependencies:
-    "@medusajs/medusa-cli": ^1.3.23
-    "@medusajs/utils": ^1.12.0-preview-20240724081425
-    awilix: ^8.0.0
-  checksum: 61a70f5b60df92473dd7c16936a09b5a57aefbd3d0be29418b0c2986ba8de6056b22c321641f928bd631065d19dcae40e106608639cc57dcfaed483e9b8119c7
-  languageName: node
-  linkType: hard
-
-"@medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:packages/framework/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
@@ -5333,13 +5322,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@npm:1.12.0-snapshot-20240723115023":
-  version: 1.12.0-snapshot-20240723115023
-  resolution: "@medusajs/types@npm:1.12.0-snapshot-20240723115023"
-  checksum: 676a9f359000fc688346b3e0a1bc4d9c13bba35e613e98fed8e47a8f6b50177ab4295c3cb2d404795c5ad7cd2b8c131e1bddd4a6e139bd82347a6388b688ac2f
-  languageName: node
-  linkType: hard
-
 "@medusajs/types@npm:^1.11.17":
   version: 1.11.17
   resolution: "@medusajs/types@npm:1.11.17"
@@ -5501,26 +5483,6 @@ __metadata:
     knex: 2.4.2
     ulid: ^2.3.0
   checksum: 5f9c1e021a029c1176e8fb8e71257a2503e38aa033fb133cad5aa6ac0a73e46b715a2622269b44f6b65a7477e90c288b7b762ae012c65f143c3b6aa460ef3101
-  languageName: node
-  linkType: hard
-
-"@medusajs/utils@npm:^1.12.0-preview-20240724081425":
-  version: 1.12.0-snapshot-20240723115023
-  resolution: "@medusajs/utils@npm:1.12.0-snapshot-20240723115023"
-  dependencies:
-    "@medusajs/types": 1.12.0-snapshot-20240723115023
-    "@mikro-orm/core": 5.9.7
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
-    awilix: ^8.0.1
-    bignumber.js: ^9.1.2
-    dotenv: ^16.4.5
-    json-2-csv: ^5.5.4
-    jsonwebtoken: ^9.0.2
-    knex: 2.4.2
-    pluralize: ^8.0.0
-    ulid: ^2.3.0
-  checksum: ae0d42e4a937c5941c4365de6be3908a5d75b121b50d0ba9d93ce948babea43b8c3d9eaedc1cd22fd7455b984e3ba209feb9217b311c28d679a92e9715376542
   languageName: node
   linkType: hard
 
