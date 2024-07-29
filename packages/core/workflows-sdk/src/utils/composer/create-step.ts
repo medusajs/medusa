@@ -25,7 +25,7 @@ import {
  *
  * @returns The expected output based on the type parameter `TOutput`.
  */
-type InvokeFn<TInput, TOutput, TCompensateInput> = (
+export type InvokeFn<TInput, TOutput, TCompensateInput> = (
   /**
    * The input of the step.
    */
@@ -53,7 +53,7 @@ type InvokeFn<TInput, TOutput, TCompensateInput> = (
  *
  * @returns There's no expected type to be returned by the compensation function.
  */
-type CompensateFn<T> = (
+export type CompensateFn<T> = (
   /**
    * The argument passed to the compensation function.
    */
