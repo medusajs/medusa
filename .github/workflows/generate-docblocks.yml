@@ -42,7 +42,7 @@ jobs:
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
         run: "yarn start run:release --type docs"
-        working-directory: www/utils/packages/docblock-generator
+        working-directory: www/utils/packages/docs-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
