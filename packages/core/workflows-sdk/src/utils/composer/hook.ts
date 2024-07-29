@@ -107,8 +107,8 @@ export function hook<TOutput>(
     ] as CreateWorkflowComposerContext
   ).hookBinder
 
-  return hookBinder(name, function (context) {
-    return {
+  return hookBinder(name, function () {
+    /*return {
       __value: async function (
         transactionContext: WorkflowStepHandlerArguments
       ) {
@@ -141,6 +141,6 @@ export function hook<TOutput>(
         return finalResult
       },
       __type: OrchestrationUtils.SymbolWorkflowHook,
-    }
+    }*/
   })
 }

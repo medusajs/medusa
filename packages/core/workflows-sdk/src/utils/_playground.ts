@@ -2,10 +2,9 @@ import {
   createStep,
   createWorkflow,
   StepResponse,
-  transform,
-  when,
   WorkflowData,
 } from "./composer"
+import { createHook } from "./composer/create-hook"
 
 const step1 = createStep("step1", async (input: {}, context) => {
   return new StepResponse({ step1: "step1" })
@@ -24,10 +23,18 @@ const workflow = createWorkflow(
   "sub-workflow",
   function (input: WorkflowData<{ outsideWorkflowData: string }>) {
     step1()
+    const somethingHook = createHook("something", { id: "1" })
     step3()
-    return step2({ filters: { id: input.outsideWorkflowData } })
+    return {
+      result: "id",
+      hooks: [somethingHook],
+    }
   }
 )
+
+workflow.hooks.something(async ({ id }, stepExecutionContext) => {
+  console.log(">>>>>>", id, stepExecutionContext)
+}) /*
 
 const workflow2 = createWorkflow("workflow", function () {
   const step1Res = step1()
@@ -45,9 +52,9 @@ const workflow2 = createWorkflow("workflow", function () {
   const workflowRes = workflow.asStep({ outsideWorkflowData: step1Res.step1 })
 
   return workflowRes
-})
+})*/
 
-workflow2()
+workflow()
   .run({})
   .then((res) => {
     console.log(res.result)

@@ -73,18 +73,17 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
   }
 
 export type CreateWorkflowComposerContext = {
+  __type: string
   hooks_: string[]
-  hooksCallback_: Record<string, Function[]>
+  hooksCallback_: Record<string, any>
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(
     fn: StepFunctionResult
   ) => WorkflowData<TOutput>
-  hookBinder: <TOutput = unknown>(
-    name: string,
-    fn: Function
-  ) => WorkflowData<TOutput>
+  // TODO change the typings
+  hookBinder: (name: string, fn: Function) => any
   parallelizeBinder: <TOutput extends WorkflowData[] = WorkflowData[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput
@@ -218,6 +217,8 @@ export type ReturnWorkflow<
     ) => ReturnType<
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
     >
+    // TODO
+    hooks: Record<string, any>
     getName: () => string
     config: (config: TransactionModelOptions) => void
   }

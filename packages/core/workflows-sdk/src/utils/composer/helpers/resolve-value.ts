@@ -9,9 +9,9 @@ async function resolveProperty(property, transactionContext) {
     property?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
   ) {
     return await property.__resolver(transactionContext)
-  } else if (property?.__type === OrchestrationUtils.SymbolWorkflowHook) {
+  } /*else if (property?.__type === OrchestrationUtils.SymbolWorkflowHook) {
     return await property.__value(transactionContext)
-  } else if (property?.__type === OrchestrationUtils.SymbolWorkflowStep) {
+  }*/ else if (property?.__type === OrchestrationUtils.SymbolWorkflowStep) {
     const output =
       invokeRes[property.__step__]?.output ?? invokeRes[property.__step__]
     if (output?.__type === OrchestrationUtils.SymbolWorkflowStepResponse) {

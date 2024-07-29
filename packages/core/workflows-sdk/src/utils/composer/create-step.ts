@@ -95,7 +95,7 @@ interface ApplyStepOptions<
  * @param invokeFn
  * @param compensateFn
  */
-function applyStep<
+export function applyStep<
   TInvokeInput,
   TStepInput extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
@@ -444,23 +444,25 @@ export function createStep<
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (
+    this: CreateWorkflowComposerContext,
     input:
       | {
           [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
         }
       | undefined
   ): WorkflowData<TInvokeResultOutput> {
-    if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
+    const context = (
+      this?.__type === OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+        ? this
+        : global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+    ) as CreateWorkflowComposerContext
+    if (!context) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
     }
 
-    const stepBinder = (
-      global[
-        OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-      ] as CreateWorkflowComposerContext
-    ).stepBinder
+    const stepBinder = context.stepBinder
 
     return stepBinder<TInvokeResultOutput>(
       applyStep<

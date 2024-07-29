@@ -110,6 +110,7 @@ export function createWorkflow<
   }
 
   const context: CreateWorkflowComposerContext = {
+    __type: OrchestrationUtils.SymbolMedusaWorkflowComposerContext,
     workflowId: name,
     flow: WorkflowManager.getEmptyTransactionDefinition(),
     handlers,
@@ -117,7 +118,7 @@ export function createWorkflow<
     hooksCallback_: {},
     hookBinder: (name, fn) => {
       context.hooks_.push(name)
-      return fn(context)
+      fn.bind(context)()
     },
     stepBinder: (fn) => {
       return fn.bind(context)()
@@ -169,22 +170,9 @@ export function createWorkflow<
     return expandedFlow
   }
 
-  let shouldRegisterHookHandler = true
-
   for (const hook of context.hooks_) {
-    mainFlow[hook] = (fn) => {
-      context.hooksCallback_[hook] ??= []
-
-      if (!shouldRegisterHookHandler) {
-        console.warn(
-          `A hook handler has already been registered for the ${hook} hook. The current handler registration will be skipped.`
-        )
-        return
-      }
-
-      context.hooksCallback_[hook].push(fn)
-      shouldRegisterHookHandler = false
-    }
+    mainFlow["hooks"] ??= {}
+    mainFlow["hooks"][hook] = context.hooksCallback_[hook].bind(context)
   }
 
   mainFlow.getName = () => name
