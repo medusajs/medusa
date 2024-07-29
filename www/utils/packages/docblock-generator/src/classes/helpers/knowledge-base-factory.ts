@@ -1,11 +1,10 @@
 import ts from "typescript"
 import {
   API_ROUTE_PARAM_REGEX,
-  DOCBLOCK_DOUBLE_LINES,
   DOCBLOCK_NEW_LINE,
   SUMMARY_PLACEHOLDER,
 } from "../../constants.js"
-import pluralize from "pluralize"
+import pluralize, { singular } from "pluralize"
 import {
   camelToTitle,
   camelToWords,
@@ -213,184 +212,306 @@ class KnowledgeBaseFactory {
         return `The main service interface for the ${normalizedStr} Module.`
       },
     },
+    {
+      exact: "$eq",
+      template: () => {
+        return `Find records whose property exactly matches this value.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$ne",
+      template: () => {
+        return `Find records whose property doesn't matches this value.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$in",
+      template: () => {
+        return `Find records whose property is within the specified values.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$nin",
+      template: () => {
+        return `Find records whose property isn't within the specified values.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$like",
+      template: () => {
+        return `Find records whose property satisfies this like filter. For example, \`My%\`.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$ilike",
+      template: () => {
+        return `Find records whose property satisfies this [ilike filter](https://www.postgresql.org/docs/current/functions-matching.html). For example, \`My%\`.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$re",
+      template: () => {
+        return `Find records whose property matches this regular expression pattern.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$contains",
+      template: () => {
+        return `Find records whose property is an array that has one or more items.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$gt",
+      template: () => {
+        return `Find records whose property's value is greater than the specified number or date.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$gte",
+      template: () => {
+        return `Find records whose property's value is greater than or equal to the specified number or date.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$lt",
+      template: () => {
+        return `Find records whose property's value is less than the specified number or date.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
+    {
+      exact: "$lte",
+      template: () => {
+        return `Find records whose property's value is less than or equal to the specified number or date.`
+      },
+      kind: [ts.SyntaxKind.PropertySignature],
+    },
   ]
   private functionSummaryKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}s along with the total count of available ${this.TYPE_PLACEHOLDER}s satisfying the provided filters.`,
-          options
-        )
+      template: (str) => {
+        const { pluralName } = this.getPluralConfigForFunction({
+          str,
+          replacement: "listAndCount",
+        })
+        return `retrieves a paginated list of ${pluralName} along with the total count of available ${pluralName} satisfying the provided filters.`
       },
     },
     {
       startsWith: "list",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `retrieves a paginated list of ${this.TYPE_PLACEHOLDER}s based on optional filters and configuration.`,
-          options
-        )
+      template: (str) => {
+        const { pluralName } = this.getPluralConfigForFunction({
+          str,
+          replacement: "list",
+        })
+        return `retrieves a paginated list of ${pluralName} based on optional filters and configuration.`
       },
     },
     {
       startsWith: "retrieve",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `retrieves a ${this.TYPE_PLACEHOLDER} by its ID.`,
-          options
-        )
+      template: (str) => {
+        const { singularName } = this.getPluralConfigForFunction({
+          str,
+          replacement: "retrieve",
+        })
+        return `retrieves a ${singularName} by its ID.`
       },
     },
     {
       startsWith: "create",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `creates${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
-            isPlural ? "s" : ""
-          }.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "create",
+            options,
+          })
+        return `creates${article} ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "delete",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `deletes${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER} by ${
-            isPlural ? "their" : "its"
-          } ID${isPlural ? "s" : ""}.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, isPlural, pronoun, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "delete",
+            options,
+          })
+        return `deletes${article} ${
+          isPlural ? pluralName : singularName
+        } by ${pronoun} ID${isPlural ? "s" : ""}.`
       },
     },
     {
       startsWith: "update",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `updates${!isPlural ? " an" : ""} existing ${this.TYPE_PLACEHOLDER}${
-            isPlural ? "s" : ""
-          }.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "update",
+            options,
+          })
+        return `updates${article} existing ${
+          isPlural ? pluralName : singularName
+        }.`
       },
     },
     {
       startsWith: "softDelete",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `soft deletes${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
-            isPlural ? "s" : ""
-          } by ${isPlural ? "their" : "its"} IDs.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, pronoun, isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "softDelete",
+            options,
+          })
+        return `soft deletes${article} ${
+          isPlural ? pluralName : singularName
+        } by ${pronoun} IDs.`
       },
     },
     {
       startsWith: "restore",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `restores${!isPlural ? " a" : ""} soft deleted ${
-            this.TYPE_PLACEHOLDER
-          }${isPlural ? "s" : ""} by ${isPlural ? "their" : "its"} IDs.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, pronoun, isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "restore",
+            options,
+          })
+        return `restores${article} soft deleted ${
+          isPlural ? pluralName : singularName
+        } by ${pronoun} ID${isPlural ? "s" : ""}.`
       },
     },
     {
       startsWith: "upsert",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `updates or creates${!isPlural ? " a" : ""} ${this.TYPE_PLACEHOLDER}${
-            isPlural ? "s" : ""
-          } if ${isPlural ? "they don't" : "it doesn't"} exist.`,
-          options
-        )
+      template: (str, options) => {
+        const { article, isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `updates or creates${article} ${
+          isPlural ? pluralName : singularName
+        } if ${isPlural ? "they don't" : "it doesn't"} exist.`
       },
     },
   ]
   private functionReturnKnowledgeBase: KnowledgeBase[] = [
     {
       startsWith: "listAndCount",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `The list of ${this.TYPE_PLACEHOLDER}s along with their total count.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The list of ${
+          isPlural ? pluralName : singularName
+        } along with their total count.`
       },
     },
     {
       startsWith: "list",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `The list of ${this.TYPE_PLACEHOLDER}s.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The list of ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "retrieve",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `The retrieved ${this.TYPE_PLACEHOLDER}.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The retrieved ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "create",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `The created ${this.TYPE_PLACEHOLDER}${isPlural ? "s" : ""}.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The created ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "update",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `The updated ${this.TYPE_PLACEHOLDER}${isPlural ? "s" : ""}.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The updated ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "upsert",
-      template: (_str, options) => {
-        const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
-        return this.replaceTypePlaceholder(
-          `The created or updated ${this.TYPE_PLACEHOLDER}${
-            isPlural ? "s" : ""
-          }.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "upsert",
+            options,
+          })
+        return `The created or updated ${isPlural ? pluralName : singularName}.`
       },
     },
     {
       startsWith: "softDelete",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated {related entity name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, and its value is an array of strings, each being the ID of a record associated ${DOCBLOCK_NEW_LINE}with the ${this.TYPE_PLACEHOLDER} through this relation, such as the IDs of associated {related entity name}.${DOCBLOCK_DOUBLE_LINES}If there are no related records, the promise resolves to \`void\`.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "softDelete",
+            options,
+          })
+        return `An object whose keys are of the format \`{camel_case_data_model}_id\` and values are arrays of IDs of soft-deleted ${
+          isPlural ? pluralName : singularName
+        }`
       },
     },
     {
       startsWith: "restore",
-      template: (_str, options) => {
-        return this.replaceTypePlaceholder(
-          `An object that includes the IDs of related records that were restored, such as the ID of associated {relation name}. ${DOCBLOCK_NEW_LINE}The object's keys are the ID attribute names of the ${this.TYPE_PLACEHOLDER} entity's relations, such as \`{relation ID field name}\`, ${DOCBLOCK_NEW_LINE}and its value is an array of strings, each being the ID of the record associated with the ${this.TYPE_PLACEHOLDER} through this relation, ${DOCBLOCK_NEW_LINE}such as the IDs of associated {relation name}.${DOCBLOCK_DOUBLE_LINES}If there are no related records restored, the promise resolves to \`void\`.`,
-          options
-        )
+      template: (str, options) => {
+        const { isPlural, singularName, pluralName } =
+          this.getPluralConfigForFunction({
+            str,
+            replacement: "restore",
+            options,
+          })
+        return `An object whose keys are of the format \`{camel_case_data_model}_id\` and values are arrays of IDs of restored ${
+          isPlural ? pluralName : singularName
+        }`
       },
     },
   ]
@@ -481,6 +602,45 @@ class KnowledgeBaseFactory {
       : this.TYPE_PLACEHOLDER
 
     return str.replaceAll(this.TYPE_PLACEHOLDER, typeName)
+  }
+
+  /**
+   * This method retrieves plural configuration for Medusa service's functions.
+   *
+   * @param param0 - The function's input.
+   * @returns The plural configurations.
+   */
+  private getPluralConfigForFunction({
+    str,
+    replacement,
+    options,
+  }: {
+    str: string
+    replacement: string
+    options?: TemplateOptions
+  }): {
+    isPlural: boolean
+    typeName: string
+    singularName: string
+    pluralName: string
+    article: string
+    pronoun: string
+  } {
+    const isPlural = this.isTypePlural(options?.pluralIndicatorStr)
+    const typeName = camelToWords(str.replace(replacement, ""))
+    const singularName = singular(typeName)
+    const pluralName = pluralize(typeName)
+    const article = isPlural ? "" : " a"
+    const pronoun = isPlural ? "their" : "its"
+
+    return {
+      isPlural,
+      typeName,
+      singularName,
+      pluralName,
+      article,
+      pronoun,
+    }
   }
 
   /**
