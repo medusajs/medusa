@@ -5,7 +5,7 @@ import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 import { minimatch } from "minimatch"
 import getBasePath from "../../utils/get-base-path.js"
 import toJsonFormatted from "../../utils/to-json-formatted.js"
-import { DmlFile } from "../../types/index.js"
+import { DmlFile } from "types"
 
 /**
  * A class used to generate DML JSON files with descriptions of properties.

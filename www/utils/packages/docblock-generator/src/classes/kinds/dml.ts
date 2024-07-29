@@ -5,7 +5,7 @@ import { getDmlOutputBasePath } from "../../utils/get-output-base-paths.js"
 import path from "path"
 import { camelToWords, RELATION_NAMES, snakeToPascal } from "utils"
 import toJsonFormatted from "../../utils/to-json-formatted.js"
-import { DmlFile, DmlObject } from "../../types/index.js"
+import { DmlFile, DmlObject } from "types"
 
 /**
  * DML generator for data models created with DML.
