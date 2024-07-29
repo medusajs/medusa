@@ -62,6 +62,14 @@ export const RouteMap: RouteObject[] = [
                     path: "create",
                     lazy: () => import("../../routes/products/product-create"),
                   },
+                  {
+                    path: "import",
+                    lazy: () => import("../../routes/products/product-import"),
+                  },
+                  {
+                    path: "export",
+                    lazy: () => import("../../routes/products/product-export"),
+                  },
                 ],
               },
               {
@@ -703,6 +711,10 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "currencies",
                 lazy: () => import("../../routes/store/store-add-currencies"),
+              },
+              {
+                path: "metadata/edit",
+                lazy: () => import("../../routes/store/store-metadata"),
               },
             ],
           },
