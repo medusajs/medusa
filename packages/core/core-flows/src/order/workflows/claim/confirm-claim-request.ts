@@ -19,8 +19,8 @@ import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createOrderClaimItemsStep } from "../../steps/create-claim-items"
-import { createReturnItemsStep } from "../../steps/create-return-items"
+import { createOrderClaimItemsFromActionsStep } from "../../steps/create-claim-items-from-actions"
+import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -227,8 +227,8 @@ export const confirmClaimRequestWorkflow = createWorkflow(
     const orderPreview = previewOrderChangeStep(order.id)
 
     const [createClaimItems, createdReturnItems] = parallelize(
-      createOrderClaimItemsStep(claimItems),
-      createReturnItemsStep(returnItems),
+      createOrderClaimItemsFromActionsStep(claimItems),
+      createReturnItemsFromActionsStep(returnItems),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
 

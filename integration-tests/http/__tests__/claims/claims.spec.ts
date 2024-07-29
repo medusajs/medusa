@@ -383,8 +383,8 @@ medusaIntegrationTestRunner({
       )
     })
 
-    describe("Returns lifecycle", () => {
-      it.only("Full flow with 2 orders", async () => {
+    describe("Claims lifecycle", () => {
+      it("Full flow with 2 orders", async () => {
         let result = await api.post(
           "/admin/claims",
           {
