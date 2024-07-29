@@ -63,8 +63,6 @@ function registerFlag(
     }
   }
 
-  console.log(">>>>>", flag.key, flagConfig[flag.key])
-
   if (logger && from) {
     logger.info(
       `Using flag ${flag.env_key} from ${from} with value ${
