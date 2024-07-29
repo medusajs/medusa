@@ -228,6 +228,12 @@ export type ProjectConfigOptions = {
    *
    * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
    * During development, it’s recommended not to pass this option.
+   * 
+   * :::note
+   * 
+   * Make sure to add to the end of the database URL `?ssl_mode=disable` as well.
+   * 
+   * :::
    *
    * @example
    * ```js title="medusa-config.js"
