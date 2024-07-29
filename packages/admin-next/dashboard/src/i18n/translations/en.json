@@ -1000,6 +1000,7 @@
     },
     "fulfillmentProviders": {
       "header": "Fulfillment Providers",
+      "shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
       "label": "Connected fulfillment providers",
       "connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
       "noProviders": "This Stock Location is not connected to any fulfillment providers.",

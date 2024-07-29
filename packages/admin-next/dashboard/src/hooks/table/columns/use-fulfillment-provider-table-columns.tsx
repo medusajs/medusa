@@ -6,6 +6,7 @@ import {
   TextCell,
   TextHeader,
 } from "../../../components/table/table-cells/common/text-cell"
+import { formatProvider } from "../../../lib/format-provider"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminFulfillmentProvider>()
 
@@ -16,7 +17,7 @@ export const useFulfillmentProviderTableColumns = () => {
     () => [
       columnHelper.accessor("id", {
         header: () => <TextHeader text={"Provider"} />,
-        cell: ({ getValue }) => <TextCell text={getValue()} />,
+        cell: ({ getValue }) => <TextCell text={formatProvider(getValue())} />,
       }),
     ],
     [t]

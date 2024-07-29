@@ -7,6 +7,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { useFulfillmentProviders } from "../../../../../hooks/api"
+import { formatProvider } from "../../../../../lib/format-provider"
 
 type LocationsFulfillmentProvidersSectionProps = {
   location: HttpTypes.AdminStockLocation
@@ -16,8 +17,8 @@ function LocationsFulfillmentProvidersSection({
   location,
 }: LocationsFulfillmentProvidersSectionProps) {
   const { t } = useTranslation()
-  const { count } = useFulfillmentProviders({
-    limit: 1,
+  const { fulfillment_providers } = useFulfillmentProviders({
+    stock_location_id: location.id,
     fields: "id",
   })
 
@@ -43,10 +44,10 @@ function LocationsFulfillmentProvidersSection({
         />
       </div>
 
-      {location?.fulfillment_providers?.length ? (
+      {fulfillment_providers?.length ? (
         <div className="flex flex-col gap-y-4 pt-4">
           <div className="grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-3">
-            {location?.fulfillment_providers?.map((fulfillmentProvider) => {
+            {fulfillment_providers?.map((fulfillmentProvider) => {
               return (
                 <>
                   <IconAvatar>
@@ -54,7 +55,7 @@ function LocationsFulfillmentProvidersSection({
                   </IconAvatar>
 
                   <div className="txt-compact-small">
-                    {fulfillmentProvider.id}
+                    {formatProvider(fulfillmentProvider.id)}
                   </div>
                 </>
               )
