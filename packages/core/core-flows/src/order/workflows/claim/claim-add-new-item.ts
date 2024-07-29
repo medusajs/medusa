@@ -100,7 +100,7 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
           details: {
             reference_id: lineItems[index].id,
             quantity: item.quantity,
-            unit_price: item.unit_price,
+            unit_price: item.unit_price ?? lineItems[index].unit_price,
             metadata: item.metadata,
           },
         }))

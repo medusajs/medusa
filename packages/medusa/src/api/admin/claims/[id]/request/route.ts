@@ -1,4 +1,4 @@
-import { orderClaimItemWorkflow } from "@medusajs/core-flows"
+import { confirmClaimRequestWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,18 +7,17 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { AdminPostClaimItemsReqSchemaType } from "../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostClaimItemsReqSchemaType>,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const { id } = req.params
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const { result } = await orderClaimItemWorkflow(req.scope).run({
-    input: { ...req.validatedBody, claim_id: id },
+  const { result } = await confirmClaimRequestWorkflow(req.scope).run({
+    input: { claim_id: id },
   })
 
   const queryObject = remoteQueryObjectFromString({

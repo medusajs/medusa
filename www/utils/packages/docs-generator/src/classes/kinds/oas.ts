@@ -25,7 +25,7 @@ import FunctionKindGenerator, {
   FunctionOrVariableNode,
   VariableNode,
 } from "./function.js"
-import { API_ROUTE_PARAM_REGEX } from "../helpers/../../constants.js"
+import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 

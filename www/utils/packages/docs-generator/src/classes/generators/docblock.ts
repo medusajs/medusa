@@ -167,6 +167,9 @@ class DocblockGenerator extends AbstractGenerator {
       super.isFileIncluded(fileName) &&
       !minimatch(getBasePath(fileName), "packages/medusa/**/api**/**", {
         matchBase: true,
+      }) &&
+      !minimatch(getBasePath(fileName), "packages/modules/**/models/**", {
+        matchBase: true,
       })
     )
   }

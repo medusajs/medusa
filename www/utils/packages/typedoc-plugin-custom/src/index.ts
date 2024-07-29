@@ -11,6 +11,7 @@ import { GenerateNamespacePlugin } from "./generate-namespace"
 import { DmlRelationsResolver } from "./dml-relations-resolver"
 import { load as dmlTypesNormalizer } from "./dml-types-normalizer"
 import { MermaidDiagramDMLGenerator } from "./mermaid-diagram-dml-generator"
+import { load as dmlJsonParser } from "./dml-json-parser"
 
 export function load(app: Application) {
   resolveReferencesPluginLoad(app)
@@ -21,6 +22,7 @@ export function load(app: Application) {
   signatureModifierPlugin(app)
   parentIgnorePlugin(app)
   dmlTypesNormalizer(app)
+  dmlJsonParser(app)
 
   new GenerateNamespacePlugin(app)
   new MermaidDiagramGenerator(app)

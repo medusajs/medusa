@@ -2,7 +2,7 @@ import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs"
 import { getDmlOutputBasePath } from "../utils/get-output-base-paths.js"
 import path from "path"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import { DmlFile } from "../types/index.js"
+import { DmlFile } from "types"
 import toJsonFormatted from "../utils/to-json-formatted.js"
 
 export default async function () {

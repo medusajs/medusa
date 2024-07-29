@@ -482,6 +482,32 @@ export interface CreateOrderReturnItemDTO {
   metadata?: Record<string, unknown> | null
 }
 
+export interface CreateOrderClaimItemDTO {
+  claim_id: string
+  item_id: string
+  reason?: ClaimReason
+  is_additional_item?: boolean
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
 export interface UpdateOrderReturnWithSelectorDTO {
   selector: Partial<ReturnDTO>
   data: Partial<UpdateReturnDTO>
@@ -510,7 +536,7 @@ export type ClaimReason =
 export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   type: OrderClaimType
   claim_items?: (BaseOrderBundledItemActionsDTO & {
-    reason: ClaimReason
+    reason?: ClaimReason
     images?: {
       url: string
       metadata?: Record<string, unknown> | null
