@@ -99,7 +99,7 @@
  *     description: The invite's created at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The invite's created at.
  *       required:
  *         - $eq
@@ -127,12 +127,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: The invite's updated at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The invite's updated at.
  *       required:
  *         - $eq
@@ -160,12 +161,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: The invite's deleted at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The invite's deleted at.
  *       required:
  *         - $eq
@@ -193,6 +195,7 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: deleted_at
  *   - name: $and
  *     in: query
  *     required: false

@@ -12,6 +12,7 @@ export const AdminFulfillmentProvidersParams = createFindParams({
   .merge(
     z.object({
       id: z.union([z.string(), z.array(z.string())]).optional(),
+      stock_location_id: z.union([z.string(), z.array(z.string())]).optional(),
       is_enabled: OptionalBooleanValidator,
       q: z.string().optional(),
     })

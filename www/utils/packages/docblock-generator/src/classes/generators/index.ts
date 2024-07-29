@@ -5,6 +5,7 @@ import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
 import { existsSync, readdirSync, statSync } from "node:fs"
 import path from "node:path"
+import getBasePath from "../../utils/get-base-path.js"
 
 export type Options = {
   paths: string[]
@@ -76,26 +77,10 @@ abstract class AbstractGenerator {
    * @returns {boolean} Whether the file can have docblocks generated for it.
    */
   isFileIncluded(fileName: string): boolean {
-    const baseFilePath = this.getBasePath(fileName)
+    const baseFilePath = getBasePath(fileName)
     return this.options.paths.some((path) =>
-      baseFilePath.startsWith(this.getBasePath(path))
+      baseFilePath.startsWith(getBasePath(path))
     )
-  }
-
-  /**
-   * Retrieve the pathname of a file without the relative part before `packages/`
-   *
-   * @param fileName - The file name/path
-   * @returns The path without the relative part.
-   */
-  getBasePath(fileName: string) {
-    let basePath = fileName
-    const packageIndex = fileName.indexOf("packages/")
-    if (packageIndex) {
-      basePath = basePath.substring(packageIndex)
-    }
-
-    return basePath
   }
 
   /**

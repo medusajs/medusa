@@ -5,6 +5,7 @@ import getMonorepoRoot from "../utils/get-monorepo-root.js"
 import { GitManager } from "../classes/helpers/git-manager.js"
 import OasGenerator from "../classes/generators/oas.js"
 import { CommonCliOptions } from "../types/index.js"
+import DmlGenerator from "../classes/generators/dml.js"
 
 export default async function ({ type, tag, ...options }: CommonCliOptions) {
   const gitManager = new GitManager()
@@ -47,6 +48,15 @@ export default async function ({ type, tag, ...options }: CommonCliOptions) {
     })
 
     await oasGenerator.run()
+  }
+
+  if (type === "all" || type === "dml") {
+    const dmlGenerator = new DmlGenerator({
+      paths: filteredFiles,
+      ...options,
+    })
+
+    await dmlGenerator.run()
   }
 
   console.log(`Finished generating docs for ${filteredFiles.length} files.`)

@@ -5,6 +5,7 @@ import MedusaReactHooksKindGenerator from "./medusa-react-hooks.js"
 import SourceFileKindGenerator from "./source-file.js"
 import DTOPropertyGenerator from "./dto-property.js"
 import OasKindGenerator from "./oas.js"
+import DmlKindGenerator from "./dml.js"
 
 /**
  * A class that is used as a registry for the kind generators.
@@ -20,6 +21,7 @@ class KindsRegistry {
     >
   ) {
     this.kindInstances = [
+      new DmlKindGenerator(options),
       new OasKindGenerator(options),
       new MedusaReactHooksKindGenerator(options),
       new FunctionKindGenerator(options),
