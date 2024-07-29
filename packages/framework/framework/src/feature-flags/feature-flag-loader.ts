@@ -4,6 +4,7 @@ import {
   isDefined,
   isObject,
   isString,
+  isTruthy,
   objectFromStringPath,
 } from "@medusajs/utils"
 import { trackFeatureFlag } from "medusa-telemetry"
@@ -14,13 +15,6 @@ import { container } from "../container"
 import { asFunction } from "awilix"
 import { configManager } from "../config"
 import { readdir } from "fs/promises"
-
-const isTruthy = (val: string | boolean | undefined): boolean => {
-  if (typeof val === "string") {
-    return val.toLowerCase() === "true"
-  }
-  return !!val
-}
 
 export const featureFlagRouter = new FlagRouter({})
 
@@ -68,8 +62,6 @@ function registerFlag(
       >
     }
   }
-
-  console.log(">>>>>", flag.key, flagConfig[flag.key])
 
   if (logger && from) {
     logger.info(
