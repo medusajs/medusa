@@ -18,6 +18,7 @@ export default function (theme: MarkdownTheme) {
           reflection: parameter,
           level: 1,
           maxLevel,
+          isTypeParams: true,
         })
       )
 
