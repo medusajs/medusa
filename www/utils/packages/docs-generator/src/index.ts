@@ -10,7 +10,7 @@ import cleanDml from "./commands/clean-dml.js"
 
 const program = new Command()
 
-program.name("docblock-generator").description("Generate TSDoc doc-blocks")
+program.name("docs-generator").description("Generate TSDoc doc-blocks")
 
 // define common options
 const typeOption = new Option("--type <type>", "The type of docs to generate.")

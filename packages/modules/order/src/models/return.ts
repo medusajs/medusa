@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   ReturnStatus,
   createPsqlIndexStatementHelper,
@@ -12,6 +13,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -60,6 +62,7 @@ const ClaimIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "return" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Return {
   [OptionalProps]?: OptionalReturnProps
 

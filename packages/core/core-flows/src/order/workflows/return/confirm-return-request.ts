@@ -4,12 +4,7 @@ import {
   OrderDTO,
   ReturnDTO,
 } from "@medusajs/types"
-import {
-  ChangeActionType,
-  MedusaError,
-  Modules,
-  OrderChangeStatus,
-} from "@medusajs/utils"
+import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -21,7 +16,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsStep } from "../../steps/create-return-items"
+import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -84,20 +79,13 @@ function prepareFulfillmentData({
   })
 
   const locationId =
-    returnShippingOption.service_zone.fulfillment_set.location?.id
+    returnShippingOption.service_zone.fulfillment_set.location?.id!
 
   // delivery address is the stock location address
   const address =
     returnShippingOption.service_zone.fulfillment_set.location?.address ?? {}
 
   delete address.id
-
-  if (!locationId) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Cannot create return without stock location, either provide a location or you should link the shipping option ${returnShippingOption.id} to a stock location.`
-    )
-  }
 
   return {
     input: {
@@ -109,6 +97,28 @@ function prepareFulfillmentData({
       order: order,
     },
   }
+}
+
+function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
+  if (!orderPreview.shipping_methods?.length) {
+    return
+  }
+
+  let returnShippingMethod
+  for (const shippingMethod of orderPreview.shipping_methods) {
+    const modifiedShippingMethod_ = shippingMethod as any
+    if (!modifiedShippingMethod_.actions) {
+      continue
+    }
+
+    returnShippingMethod = modifiedShippingMethod_.actions.find((action) => {
+      return (
+        action.action === ChangeActionType.SHIPPING_ADD &&
+        action.return_id === orderReturn.id
+      )
+    })
+  }
+  return returnShippingMethod.shipping_option_id
 }
 
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
@@ -169,36 +179,16 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     validationStep({ order, orderReturn, orderChange })
 
-    const createdReturnItems = createReturnItemsStep({
+    const orderPreview = previewOrderChangeStep(order.id)
+
+    const createdReturnItems = createReturnItemsFromActionsStep({
       returnId: orderReturn.id,
       changes: returnItemActions,
     })
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
-
-    const returnModified = useRemoteQueryStep({
-      entry_point: "return",
-      fields: [
-        "id",
-        "status",
-        "order_id",
-        "canceled_at",
-        "shipping_methods.shipping_option_id",
-      ],
-      variables: { id: input.return_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "return-query" })
-
     const returnShippingOptionId = transform(
-      { returnModified },
-      ({ returnModified }) => {
-        if (!returnModified.shipping_methods?.length) {
-          return
-        }
-
-        return returnModified.shipping_methods[0].shipping_option_id
-      }
+      { orderPreview, orderReturn },
+      extractReturnShippingOptionId
     )
 
     when({ returnShippingOptionId }, ({ returnShippingOptionId }) => {
@@ -242,6 +232,8 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       createRemoteLinkStep(link)
     })
 
-    return previewOrderChangeStep(order.id)
+    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+
+    return orderPreview
   }
 )

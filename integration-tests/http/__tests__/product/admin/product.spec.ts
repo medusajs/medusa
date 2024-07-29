@@ -1390,7 +1390,20 @@ medusaIntegrationTestRunner({
                 barcode: "test-barcode",
                 ean: "test-ean",
                 upc: "test-upc",
-                // BREAKING: Price updates are no longer supported through the product update endpoint. There is a batch variants endpoint for this purpose
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 200,
+                  },
+                  {
+                    currency_code: "eur",
+                    amount: 65,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 50,
+                  },
+                ],
               },
             ],
             tags: [{ value: "123" }],
@@ -1478,14 +1491,106 @@ medusaIntegrationTestRunner({
                   origin_country: null,
                   prices: expect.arrayContaining([
                     expect.objectContaining({
-                      amount: 100,
+                      amount: 200,
                       created_at: expect.any(String),
                       currency_code: "usd",
+                    }),
+                    expect.objectContaining({
+                      amount: 65,
+                      created_at: expect.any(String),
+                      currency_code: "eur",
+                    }),
+                    expect.objectContaining({
+                      amount: 50,
+                      created_at: expect.any(String),
+                      currency_code: "dkk",
                     }),
                   ]),
                   product_id: baseProduct.id,
                   title: "New variant",
                   updated_at: expect.any(String),
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("updates product variants (update price on existing variant, create new variant)", async () => {
+          const payload = {
+            variants: [
+              {
+                id: baseProduct.variants[0].id,
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 200,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 50,
+                  },
+                ],
+              },
+              {
+                title: "New variant",
+                prices: [
+                  {
+                    currency_code: "usd",
+                    amount: 150,
+                  },
+                  {
+                    currency_code: "dkk",
+                    amount: 20,
+                  },
+                ],
+              },
+            ],
+          }
+
+          const response = await api
+            .post(`/admin/products/${baseProduct.id}`, payload, adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          expect(response.status).toEqual(200)
+
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              id: baseProduct.id,
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: baseProduct.variants[0].id,
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      amount: 200,
+                      created_at: expect.any(String),
+                      currency_code: "usd",
+                    }),
+                    expect.objectContaining({
+                      amount: 50,
+                      created_at: expect.any(String),
+                      currency_code: "dkk",
+                    }),
+                  ]),
+                  product_id: baseProduct.id,
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  title: "New variant",
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      amount: 150,
+                      created_at: expect.any(String),
+                      currency_code: "usd",
+                    }),
+                    expect.objectContaining({
+                      amount: 20,
+                      created_at: expect.any(String),
+                      currency_code: "dkk",
+                    }),
+                  ]),
+                  product_id: baseProduct.id,
                 }),
               ]),
             })

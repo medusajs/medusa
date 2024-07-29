@@ -3,6 +3,7 @@ import { OperatorMap } from "../dal/utils"
 import { FulfillmentDTO } from "../fulfillment"
 import { PaymentCollectionDTO } from "../payment"
 import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
+import { ClaimReason } from "./mutations"
 
 export type ChangeActionType =
   | "CANCEL"
@@ -1156,6 +1157,40 @@ export interface OrderReturnItemDTO {
   updated_at?: Date | string
 }
 
+export interface OrderClaimItemDTO {
+  id: string
+  claim_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  reason: ClaimReason
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderClaimItemImageDTO {
+  id: string
+  claim_item_id: string
+  url: string
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderExchangeItemDTO {
+  id: string
+  exchange_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
 export interface OrderClaimDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
   order_id: string
@@ -1341,6 +1376,9 @@ export interface OrderChangeActionDTO {
    * The ID of the associated order
    */
   order_id: string | null
+  return_id: string | null
+  claim_id: string | null
+  exchange_id: string | null
   /**
    * The associated order
    *

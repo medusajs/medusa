@@ -17,6 +17,7 @@ import {
   STEP_INACTIVE_STATES,
   STEP_IN_PROGRESS_STATES,
   STEP_OK_STATES,
+  STEP_SKIPPED_STATES,
 } from "../../../constants"
 import {
   StepError,
@@ -132,6 +133,9 @@ const Event = ({
           <div className="bg-ui-bg-base shadow-borders-base flex size-2.5 items-center justify-center rounded-full">
             <div
               className={clx("size-1.5 rounded-full", {
+                "bg-ui-tag-neutral-bg": STEP_SKIPPED_STATES.includes(
+                  step.invoke.state
+                ),
                 "bg-ui-tag-green-icon": STEP_OK_STATES.includes(
                   step.invoke.state
                 ),
@@ -204,7 +208,8 @@ const Event = ({
                   snippets={[
                     {
                       code: JSON.stringify(
-                        stepInvokeContext.output.output,
+                        // TODO: Apply resolve value: packages/core/workflows-sdk/src/utils/composer/helpers/resolve-value.ts
+                        stepInvokeContext?.output?.output ?? {},
                         null,
                         2
                       ),
@@ -227,8 +232,9 @@ const Event = ({
                   <CodeBlock
                     snippets={[
                       {
+                        // TODO: Apply resolve value: packages/core/workflows-sdk/src/utils/composer/helpers/resolve-value.ts
                         code: JSON.stringify(
-                          stepInvokeContext.output.compensateInput,
+                          stepInvokeContext?.output?.compensateInput ?? {},
                           null,
                           2
                         ),
@@ -290,6 +296,8 @@ const StepState = ({
 
   const isFailed = state === TransactionStepState.FAILED
   const isRunning = state === TransactionStepState.INVOKING
+  const isSkipped = state === TransactionStepState.SKIPPED
+  const isSkippedFailure = state === TransactionStepState.SKIPPED_FAILURE
 
   if (isUnreachable) {
     return null
@@ -306,10 +314,20 @@ const StepState = ({
     )
   }
 
-  if (isFailed) {
+  let stateText: string | undefined
+
+  if (isSkipped) {
+    stateText = t("workflowExecutions.history.skippedState")
+  } else if (isSkippedFailure) {
+    stateText = t("workflowExecutions.history.skippedFailureState")
+  } else if (isFailed) {
+    stateText = t("workflowExecutions.history.failedState")
+  }
+
+  if (stateText !== null) {
     return (
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
-        {t("workflowExecutions.history.failedState")}
+        {stateText}
       </Text>
     )
   }

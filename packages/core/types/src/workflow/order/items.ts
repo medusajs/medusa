@@ -1,3 +1,4 @@
+import { ClaimReason } from "../../order/mutations"
 import { BigNumberInput } from "../../totals"
 
 interface NewItem {
@@ -63,7 +64,7 @@ export interface UpdateExchangeAddItemWorkflowInput {
 
 export interface OrderClaimItemWorkflowInput {
   claim_id: string
-  items: ExistingItem[]
+  items: (ExistingItem & { reason?: ClaimReason })[]
 }
 
 export interface UpdateClaimItemWorkflowInput {
@@ -71,6 +72,7 @@ export interface UpdateClaimItemWorkflowInput {
   action_id: string
   data: {
     quantity?: BigNumberInput
+    reason_id?: ClaimReason
     internal_note?: string | null
   }
 }

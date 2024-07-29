@@ -2,12 +2,10 @@ export const defaultAdminClaimFields = [
   "id",
   "type",
   "order_id",
-  "exchange_id",
-  "claim_id",
+  "return_id",
   "display_id",
   "location_id",
   "order_version",
-  "status",
   "refund_amount",
   "created_at",
   "updated_at",
@@ -15,8 +13,9 @@ export const defaultAdminClaimFields = [
 
 export const defaultAdminDetailsClaimFields = [
   ...defaultAdminClaimFields,
-  "items.*",
-  "items.reason.*",
+  "additional_items.*",
+  "claim_items.*",
+  "claim_items.reason.*",
 ]
 
 export const retrieveTransformQueryConfig = {

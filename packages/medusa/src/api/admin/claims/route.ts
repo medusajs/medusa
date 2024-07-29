@@ -18,7 +18,7 @@ export const GET = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claims",
+    entryPoint: "order_claims",
     variables: {
       filters: {
         ...req.filterableFields,
@@ -52,7 +52,7 @@ export const POST = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claim",
+    entryPoint: "order_claim",
     variables: {
       id: result.claim_id,
       filters: {
