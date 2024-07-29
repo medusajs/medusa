@@ -23,7 +23,7 @@ export class SkipStepResponse extends Error {
 
   constructor(message?: string) {
     super(message)
-    this.name = "PermanentStepFailure"
+    this.name = "SkipStepResponse"
   }
 }
 

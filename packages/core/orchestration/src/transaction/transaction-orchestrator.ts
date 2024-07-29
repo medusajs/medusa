@@ -474,9 +474,6 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (!hasStepTimedOut) {
       step.changeStatus(TransactionStepStatus.OK)
-    }
-
-    if (!hasStepTimedOut) {
       step.changeState(TransactionStepState.SKIPPED)
     }
 
@@ -746,7 +743,7 @@ export class TransactionOrchestrator extends EventEmitter {
                   )
                 }
 
-                if (SkipStepResponse.isSkipStepResponse(response)) {
+                if (SkipStepResponse.isSkipStepResponse(response?.output)) {
                   await TransactionOrchestrator.skipStep(transaction, step)
                   return
                 }

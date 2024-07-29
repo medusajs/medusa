@@ -99,6 +99,7 @@ export class TransactionStep {
         TransactionStepState.FAILED,
         TransactionStepState.DONE,
         TransactionStepState.TIMEOUT,
+        TransactionStepState.SKIPPED,
       ],
       [TransactionStepState.COMPENSATING]: [
         TransactionStepState.REVERTED,
