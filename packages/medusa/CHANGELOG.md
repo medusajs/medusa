@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.20.9
+
+### Patch Changes
+
+- [`363bcc65b5`](https://github.com/medusajs/medusa/commit/363bcc65b5cd21d8941be954b91868fcdefd3890) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Correctly pass cart_id to price calculation
+
 ## 1.20.8
 
 ### Patch Changes
