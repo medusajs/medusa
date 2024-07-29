@@ -1799,7 +1799,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    title: "API References",
+    title: "References",
     hasTitleStyling: true,
     children: [
       {
@@ -1849,6 +1849,23 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             hasTitleStyling: true,
             autogenerate_path:
               "/references/dml/Property_Configuration_Methods/methods",
+          },
+        ],
+      },
+      {
+        path: "/service-factory-reference",
+        title: "Service Factory Reference",
+        isChildSidebar: true,
+        children: [
+          {
+            title: "Methods",
+            hasTitleStyling: true,
+            autogenerate_path: "/service-factory-reference/methods",
+          },
+          {
+            title: "Tips",
+            hasTitleStyling: true,
+            autogenerate_path: "/service-factory-reference/tips",
           },
         ],
       },

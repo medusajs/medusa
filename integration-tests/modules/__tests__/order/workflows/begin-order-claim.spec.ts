@@ -126,9 +126,6 @@ async function prepareDataFixtures({ container }) {
         fulfillment_provider_id: "manual_test-provider",
       },
     },
-  ])
-
-  await remoteLink.create([
     {
       [Modules.STOCK_LOCATION]: {
         stock_location_id: location.id,
