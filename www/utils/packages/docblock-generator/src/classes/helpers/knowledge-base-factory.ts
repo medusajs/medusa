@@ -678,6 +678,63 @@ class KnowledgeBaseFactory {
 
     return result
   }
+
+  /**
+   * Retrieve summary and description for a property of an object, interface, or type.
+   *
+   * @param param0 - The property's details.
+   * @returns The property's summary.
+   */
+  tryToGetObjectPropertySummary({
+    retrieveOptions,
+    propertyDetails: { isClassOrInterface, isBoolean, classOrInterfaceName },
+  }: {
+    /**
+     * The options used to retrieve the summary from the knowledge base, if available.
+     */
+    retrieveOptions: RetrieveOptions
+    /**
+     * The details of the property.
+     */
+    propertyDetails: {
+      /**
+       * Whether the property's value is a class or interface. This applies to all
+       * object-like types.
+       *
+       * If `true`, the property is considered to represent a relationship to another
+       * class / interface.
+       */
+      isClassOrInterface: boolean
+      /**
+       * Whether the property's value is a boolean
+       */
+      isBoolean: boolean
+      /**
+       * The name of the class / interface this property's value is associated to.
+       * This is only used if {@link isClassOrInterface} is `true`.
+       */
+      classOrInterfaceName?: string
+    }
+  }): string {
+    let summary = this.tryToGetSummary(retrieveOptions)
+
+    if (summary) {
+      return summary
+    }
+
+    if (isClassOrInterface) {
+      summary = `The associated ${classOrInterfaceName}.`
+    } else if (isBoolean) {
+      summary = `Whether the ${retrieveOptions.templateOptions
+        ?.parentName} ${snakeToWords(retrieveOptions.str)}.`
+    } else {
+      summary = `The ${snakeToWords(
+        retrieveOptions.str
+      )} of the ${retrieveOptions.templateOptions?.parentName}`
+    }
+
+    return summary
+  }
 }
 
 export default KnowledgeBaseFactory

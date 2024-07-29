@@ -12,7 +12,7 @@ import {
 } from "../../types/index.js"
 import formatOas from "../../utils/format-oas.js"
 import getCorrectZodTypeName from "../../utils/get-correct-zod-type-name.js"
-import getOasOutputBasePath from "../../utils/get-oas-output-base-path.js"
+import { getOasOutputBasePath } from "../../utils/get-output-base-paths.js"
 import isZodObject from "../../utils/is-zod-object.js"
 import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 import OasExamplesGenerator from "../examples/oas.js"
