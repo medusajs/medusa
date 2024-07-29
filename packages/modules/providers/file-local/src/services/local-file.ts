@@ -77,7 +77,6 @@ export class LocalFileService extends AbstractFileProviderService {
     return
   }
 
-  // For private files, we simply return the file path, which can then be loaded manually by the backend.
   // The local file provider doesn't support presigned URLs for private files (i.e files not placed in /static).
   async getPresignedDownloadUrl(
     file: FileTypes.ProviderGetFileDTO
@@ -94,10 +93,6 @@ export class LocalFileService extends AbstractFileProviderService {
         MedusaError.Types.NOT_FOUND,
         `File with key ${file.fileKey} not found`
       )
-    }
-
-    if (isPrivate) {
-      return filePath
     }
 
     return this.getUploadFileUrl(file.fileKey)
