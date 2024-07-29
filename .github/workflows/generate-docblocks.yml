@@ -42,7 +42,7 @@ jobs:
       - name: Run docblock generator
         if: steps.check-commit.outputs.is_release_commit == 'true'
         run: "yarn start run:release --type docs"
-        working-directory: www/utils/packages/docblock-generator
+        working-directory: www/utils/packages/docs-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_OWNER: ${{ github.repository_owner }}
@@ -116,3 +116,55 @@ jobs:
           branch: "chore/generate-oas"
           branch-suffix: "timestamp"
           add-paths: www/utils/generated/oas-output/**
+  generate-dml:
+    name: Generated DML JSON files PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Check Commit
+        id: check-commit
+        run: "yarn check:release-commit ${{ github.sha }}"
+        working-directory: www/utils/packages/scripts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Run docblock generator
+        if: steps.check-commit.outputs.is_release_commit == 'true'
+        run: "yarn generate:dml"
+        working-directory: www/utils
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Create Pull Request
+        if: steps.check-commit.outputs.is_release_commit == 'true'
+        uses: peter-evans/create-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: "chore(docs): Generated DML JSON files"
+          body: "This PR holds all generated DML JSON files for the upcoming release."
+          branch: "chore/generate-dml-json"
+          branch-suffix: "timestamp"
+          add-paths: www/utils/generated/dml-output/**

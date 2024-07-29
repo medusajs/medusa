@@ -8,6 +8,7 @@ import {
   setShippingOptionsPricesStep,
   upsertShippingOptionsStep,
 } from "../steps"
+import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
@@ -18,6 +19,8 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[]
     >
   ): WorkflowData<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
+    validateFulfillmentProvidersStep(input)
+
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
         const prices = option.prices

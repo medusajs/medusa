@@ -140,6 +140,12 @@ medusaIntegrationTestRunner({
         },
         currency_code: "usd",
         customer_id: "joe",
+        transactions: [
+          {
+            amount: 20,
+            currency_code: "usd",
+          },
+        ],
       })
 
       shippingProfile = (
@@ -202,19 +208,17 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      await api.post(
+        `/admin/stock-locations/${location.id}/fulfillment-providers`,
+        { add: ["manual_test-provider"] },
+        adminHeaders
+      )
+
       const remoteLink = container.resolve(
         ContainerRegistrationKeys.REMOTE_LINK
       )
 
       await remoteLink.create([
-        {
-          [Modules.STOCK_LOCATION]: {
-            stock_location_id: location.id,
-          },
-          [Modules.FULFILLMENT]: {
-            fulfillment_set_id: fulfillmentSet.id,
-          },
-        },
         {
           [Modules.SALES_CHANNEL]: {
             sales_channel_id: "test",
@@ -330,6 +334,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(
           `/admin/returns/${returnId2}/shipping-method`,
           {
@@ -337,6 +342,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(`/admin/returns/${returnId2}/request`, {}, adminHeaders)
 
         const returnId = result.data.return.id
@@ -419,6 +425,25 @@ medusaIntegrationTestRunner({
             description: "Test",
             status: "pending",
             order_id: order.id,
+          })
+        )
+
+        result = await api.post(
+          `/admin/returns/${returnId}`,
+          {
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
+          },
+          adminHeaders
+        )
+
+        expect(result.data.return).toEqual(
+          expect.objectContaining({
+            id: returnId,
+            location_id: location.id,
+            metadata: { hello: "world" },
+            no_notification: true,
           })
         )
 

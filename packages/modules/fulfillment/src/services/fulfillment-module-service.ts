@@ -14,18 +14,18 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  deepEqualObj,
   EmitEvents,
-  getSetDifference,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
-  isPresent,
-  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  arrayDifference,
+  deepEqualObj,
+  getSetDifference,
+  isDefined,
+  isPresent,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -617,9 +617,8 @@ export default class FulfillmentModuleService
       ...fulfillmentRest
     } = fulfillment
 
-    let fulfillmentThirdPartyData!: any
     try {
-      fulfillmentThirdPartyData =
+      const providerResult =
         await this.fulfillmentProviderService_.createFulfillment(
           provider_id,
           fulfillmentData || {},
@@ -630,7 +629,8 @@ export default class FulfillmentModuleService
       await this.fulfillmentService_.update(
         {
           id: fulfillment.id,
-          data: fulfillmentThirdPartyData ?? {},
+          data: providerResult.data ?? {},
+          labels: providerResult.labels ?? [],
         },
         sharedContext
       )
@@ -662,9 +662,8 @@ export default class FulfillmentModuleService
       sharedContext
     )
 
-    let fulfillmentThirdPartyData!: any
     try {
-      fulfillmentThirdPartyData =
+      const providerResult =
         await this.fulfillmentProviderService_.createReturn(
           fulfillment.provider_id,
           fulfillment as Record<any, any>
@@ -672,7 +671,8 @@ export default class FulfillmentModuleService
       await this.fulfillmentService_.update(
         {
           id: fulfillment.id,
-          data: fulfillmentThirdPartyData ?? {},
+          data: providerResult.data ?? {},
+          labels: providerResult.labels ?? [],
         },
         sharedContext
       )

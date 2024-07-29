@@ -7,11 +7,11 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   transform,
   when,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
@@ -22,7 +22,6 @@ import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
@@ -40,7 +39,7 @@ const validationStep = createStep(
     orderChange: OrderChangeDTO
     items: OrderWorkflow.OrderClaimRequestItemReturnWorkflowInput["items"]
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderClaim, "Claim")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
@@ -157,6 +156,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
           details: {
             reference_id: item.id,
             quantity: item.quantity,
+            reason_id: item.reason_id,
             metadata: item.metadata,
           },
         }))

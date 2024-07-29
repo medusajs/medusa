@@ -1,11 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog"
 
-import {
-  BellAlert,
-  SidebarLeft,
-  TriangleRightMini,
-  XMark,
-} from "@medusajs/icons"
+import { SidebarLeft, TriangleRightMini, XMark } from "@medusajs/icons"
 import { IconButton, clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 import { Link, Outlet, UIMatch, useMatches } from "react-router-dom"
@@ -14,6 +9,7 @@ import { useTranslation } from "react-i18next"
 import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
+import { Notifications } from "../notifications"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -107,18 +103,6 @@ const Breadcrumbs = () => {
   )
 }
 
-const ToggleNotifications = () => {
-  return (
-    <IconButton
-      size="small"
-      variant="transparent"
-      className="text-ui-fg-muted transition-fg hover:text-ui-fg-subtle"
-    >
-      <BellAlert />
-    </IconButton>
-  )
-}
-
 const ToggleSidebar = () => {
   const { toggle } = useSidebar()
 
@@ -152,7 +136,7 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
-        <ToggleNotifications />
+        <Notifications />
       </div>
     </div>
   )

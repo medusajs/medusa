@@ -14,6 +14,9 @@ medusaIntegrationTestRunner({
       let shippingProfile
       let fulfillmentSet
       let region
+      let appContainer
+      let location
+      let location2
 
       const shippingOptionRule = {
         operator: RuleOperator.EQ,
@@ -22,7 +25,8 @@ medusaIntegrationTestRunner({
       }
 
       beforeEach(async () => {
-        const appContainer = getContainer()
+        appContainer = getContainer()
+
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         shippingProfile = (
@@ -36,7 +40,7 @@ medusaIntegrationTestRunner({
           )
         ).data.shipping_profile
 
-        let location = (
+        location = (
           await api.post(
             `/admin/stock-locations`,
             {
@@ -56,6 +60,12 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.stock_location
+
+        await api.post(
+          `/admin/stock-locations/${location.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
 
         fulfillmentSet = (
           await api.post(
@@ -171,6 +181,41 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should throw error when provider does not exist on a location", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "does-not-exist",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1000,
+              },
+            ],
+            rules: [shippingOptionRule],
+          }
+
+          const error = await api
+            .post(
+              `/admin/shipping-options`,
+              shippingOptionPayload,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Providers (does-not-exist) are not enabled for the service location"
           )
         })
       })
@@ -329,6 +374,57 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should throw an error when provider does not belong to service location", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 1000,
+              },
+              {
+                region_id: region.id,
+                amount: 1000,
+              },
+            ],
+            rules: [shippingOptionRule],
+          }
+
+          const response = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          const shippingOptionId = response.data.shipping_option.id
+
+          const updateShippingOptionPayload = {
+            provider_id: "another_test-provider",
+          }
+
+          const error = await api
+            .post(
+              `/admin/shipping-options/${shippingOptionId}`,
+              updateShippingOptionPayload,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            "Providers (another_test-provider) are not enabled for the service location"
           )
         })
       })

@@ -1,6 +1,6 @@
 import { AddressDTO } from "@medusajs/types"
 
-import { countries } from "./data/countries"
+import { countries, getCountryByIso2 } from "./data/countries"
 
 export const isSameAddress = (a: AddressDTO | null, b: AddressDTO | null) => {
   if (!a || !b) {
@@ -72,7 +72,13 @@ export const getFormattedAddress = ({
   if (country) {
     formattedAddress.push(country.display_name)
   } else if (country_code) {
-    formattedAddress.push(country_code.toUpperCase())
+    const country = getCountryByIso2(country_code)
+
+    if (country) {
+      formattedAddress.push(country.display_name)
+    } else {
+      formattedAddress.push(country_code.toUpperCase())
+    }
   }
 
   return formattedAddress

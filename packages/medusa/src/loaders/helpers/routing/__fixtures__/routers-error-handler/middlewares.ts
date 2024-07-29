@@ -1,6 +1,6 @@
-import { MiddlewaresConfig } from "../../types"
+import { defineMiddlewares } from "../../../../../utils/define-middlewares"
 
-export const config: MiddlewaresConfig = {
+export default defineMiddlewares({
   errorHandler: (err, _req, res, _next) => {
     const { code, message } = err
 
@@ -36,4 +36,4 @@ export const config: MiddlewaresConfig = {
         })
     }
   },
-}
+})

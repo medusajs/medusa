@@ -446,7 +446,7 @@ export class RoutesLoader {
 
     try {
       await import(absolutePath).then((import_) => {
-        const middlewaresConfig = import_.config as
+        const middlewaresConfig = import_.default as
           | MiddlewaresConfig
           | undefined
 

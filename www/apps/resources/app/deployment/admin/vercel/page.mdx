@@ -8,50 +8,51 @@ export const metadata = {
 
 # {metadata.title}
 
-<Note type="soon">
-
-The following deployment guide doesn't support Medusa v2 yet.
-
-</Note>
-
-This guide explains how to deploy the Medusa Admin separately from the Medusa application to Vercel.
+In this document, you’ll learn how to deploy the Medusa Admin to [Vercel](https://vercel.com).
 
 <Note title="Important">
 
-Per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the Medusa Admin on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
+As Medusa v2 is still in active development, it's highly recommended not to deploy it for production purposes. The deployment process may also change.
 
 </Note>
-
-[Vercel](https://vercel.com/) is a cloud platform for static sites and serverless functions. It provides developers with a platform to deploy web projects quickly and easily.
-
-<Note type="check">
-
-- Deployed Medusa application.
-- [Vercel account](https://vercel.com/)
-- [GitHub repository with the Medusa Admin's code](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
-
-</Note>
-
-## Configure Build Script
-
-In the `package.json` of the Medusa application, add or change a build script for the admin:
-
-```json
-"scripts": {
-  // other scripts
-  "build:admin": "medusa-admin build --deployment",
-}
-```
-
-When using the `--deployment` option, the Medusa application's URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. You'll configure this environment variable in a later step.
 
 ---
 
-## Add Vercel Configurations
+<Note type="check">
 
-In the root directory of the Medusa application, create a new file `vercel.json` with the following content:
+- [Medusa application](!docs!)’s codebase hosted on GitHub repository.
+- [Deployed Medusa application](../../page.mdx#medusa-application).
 
-```json
+</Note>
+
+## 1. Configure Admin in Medusa
+
+In `medusa-config.js`, set the following admin configuration:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  admin: {
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
+    path: process.env.MEDUSA_ADMIN_PATH
+  },
+})
+```
+
+Where:
+
+- You set `disable` to the environment variable `DISABLE_MEDUSA_ADMIN`. In the deployed Medusa application, you set the environment variable’s value to `true` to disable the admin, and when deploying the admin you set it to `false`.
+- `backendUrl` will be the URL of the deployed Medusa backend.
+- `path` is the base path of the admin, which is `/app` by default. When you set the environment variable `MEDUSA_ADMIN_PATH` later while deploying the admin, you’ll set it to `/`.
+
+---
+
+## 2. Add Vercel Rewrite
+
+Create the file `vercel.json` in the root directory of your Medusa application with the following content:
+
+```json title="vercel.json"
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
@@ -59,87 +60,85 @@ In the root directory of the Medusa application, create a new file `vercel.json`
 
 ---
 
-## Push Changes to GitHub
-
-After making all the previous changes, push them to GitHub before starting the deployment on Vercel:
-
-```bash
-git add .
-git commit -m "prepare repository for deployment"
-git push
-```
-
----
-
-## Deploy to Vercel
-
-This section covers how to deploy the Medusa Admin, either using the Vercel website or using Vercel’s CLI tool.
-
-### Option 1: Using the Vercel Website
-
-This section explains how to deploy the admin using the Vercel website:
-
-1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
-2. Click on the “Add New…” button next to the search bar.
-3. Choose Project from the dropdown.
-4. In the new page that opens, find the Git repository that holds your Medusa application or Medusa Admin and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
-5. In the Configure Project form:
-    1. Set the Framework Preset to Other.
-    2. Open the Build and Output Settings collapsible, and set the Build Command to `yarn build:admin` and the Output Directory to `build`.
-    3. Open the Environment Variables collapsible, and add an environment variable with the name `MEDUSA_ADMIN_BACKEND_URL` with the value being the URL to your deployed Medusa application.
-    4. You can optionally edit the Project Name.
-6. Once you’re done, click on the “Deploy” button.
-
-This will start the deployment of the admin. Once it’s done, you’ll be redirected to the main dashboard of your new project.
+## 3. Create Vercel Project
 
 <Note>
 
-At this point, when you visit the admin, you'll face errors related to Cross-Origin Resource Sharing (CORS). Before you start using the Medusa Admin, follow along the [Configure CORS on the Medusa Application](#configure-cors-on-the-medusa-application) section.
+Push all changes you’ve made in the previous step to the GitHub repository before proceeding.
 
 </Note>
 
-### Option 2: Using Vercel’s CLI Tool
+To create a Vercel project, on your Vercel dashboard:
 
-This section explains how to deploy the admin using the Vercel CLI tool. You should have the CLI tool installed first, as explained in [Vercel’s documentation](https://vercel.com/docs/cli).
+1. Click on the Add New button at the top right.
+2. Choose Project from dropdown.
+3. In the list of GitHub repository shown, find the GitHub repository and click its Import button.
+4. This shows a form to configure the project:
+    1. Choose Other for the Framework Preset field.
+    2. Keep the root directory to `.`
+    3. Expand the Build and Output Settings section:
+        - Set the Build Command field to the following:
+        
+        ```bash npm2yarn
+        npm run build
+        ```
+        
+        - Set the Output Directory field to `build`.
+        - Set the Install Command field to the following:
+        
+        ```bash npm2yarn
+        npm run build
+        ```
 
-In the directory of your Medusa application, run the following command to deploy your Medusa Admin:
+    4. Expand the Environment Variables section and add the following variables:
+    
+    ```bash
+    DISABLE_MEDUSA_ADMIN=false
+    MEDUSA_BACKEND_URL = # URL of deployed Medusa application
+    MEDUSA_ADMIN_PATH=/
+    ```
+    
+
+Where the value of `MEDUSA_BACKEND_URL` is the URL to your deployed Medusa application.
+
+Then, click the Deploy button to deploy the admin. This takes a couple of minutes. Once the deployment is done, click the Continue to Dashboard button.
+
+---
+
+## 4. Set Admin URL
+
+Vercel generates a random domain name for your project. You can use it or [set a custom domain name](https://vercel.com/guides/how-do-i-add-a-custom-domain-to-my-vercel-project).
+
+Once you have the admin’s domain name, you must set the `ADMIN_CORS` environment variable in the Medusa application to the admin’s URL:
 
 ```bash
-vercel --build-env MEDUSA_ADMIN_BACKEND_URL=<YOUR_APP_URL>
+ADMIN_CORS=https://admin-...
 ```
 
-Where `<YOUR_APP_URL>` is the URL of your deployed Medusa application.
+And add the admin URL to the `AUTH_CORS` environment variable in the Medusa application:
 
-You’ll then be asked to log in if you haven’t already, and to choose the scope to deploy your project to. You can also decide to link the admin to an existing project, or change the project’s name.
+```bash
+AUTH_CORS=<OTHER_URLS>,https://admin-...
+```
 
-When asked, ”In which directory is your code located?”, keep the default `./` and just press Enter.
+Where `<OTHER_URLS>` are URLs added previously to `AUTH_CORS`, such as the URL of a storefront. URLs in `AUTH_CORS` are separated by a comma.
 
-The project setup will then start. When asked if you want to modify the settings, answer `y`. You’ll then be asked a series of questions:
+Then, redeploy the Medusa application.
 
-1. “Which settings would you like to overwrite”: select Build Command and Output Directory using the space bar, then press Enter.
-2. “What's your **Build Command**?”: enter `yarn build:admin`.
-3. “What's your **Output Directory**?”: enter `build`.
+---
 
-After that, it will take a couple of minutes for the deployment to finish. The link to the admin will be shown in the final output of the command.
+## Test the Admin
+
+To test the admin, open its URL and login with an admin user’s credentials.
 
 <Note>
 
-At this point, when you visit the admin, you'll face errors related to Cross-Origin Resource Sharing (CORS). Before you start using the Medusa Admin, follow along the [Configure CORS on the Medusa Application](#configure-cors-on-the-medusa-application) section.
+If you don’t have an admin user on your Medusa application, use the [user command of the Medusa CLI tool](../../../medusa-cli/page.mdx#user).
 
 </Note>
 
 ---
 
-## Configure CORS on the Medusa Application
+## Troubleshooting
 
-To send requests to the Medusa application from the admin dashboard, set the `ADMIN_CORS` environment variable on your deployed Medusa application to the admin’s URL.
-
-On your Medusa application, add the following environment variable:
-
-```bash
-ADMIN_CORS=<ADMIN_URL>
-```
-
-Where `<ADMIN_URL>` is the URL of the deployed Medusa Admin.
-
-Then, restart your Medusa application. Once the application is running again, you can use your admin dashboard.
+If you’re running into issues in your admin, find the logs in your Vercel project’s dashboard under the Logs tab.

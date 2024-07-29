@@ -78,6 +78,12 @@ export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }
 
+export interface AdminUpdateReturnRequest {
+  location_id?: string
+  no_notification?: boolean
+  metadata?: Record<string, unknown> | null
+}
+
 export interface AdminReturnFilters extends FindParams {
   id?: string[] | string | OperatorMap<string | string[]>
   order_id?: string[] | string | OperatorMap<string | string[]>

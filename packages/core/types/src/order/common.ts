@@ -3,6 +3,7 @@ import { OperatorMap } from "../dal/utils"
 import { FulfillmentDTO } from "../fulfillment"
 import { PaymentCollectionDTO } from "../payment"
 import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
+import { ClaimReason } from "./mutations"
 
 /**
  * The change action's type.
@@ -1307,7 +1308,8 @@ type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
 /**
  * The return details.
  */
-export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
+export interface ReturnDTO
+  extends Omit<OrderDTO, "status" | "version" | "items"> {
   /**
    * The ID of the return.
    */
@@ -1327,6 +1329,7 @@ export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
    * The associated order's ID.
    */
   order_id: string
+  items: OrderReturnItemDTO[]
 }
 
 /**
@@ -1394,11 +1397,49 @@ export interface OrderReturnItemDTO {
   updated_at?: Date | string
 }
 
+export interface OrderClaimItemDTO {
+  id: string
+  claim_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  reason: ClaimReason
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderClaimItemImageDTO {
+  id: string
+  claim_item_id: string
+  url: string
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export interface OrderExchangeItemDTO {
+  id: string
+  exchange_id: string
+  order_id: string
+  item_id: string
+  quantity: number
+  raw_quantity: BigNumberRawValue
+  metadata?: Record<string, unknown> | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
 /**
  * The claim details.
  */
 export interface OrderClaimDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
+  /**
+   * The ID of the associated order.
+   */
+  order_id: string
   /**
    * The items to be received from the customer
    * if the claim's type is `replace`.
@@ -1415,7 +1456,10 @@ export interface OrderClaimDTO
    * The associated return, if the claim's type is `replace`.
    */
   return?: ReturnDTO
-
+  /**
+   * The ID of the associated return, if the claim's type is `replace`.
+   */
+  return_id?: string
   /**
    * Whether the customer should receive notifications related
    * to updates on the claim.
@@ -1433,6 +1477,10 @@ export interface OrderClaimDTO
  */
 export interface OrderExchangeDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
+  /**
+   * The associated order's ID.
+   */
+  order_id: string
   /**
    * The items to be returned from the customer.
    */
@@ -1467,11 +1515,6 @@ export interface OrderExchangeDTO
    * The associated return's ID.
    */
   return_id?: string
-
-  /**
-   * The associated order's ID.
-   */
-  order_id: string
 }
 
 /**
@@ -1696,7 +1739,18 @@ export interface OrderChangeActionDTO {
    * The ID of the associated order
    */
   order_id: string | null
-
+  /**
+   * The ID of the associated return.
+   */
+  return_id: string | null
+  /**
+   * The ID of the associated claim.
+   */
+  claim_id: string | null
+  /**
+   * The ID of the associated exchange.
+   */
+  exchange_id: string | null
   /**
    * The associated order
    *

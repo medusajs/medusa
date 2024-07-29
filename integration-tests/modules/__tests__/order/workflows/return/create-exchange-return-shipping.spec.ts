@@ -29,7 +29,6 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         fixtures = await prepareDataFixtures({ container })
-
         order = await createOrderFixture({
           container,
           product: fixtures.product,

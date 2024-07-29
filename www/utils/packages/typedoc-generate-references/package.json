@@ -2,7 +2,7 @@
   "name": "typedoc-generate-references",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env ts-node src/index.ts",
+    "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",

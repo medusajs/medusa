@@ -19,12 +19,14 @@ export const POST = async (
     )
   }
 
-  const { transaction } = await importProductsWorkflow(req.scope).run({
+  const { result, transaction } = await importProductsWorkflow(req.scope).run({
     input: {
       filename: input.originalname,
       fileContent: input.buffer.toString("utf-8"),
     },
   })
 
-  res.status(202).json({ workflow_id: transaction.transactionId })
+  res
+    .status(202)
+    .json({ transaction_id: transaction.transactionId, summary: result })
 }

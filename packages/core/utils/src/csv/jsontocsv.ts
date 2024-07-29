@@ -12,6 +12,7 @@ export const convertJsonToCsv = <T extends object>(
     expandNestedObjects: true,
     expandArrayObjects: true,
     unwindArrays: false,
+    preventCsvInjection: true,
     emptyFieldValue: "",
   })
 }

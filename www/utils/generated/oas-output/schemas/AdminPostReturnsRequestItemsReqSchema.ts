@@ -6,7 +6,7 @@
  * properties:
  *   items:
  *     type: array
- *     description: The return's items.
+ *     description: The claim's items.
  *     items:
  *       type: object
  *       description: The item's items.

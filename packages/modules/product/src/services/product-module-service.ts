@@ -1710,7 +1710,10 @@ export default class ProductModuleService
     const variantsWithOptions = variants.map((variant: any) => {
       const variantOptions = Object.entries(variant.options ?? {}).map(
         ([key, val]) => {
-          const option = options.find((o) => o.title === key)
+          const option = options.find(
+            (o) => o.title === key && o.product_id === variant.product_id
+          )
+
           const optionValue = option?.values?.find(
             (v: any) => (v.value?.value ?? v.value) === val
           )
