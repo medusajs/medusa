@@ -1329,6 +1329,10 @@ export interface ReturnDTO
    * The associated order's ID.
    */
   order_id: string
+
+  /**
+   * The items of the return
+   */
   items: OrderReturnItemDTO[]
 }
 
@@ -1397,37 +1401,143 @@ export interface OrderReturnItemDTO {
   updated_at?: Date | string
 }
 
+/**
+ * The order claim item details.
+ */
 export interface OrderClaimItemDTO {
+  /**
+   * The ID of the order claim item.
+   */
   id: string
+
+  /**
+   * The associated claim's ID.
+   */
   claim_id: string
+
+  /**
+   * The associated order's ID.
+   */
   order_id: string
+
+  /**
+   * The associated item's ID.
+   */
   item_id: string
+
+  /**
+   * The quantity of the order claim item
+   */
   quantity: number
+
+  /**
+   * The reason of the order claim item
+   */
   reason: ClaimReason
+
+  /**
+   * The raw quantity of the order claim item
+   */
   raw_quantity: BigNumberRawValue
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The creation date of the order claim item
+   */
   created_at?: Date | string
+
+  /**
+   * The update date of the order claim item
+   */
   updated_at?: Date | string
 }
 
+/**
+ * The order claim item image details.
+ */
 export interface OrderClaimItemImageDTO {
+  /**
+   * The ID of the order claim item image.
+   */
   id: string
+
+  /**
+   * The associated claim item's ID.
+   */
   claim_item_id: string
+
+  /**
+   * The url of the order claim item image
+   */
   url: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The creation date of the order claim item image
+   */
   created_at?: Date | string
+
+  /**
+   * The update date of the order claim item image
+   */
   updated_at?: Date | string
 }
 
+/**
+ * The order exchange item details.
+ */
 export interface OrderExchangeItemDTO {
+  /**
+   * The ID of the order exchange item.
+   */
   id: string
+
+  /**
+   * The associated exchange's ID.
+   */
   exchange_id: string
+
+  /**
+   * The associated order's ID.
+   */
   order_id: string
+
+  /**
+   * The associated item's ID.
+   */
   item_id: string
+
+  /**
+   * The quantity of the order exchange item
+   */
   quantity: number
+
+  /**
+   * The raw quantity of the order exchange item
+   */
   raw_quantity: BigNumberRawValue
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The creation date of the order exchange item
+   */
   created_at?: Date | string
+
+  /**
+   * The update date of the order exchange item
+   */
   updated_at?: Date | string
 }
 
@@ -1440,6 +1550,7 @@ export interface OrderClaimDTO
    * The ID of the associated order.
    */
   order_id: string
+
   /**
    * The items to be received from the customer
    * if the claim's type is `replace`.
@@ -1456,10 +1567,12 @@ export interface OrderClaimDTO
    * The associated return, if the claim's type is `replace`.
    */
   return?: ReturnDTO
+
   /**
    * The ID of the associated return, if the claim's type is `replace`.
    */
   return_id?: string
+
   /**
    * Whether the customer should receive notifications related
    * to updates on the claim.
@@ -1481,6 +1594,7 @@ export interface OrderExchangeDTO
    * The associated order's ID.
    */
   order_id: string
+
   /**
    * The items to be returned from the customer.
    */
@@ -1739,18 +1853,22 @@ export interface OrderChangeActionDTO {
    * The ID of the associated order
    */
   order_id: string | null
+
   /**
    * The ID of the associated return.
    */
   return_id: string | null
+
   /**
    * The ID of the associated claim.
    */
   claim_id: string | null
+
   /**
    * The ID of the associated exchange.
    */
   exchange_id: string | null
+
   /**
    * The associated order
    *

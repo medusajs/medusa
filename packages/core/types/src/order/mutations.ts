@@ -11,7 +11,6 @@ import {
 } from "./common"
 
 /** ADDRESS START */
-
 /**
  * The data to create or update in the address.
  */
@@ -93,9 +92,7 @@ export interface UpdateOrderAddressDTO extends UpsertOrderAddressDTO {
 export interface CreateOrderAddressDTO extends UpsertOrderAddressDTO {}
 
 /** ADDRESS END */
-
 /** ORDER START */
-
 /**
  * The data of the order to be created.
  */
@@ -244,9 +241,7 @@ export interface UpdateOrderDTO {
 }
 
 /** ORDER END */
-
 /** ADJUSTMENT START */
-
 /**
  * The data of the order adjustment to be created.
  */
@@ -375,9 +370,7 @@ export interface UpsertOrderLineItemAdjustmentDTO {
 }
 
 /** ADJUSTMENTS END */
-
 /** TAX LINES START */
-
 /**
  * The dat of the tax line to be created.
  */
@@ -466,9 +459,7 @@ export interface CreateOrderLineItemTaxLineDTO extends CreateOrderTaxLineDTO {}
 export interface UpdateOrderLineItemTaxLineDTO extends UpdateOrderTaxLineDTO {}
 
 /** TAX LINES END */
-
 /** LINE ITEMS START */
-
 /**
  * The data of the line item to create.
  */
@@ -664,9 +655,7 @@ export interface UpdateOrderLineItemDTO
 }
 
 /** LINE ITEMS END */
-
 /** SHIPPING METHODS START */
-
 /**
  * The data of the shipping method to be created.
  */
@@ -843,9 +832,7 @@ export interface UpdateOrderShippingMethodAdjustmentDTO {
 }
 
 /** SHIPPING METHODS END */
-
 /** ORDER CHANGE START */
-
 /**
  * The data of the order change to be created.
  */
@@ -936,7 +923,7 @@ export interface UpdateOrderChangeDTO {
   internal_note?: string | null
 
   /**
-   * The user or customer that requested the 
+   * The user or customer that requested the
    * order change.
    */
   requested_by?: string | null
@@ -1040,7 +1027,7 @@ export interface ConfirmOrderChangeDTO {
   id: string
 
   /**
-   * The user or customer that confirmed the 
+   * The user or customer that confirmed the
    * order change.
    */
   confirmed_by?: string
@@ -1052,9 +1039,7 @@ export interface ConfirmOrderChangeDTO {
 }
 
 /** ORDER CHANGE END */
-
 /** ORDER CHANGE ACTION START */
-
 /**
  * The data of the order change action to be created.
  */
@@ -1100,7 +1085,7 @@ export interface CreateOrderChangeActionDTO {
   /**
    * The ID of the record references of the data model
    * specified in {@link reference}.
-   * 
+   *
    * For example, if `reference` is `return`, the `reference_id`
    * is the ID of the return.
    */
@@ -1123,7 +1108,7 @@ export interface CreateOrderChangeActionDTO {
 
   /**
    * The details of the order change action.
-   * 
+   *
    * This could include the returned items or their changed
    * quantity, based on the type of this action.
    */
@@ -1146,7 +1131,6 @@ export interface UpdateOrderChangeActionDTO {
 }
 
 /** ORDER TRANSACTION START */
-
 /**
  * The data of the transaction to be created.
  */
@@ -1179,7 +1163,7 @@ export interface CreateOrderTransactionDTO {
   internal_note?: string | null
 
   /**
-   * The user or customer that created this 
+   * The user or customer that created this
    * transaction.
    */
   created_by?: string
@@ -1264,9 +1248,7 @@ export interface UpdateOrderTransactionWithSelectorDTO {
 }
 
 /** ORDER TRANSACTION END */
-
 /** ORDER DETAIL START */
-
 /**
  * The data to update in the order items.
  */
@@ -1345,9 +1327,7 @@ export interface UpdateOrderItemWithSelectorDTO {
 }
 
 /** ORDER DETAIL END */
-
 /** ORDER bundled action flows  */
-
 /**
  * The details of an item used in a change action
  * performed on an order.
@@ -1428,7 +1408,7 @@ interface BaseOrderBundledActionsDTO {
   /**
    * The ID of the record of the data model
    * specified in {@link reference}.
-   * 
+   *
    * For example, if `reference` is `return`, the
    * value is `return_123`.
    */
@@ -1458,7 +1438,7 @@ export interface RegisterOrderFulfillmentDTO
 }
 
 /**
- * The details to cancel a fulfillment of an order, return, 
+ * The details to cancel a fulfillment of an order, return,
  * exchange, or claim.
  */
 export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
@@ -1492,6 +1472,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
    * The ID of the location to return the items to.
    */
   location_id?: string
+
   /**
    * The items of the return.
    */
@@ -1538,7 +1519,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   refund_amount?: BigNumberInput
 
   /**
-   * Whether the customer should receive notifications related to 
+   * Whether the customer should receive notifications related to
    * updates on the return.
    */
   no_notification?: boolean
@@ -1678,7 +1659,7 @@ export interface UpdateOrderExchangeDTO {
 
   /**
    * The difference due of the exchange.
-   * 
+   *
    * - If less than `0`, the merchant owes the customer this amount.
    * - If greater than `0`, the customer owes the merchange this amount.
    * - If equal to `0`, no payment is required by either sides.
@@ -1742,29 +1723,104 @@ export interface CreateOrderReturnItemDTO {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The order claim item to be created.
+ */
 export interface CreateOrderClaimItemDTO {
+  /**
+   * The associated claim's ID.
+   */
   claim_id: string
+
+  /**
+   * The associated item's ID.
+   */
   item_id: string
+
+  /**
+   * The reason of the order claim item
+   */
   reason?: ClaimReason
+
+  /**
+   * Whether the order claim item is an additional item sent
+   * as a replacement to the customer.
+   */
   is_additional_item?: boolean
+
+  /**
+   * The quantity of the order claim item
+   */
   quantity?: BigNumberInput
+
+  /**
+   * The note of the order claim item
+   */
   note?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The order exchange item to be created.
+ */
 export interface CreateOrderExchangeItemDTO {
+  /**
+   * The associated exchange's ID.
+   */
   exchange_id: string
+
+  /**
+   * The associated item's ID.
+   */
   item_id: string
+
+  /**
+   * The quantity of the order exchange item
+   */
   quantity?: BigNumberInput
+
+  /**
+   * The note of the order exchange item
+   */
   note?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The order exchange item to be created.
+ */
 export interface CreateOrderExchangeItemDTO {
+  /**
+   * The associated exchange's ID.
+   */
   exchange_id: string
+
+  /**
+   * The associated item's ID.
+   */
   item_id: string
+
+  /**
+   * The quantity of the order exchange item
+   */
   quantity?: BigNumberInput
+
+  /**
+   * The note of the order exchange item
+   */
   note?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
 }
 
@@ -1938,7 +1994,7 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
 
   /**
    * The difference due of the exchange.
-   * 
+   *
    * - If less than `0`, the merchant owes the customer this amount.
    * - If greater than `0`, the customer owes the merchange this amount.
    * - If equal to `0`, no payment is required by either sides.
@@ -1985,7 +2041,6 @@ export interface ReceiveOrderReturnDTO
 }
 
 /** ORDER bundled action flows */
-
 /**
  * The return reason to be created.
  */
@@ -2047,7 +2102,7 @@ export interface UpdateOrderReturnReasonDTO {
 }
 
 /**
- * The attributes to update in the return reason 
+ * The attributes to update in the return reason
  */
 export interface ReturnReasonUpdatableFields {
   /**

@@ -89,8 +89,8 @@ import {
   UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
-
 // TODO: missing listOrderShippingMethods and listOrderChanges, fix module integration to remove any cast
+
 /**
  * The main service interface for the Order Module.
  */
@@ -2253,7 +2253,6 @@ export interface IOrderModuleService extends IModuleService {
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
-
   // Order Change
 
   /**
@@ -3771,21 +3770,92 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderReturnItemDTO[]>
 
+  /**
+   * This method creates a order claim item.
+   *
+   * @param {CreateOrderClaimItemDTO} data - The order claim item to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderClaimItemDTO>} The created order claim item.
+   *
+   * @example
+   * const orderClaimItem = await orderModuleService.createOrderClaimItems({
+   *   claim_id: "123",
+   *   item_id: "321",
+   *   quantity: 1
+   * })
+   */
   createOrderClaimItems(
     data: CreateOrderClaimItemDTO,
     sharedContext?: Context
   ): Promise<OrderClaimItemDTO>
 
+  /**
+   * This method creates order claim items.
+   *
+   * @param {CreateOrderClaimItemDTO[]} data - The order claim items to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderClaimItemDTO[]>} The created order claim items.
+   *
+   * @example
+   * const orderClaimItems = await orderModuleService.createOrderClaimItems([
+   *   {
+   *     claim_id: "123",
+   *     item_id: "321",
+   *     quantity: 1
+   *   },
+   *   {
+   *     claim_id: "321",
+   *     item_id: "321",
+   *     is_additional_item: 1,
+   *     quantity: 1
+   *   }
+   * ])
+   */
   createOrderClaimItems(
     data: CreateOrderClaimItemDTO[],
     sharedContext?: Context
   ): Promise<OrderClaimItemDTO[]>
 
+  /**
+   * This method creates an order exchange item.
+   *
+   * @param {CreateOrderExchangeItemDTO} data - The order exchange item to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderExchangeItemDTO>} The created order exchange item.
+   *
+   * @example
+   * const orderExchangeItem = await orderModuleService.createOrderExchangeItems({
+   *   exchange_id: "123",
+   *   item_id: "321",
+   *   quantity: 1
+   * })
+   */
   createOrderExchangeItems(
     data: CreateOrderExchangeItemDTO,
     sharedContext?: Context
   ): Promise<OrderExchangeItemDTO>
 
+  /**
+   * This method creates order exchange items.
+   *
+   * @param {CreateOrderExchangeItemDTO[]} data - The order exchange items to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderExchangeItemDTO[]>} The created order exchange items.
+   *
+   * @example
+   * const orderExchangeItems = await orderModuleService.createOrderExchangeItems([
+   *   {
+   *     exchange_id: "123",
+   *     item_id: "321",
+   *     quantity: 1
+   *   },
+   *   {
+   *     exchange_id: "321",
+   *     item_id: "123",
+   *     quantity: 1
+   *   }
+   * ])
+   */
   createOrderExchangeItems(
     data: CreateOrderExchangeItemDTO[],
     sharedContext?: Context
@@ -4081,8 +4151,32 @@ export interface IOrderModuleService extends IModuleService {
    */
   deleteOrderClaims(ids: string[], sharedContext?: Context): Promise<void>
 
+  /**
+   * This method deletes order claim items by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the order claim items.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the claim items are deleted.
+   *
+   * @example
+   * await orderModuleService.deleteOrderClaimItems([
+   *   "123", "321"
+   * ])
+   */
   deleteOrderClaimItems(ids: string[], sharedContext?: Context): Promise<void>
 
+  /**
+   * This method deletes order claim item images by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the order claim item images.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the claim items are deleted.
+   *
+   * @example
+   * await orderModuleService.deleteOrderClaimItemImages([
+   *   "123", "321"
+   * ])
+   */
   deleteOrderClaimItemImages(
     ids: string[],
     sharedContext?: Context
@@ -4256,6 +4350,18 @@ export interface IOrderModuleService extends IModuleService {
    */
   deleteOrderExchanges(ids: string[], sharedContext?: Context): Promise<void>
 
+  /**
+   * This method deletes order exchange items by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the order exchange items.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the order exchange items are deleted successfully.
+   *
+   * @example
+   * await orderModuleService.deleteOrderExchangeItems([
+   *   "123", "321"
+   * ])
+   */
   deleteOrderExchangeItems(
     ids: string[],
     sharedContext?: Context
