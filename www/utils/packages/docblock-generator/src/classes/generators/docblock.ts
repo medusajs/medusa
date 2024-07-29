@@ -4,6 +4,7 @@ import { GeneratorEvent } from "../helpers/generator-event-manager.js"
 import AbstractGenerator from "./index.js"
 import { minimatch } from "minimatch"
 import AiGenerator from "../helpers/ai-generator.js"
+import getBasePath from "../../utils/get-base-path.js"
 
 /**
  * A class used to generate docblock for one or multiple file paths.
@@ -164,7 +165,7 @@ class DocblockGenerator extends AbstractGenerator {
   isFileIncluded(fileName: string): boolean {
     return (
       super.isFileIncluded(fileName) &&
-      !minimatch(this.getBasePath(fileName), "packages/medusa/**/api**/**", {
+      !minimatch(getBasePath(fileName), "packages/medusa/**/api**/**", {
         matchBase: true,
       })
     )

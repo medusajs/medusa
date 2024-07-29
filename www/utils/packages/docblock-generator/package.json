@@ -7,7 +7,8 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "generate:oas": "yarn start run ../../../../packages/medusa/src/api --type oas && yarn start clean:oas"
+    "generate:oas": "yarn start run ../../../../packages/medusa/src/api --type oas && yarn start clean:oas",
+    "generate:dml": "yarn start run ../../../../packages/modules --type dml && yarn start clean:dml"
   },
   "publishConfig": {
     "access": "public"
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.9.4",
-    "@types/pluralize": "^0.0.33"
+    "@types/pluralize": "^0.0.33",
+    "types": "*"
   }
 }

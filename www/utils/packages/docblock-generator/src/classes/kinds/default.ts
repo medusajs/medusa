@@ -24,7 +24,7 @@ export type GeneratorOptions = {
   checker: ts.TypeChecker
   kinds?: ts.SyntaxKind[]
   generatorEventManager: GeneratorEventManager
-  additionalOptions: Pick<CommonCliOptions, "generateExamples">
+  additionalOptions?: Pick<CommonCliOptions, "generateExamples">
 }
 
 export type GetDocBlockOptions = {
@@ -65,7 +65,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     checker,
     kinds,
     generatorEventManager,
-    additionalOptions,
+    additionalOptions = {},
   }: GeneratorOptions) {
     this.allowedKinds = kinds || DefaultKindGenerator.DEFAULT_ALLOWED_NODE_KINDS
     this.checker = checker
