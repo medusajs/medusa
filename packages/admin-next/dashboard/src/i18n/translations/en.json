@@ -2063,6 +2063,8 @@
       "runningState": "Running...",
       "awaitingState": "Awaiting",
       "failedState": "Failed",
+      "skippedState": "Skipped",
+      "skippedFailureState": "Skipped (Failure)",
       "definitionLabel": "Definition",
       "outputLabel": "Output",
       "compensateInputLabel": "Compensate input",
@@ -2085,6 +2087,7 @@
     "step": {
       "state": {
         "skipped": "Skipped",
+        "skippedFailure": "Skipped (Failure)",
         "dormant": "Dormant",
         "timeout": "Timeout"
       }

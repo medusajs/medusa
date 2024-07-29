@@ -15,6 +15,7 @@ import {
   STEP_INACTIVE_STATES,
   STEP_IN_PROGRESS_STATES,
   STEP_OK_STATES,
+  STEP_SKIPPED_STATES,
 } from "../../../constants"
 import { WorkflowExecutionDTO, WorkflowExecutionStep } from "../../../types"
 
@@ -405,6 +406,9 @@ const Node = ({ step }: { step: WorkflowExecutionStep }) => {
             className={clx(
               "size-2 rounded-sm shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]",
               {
+                "bg-ui-tag-neutral-bg": STEP_SKIPPED_STATES.includes(
+                  step.invoke.state
+                ),
                 "bg-ui-tag-green-icon": STEP_OK_STATES.includes(
                   step.invoke.state
                 ),
