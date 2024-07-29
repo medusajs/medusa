@@ -23,7 +23,7 @@ medusaIntegrationTestRunner({
         ).data.stock_location
       })
 
-      describe("POST /admin/fulfillment-providers", () => {
+      describe("GET /admin/fulfillment-providers", () => {
         it("should list all fulfillment providers successfully", async () => {
           const response = await api.get(
             `/admin/fulfillment-providers`,
