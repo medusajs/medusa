@@ -1,12 +1,13 @@
 import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { RouteDrawer, useRouteModal } from "../../../components/modals"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useConfirmImportProducts, useImportProducts } from "../../../hooks/api"
 import { UploadImport } from "./components/upload-import"
 import { ImportSummary } from "./components/import-summary"
 import { Trash } from "@medusajs/icons"
 import { FilePreview } from "../../../components/common/file-preview"
+import { getProductImportCsvTemplate } from "./helpers/import-template"
 
 export const ProductImport = () => {
   const { t } = useTranslation()
@@ -33,6 +34,10 @@ const ProductImportContent = () => {
   const { mutateAsync: importProducts, isPending, data } = useImportProducts()
   const { mutateAsync: confirm } = useConfirmImportProducts()
   const { handleSuccess } = useRouteModal()
+
+  const productImportTemplateContent = useMemo(() => {
+    return getProductImportCsvTemplate()
+  }, [])
 
   const handleUploaded = async (file: File) => {
     setFilename(file.name)
@@ -112,9 +117,8 @@ const ProductImportContent = () => {
         </Text>
         <div className="mt-4">
           <FilePreview
-            filename={"medusa-template-product-list.csv"}
-            // TODO: Where would the template file be stored?
-            url={"https://example.com"}
+            filename={"product-import-template.csv"}
+            url={productImportTemplateContent}
           />
         </div>
       </RouteDrawer.Body>
