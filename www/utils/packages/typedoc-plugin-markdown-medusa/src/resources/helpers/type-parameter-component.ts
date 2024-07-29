@@ -21,10 +21,6 @@ export default function (theme: MarkdownTheme) {
         })
       )
 
-      // if (typeof options.hash.sectionTitle !== "string") {
-      //   console.log("here3")
-      // }
-
       return formatParameterComponent({
         parameterComponent,
         componentItems: parameters,
