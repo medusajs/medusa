@@ -3,6 +3,7 @@ import AbstractGenerator from "./index.js"
 import ts from "typescript"
 import OasKindGenerator from "../kinds/oas.js"
 import { GeneratorEvent } from "../helpers/generator-event-manager.js"
+import getBasePath from "../../utils/get-base-path.js"
 
 /**
  * A class used to generate OAS yaml comments. The comments are written
@@ -82,7 +83,7 @@ class OasGenerator extends AbstractGenerator {
   isFileIncluded(fileName: string): boolean {
     return (
       super.isFileIncluded(fileName) &&
-      minimatch(this.getBasePath(fileName), "packages/medusa/**/api**/**", {
+      minimatch(getBasePath(fileName), "packages/medusa/**/api**/**", {
         matchBase: true,
       })
     )

@@ -1,7 +1,7 @@
 import ts from "typescript"
 import DefaultKindGenerator, { GetDocBlockOptions } from "./default.js"
 import { DOCBLOCK_END_LINE, DOCBLOCK_START } from "../../constants.js"
-import { camelToWords, snakeToWords } from "utils"
+import { camelToWords } from "utils"
 import { normalizeName } from "../../utils/str-formatting.js"
 
 /**
@@ -40,36 +40,32 @@ class DTOPropertyGenerator extends DefaultKindGenerator<ts.PropertySignature> {
     let str = DOCBLOCK_START
     const rawParentName = this.getParentName(node.parent)
     const parentName = this.formatInterfaceName(rawParentName)
+    // check if the property's type is interface/type/class
+    const propertyType = this.checker.getTypeAtLocation(node)
+    const isPropertyClassOrInterface = propertyType.isClassOrInterface()
 
     // try first to retrieve the summary from the knowledge base if it exists.
-    const summary = this.knowledgeBaseFactory.tryToGetSummary({
-      str: node.name.getText(),
-      kind: node.kind,
-      templateOptions: {
-        rawParentName,
-        parentName,
+    const summary = this.knowledgeBaseFactory.tryToGetObjectPropertySummary({
+      retrieveOptions: {
+        str: node.name.getText(),
+        kind: node.kind,
+        templateOptions: {
+          rawParentName,
+          parentName,
+        },
+      },
+      propertyDetails: {
+        isClassOrInterface: isPropertyClassOrInterface,
+        isBoolean:
+          "intrinsicName" in propertyType &&
+          propertyType.intrinsicName === "boolean",
+        classOrInterfaceName: isPropertyClassOrInterface
+          ? this.formatInterfaceName(this.checker.typeToString(propertyType))
+          : undefined,
       },
     })
 
-    if (summary) {
-      str += summary
-    } else {
-      // check if the property's type is interface/type/class
-      const propertyType = this.checker.getTypeAtLocation(node)
-      if (propertyType.isClassOrInterface()) {
-        str += `The associated ${this.formatInterfaceName(
-          this.checker.typeToString(propertyType)
-        )}.`
-      } else if (
-        "intrinsicName" in propertyType &&
-        propertyType.intrinsicName === "boolean"
-      ) {
-        str += `Whether the ${parentName} ${snakeToWords(node.name.getText())}.`
-      } else {
-        // format summary
-        str += `The ${snakeToWords(node.name.getText())} of the ${parentName}.`
-      }
-    }
+    str += summary
 
     return `${str}${DOCBLOCK_END_LINE}`
   }

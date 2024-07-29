@@ -7,7 +7,7 @@ import dirname from "./dirname.js"
  *
  * @returns {string} The absolute path to the monorepository.
  */
-export default function getMonorepoRoot() {
+export default function getMonorepoRoot(): string {
   return (
     process.env.MONOREPO_ROOT_PATH ||
     path.join(dirname(import.meta.url), "..", "..", "..", "..", "..", "..")

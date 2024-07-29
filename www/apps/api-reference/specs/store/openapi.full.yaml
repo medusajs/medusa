@@ -2770,7 +2770,7 @@ paths:
           description: The product category's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's created at.
             required:
               - $eq
@@ -2798,12 +2798,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The product category's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's updated at.
             required:
               - $eq
@@ -2831,12 +2832,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The product category's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's deleted at.
             required:
               - $eq
@@ -2864,6 +2866,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -3195,7 +3198,7 @@ paths:
           description: The product's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product's created at.
             required:
               - $eq
@@ -3223,12 +3226,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The product's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product's updated at.
             required:
               - $eq
@@ -3256,12 +3260,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The product's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product's deleted at.
             required:
               - $eq
@@ -3289,6 +3294,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: country_code
           in: query
           description: The product's country code.
@@ -5375,12 +5381,12 @@ components:
       description: SUMMARY
       x-schemaName: AdminExportProductResponse
       required:
-        - workflow_id
+        - transaction_id
       properties:
-        workflow_id:
+        transaction_id:
           type: string
-          title: workflow_id
-          description: The product's workflow id.
+          title: transaction_id
+          description: The product's transaction id.
     AdminFulfillmentProvider:
       type: object
       description: The shipping option's provider.
@@ -5486,12 +5492,28 @@ components:
       description: SUMMARY
       x-schemaName: AdminImportProductResponse
       required:
-        - workflow_id
+        - transaction_id
+        - summary
       properties:
-        workflow_id:
+        transaction_id:
           type: string
-          title: workflow_id
-          description: The product's workflow id.
+          title: transaction_id
+          description: The product's transaction id.
+        summary:
+          type: object
+          description: The product's summary.
+          required:
+            - toCreate
+            - toUpdate
+          properties:
+            toCreate:
+              type: number
+              title: toCreate
+              description: The summary's tocreate.
+            toUpdate:
+              type: number
+              title: toUpdate
+              description: The summary's toupdate.
     AdminOrderCancelFulfillment:
       type: object
       description: SUMMARY
@@ -5610,6 +5632,158 @@ components:
           type: string
           title: internal_note
           description: The return's internal note.
+    AdminPostClaimItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The claim's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - id
+              - quantity
+            properties:
+              id:
+                type: string
+                title: id
+                description: The item's ID.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              description:
+                type: string
+                title: description
+                description: The item's description.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostClaimsAddItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsAddItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The claim's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - variant_id
+              - quantity
+            properties:
+              variant_id:
+                type: string
+                title: variant_id
+                description: The item's variant id.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              unit_price:
+                type: number
+                title: unit_price
+                description: The item's unit price.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostClaimsItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The claim's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+    AdminPostClaimsShippingActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsShippingActionReqSchema
+      properties:
+        custom_price:
+          type: number
+          title: custom_price
+          description: The claim's custom price.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
+    AdminPostClaimsShippingReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsShippingReqSchema
+      required:
+        - shipping_option_id
+      properties:
+        shipping_option_id:
+          type: string
+          title: shipping_option_id
+          description: The claim's shipping option id.
+        custom_price:
+          type: number
+          title: custom_price
+          description: The claim's custom price.
+        description:
+          type: string
+          title: description
+          description: The claim's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
+    AdminPostOrderClaimsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderClaimsReqSchema
+      required:
+        - type
+        - order_id
+        - metadata
+      properties:
+        type:
+          type: string
+          enum:
+            - refund
+            - replace
+        order_id:
+          type: string
+          title: order_id
+          description: The claim's order id.
+        description:
+          type: string
+          title: description
+          description: The claim's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
     AdminPostReceiveReturnsReqSchema:
       type: object
       description: SUMMARY
@@ -5733,18 +5907,18 @@ components:
         quantity:
           type: number
           title: quantity
-          description: The return's quantity.
+          description: The claim's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: The claim's internal note.
         reason_id:
           type: string
           title: reason_id
-          description: The return's reason id.
+          description: The claim's reason id.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The claim's metadata.
     AdminPostReturnsRequestItemsReqSchema:
       type: object
       description: SUMMARY
@@ -5752,7 +5926,7 @@ components:
       properties:
         items:
           type: array
-          description: The return's items.
+          description: The claim's items.
           items:
             type: object
             description: The item's items.
@@ -5783,6 +5957,24 @@ components:
               metadata:
                 type: object
                 description: The item's metadata.
+    AdminPostReturnsReturnReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsReturnReqSchema
+      required:
+        - metadata
+      properties:
+        location_id:
+          type: string
+          title: location_id
+          description: The return's location id.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
+        metadata:
+          type: object
+          description: The return's metadata.
     AdminPostReturnsShippingActionReqSchema:
       type: object
       description: SUMMARY
@@ -5809,22 +6001,22 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The return's shipping option id.
+          description: The claim's shipping option id.
         custom_price:
           type: number
           title: custom_price
-          description: The return's custom price.
+          description: The claim's custom price.
         description:
           type: string
           title: description
-          description: The return's description.
+          description: The claim's description.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: The claim's internal note.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The claim's metadata.
     AdminPrice:
       type: object
       description: The price's prices.
@@ -5972,13 +6164,13 @@ components:
           type: string
           title: id
           description: The parent's ID.
+        metadata:
+          type: object
+          description: The parent's metadata.
         handle:
           type: string
           title: handle
           description: The parent's handle.
-        metadata:
-          type: object
-          description: The parent's metadata.
         hs_code:
           type: string
           title: hs_code
@@ -8527,13 +8719,13 @@ components:
           type: string
           title: id
           description: The product's ID.
+        metadata:
+          type: object
+          description: The product's metadata.
         handle:
           type: string
           title: handle
           description: The product's handle.
-        metadata:
-          type: object
-          description: The product's metadata.
         hs_code:
           type: string
           title: hs_code

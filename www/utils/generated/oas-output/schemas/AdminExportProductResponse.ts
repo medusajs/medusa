@@ -4,12 +4,12 @@
  * description: SUMMARY
  * x-schemaName: AdminExportProductResponse
  * required:
- *   - workflow_id
+ *   - transaction_id
  * properties:
- *   workflow_id:
+ *   transaction_id:
  *     type: string
- *     title: workflow_id
- *     description: The product's workflow id.
+ *     title: transaction_id
+ *     description: The product's transaction id.
  * 
 */
 
