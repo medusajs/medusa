@@ -231,7 +231,7 @@ export type ProjectConfigOptions = {
    * 
    * :::note
    * 
-   * Make sure to add to the end of the database URL `?ssl_mode=disable` as well.
+   * Make sure to add to the end of the database URL `?ssl_mode=disable` as well when disabling `rejectUnauthorized`.
    * 
    * :::
    *
