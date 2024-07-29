@@ -122,20 +122,6 @@ export const LocationEditFulfillmentProvidersForm = ({
   return (
     <RouteFocusModal.Form form={form}>
       <div className="flex h-full flex-col overflow-hidden">
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-
-            <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
-
         <RouteFocusModal.Body>
           <DataTable
             table={table}
@@ -151,6 +137,20 @@ export const LocationEditFulfillmentProvidersForm = ({
             layout="fill"
           />
         </RouteFocusModal.Body>
+
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+
+            <Button size="small" isLoading={isMutating} onClick={handleSubmit}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
       </div>
     </RouteFocusModal.Form>
   )

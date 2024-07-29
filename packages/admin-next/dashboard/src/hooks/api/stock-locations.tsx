@@ -193,9 +193,6 @@ export const useUpdateStockLocationFulfillmentProviders = (
         queryKey: stockLocationsQueryKeys.details(),
       })
       await queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-      await queryClient.invalidateQueries({
         queryKey: fulfillmentProvidersQueryKeys.lists(),
       })
 

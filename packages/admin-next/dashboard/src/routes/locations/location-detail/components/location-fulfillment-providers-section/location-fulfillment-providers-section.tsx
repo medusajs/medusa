@@ -1,12 +1,11 @@
 import { HandTruck, PencilSquare } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, Text } from "@medusajs/ui"
+import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
-import { ListSummary } from "../../../../../components/common/list-summary"
 import { useFulfillmentProviders } from "../../../../../hooks/api"
 
 type LocationsFulfillmentProvidersSectionProps = {
@@ -46,25 +45,21 @@ function LocationsFulfillmentProvidersSection({
 
       {location?.fulfillment_providers?.length ? (
         <div className="flex flex-col gap-y-4 pt-4">
-          <div className="grid grid-cols-[28px_1fr] items-center gap-x-3">
-            <IconAvatar>
-              <HandTruck className="text-ui-fg-subtle" />
-            </IconAvatar>
+          <div className="grid grid-cols-[28px_1fr] items-center gap-x-3 gap-y-3">
+            {location?.fulfillment_providers?.map((fulfillmentProvider) => {
+              return (
+                <>
+                  <IconAvatar>
+                    <HandTruck className="text-ui-fg-subtle" />
+                  </IconAvatar>
 
-            <ListSummary
-              n={2}
-              className="text-ui-fg-base"
-              inline
-              list={location?.fulfillment_providers?.map((fp) => fp.id) ?? []}
-            />
-          </div>
-
-          <Text className="text-ui-fg-subtle" size="small" leading="compact">
-            {t("stockLocations.fulfillmentProviders.connectedTo", {
-              count: location?.fulfillment_providers?.length,
-              total: count,
+                  <div className="txt-compact-small">
+                    {fulfillmentProvider.id}
+                  </div>
+                </>
+              )
             })}
-          </Text>
+          </div>
         </div>
       ) : (
         <NoRecords
