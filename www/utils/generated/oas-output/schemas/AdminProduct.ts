@@ -83,13 +83,13 @@
  *     type: string
  *     title: id
  *     description: The parent's ID.
+ *   metadata:
+ *     type: object
+ *     description: The parent's metadata.
  *   handle:
  *     type: string
  *     title: handle
  *     description: The parent's handle.
- *   metadata:
- *     type: object
- *     description: The parent's metadata.
  *   hs_code:
  *     type: string
  *     title: hs_code
