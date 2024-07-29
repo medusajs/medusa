@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
@@ -10,6 +11,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -51,6 +53,7 @@ const ReturnIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_exchange" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class OrderExchange {
   [OptionalProps]?: OptionalOrderExchangeProps
 
