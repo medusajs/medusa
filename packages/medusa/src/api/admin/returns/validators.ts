@@ -92,7 +92,6 @@ export type AdminPostReceiveReturnItemsReqSchemaType = z.infer<
 
 export const AdminPostCancelReturnReqSchema = z.object({
   no_notification: z.boolean().optional(),
-  internal_note: z.string().nullish(),
 })
 
 export type AdminPostCancelReturnReqSchemaType = z.infer<

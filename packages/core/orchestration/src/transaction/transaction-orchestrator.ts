@@ -804,7 +804,8 @@ export class TransactionOrchestrator extends EventEmitter {
                   }
 
                   let setResponse = true
-                  if (SkipStepResponse.isSkipStepResponse(response)) {
+                  const output = response?.__type ? response.output : response
+                  if (SkipStepResponse.isSkipStepResponse(output)) {
                     await TransactionOrchestrator.skipStep(transaction, step)
                     setResponse = false
                   }
