@@ -146,6 +146,7 @@ export class TransactionOrchestrator extends EventEmitter {
       TransactionStepState.REVERTED,
       TransactionStepState.FAILED,
       TransactionStepState.DORMANT,
+      TransactionStepState.SKIPPED,
     ]
     const siblings = step.next.map((sib) => flow.steps[sib])
     return (
@@ -802,16 +803,19 @@ export class TransactionOrchestrator extends EventEmitter {
                     )
                   }
 
+                  let setResponse = true
                   if (SkipStepResponse.isSkipStepResponse(response)) {
                     await TransactionOrchestrator.skipStep(transaction, step)
-                    return
+                    setResponse = false
                   }
 
-                  await TransactionOrchestrator.setStepSuccess(
-                    transaction,
-                    step,
-                    response
-                  )
+                  if (setResponse) {
+                    await TransactionOrchestrator.setStepSuccess(
+                      transaction,
+                      step,
+                      response
+                    )
+                  }
 
                   await transaction.scheduleRetry(
                     step,
