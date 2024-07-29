@@ -4,7 +4,7 @@ import {
   DOCBLOCK_NEW_LINE,
   SUMMARY_PLACEHOLDER,
 } from "../../constants.js"
-import pluralize, { singular } from "pluralize"
+import pluralize from "pluralize"
 import {
   camelToTitle,
   camelToWords,
@@ -13,6 +13,8 @@ import {
   wordsToKebab,
 } from "utils"
 import { normalizeName } from "../../utils/str-formatting.js"
+
+const singular = pluralize.singular
 
 type TemplateOptions = {
   pluralIndicatorStr?: string
