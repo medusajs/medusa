@@ -704,6 +704,10 @@ export const RouteMap: RouteObject[] = [
                 path: "currencies",
                 lazy: () => import("../../routes/store/store-add-currencies"),
               },
+              {
+                path: "metadata/edit",
+                lazy: () => import("../../routes/store/store-metadata"),
+              },
             ],
           },
           {

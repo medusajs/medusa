@@ -2,6 +2,7 @@ import { PencilSquare } from "@medusajs/icons"
 import { AdminStore } from "@medusajs/types"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useRegion } from "../../../../../hooks/api/regions"
 

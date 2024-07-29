@@ -19,7 +19,7 @@ export const storeQueryKeys = queryKeysFactory(STORE_QUERY_KEY)
 /**
  * Workaround to keep the V1 version of retrieving the store.
  */
-async function retrieveActiveStore(
+export async function retrieveActiveStore(
   query?: HttpTypes.AdminStoreParams
 ): Promise<HttpTypes.AdminStoreResponse> {
   const response = await sdk.admin.store.list(query)
@@ -34,7 +34,7 @@ async function retrieveActiveStore(
 }
 
 export const useStore = (
-  query?: Record<string, any>,
+  query?: HttpTypes.SelectParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminStoreResponse,
