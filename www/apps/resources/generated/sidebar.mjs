@@ -6720,12 +6720,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
+            "autogenerate_path": "storefront-development/products/price/examples",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/show-price",
-                "title": "Example: Show Variant Price",
+                "title": "Example: Show Variant's Price",
                 "children": []
               },
               {
@@ -6733,6 +6734,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/sale-price",
                 "title": "Example: Show Sale Price",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/tax-price",
+                "title": "Example: Show Price with Taxes",
                 "children": []
               }
             ]
