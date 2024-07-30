@@ -7,3 +7,8 @@ export interface FindParams extends SelectParams {
   offset?: number
   order?: string
 }
+
+export interface AdminBatchLink {
+  add?: string[]
+  remove?: string[]
+}
