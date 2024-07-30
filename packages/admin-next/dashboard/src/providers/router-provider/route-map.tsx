@@ -872,6 +872,13 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/locations/location-sales-channels"),
                   },
                   {
+                    path: "fulfillment-providers",
+                    lazy: () =>
+                      import(
+                        "../../routes/locations/location-fulfillment-providers"
+                      ),
+                  },
+                  {
                     path: "fulfillment-set/:fset_id",
                     children: [
                       {
