@@ -3206,7 +3206,7 @@ export default class OrderModuleService<
     const ret = await this.cancelClaim_(data, sharedContext)
 
     return await this.retrieveOrderClaim(ret.id, {
-      relations: ["items"],
+      relations: ["additional_items", "claim_items"],
     })
   }
 

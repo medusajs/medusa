@@ -508,20 +508,21 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.claims
-        expect(result).toHaveLength(2)
 
-        console.log(
-          JSON.stringify(
-            (
-              await api.get(
-                `/admin/orders?fields=*items,total,summary`,
-                adminHeaders
-              )
-            ).data.orders[0],
-            null,
-            2
+        expect(result).toHaveLength(2)
+        expect(result[0].additional_items).toHaveLength(1)
+        expect(result[0].claim_items).toHaveLength(1)
+        expect(result[0].canceled_at).toBeNull()
+
+        await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
+
+        result = (
+          await api.get(
+            `/admin/claims?fields=*claim_items,*additional_items`,
+            adminHeaders
           )
-        )
+        ).data.claims
+        expect(result[0].canceled_at).toBeDefined()
       })
     })
   },
