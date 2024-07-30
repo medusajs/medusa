@@ -1,10 +1,6 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  createMedusaContainer,
-  promiseAll,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import path from "path"
@@ -12,8 +8,13 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import { configLoader, logger } from "@medusajs/framework"
-import expressLoader from "./express"
+import {
+  configLoader,
+  container,
+  expressLoader,
+  logger,
+  pgConnectionLoader,
+} from "@medusajs/framework"
 import featureFlagsLoader from "./feature-flags"
 import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
@@ -21,7 +22,6 @@ import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 import { SubscriberLoader } from "./helpers/subscribers"
 import loadMedusaApp from "./medusa-app"
-import registerPgConnection from "./pg-connection"
 
 type Options = {
   directory: string
@@ -93,9 +93,8 @@ async function loadEntrypoints(
 
   const { shutdown } = await expressLoader({
     app: expressApp,
-    configModule,
-    rootDirectory,
   })
+
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     req.scope = container.createScope() as MedusaContainer
     req.requestId = (req.headers["x-request-id"] as string) ?? v4()
@@ -121,8 +120,7 @@ async function loadEntrypoints(
   return shutdown
 }
 
-export async function initializeContainer(rootDirectory: string) {
-  const container = createMedusaContainer()
+export function initializeContainer(rootDirectory: string): MedusaContainer {
   const configModule = configLoader(rootDirectory, "medusa-config.js")
   const featureFlagRouter = featureFlagsLoader(configModule, logger)
 
@@ -133,7 +131,7 @@ export async function initializeContainer(rootDirectory: string) {
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  await registerPgConnection({ container, configModule })
+  pgConnectionLoader()
   return container
 }
 
@@ -145,7 +143,7 @@ export default async ({
   app: Express
   shutdown: () => Promise<void>
 }> => {
-  const container = await initializeContainer(rootDirectory)
+  const container = initializeContainer(rootDirectory)
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )

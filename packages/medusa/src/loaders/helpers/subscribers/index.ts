@@ -9,7 +9,7 @@ import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
-import logger from "../../logger"
+import { logger } from "@medusajs/framework"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 

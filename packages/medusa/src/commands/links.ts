@@ -2,7 +2,7 @@ import boxen from "boxen"
 import chalk from "chalk"
 import checkbox from "@inquirer/checkbox"
 
-import Logger from "../loaders/logger"
+import { logger } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
@@ -96,7 +96,7 @@ const main = async function ({ directory }) {
   }
 
   try {
-    const container = await initializeContainer(directory)
+    const container = initializeContainer(directory)
 
     const configModule = container.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
@@ -111,7 +111,7 @@ const main = async function ({ directory }) {
       container,
     })
 
-    Logger.info("Syncing links...")
+    logger.info("Syncing links...")
 
     const actionPlan = await planner.createPlan()
     const groupActionPlan = groupByActionPlan(actionPlan)
@@ -162,13 +162,13 @@ const main = async function ({ directory }) {
     }
 
     if (actionsToExecute.length) {
-      Logger.info("Links sync completed")
+      logger.info("Links sync completed")
     } else {
-      Logger.info("Database already up-to-date")
+      logger.info("Database already up-to-date")
     }
     process.exit()
   } catch (e) {
-    Logger.error(e)
+    logger.error(e)
     process.exit(1)
   }
 }
