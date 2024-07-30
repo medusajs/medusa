@@ -4,7 +4,7 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { AdminOrderLineItem } from "@medusajs/types"
-import { Button, IconButton, Input, Popover, toast } from "@medusajs/ui"
+import { Button, Input, Popover, toast } from "@medusajs/ui"
 
 import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
@@ -50,15 +50,27 @@ function WrittenOffQuantity({
   const onDismissedQuantityChanged = async (value: number | null) => {
     // TODO: if out of bounds prevent sending and notify user
 
-    if (value) {
-      try {
-        // TODO: look into actions to see if the item is already added
-        await addDismissedItems({
-          items: [{ id: item.id, quantity: value }],
-        })
-      } catch (e) {
-        toast.error(e.message)
+    const action = item.actions?.find(
+      (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
+    )
+
+    try {
+      if (value) {
+        if (!action) {
+          await addDismissedItems({
+            items: [{ id: item.id, quantity: value }],
+          })
+        } else {
+          await updateDismissedItems({ actionId: action.id, quantity: value })
+        }
+      } else {
+        if (action) {
+          // remove damaged item if value is unset and it was added before
+          await removeDismissedItems(action.id)
+        }
       }
+    } catch (e) {
+      toast.error(e.message)
     }
   }
 
@@ -70,7 +82,7 @@ function WrittenOffQuantity({
             <Heart />
           </div>
           {!!item.detail.written_off_quantity && (
-            <span>item.detail.written_off_quantity</span>
+            <span>{item.detail.written_off_quantity}</span>
           )}
         </Button>
       </Popover.Trigger>
