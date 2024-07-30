@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -8,10 +9,9 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateStore } from "../../../../../hooks/api/store"
-import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type EditStoreFormProps = {
-  store: ExtendedStoreDTO
+  store: HttpTypes.AdminStore
 }
 
 const EditStoreSchema = z.object({

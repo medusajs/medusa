@@ -35,6 +35,7 @@ type DateComparisonOperator = {
 export const DateFilter = ({
   filter,
   prefix,
+  readonly,
   openOnMount,
 }: DateFilterProps) => {
   const [open, setOpen] = useState(openOnMount)
@@ -118,112 +119,119 @@ export const DateFilter = ({
 
   return (
     <Popover.Root modal open={open} onOpenChange={handleOpenChange}>
-      <DateDisplay label={label} value={displayValue} onRemove={handleRemove} />
-      <Popover.Portal>
-        <Popover.Content
-          data-name="date_filter_content"
-          align="start"
-          sideOffset={8}
-          collisionPadding={24}
-          className={clx(
-            "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg"
-          )}
-          onInteractOutside={(e) => {
-            if (e.target instanceof HTMLElement) {
-              if (
-                e.target.attributes.getNamedItem("data-name")?.value ===
-                "filters_menu_content"
-              ) {
-                e.preventDefault()
+      <DateDisplay
+        label={label}
+        value={displayValue}
+        onRemove={handleRemove}
+        readonly={readonly}
+      />
+      {!readonly && (
+        <Popover.Portal>
+          <Popover.Content
+            data-name="date_filter_content"
+            align="start"
+            sideOffset={8}
+            collisionPadding={24}
+            className={clx(
+              "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg"
+            )}
+            onInteractOutside={(e) => {
+              if (e.target instanceof HTMLElement) {
+                if (
+                  e.target.attributes.getNamedItem("data-name")?.value ===
+                  "filters_menu_content"
+                ) {
+                  e.preventDefault()
+                }
               }
-            }
-          }}
-        >
-          <ul className="w-full p-1">
-            {presets.map((preset) => {
-              const isSelected = selectedParams
-                .get()
-                .includes(JSON.stringify(preset.value))
-              return (
-                <li key={preset.label}>
-                  <button
-                    className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
-                    type="button"
-                    onClick={() => {
-                      handleSelectPreset(preset.value)
-                    }}
-                  >
-                    <div
-                      className={clx(
-                        "transition-fg flex h-5 w-5 items-center justify-center",
-                        {
-                          "[&_svg]:invisible": !isSelected,
-                        }
-                      )}
+            }}
+          >
+            <ul className="w-full p-1">
+              {presets.map((preset) => {
+                const isSelected = selectedParams
+                  .get()
+                  .includes(JSON.stringify(preset.value))
+                return (
+                  <li key={preset.label}>
+                    <button
+                      className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
+                      type="button"
+                      onClick={() => {
+                        handleSelectPreset(preset.value)
+                      }}
                     >
-                      <EllipseMiniSolid />
-                    </div>
-                    {preset.label}
-                  </button>
-                </li>
-              )
-            })}
-            <li>
-              <button
-                className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
-                type="button"
-                onClick={handleSelectCustom}
-              >
-                <div
-                  className={clx(
-                    "transition-fg flex h-5 w-5 items-center justify-center",
-                    {
-                      "[&_svg]:invisible": !showCustom,
-                    }
-                  )}
+                      <div
+                        className={clx(
+                          "transition-fg flex h-5 w-5 items-center justify-center",
+                          {
+                            "[&_svg]:invisible": !isSelected,
+                          }
+                        )}
+                      >
+                        <EllipseMiniSolid />
+                      </div>
+                      {preset.label}
+                    </button>
+                  </li>
+                )
+              })}
+              <li>
+                <button
+                  className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
+                  type="button"
+                  onClick={handleSelectCustom}
                 >
-                  <EllipseMiniSolid />
+                  <div
+                    className={clx(
+                      "transition-fg flex h-5 w-5 items-center justify-center",
+                      {
+                        "[&_svg]:invisible": !showCustom,
+                      }
+                    )}
+                  >
+                    <EllipseMiniSolid />
+                  </div>
+                  {t("filters.date.custom")}
+                </button>
+              </li>
+            </ul>
+            {showCustom && (
+              <div className="border-t px-1 pb-3 pt-1">
+                <div>
+                  <div className="px-2 py-1">
+                    <Text size="xsmall" leading="compact" weight="plus">
+                      {t("filters.date.from")}
+                    </Text>
+                  </div>
+                  <div className="px-2 py-1">
+                    <DatePicker
+                      maxValue={customEndValue}
+                      value={customStartValue}
+                      onChange={(d) => handleCustomDateChange(d, "start")}
+                    />
+                  </div>
                 </div>
-                {t("filters.date.custom")}
-              </button>
-            </li>
-          </ul>
-          {showCustom && (
-            <div className="border-t px-1 pb-3 pt-1">
-              <div>
-                <div className="px-2 py-1">
-                  <Text size="xsmall" leading="compact" weight="plus">
-                    {t("filters.date.from")}
-                  </Text>
-                </div>
-                <div className="px-2 py-1">
-                  <DatePicker
-                    maxValue={customEndValue}
-                    value={customStartValue}
-                    onChange={(d) => handleCustomDateChange(d, "start")}
-                  />
+                <div>
+                  <div className="px-2 py-1">
+                    <Text size="xsmall" leading="compact" weight="plus">
+                      {t("filters.date.to")}
+                    </Text>
+                  </div>
+                  <div className="px-2 py-1">
+                    <DatePicker
+                      minValue={customStartValue}
+                      value={customEndValue || undefined}
+                      onChange={(d) => {
+                        handleCustomDateChange(d, "end")
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="px-2 py-1">
-                  <Text size="xsmall" leading="compact" weight="plus">
-                    {t("filters.date.to")}
-                  </Text>
-                </div>
-                <div className="px-2 py-1">
-                  <DatePicker
-                    minValue={customStartValue}
-                    value={customEndValue || undefined}
-                    onChange={(d) => {
-                      handleCustomDateChange(d, "end")
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </Popover.Content>
-      </Popover.Portal>
+            )}
+          </Popover.Content>
+        </Popover.Portal>
+      )}
     </Popover.Root>
   )
 }
@@ -231,10 +239,16 @@ export const DateFilter = ({
 type DateDisplayProps = {
   label: string
   value?: string
+  readonly?: boolean
   onRemove: () => void
 }
 
-const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
+const DateDisplay = ({
+  label,
+  value,
+  readonly,
+  onRemove,
+}: DateDisplayProps) => {
   const handleRemove = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     onRemove()
@@ -245,8 +259,10 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
       asChild
       className={clx(
         "bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-pointer select-none items-center rounded-md",
-        "hover:bg-ui-bg-field-hover",
-        "data-[state=open]:bg-ui-bg-field-hover"
+        {
+          "hover:bg-ui-bg-field-hover": !readonly,
+          "data-[state=open]:bg-ui-bg-field-hover": !readonly,
+        }
       )}
     >
       <div>
@@ -268,7 +284,7 @@ const DateDisplay = ({ label, value, onRemove }: DateDisplayProps) => {
             </div>
           </div>
         )}
-        {value && (
+        {!readonly && value && (
           <div>
             <button
               onClick={handleRemove}

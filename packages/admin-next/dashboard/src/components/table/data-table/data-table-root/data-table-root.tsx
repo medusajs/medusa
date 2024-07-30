@@ -132,7 +132,7 @@ export const DataTableRoot = <TData,>({
         })}
       >
         {!noResults ? (
-          <Table className="w-full">
+          <Table className="relative w-full">
             <Table.Header className="border-t-0">
               {table.getHeaderGroups().map((headerGroup) => {
                 return (
@@ -170,7 +170,7 @@ export const DataTableRoot = <TData,>({
                               : undefined,
                           }}
                           className={clx({
-                            "bg-ui-bg-base sticky inset-y-0 left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyHeader,
                             "left-[68px]":
                               isStickyHeader && hasSelect && !isSelectHeader,
@@ -203,13 +203,6 @@ export const DataTableRoot = <TData,>({
                 return (
                   <Table.Row
                     key={row.id}
-                    onKeyDown={(e) => {
-                      console.log("e.key", e.key, e.target)
-
-                      if (e.key === "x") {
-                        row.toggleSelected()
-                      }
-                    }}
                     data-selected={row.getIsSelected()}
                     className={clx(
                       "transition-fg group/row group relative [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
@@ -247,7 +240,7 @@ export const DataTableRoot = <TData,>({
                           ? row.depth * 14 + 24
                           : undefined
 
-                      const hasLeftOfsset =
+                      const hasLeftOffset =
                         isStickyCell && hasSelect && !isSelectCell
 
                       const Inner = flexRender(
@@ -263,11 +256,11 @@ export const DataTableRoot = <TData,>({
                           key={cell.id}
                           className={clx({
                             "!pl-0 !pr-0": shouldRenderAsLink,
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky inset-y-0 left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
-                            "bottom-0 left-[68px] top-0": hasLeftOfsset,
+                            "left-[68px]": hasLeftOffset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
                             "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
@@ -290,7 +283,7 @@ export const DataTableRoot = <TData,>({
                                 className={clx(
                                   "flex size-full items-center pr-6",
                                   {
-                                    "pl-6": isTabableLink && !hasLeftOfsset,
+                                    "pl-6": isTabableLink && !hasLeftOffset,
                                   }
                                 )}
                               >
