@@ -126,15 +126,15 @@ export class JobLoader {
       : [this.#sourceDir]
 
     const promises = normalizedSourcePath.map(async (sourcePath) => {
+      try {
+        await access(sourcePath)
+      } catch {
+        return
+      }
+
       return await readdir(sourcePath, {
         withFileTypes: true,
       }).then(async (entries) => {
-        try {
-          await access(sourcePath)
-        } catch {
-          return
-        }
-
         const fileEntries = entries.filter((entry) => {
           return (
             !entry.isDirectory() &&
