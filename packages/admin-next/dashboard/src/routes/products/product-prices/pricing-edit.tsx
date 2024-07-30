@@ -72,87 +72,81 @@ export const PricingEdit = ({
 
   const { mutateAsync, isPending } = useUpdateProductVariantsBatch(product.id)
 
-  const handleSubmit = form.handleSubmit(
-    async (values) => {
-      const reqData = values.variants.map((variant, ind) => ({
-        id: variants[ind].id,
-        prices: Object.entries(variant.prices || {}).map(
-          ([currencyCodeOrRegionId, value]: any) => {
-            const regionId = currencyCodeOrRegionId.startsWith("reg_")
-              ? currencyCodeOrRegionId
-              : undefined
-            const currencyCode = currencyCodeOrRegionId.startsWith("reg_")
-              ? regionsCurrencyMap[regionId]
-              : currencyCodeOrRegionId
+  const handleSubmit = form.handleSubmit(async (values) => {
+    const reqData = values.variants.map((variant, ind) => ({
+      id: variants[ind].id,
+      prices: Object.entries(variant.prices || {}).map(
+        ([currencyCodeOrRegionId, value]: any) => {
+          const regionId = currencyCodeOrRegionId.startsWith("reg_")
+            ? currencyCodeOrRegionId
+            : undefined
+          const currencyCode = currencyCodeOrRegionId.startsWith("reg_")
+            ? regionsCurrencyMap[regionId]
+            : currencyCodeOrRegionId
 
-            let existingId = undefined
+          let existingId = undefined
 
-            if (regionId) {
-              existingId = variants[ind].prices.find(
-                (p) => p.rules["region_id"] === regionId
-              )?.id
-            } else {
-              existingId = variants[ind].prices.find(
-                (p) =>
-                  p.currency_code === currencyCode &&
-                  Object.keys(p.rules ?? {}).length === 0
-              )?.id
-            }
-
-            const amount = castNumber(value)
-
-            const pricePayload = existingId
-              ? {
-                  id: existingId,
-                  amount,
-                }
-              : { currency_code: currencyCode, amount }
-
-            if (regionId && !existingId) {
-              pricePayload.rules = { region_id: regionId }
-            }
-
-            return pricePayload
+          if (regionId) {
+            existingId = variants[ind].prices.find(
+              (p) => p.rules["region_id"] === regionId
+            )?.id
+          } else {
+            existingId = variants[ind].prices.find(
+              (p) =>
+                p.currency_code === currencyCode &&
+                Object.keys(p.rules ?? {}).length === 0
+            )?.id
           }
-        ),
-      }))
 
-      await mutateAsync(reqData, {
-        onSuccess: () => {
-          handleSuccess("..")
-        },
-      })
-    },
-    (err) => {
-      console.log(err)
-    }
-  )
+          const amount = castNumber(value)
+
+          const pricePayload = existingId
+            ? {
+                id: existingId,
+                amount,
+              }
+            : { currency_code: currencyCode, amount }
+
+          if (regionId && !existingId) {
+            pricePayload.rules = { region_id: regionId }
+          }
+
+          return pricePayload
+        }
+      ),
+    }))
+
+    await mutateAsync(reqData, {
+      onSuccess: () => {
+        handleSuccess("..")
+      },
+    })
+  })
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteFocusModal.Header>
-          <div className="flex w-full items-center justify-end gap-x-2">
-            <div className="flex items-center gap-x-4">
-              <RouteFocusModal.Close asChild>
-                <Button variant="secondary" size="small">
-                  {t("actions.cancel")}
-                </Button>
-              </RouteFocusModal.Close>
-              <Button
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isPending}
-              >
-                {t("actions.save")}
-              </Button>
-            </div>
-          </div>
-        </RouteFocusModal.Header>
-        <RouteFocusModal.Body>
+      <form onSubmit={handleSubmit} className="flex size-full flex-col">
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex flex-col overflow-hidden">
           <VariantPricingForm form={form as any} />
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <div className="flex w-full items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              isLoading={isPending}
+            >
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )

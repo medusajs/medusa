@@ -210,6 +210,17 @@
       }
     }
   },
+  "dataGrid": {
+    "editColumns": "Edit columns",
+    "shortcuts": {
+      "label": "Shortcuts",
+      "commands": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "edit": "Edit the current cell"
+      }
+    }
+  },
   "filters": {
     "date": {
       "today": "Today",

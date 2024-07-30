@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 
 import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { useRouteModal } from "../../../../../components/modals"
 import { useProducts } from "../../../../../hooks/api/products"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
@@ -39,6 +40,8 @@ export const PriceListPricesAddPricesForm = ({
   })
 
   const { setValue } = form
+
+  const { setCloseOnEscape } = useRouteModal()
 
   useEffect(() => {
     if (!isLoading && products) {
@@ -84,6 +87,7 @@ export const PriceListPricesAddPricesForm = ({
           }
         }}
         state={form}
+        onEditingChange={(editing) => setCloseOnEscape(!editing)}
       />
     </div>
   )
