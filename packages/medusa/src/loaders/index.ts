@@ -14,13 +14,13 @@ import {
   expressLoader,
   logger,
   pgConnectionLoader,
+  SubscriberLoader,
 } from "@medusajs/framework"
 import featureFlagsLoader from "./feature-flags"
 import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
-import { SubscriberLoader } from "./helpers/subscribers"
 import loadMedusaApp from "./medusa-app"
 
 type Options = {
@@ -39,17 +39,11 @@ const shouldLoadBackgroundProcessors = (configModule) => {
   )
 }
 
-async function subscribersLoader(
-  plugins: PluginDetails[],
-  container: MedusaContainer
-) {
+async function subscribersLoader(plugins: PluginDetails[]) {
   /**
    * Load subscribers from the medusa/medusa package
    */
-  await new SubscriberLoader(
-    path.join(__dirname, "../subscribers"),
-    container
-  ).load()
+  await new SubscriberLoader(path.join(__dirname, "../subscribers")).load()
 
   /**
    * Load subscribers from all the plugins.
@@ -58,7 +52,7 @@ async function subscribersLoader(
     plugins.map(async (pluginDetails) => {
       await new SubscriberLoader(
         path.join(pluginDetails.resolve, "subscribers"),
-        container
+        pluginDetails.options
       ).load()
     })
   )
@@ -83,7 +77,7 @@ async function loadEntrypoints(
   )
 
   if (shouldLoadBackgroundProcessors(configModule)) {
-    await subscribersLoader(plugins, container)
+    await subscribersLoader(plugins)
     await jobsLoader(plugins)
   }
 

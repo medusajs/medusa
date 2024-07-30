@@ -32,6 +32,12 @@
       "import": "./dist/database/index.js",
       "require": "./dist/database/index.js",
       "node": "./dist/database/index.js"
+    },
+    "./subscribers": {
+      "types": "./dist/subscribers/index.d.ts",
+      "import": "./dist/subscribers/index.js",
+      "require": "./dist/subscribers/index.js",
+      "node": "./dist/subscribers/index.js"
     }
   },
   "engines": {
