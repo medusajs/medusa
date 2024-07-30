@@ -6,21 +6,21 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  const { configManager, pgConnectionLoader, container } = await import(
-    "@medusajs/framework"
-  )
+  const {
+    configManager,
+    pgConnectionLoader,
+    logger,
+    container,
+    featureFlagsLoader,
+  } = await import("@medusajs/framework")
+
   const configModule = configManager.config
 
   const pgConnection = pgConnectionLoader()
-
-  const featureFlagRouter =
-    require("@medusajs/medusa/dist/loaders/feature-flags").default(configModule)
+  await featureFlagsLoader(process.cwd())
 
   container.register({
-    [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
-    [ContainerRegistrationKeys.LOGGER]: asValue(console),
-    [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
-    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
+    [ContainerRegistrationKeys.LOGGER]: asValue(logger),
   })
 
   try {

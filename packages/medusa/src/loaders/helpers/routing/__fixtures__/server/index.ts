@@ -14,7 +14,7 @@ import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
 import { getResolvedPlugins } from "../../../../helpers/resolve-plugins"
-import featureFlagsLoader, { featureFlagRouter } from "../../../../feature-flags"
+import { featureFlagRouter, featureFlagsLoader } from "@medusajs/framework"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
