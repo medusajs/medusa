@@ -17,7 +17,7 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   const configModule = configManager.config
 
   const pgConnection = pgConnectionLoader()
-  await featureFlagsLoader(process.cwd())
+  await featureFlagsLoader()
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),

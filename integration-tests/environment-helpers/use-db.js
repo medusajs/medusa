@@ -105,7 +105,7 @@ module.exports = {
     } = require("@medusajs/framework")
 
     const configModule = configLoader(cwd, `medusa-config`)
-    const featureFlagRouter = await featureFlagsLoader(cwd)
+    const featureFlagRouter = await featureFlagsLoader()
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 

@@ -84,11 +84,11 @@ function registerFlag(
  * @param sourcePath
  */
 export async function featureFlagsLoader(
-  sourcePath: string
+  sourcePath?: string
 ): Promise<FlagRouter> {
   const { featureFlags: projectConfigFlags = {} } = configManager.config
 
-  const flagDir = normalize(sourcePath)
+  const flagDir = normalize(sourcePath || __dirname)
 
   await readdir(flagDir, { recursive: true, withFileTypes: true }).then(
     async (files) => {

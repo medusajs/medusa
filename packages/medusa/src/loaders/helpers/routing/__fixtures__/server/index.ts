@@ -92,7 +92,7 @@ export const createServer = async (rootDir) => {
 
   const plugins = getResolvedPlugins(rootDir, config) || []
 
-  await featureFlagsLoader(rootDir)
+  await featureFlagsLoader()
   await moduleLoader({ container, moduleResolutions, logger })
 
   app.use((req, res, next) => {
