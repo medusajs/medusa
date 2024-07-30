@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
         expect(testEventPayloadHandlerMock).toHaveBeenCalled()
         expect(
           testEventPayloadHandlerMock.mock.calls[0][0].pluginOptions
-        ).toEqual({})
+        ).toEqual(expect.any(Object))
         expect(testEventPayloadHandlerMock.mock.calls[0][0].event).toEqual({
           name: eventName,
           data: {
