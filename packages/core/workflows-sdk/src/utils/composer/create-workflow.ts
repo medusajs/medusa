@@ -14,20 +14,11 @@ import {
   ReturnWorkflow,
   StepFunction,
   WorkflowData,
-  WorkflowDataProperties,
+  HookHandler,
 } from "./type"
+import { WorkflowResponse } from "./helpers/workflow-response"
 
 global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
-
-/**
- * Workflow response class encapsulates the return value of a workflow
- */
-export class WorkflowResponse<TData, THooks = []> {
-  __type: typeof OrchestrationUtils.SymbolMedusaWorkflowResponse =
-    OrchestrationUtils.SymbolMedusaWorkflowResponse
-
-  constructor(public $result: TData, public options?: { hooks: THooks }) {}
-}
 
 /**
  * This function creates a workflow with the provided name and a constructor function.
@@ -94,16 +85,9 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
    * You'll have to use the {@link transform} function if you need to directly manipulate data.
    */
-  composer: (input: WorkflowData<TData>) => void | WorkflowResponse<
-    | WorkflowData<TResult>
-    | {
-        [K in keyof TResult]:
-          | WorkflowData<TResult[K]>
-          | WorkflowDataProperties<TResult[K]>
-          | TResult[K]
-      },
-    THooks
-  >
+  composer: (
+    input: WorkflowData<TData>
+  ) => void | WorkflowResponse<TResult, THooks>
 ): ReturnWorkflow<TData, TResult, THooks> {
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig
@@ -180,15 +164,13 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     return expandedFlow
   }
 
+  mainFlow.hooks = {} as Record<string, HookHandler>
   for (const hook of context.hooks_.declared) {
-    mainFlow["hooks"] ??= {}
-    mainFlow["hooks"][hook] = context.hooksCallback_[hook].bind(context)
+    mainFlow.hooks[hook] = context.hooksCallback_[hook].bind(context)
   }
 
   mainFlow.getName = () => name
-
   mainFlow.run = mainFlow().run
-
   mainFlow.runAsStep = ({
     input,
   }: {

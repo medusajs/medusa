@@ -12,7 +12,7 @@ export const createReturnFulfillmentWorkflow = createWorkflow(
   createReturnFulfillmentWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.CreateFulfillmentWorkflowInput>
-  ): WorkflowResponse<WorkflowData<FulfillmentDTO>> => {
+  ): WorkflowResponse<FulfillmentDTO> => {
     return new WorkflowResponse(createReturnFulfillmentStep(input))
   }
 )

@@ -23,7 +23,7 @@ export const createProductsWorkflow = createWorkflow(
   createProductsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
     // Passing prices to the product module will fail, we want to keep them for after the product is created.
     const productWithoutExternalRelations = transform({ input }, (data) =>
       data.input.products.map((p) => ({

@@ -168,7 +168,7 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<WorkflowData<OrderDTO>> {
+  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],

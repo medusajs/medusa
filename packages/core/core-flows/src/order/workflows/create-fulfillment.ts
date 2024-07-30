@@ -194,7 +194,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CreateOrderFulfillmentWorkflowInput>
-  ): WorkflowResponse<WorkflowData<FulfillmentDTO>> => {
+  ): WorkflowResponse<FulfillmentDTO> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [

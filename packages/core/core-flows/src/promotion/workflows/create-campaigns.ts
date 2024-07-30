@@ -11,9 +11,7 @@ type WorkflowInput = { campaignsData: CreateCampaignDTO[] }
 export const createCampaignsWorkflowId = "create-campaigns"
 export const createCampaignsWorkflow = createWorkflow(
   createCampaignsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<CampaignDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<CampaignDTO[]> => {
     return new WorkflowResponse(createCampaignsStep(input.campaignsData))
   }
 )

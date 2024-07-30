@@ -13,7 +13,7 @@ export const createProductTypesWorkflow = createWorkflow(
   createProductTypesWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductTypeDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductTypeDTO[]> => {
     return new WorkflowResponse(createProductTypesStep(input.product_types))
   }
 )

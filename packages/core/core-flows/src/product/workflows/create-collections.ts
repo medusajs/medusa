@@ -13,7 +13,7 @@ export const createCollectionsWorkflow = createWorkflow(
   createCollectionsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductCollectionDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductCollectionDTO[]> => {
     return new WorkflowResponse(createCollectionsStep(input.collections))
   }
 )

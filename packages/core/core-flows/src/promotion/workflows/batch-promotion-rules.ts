@@ -27,7 +27,7 @@ export const batchPromotionRulesWorkflow = createWorkflow(
         rule_type: RuleType
       }
     >
-  ): WorkflowResponse<WorkflowData<BatchWorkflowOutput<PromotionRuleDTO>>> => {
+  ): WorkflowResponse<BatchWorkflowOutput<PromotionRuleDTO>> => {
     const createInput = transform({ input }, (data) => ({
       rule_type: data.input.rule_type,
       data: { id: data.input.id, rules: data.input.create ?? [] },

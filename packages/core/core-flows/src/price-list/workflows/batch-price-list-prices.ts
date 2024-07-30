@@ -20,7 +20,7 @@ export const batchPriceListPricesWorkflow = createWorkflow(
     input: WorkflowData<{
       data: BatchPriceListPricesWorkflowDTO
     }>
-  ): WorkflowResponse<WorkflowData<BatchPriceListPricesWorkflowResult>> => {
+  ): WorkflowResponse<BatchPriceListPricesWorkflowResult> => {
     const createInput = transform({ input: input.data }, (data) => [
       { id: data.input.id, prices: data.input.create },
     ])

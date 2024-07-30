@@ -11,9 +11,7 @@ type WorkflowInput = { price_lists_data: CreatePriceListWorkflowInputDTO[] }
 export const createPriceListsWorkflowId = "create-price-lists"
 export const createPriceListsWorkflow = createWorkflow(
   createPriceListsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<PriceListDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<PriceListDTO[]> => {
     const variantPriceMap = validateVariantPriceLinksStep(
       input.price_lists_data
     )

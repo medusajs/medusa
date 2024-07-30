@@ -13,9 +13,7 @@ export const deleteInventoryLevelsWorkflowId =
   "delete-inventory-levels-workflow"
 export const deleteInventoryLevelsWorkflow = createWorkflow(
   deleteInventoryLevelsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<string[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<string[]> => {
     return new WorkflowResponse(deleteInventoryLevelsStep(input.ids))
   }
 )

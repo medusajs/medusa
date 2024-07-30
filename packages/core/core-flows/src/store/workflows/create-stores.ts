@@ -13,9 +13,7 @@ type WorkflowInputData = { stores: StoreWorkflow.CreateStoreWorkflowInput[] }
 export const createStoresWorkflowId = "create-stores"
 export const createStoresWorkflow = createWorkflow(
   createStoresWorkflowId,
-  (
-    input: WorkflowData<WorkflowInputData>
-  ): WorkflowResponse<WorkflowData<StoreDTO[]>> => {
+  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       return data.input.stores.map((store) => {
         return {

@@ -65,7 +65,7 @@ export type CompensateFn<T> = (
   context: StepExecutionContext
 ) => unknown | Promise<unknown>
 
-interface ApplyStepOptions<
+export interface ApplyStepOptions<
   TStepInputs extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },

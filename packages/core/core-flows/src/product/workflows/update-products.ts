@@ -212,7 +212,7 @@ export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
     const previousVariantIds = getVariantIdsForProductsStep(input)
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)

@@ -19,7 +19,7 @@ export const createCustomerAddressesWorkflow = createWorkflow(
   createCustomerAddressesWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<CustomerAddressDTO[]>> => {
+  ): WorkflowResponse<CustomerAddressDTO[]> => {
     const unsetInput = transform(input, (data) => ({
       create: data.addresses,
     }))

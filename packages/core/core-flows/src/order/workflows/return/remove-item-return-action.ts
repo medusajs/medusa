@@ -60,7 +60,7 @@ export const removeItemReturnActionWorkflow = createWorkflow(
   removeItemReturnActionWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.DeleteRequestItemReturnWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderDTO>> {
+  ): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],

@@ -14,7 +14,7 @@ export const updatePromotionRulesWorkflow = createWorkflow(
   updatePromotionRulesWorkflowId,
   (
     input: WorkflowData<UpdatePromotionRulesWorkflowDTO>
-  ): WorkflowResponse<WorkflowData<PromotionRuleDTO[]>> => {
+  ): WorkflowResponse<PromotionRuleDTO[]> => {
     return new WorkflowResponse(updatePromotionRulesStep(input))
   }
 )

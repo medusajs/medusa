@@ -19,9 +19,7 @@ type WorkflowInput = {
 export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
 export const setTaxRateRulesWorkflow = createWorkflow(
   setTaxRateRulesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<TaxRateRuleDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<TaxRateRuleDTO[]> => {
     const ruleIds = listTaxRateRuleIdsStep({
       selector: { tax_rate_id: input.tax_rate_ids },
     })

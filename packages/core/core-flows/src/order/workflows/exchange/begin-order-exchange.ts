@@ -23,7 +23,7 @@ export const beginExchangeOrderWorkflow = createWorkflow(
   beginExchangeOrderWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.BeginOrderExchangeWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderChangeDTO>> {
+  ): WorkflowResponse<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status"],

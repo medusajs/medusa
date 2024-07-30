@@ -12,7 +12,7 @@ export const refreshInviteTokensWorkflow = createWorkflow(
   refreshInviteTokensWorkflowId,
   (
     input: WorkflowData<InviteWorkflow.ResendInvitesWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<InviteDTO[]>> => {
+  ): WorkflowResponse<InviteDTO[]> => {
     return new WorkflowResponse(refreshInviteTokensStep(input.invite_ids))
   }
 )

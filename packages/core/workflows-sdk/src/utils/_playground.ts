@@ -3,9 +3,9 @@ import {
   createWorkflow,
   StepResponse,
   WorkflowData,
-  WorkflowResponse,
 } from "./composer"
 import { createHook } from "./composer/create-hook"
+import { WorkflowResponse } from "./composer/helpers/workflow-response"
 
 const step1 = createStep("step1", async (input: {}, context) => {
   return new StepResponse({ step1: "step1" })

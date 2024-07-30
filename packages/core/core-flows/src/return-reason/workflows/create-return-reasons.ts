@@ -16,7 +16,7 @@ export const createReturnReasonsWorkflow = createWorkflow(
   createReturnReasonsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderReturnReasonDTO[]>> => {
+  ): WorkflowResponse<OrderReturnReasonDTO[]> => {
     return new WorkflowResponse(createReturnReasonsStep(input.data))
   }
 )

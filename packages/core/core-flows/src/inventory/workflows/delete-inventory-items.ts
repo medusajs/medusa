@@ -11,7 +11,7 @@ import { Modules } from "@medusajs/utils"
 export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 export const deleteInventoryItemWorkflow = createWorkflow(
   deleteInventoryItemWorkflowId,
-  (input: WorkflowData<string[]>): WorkflowResponse<WorkflowData<string[]>> => {
+  (input: WorkflowData<string[]>): WorkflowResponse<string[]> => {
     deleteInventoryItemStep(input)
     removeRemoteLinkStep({
       [Modules.INVENTORY]: { inventory_item_id: input },

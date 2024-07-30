@@ -20,7 +20,7 @@ export const updateSalesChannelsWorkflow = createWorkflow(
   updateSalesChannelsWorkflowId,
   (
     input: WorkflowData<UpdateSalesChannelsStepInput>
-  ): WorkflowResponse<WorkflowData<SalesChannelDTO[]>> => {
+  ): WorkflowResponse<SalesChannelDTO[]> => {
     return new WorkflowResponse(updateSalesChannelsStep(input))
   }
 )

@@ -23,7 +23,7 @@ export const beginClaimOrderWorkflow = createWorkflow(
   beginClaimOrderWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.BeginOrderClaimWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderChangeDTO>> {
+  ): WorkflowResponse<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status"],

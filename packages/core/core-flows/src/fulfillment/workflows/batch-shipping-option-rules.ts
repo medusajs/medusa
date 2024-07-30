@@ -28,9 +28,7 @@ export const batchShippingOptionRulesWorkflow = createWorkflow(
         UpdateShippingOptionRuleDTO
       >
     >
-  ): WorkflowResponse<
-    WorkflowData<BatchWorkflowOutput<ShippingOptionRuleDTO>>
-  > => {
+  ): WorkflowResponse<BatchWorkflowOutput<ShippingOptionRuleDTO>> => {
     const actionInputs = transform({ input }, (data) => {
       const { create, update, delete: del } = data.input
       return {

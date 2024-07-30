@@ -26,9 +26,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
         UpdateProductVariantWorkflowInputDTO
       >
     >
-  ): WorkflowResponse<
-    WorkflowData<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>>
-  > => {
+  ): WorkflowResponse<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
     const normalizedInput = transform({ input }, (data) => {
       return {
         create: data.input.create ?? [],

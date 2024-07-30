@@ -15,7 +15,7 @@ export const acceptInviteWorkflow = createWorkflow(
   acceptInviteWorkflowId,
   (
     input: WorkflowData<InviteWorkflow.AcceptInviteWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<UserDTO[]>> => {
+  ): WorkflowResponse<UserDTO[]> => {
     const invite = validateTokenStep(input.invite_token)
 
     const createUserInput = transform(

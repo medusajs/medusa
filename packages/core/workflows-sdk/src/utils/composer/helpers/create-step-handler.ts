@@ -1,12 +1,34 @@
-import {CreateWorkflowComposerContext, StepExecutionContext} from "../type"
-import {WorkflowStepHandlerArguments} from "@medusajs/orchestration"
-import {resolveValue} from "./resolve-value"
-import {StepResponse} from "./step-response"
-import {deepCopy, OrchestrationUtils} from "@medusajs/utils"
+import {
+  CreateWorkflowComposerContext,
+  StepExecutionContext,
+  WorkflowData,
+} from "../type"
+import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
+import { resolveValue } from "./resolve-value"
+import { StepResponse } from "./step-response"
+import { deepCopy, OrchestrationUtils } from "@medusajs/utils"
+import { ApplyStepOptions } from "../create-step"
 
-export function createStepHandler(
+export function createStepHandler<
+  TInvokeInput,
+  TStepInput extends {
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+  },
+  TInvokeResultOutput,
+  TInvokeResultCompensateInput
+>(
   this: CreateWorkflowComposerContext,
-  { stepName, input, invokeFn, compensateFn }
+  {
+    stepName,
+    input,
+    invokeFn,
+    compensateFn,
+  }: ApplyStepOptions<
+    TStepInput,
+    TInvokeInput,
+    TInvokeResultOutput,
+    TInvokeResultCompensateInput
+  >
 ) {
   const handler = {
     invoke: async (stepArguments: WorkflowStepHandlerArguments) => {

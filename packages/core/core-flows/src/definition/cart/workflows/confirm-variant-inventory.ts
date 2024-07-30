@@ -25,7 +25,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
   confirmVariantInventoryWorkflowId,
   (
     input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<Output>> => {
+  ): WorkflowResponse<Output> => {
     const confirmInventoryInput = transform({ input }, (data) => {
       const productVariantInventoryItems = new Map<string, any>()
       const stockLocationIds = new Set<string>()

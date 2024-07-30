@@ -1,5 +1,6 @@
 import {
   BigNumberInput,
+  OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
@@ -42,7 +43,7 @@ export const createExchangeReturnShippingMethodWorkflow = createWorkflow(
     exchangeId: string
     shippingOptionId: string
     customShippingPrice?: BigNumberInput
-  }): WorkflowResponse<WorkflowData> {
+  }): WorkflowResponse<OrderChangeActionDTO[]> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "return_id"],

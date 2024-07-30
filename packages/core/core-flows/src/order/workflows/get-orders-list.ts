@@ -27,7 +27,7 @@ export const getOrdersListWorkflow = createWorkflow(
       fields: string[]
       variables?: Record<string, any>
     }>
-  ): WorkflowResponse<WorkflowData<OrderOutput>> => {
+  ): WorkflowResponse<OrderOutput> => {
     const fields = transform(input, ({ fields }) => {
       return deduplicate([
         ...fields,

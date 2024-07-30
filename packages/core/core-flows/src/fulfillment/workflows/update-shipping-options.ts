@@ -19,9 +19,7 @@ export const updateShippingOptionsWorkflow = createWorkflow(
     input: WorkflowData<
       FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[]
     >
-  ): WorkflowResponse<
-    WorkflowData<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput>
-  > => {
+  ): WorkflowResponse<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
     validateFulfillmentProvidersStep(input)
 
     const data = transform(input, (data) => {

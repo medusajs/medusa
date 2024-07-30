@@ -15,7 +15,7 @@ export const updateInventoryItemsWorkflow = createWorkflow(
   updateInventoryItemsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<InventoryTypes.InventoryItemDTO[]>> => {
+  ): WorkflowResponse<InventoryTypes.InventoryItemDTO[]> => {
     return new WorkflowResponse(updateInventoryItemsStep(input.updates))
   }
 )

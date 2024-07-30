@@ -1,7 +1,11 @@
-import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
+import {
+  IDistributedSchedulerStorage,
+  SchedulerOptions,
+  WorkflowManager,
+  WorkflowScheduler,
+} from "@medusajs/orchestration"
 import {
   ModuleRegistrationName,
-  SymbolWorkflowHook,
   composeMessage,
   createMedusaContainer,
   promiseAll,
@@ -12,12 +16,10 @@ import {
   WorkflowResponse,
   createStep,
   createWorkflow,
-  hook,
   parallelize,
   transform,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
-import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
 import { createHook } from "../create-hook"
 
 jest.setTimeout(30000)

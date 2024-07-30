@@ -18,7 +18,7 @@ export const createInventoryLevelsWorkflow = createWorkflow(
   createInventoryLevelsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<InventoryLevelDTO[]>> => {
+  ): WorkflowResponse<InventoryLevelDTO[]> => {
     validateInventoryLocationsStep(input.inventory_levels)
 
     return new WorkflowResponse(

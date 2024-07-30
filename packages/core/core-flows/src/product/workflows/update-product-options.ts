@@ -18,7 +18,7 @@ export const updateProductOptionsWorkflow = createWorkflow(
   updateProductOptionsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductOptionDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductOptionDTO[]> => {
     return new WorkflowResponse(updateProductOptionsStep(input))
   }
 )

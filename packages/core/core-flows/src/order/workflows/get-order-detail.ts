@@ -20,7 +20,7 @@ export const getOrderDetailWorkflow = createWorkflow(
       fields: string[]
       order_id: string
     }>
-  ): WorkflowResponse<WorkflowData<OrderDetailDTO>> => {
+  ): WorkflowResponse<OrderDetailDTO> => {
     const fields = transform(input, ({ fields }) => {
       return deduplicate([
         ...fields,

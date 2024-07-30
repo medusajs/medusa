@@ -16,9 +16,7 @@ type WorkflowInput = {
 export const createUserAccountWorkflowId = "create-user-account"
 export const createUserAccountWorkflow = createWorkflow(
   createUserAccountWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<UserDTO>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<UserDTO> => {
     const users = createUsersStep([input.userData])
     const user = transform(users, (users: UserDTO[]) => users[0])
 

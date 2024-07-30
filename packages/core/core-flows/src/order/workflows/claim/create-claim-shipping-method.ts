@@ -47,7 +47,7 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
     claim_id?: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowResponse<WorkflowData<OrderDTO>> {
+  }): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],

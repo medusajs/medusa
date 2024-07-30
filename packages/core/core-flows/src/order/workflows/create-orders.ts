@@ -85,9 +85,7 @@ function getOrderInput(data) {
 export const createOrdersWorkflowId = "create-orders"
 export const createOrdersWorkflow = createWorkflow(
   createOrdersWorkflowId,
-  (
-    input: WorkflowData<CreateOrderDTO>
-  ): WorkflowResponse<WorkflowData<OrderDTO>> => {
+  (input: WorkflowData<CreateOrderDTO>): WorkflowResponse<OrderDTO> => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? [])
         .map((item) => item.variant_id)

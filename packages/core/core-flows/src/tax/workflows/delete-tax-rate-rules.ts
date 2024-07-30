@@ -10,9 +10,7 @@ type WorkflowInput = { ids: string[] }
 export const deleteTaxRateRulesWorkflowId = "delete-tax-rate-rules"
 export const deleteTaxRateRulesWorkflow = createWorkflow(
   deleteTaxRateRulesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<void>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<void> => {
     return new WorkflowResponse(deleteTaxRateRulesStep(input.ids))
   }
 )

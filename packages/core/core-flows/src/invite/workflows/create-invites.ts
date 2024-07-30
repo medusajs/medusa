@@ -11,7 +11,7 @@ export const createInvitesWorkflow = createWorkflow(
   createInvitesWorkflowId,
   (
     input: WorkflowData<InviteWorkflow.CreateInvitesWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<InviteDTO[]>> => {
+  ): WorkflowResponse<InviteDTO[]> => {
     return new WorkflowResponse(createInviteStep(input.invites))
   }
 )

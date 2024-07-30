@@ -55,7 +55,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
   orderExchangeRequestItemReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderExchangeRequestItemReturnWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderDTO>> {
+  ): WorkflowResponse<OrderDTO> {
     const orderExchange = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "order_id", "return_id", "canceled_at"],

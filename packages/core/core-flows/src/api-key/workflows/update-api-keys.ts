@@ -20,9 +20,7 @@ type WorkflowInput = UpdateApiKeysStepInput
 export const updateApiKeysWorkflowId = "update-api-keys"
 export const updateApiKeysWorkflow = createWorkflow(
   updateApiKeysWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ApiKeyDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<ApiKeyDTO[]> => {
     return new WorkflowResponse(updateApiKeysStep(input))
   }
 )

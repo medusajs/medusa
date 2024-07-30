@@ -13,7 +13,7 @@ export const createCustomerGroupsWorkflow = createWorkflow(
   createCustomerGroupsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<CustomerGroupDTO[]>> => {
+  ): WorkflowResponse<CustomerGroupDTO[]> => {
     return new WorkflowResponse(createCustomerGroupsStep(input.customersData))
   }
 )

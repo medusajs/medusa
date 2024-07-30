@@ -31,7 +31,7 @@ export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
   (
     input: WorkflowData<CreateCartWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<CartDTO>> => {
+  ): WorkflowResponse<CartDTO> => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })

@@ -18,9 +18,7 @@ type WorkflowInput = {
 export const uploadFilesWorkflowId = "upload-files"
 export const uploadFilesWorkflow = createWorkflow(
   uploadFilesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<FileDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<FileDTO[]> => {
     return new WorkflowResponse(uploadFilesStep(input))
   }
 )

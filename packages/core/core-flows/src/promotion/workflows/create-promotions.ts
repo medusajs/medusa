@@ -11,9 +11,7 @@ type WorkflowInput = { promotionsData: CreatePromotionDTO[] }
 export const createPromotionsWorkflowId = "create-promotions"
 export const createPromotionsWorkflow = createWorkflow(
   createPromotionsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<PromotionDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<PromotionDTO[]> => {
     return new WorkflowResponse(createPromotionsStep(input.promotionsData))
   }
 )

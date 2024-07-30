@@ -129,7 +129,7 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
 export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
 export const confirmReturnReceiveWorkflow = createWorkflow(
   confirmReturnReceiveWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<WorkflowData<OrderDTO>> {
+  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: [

@@ -14,9 +14,7 @@ type WorkflowInputData = StoreWorkflow.UpdateStoreWorkflowInput
 export const updateStoresWorkflowId = "update-stores"
 export const updateStoresWorkflow = createWorkflow(
   updateStoresWorkflowId,
-  (
-    input: WorkflowData<WorkflowInputData>
-  ): WorkflowResponse<WorkflowData<StoreDTO[]>> => {
+  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       if (!data.input.update.supported_currencies?.length) {
         return data.input

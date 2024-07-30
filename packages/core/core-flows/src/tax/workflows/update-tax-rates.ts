@@ -90,9 +90,7 @@ const maybeListTaxRateRuleIdsStep = createStep(
 export const updateTaxRatesWorkflowId = "update-tax-rates"
 export const updateTaxRatesWorkflow = createWorkflow(
   updateTaxRatesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<TaxRateDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<TaxRateDTO[]> => {
     const cleanedUpdateInput = transform(input, (data) => {
       // Transform clones data so we can safely modify it
       if (data.update.rules) {

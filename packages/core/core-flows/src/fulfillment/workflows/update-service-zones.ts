@@ -1,4 +1,4 @@
-import { FulfillmentWorkflow } from "@medusajs/types"
+import { FulfillmentWorkflow, ServiceZoneDTO } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -11,7 +11,7 @@ export const updateServiceZonesWorkflow = createWorkflow(
   updateServiceZonesWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.UpdateServiceZonesWorkflowInput>
-  ): WorkflowResponse<WorkflowData> => {
+  ): WorkflowResponse<ServiceZoneDTO[]> => {
     return new WorkflowResponse(updateServiceZonesStep(input))
   }
 )

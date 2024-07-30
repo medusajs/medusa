@@ -12,9 +12,7 @@ export const createShippingProfilesWorkflow = createWorkflow(
   createShippingProfilesWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.CreateShippingProfilesWorkflowInput>
-  ): WorkflowResponse<
-    WorkflowData<FulfillmentWorkflow.CreateShippingProfilesWorkflowOutput>
-  > => {
+  ): WorkflowResponse<FulfillmentWorkflow.CreateShippingProfilesWorkflowOutput> => {
     return new WorkflowResponse(createShippingProfilesStep(input.data))
   }
 )

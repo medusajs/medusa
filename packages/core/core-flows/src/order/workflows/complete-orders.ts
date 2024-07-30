@@ -15,7 +15,7 @@ export const completeOrderWorkflow = createWorkflow(
   completeOrderWorkflowId,
   (
     input: WorkflowData<CompleteOrdersStepInput>
-  ): WorkflowResponse<WorkflowData<OrderDTO[]>> => {
+  ): WorkflowResponse<OrderDTO[]> => {
     return new WorkflowResponse(completeOrdersStep(input))
   }
 )

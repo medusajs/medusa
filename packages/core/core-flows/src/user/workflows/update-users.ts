@@ -12,7 +12,7 @@ export const updateUsersWorkflow = createWorkflow(
   updateUsersWorkflowId,
   (
     input: WorkflowData<UserWorkflow.UpdateUsersWorkflowInputDTO>
-  ): WorkflowResponse<WorkflowData<UserDTO[]>> => {
+  ): WorkflowResponse<UserDTO[]> => {
     return new WorkflowResponse(updateUsersStep(input.updates))
   }
 )

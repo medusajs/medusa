@@ -60,7 +60,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
   addOrderLineItemsWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.OrderAddLineItemWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderLineItemDTO[]>> => {
+  ): WorkflowResponse<OrderLineItemDTO[]> => {
     const order = useRemoteQueryStep({
       entry_point: "orders",
       fields: [

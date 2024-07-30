@@ -24,6 +24,7 @@ type StepFunctionReturnConfig<TOutput> = {
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
+export type HookHandler = (...args: any[]) => void | Promise<void>
 
 /**
  * Helper to convert an array of hooks to functions
@@ -90,15 +91,14 @@ export type CreateWorkflowComposerContext = {
     declared: string[]
     registered: string[]
   }
-  hooksCallback_: Record<string, any>
+  hooksCallback_: Record<string, HookHandler>
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(
     fn: StepFunctionResult
   ) => WorkflowData<TOutput>
-  // TODO change the typings
-  hookBinder: (name: string, fn: Function) => any
+  hookBinder: (name: string, fn: () => HookHandler) => void
   parallelizeBinder: <TOutput extends WorkflowData[] = WorkflowData[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput

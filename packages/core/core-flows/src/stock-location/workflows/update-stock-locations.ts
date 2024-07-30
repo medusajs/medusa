@@ -20,7 +20,7 @@ export const updateStockLocationsWorkflow = createWorkflow(
   updateStockLocationsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<StockLocationDTO[]>> => {
+  ): WorkflowResponse<StockLocationDTO[]> => {
     return new WorkflowResponse(updateStockLocationsStep(input))
   }
 )

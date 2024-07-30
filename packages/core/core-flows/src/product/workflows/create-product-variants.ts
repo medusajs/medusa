@@ -122,7 +122,7 @@ export const createProductVariantsWorkflow = createWorkflow(
   createProductVariantsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<ProductTypes.ProductVariantDTO[]>> => {
+  ): WorkflowResponse<ProductTypes.ProductVariantDTO[]> => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is created.
     const variantsWithoutPrices = transform({ input }, (data) =>
       data.input.product_variants.map((v) => ({

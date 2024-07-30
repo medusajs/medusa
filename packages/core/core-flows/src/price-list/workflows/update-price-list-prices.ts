@@ -16,7 +16,7 @@ export const updatePriceListPricesWorkflow = createWorkflow(
     input: WorkflowData<{
       data: UpdatePriceListPricesWorkflowDTO[]
     }>
-  ): WorkflowResponse<WorkflowData<PricingTypes.PriceDTO[]>> => {
+  ): WorkflowResponse<PricingTypes.PriceDTO[]> => {
     const [_, variantPriceMap] = parallelize(
       validatePriceListsStep(input.data),
       validateVariantPriceLinksStep(input.data)

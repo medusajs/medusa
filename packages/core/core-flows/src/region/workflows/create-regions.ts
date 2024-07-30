@@ -15,9 +15,7 @@ export const createRegionsWorkflow = createWorkflow(
   createRegionsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowInput>
-  ): WorkflowResponse<
-    WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput>
-  > => {
+  ): WorkflowResponse<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
     const data = transform(input, (data) => {
       const regionIndexToAdditionalData = data.regions.map((region, index) => {
         return {

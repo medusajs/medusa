@@ -18,9 +18,7 @@ export const importProductsWorkflow = createWorkflow(
   importProductsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.ProductWorkflow.ImportProductsDTO>
-  ): WorkflowResponse<
-    WorkflowData<WorkflowTypes.ProductWorkflow.ImportProductsSummary>
-  > => {
+  ): WorkflowResponse<WorkflowTypes.ProductWorkflow.ImportProductsSummary> => {
     const products = parseProductCsvStep(input.fileContent)
     const batchRequest = groupProductsForBatchStep(products)
 

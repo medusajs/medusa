@@ -14,7 +14,7 @@ export const updateOrderChangeActionsWorkflow = createWorkflow(
   updateOrderChangeActionsWorkflowId,
   (
     input: WorkflowData<UpdateOrderChangeActionDTO[]>
-  ): WorkflowResponse<WorkflowData<OrderChangeActionDTO[]>> => {
+  ): WorkflowResponse<OrderChangeActionDTO[]> => {
     return new WorkflowResponse(updateOrderChangeActionsStep(input))
   }
 )

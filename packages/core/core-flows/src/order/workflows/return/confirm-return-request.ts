@@ -125,7 +125,7 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<WorkflowData<OrderDTO>> {
+  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "location_id", "canceled_at"],

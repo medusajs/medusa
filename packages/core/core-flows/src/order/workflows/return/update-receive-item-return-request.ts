@@ -70,7 +70,7 @@ export const updateReceiveItemReturnRequestWorkflow = createWorkflow(
   updateReceiveItemReturnRequestWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.UpdateReceiveItemReturnRequestWorkflowInput>
-  ): WorkflowResponse<WorkflowData<OrderDTO>> {
+  ): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],

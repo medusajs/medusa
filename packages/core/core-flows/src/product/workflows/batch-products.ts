@@ -26,9 +26,7 @@ export const batchProductsWorkflow = createWorkflow(
         UpdateProductWorkflowInputDTO
       >
     >
-  ): WorkflowResponse<
-    WorkflowData<BatchWorkflowOutput<ProductTypes.ProductDTO>>
-  > => {
+  ): WorkflowResponse<BatchWorkflowOutput<ProductTypes.ProductDTO>> => {
     const res = parallelize(
       createProductsWorkflow.runAsStep({
         input: { products: input.create ?? [] },

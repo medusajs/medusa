@@ -12,9 +12,7 @@ export const updateReservationsWorkflow = createWorkflow(
   updateReservationsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.ReservationWorkflow.UpdateReservationsWorkflowInput>
-  ): WorkflowResponse<
-    WorkflowData<WorkflowTypes.ReservationWorkflow.UpdateReservationsWorkflowOutput>
-  > => {
+  ): WorkflowResponse<WorkflowTypes.ReservationWorkflow.UpdateReservationsWorkflowOutput> => {
     return new WorkflowResponse(updateReservationsStep(input.updates))
   }
 )

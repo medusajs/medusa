@@ -15,7 +15,7 @@ export const archiveOrderWorkflow = createWorkflow(
   archiveOrderWorkflowId,
   (
     input: WorkflowData<ArchiveOrdersStepInput>
-  ): WorkflowResponse<WorkflowData<OrderDTO[]>> => {
+  ): WorkflowResponse<OrderDTO[]> => {
     return new WorkflowResponse(archiveOrdersStep(input))
   }
 )

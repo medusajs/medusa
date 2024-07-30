@@ -11,9 +11,7 @@ type WorkflowInput = { salesChannelsData: CreateSalesChannelDTO[] }
 export const createSalesChannelsWorkflowId = "create-sales-channels"
 export const createSalesChannelsWorkflow = createWorkflow(
   createSalesChannelsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<SalesChannelDTO[]>> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<SalesChannelDTO[]> => {
     return new WorkflowResponse(
       createSalesChannelsStep({ data: input.salesChannelsData })
     )

@@ -8,9 +8,7 @@ import { removePriceListPricesStep } from "../steps/remove-price-list-prices"
 export const removePriceListPricesWorkflowId = "remove-price-list-prices"
 export const removePriceListPricesWorkflow = createWorkflow(
   removePriceListPricesWorkflowId,
-  (
-    input: WorkflowData<{ ids: string[] }>
-  ): WorkflowResponse<WorkflowData<string[]>> => {
+  (input: WorkflowData<{ ids: string[] }>): WorkflowResponse<string[]> => {
     return new WorkflowResponse(removePriceListPricesStep(input.ids))
   }
 )

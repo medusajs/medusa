@@ -20,7 +20,7 @@ export const updateCustomerGroupsWorkflow = createWorkflow(
   updateCustomerGroupsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<WorkflowData<CustomerGroupDTO[]>> => {
+  ): WorkflowResponse<CustomerGroupDTO[]> => {
     return new WorkflowResponse(updateCustomerGroupsStep(input))
   }
 )

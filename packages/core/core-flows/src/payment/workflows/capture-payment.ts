@@ -17,7 +17,7 @@ export const capturePaymentWorkflow = createWorkflow(
       captured_by?: string
       amount?: BigNumberInput
     }>
-  ): WorkflowResponse<WorkflowData<PaymentDTO>> => {
+  ): WorkflowResponse<PaymentDTO> => {
     const payment = capturePaymentStep(input)
 
     emitEventStep({

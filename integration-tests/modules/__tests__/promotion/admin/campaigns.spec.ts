@@ -86,7 +86,7 @@ const adminHeaders = {
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe.only("Admin Campaigns API", () => {
+    describe("Admin Campaigns API", () => {
       let appContainer
       let promotionModuleService: IPromotionModuleService
 

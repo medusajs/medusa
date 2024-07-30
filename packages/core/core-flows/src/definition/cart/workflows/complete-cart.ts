@@ -21,7 +21,7 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
-  (input: WorkflowData<any>): WorkflowResponse<WorkflowData<OrderDTO>> => {
+  (input: WorkflowData<any>): WorkflowResponse<OrderDTO> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: completeCartFields,
