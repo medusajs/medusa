@@ -32,6 +32,12 @@
       "import": "./dist/database/index.js",
       "require": "./dist/database/index.js",
       "node": "./dist/database/index.js"
+    },
+    "./jobs": {
+      "types": "./dist/jobs/index.d.ts",
+      "import": "./dist/jobs/index.js",
+      "require": "./dist/jobs/index.js",
+      "node": "./dist/jobs/index.js"
     }
   },
   "engines": {
