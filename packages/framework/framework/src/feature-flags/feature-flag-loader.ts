@@ -88,7 +88,11 @@ export async function featureFlagsLoader(
 ): Promise<FlagRouter> {
   const { featureFlags: projectConfigFlags = {} } = configManager.config
 
-  const flagDir = normalize(sourcePath || __dirname)
+  if (!sourcePath) {
+    return featureFlagRouter
+  }
+
+  const flagDir = normalize(sourcePath)
 
   await readdir(flagDir, { recursive: true, withFileTypes: true }).then(
     async (files) => {
