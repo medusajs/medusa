@@ -49,8 +49,6 @@ function createReturnItems(
       reference_id: returnReference.id,
       details: {
         reference_id: item.id,
-        return_id: returnReference.id,
-        exchange_id: exchangeReference.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },
@@ -93,7 +91,6 @@ async function processAdditionalItems(
         reference_id: exchangeReference.id,
         details: {
           reference_id: item.id,
-          exchange_id: exchangeReference.id,
           quantity: item.quantity,
           metadata: item.metadata,
         },
