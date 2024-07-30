@@ -7,7 +7,7 @@ import { isObject, MedusaError, promiseAll } from "@medusajs/utils"
 import { SchedulerOptions } from "@medusajs/orchestration"
 import { MedusaContainer } from "@medusajs/types"
 import { logger } from "../logger"
-import { readdir } from "fs/promises"
+import { access, readdir } from "fs/promises"
 import { join } from "path"
 
 type CronJobConfig = {
@@ -129,6 +129,12 @@ export class JobLoader {
       return await readdir(sourcePath, {
         withFileTypes: true,
       }).then(async (entries) => {
+        try {
+          await access(sourcePath)
+        } catch {
+          return
+        }
+
         const fileEntries = entries.filter((entry) => {
           return (
             !entry.isDirectory() &&
