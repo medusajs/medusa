@@ -22,8 +22,8 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 /**
  * Workflow response class encapsulates the return value of a workflow
  */
-export class WorkflowResponse<TData, THooks> {
-  constructor(public $result: TData, public options: { hooks: THooks }) {}
+export class WorkflowResponse<TData, THooks = []> {
+  constructor(public $result: TData, public options?: { hooks: THooks }) {}
   static unWrapResult(value: unknown) {
     return value && typeof value === "object" && "$result" in value
       ? value.$result
