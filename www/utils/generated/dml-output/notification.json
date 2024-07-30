@@ -1,0 +1,31 @@
+{
+	"Notificationprovider": {
+		"filePath": "packages/modules/notification/src/models/notification-provider.ts",
+		"properties": {
+			"id": "The ID of the notificationprovider.",
+			"handle": "The handle of the notificationprovider",
+			"name": "The name of the notificationprovider",
+			"is_enabled": "Whether the notificationprovider is enabled.",
+			"channels": "The channels of the notificationprovider",
+			"notifications": "The associated notifications.\n\n@expandable"
+		}
+	},
+	"Notification": {
+		"filePath": "packages/modules/notification/src/models/notification.ts",
+		"properties": {
+			"id": "The ID of the notification.",
+			"to": "The to of the notification",
+			"channel": "The channel of the notification",
+			"template": "The template of the notification",
+			"data": "The data of the notification",
+			"trigger_type": "The trigger type of the notification",
+			"resource_id": "The resource id of the notification",
+			"resource_type": "The resource type of the notification",
+			"receiver_id": "The receiver id of the notification",
+			"original_notification_id": "The original notification id of the notification",
+			"idempotency_key": "The idempotency key of the notification",
+			"external_id": "The external id of the notification",
+			"provider": "The associated provider.\n\n@expandable"
+		}
+	}
+}

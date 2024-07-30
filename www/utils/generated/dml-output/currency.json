@@ -1,0 +1,13 @@
+{
+	"Currency": {
+		"filePath": "packages/modules/currency/src/models/currency.ts",
+		"properties": {
+			"code": "The code of the currency",
+			"symbol": "The symbol of the currency",
+			"symbol_native": "The symbol native of the currency",
+			"name": "The name of the currency",
+			"decimal_digits": "The decimal digits of the currency",
+			"rounding": "The rounding of the currency"
+		}
+	}
+}

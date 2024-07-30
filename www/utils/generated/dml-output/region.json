@@ -1,0 +1,25 @@
+{
+	"Region": {
+		"filePath": "packages/modules/region/src/models/region.ts",
+		"properties": {
+			"id": "The ID of the region.",
+			"name": "The name of the region",
+			"currency_code": "The currency code of the region",
+			"automatic_taxes": "Whether the region automatic taxes.",
+			"countries": "The associated countries.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
+		}
+	},
+	"Country": {
+		"filePath": "packages/modules/region/src/models/country.ts",
+		"properties": {
+			"iso_2": "The iso 2 of the country",
+			"iso_3": "The iso 3 of the country",
+			"num_code": "The num code of the country",
+			"name": "The name of the country",
+			"display_name": "The display name of the country",
+			"region": "The associated region.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs."
+		}
+	}
+}
