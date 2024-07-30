@@ -8,37 +8,12 @@
     "dist"
   ],
   "exports": {
-    ".": {
-      "node": "./dist/index.js",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "require": "./dist/config/index.js",
-      "node": "./dist/config/index.js"
-    },
-    "./logger": {
-      "types": "./dist/logger/index.d.ts",
-      "import": "./dist/logger/index.js",
-      "require": "./dist/logger/index.js",
-      "node": "./dist/logger/index.js"
-    },
-    "./database": {
-      "types": "./dist/database/index.d.ts",
-      "import": "./dist/database/index.js",
-      "require": "./dist/database/index.js",
-      "node": "./dist/database/index.js"
-    },
-    "./jobs": {
-      "types": "./dist/jobs/index.d.ts",
-      "import": "./dist/jobs/index.js",
-      "require": "./dist/jobs/index.js",
-      "node": "./dist/jobs/index.js"
-    }
+    ".": "./dist/index.js",
+    "./config": "./dist/config/index.js",
+    "./logger": "./dist/logger/index.js",
+    "./database": "./dist/database/index.js",
+    "./subscribers": "./dist/subscribers/index.js",
+    "./jobs": "./dist/jobs/index.js"
   },
   "engines": {
     "node": ">=20"

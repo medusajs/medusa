@@ -1,7 +1,9 @@
-import { MedusaContainer } from "@medusajs/types"
 import { join } from "path"
-import { containerMock, eventBusServiceMock } from "../__mocks__"
-import { SubscriberLoader } from "../index"
+import { eventBusServiceMock } from "../__mocks__"
+import { SubscriberLoader } from "../subscriber-loader"
+import { container } from "../../container"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { asValue } from "awilix"
 
 describe("SubscriberLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "subscribers")
@@ -15,13 +17,12 @@ describe("SubscriberLoader", () => {
   let registeredPaths: string[] = []
 
   beforeAll(async () => {
-    jest.clearAllMocks()
+    container.register(
+      ModuleRegistrationName.EVENT_BUS,
+      asValue(eventBusServiceMock)
+    )
 
-    const paths = await new SubscriberLoader(
-      rootDir,
-      containerMock as unknown as MedusaContainer,
-      pluginOptions
-    ).load()
+    const paths = await new SubscriberLoader(rootDir, pluginOptions).load()
 
     if (paths) {
       registeredPaths = [...registeredPaths, ...paths]
