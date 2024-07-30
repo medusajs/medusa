@@ -856,7 +856,7 @@ export type ConfigModule = {
    *
    * :::
    */
-  featureFlags: Record<string, boolean | string>
+  featureFlags: Record<string, boolean | string | Record<string, boolean>>
 }
 
 export type PluginDetails = {
