@@ -96,7 +96,7 @@ const main = async function ({ directory }) {
   }
 
   try {
-    const container = initializeContainer(directory)
+    const container = await initializeContainer(directory)
 
     const configModule = container.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
