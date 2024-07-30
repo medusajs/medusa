@@ -82,9 +82,7 @@ export type AdminPostReceiveClaimItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostCancelClaimReqSchema = z.object({
-  return_id: z.string(),
   no_notification: z.boolean().optional(),
-  internal_note: z.string().nullish(),
 })
 export type AdminPostCancelClaimReqSchemaType = z.infer<
   typeof AdminPostCancelClaimReqSchema
