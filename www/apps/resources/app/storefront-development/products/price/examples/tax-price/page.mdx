@@ -1,0 +1,253 @@
+---
+sidebar_position: 3
+sidebar_label: "Example: Show Price with Taxes"
+---
+
+export const metadata = {
+  title: `Example: Show Product Variant's Price with Taxes`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to show a product variant's price with taxes, with a full React example.
+
+## Retrieve Variant's Price with Tax
+
+To retrieve a product variant's price with taxes, you must pass the `region_id` and `country_code` query parameters:
+
+export const fetchHighlights = [
+  ["3", "region_id", "Pass the region ID as a query parameter."],
+  ["4", "country_code", "Pass the ISO 2 country code as a parameter."],
+  ["4", "region.countries[0].iso_2", "You can instead allow the customer to select a specific country."],
+]
+
+```ts highlights={fetchHighlights}
+const queryParams = new URLSearchParams({
+  fields: `*variants.calculated_price`,
+  region_id: region.id,
+  country_code: region.countries[0].iso_2
+})
+
+fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+  },
+})
+.then((res) => res.json())
+.then(({ product }) => {
+  // TODO use product
+  console.log(product)
+})
+```
+
+You pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](https://docs.medusajs.com/v2/api/store#products_getproductsid).
+
+<Note title="Tip">
+
+You can instead allow the customer to choose their country.
+
+</Note>
+
+---
+
+## Display Variant's Price with Taxes
+
+After passing the `region_id` and `country_code` as query parameters when retrieving the product, each variant's price object will have a `calculated_amount_with_tax` property to indicate the price taxes applied:
+
+```ts
+const price = formatPrice(selectedVariantPrice.calculated_price.calculated_amount_with_tax)
+```
+
+Where `selectedVariantPrice` is either the variant the customer selected or the cheapest variant.
+
+<Note title="Tip">
+
+Learn more about the `formatPrice` function in [this guide](../show-price/page.mdx#price-formatting)
+
+</Note>
+
+---
+
+## Tax Price Properties
+
+Aside from the `calculated_amount_with_tax` property, a variant's `calculated_price` object has the following properties related to taxes:
+
+1. `calculated_amount_without_tax`: The calculated amount without taxes.
+2. `is_calculated_price_tax_inclusive`: Whether the `calculated_amount` property includes taxes. If enabled, you can display it instead of `calculated_amount_with_tax`.
+
+---
+
+## Full React Example
+
+For example, in a React-based storefront:
+
+<Note type="check">
+
+The example passes the `region_id` query parameter for pricing. Learn how to store and retrieve the customer's region in the [Regions guides](../../../../regions/context/page.mdx).
+
+</Note>
+
+export const taxHighlight = [
+  ["5", "useRegion", "The `useRegion` hook is implemented in the Region React Context guide."],
+  ["13", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["19", "region", "Access the region using the `useRegion` hook."],
+  ["28", "region_id", "Pass the region ID as a query parameter."],
+  ["29", "country_code", "Pass the ISO 2 country code as a parameter."],
+  ["29", "region.countries[0].iso_2", "You can instead allow the customer to select a specific country."],
+  ["59", "formatPrice", "A utility function to format an amount with its currency."],
+  ["60", `"en-US"`, "If you use a different locale change it here."],
+  ["67", "selectedVariantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
+  ["69", "selectedVariant", "Use the selected variant for pricing."],
+  ["72", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
+  ["80", "price", "Compute the price of the selected or cheapest variant."],
+  ["87", "calculated_amount_with_tax", "Use the variant price's `calculated_amount_with_tax` property to display the price."],
+  ["126", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
+  ["127", "price", "Display the computed price."]
+]
+
+```tsx highlights={taxHighlight}
+"use client" // include with Next.js 13+
+
+import { useEffect, useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { useRegion } from "../providers/region"
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+export default function Product({ params: { id } }: Params) {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<
+    HttpTypes.StoreProduct | undefined
+  >()
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  const region = useRegion()
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const queryParams = new URLSearchParams({
+      fields: `*variants.calculated_price`,
+      region_id: region.id,
+      country_code: region.countries[0].iso_2
+    })
+
+    fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
+    })
+    .then((res) => res.json())
+    .then(({ product: dataProduct }) => {
+      setProduct(dataProduct)
+      setLoading(false)
+    })
+  }, [loading])
+
+  const selectedVariant = useMemo(() => {
+    if (
+      !product?.variants ||
+      !product.options || 
+      Object.keys(selectedOptions).length !== product.options?.length
+    ) {
+      return
+    }
+
+    return product.variants.find((variant) => variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    ))
+  }, [selectedOptions, product])
+
+  const formatPrice = (amount: number): string => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: region.currency_code,
+    })
+    .format(amount)
+  }
+
+  const selectedVariantPrice = useMemo(() => {
+    if (selectedVariant) {
+      return selectedVariant
+    }
+
+    return product?.variants?.sort((a: any, b: any) => {
+      return (
+        a.calculated_price.calculated_amount_with_tax -
+        b.calculated_price.calculated_amount_with_tax
+      )
+    })[0]
+  }, [selectedVariant, product])
+
+  const price = useMemo(() => {
+    if (!selectedVariantPrice) {
+      return
+    }
+
+    // @ts-ignore
+    return formatPrice(
+      selectedVariantPrice.calculated_price.calculated_amount_with_tax
+    )
+  }, [selectedVariantPrice])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {product && (
+        <>
+          <h1>{product.title}</h1>
+          {(product.options?.length || 0) > 0 && (
+            <ul>
+              {product.options!.map((option) => (
+                <li key={option.id}>
+                  {option.title}
+                  {option.values?.map((optionValue) => (
+                    <button 
+                      key={optionValue.id}
+                      onClick={() => {
+                        setSelectedOptions((prev) => {
+                          return {
+                            ...prev,
+                            [option.id!]: optionValue.value!,
+                          }
+                        })
+                      }}
+                    >
+                      {optionValue.value}
+                    </button>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedVariant && (
+            <span>Selected Variant: {selectedVariant.id}</span>
+          )}
+          {price && (
+            <span>
+              {!selectedVariant && "From: "}
+              {price}
+            </span>
+          )}
+          {product.images?.map((image) => (
+            <img src={image.url} key={image.id} />
+          ))}
+        </>
+      )}
+    </div>
+  )
+}
+```
+
+In this example, you:
+
+- Pass the selected region's ID and the code of its first country as query parameters to the [Get Product API route](https://docs.medusajs.com/v2/api/store#products_getproductsid).
+    - You can instead allow the customer to choose their country.
+- Display the selected variant's price by formatting its price's `calculated_amount_with_tax` property.
