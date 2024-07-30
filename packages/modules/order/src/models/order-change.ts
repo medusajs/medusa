@@ -114,6 +114,7 @@ export default class OrderChange {
 
   @ManyToOne(() => Return, {
     persist: false,
+    nullable: true,
   })
   return: Rel<Return>
 
@@ -129,6 +130,7 @@ export default class OrderChange {
 
   @ManyToOne(() => OrderClaim, {
     persist: false,
+    nullable: true,
   })
   claim: OrderClaim
 
@@ -144,6 +146,7 @@ export default class OrderChange {
 
   @ManyToOne(() => OrderExchange, {
     persist: false,
+    nullable: true,
   })
   exchange: OrderExchange
 

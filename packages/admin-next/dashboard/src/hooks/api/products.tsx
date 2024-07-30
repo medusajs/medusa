@@ -326,3 +326,48 @@ export const useDeleteProduct = (
     ...options,
   })
 }
+
+export const useExportProducts = (
+  query?: HttpTypes.AdminProductListParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminExportProductResponse,
+    FetchError,
+    HttpTypes.AdminExportProductRequest
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.product.export(payload, query),
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useImportProducts = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminImportProductResponse,
+    FetchError,
+    HttpTypes.AdminImportProductRequest
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.product.import(payload),
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useConfirmImportProducts = (
+  options?: UseMutationOptions<{}, FetchError, string>
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.product.confirmImport(payload),
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

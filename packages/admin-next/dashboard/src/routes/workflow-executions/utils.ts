@@ -93,6 +93,8 @@ export const getStepState = (
       return t("workflowExecutions.state.notStarted")
     case TransactionStepState.SKIPPED:
       return t("workflowExecutions.step.state.skipped")
+    case TransactionStepState.SKIPPED_FAILURE:
+      return t("workflowExecutions.step.state.skippedFailure")
     case TransactionStepState.DORMANT:
       return t("workflowExecutions.step.state.dormant")
     case TransactionStepState.TIMEOUT:

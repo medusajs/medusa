@@ -1,5 +1,5 @@
 import { ApiKeyDTO, CreateApiKeyDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
 import { createApiKeysStep } from "../steps"
 
 type WorkflowInput = { api_keys: CreateApiKeyDTO[] }

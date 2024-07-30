@@ -5,6 +5,7 @@ import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminPostCancelClaimReqSchema,
   AdminPostClaimItemsReqSchema,
   AdminPostClaimsAddItemsReqSchema,
   AdminPostClaimsRequestItemsActionReqSchema,
@@ -209,7 +210,6 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/claims/:id/request",
@@ -222,6 +222,11 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["DELETE"],
+    matcher: "/admin/claims/:id/request",
+    middlewares: [],
+  },
+  {
+    method: ["DELETE"],
     matcher: "/admin/claims/:id",
     middlewares: [],
   },
@@ -229,6 +234,7 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/claims/:id/cancel",
     middlewares: [
+      validateAndTransformBody(AdminPostCancelClaimReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

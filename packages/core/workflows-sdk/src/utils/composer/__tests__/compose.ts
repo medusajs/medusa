@@ -1,20 +1,20 @@
 import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
 import {
+  ModuleRegistrationName,
   composeMessage,
   createMedusaContainer,
-  ModuleRegistrationName,
   promiseAll,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import {
+  StepResponse,
   createStep,
   createWorkflow,
   hook,
   parallelize,
-  StepResponse,
   transform,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
-import { asValue } from "awilix"
 import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
 
 jest.setTimeout(30000)
@@ -1109,6 +1109,82 @@ describe("Workflow composer", function () {
             },
           },
         ],
+        obj: "return from 3",
+      })
+    })
+
+    it("should compose a new workflow and skip steps depending on the input", async () => {
+      const mockStep1Fn = jest.fn().mockImplementation((input) => {
+        if (input === 1) {
+          return StepResponse.skip()
+        } else {
+          return new StepResponse({ obj: "return from 1" })
+        }
+      })
+      const mockStep2Fn = jest.fn().mockImplementation((input) => {
+        if (!input) {
+          return StepResponse.skip()
+        }
+      })
+      const mockStep3Fn = jest.fn().mockImplementation((inputs) => {
+        return new StepResponse({
+          inputs,
+          obj: "return from 3",
+        })
+      })
+
+      const step1 = createStep("step1", mockStep1Fn)
+      const step2 = createStep("step2", mockStep2Fn)
+      const step3 = createStep("step3", mockStep3Fn)
+
+      const workflow = createWorkflow("workflow1", function (input) {
+        const returnStep1 = step1(input)
+        const ret2 = step2(returnStep1)
+        return step3({ one: returnStep1, two: ret2, input })
+      })
+
+      const { result: workflowResult, transaction } = await workflow().run({
+        input: 1,
+      })
+
+      expect(transaction.getFlow().hasSkippedSteps).toBe(true)
+      expect(mockStep3Fn.mock.calls[0][0]).toEqual({
+        input: 1,
+      })
+
+      expect(workflowResult).toEqual({
+        inputs: {
+          input: 1,
+        },
+        obj: "return from 3",
+      })
+
+      const { result: workflowResultTwo, transaction: transactionTwo } =
+        await workflow().run({
+          input: "none",
+        })
+
+      expect(transactionTwo.getFlow().hasSkippedSteps).toBe(false)
+      expect(mockStep3Fn.mock.calls[1][0]).toEqual({
+        one: {
+          obj: "return from 1",
+        },
+        two: {
+          __type: "Symbol(WorkflowWorkflowData)",
+        },
+        input: "none",
+      })
+
+      expect(workflowResultTwo).toEqual({
+        inputs: {
+          one: {
+            obj: "return from 1",
+          },
+          two: {
+            __type: "Symbol(WorkflowWorkflowData)",
+          },
+          input: "none",
+        },
         obj: "return from 3",
       })
     })

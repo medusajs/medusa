@@ -62,9 +62,6 @@ export async function cancelExchange(
       reference_id: exchangeOrder.return.id,
       details: {
         reference_id: item.item_id,
-        order_id: exchangeOrder.order_id,
-        exchange_id: exchangeOrder.id,
-        return_id: exchangeOrder.return.id,
         quantity: item.quantity,
       },
     })

@@ -1,27 +1,27 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  createMedusaContainer,
-  promiseAll,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
-import path from "path"
+import path, { join } from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import { configLoader, logger } from "@medusajs/framework"
-import expressLoader from "./express"
-import featureFlagsLoader from "./feature-flags"
+import {
+  configLoader,
+  container,
+  expressLoader,
+  featureFlagsLoader,
+  logger,
+  pgConnectionLoader,
+  SubscriberLoader,
+} from "@medusajs/framework"
 import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
-import { SubscriberLoader } from "./helpers/subscribers"
 import loadMedusaApp from "./medusa-app"
-import registerPgConnection from "./pg-connection"
 
 type Options = {
   directory: string
@@ -39,17 +39,11 @@ const shouldLoadBackgroundProcessors = (configModule) => {
   )
 }
 
-async function subscribersLoader(
-  plugins: PluginDetails[],
-  container: MedusaContainer
-) {
+async function subscribersLoader(plugins: PluginDetails[]) {
   /**
    * Load subscribers from the medusa/medusa package
    */
-  await new SubscriberLoader(
-    path.join(__dirname, "../subscribers"),
-    container
-  ).load()
+  await new SubscriberLoader(path.join(__dirname, "../subscribers")).load()
 
   /**
    * Load subscribers from all the plugins.
@@ -58,7 +52,7 @@ async function subscribersLoader(
     plugins.map(async (pluginDetails) => {
       await new SubscriberLoader(
         path.join(pluginDetails.resolve, "subscribers"),
-        container
+        pluginDetails.options
       ).load()
     })
   )
@@ -83,7 +77,7 @@ async function loadEntrypoints(
   )
 
   if (shouldLoadBackgroundProcessors(configModule)) {
-    await subscribersLoader(plugins, container)
+    await subscribersLoader(plugins)
     await jobsLoader(plugins)
   }
 
@@ -93,9 +87,8 @@ async function loadEntrypoints(
 
   const { shutdown } = await expressLoader({
     app: expressApp,
-    configModule,
-    rootDirectory,
   })
+
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     req.scope = container.createScope() as MedusaContainer
     req.requestId = (req.headers["x-request-id"] as string) ?? v4()
@@ -121,10 +114,13 @@ async function loadEntrypoints(
   return shutdown
 }
 
-export async function initializeContainer(rootDirectory: string) {
-  const container = createMedusaContainer()
+export async function initializeContainer(
+  rootDirectory: string
+): Promise<MedusaContainer> {
   const configModule = configLoader(rootDirectory, "medusa-config.js")
-  const featureFlagRouter = featureFlagsLoader(configModule, logger)
+  const featureFlagRouter = await featureFlagsLoader(
+    join(__dirname, "feature-flags")
+  )
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),
@@ -133,7 +129,7 @@ export async function initializeContainer(rootDirectory: string) {
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
-  await registerPgConnection({ container, configModule })
+  pgConnectionLoader()
   return container
 }
 

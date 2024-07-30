@@ -4,10 +4,11 @@ import {
   UpdateOrderChangeDTO,
 } from "@medusajs/types"
 import {
-  getSelectsAndRelationsFromObjectArray,
   ModuleRegistrationName,
+  deduplicate,
+  getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const cancelOrderChangeStepId = "cancel-order-change"
 export const cancelOrderChangeStep = createStep(
@@ -22,8 +23,18 @@ export const cancelOrderChangeStep = createStep(
       { objectFields: ["metadata"] }
     )
 
+    selects.push(
+      "order_id",
+      "return_id",
+      "claim_id",
+      "exchange_id",
+      "version",
+      "canceled_at",
+      "cancelled_by"
+    )
+
     const dataBeforeUpdate = await service.retrieveOrderChange(data.id, {
-      select: [...selects, "canceled_at"],
+      select: deduplicate(selects),
       relations,
     })
 

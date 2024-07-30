@@ -121,7 +121,9 @@
     "select": "Select",
     "browse": "Browse",
     "logout": "Logout",
-    "hide": "Hide"
+    "hide": "Hide",
+    "export": "Export",
+    "import": "Import"
   },
   "operators": {
     "in": "In"
@@ -205,6 +207,17 @@
         "general": "General",
         "developer": "Developer",
         "myAccount": "My Account"
+      }
+    }
+  },
+  "dataGrid": {
+    "editColumns": "Edit columns",
+    "shortcuts": {
+      "label": "Shortcuts",
+      "commands": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "edit": "Edit the current cell"
       }
     }
   },
@@ -330,6 +343,41 @@
         }
       },
       "successToast": "Product {{title}} was successfully created."
+    },
+    "export": {
+      "header": "Export Product List",
+      "description": "Export the product list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      },
+      "columns": {
+        "title": "Columns",
+        "description": "Customize the exported data to meet specific needs"
+      }
+    },
+    "import": {
+      "header": "Import Product List",
+      "description": "Import products by providing a CSV file in a pre-defined format",
+      "template": {
+        "title": "Unsure about how to arrange your list?",
+        "description": "Download the template below to ensure you are following the correct format."
+      },
+      "upload": {
+        "title": "Upload a CSV file",
+        "description": "Through imports you can add or update products. To update existing products you must use the existing handle and ID, to update existing variants you must use the existing ID. You will be asked for confirmation before we import products.",
+        "preprocessing": "Preprocessing...",
+        "productsToCreate": "Products will be created",
+        "productsToUpdate": "Products will be updated"
+      },
+      "success": {
+        "title": "We are processing your import",
+        "description": "Importing data may take a while. We will notify you when we are done."
+      }
     },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
@@ -999,6 +1047,15 @@
     },
     "delete": {
       "confirmation": "You are about to delete the stock location {{name}}. This action cannot be undone."
+    },
+    "fulfillmentProviders": {
+      "header": "Fulfillment Providers",
+      "shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
+      "label": "Connected fulfillment providers",
+      "connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
+      "noProviders": "This Stock Location is not connected to any fulfillment providers.",
+      "action": "Connect Providers",
+      "successToast": "Fulfillment providers for stock location were successfully updated."
     },
     "fulfillmentSets": {
       "pickup": {
@@ -2065,6 +2122,8 @@
       "runningState": "Running...",
       "awaitingState": "Awaiting",
       "failedState": "Failed",
+      "skippedState": "Skipped",
+      "skippedFailureState": "Skipped (Failure)",
       "definitionLabel": "Definition",
       "outputLabel": "Output",
       "compensateInputLabel": "Compensate input",
@@ -2087,6 +2146,7 @@
     "step": {
       "state": {
         "skipped": "Skipped",
+        "skippedFailure": "Skipped (Failure)",
         "dormant": "Dormant",
         "timeout": "Timeout"
       }

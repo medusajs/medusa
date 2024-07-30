@@ -41,10 +41,15 @@ export type Filter = {
 
 type DataTableFilterProps = {
   filters: Filter[]
+  readonly?: boolean
   prefix?: string
 }
 
-export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
+export const DataTableFilter = ({
+  filters,
+  readonly,
+  prefix,
+}: DataTableFilterProps) => {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const [open, setOpen] = useState(false)
@@ -127,6 +132,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
                   key={filter.key}
                   filter={filter}
                   prefix={prefix}
+                  readonly={readonly}
                   options={filter.options}
                   multiple={filter.multiple}
                   searchable={filter.searchable}
@@ -139,6 +145,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
                   key={filter.key}
                   filter={filter}
                   prefix={prefix}
+                  readonly={readonly}
                   openOnMount={filter.openOnMount}
                 />
               )
@@ -148,6 +155,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
                   key={filter.key}
                   filter={filter}
                   prefix={prefix}
+                  readonly={readonly}
                   openOnMount={filter.openOnMount}
                 />
               )
@@ -157,6 +165,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
                   key={filter.key}
                   filter={filter}
                   prefix={prefix}
+                  readonly={readonly}
                   openOnMount={filter.openOnMount}
                 />
               )
@@ -164,7 +173,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
               break
           }
         })}
-        {availableFilters.length > 0 && (
+        {!readonly && availableFilters.length > 0 && (
           <Popover.Root modal open={open} onOpenChange={setOpen}>
             <Popover.Trigger asChild id="filters_menu_trigger">
               <Button size="small" variant="secondary">
@@ -208,7 +217,7 @@ export const DataTableFilter = ({ filters, prefix }: DataTableFilterProps) => {
             </Popover.Portal>
           </Popover.Root>
         )}
-        {activeFilters.length > 0 && (
+        {!readonly && activeFilters.length > 0 && (
           <ClearAllFilters filters={filters} prefix={prefix} />
         )}
       </div>

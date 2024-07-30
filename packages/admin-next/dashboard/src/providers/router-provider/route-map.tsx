@@ -62,6 +62,14 @@ export const RouteMap: RouteObject[] = [
                     path: "create",
                     lazy: () => import("../../routes/products/product-create"),
                   },
+                  {
+                    path: "import",
+                    lazy: () => import("../../routes/products/product-import"),
+                  },
+                  {
+                    path: "export",
+                    lazy: () => import("../../routes/products/product-export"),
+                  },
                 ],
               },
               {
@@ -704,6 +712,10 @@ export const RouteMap: RouteObject[] = [
                 path: "currencies",
                 lazy: () => import("../../routes/store/store-add-currencies"),
               },
+              {
+                path: "metadata/edit",
+                lazy: () => import("../../routes/store/store-metadata"),
+              },
             ],
           },
           {
@@ -858,6 +870,13 @@ export const RouteMap: RouteObject[] = [
                     path: "sales-channels",
                     lazy: () =>
                       import("../../routes/locations/location-sales-channels"),
+                  },
+                  {
+                    path: "fulfillment-providers",
+                    lazy: () =>
+                      import(
+                        "../../routes/locations/location-fulfillment-providers"
+                      ),
                   },
                   {
                     path: "fulfillment-set/:fset_id",

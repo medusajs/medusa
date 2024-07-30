@@ -1,9 +1,4 @@
-import {
-  AdminBatchProductVariantInventoryItemRequest,
-  AdminBatchProductVariantInventoryItemResponse,
-  HttpTypes,
-  SelectParams,
-} from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -13,9 +8,48 @@ export class Product {
     this.client = client
   }
 
+  async import(
+    body: HttpTypes.AdminImportProductRequest,
+    query?: {},
+    headers?: ClientHeaders
+  ) {
+    const form = new FormData()
+    form.append("file", body.file)
+
+    return await this.client.fetch<HttpTypes.AdminImportProductResponse>(
+      `/admin/products/import`,
+      {
+        method: "POST",
+        headers: {
+          ...headers,
+          // Let the browser determine the content type.
+          "content-type": null,
+        },
+        body: form,
+        query,
+      }
+    )
+  }
+
+  async confirmImport(
+    transactionId: string,
+    query?: {},
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<{}>(
+      `/admin/products/import/${transactionId}/confirm`,
+      {
+        method: "POST",
+        headers,
+        body: {},
+        query,
+      }
+    )
+  }
+
   async export(
     body: HttpTypes.AdminExportProductRequest,
-    query?: SelectParams,
+    query?: HttpTypes.AdminProductListParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminExportProductResponse>(

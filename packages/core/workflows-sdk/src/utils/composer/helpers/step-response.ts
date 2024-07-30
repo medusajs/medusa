@@ -1,5 +1,8 @@
-import { PermanentStepFailureError } from "@medusajs/orchestration"
-import { isDefined, OrchestrationUtils } from "@medusajs/utils"
+import {
+  PermanentStepFailureError,
+  SkipStepResponse,
+} from "@medusajs/orchestration"
+import { OrchestrationUtils, isDefined } from "@medusajs/utils"
 
 /**
  * This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.
@@ -114,6 +117,10 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    */
   static permanentFailure(message = "Permanent failure"): never {
     throw new PermanentStepFailureError(message)
+  }
+
+  static skip(): SkipStepResponse {
+    return new SkipStepResponse()
   }
 
   /**
