@@ -22735,6 +22735,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
   dependencies:
+    "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/migrations": 5.9.7
@@ -22745,7 +22746,6 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    "@medusajs/framework": ^0.0.1
     "@medusajs/medusa": ">1.19"
     "@medusajs/modules-sdk": ^1.12.10
     axios: ^0.28.0
@@ -22753,8 +22753,6 @@ __metadata:
     get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
-    "@medusajs/framework":
-      optional: true
     "@medusajs/medusa":
       optional: true
     axios:
