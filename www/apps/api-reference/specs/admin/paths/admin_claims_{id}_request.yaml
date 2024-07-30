@@ -1,7 +1,7 @@
 post:
-  operationId: PostClaimsIdClaimItems
-  summary: Add Claim Items to Claim
-  description: Add a list of claim items to a claim.
+  operationId: PostClaimsIdRequest
+  summary: Add Requests to Claim
+  description: Add a list of requests to a claim.
   x-authenticated: true
   parameters:
     - name: id
@@ -22,20 +22,18 @@ post:
           data.
     - name: fields
       in: query
-      description: >-
-        Comma-separated fields that should be included in the returned data. if
-        a field is prefixed with `+` it will be added to the default fields,
-        using `-` will remove it from the default fields. without prefix it will
-        replace the entire default fields.
+      description: |-
+        Comma-separated fields that should be included in the returned data.
+         * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+         * without prefix it will replace the entire default fields.
       required: false
       schema:
         type: string
         title: fields
-        description: >-
+        description: |-
           Comma-separated fields that should be included in the returned data.
-          if a field is prefixed with `+` it will be added to the default
-          fields, using `-` will remove it from the default fields. without
-          prefix it will replace the entire default fields.
+           * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+           * without prefix it will replace the entire default fields.
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -69,19 +67,16 @@ post:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostClaimItemsReqSchema.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/admin_claims_{id}_claim-items/post.sh
+        $ref: ../code_samples/Shell/admin_claims_{id}_request/post.sh
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

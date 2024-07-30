@@ -144,6 +144,8 @@ paths:
     $ref: paths/admin_claims_{id}_outbound_shipping-method.yaml
   /admin/claims/{id}/outbound/shipping-method/{action_id}:
     $ref: paths/admin_claims_{id}_outbound_shipping-method_{action_id}.yaml
+  /admin/claims/{id}/request:
+    $ref: paths/admin_claims_{id}_request.yaml
   /admin/collections:
     $ref: paths/admin_collections.yaml
   /admin/collections/{id}:
