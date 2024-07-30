@@ -1,0 +1,13 @@
+{
+	"Currency": {
+		"filePath": "packages/modules/currency/src/models/currency.ts",
+		"properties": {
+			"code": "The ISO 3-character currency code. For example, `USD`.",
+			"symbol": "The symbol of the currency. For example, `$`.",
+			"symbol_native": "The native symbol of the currency, if it has a different local symbol.",
+			"name": "The name of the currency",
+			"decimal_digits": "How many digits are after the decimal separator for prices in this currency.",
+			"rounding": "The rounding percision of prices in this currency."
+		}
+	}
+}

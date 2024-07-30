@@ -1537,16 +1537,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
-            children: [
-              {
-                path: "/storefront-development/products/price/examples/show-price",
-                title: "Example: Show Variant Price",
-              },
-              {
-                path: "/storefront-development/products/price/examples/sale-price",
-                title: "Example: Show Sale Price",
-              },
-            ],
+            autogenerate_path: "storefront-development/products/price/examples",
           },
           {
             path: "/storefront-development/products/categories",

@@ -79,6 +79,7 @@
     "express-session": "^1.17.3",
     "ioredis": "^5.2.5",
     "ioredis-mock": "8.4.0",
+    "medusa-telemetry": "^0.0.18",
     "morgan": "^1.9.1"
   }
 }
