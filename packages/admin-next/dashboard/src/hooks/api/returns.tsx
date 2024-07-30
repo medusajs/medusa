@@ -391,10 +391,10 @@ export const useUpdateReceiveItem = (
   })
 }
 
-export const useRemoveReceiveItem = (
+export const useRemoveReceiveItems = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
 ) => {
   return useMutation({
     mutationFn: (actionId: string) => {

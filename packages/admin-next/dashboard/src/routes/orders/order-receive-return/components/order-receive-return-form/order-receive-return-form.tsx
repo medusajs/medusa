@@ -14,8 +14,10 @@ import { ReceiveReturnSchema } from "./constants"
 import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
+  useAddReceiveItems,
   useCancelReceiveReturn,
   useConfirmReturnReceive,
+  useRemoveReceiveItems,
   useUpdateReceiveItem,
 } from "../../../../../hooks/api/returns"
 import WrittenOffQuantity from "./written-off-quantity"
@@ -55,7 +57,15 @@ export function OrderReceiveReturnForm({
     order.id
   )
 
+  const { mutateAsync: addReceiveItems } = useAddReceiveItems(
+    orderReturn.id,
+    order.id
+  )
   const { mutateAsync: updateReceiveItem } = useUpdateReceiveItem(
+    orderReturn.id,
+    order.id
+  )
+  const { mutateAsync: removeReceiveItem } = useRemoveReceiveItems(
     orderReturn.id,
     order.id
   )
@@ -127,17 +137,58 @@ export function OrderReceiveReturnForm({
     }
   })
 
-  const handleQuantityChange = async (itemId: string, value: number | null) => {
-    const action = previewItems
-      ?.find((i) => i.id === itemId)
-      ?.actions?.find((a) => a.action === "RECEIVE_RETURN_ITEM")
+  const handleQuantityChange = async (
+    itemId: string,
+    value: number | null,
+    index: number
+  ) => {
+    const item = previewItems?.find((i) => i.id === itemId)
+    const action = item?.actions?.find(
+      (a) => a.action === "RECEIVE_RETURN_ITEM"
+    )
 
-    if (action) {
-      try {
+    if (typeof value === "number" && value < 0) {
+      form.setValue(
+        `items.${index}.quantity`,
+        item.detail.return_received_quantity,
+        { shouldTouch: true, shouldDirty: true }
+      )
+
+      toast.error(t("orders.returns.receive.toast.errorNegativeValue"))
+
+      return
+    }
+
+    if (typeof value === "number" && value > item.quantity) {
+      // reset value in the form and notify the user to be aware that we didn't chang anything
+
+      form.setValue(
+        `items.${index}.quantity`,
+        item.detail.return_received_quantity,
+        { shouldTouch: true, shouldDirty: true }
+      )
+
+      toast.error(t("orders.returns.receive.toast.errorLargeValue"))
+
+      return
+    }
+
+    try {
+      if (action) {
+        if (value === null || value === 0) {
+          await removeReceiveItem(action.id)
+
+          return
+        }
+
         await updateReceiveItem({ actionId: action.id, quantity: value })
-      } catch (e) {
-        toast.error(e.message)
+      } else {
+        if (typeof value === "number" && value > 0 && value <= item.quantity) {
+          await addReceiveItems({ items: [{ id: item.id, quantity: value }] })
+        }
       }
+    } catch (e) {
+      toast.error(e.message)
     }
   }
 
@@ -231,10 +282,12 @@ export function OrderReceiveReturnForm({
                                       : parseFloat(e.target.value)
 
                                   onChange(value)
-
-                                  handleQuantityChange(item.id, value)
                                 }}
                                 {...field}
+                                onBlur={() => {
+                                  field.onBlur()
+                                  handleQuantityChange(item.id, value, ind)
+                                }}
                               />
                             </Form.Control>
                           </Form.Item>
