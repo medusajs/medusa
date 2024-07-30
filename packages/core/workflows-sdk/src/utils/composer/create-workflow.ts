@@ -20,6 +20,18 @@ import {
 global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 
 /**
+ * Workflow response class encapsulates the return value of a workflow
+ */
+export class WorkflowResponse<TData, THooks> {
+  constructor(public $result: TData, public options: { hooks: THooks }) {}
+  static unWrapResult(value: unknown) {
+    return value && typeof value === "object" && "$result" in value
+      ? value.$result
+      : value
+  }
+}
+
+/**
  * This function creates a workflow with the provided name and a constructor function.
  * The constructor function builds the workflow from steps created by the {@link createStep} function.
  * The returned workflow is an exported workflow of type {@link ReturnWorkflow}, meaning it's not executed right away. To execute it,
@@ -74,11 +86,7 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  * }
  */
 
-export function createWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function> = Record<string, Function>
->(
+export function createWorkflow<TData, TResult, THooks extends any[]>(
   /**
    * The name of the workflow or its configuration.
    */
@@ -88,7 +96,7 @@ export function createWorkflow<
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
    * You'll have to use the {@link transform} function if you need to directly manipulate data.
    */
-  composer: (input: WorkflowData<TData>) =>
+  composer: (input: WorkflowData<TData>) => WorkflowResponse<
     | void
     | WorkflowData<TResult>
     | {
@@ -96,7 +104,9 @@ export function createWorkflow<
           | WorkflowData<TResult[K]>
           | WorkflowDataProperties<TResult[K]>
           | TResult[K]
-      }
+      },
+    THooks
+  >
 ): ReturnWorkflow<TData, TResult, THooks> {
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig

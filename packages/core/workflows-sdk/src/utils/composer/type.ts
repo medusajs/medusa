@@ -9,6 +9,7 @@ import {
 } from "@medusajs/orchestration"
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ExportedWorkflow } from "../../helper"
+import { Hook } from "./create-hook"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
@@ -23,6 +24,17 @@ type StepFunctionReturnConfig<TOutput> = {
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
+
+/**
+ * Helper to convert an array of hooks to functions
+ */
+type ConvertHooksToFunctions<THooks extends any[]> = {
+  [K in keyof THooks]: THooks[K] extends Hook<infer Name, infer Input>
+    ? {
+        [Fn in Name]: (callback: (input: Input) => any) => void
+      }
+    : never
+}[number]
 
 /**
  * A step function to be used in a workflow.
@@ -192,11 +204,7 @@ export type WorkflowTransactionContext = StepExecutionContext &
  * }
  * ```
  */
-export type ReturnWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function>
-> = {
+export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
@@ -204,24 +212,23 @@ export type ReturnWorkflow<
     "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
-} & THooks & {
-    runAsStep: ({
-      input,
-    }: {
-      input: TData | WorkflowData<TData>
-    }) => ReturnType<StepFunction<TData, TResult>>
-    run: <TDataOverride = undefined, TResultOverride = undefined>(
-      ...args: Parameters<
-        ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
-      >
-    ) => ReturnType<
+} & {
+  runAsStep: ({
+    input,
+  }: {
+    input: TData | WorkflowData<TData>
+  }) => ReturnType<StepFunction<TData, TResult>>
+  run: <TDataOverride = undefined, TResultOverride = undefined>(
+    ...args: Parameters<
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
     >
-    // TODO
-    hooks: Record<string, any>
-    getName: () => string
-    config: (config: TransactionModelOptions) => void
-  }
+  ) => ReturnType<
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
+  >
+  getName: () => string
+  config: (config: TransactionModelOptions) => void
+  hooks: ConvertHooksToFunctions<THooks>
+}
 
 /**
  * Extract the raw type of the expected input data of a workflow.
