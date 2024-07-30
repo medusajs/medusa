@@ -34,6 +34,17 @@ export function OrderReceiveReturnForm({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  /**
+   * Items on the preview order that are part of the return we are receiving currently.
+   */
+  const previewItems = useMemo(() => {
+    const idsMap = {}
+
+    orderReturn.items.forEach((i) => (idsMap[i.item_id] = true))
+
+    return preview.items.filter((i) => idsMap[i.id])
+  }, [preview.items, orderReturn])
+
   const { mutateAsync: confirmReturnReceive } = useConfirmReturnReceive(
     orderReturn.id,
     order.id
@@ -65,7 +76,7 @@ export function OrderReceiveReturnForm({
 
   const form = useForm<zod.infer<typeof ReceiveReturnSchema>>({
     defaultValues: {
-      items: preview.items
+      items: previewItems
         ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
         .map((i) => ({
           item_id: i.id,
@@ -78,7 +89,7 @@ export function OrderReceiveReturnForm({
   })
 
   useEffect(() => {
-    preview.items
+    previewItems
       ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
       .forEach((item, index) => {
         form.setValue(
@@ -92,7 +103,7 @@ export function OrderReceiveReturnForm({
           { shouldTouch: true, shouldDirty: true }
         )
       })
-  }, [preview.items])
+  }, [previewItems])
 
   /**
    * HANDLERS
@@ -117,7 +128,7 @@ export function OrderReceiveReturnForm({
   })
 
   const handleQuantityChange = async (itemId: string, value: number | null) => {
-    const action = preview.items
+    const action = previewItems
       ?.find((i) => i.id === itemId)
       ?.actions?.find((a) => a.action === "RECEIVE_RETURN_ITEM")
 
@@ -162,7 +173,7 @@ export function OrderReceiveReturnForm({
               {t("orders.returns.receive.itemsLabel")}
             </span>
           </div>
-          {preview.items.map((item, ind) => {
+          {previewItems.map((item, ind) => {
             const originalItem = itemsMap[item.id]
 
             return (
