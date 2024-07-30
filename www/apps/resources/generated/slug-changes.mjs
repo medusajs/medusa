@@ -1500,9 +1500,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems",
+    "newSlug": "/references/order/createOrderClaimItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims",
     "newSlug": "/references/order/createOrderClaims",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems",
+    "newSlug": "/references/order/createOrderExchangeItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchanges",
@@ -1585,9 +1595,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages",
+    "newSlug": "/references/order/deleteOrderClaimItemImages",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems",
+    "newSlug": "/references/order/deleteOrderClaimItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims",
     "newSlug": "/references/order/deleteOrderClaims",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems",
+    "newSlug": "/references/order/deleteOrderExchangeItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchanges",
@@ -2025,21 +2050,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.Address/page.mdx"
   },
   {
-    "origSlug": "/references/order_models/classes/order_models.ClaimItem",
-    "newSlug": "/references/order/models/ClaimItem",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItem/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ClaimItemImage",
-    "newSlug": "/references/order/models/ClaimItemImage",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItemImage/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ExchangeItem",
-    "newSlug": "/references/order/models/ExchangeItem",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ExchangeItem/page.mdx"
-  },
-  {
     "origSlug": "/references/order_models/classes/order_models.LineItem",
     "newSlug": "/references/order/models/LineItem",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItem/page.mdx"
@@ -2075,9 +2085,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaim/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderClaimItem",
+    "newSlug": "/references/order/models/OrderClaimItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderClaimItemImage",
+    "newSlug": "/references/order/models/OrderClaimItemImage",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItemImage/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderExchange",
     "newSlug": "/references/order/models/OrderExchange",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchange/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderExchangeItem",
+    "newSlug": "/references/order/models/OrderExchangeItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchangeItem/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.OrderItem",
