@@ -63,12 +63,6 @@ export function OrderReceiveReturnForm({
     return ret
   }, [order.items])
 
-  const returnItemsMap = useMemo(() => {
-    const ret = {}
-    orderReturn.items.forEach((i) => (ret[i.item_id] = i))
-    return ret
-  }, [orderReturn.items])
-
   const form = useForm<zod.infer<typeof ReceiveReturnSchema>>({
     defaultValues: {
       items: preview.items
@@ -170,7 +164,6 @@ export function OrderReceiveReturnForm({
           </div>
           {preview.items.map((item, ind) => {
             const originalItem = itemsMap[item.id]
-            const returnItem = returnItemsMap[item.id]
 
             return (
               <div
@@ -206,7 +199,6 @@ export function OrderReceiveReturnForm({
                       index={ind}
                       returnId={orderReturn.id}
                       orderId={order.id}
-                      returnItemId={returnItem.id}
                     />
                     <Form.Field
                       control={form.control}

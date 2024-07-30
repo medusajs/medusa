@@ -17,7 +17,6 @@ import {
 type WriteOffQuantityProps = {
   returnId: string
   orderId: string
-  returnItemId: string
   index: number
   item: AdminOrderLineItem
   form: UseFormReturn<typeof ReceiveReturnSchema>
@@ -29,7 +28,6 @@ function WrittenOffQuantity({
   index,
   returnId,
   orderId,
-  returnItemId,
 }: WriteOffQuantityProps) {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
@@ -56,7 +54,7 @@ function WrittenOffQuantity({
       try {
         // TODO: look into actions to see if the item is already added
         await addDismissedItems({
-          items: [{ id: returnItemId, quantity: value }],
+          items: [{ id: item.id, quantity: value }],
         })
       } catch (e) {
         toast.error(e.message)
