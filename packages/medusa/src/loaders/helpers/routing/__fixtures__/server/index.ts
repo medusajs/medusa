@@ -4,20 +4,23 @@ import {
   registerMedusaModule,
 } from "@medusajs/modules-sdk"
 import {
-  ContainerRegistrationKeys,
-  createMedusaContainer,
-  generateJwtToken,
-} from "@medusajs/utils"
+  configManager,
+  ConfigModule,
+  container,
+  featureFlagsLoader,
+  logger,
+} from "@medusajs/framework"
+import { ContainerRegistrationKeys, generateJwtToken } from "@medusajs/utils"
 import { asValue } from "awilix"
 import express from "express"
 import querystring from "querystring"
 import supertest from "supertest"
 import apiLoader from "../../../../api"
 import { getResolvedPlugins } from "../../../../helpers/resolve-plugins"
-import { featureFlagRouter, featureFlagsLoader } from "@medusajs/framework"
 
 import RoutesLoader from "../.."
 import { config } from "../mocks"
+import { MedusaContainer } from "@medusajs/types"
 
 function asArray(resolvers) {
   return {
@@ -44,15 +47,18 @@ export const createServer = async (rootDir) => {
     )[moduleKey]
   })
 
-  const container = createMedusaContainer()
+  configManager.loadConfig({
+    projectConfig: config as ConfigModule,
+    baseDir: rootDir,
+  })
 
-  container.registerAdd = function (name, registration) {
+  container.registerAdd = function (this: MedusaContainer, name, registration) {
     const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
       this.register(storeKey, asValue([]))
     }
-    const store = this.resolve(storeKey)
+    const store = this.resolve(storeKey) as Array<any>
 
     if (this.registrations[name] === undefined) {
       this.register(name, asArray(store))
@@ -63,7 +69,6 @@ export const createServer = async (rootDir) => {
   }.bind(container)
 
   container.register(ContainerRegistrationKeys.PG_CONNECTION, asValue({}))
-  container.register("featureFlagRouter", asValue(featureFlagRouter))
   container.register("configModule", asValue(config))
   container.register({
     logger: asValue({
@@ -87,11 +92,11 @@ export const createServer = async (rootDir) => {
 
   const plugins = getResolvedPlugins(rootDir, config) || []
 
-  featureFlagsLoader(config)
-  await moduleLoader({ container, moduleResolutions })
+  await featureFlagsLoader(rootDir)
+  await moduleLoader({ container, moduleResolutions, logger })
 
   app.use((req, res, next) => {
-    req.scope = container.createScope()
+    req.scope = container.createScope() as MedusaContainer
     next()
   })
 

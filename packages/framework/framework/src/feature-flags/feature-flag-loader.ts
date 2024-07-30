@@ -24,6 +24,7 @@ container.register(
 )
 
 const excludedFiles = ["index.js", "index.ts"]
+const excludedExtensions = [".d.ts", ".d.ts.map", ".js.map"]
 const flagConfig: Record<string, boolean | Record<string, boolean>> = {}
 
 function registerFlag(
@@ -100,7 +101,10 @@ export async function featureFlagsLoader(
           return await featureFlagsLoader(join(flagDir, file.name))
         }
 
-        if (file.name.endsWith(".d.ts") || excludedFiles.includes(file.name)) {
+        if (
+          excludedExtensions.some((ext) => file.name.endsWith(ext)) ||
+          excludedFiles.includes(file.name)
+        ) {
           return
         }
 
