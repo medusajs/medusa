@@ -9,6 +9,7 @@ export const defaultAdminClaimFields = [
   "refund_amount",
   "created_at",
   "updated_at",
+  "canceled_at",
 ]
 
 export const defaultAdminDetailsClaimFields = [
