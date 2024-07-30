@@ -6,8 +6,6 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  // in case it is not install as it is optional and required only when using this util
-  // @ts-ignore
   const { configManager, pgConnectionLoader, container } = await import(
     "@medusajs/framework"
   )
