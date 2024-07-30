@@ -3,7 +3,7 @@ import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
-import path from "path"
+import path, { join } from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
@@ -12,10 +12,10 @@ import {
   configLoader,
   container,
   expressLoader,
+  featureFlagsLoader,
   logger,
   pgConnectionLoader,
 } from "@medusajs/framework"
-import featureFlagsLoader from "./feature-flags"
 import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
@@ -120,9 +120,13 @@ async function loadEntrypoints(
   return shutdown
 }
 
-export function initializeContainer(rootDirectory: string): MedusaContainer {
+export async function initializeContainer(
+  rootDirectory: string
+): Promise<MedusaContainer> {
   const configModule = configLoader(rootDirectory, "medusa-config.js")
-  const featureFlagRouter = featureFlagsLoader(configModule, logger)
+  const featureFlagRouter = await featureFlagsLoader(
+    join(__dirname, "feature-flags")
+  )
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),
@@ -143,7 +147,7 @@ export default async ({
   app: Express
   shutdown: () => Promise<void>
 }> => {
-  const container = initializeContainer(rootDirectory)
+  const container = await initializeContainer(rootDirectory)
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )

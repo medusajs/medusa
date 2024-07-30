@@ -32,6 +32,12 @@
       "import": "./dist/database/index.js",
       "require": "./dist/database/index.js",
       "node": "./dist/database/index.js"
+    },
+    "./feature-flag": {
+      "types": "./dist/feature-flags/index.d.ts",
+      "import": "./dist/feature-flags/index.js",
+      "require": "./dist/feature-flags/index.js",
+      "node": "./dist/feature-flags/index.js"
     }
   },
   "engines": {
@@ -73,6 +79,7 @@
     "express-session": "^1.17.3",
     "ioredis": "^5.2.5",
     "ioredis-mock": "8.4.0",
+    "medusa-telemetry": "^0.0.18",
     "morgan": "^1.9.1"
   }
 }
