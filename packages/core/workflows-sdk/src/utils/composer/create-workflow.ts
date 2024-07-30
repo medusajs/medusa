@@ -123,10 +123,13 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     workflowId: name,
     flow: WorkflowManager.getEmptyTransactionDefinition(),
     handlers,
-    hooks_: [],
+    hooks_: {
+      declared: [],
+      registered: [],
+    },
     hooksCallback_: {},
     hookBinder: (name, fn) => {
-      context.hooks_.push(name)
+      context.hooks_.declared.push(name)
       context.hooksCallback_[name] = fn.bind(context)()
     },
     stepBinder: (fn) => {
@@ -179,7 +182,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     return expandedFlow
   }
 
-  for (const hook of context.hooks_) {
+  for (const hook of context.hooks_.declared) {
     mainFlow["hooks"] ??= {}
     mainFlow["hooks"][hook] = context.hooksCallback_[hook].bind(context)
   }

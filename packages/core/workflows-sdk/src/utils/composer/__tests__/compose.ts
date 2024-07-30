@@ -1,6 +1,7 @@
 import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
 import {
   ModuleRegistrationName,
+  SymbolWorkflowHook,
   composeMessage,
   createMedusaContainer,
   promiseAll,
@@ -8,6 +9,7 @@ import {
 import { asValue } from "awilix"
 import {
   StepResponse,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   hook,
@@ -16,6 +18,7 @@ import {
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
 import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
+import { createHook } from "../create-hook"
 
 jest.setTimeout(30000)
 
@@ -878,9 +881,7 @@ describe("Workflow composer", function () {
       expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
     })
 
-    it("should compose a new workflow exposing hooks and log warns if multiple handlers are registered for the same hook", async () => {
-      const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
-
+    it("should throw error when multiple handlers are defined for a single hook", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
         return { id: input, product: "product_1", variant: "variant_2" }
       })
@@ -896,23 +897,16 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const data = getData({ input })
 
-        const hookReturn = hook("changeProduct", {
+        const hookReturn = createHook("changeProduct", {
           opinionatedPropertyName: data,
         })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
 
-        return saveProduct({ product: transformedData })
+        return new WorkflowResponse(saveProduct({ product: data }), {
+          hooks: [hookReturn],
+        })
       })
 
-      workflow.changeProduct(({ opinionatedPropertyName }) => {
+      workflow.hooks.changeProduct(({ opinionatedPropertyName }) => {
         return {
           newProperties: "new properties",
           prod: opinionatedPropertyName.product + "**",
@@ -927,33 +921,35 @@ describe("Workflow composer", function () {
         }
       })
 
-      workflow.changeProduct((theReturnOfThePreviousHook) => {
-        return {
-          ...theReturnOfThePreviousHook,
-          moreProperties: "2nd hook update",
-        }
-      })
+      expect(() =>
+        workflow.hooks.changeProduct((theReturnOfThePreviousHook) => {
+          return {
+            ...theReturnOfThePreviousHook,
+            moreProperties: "2nd hook update",
+          }
+        })
+      ).toThrow(
+        "Cannot define multiple hook handlers for the changeProduct hook"
+      )
 
       const workflowInput = "id_123"
       const { result: final } = await workflow().run({
         input: workflowInput,
       })
 
-      expect(warn).toHaveBeenCalledTimes(1)
       expect(final).toEqual({
         id: "id_123",
-        prod: "product_1**",
-        var: "variant_2**",
+        // prod: "product_1**",
+        // var: "variant_2**",
         variant: "variant_2",
         product: "Saved product - product_1",
-        newProperties: "new properties",
-        other: [1, 2, 3],
-        nested: {
-          a: {
-            b: "c",
-          },
-        },
-        moreProperties: "more properties",
+        // newProperties: "new properties",
+        // other: [1, 2, 3],
+        // nested: {
+        //   a: {
+        //     b: "c",
+        //   },
+        // },
       })
     })
   })
@@ -1858,9 +1854,7 @@ describe("Workflow composer", function () {
       expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
     })
 
-    it("should compose a new workflow exposing hooks and log warns if multiple handlers are registered for the same hook", async () => {
-      const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
-
+    it("should throw error when multiple handlers for the same hook are defined", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
         return new StepResponse({
           id: input,
@@ -1880,23 +1874,16 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const data = getData({ input })
 
-        const hookReturn = hook("changeProduct", {
+        const hookReturn = createHook("changeProduct", {
           opinionatedPropertyName: data,
         })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
 
-        return saveProduct({ product: transformedData })
+        return new WorkflowResponse(saveProduct({ product: data }), {
+          hooks: [hookReturn],
+        })
       })
 
-      workflow.changeProduct(({ opinionatedPropertyName }) => {
+      workflow.hooks.changeProduct(({ opinionatedPropertyName }) => {
         return {
           newProperties: "new properties",
           prod: opinionatedPropertyName.product + "**",
@@ -1911,33 +1898,36 @@ describe("Workflow composer", function () {
         }
       })
 
-      workflow.changeProduct((theReturnOfThePreviousHook) => {
-        return {
-          ...theReturnOfThePreviousHook,
-          moreProperties: "2nd hook update",
-        }
-      })
+      expect(() =>
+        workflow.hooks.changeProduct((theReturnOfThePreviousHook) => {
+          return {
+            ...theReturnOfThePreviousHook,
+            moreProperties: "2nd hook update",
+          }
+        })
+      ).toThrow(
+        "Cannot define multiple hook handlers for the changeProduct hook"
+      )
 
       const workflowInput = "id_123"
       const { result: final } = await workflow().run({
         input: workflowInput,
       })
 
-      expect(warn).toHaveBeenCalledTimes(1)
       expect(final).toEqual({
         id: "id_123",
-        prod: "product_1**",
-        var: "variant_2**",
+        // prod: "product_1**",
+        // var: "variant_2**",
         variant: "variant_2",
         product: "Saved product - product_1",
-        newProperties: "new properties",
-        other: [1, 2, 3],
-        nested: {
-          a: {
-            b: "c",
-          },
-        },
-        moreProperties: "more properties",
+        // newProperties: "new properties",
+        // other: [1, 2, 3],
+        // nested: {
+        //   a: {
+        //     b: "c",
+        //   },
+        // },
+        // moreProperties: "more properties",
       })
     })
   })

@@ -86,7 +86,10 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
 
 export type CreateWorkflowComposerContext = {
   __type: string
-  hooks_: string[]
+  hooks_: {
+    declared: string[]
+    registered: string[]
+  }
   hooksCallback_: Record<string, any>
   workflowId: string
   flow: OrchestratorBuilder

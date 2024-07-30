@@ -53,6 +53,14 @@ export function createHook<Name extends string, TInvokeInput>(
         invokeFn,
         compensateFn,
       })
+
+      if (this.hooks_.registered.includes(name)) {
+        throw new Error(
+          `Cannot define multiple hook handlers for the ${name} hook`
+        )
+      }
+
+      this.hooks_.registered.push(name)
       this.handlers.set(name, handlers)
     }
 
