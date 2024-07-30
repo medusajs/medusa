@@ -1,12 +1,18 @@
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProductTags } from "../../../../../hooks/api"
 import { useProductTagTableColumns } from "../../../../../hooks/table/columns"
 import { useProductTagTableFilters } from "../../../../../hooks/table/filters"
 import { useProductTagTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 
 const PAGE_SIZE = 20
 
@@ -19,7 +25,7 @@ export const ProductTagListTable = () => {
   const { product_tags, count, isPending, isError, error } =
     useProductTags(searchParams)
 
-  const columns = useProductTagTableColumns()
+  const columns = useColumns()
   const filters = useProductTagTableFilters()
 
   const { table } = useDataTable({
@@ -56,5 +62,56 @@ export const ProductTagListTable = () => {
         orderBy={["value", "created_at", "updated_at"]}
       />
     </Container>
+  )
+}
+
+const ProductTagRowActions = ({
+  productTag,
+}: {
+  productTag: HttpTypes.AdminProductTag
+}) => {
+  const { t } = useTranslation()
+  const handleDelete = useDeleteProductTagAction({ productTag })
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: t("actions.edit"),
+              to: `${productTag.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: handleDelete,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const columnHelper = createColumnHelper<HttpTypes.AdminProductTag>()
+
+const useColumns = () => {
+  const base = useProductTagTableColumns()
+
+  return useMemo(
+    () => [
+      ...base,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <ProductTagRowActions productTag={row.original} />,
+      }),
+    ],
+    [base]
   )
 }

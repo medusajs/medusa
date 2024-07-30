@@ -969,6 +969,13 @@ export const RouteMap: RouteObject[] = [
                   crumb: (data: HttpTypes.AdminProductTagResponse) =>
                     data.product_tag.value,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/product-tags/product-tag-edit"),
+                  },
+                ],
               },
             ],
           },

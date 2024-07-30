@@ -30,7 +30,11 @@ export const ProductTagCreateForm = () => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
       onSuccess: ({ product_tag }) => {
-        toast.success(t("productTags.create.successToast"))
+        toast.success(
+          t("productTags.create.successToast", {
+            value: product_tag.value,
+          })
+        )
         handleSuccess(`../${product_tag.id}`)
       },
       onError: (error) => {
@@ -49,10 +53,14 @@ export const ProductTagCreateForm = () => {
         <RouteFocusModal.Body className="flex flex-1 justify-center overflow-auto px-6 py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div className="flex flex-col gap-y-1">
-              <Heading>{t("productTags.create.header")}</Heading>
-              <Text size="small" className="text-ui-fg-subtle">
-                {t("productTags.create.subtitle")}
-              </Text>
+              <RouteFocusModal.Title asChild>
+                <Heading>{t("productTags.create.header")}</Heading>
+              </RouteFocusModal.Title>
+              <RouteFocusModal.Description asChild>
+                <Text size="small" className="text-ui-fg-subtle">
+                  {t("productTags.create.subtitle")}
+                </Text>
+              </RouteFocusModal.Description>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
               <Form.Field
