@@ -54,6 +54,33 @@ function WrittenOffQuantity({
       (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
     )
 
+    if (typeof value === "number" && value < 0) {
+      form.setValue(
+        `items.${index}.written_off_quantity`,
+        item.detail.written_off_quantity,
+        { shouldTouch: true, shouldDirty: true }
+      )
+
+      toast.error(t("orders.returns.receive.toast.errorNegativeValue"))
+
+      return
+    }
+
+    if (
+      typeof value === "number" &&
+      value > item.quantity - item.detail.return_received_quantity
+    ) {
+      form.setValue(
+        `items.${index}.written_off_quantity`,
+        item.detail.written_off_quantity,
+        { shouldTouch: true, shouldDirty: true }
+      )
+
+      toast.error(t("orders.returns.receive.toast.errorLargeDamagedValue"))
+
+      return
+    }
+
     try {
       if (value) {
         if (!action) {
