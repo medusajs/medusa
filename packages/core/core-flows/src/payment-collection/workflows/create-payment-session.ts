@@ -1,6 +1,7 @@
 import { PaymentProviderContext, PaymentSessionDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -19,7 +20,9 @@ interface WorkflowInput {
 export const createPaymentSessionsWorkflowId = "create-payment-sessions"
 export const createPaymentSessionsWorkflow = createWorkflow(
   createPaymentSessionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<PaymentSessionDTO> => {
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<PaymentSessionDTO>> => {
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
       fields: ["id", "amount", "currency_code", "payment_sessions.*"],
@@ -62,6 +65,6 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       })
     )
 
-    return created
+    return new WorkflowResponse(created)
   }
 )

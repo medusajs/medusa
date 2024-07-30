@@ -1,6 +1,7 @@
 import { PricingTypes, UpdatePriceListPricesWorkflowDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
@@ -15,15 +16,17 @@ export const updatePriceListPricesWorkflow = createWorkflow(
     input: WorkflowData<{
       data: UpdatePriceListPricesWorkflowDTO[]
     }>
-  ): WorkflowData<PricingTypes.PriceDTO[]> => {
+  ): WorkflowResponse<WorkflowData<PricingTypes.PriceDTO[]>> => {
     const [_, variantPriceMap] = parallelize(
       validatePriceListsStep(input.data),
       validateVariantPriceLinksStep(input.data)
     )
 
-    return updatePriceListPricesStep({
-      data: input.data,
-      variant_price_map: variantPriceMap,
-    })
+    return new WorkflowResponse(
+      updatePriceListPricesStep({
+        data: input.data,
+        variant_price_map: variantPriceMap,
+      })
+    )
   }
 )

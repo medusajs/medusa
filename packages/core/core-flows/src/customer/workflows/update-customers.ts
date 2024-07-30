@@ -3,7 +3,11 @@ import {
   CustomerUpdatableFields,
   FilterableCustomerProps,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateCustomersStep } from "../steps"
 
 type UpdateCustomersStepInput = {
@@ -16,7 +20,9 @@ type WorkflowInput = UpdateCustomersStepInput
 export const updateCustomersWorkflowId = "update-customers"
 export const updateCustomersWorkflow = createWorkflow(
   updateCustomersWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerDTO[]> => {
-    return updateCustomersStep(input)
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<CustomerDTO[]>> => {
+    return new WorkflowResponse(updateCustomersStep(input))
   }
 )

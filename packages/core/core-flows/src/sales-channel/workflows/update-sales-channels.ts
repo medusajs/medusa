@@ -3,7 +3,11 @@ import {
   SalesChannelDTO,
   UpdateSalesChannelDTO,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateSalesChannelsStep } from "../steps/update-sales-channels"
 
 type UpdateSalesChannelsStepInput = {
@@ -16,7 +20,7 @@ export const updateSalesChannelsWorkflow = createWorkflow(
   updateSalesChannelsWorkflowId,
   (
     input: WorkflowData<UpdateSalesChannelsStepInput>
-  ): WorkflowData<SalesChannelDTO[]> => {
-    return updateSalesChannelsStep(input)
+  ): WorkflowResponse<WorkflowData<SalesChannelDTO[]>> => {
+    return new WorkflowResponse(updateSalesChannelsStep(input))
   }
 )

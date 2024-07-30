@@ -1,4 +1,8 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 
 import { deleteInventoryLevelsStep } from "../steps"
 
@@ -9,7 +13,9 @@ export const deleteInventoryLevelsWorkflowId =
   "delete-inventory-levels-workflow"
 export const deleteInventoryLevelsWorkflow = createWorkflow(
   deleteInventoryLevelsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<string[]> => {
-    return deleteInventoryLevelsStep(input.ids)
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<string[]>> => {
+    return new WorkflowResponse(deleteInventoryLevelsStep(input.ids))
   }
 )

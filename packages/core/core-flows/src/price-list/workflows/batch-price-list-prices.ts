@@ -4,6 +4,7 @@ import {
 } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -19,7 +20,7 @@ export const batchPriceListPricesWorkflow = createWorkflow(
     input: WorkflowData<{
       data: BatchPriceListPricesWorkflowDTO
     }>
-  ): WorkflowData<BatchPriceListPricesWorkflowResult> => {
+  ): WorkflowResponse<WorkflowData<BatchPriceListPricesWorkflowResult>> => {
     const createInput = transform({ input: input.data }, (data) => [
       { id: data.input.id, prices: data.input.create },
     ])
@@ -34,6 +35,8 @@ export const batchPriceListPricesWorkflow = createWorkflow(
       removePriceListPricesWorkflowStep(input.data.delete)
     )
 
-    return transform({ created, updated, deleted }, (data) => data)
+    return new WorkflowResponse(
+      transform({ created, updated, deleted }, (data) => data)
+    )
   }
 )

@@ -1,5 +1,9 @@
 import { InventoryLevelDTO, InventoryTypes } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import {
   createInventoryLevelsStep,
   validateInventoryLocationsStep,
@@ -12,9 +16,13 @@ export const createInventoryLevelsWorkflowId =
   "create-inventory-levels-workflow"
 export const createInventoryLevelsWorkflow = createWorkflow(
   createInventoryLevelsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<InventoryLevelDTO[]> => {
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<InventoryLevelDTO[]>> => {
     validateInventoryLocationsStep(input.inventory_levels)
 
-    return createInventoryLevelsStep(input.inventory_levels)
+    return new WorkflowResponse(
+      createInventoryLevelsStep(input.inventory_levels)
+    )
   }
 )

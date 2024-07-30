@@ -2,6 +2,7 @@ import { OrderLineItemDTO, OrderWorkflow } from "@medusajs/types"
 import { MathBN, MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -59,7 +60,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
   addOrderLineItemsWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.OrderAddLineItemWorkflowInput>
-  ): WorkflowData<OrderLineItemDTO[]> => {
+  ): WorkflowResponse<WorkflowData<OrderLineItemDTO[]>> => {
     const order = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -141,8 +142,10 @@ export const addOrderLineItemsWorkflow = createWorkflow(
       prepareLineItems
     )
 
-    return createOrderLineItemsStep({
-      items: lineItems,
-    })
+    return new WorkflowResponse(
+      createOrderLineItemsStep({
+        items: lineItems,
+      })
+    )
   }
 )

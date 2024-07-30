@@ -3,7 +3,11 @@ import {
   FilterableApiKeyProps,
   UpdateApiKeyDTO,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateApiKeysStep } from "../steps"
 
 type UpdateApiKeysStepInput = {
@@ -16,7 +20,9 @@ type WorkflowInput = UpdateApiKeysStepInput
 export const updateApiKeysWorkflowId = "update-api-keys"
 export const updateApiKeysWorkflow = createWorkflow(
   updateApiKeysWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<ApiKeyDTO[]> => {
-    return updateApiKeysStep(input)
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<ApiKeyDTO[]>> => {
+    return new WorkflowResponse(updateApiKeysStep(input))
   }
 )

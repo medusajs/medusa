@@ -7,6 +7,7 @@ import {
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -43,7 +44,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
   orderExchangeAddNewItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderExchangeAddNewItemWorkflowInput>
-  ): WorkflowData<OrderDTO> {
+  ): WorkflowResponse<WorkflowData<OrderDTO>> {
     const orderExchange = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "order_id", "canceled_at"],
@@ -110,6 +111,6 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     createOrderChangeActionsStep(orderChangeActionInput)
 
-    return previewOrderChangeStep(orderExchange.order_id)
+    return new WorkflowResponse(previewOrderChangeStep(orderExchange.order_id))
   }
 )

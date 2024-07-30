@@ -10,6 +10,7 @@ import {
   parallelize,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createShippingOptionRulesStep,
@@ -27,7 +28,9 @@ export const batchShippingOptionRulesWorkflow = createWorkflow(
         UpdateShippingOptionRuleDTO
       >
     >
-  ): WorkflowData<BatchWorkflowOutput<ShippingOptionRuleDTO>> => {
+  ): WorkflowResponse<
+    WorkflowData<BatchWorkflowOutput<ShippingOptionRuleDTO>>
+  > => {
     const actionInputs = transform({ input }, (data) => {
       const { create, update, delete: del } = data.input
       return {
@@ -43,6 +46,8 @@ export const batchShippingOptionRulesWorkflow = createWorkflow(
       deleteShippingOptionRulesStep(actionInputs.deleteInput)
     )
 
-    return transform({ created, deleted, updated }, (data) => data)
+    return new WorkflowResponse(
+      transform({ created, deleted, updated }, (data) => data)
+    )
   }
 )

@@ -8,6 +8,7 @@ import {
 import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -167,7 +168,7 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+  function (input: WorkflowInput): WorkflowResponse<WorkflowData<OrderDTO>> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -356,6 +357,6 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       })
     })
 
-    return orderPreview
+    return new WorkflowResponse(orderPreview)
   }
 )

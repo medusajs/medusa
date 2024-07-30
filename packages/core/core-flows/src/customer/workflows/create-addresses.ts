@@ -1,6 +1,7 @@
 import { CreateCustomerAddressDTO, CustomerAddressDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -16,7 +17,9 @@ type WorkflowInput = { addresses: CreateCustomerAddressDTO[] }
 export const createCustomerAddressesWorkflowId = "create-customer-addresses"
 export const createCustomerAddressesWorkflow = createWorkflow(
   createCustomerAddressesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerAddressDTO[]> => {
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<CustomerAddressDTO[]>> => {
     const unsetInput = transform(input, (data) => ({
       create: data.addresses,
     }))
@@ -26,6 +29,6 @@ export const createCustomerAddressesWorkflow = createWorkflow(
       maybeUnsetDefaultBillingAddressesStep(unsetInput)
     )
 
-    return createCustomerAddressesStep(input.addresses)
+    return new WorkflowResponse(createCustomerAddressesStep(input.addresses))
   }
 )

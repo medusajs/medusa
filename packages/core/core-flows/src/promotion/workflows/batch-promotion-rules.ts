@@ -7,6 +7,7 @@ import {
 } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -26,7 +27,7 @@ export const batchPromotionRulesWorkflow = createWorkflow(
         rule_type: RuleType
       }
     >
-  ): WorkflowData<BatchWorkflowOutput<PromotionRuleDTO>> => {
+  ): WorkflowResponse<WorkflowData<BatchWorkflowOutput<PromotionRuleDTO>>> => {
     const createInput = transform({ input }, (data) => ({
       rule_type: data.input.rule_type,
       data: { id: data.input.id, rules: data.input.create ?? [] },
@@ -47,6 +48,8 @@ export const batchPromotionRulesWorkflow = createWorkflow(
       deletePromotionRulesWorkflowStep(deleteInput)
     )
 
-    return transform({ created, updated, deleted }, (data) => data)
+    return new WorkflowResponse(
+      transform({ created, updated, deleted }, (data) => data)
+    )
   }
 )

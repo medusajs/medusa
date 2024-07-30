@@ -96,8 +96,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
    * You'll have to use the {@link transform} function if you need to directly manipulate data.
    */
-  composer: (input: WorkflowData<TData>) => WorkflowResponse<
-    | void
+  composer: (input: WorkflowData<TData>) => void | WorkflowResponse<
     | WorkflowData<TResult>
     | {
         [K in keyof TResult]:

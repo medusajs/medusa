@@ -2,6 +2,7 @@ import { OrderDTO } from "@medusajs/types"
 import { Modules, OrderEvents } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -20,7 +21,7 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
-  (input: WorkflowData<any>): WorkflowData<OrderDTO> => {
+  (input: WorkflowData<any>): WorkflowResponse<WorkflowData<OrderDTO>> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: completeCartFields,
@@ -94,6 +95,6 @@ export const completeCartWorkflow = createWorkflow(
 
     emitEventStep({ eventName: OrderEvents.PLACED, data: { id: order.id } })
 
-    return order
+    return new WorkflowResponse(order)
   }
 )

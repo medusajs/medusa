@@ -9,6 +9,7 @@ import {
 import { MathBN, MedusaError, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -193,7 +194,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CreateOrderFulfillmentWorkflowInput>
-  ): WorkflowData<FulfillmentDTO> => {
+  ): WorkflowResponse<WorkflowData<FulfillmentDTO>> => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -296,6 +297,6 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     )
 
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
-    return fulfillment
+    return new WorkflowResponse(fulfillment)
   }
 )

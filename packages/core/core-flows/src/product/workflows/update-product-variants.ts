@@ -1,6 +1,7 @@
 import { PricingTypes, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -28,7 +29,7 @@ export const updateProductVariantsWorkflow = createWorkflow(
   updateProductVariantsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
+  ): WorkflowResponse<WorkflowData<ProductTypes.ProductVariantDTO[]>> => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is updated.
     const updateWithoutPrices = transform({ input }, (data) => {
       if ("product_variants" in data.input) {
@@ -112,7 +113,7 @@ export const updateProductVariantsWorkflow = createWorkflow(
     const updatedPriceSets = updatePriceSetsStep(pricesToUpdate)
 
     // We want to correctly return the variants with their associated price sets and the prices coming from it
-    return transform(
+    const response = transform(
       {
         variantPriceSetLinks,
         updatedVariants,
@@ -132,5 +133,7 @@ export const updateProductVariantsWorkflow = createWorkflow(
         })
       }
     )
+
+    return new WorkflowResponse(response)
   }
 )

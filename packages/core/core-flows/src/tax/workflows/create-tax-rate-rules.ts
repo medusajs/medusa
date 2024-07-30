@@ -1,5 +1,9 @@
 import { CreateTaxRateRuleDTO, TaxRateRuleDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { createTaxRateRulesStep } from "../steps"
 
 type WorkflowInput = {
@@ -9,7 +13,9 @@ type WorkflowInput = {
 export const createTaxRateRulesWorkflowId = "create-tax-rate-rules"
 export const createTaxRateRulesWorkflow = createWorkflow(
   createTaxRateRulesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<TaxRateRuleDTO[]> => {
-    return createTaxRateRulesStep(input.rules)
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<WorkflowData<TaxRateRuleDTO[]>> => {
+    return new WorkflowResponse(createTaxRateRulesStep(input.rules))
   }
 )

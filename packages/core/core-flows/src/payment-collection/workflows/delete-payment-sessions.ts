@@ -1,4 +1,8 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import {
   deletePaymentSessionsStep,
   validateDeletedPaymentSessionsStep,
@@ -19,6 +23,6 @@ export const deletePaymentSessionsWorkflow = createWorkflow(
       idsDeleted,
     })
 
-    return idsDeleted
+    return new WorkflowResponse(idsDeleted)
   }
 )

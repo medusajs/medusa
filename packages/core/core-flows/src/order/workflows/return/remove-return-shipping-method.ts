@@ -7,6 +7,7 @@ import {
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -57,7 +58,7 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
   removeReturnShippingMethodWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.DeleteReturnShippingMethodWorkflowInput>
-  ): WorkflowData {
+  ): WorkflowResponse<WorkflowData> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -100,6 +101,6 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
     )
 
-    return previewOrderChangeStep(orderReturn.order_id)
+    return new WorkflowResponse(previewOrderChangeStep(orderReturn.order_id))
   }
 )
