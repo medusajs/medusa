@@ -1,10 +1,12 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, useLoaderData } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProductTags } from "../../../../../hooks/api"
@@ -13,6 +15,7 @@ import { useProductTagTableFilters } from "../../../../../hooks/table/filters"
 import { useProductTagTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
+import { productTagListLoader } from "../../loader"
 
 const PAGE_SIZE = 20
 
@@ -22,8 +25,17 @@ export const ProductTagListTable = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const { product_tags, count, isPending, isError, error } =
-    useProductTags(searchParams)
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<typeof productTagListLoader>
+  >
+
+  const { product_tags, count, isPending, isError, error } = useProductTags(
+    searchParams,
+    {
+      initialData,
+      placeholderData: keepPreviousData,
+    }
+  )
 
   const columns = useColumns()
   const filters = useProductTagTableFilters()
