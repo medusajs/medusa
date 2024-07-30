@@ -174,14 +174,18 @@ const useActivityItems = (order: AdminOrder) => {
     for (const ret of returns) {
       if (ret.status === "requested") {
         items.push({
-          title: t("orders.activity.events.return.created"),
+          title: t("orders.activity.events.return.created", {
+            returnId: ret.id.slice(-7),
+          }),
           timestamp: ret.created_at,
           children: <ReturnBody orderReturn={ret} />,
         })
       }
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
-          title: t("orders.activity.events.return.received"),
+          title: t("orders.activity.events.return.received", {
+            returnId: ret.id.slice(-7),
+          }),
           timestamp: ret.received_at,
           children: <ReturnBody orderReturn={ret} />,
         })
