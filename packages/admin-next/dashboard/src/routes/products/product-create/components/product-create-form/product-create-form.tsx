@@ -205,20 +205,16 @@ export const ProductCreateForm = ({
     <RouteFocusModal>
       <RouteFocusModal.Form form={form}>
         <form
-          // onKeyDown={(e) => {
-          //   // We want to continue to the next tab on enter instead of saving as draft immediately
-          //   if (e.key === "Enter") {
-          //     if (tab !== Tab.VARIANTS) {
-          //       e.preventDefault()
-          //       e.stopPropagation()
-          //       onNext(tab)
-          //     } else {
-          //       e.preventDefault()
-          //       e.stopPropagation()
-          //       handleSubmit(e)
-          //     }
-          //   }
-          // }}
+          onKeyDown={(e) => {
+            // We want to continue to the next tab on enter instead of saving as draft immediately
+            if (e.key === "Enter") {
+              if (tab !== Tab.VARIANTS) {
+                e.preventDefault()
+                e.stopPropagation()
+                onNext(tab)
+              }
+            }
+          }}
           onSubmit={handleSubmit}
           className="flex h-full flex-col"
         >

@@ -144,7 +144,6 @@ export const useDataGridCell = <TData, TValue>({
 
       // Allow the user to copy
       if (e.key.toLowerCase() === "c" && (e.ctrlKey || e.metaKey)) {
-        console.log("I am copying")
         return
       }
 

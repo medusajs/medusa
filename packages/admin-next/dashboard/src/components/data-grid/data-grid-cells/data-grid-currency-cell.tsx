@@ -1,4 +1,7 @@
-import CurrencyInput, { formatValue } from "react-currency-input-field"
+import CurrencyInput, {
+  CurrencyInputProps,
+  formatValue,
+} from "react-currency-input-field"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCallback, useEffect, useState } from "react"
@@ -69,15 +72,39 @@ const Inner = ({
       return formatValue({
         value: ensuredValue,
         decimalScale: currencyInfo.decimal_digits,
+        disableGroupSeparators: true,
+        decimalSeparator: ".",
       })
     },
     [currencyInfo]
   )
 
-  const [localValue, setLocalValue] = useState(formatter(value))
+  const [localValue, setLocalValue] = useState<string | number>(value || "")
+
+  const handleValueChange: CurrencyInputProps["onValueChange"] = (
+    value,
+    _name,
+    _values
+  ) => {
+    if (!value) {
+      setLocalValue("")
+      return
+    }
+
+    setLocalValue(value)
+  }
 
   useEffect(() => {
-    setLocalValue(formatter(value))
+    let update = value
+
+    // The component we use is a bit fidly when the value is updated externally
+    // so we need to ensure a format that will result in the cell being formatted correctly
+    // according to the users locale on the next render.
+    if (!isNaN(Number(value))) {
+      update = formatter(update)
+    }
+
+    setLocalValue(update)
   }, [value, formatter])
 
   const combinedRed = useCombinedRefs(inputRef, ref)
@@ -95,10 +122,9 @@ const Inner = ({
         {...attributes}
         ref={combinedRed}
         className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
-        value={localValue}
-        onValueChange={(_value, _name, values) => {
-          setLocalValue(values?.value || "")
-        }}
+        value={localValue || undefined}
+        onValueChange={handleValueChange}
+        formatValueOnBlur
         onBlur={() => {
           onBlur()
           onInputBlur()
