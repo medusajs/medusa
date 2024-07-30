@@ -16,7 +16,11 @@ export const productTagListLoader = async ({ request }: LoaderFunctionArgs) => {
   const queryObject: Record<string, string> = {}
 
   searchParams.forEach((value, key) => {
-    queryObject[key] = value
+    try {
+      queryObject[key] = JSON.parse(value)
+    } catch (e) {
+      queryObject[key] = value
+    }
   })
 
   const query = productTagListQuery(
