@@ -18,7 +18,7 @@ export const productTagListLoader = async ({ request }: LoaderFunctionArgs) => {
   searchParams.forEach((value, key) => {
     try {
       queryObject[key] = JSON.parse(value)
-    } catch (e) {
+    } catch (_e) {
       queryObject[key] = value
     }
   })
