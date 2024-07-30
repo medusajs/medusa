@@ -1,7 +1,8 @@
 import { FileSystem } from "@medusajs/utils"
 import { join } from "path"
+import { featureFlagsLoader } from "../feature-flag-loader"
+import { configManager } from "../../config"
 
-import loadFeatureFlags from "../feature-flags"
 const filesystem = new FileSystem(join(__dirname, "__ff-test__"))
 
 const buildFeatureFlag = (
@@ -29,6 +30,11 @@ describe("feature flags", () => {
 
     process.env = { ...OLD_ENV }
     await filesystem.cleanup()
+
+    configManager.loadConfig({
+      projectConfig: {} as any,
+      baseDir: filesystem.basePath,
+    })
   })
 
   afterAll(async () => {
@@ -37,29 +43,33 @@ describe("feature flags", () => {
   })
 
   it("should load the flag from project", async () => {
+    configManager.loadConfig({
+      projectConfig: { featureFlags: { flag_1: false } },
+      baseDir: filesystem.basePath,
+    })
+
     await filesystem.create("flags/flag-1.js", buildFeatureFlag("flag-1", true))
 
-    const flags = loadFeatureFlags(
-      { featureFlags: { flag_1: false } },
-      undefined,
-      join(filesystem.basePath, "flags")
-    )
+    const flags = await featureFlagsLoader(join(filesystem.basePath, "flags"))
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load a nested + simple flag from project", async () => {
+    configManager.loadConfig({
+      projectConfig: {
+        featureFlags: { test: { nested: true }, simpletest: true },
+      },
+      baseDir: filesystem.basePath,
+    })
+
     await filesystem.create("flags/test.js", buildFeatureFlag("test", false))
     await filesystem.create(
       "flags/simpletest.js",
       buildFeatureFlag("simpletest", false)
     )
 
-    const flags = loadFeatureFlags(
-      { featureFlags: { test: { nested: true }, simpletest: true } },
-      undefined,
-      join(filesystem.basePath, "flags")
-    )
+    const flags = await featureFlagsLoader(join(filesystem.basePath, "flags"))
 
     expect(flags.isFeatureEnabled({ test: "nested" })).toEqual(true)
     expect(flags.isFeatureEnabled("simpletest")).toEqual(true)
@@ -71,11 +81,7 @@ describe("feature flags", () => {
       buildFeatureFlag("flag-1", false)
     )
 
-    const flags = loadFeatureFlags(
-      {},
-      undefined,
-      join(filesystem.basePath, "flags")
-    )
+    const flags = await featureFlagsLoader(join(filesystem.basePath, "flags"))
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
@@ -87,16 +93,17 @@ describe("feature flags", () => {
       "flags/flag-1.js",
       buildFeatureFlag("flag-1", false)
     )
-    const flags = loadFeatureFlags(
-      {},
-      undefined,
-      join(filesystem.basePath, "flags")
-    )
+    const flags = await featureFlagsLoader(join(filesystem.basePath, "flags"))
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load mix of flags", async () => {
+    configManager.loadConfig({
+      projectConfig: { featureFlags: { flag_2: false } },
+      baseDir: filesystem.basePath,
+    })
+
     process.env.MEDUSA_FF_FLAG_3 = "true"
     await filesystem.create(
       "flags/flag-1.js",
@@ -111,11 +118,7 @@ describe("feature flags", () => {
       buildFeatureFlag("flag-3", false)
     )
 
-    const flags = loadFeatureFlags(
-      { featureFlags: { flag_2: false } },
-      undefined,
-      join(filesystem.basePath, "flags")
-    )
+    const flags = await featureFlagsLoader(join(filesystem.basePath, "flags"))
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
     expect(flags.isFeatureEnabled("flag_2")).toEqual(false)
