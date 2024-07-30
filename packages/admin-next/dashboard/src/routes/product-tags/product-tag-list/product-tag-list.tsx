@@ -1,6 +1,9 @@
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { ProductTagListTable } from "./components/product-tag-list-table"
 
+import after from "virtual:medusa/widgets/product_tag/list/after"
+import before from "virtual:medusa/widgets/product_tag/list/before"
+
 export const ProductTagList = () => {
   return (
     <SingleColumnPage
@@ -8,8 +11,8 @@ export const ProductTagList = () => {
       showJSON={false}
       hasOutlet
       widgets={{
-        after: { widgets: [] },
-        before: { widgets: [] },
+        after,
+        before,
       }}
     >
       <ProductTagListTable />
