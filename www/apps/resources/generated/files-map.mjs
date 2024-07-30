@@ -924,6 +924,10 @@ export const filesMap = [
     "pathname": "/storefront-development/products/price/examples/show-price"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/examples/tax-price/page.mdx",
+    "pathname": "/storefront-development/products/price/examples/tax-price"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
     "pathname": "/storefront-development/products/price"
   },
