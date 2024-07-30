@@ -2489,8 +2489,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createOrderClaimItems",
+                        "title": "createOrderClaimItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createOrderClaims",
                         "title": "createOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createOrderExchangeItems",
+                        "title": "createOrderExchangeItems",
                         "children": []
                       },
                       {
@@ -2608,8 +2622,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaimItemImages",
+                        "title": "deleteOrderClaimItemImages",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaimItems",
+                        "title": "deleteOrderClaimItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrderClaims",
                         "title": "deleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderExchangeItems",
+                        "title": "deleteOrderExchangeItems",
                         "children": []
                       },
                       {
@@ -3236,27 +3271,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/models/ClaimItem",
-                        "title": "ClaimItem",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/order/models/ClaimItemImage",
-                        "title": "ClaimItemImage",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/order/models/ExchangeItem",
-                        "title": "ExchangeItem",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/order/models/LineItem",
                         "title": "LineItem",
                         "children": []
@@ -3306,8 +3320,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/models/OrderClaimItem",
+                        "title": "OrderClaimItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/OrderClaimItemImage",
+                        "title": "OrderClaimItemImage",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/models/OrderExchange",
                         "title": "OrderExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/OrderExchangeItem",
+                        "title": "OrderExchangeItem",
                         "children": []
                       },
                       {
@@ -6720,12 +6755,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
+            "autogenerate_path": "storefront-development/products/price/examples",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/show-price",
-                "title": "Example: Show Variant Price",
+                "title": "Example: Show Variant's Price",
                 "children": []
               },
               {
@@ -6733,6 +6769,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/sale-price",
                 "title": "Example: Show Sale Price",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/tax-price",
+                "title": "Example: Show Price with Taxes",
                 "children": []
               }
             ]

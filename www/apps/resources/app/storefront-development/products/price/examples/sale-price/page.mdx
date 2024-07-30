@@ -1,14 +1,52 @@
+---
+sidebar_position: 2
+sidebar_label: "Example: Show Sale Price"
+---
+
 export const metadata = {
-  title: `React Example: Show Product Variant's Sale Price`,
+  title: `Example: Show Product Variant's Sale Price`,
 }
 
 # {metadata.title}
 
-This document provides an example of how to show a product variant's sale price.
+In this document, you'll learn how to display a product variant's sale price, with a full React example.
 
-To check if a product variant's price is a sale price, check whether the variant's `calculated_price.calculated_price.price_list_type` field is equal to `sale`.
+## Check if a Price is a Sale
 
-In that case, the original price is in the variant's `calculated_price.original_amount` field.
+To check if a product variant's price is a sale price, check whether the variant's `calculated_price.calculated_price.price_list_type` field is equal to `sale`:
+
+```ts
+const isSale = selectedVariantPrice.calculated_price.calculated_price.price_list_type === "sale"
+```
+
+Where `selectedVariantPrice` is either the variant the customer selected or the cheapest variant.
+
+---
+
+## Display Original and Discount Amounts
+
+If the price is a sale price, the original price is in the variant's `calculated_price.original_amount` field:
+
+```ts
+const salePrice = formatPrice(selectedVariantPrice.calculated_price.calculated_amount)
+const originalPrice = formatPrice(selectedVariantPrice.calculated_price.original_amount)
+const discountedAmount = formatPrice(
+  selectedVariantPrice.calculated_price.original_amount - 
+  selectedVariantPrice.calculated_price.calculated_amount
+)
+```
+
+You can use the original price either to display it or calculate and display the discounted amount.
+
+<Note title="Tip">
+
+Learn more about the `formatPrice` function in [this guide](../show-price/page.mdx#price-formatting)
+
+</Note>
+
+---
+
+## Full React Example
 
 For example, in a React-based storefront:
 
@@ -93,7 +131,7 @@ export default function Product({ params: { id } }: Params) {
     .format(amount)
   }
 
-  const variantPrice = useMemo(() => {
+  const selectedVariantPrice = useMemo(() => {
     if (selectedVariant) {
       return selectedVariant
     }
@@ -107,22 +145,22 @@ export default function Product({ params: { id } }: Params) {
   }, [selectedVariant, product])
 
   const price = useMemo(() => {
-    if (!variantPrice) {
+    if (!selectedVariantPrice) {
       return
     }
 
     // @ts-ignore
-    return formatPrice(variantPrice.calculated_price.calculated_amount)
-  }, [variantPrice])
+    return formatPrice(selectedVariantPrice.calculated_price.calculated_amount)
+  }, [selectedVariantPrice])
 
   const isSale = useMemo(() => {
-    if (!variantPrice) {
+    if (!selectedVariantPrice) {
       return false
     }
 
     // @ts-ignore
-    return variantPrice.calculated_price.calculated_price.price_list_type === "sale"
-  }, [variantPrice])
+    return selectedVariantPrice.calculated_price.calculated_price.price_list_type === "sale"
+  }, [selectedVariantPrice])
 
   const originalPrice = useMemo(() => {
     if (!isSale) {
@@ -130,8 +168,8 @@ export default function Product({ params: { id } }: Params) {
     }
 
     // @ts-ignore
-    return formatPrice(variantPrice.calculated_price.original_amount)
-  }, [isSale, variantPrice])
+    return formatPrice(selectedVariantPrice.calculated_price.original_amount)
+  }, [isSale, selectedVariantPrice])
 
   return (
     <div>
@@ -188,9 +226,3 @@ In this example, you:
 - Define an `isSale` memo variable that determines whether the chosen variant's price is a sale price. You do that by checking if the value of the variant's `calculated_price.calculated_price.price_list_type` field is `sale`.
 - Define an `originalPrice` memo variable that, if `isSale` is enabled, has the formatted original price of the chosen variant. The variant's original price is in the `calculated_price.original_amount` field.
 - If `isSale` is enabled, show a message to the customer indicating that this product is on sale along with the original price.
-
-<Note title="Tip">
-
-Learn more about the `formatPrice` function in [this guide](../show-price/page.mdx#price-formatting)
-
-</Note>

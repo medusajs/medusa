@@ -34,7 +34,6 @@ function createReturnItems(em, data, returnRef, actions) {
       reference_id: returnRef.id,
       details: {
         reference_id: item.id,
-        return_id: returnRef.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },

@@ -1,4 +1,4 @@
-import Logger from "../loaders/logger"
+import { logger } from "@medusajs/framework"
 import { runMedusaAppMigrations } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
@@ -19,17 +19,17 @@ function validateInputArgs({
   const actionsRequiringModules = ["revert", "generate"]
 
   if (modules.length && !actionsRequiringModules.includes(action)) {
-    Logger.error(
+    logger.error(
       `<modules> cannot be specified with the "${action}" action. Please remove the <modules> argument and try again.`
     )
     process.exit(1)
   }
 
   if (!modules.length && actionsRequiringModules.includes(action)) {
-    Logger.error(
+    logger.error(
       "Please provide the modules for which you want to revert migrations"
     )
-    Logger.error(`For example: "npx medusa migration revert <moduleName>"`)
+    logger.error(`For example: "npx medusa migration revert <moduleName>"`)
     process.exit(1)
   }
 }
@@ -45,7 +45,7 @@ const main = async function ({ directory }) {
 
   validateInputArgs({ action, modules })
 
-  const container = await initializeContainer(directory)
+  const container = initializeContainer(directory)
 
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -55,7 +55,7 @@ const main = async function ({ directory }) {
   const pluginLinks = await resolvePluginsLinks(plugins, container)
 
   if (action === "run") {
-    Logger.info("Running migrations...")
+    logger.info("Running migrations...")
 
     await runMedusaAppMigrations({
       configModule,
@@ -65,10 +65,10 @@ const main = async function ({ directory }) {
     })
 
     console.log(new Array(TERMINAL_SIZE).join("-"))
-    Logger.info("Migrations completed")
+    logger.info("Migrations completed")
     process.exit()
   } else if (action === "revert") {
-    Logger.info("Reverting migrations...")
+    logger.info("Reverting migrations...")
 
     try {
       await runMedusaAppMigrations({
@@ -79,23 +79,23 @@ const main = async function ({ directory }) {
         action: "revert",
       })
       console.log(new Array(TERMINAL_SIZE).join("-"))
-      Logger.info("Migrations reverted")
+      logger.info("Migrations reverted")
       process.exit()
     } catch (error) {
       console.log(new Array(TERMINAL_SIZE).join("-"))
       if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
-        Logger.error(error.message)
+        logger.error(error.message)
         const modulesList = error.allModules.map(
           (name: string) => `          - ${name}`
         )
-        Logger.error(`Available modules:\n${modulesList.join("\n")}`)
+        logger.error(`Available modules:\n${modulesList.join("\n")}`)
       } else {
-        Logger.error(error.message, error)
+        logger.error(error.message, error)
       }
       process.exit(1)
     }
   } else if (action === "generate") {
-    Logger.info("Generating migrations...")
+    logger.info("Generating migrations...")
 
     await runMedusaAppMigrations({
       moduleNames: modules,
@@ -106,10 +106,10 @@ const main = async function ({ directory }) {
     })
 
     console.log(new Array(TERMINAL_SIZE).join("-"))
-    Logger.info("Migrations generated")
+    logger.info("Migrations generated")
     process.exit()
   } else if (action === "show") {
-    Logger.info("Action not supported yet")
+    logger.info("Action not supported yet")
     process.exit(0)
   }
 }

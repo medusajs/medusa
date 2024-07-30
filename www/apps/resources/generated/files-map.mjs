@@ -924,6 +924,10 @@ export const filesMap = [
     "pathname": "/storefront-development/products/price/examples/show-price"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/examples/tax-price/page.mdx",
+    "pathname": "/storefront-development/products/price/examples/tax-price"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
     "pathname": "/storefront-development/products/price"
   },
@@ -3972,8 +3976,16 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchanges/page.mdx",
@@ -4040,8 +4052,20 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchanges/page.mdx",
@@ -4444,12 +4468,20 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CreateOrderClaimDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderClaimItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderClaimItemDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderExchangeDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderExchangeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderExchangeItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderExchangeItemDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderLineItemDTO/page.mdx",
@@ -4608,12 +4640,20 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.OrderClaimDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderClaimItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderClaimItemDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderExchangeDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderExchangeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderExchangeItemDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderExchangeItemDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderItemDTO/page.mdx",
@@ -4896,18 +4936,6 @@ export const filesMap = [
     "pathname": "/references/order_models/classes/order_models.Address"
   },
   {
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItem/page.mdx",
-    "pathname": "/references/order_models/classes/order_models.ClaimItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItemImage/page.mdx",
-    "pathname": "/references/order_models/classes/order_models.ClaimItemImage"
-  },
-  {
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ExchangeItem/page.mdx",
-    "pathname": "/references/order_models/classes/order_models.ExchangeItem"
-  },
-  {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItem/page.mdx",
     "pathname": "/references/order_models/classes/order_models.LineItem"
   },
@@ -4936,8 +4964,20 @@ export const filesMap = [
     "pathname": "/references/order_models/classes/order_models.OrderClaim"
   },
   {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItem/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderClaimItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItemImage/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderClaimItemImage"
+  },
+  {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchange/page.mdx",
     "pathname": "/references/order_models/classes/order_models.OrderExchange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchangeItem/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderExchangeItem"
   },
   {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderItem/page.mdx",
@@ -10294,6 +10334,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/workflows/StepResponse/methods/workflows.StepResponse.permanentFailure/page.mdx",
     "pathname": "/references/workflows/StepResponse/methods/workflows.StepResponse.permanentFailure"
+  },
+  {
+    "filePath": "/www/apps/resources/references/workflows/StepResponse/methods/workflows.StepResponse.skip/page.mdx",
+    "pathname": "/references/workflows/StepResponse/methods/workflows.StepResponse.skip"
   },
   {
     "filePath": "/www/apps/resources/references/workflows/classes/workflows.StepResponse/page.mdx",
