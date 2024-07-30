@@ -97,12 +97,15 @@ module.exports = {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
-    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const {
+      featureFlagsLoader,
+      configLoader,
+      container,
+      pgConnectionLoader,
+    } = require("@medusajs/framework")
 
-    const featureFlagsLoader =
-      require("@medusajs/medusa/dist/loaders/feature-flags").default
-
-    const featureFlagRouter = featureFlagsLoader(configModule)
+    const configModule = configLoader(cwd, `medusa-config`)
+    const featureFlagRouter = await featureFlagsLoader()
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
@@ -157,23 +160,11 @@ module.exports = {
       force_modules_migration ||
       featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
     ) {
-      const { container, pgConnectionLoader } = await import(
-        "@medusajs/framework"
-      )
-
-      const featureFlagLoader =
-        require("@medusajs/medusa/dist/loaders/feature-flags").default
-
-      const featureFlagRouter = await featureFlagLoader(configModule)
-
       const pgConnection = pgConnectionLoader()
 
       container.register({
-        [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(console),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
-        [ContainerRegistrationKeys.PG_CONNECTION]: asValue(pgConnection),
-        featureFlagRouter: asValue(featureFlagRouter),
       })
 
       instance.setPgConnection(pgConnection)
