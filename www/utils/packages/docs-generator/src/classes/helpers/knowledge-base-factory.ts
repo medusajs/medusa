@@ -420,7 +420,7 @@ class KnowledgeBaseFactory {
         const { isPlural, singularName, pluralName } =
           this.getPluralConfigForFunction({
             str,
-            replacement: "upsert",
+            replacement: "listAndCount",
             options,
           })
         return `The list of ${
@@ -434,7 +434,7 @@ class KnowledgeBaseFactory {
         const { isPlural, singularName, pluralName } =
           this.getPluralConfigForFunction({
             str,
-            replacement: "upsert",
+            replacement: "list",
             options,
           })
         return `The list of ${isPlural ? pluralName : singularName}.`
@@ -446,7 +446,7 @@ class KnowledgeBaseFactory {
         const { isPlural, singularName, pluralName } =
           this.getPluralConfigForFunction({
             str,
-            replacement: "upsert",
+            replacement: "retrieve",
             options,
           })
         return `The retrieved ${isPlural ? pluralName : singularName}.`
@@ -458,7 +458,7 @@ class KnowledgeBaseFactory {
         const { isPlural, singularName, pluralName } =
           this.getPluralConfigForFunction({
             str,
-            replacement: "upsert",
+            replacement: "create",
             options,
           })
         return `The created ${isPlural ? pluralName : singularName}.`
@@ -470,7 +470,7 @@ class KnowledgeBaseFactory {
         const { isPlural, singularName, pluralName } =
           this.getPluralConfigForFunction({
             str,
-            replacement: "upsert",
+            replacement: "update",
             options,
           })
         return `The updated ${isPlural ? pluralName : singularName}.`
