@@ -1,12 +1,12 @@
 {
-	"Notificationprovider": {
+	"notification provider": {
 		"filePath": "packages/modules/notification/src/models/notification-provider.ts",
 		"properties": {
-			"id": "The ID of the notificationprovider.",
-			"handle": "The handle of the notificationprovider",
-			"name": "The name of the notificationprovider",
-			"is_enabled": "Whether the notificationprovider is enabled.",
-			"channels": "The channels of the notificationprovider",
+			"id": "The ID of the notification provider.",
+			"handle": "The handle of the notification provider",
+			"name": "The name of the notification provider",
+			"is_enabled": "Whether the notification provider is enabled.",
+			"channels": "The channels the notification provider can be used for. For example, `email`.",
 			"notifications": "The associated notifications.\n\n@expandable"
 		}
 	},
@@ -15,17 +15,17 @@
 		"properties": {
 			"id": "The ID of the notification.",
 			"to": "The to of the notification",
-			"channel": "The channel of the notification",
-			"template": "The template of the notification",
-			"data": "The data of the notification",
-			"trigger_type": "The trigger type of the notification",
-			"resource_id": "The resource id of the notification",
-			"resource_type": "The resource type of the notification",
-			"receiver_id": "The receiver id of the notification",
-			"original_notification_id": "The original notification id of the notification",
-			"idempotency_key": "The idempotency key of the notification",
-			"external_id": "The external id of the notification",
-			"provider": "The associated provider.\n\n@expandable"
+			"channel": "The channel of the notification. For example, `email`.",
+			"template": "The template of the notification. For example, if you're using a service like SendGrid, this would be the template ID of the notification.",
+			"data": "The data payload sent with the notification",
+			"trigger_type": "The event name, the workflow, or anything else that can help to identify what triggered the notification.",
+			"resource_id": "The ID of the resource this notification is for, if applicable.",
+			"resource_type": "The type of the resource this notification is for, if applicable. For example, `order`.",
+			"receiver_id": "The ID of the customer this notification is for, if applicable.",
+			"original_notification_id": "The ID of the original notification, in case this is a retried notification.",
+			"idempotency_key": "The idempotency key of the notification.",
+			"external_id": "The id of the notification in the external system.",
+			"provider": "The associated provider used to send the notification.\n\n@expandable"
 		}
 	}
 }
