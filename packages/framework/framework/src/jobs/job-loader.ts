@@ -102,25 +102,23 @@ export class JobLoader {
       }
     )
 
-    createWorkflow(
-      {
-        name: workflowName,
-        schedule: isObject(config.schedule)
-          ? config.schedule
-          : {
-              cron: config.schedule,
-              numberOfExecutions: config.numberOfExecutions,
-            },
-      },
-      () => {
-        return step()
-      }
-    )
+    const workflowConfig = {
+      name: workflowName,
+      schedule: isObject(config.schedule)
+        ? config.schedule
+        : {
+            cron: config.schedule,
+            numberOfExecutions: config.numberOfExecutions,
+          },
+    }
+
+    createWorkflow(workflowConfig, () => {
+      step()
+    })
   }
 
   /**
    * Load cron jobs from one or multiple source paths
-   * @param sourcePaths
    */
   async load() {
     const normalizedSourcePath = Array.isArray(this.#sourceDir)
