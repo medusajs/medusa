@@ -149,8 +149,7 @@ export const createExchangeReturnShippingMethodWorkflow = createWorkflow(
       }
     )
 
-    return new WorkflowResponse(
-      createOrderChangeActionsStep([orderChangeActionInput])
-    )
+    const response = createOrderChangeActionsStep([orderChangeActionInput])
+    return new WorkflowResponse(response)
   }
 )

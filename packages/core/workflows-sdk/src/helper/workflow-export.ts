@@ -16,7 +16,7 @@ import {
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
-import { resolveValue, WorkflowResponse } from "../utils/composer"
+import { resolveValue } from "../utils/composer"
 import {
   ExportedWorkflow,
   FlowCancelOptions,
@@ -139,7 +139,7 @@ function createContextualWorkflowRunner<
     return {
       errors,
       transaction,
-      result: WorkflowResponse.unWrapResult(result),
+      result: result,
     }
   }
 
