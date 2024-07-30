@@ -164,7 +164,14 @@ export class JobLoader {
     })
 
     const jobsInputs = await promiseAll(promises)
-    const flatJobsInput = jobsInputs.flat(1)
+    const flatJobsInput = jobsInputs.flat(1).filter(
+      (
+        job
+      ): job is {
+        config: CronJobConfig
+        handler: CronJobHandler
+      } => !!job
+    )
 
     flatJobsInput.map(this.registerJob)
 
