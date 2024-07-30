@@ -2144,6 +2144,17 @@
       "value": "Value"
     }
   },
+  "productTags": {
+    "domain": "Product Tags",
+    "create": {
+      "header": "Create Product Tag",
+      "subtitle": "Create a new product tag to categorize your products.",
+      "successToast": "Product tag {{value}} was successfully created."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
   "notifications": {
     "domain": "Notifications",
     "emptyState": {

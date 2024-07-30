@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { Filter } from "../../../components/table/data-table"
+import { useProductTags } from "../../api"
 import { useProductTypes } from "../../api/product-types"
 import { useSalesChannels } from "../../api/sales-channels"
 
@@ -8,6 +9,7 @@ const excludeableFields = [
   "collections",
   "categories",
   "product_types",
+  "product_tags",
 ] as const
 
 export const useProductTableFilters = (
@@ -26,6 +28,13 @@ export const useProductTableFilters = (
       enabled: !isProductTypeExcluded,
     }
   )
+
+  const isProductTagExcluded = exclude?.includes("product_tags")
+
+  const { product_tags } = useProductTags({
+    limit: 1000,
+    offset: 0,
+  })
 
   // const { product_tags } = useAdminProductTags({
   //   limit: 1000,
@@ -82,6 +91,21 @@ export const useProductTableFilters = (
     }
 
     filters = [...filters, typeFilter]
+  }
+
+  if (product_tags && !isProductTagExcluded) {
+    const tagFilter: Filter = {
+      key: "tags",
+      label: t("fields.tag"),
+      type: "select",
+      multiple: true,
+      options: product_tags.map((t) => ({
+        label: t.value,
+        value: t.id,
+      })),
+    }
+
+    filters = [...filters, tagFilter]
   }
 
   // if (product_tags) {
@@ -144,21 +168,21 @@ export const useProductTableFilters = (
   //   filters = [...filters, collectionFilter]
   // }
 
-  const giftCardFilter: Filter = {
-    key: "is_giftcard",
-    label: t("fields.giftCard"),
-    type: "select",
-    options: [
-      {
-        label: t("fields.true"),
-        value: "true",
-      },
-      {
-        label: t("fields.false"),
-        value: "false",
-      },
-    ],
-  }
+  // const giftCardFilter: Filter = {
+  //   key: "is_giftcard",
+  //   label: t("fields.giftCard"),
+  //   type: "select",
+  //   options: [
+  //     {
+  //       label: t("fields.true"),
+  //       value: "true",
+  //     },
+  //     {
+  //       label: t("fields.false"),
+  //       value: "false",
+  //     },
+  //   ],
+  // }
 
   const statusFilter: Filter = {
     key: "status",
@@ -194,7 +218,7 @@ export const useProductTableFilters = (
     type: "date",
   }))
 
-  filters = [...filters, statusFilter, giftCardFilter, ...dateFilters]
+  filters = [...filters, statusFilter, ...dateFilters]
 
   return filters
 }

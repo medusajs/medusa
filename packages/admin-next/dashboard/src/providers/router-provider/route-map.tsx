@@ -1,9 +1,7 @@
 import {
-  AdminApiKeyResponse,
   AdminProductCategoryResponse,
   AdminTaxRegionResponse,
   HttpTypes,
-  SalesChannelDTO,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -739,7 +737,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/users/user-detail"),
                 handle: {
-                  crumb: (data: { user: UserDTO }) => data.user.email,
+                  crumb: (data: HttpTypes.AdminUserResponse) => data.user.email,
                 },
                 children: [
                   {
@@ -776,7 +774,7 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/sales-channels/sales-channel-detail"),
                 handle: {
-                  crumb: (data: { sales_channel: SalesChannelDTO }) =>
+                  crumb: (data: HttpTypes.AdminSalesChannelResponse) =>
                     data.sales_channel.name,
                 },
                 children: [
@@ -944,7 +942,36 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
-
+          {
+            path: "product-tags",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Product Tags",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/product-tags/product-tag-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/product-tags/product-tag-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/product-tags/product-tag-detail"),
+                handle: {
+                  crumb: (data: HttpTypes.AdminProductTagResponse) =>
+                    data.product_tag.value,
+                },
+              },
+            ],
+          },
           {
             path: "workflows",
             element: <Outlet />,
@@ -1051,7 +1078,7 @@ export const RouteMap: RouteObject[] = [
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: AdminApiKeyResponse) => {
+                  crumb: (data: HttpTypes.AdminApiKeyResponse) => {
                     return data.api_key.title
                   },
                 },
@@ -1110,7 +1137,7 @@ export const RouteMap: RouteObject[] = [
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: AdminApiKeyResponse) => {
+                  crumb: (data: HttpTypes.AdminApiKeyResponse) => {
                     return data.api_key.title
                   },
                 },
