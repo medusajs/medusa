@@ -15,16 +15,20 @@
     },
     "start:monorepo": {
       "dependsOn": [
-        "build#docs-ui",
-        "^start:monorepo"
+        "^build-scripts#build",
+        "^docs-ui#build",
+        "^remark-rehype-plugins#build",
+        "^types#build"
       ]
     },
     "lint": { },
     "lint:content": { },
     "dev:monorepo": {
       "dependsOn": [
-        "build#docs-ui",
-        "^dev:monorepo"
+        "^build-scripts#build",
+        "^docs-ui#build",
+        "^remark-rehype-plugins#build",
+        "^types#build"
       ],
       "cache": false,
       "persistent": true
