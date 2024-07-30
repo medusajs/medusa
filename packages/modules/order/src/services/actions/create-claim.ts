@@ -46,8 +46,6 @@ function createReturnItem(em, item, claimReference, returnReference, actions) {
     reference_id: returnReference.id,
     details: {
       reference_id: item.id,
-      return_id: returnReference.id,
-      claim_id: claimReference.id,
       quantity: item.quantity,
       metadata: item.metadata,
     },
@@ -77,7 +75,6 @@ function createClaimAndReturnItems(
       reference_id: claimReference.id,
       details: {
         reference_id: item.id,
-        claim_id: claimReference.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },
@@ -127,7 +124,6 @@ async function processAdditionalItems(
         reference_id: claimReference.id,
         details: {
           reference_id: item.id,
-          claim_id: claimReference.id,
           quantity: item.quantity,
           metadata: item.metadata,
         },

@@ -6,7 +6,7 @@ import { track } from "medusa-telemetry"
 
 import { ModuleRegistrationName } from "@medusajs/utils"
 import loaders from "../loaders"
-import Logger from "../loaders/logger"
+import { logger } from "@medusajs/framework"
 
 export default async function ({
   directory,
@@ -38,7 +38,7 @@ export default async function ({
     if (invite) {
       const invite = await userService.createInvites({ email })
 
-      Logger.info(`
+      logger.info(`
       Invite token: ${invite.token}
       Open the invite in Medusa Admin at: [your-admin-url]/invite?token=${invite.token}`)
     } else {
@@ -52,7 +52,7 @@ export default async function ({
       })
 
       if (error) {
-        Logger.error(error)
+        logger.error(error)
         process.exit(1)
       }
 

@@ -1041,6 +1041,15 @@
     "delete": {
       "confirmation": "You are about to delete the stock location {{name}}. This action cannot be undone."
     },
+    "fulfillmentProviders": {
+      "header": "Fulfillment Providers",
+      "shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
+      "label": "Connected fulfillment providers",
+      "connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
+      "noProviders": "This Stock Location is not connected to any fulfillment providers.",
+      "action": "Connect Providers",
+      "successToast": "Fulfillment providers for stock location were successfully updated."
+    },
     "fulfillmentSets": {
       "pickup": {
         "header": "Pickup"

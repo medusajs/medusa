@@ -1,4 +1,7 @@
-import { confirmClaimRequestWorkflow } from "@medusajs/core-flows"
+import {
+  cancelBeginOrderClaimWorkflow,
+  confirmClaimRequestWorkflow,
+} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -54,5 +57,24 @@ export const POST = async (
     order_preview: result,
     claim: orderClaim,
     return: orderReturn,
+  })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const { id } = req.params
+
+  await cancelBeginOrderClaimWorkflow(req.scope).run({
+    input: {
+      claim_id: id,
+    },
+  })
+
+  res.status(200).json({
+    id,
+    object: "claim",
+    deleted: true,
   })
 }

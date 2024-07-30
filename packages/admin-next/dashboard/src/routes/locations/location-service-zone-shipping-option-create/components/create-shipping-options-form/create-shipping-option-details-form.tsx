@@ -17,12 +17,14 @@ type CreateShippingOptionDetailsFormProps = {
   form: UseFormReturn<CreateShippingOptionSchema>
   isReturn?: boolean
   zone: HttpTypes.AdminServiceZone
+  locationId: string
 }
 
 export const CreateShippingOptionDetailsForm = ({
   form,
   isReturn = false,
   zone,
+  locationId,
 }: CreateShippingOptionDetailsFormProps) => {
   const { t } = useTranslation()
 
@@ -37,7 +39,11 @@ export const CreateShippingOptionDetailsForm = ({
   })
 
   const fulfillmentProviders = useComboboxData({
-    queryFn: (params) => sdk.admin.fulfillmentProvider.list(params),
+    queryFn: (params) =>
+      sdk.admin.fulfillmentProvider.list({
+        ...params,
+        stock_location_id: locationId,
+      }),
     queryKey: ["fulfillment_providers"],
     getOptions: (data) =>
       data.fulfillment_providers.map((provider) => ({
@@ -161,7 +167,11 @@ export const CreateShippingOptionDetailsForm = ({
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>
+                  <Form.Label
+                    tooltip={t(
+                      "stockLocations.fulfillmentProviders.shippingOptionsTooltip"
+                    )}
+                  >
                     {t("stockLocations.shippingOptions.fields.provider")}
                   </Form.Label>
                   <Form.Control>
