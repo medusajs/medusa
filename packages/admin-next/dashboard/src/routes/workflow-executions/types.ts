@@ -91,5 +91,6 @@ export enum TransactionStepState {
   FAILED = "failed",
   DORMANT = "dormant",
   SKIPPED = "skipped",
+  SKIPPED_FAILURE = "skipped_failure",
   TIMEOUT = "timeout",
 }

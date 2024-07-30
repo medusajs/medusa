@@ -8,6 +8,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
+import { defaultAdminDetailsReturnFields } from "../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsReqSchemaType } from "../../../../returns/validators"
 
 export const POST = async (
@@ -20,7 +21,7 @@ export const POST = async (
 
   const [claim] = await remoteQuery(
     remoteQueryObjectFromString({
-      entryPoint: "claim",
+      entryPoint: "order_claim",
       variables: {
         id,
       },
@@ -33,18 +34,19 @@ export const POST = async (
   )
 
   const { result } = await orderClaimRequestItemReturnWorkflow(req.scope).run({
-    input: { ...req.validatedBody, return_id: claim.return_id, claim_id: id },
+    input: {
+      ...req.validatedBody,
+      return_id: claim.return_id,
+      claim_id: id,
+    },
   })
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "return",
     variables: {
-      id,
-      filters: {
-        ...req.filterableFields,
-      },
+      id: claim.return_id,
     },
-    fields: req.remoteQueryConfig.fields,
+    fields: defaultAdminDetailsReturnFields,
   })
 
   const [orderReturn] = await remoteQuery(queryObject)

@@ -1,4 +1,5 @@
 import { Client } from "../client"
+import { Currency } from "./currency"
 import { Customer } from "./customer"
 import { Fulfillment } from "./fulfillment"
 import { FulfillmentProvider } from "./fulfillment-provider"
@@ -16,6 +17,7 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { Return } from "./return"
+import { ReturnReason } from "./return-reason"
 import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
 import { ShippingProfile } from "./shipping-profile"
@@ -25,7 +27,6 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
-import { ReturnReason } from "./return-reason"
 
 export class Admin {
   public invite: Invite
@@ -55,6 +56,7 @@ export class Admin {
   public store: Store
   public productTag: ProductTag
   public user: User
+  public currency: Currency
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -84,5 +86,6 @@ export class Admin {
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
     this.user = new User(client)
+    this.currency = new Currency(client)
   }
 }

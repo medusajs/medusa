@@ -97,7 +97,7 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
       variables: {
         filters: {
           order_id: orderReturn.order_id,
-          return_id: orderReturn.id,
+          claim_id: input.claim_id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
