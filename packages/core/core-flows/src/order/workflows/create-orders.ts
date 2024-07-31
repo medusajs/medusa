@@ -2,6 +2,7 @@ import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
 import { MathBN, MedusaError, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -84,7 +85,7 @@ function getOrderInput(data) {
 export const createOrdersWorkflowId = "create-orders"
 export const createOrdersWorkflow = createWorkflow(
   createOrdersWorkflowId,
-  (input: WorkflowData<CreateOrderDTO>): WorkflowData<OrderDTO> => {
+  (input: WorkflowData<CreateOrderDTO>): WorkflowResponse<OrderDTO> => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? [])
         .map((item) => item.variant_id)
@@ -176,6 +177,6 @@ export const createOrdersWorkflow = createWorkflow(
 
     updateOrderTaxLinesStep({ order_id: order.id })
 
-    return order
+    return new WorkflowResponse(order)
   }
 )

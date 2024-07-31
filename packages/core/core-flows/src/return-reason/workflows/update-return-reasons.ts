@@ -3,7 +3,11 @@ import {
   OrderReturnReasonDTO,
   ReturnReasonUpdatableFields,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateReturnReasonsStep } from "../steps"
 
 type WorkflowInput = {
@@ -16,7 +20,7 @@ export const updateReturnReasonsWorkflow = createWorkflow(
   updateReturnReasonsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<OrderReturnReasonDTO[]> => {
-    return updateReturnReasonsStep(input)
+  ): WorkflowResponse<OrderReturnReasonDTO[]> => {
+    return new WorkflowResponse(updateReturnReasonsStep(input))
   }
 )

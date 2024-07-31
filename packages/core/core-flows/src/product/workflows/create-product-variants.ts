@@ -2,6 +2,7 @@ import { LinkDefinition } from "@medusajs/modules-sdk"
 import { InventoryTypes, PricingTypes, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -121,7 +122,7 @@ export const createProductVariantsWorkflow = createWorkflow(
   createProductVariantsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
+  ): WorkflowResponse<ProductTypes.ProductVariantDTO[]> => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is created.
     const variantsWithoutPrices = transform({ input }, (data) =>
       data.input.product_variants.map((v) => ({
@@ -211,7 +212,7 @@ export const createProductVariantsWorkflow = createWorkflow(
 
     createVariantPricingLinkStep(variantAndPriceSetLinks)
 
-    return transform(
+    const response = transform(
       {
         variantAndPriceSets,
       },
@@ -222,5 +223,7 @@ export const createProductVariantsWorkflow = createWorkflow(
         }))
       }
     )
+
+    return new WorkflowResponse(response)
   }
 )
