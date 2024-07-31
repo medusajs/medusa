@@ -194,7 +194,7 @@ medusaIntegrationTestRunner({
 
         await compareCSVs(
           notifications[0].data.file.url,
-          path.join(__dirname, "__fixtures__", "exported-products.csv")
+          path.join(__dirname, "__fixtures__", "exported-products-comma.csv")
         )
         await fs.rm(path.dirname(notifications[0].data.file.url), {
           force: true,
