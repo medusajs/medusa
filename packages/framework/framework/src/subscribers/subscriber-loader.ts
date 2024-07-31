@@ -33,6 +33,8 @@ export class SubscriberLoader {
    * @private
    */
   #excludes: RegExp[] = [
+    /index\.js/,
+    /index\.ts/,
     /\.DS_Store/,
     /(\.ts\.map|\.js\.map|\.d\.ts|\.md)/,
     /^_[^/\\]*(\.[^/\\]+)?$/,
@@ -129,17 +131,17 @@ export class SubscriberLoader {
       recursive: true,
       withFileTypes: true,
     }).then(async (entries) => {
-      return entries.flatMap(async (entry) => {
-        if (this.#excludes.some((exclude) => exclude.test(entry.name))) {
-          return
-        }
+      const fileEntries = entries.filter((entry) => {
+        return (
+          !entry.isDirectory() &&
+          !this.#excludes.some((exclude) => exclude.test(entry.name))
+        )
+      })
 
-        const fullPath = join(dirPath, entry.name)
+      logger.debug(`Registering subscribers from ${dirPath}.`)
 
-        if (entry.isDirectory()) {
-          return await this.createMap(fullPath)
-        }
-
+      return fileEntries.flatMap(async (entry) => {
+        const fullPath = join(entry.path, entry.name)
         return await this.createDescriptor(fullPath)
       })
     })
@@ -236,6 +238,8 @@ export class SubscriberLoader {
         handler,
       })
     }
+
+    logger.debug(`Subscribers registered.`)
 
     /**
      * Return the file paths of the registered subscribers, to prevent the
