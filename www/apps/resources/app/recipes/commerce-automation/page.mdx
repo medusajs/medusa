@@ -485,7 +485,7 @@ export const syncProductsWorkflowHighlight = [
   import { 
     StepResponse, 
     createStep, 
-    createWorkflow
+    createWorkflow,
   } from "@medusajs/workflows-sdk"
 
   type RetrieveStoreStepInput = {
@@ -597,9 +597,7 @@ export const syncProductsWorkflowHighlight = [
     store_id: string
   }
 
-  export const syncProductsWorkflow = createWorkflow<
-    SyncProductsWorkflowInput, {}
-    >(
+  export const syncProductsWorkflow = createWorkflow(
       "sync-products-workflow",
       function ({ store_id }: SyncProductsWorkflowInput) {
         const { store } = retrieveStoreStep({

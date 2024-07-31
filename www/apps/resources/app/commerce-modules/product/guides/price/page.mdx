@@ -30,15 +30,15 @@ const query = remoteQueryObjectFromString({
   fields: [
     "*",
     "variants.*",
-    "variants.prices.*"
+    "variants.prices.*",
   ],
   variables: {
     filters: {
       id: [
-        "prod_123"
-      ]
+        "prod_123",
+      ],
     },
-  }
+  },
 })
 
 // `result` is array of products
@@ -72,19 +72,19 @@ const query = remoteQueryObjectFromString({
   fields: [
     "*",
     "variants.*",
-    "variants.calculated_price.*"
+    "variants.calculated_price.*",
   ],
   variables: {
     filters: {
-      id
+      id,
     },
     "variants.calculated_price": {
       context: {
         region_id: "reg_01J3MRPDNXXXDSCC76Y6YCZARS",
-        currency_code: "eur"
-      }
-    }
-  }
+        currency_code: "eur",
+      },
+    },
+  },
 })
 
 // `result` is array of products

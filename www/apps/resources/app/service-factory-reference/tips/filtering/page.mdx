@@ -40,8 +40,8 @@ In the example above, only posts having the name `My Post 2` are retrieved.
 const posts = await postModuleService.listPosts({
   views: [
     50,
-    100
-  ]
+    100,
+  ],
 })
 ```
 
@@ -57,9 +57,9 @@ In the example above, only posts having either `50` or `100` views are retrieved
 const posts = await postModuleService.listPosts({
   name: {
     $nin: [
-      "My Post"
-    ]
-  }
+      "My Post",
+    ],
+  },
 })
 ```
 
@@ -80,8 +80,8 @@ This filter only applies to text-like properties, including `id` and `enum` prop
 ```ts
 const posts = await postModuleService.listPosts({
   name: {
-    $like: "My%"
-  }
+    $like: "My%",
+  },
 })
 ```
 
@@ -102,8 +102,8 @@ This filter only applies to the `number` and `dateTime` properties.
 ```ts
 const posts = await postModuleService.listPosts({
   published_at: {
-    $lt: new Date()
-  }
+    $lt: new Date(),
+  },
 })
 ```
 
@@ -128,8 +128,8 @@ endToday.setHours(23, 59, 59, 59)
 const posts = await postModuleService.listPosts({
   published_at: {
     $gte: startToday,
-    $lte: endToday
-  }
+    $lte: endToday,
+  },
 })
 ```
 
@@ -149,10 +149,10 @@ const posts = await postModuleService.listPosts({
     },
     {
       published_at: {
-        $lt: new Date()
-      }
-    }
-  ]
+        $lt: new Date(),
+      },
+    },
+  ],
 })
 ```
 
