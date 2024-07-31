@@ -13,6 +13,7 @@ import {
   container,
   expressLoader,
   featureFlagsLoader,
+  LinkLoader,
   JobLoader,
   logger,
   pgConnectionLoader,
@@ -20,7 +21,6 @@ import {
   WorkflowLoader,
 } from "@medusajs/framework"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
-import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 import loadMedusaApp from "./medusa-app"
 
 type Options = {
@@ -151,7 +151,10 @@ export default async ({
   )
 
   const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
-  const pluginLinks = await resolvePluginsLinks(plugins, container)
+  const linksSourcePaths = plugins.map((plugin) =>
+    join(plugin.resolve, "links")
+  )
+  await new LinkLoader(linksSourcePaths).load()
 
   const {
     onApplicationStart,
@@ -159,7 +162,6 @@ export default async ({
     onApplicationPrepareShutdown,
   } = await loadMedusaApp({
     container,
-    linkModules: pluginLinks,
   })
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))

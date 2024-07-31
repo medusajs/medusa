@@ -8,14 +8,14 @@ export class MockSchedulerStorage implements IDistributedSchedulerStorage {
     jobDefinition: string | { jobId: string },
     schedulerOptions: SchedulerOptions
   ): Promise<void> {
-    return Promise.resolve()
+    return await Promise.resolve()
   }
 
   async remove(jobId: string): Promise<void> {
-    return Promise.resolve()
+    return await Promise.resolve()
   }
 
   async removeAll(): Promise<void> {
-    return Promise.resolve()
+    return await Promise.resolve()
   }
 }
