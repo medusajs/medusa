@@ -503,10 +503,11 @@ medusaIntegrationTestRunner({
           toUpdate: 0,
         })
 
-        await api
-          .post(`/admin/products/import/${transactionId}/confirm`, {}, meta)
-          // TODO: Currently the `setStepSuccess` waits for the whole workflow to finish before returning.
-          .catch((e) => e)
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
 
         await subscriberExecution
         const notifications = (
