@@ -53,21 +53,21 @@ export class JobLoader {
     if (!config) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "Config is required for scheduled"
+        "Config is required for scheduled jobs."
       )
     }
 
     if (!config.schedule) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "Cron schedule definition is required for scheduled jobs"
+        "Cron schedule definition is required for scheduled jobs."
       )
     }
 
     if (!config.name) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "Job name is required for scheduled jobs"
+        "Job name is required for scheduled jobs."
       )
     }
   }
@@ -143,9 +143,7 @@ export class JobLoader {
           )
         })
 
-        logger.debug(
-          `Registering jobs from ${sourcePath}.`
-        )
+        logger.debug(`Registering jobs from ${sourcePath}.`)
 
         return await promiseAll(
           fileEntries.map(async (entry) => {
