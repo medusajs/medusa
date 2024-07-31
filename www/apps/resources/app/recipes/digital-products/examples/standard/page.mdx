@@ -517,16 +517,17 @@ In the compensation function, you delete the digital product medias.
 Finally, create the file `src/workflows/create-digital-product/index.ts` with the following content:
 
 export const createDpWorkflowHighlights = [
-  ["35", "createProductsWorkflow", "Create the Medusa product."],
-  ["41", "createDigitalProductStep", "Create the digital product."],
-  ["45", "createDigitalProductMediasStep", "Create the digital product's medias."],
-  ["59", "createRemoteLinkStep", "Link the digital product to the first variant of the product."],
+  ["36", "createProductsWorkflow", "Create the Medusa product."],
+  ["42", "createDigitalProductStep", "Create the digital product."],
+  ["46", "createDigitalProductMediasStep", "Create the digital product's medias."],
+  ["60", "createRemoteLinkStep", "Link the digital product to the first variant of the product."],
 ]
 
-```ts title="src/workflows/create-digital-product/index.ts" highlights={createDpWorkflowHighlights} collapsibleLines="1-22" expandMoreLabel="Show Imports"
+```ts title="src/workflows/create-digital-product/index.ts" highlights={createDpWorkflowHighlights} collapsibleLines="1-23" expandMoreLabel="Show Imports"
 import { 
   createWorkflow,
   transform,
+  WorkflowResponse
 } from "@medusajs/workflows-sdk"
 import {
   CreateProductWorkflowInputDTO,
@@ -591,12 +592,12 @@ const createDigitalProductWorkflow = createWorkflow(
       },
     }])
 
-    return {
+    return new WorkflowResponse({
       digital_product: {
         ...digital_product,
         medias: digital_product_medias,
       },
-    }
+    })
   }
 )
 
@@ -1533,19 +1534,20 @@ In the compensation function, you delete the digital product order.
 Create the file `src/workflows/create-digital-product-order/index.ts` with the following content:
 
 export const createDpoWorkflowHighlights = [
-  ["24", "completeCartWorkflow", "Create an order for the cart."],
-  ["30", "useRemoteQueryStep", "Retrieve the order's items and their associated variants and linked digital products."],
-  ["55", "when", "Check whether the order has any digital products."],
-  ["60", "then", "Perform the callback function if an order has digital products."],
-  ["63", "createDigitalProductOrderStep", "Create the digital product order."],
-  ["65", "createRemoteLinkStep", "Link the digital product order to the Medusa order."]
+  ["25", "completeCartWorkflow", "Create an order for the cart."],
+  ["31", "useRemoteQueryStep", "Retrieve the order's items and their associated variants and linked digital products."],
+  ["56", "when", "Check whether the order has any digital products."],
+  ["61", "then", "Perform the callback function if an order has digital products."],
+  ["64", "createDigitalProductOrderStep", "Create the digital product order."],
+  ["66", "createRemoteLinkStep", "Link the digital product order to the Medusa order."]
 ]
 
-```ts title="src/workflows/create-digital-product-order/index.ts" highlights={createDpoWorkflowHighlights} collapsibleLines="1-16" expandMoreLabel="Show Imports"
+```ts title="src/workflows/create-digital-product-order/index.ts" highlights={createDpoWorkflowHighlights} collapsibleLines="1-17" expandMoreLabel="Show Imports"
 import {
   createWorkflow,
   transform,
   when,
+  WorkflowResponse
 } from "@medusajs/workflows-sdk"
 import {
   completeCartWorkflow,
@@ -1618,10 +1620,10 @@ const createDigitalProductOrderWorkflow = createWorkflow(
       return digital_product_order
     })
 
-    return {
+    return new WorkflowResponse({
       order,
       digital_product_order,
-    }
+    })
   }
 )
 
