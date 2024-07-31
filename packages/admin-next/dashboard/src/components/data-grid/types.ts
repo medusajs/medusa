@@ -1,5 +1,5 @@
 import { CellContext } from "@tanstack/react-table"
-import { MouseEvent, ReactNode } from "react"
+import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 
 export type CellCoords = {
   row: number
@@ -28,16 +28,42 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
   rowIndex: number
 }
 
-export interface DataGridCellContainerProps {
+export interface DataGridCellRenderProps {
+  container: DataGridCellContainerProps
+  input: InputProps
+}
+
+export interface InputProps {
+  ref: RefObject<HTMLElement>
+  onBlur: () => void
+  onFocus: () => void
+  onChange: (next: any, prev: any) => void
+  "data-row": number
+  "data-col": number
+  "data-cell-id": string
+  "data-field": string
+}
+
+interface InnerProps {
+  ref: RefObject<HTMLDivElement>
+  onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
+  onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void
+  onFocus: (e: React.FocusEvent<HTMLElement>) => void
+  "data-container-id": string
+}
+
+interface OverlayProps {
+  onMouseDown: (e: React.MouseEvent<HTMLElement>) => void
+}
+
+export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
+  innerProps: InnerProps
+  overlayProps: OverlayProps
   isAnchor: boolean
+  isSelected: boolean
+  isDragSelected: boolean
   placeholder?: ReactNode
-  wrapper: {
-    onMouseDown: (e: MouseEvent<HTMLElement>) => void
-    onMouseOver: ((e: MouseEvent<HTMLElement>) => void) | undefined
-  }
-  overlay: {
-    onClick: () => void
-  }
+  showOverlay: boolean
 }
 
 export type DataGridColumnType = "string" | "number" | "boolean"

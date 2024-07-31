@@ -1,5 +1,4 @@
 import {
-  ArrowDownTray,
   BellAlert,
   BellAlertDone,
   InformationCircleSolid,
@@ -13,6 +12,7 @@ import { InfiniteList } from "../../common/infinite-list"
 import { sdk } from "../../../lib/client"
 import { notificationQueryKeys } from "../../../hooks/api"
 import { TFunction } from "i18next"
+import { FilePreview } from "../../common/file-preview"
 
 interface NotificationData {
   title: string
@@ -132,31 +132,16 @@ const Notification = ({
               </Text>
             )}
           </div>
-          <NotificationFile file={data.file} />
+          {!!data?.file?.url && (
+            <FilePreview
+              filename={data.file.filename ?? ""}
+              url={data.file.url}
+              hideThumbnail
+            />
+          )}
         </div>
       </div>
     </>
-  )
-}
-
-const NotificationFile = ({ file }: { file: NotificationData["file"] }) => {
-  if (!file?.url) {
-    return null
-  }
-
-  return (
-    <div className="shadow-elevation-card-rest bg-ui-bg-component transition-fg rounded-md px-3 py-2">
-      <div className="flex w-full flex-row items-center justify-between gap-2">
-        <Text size="small" leading="compact">
-          {file?.filename ?? file.url}
-        </Text>
-        <IconButton variant="transparent" asChild>
-          <a href={file.url} download={file.filename ?? `${Date.now()}`}>
-            <ArrowDownTray />
-          </a>
-        </IconButton>
-      </div>
-    </div>
   )
 }
 
