@@ -13,7 +13,7 @@
     "./logger": "./dist/logger/index.js",
     "./database": "./dist/database/index.js",
     "./subscribers": "./dist/subscribers/index.js",
-    "./workflows": "./dist/workflows/index.js"
+    "./workflows": "./dist/workflows/index.js",
     "./jobs": "./dist/jobs/index.js"
   },
   "engines": {
