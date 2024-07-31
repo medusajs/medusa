@@ -147,7 +147,7 @@ export class JobLoader {
         )
 
         return await promiseAll(
-          entries.map(async (entry) => {
+          fileEntries.map(async (entry) => {
             const fullPath = join(sourcePath, entry.name)
 
             const module_ = await import(fullPath)
