@@ -66,6 +66,6 @@ export class WortkflowLoader {
 
     await promiseAll(promises)
 
-    logger.debug(`Registered workflows.`)
+    logger.debug(`Workflows registered.`)
   }
 }
