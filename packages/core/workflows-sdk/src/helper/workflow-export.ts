@@ -139,7 +139,7 @@ function createContextualWorkflowRunner<
     return {
       errors,
       transaction,
-      result: result,
+      result,
     }
   }
 
