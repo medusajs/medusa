@@ -45,6 +45,7 @@ async function subscribersLoader(plugins: PluginDetails[]) {
    */
   await new SubscriberLoader(join(__dirname, "../subscribers")).load()
 
+  // TODO: make it the same as the other loaders, taking an array of paths to load from
   /**
    * Load subscribers from all the plugins.
    */
