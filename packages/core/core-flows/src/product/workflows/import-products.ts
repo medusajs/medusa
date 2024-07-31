@@ -1,5 +1,6 @@
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -17,7 +18,7 @@ export const importProductsWorkflow = createWorkflow(
   importProductsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.ProductWorkflow.ImportProductsDTO>
-  ): WorkflowData<WorkflowTypes.ProductWorkflow.ImportProductsSummary> => {
+  ): WorkflowResponse<WorkflowTypes.ProductWorkflow.ImportProductsSummary> => {
     const products = parseProductCsvStep(input.fileContent)
     const batchRequest = groupProductsForBatchStep(products)
 
@@ -64,7 +65,6 @@ export const importProductsWorkflow = createWorkflow(
       ]
     })
     sendNotificationsStep(notifications)
-
-    return summary
+    return new WorkflowResponse(summary)
   }
 )

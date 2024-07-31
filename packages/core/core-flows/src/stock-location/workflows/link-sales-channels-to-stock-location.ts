@@ -10,7 +10,7 @@ export const linkSalesChannelsToStockLocationWorkflowId =
   "link-sales-channels-to-stock-location"
 export const linkSalesChannelsToStockLocationWorkflow = createWorkflow(
   linkSalesChannelsToStockLocationWorkflowId,
-  (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<LinkWorkflowInput>): void => {
     const toAdd = transform({ input }, (data) => {
       return data.input.add?.map((salesChannelId) => ({
         sales_channel_id: salesChannelId,

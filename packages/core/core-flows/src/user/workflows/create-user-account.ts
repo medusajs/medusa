@@ -1,6 +1,7 @@
 import { CreateUserDTO, UserDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -15,7 +16,7 @@ type WorkflowInput = {
 export const createUserAccountWorkflowId = "create-user-account"
 export const createUserAccountWorkflow = createWorkflow(
   createUserAccountWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<UserDTO> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<UserDTO> => {
     const users = createUsersStep([input.userData])
     const user = transform(users, (users: UserDTO[]) => users[0])
 
@@ -24,6 +25,6 @@ export const createUserAccountWorkflow = createWorkflow(
       actorType: "user",
       value: user.id,
     })
-    return user
+    return new WorkflowResponse(user)
   }
 )

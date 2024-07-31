@@ -19,3 +19,6 @@ export const SymbolWorkflowStepBind = Symbol.for("WorkflowStepBind").toString()
 export const SymbolWorkflowStepTransformer = Symbol.for(
   "WorkflowStepTransformer"
 ).toString()
+export const SymbolMedusaWorkflowResponse = Symbol.for(
+  "MedusaWorkflowResponse"
+).toString()

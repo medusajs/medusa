@@ -1,5 +1,9 @@
 import { UserDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateUsersStep } from "../steps"
 import { UserWorkflow } from "@medusajs/types"
 
@@ -8,7 +12,7 @@ export const updateUsersWorkflow = createWorkflow(
   updateUsersWorkflowId,
   (
     input: WorkflowData<UserWorkflow.UpdateUsersWorkflowInputDTO>
-  ): WorkflowData<UserDTO[]> => {
-    return updateUsersStep(input.updates)
+  ): WorkflowResponse<UserDTO[]> => {
+    return new WorkflowResponse(updateUsersStep(input.updates))
   }
 )
