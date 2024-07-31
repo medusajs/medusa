@@ -16,8 +16,8 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
-import { createCompleteReturnStep } from "../../steps/create-complete-return"
-import { receiveReturnStep } from "../../steps/receive-return"
+import { createCompleteReturnStep } from "../../steps/return/create-complete-return"
+import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
