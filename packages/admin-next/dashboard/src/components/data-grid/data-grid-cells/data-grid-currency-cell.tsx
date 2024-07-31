@@ -1,9 +1,14 @@
-import CurrencyInput from "react-currency-input-field"
-import { Controller } from "react-hook-form"
+import CurrencyInput, {
+  CurrencyInputProps,
+  formatValue,
+} from "react-currency-input-field"
+import { Controller, ControllerRenderProps } from "react-hook-form"
 
-import { currencies } from "../../../lib/data/currencies"
+import { useCallback, useEffect, useState } from "react"
+import { useCombinedRefs } from "../../../hooks/use-combined-refs"
+import { CurrencyInfo, currencies } from "../../../lib/data/currencies"
 import { useDataGridCell } from "../hooks"
-import { DataGridCellProps } from "../types"
+import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 interface DataGridCurrencyCellProps<TData, TValue = any>
@@ -16,10 +21,13 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
   context,
   code,
 }: DataGridCurrencyCellProps<TData, TValue>) => {
-  const { control, attributes, container } = useDataGridCell({
+  const { control, renderProps } = useDataGridCell({
     field,
     context,
+    type: "number",
   })
+
+  const { container, input } = renderProps
 
   const currency = currencies[code.toUpperCase()]
 
@@ -27,28 +35,108 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
     <Controller
       control={control}
       name={field}
-      render={({ field: { value, onChange, ...field } }) => {
+      render={({ field }) => {
         return (
           <DataGridCellContainer {...container}>
-            <div className="flex size-full items-center gap-2 px-4 py-2.5">
-              <span className="txt-compact-small text-ui-fg-muted" aria-hidden>
-                {currency.symbol_native}
-              </span>
-              <CurrencyInput
-                {...field}
-                {...attributes}
-                className="txt-compact-small w-full flex-1 appearance-none bg-transparent text-right outline-none"
-                value={value}
-                onValueChange={(_value, _name, values) =>
-                  onChange(values?.value)
-                }
-                decimalScale={currency.decimal_digits}
-                decimalsLimit={currency.decimal_digits}
-              />
-            </div>
+            <Inner field={field} inputProps={input} currencyInfo={currency} />
           </DataGridCellContainer>
         )
       }}
     />
+  )
+}
+
+const Inner = ({
+  field,
+  inputProps,
+  currencyInfo,
+}: {
+  field: ControllerRenderProps<any, string>
+  inputProps: InputProps
+  currencyInfo: CurrencyInfo
+}) => {
+  const { value, onChange: _, onBlur, ref, ...rest } = field
+  const {
+    ref: inputRef,
+    onBlur: onInputBlur,
+    onFocus,
+    onChange,
+    ...attributes
+  } = inputProps
+
+  const formatter = useCallback(
+    (value?: string | number) => {
+      const ensuredValue =
+        typeof value === "number" ? value.toString() : value || ""
+
+      return formatValue({
+        value: ensuredValue,
+        decimalScale: currencyInfo.decimal_digits,
+        disableGroupSeparators: true,
+        decimalSeparator: ".",
+      })
+    },
+    [currencyInfo]
+  )
+
+  const [localValue, setLocalValue] = useState<string | number>(value || "")
+
+  const handleValueChange: CurrencyInputProps["onValueChange"] = (
+    value,
+    _name,
+    _values
+  ) => {
+    if (!value) {
+      setLocalValue("")
+      return
+    }
+
+    setLocalValue(value)
+  }
+
+  useEffect(() => {
+    let update = value
+
+    // The component we use is a bit fidly when the value is updated externally
+    // so we need to ensure a format that will result in the cell being formatted correctly
+    // according to the users locale on the next render.
+    if (!isNaN(Number(value))) {
+      update = formatter(update)
+    }
+
+    setLocalValue(update)
+  }, [value, formatter])
+
+  const combinedRed = useCombinedRefs(inputRef, ref)
+
+  return (
+    <div className="relative flex size-full items-center">
+      <span
+        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-4 w-fit min-w-4"
+        aria-hidden
+      >
+        {currencyInfo.symbol_native}
+      </span>
+      <CurrencyInput
+        {...rest}
+        {...attributes}
+        ref={combinedRed}
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
+        value={localValue || undefined}
+        onValueChange={handleValueChange}
+        formatValueOnBlur
+        onBlur={() => {
+          onBlur()
+          onInputBlur()
+
+          onChange(localValue, value)
+        }}
+        onFocus={onFocus}
+        decimalScale={currencyInfo.decimal_digits}
+        decimalsLimit={currencyInfo.decimal_digits}
+        autoComplete="off"
+        tabIndex={-1}
+      />
+    </div>
   )
 }

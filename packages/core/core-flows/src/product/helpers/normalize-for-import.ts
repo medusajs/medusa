@@ -1,9 +1,10 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes, RegionTypes } from "@medusajs/types"
 import { MedusaError, lowerCaseFirst } from "@medusajs/utils"
 
 // We want to convert the csv data format to a standard DTO format.
 export const normalizeForImport = (
-  rawProducts: object[]
+  rawProducts: object[],
+  regions: RegionTypes.RegionDTO[]
 ): HttpTypes.AdminCreateProduct[] => {
   const productMap = new Map<
     string,
@@ -12,13 +13,14 @@ export const normalizeForImport = (
       variants: HttpTypes.AdminCreateProductVariant[]
     }
   >()
+  const regionsMap = new Map(regions.map((r) => [r.id, r]))
 
   rawProducts.forEach((rawProduct) => {
     const productInMap = productMap.get(rawProduct["Product Handle"])
     if (!productInMap) {
       productMap.set(rawProduct["Product Handle"], {
         product: normalizeProductForImport(rawProduct),
-        variants: [normalizeVariantForImport(rawProduct)],
+        variants: [normalizeVariantForImport(rawProduct, regionsMap)],
       })
       return
     }
@@ -27,7 +29,7 @@ export const normalizeForImport = (
       product: productInMap.product,
       variants: [
         ...productInMap.variants,
-        normalizeVariantForImport(rawProduct),
+        normalizeVariantForImport(rawProduct, regionsMap),
       ],
     })
   })
@@ -125,7 +127,8 @@ const normalizeProductForImport = (
 }
 
 const normalizeVariantForImport = (
-  rawProduct: object
+  rawProduct: object,
+  regionsMap: Map<string, RegionTypes.RegionDTO>
 ): HttpTypes.AdminCreateProductVariant => {
   const response = {}
   const options = new Map<number, { name?: string; value?: string }>()
@@ -148,10 +151,19 @@ const normalizeVariantForImport = (
           { currency_code: priceKey.toLowerCase(), amount: normalizedValue },
         ]
       } else {
+        const region = regionsMap.get(priceKey)
+        if (!region) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Region with ID ${priceKey} not found`
+          )
+        }
+
         response["prices"] = [
           ...(response["prices"] || []),
           {
             amount: normalizedValue,
+            currency_code: region.currency_code,
             rules: { region_id: priceKey },
           },
         ]

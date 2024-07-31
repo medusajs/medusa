@@ -13,6 +13,7 @@ export const IncludesTaxTooltip = ({
 
   return (
     <Tooltip
+      maxWidth={999}
       content={
         includesTax
           ? t("general.includesTaxTooltip")
