@@ -133,6 +133,7 @@ export class JobLoader {
       }
 
       return await readdir(sourcePath, {
+        recursive: true,
         withFileTypes: true,
       }).then(async (entries) => {
         const fileEntries = entries.filter((entry) => {
@@ -148,9 +149,10 @@ export class JobLoader {
 
         return await promiseAll(
           fileEntries.map(async (entry) => {
-            const fullPath = join(sourcePath, entry.name)
+            const fullPath = join(entry.path, entry.name)
 
             const module_ = await import(fullPath)
+
             const input = {
               config: module_.config,
               handler: module_.default,
