@@ -8,7 +8,7 @@ async function resolveProperty(property, transactionContext) {
   } else if (
     property?.__type === OrchestrationUtils.SymbolMedusaWorkflowResponse
   ) {
-    return resolveProperty(property.$result, transactionContext)
+    return resolveValue(property.$result, transactionContext)
   } else if (
     property?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
   ) {

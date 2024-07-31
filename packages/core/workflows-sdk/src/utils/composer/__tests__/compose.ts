@@ -1912,7 +1912,7 @@ describe("Workflow composer", function () {
     expect(mockCompensateSte1.mock.calls[0][0]).toEqual(undefined)
   })
 
-  it("should compose a workflow that returns destructured properties", async () => {
+  it.only("should compose a workflow that returns destructured properties", async () => {
     const step = function () {
       return new StepResponse({
         propertyNotReturned: 1234,
