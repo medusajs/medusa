@@ -1571,7 +1571,7 @@ export default class ProductModuleService
     if (productData.handle && !isValidHandle(productData.handle)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Invalid product handle. It must contain URL safe characters"
+        `Invalid product handle '${productData.handle}'. It must contain URL safe characters`
       )
     }
   }
