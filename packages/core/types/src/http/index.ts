@@ -1,6 +1,7 @@
 export * from "./api-key"
 export * from "./campaign"
 export * from "./cart"
+export * from "./claim"
 export * from "./collection"
 export * from "./common"
 export * from "./currency"

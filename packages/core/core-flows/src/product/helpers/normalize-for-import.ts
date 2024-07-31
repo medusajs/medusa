@@ -70,12 +70,19 @@ const variantFieldsToOmit = new Map([["variant_product_id", true]])
 // These fields can have a numeric value, but they are stored as string in the DB so we need to normalize them
 const stringFields = [
   "product_tag_",
+  "variant_option_",
   "variant_barcode",
   "variant_sku",
   "variant_ean",
   "variant_upc",
   "variant_hs_code",
   "variant_mid_code",
+]
+
+const booleanFields = [
+  "product_discountable",
+  "variant_manage_inventory",
+  "variant_allow_backorder",
 ]
 
 const normalizeProductForImport = (
@@ -221,9 +228,20 @@ const normalizeVariantForImport = (
 }
 
 const getNormalizedValue = (key: string, value: any): any => {
-  return stringFields.some((field) => key.startsWith(field))
+  let res = stringFields.some((field) => key.startsWith(field))
     ? value?.toString()
     : value
+
+  if (booleanFields.some((field) => key.startsWith(field))) {
+    if (value === "TRUE") {
+      res = true
+    }
+    if (value === "FALSE") {
+      res = false
+    }
+  }
+
+  return res
 }
 
 const snakecaseKey = (key: string): string => {
