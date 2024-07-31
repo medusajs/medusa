@@ -44,7 +44,7 @@ const validateOrder = createStep(
     throwErrorIf(
       orderExchange_.fulfillments,
       notCanceled,
-      "All fulfillments must be canceled before canceling a exchange"
+      "All fulfillments must be canceled before canceling am exchange"
     )
   }
 )
