@@ -17,6 +17,7 @@ const compareCSVs = async (filePath, expectedFilePath) => {
   let fixturesContent = await fs.readFile(expectedFilePath, {
     encoding: "utf-8",
   })
+  await fs.rm(path.dirname(asLocalPath), { recursive: true, force: true })
 
   // Normalize csv data to get rid of dynamic data
   const idsToReplace = ["prod_", "pcol_", "variant_", "ptyp_"]
@@ -47,6 +48,7 @@ medusaIntegrationTestRunner({
     let publishedCollection
 
     let baseType
+    let baseRegion
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -55,6 +57,17 @@ medusaIntegrationTestRunner({
 
     beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      baseRegion = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "Test region",
+            currency_code: "USD",
+          },
+          adminHeaders
+        )
+      ).data.region
 
       baseCollection = (
         await api.post(
@@ -196,10 +209,64 @@ medusaIntegrationTestRunner({
           notifications[0].data.file.url,
           path.join(__dirname, "__fixtures__", "exported-products-comma.csv")
         )
-        await fs.rm(path.dirname(notifications[0].data.file.url), {
-          force: true,
-          recursive: true,
-        })
+      })
+
+      it("should export a csv file with region prices", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        const productWithRegionPrices = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with prices",
+              variants: [
+                {
+                  title: "Test variant",
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 100,
+                    },
+                    {
+                      currency_code: "usd",
+                      rules: {
+                        region_id: baseRegion.id,
+                      },
+                      amount: 45,
+                    },
+                  ],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const batchJobRes = await api.post(
+          "/admin/products/export?id=" + productWithRegionPrices.id,
+          {},
+          adminHeaders
+        )
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        await compareCSVs(
+          notifications[0].data.file.url,
+          path.join(__dirname, "__fixtures__", "prices-with-region.csv")
+        )
       })
 
       it("should export a csv file filtered by specific products", async () => {
@@ -229,11 +296,6 @@ medusaIntegrationTestRunner({
           notifications[0].data.file.url,
           path.join(__dirname, "__fixtures__", "filtered-products.csv")
         )
-
-        await fs.rm(path.dirname(notifications[0].data.file.url), {
-          force: true,
-          recursive: true,
-        })
       })
     })
   },
