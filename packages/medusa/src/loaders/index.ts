@@ -158,7 +158,9 @@ export default async ({
     linkModules: pluginLinks,
   })
 
-  const workflowsSourcePaths = plugins.map((p) => p.resolve)
+  const workflowsSourcePaths = plugins.map((p) =>
+    join(p.resolve, "jobs/workflows")
+  )
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths)
   await workflowLoader.load()
 
