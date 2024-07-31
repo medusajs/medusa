@@ -144,7 +144,7 @@ export class JobLoader {
         })
 
         logger.debug(
-          `Registering ${fileEntries.length} jobs from ${sourcePath}.`
+          `Registering jobs from ${sourcePath}.`
         )
 
         return await promiseAll(
@@ -177,6 +177,6 @@ export class JobLoader {
 
     flatJobsInput.map(this.registerJob)
 
-    logger.debug(`Registered ${flatJobsInput.length} jobs.`)
+    logger.debug(`Job registered.`)
   }
 }
