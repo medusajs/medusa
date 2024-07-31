@@ -1,36 +1,41 @@
+import { clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
-import { DataGridCellContainerProps } from "../types"
 
-type ContainerProps = PropsWithChildren<DataGridCellContainerProps>
+import { DataGridCellContainerProps } from "../types"
 
 export const DataGridCellContainer = ({
   isAnchor,
+  isSelected,
+  isDragSelected,
+  showOverlay,
   placeholder,
-  overlay,
-  wrapper,
+  innerProps,
+  overlayProps,
   children,
-}: ContainerProps) => {
+}: DataGridCellContainerProps) => {
   return (
-    <div className="static size-full">
-      <div className="flex size-full items-start outline-none" tabIndex={-1}>
-        <div {...wrapper} className="relative size-full min-w-0 flex-1">
-          <div className="relative z-[1] flex size-full items-center justify-center">
-            <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
-              {children}
-            </RenderChildren>
-          </div>
-          {!isAnchor && (
-            <div
-              {...overlay}
-              tabIndex={-1}
-              className="absolute inset-0 z-[2] size-full"
-            />
-          )}
-        </div>
+    <div
+      className={clx("bg-ui-bg-base relative size-full outline-none", {
+        "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
+        "bg-ui-bg-highlight  [&:has([data-field]:focus)]:bg-ui-bg-base":
+          isSelected || isAnchor,
+        "bg-ui-bg-subtle": isDragSelected && !isAnchor,
+      })}
+      tabIndex={0}
+      {...innerProps}
+    >
+      <div className="relative z-[1] flex size-full items-center justify-center">
+        <RenderChildren isAnchor={isAnchor} placeholder={placeholder}>
+          {children}
+        </RenderChildren>
       </div>
-      {/* {showDragHandle && (
-        <div className="bg-ui-bg-interactive absolute -bottom-[1.5px] -right-[1.5px] size-[3px]" />
-      )} */}
+      {showOverlay && (
+        <div
+          {...overlayProps}
+          data-cell-overlay="true"
+          className="absolute inset-0 z-[2] size-full"
+        />
+      )}
     </div>
   )
 }

@@ -1,16 +1,16 @@
+import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Form } from "../../../../../components/common/form"
+import { z } from "zod"
 import {
   FileType,
   FileUpload,
 } from "../../../../../components/common/file-upload"
-import { UseFormReturn } from "react-hook-form"
+import { Form } from "../../../../../components/common/form"
+import { MediaSchema } from "../../../product-create/constants"
 import {
   EditProductMediaSchemaType,
   ProductCreateSchemaType,
 } from "../../../product-create/types"
-import { MediaSchema } from "../../../product-create/constants"
-import { z } from "zod"
 
 type Media = z.infer<typeof MediaSchema>
 
@@ -35,11 +35,13 @@ const SUPPORTED_FORMATS_FILE_EXTENSIONS = [
 export const UploadMediaFormItem = ({
   form,
   append,
+  showHint = true,
 }: {
   form:
     | UseFormReturn<ProductCreateSchemaType>
     | UseFormReturn<EditProductMediaSchemaType>
   append: (value: Media) => void
+  showHint?: boolean
 }) => {
   const { t } = useTranslation()
 
@@ -72,10 +74,12 @@ export const UploadMediaFormItem = ({
       render={() => {
         return (
           <Form.Item>
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-2">
               <div className="flex flex-col gap-y-1">
                 <Form.Label optional>{t("products.media.label")}</Form.Label>
-                <Form.Hint>{t("products.media.editHint")}</Form.Hint>
+                {showHint && (
+                  <Form.Hint>{t("products.media.editHint")}</Form.Hint>
+                )}
               </div>
               <Form.Control>
                 <FileUpload

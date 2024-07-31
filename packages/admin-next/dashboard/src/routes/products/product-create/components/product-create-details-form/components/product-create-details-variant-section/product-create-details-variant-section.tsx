@@ -8,7 +8,6 @@ import {
   IconButton,
   Input,
   Label,
-  Switch,
   Text,
   clx,
 } from "@medusajs/ui"
@@ -22,6 +21,7 @@ import {
 import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../../../components/common/form"
+import { InlineTip } from "../../../../../../../components/common/inline-tip"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
@@ -285,26 +285,28 @@ export const ProductCreateVariantsSection = ({
 
   return (
     <div id="variants" className="flex flex-col gap-y-8">
-      <Heading level="h2">{t("products.create.variants.header")}</Heading>
-      <SwitchBox
-        control={form.control}
-        name="enable_variants"
-        label={t("products.create.variants.subHeadingTitle")}
-        description={t("products.create.variants.subHeadingDescription")}
-        onCheckedChange={(checked) => {
-          if (checked) {
-            form.setValue("options", [
-              {
-                title: "",
-                values: [],
-              },
-            ])
-            form.setValue("variants", [])
-          } else {
-            createDefaultOptionAndVariant()
-          }
-        }}
-      />
+      <div className="flex flex-col gap-y-6">
+        <Heading level="h2">{t("products.create.variants.header")}</Heading>
+        <SwitchBox
+          control={form.control}
+          name="enable_variants"
+          label={t("products.create.variants.subHeadingTitle")}
+          description={t("products.create.variants.subHeadingDescription")}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              form.setValue("options", [
+                {
+                  title: "",
+                  values: [],
+                },
+              ])
+              form.setValue("variants", [])
+            } else {
+              createDefaultOptionAndVariant()
+            }
+          }}
+        />
+      </div>
       {watchedAreVariantsEnabled && (
         <>
           <div className="flex flex-col gap-y-6">
@@ -314,7 +316,7 @@ export const ProductCreateVariantsSection = ({
               render={() => {
                 return (
                   <Form.Item>
-                    <div className="flex flex-col gap-y-4">
+                    <div className="flex flex-col gap-y-6">
                       <div className="flex items-start justify-between gap-x-4">
                         <div className="flex flex-col">
                           <Form.Label>
@@ -426,94 +428,103 @@ export const ProductCreateVariantsSection = ({
               }}
             />
           </div>
-          <div className="grid grid-cols-1 gap-x-4 gap-y-4">
-            <div className="flex flex-col gap-y-1">
-              <Label weight="plus">
-                {t("products.create.variants.productVariants.label")}
-              </Label>
-              <Hint>{t("products.create.variants.productVariants.hint")}</Hint>
-            </div>
-            {!showInvalidOptionsMessage && showInvalidVariantsMessage && (
-              <Alert dismissible variant="error">
-                {t("products.create.errors.variants")}
-              </Alert>
-            )}
-            {variants.fields.length > 0 ? (
-              <div className="overflow-hidden rounded-xl border">
-                <div
-                  className="bg-ui-bg-component text-ui-fg-subtle grid items-center gap-3 border-b px-6 py-3.5"
-                  style={{
-                    gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
-                  }}
-                >
-                  <div>
-                    <Checkbox
-                      checked={getCheckboxState(watchedVariants)}
-                      onCheckedChange={onCheckboxChange}
-                    />
-                  </div>
-                  <div />
-                  {watchedOptions.map((option, index) => (
-                    <div key={index}>
-                      <Text size="small" leading="compact" weight="plus">
-                        {option.title}
-                      </Text>
-                    </div>
-                  ))}
-                </div>
-                <SortableList
-                  items={variants.fields}
-                  onChange={handleRankChange}
-                  renderItem={(item, index) => {
-                    return (
-                      <SortableList.Item
-                        id={item.id}
-                        className={clx("bg-ui-bg-base border-b", {
-                          "border-b-0": index === variants.fields.length - 1,
-                        })}
-                      >
-                        <div
-                          className="text-ui-fg-subtle grid w-full items-center gap-3 px-6 py-3.5"
-                          style={{
-                            gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
-                          }}
-                        >
-                          <Form.Field
-                            control={form.control}
-                            name={`variants.${index}.should_create` as const}
-                            render={({
-                              field: { value, onChange, ...field },
-                            }) => {
-                              return (
-                                <Form.Item>
-                                  <Form.Control>
-                                    <Checkbox
-                                      {...field}
-                                      checked={value}
-                                      onCheckedChange={onChange}
-                                    />
-                                  </Form.Control>
-                                </Form.Item>
-                              )
-                            }}
-                          />
-                          <SortableList.DragHandle />
-                          {Object.values(item.options).map((value, index) => (
-                            <Text key={index} size="small" leading="compact">
-                              {value}
-                            </Text>
-                          ))}
-                        </div>
-                      </SortableList.Item>
-                    )
-                  }}
-                />
+          <div className="grid grid-cols-1 gap-x-4 gap-y-8">
+            <div className="flex flex-col gap-y-6">
+              <div className="flex flex-col">
+                <Label weight="plus">
+                  {t("products.create.variants.productVariants.label")}
+                </Label>
+                <Hint>
+                  {t("products.create.variants.productVariants.hint")}
+                </Hint>
               </div>
-            ) : (
-              <Alert>
-                {t("products.create.variants.productVariants.alert")}
-              </Alert>
-            )}
+              {!showInvalidOptionsMessage && showInvalidVariantsMessage && (
+                <Alert dismissible variant="error">
+                  {t("products.create.errors.variants")}
+                </Alert>
+              )}
+              {variants.fields.length > 0 ? (
+                <div className="overflow-hidden rounded-xl border">
+                  <div
+                    className="bg-ui-bg-component text-ui-fg-subtle grid items-center gap-3 border-b px-6 py-2.5"
+                    style={{
+                      gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
+                    }}
+                  >
+                    <div>
+                      <Checkbox
+                        checked={getCheckboxState(watchedVariants)}
+                        onCheckedChange={onCheckboxChange}
+                      />
+                    </div>
+                    <div />
+                    {watchedOptions.map((option, index) => (
+                      <div key={index}>
+                        <Text size="small" leading="compact" weight="plus">
+                          {option.title}
+                        </Text>
+                      </div>
+                    ))}
+                  </div>
+                  <SortableList
+                    items={variants.fields}
+                    onChange={handleRankChange}
+                    renderItem={(item, index) => {
+                      return (
+                        <SortableList.Item
+                          id={item.id}
+                          className={clx("bg-ui-bg-base border-b", {
+                            "border-b-0": index === variants.fields.length - 1,
+                          })}
+                        >
+                          <div
+                            className="text-ui-fg-subtle grid w-full items-center gap-3 px-6 py-2.5"
+                            style={{
+                              gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
+                            }}
+                          >
+                            <Form.Field
+                              control={form.control}
+                              name={`variants.${index}.should_create` as const}
+                              render={({
+                                field: { value, onChange, ...field },
+                              }) => {
+                                return (
+                                  <Form.Item>
+                                    <Form.Control>
+                                      <Checkbox
+                                        {...field}
+                                        checked={value}
+                                        onCheckedChange={onChange}
+                                      />
+                                    </Form.Control>
+                                  </Form.Item>
+                                )
+                              }}
+                            />
+                            <SortableList.DragHandle />
+                            {Object.values(item.options).map((value, index) => (
+                              <Text key={index} size="small" leading="compact">
+                                {value}
+                              </Text>
+                            ))}
+                          </div>
+                        </SortableList.Item>
+                      )
+                    }}
+                  />
+                </div>
+              ) : (
+                <Alert>
+                  {t("products.create.variants.productVariants.alert")}
+                </Alert>
+              )}
+              {variants.fields.length > 0 && (
+                <InlineTip variant="tip">
+                  {t("products.create.variants.productVariants.tip")}
+                </InlineTip>
+              )}
+            </div>
           </div>
         </>
       )}

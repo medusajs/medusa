@@ -4,6 +4,14 @@
 
 {{else}}
 
+{{#ifWorkflowStep}}
+
+{{> member.step}}
+
+{{else}}
+
 {{> member.signature}}
+
+{{/ifWorkflowStep}}
 
 {{/ifReactQueryType}}

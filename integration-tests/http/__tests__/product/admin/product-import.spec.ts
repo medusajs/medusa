@@ -322,8 +322,123 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should fail on invalid prices being present in the CSV", async () => {})
-      it("should fail on non-existent fields being present in the CSV", async () => {})
+      it("should fail on invalid region in prices being present in the CSV", async () => {
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "invalid-prices.csv"),
+          { encoding: "utf-8" }
+        )
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: fileContent,
+        })
+
+        const err = await api
+          .post("/admin/products/import", form, meta)
+          .catch((e) => e)
+        expect(err.response.data.message).toEqual(
+          "Region with ID reg_nonexistent not found"
+        )
+      })
+
+      it("should ignore non-existent fields being present in the CSV that don't start with Product or Variant", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "unrelated-column.csv"),
+          { encoding: "utf-8" }
+        )
+
+        fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
+        fileContent = fileContent.replace(/ptyp_\w*\d*/g, baseType.id)
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: fileContent,
+        })
+
+        const batchJobRes = await api.post("/admin/products/import", form, meta)
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 1,
+          toUpdate: 0,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        expect(notifications.length).toBe(1)
+        expect(notifications[0]).toEqual(
+          expect.objectContaining({
+            data: expect.objectContaining({
+              title: "Product import",
+              description: `Product import of file test.csv completed successfully!`,
+            }),
+          })
+        )
+      })
+
+      it("should fail on non-existent product fields being present in the CSV", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "invalid-column.csv"),
+          { encoding: "utf-8" }
+        )
+
+        fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
+        fileContent = fileContent.replace(/ptyp_\w*\d*/g, baseType.id)
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: fileContent,
+        })
+
+        const batchJobRes = await api.post("/admin/products/import", form, meta)
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 1,
+          toUpdate: 0,
+        })
+
+        await api
+          .post(`/admin/products/import/${transactionId}/confirm`, {}, meta)
+          // TODO: Currently the `setStepSuccess` waits for the whole workflow to finish before returning.
+          .catch((e) => e)
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        expect(notifications.length).toBe(1)
+        expect(notifications[0]).toEqual(
+          expect.objectContaining({
+            data: expect.objectContaining({
+              title: "Product import",
+              description: `Failed to import products from file test.csv`,
+            }),
+          })
+        )
+      })
     })
   },
 })

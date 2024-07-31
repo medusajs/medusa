@@ -2,16 +2,17 @@ import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { ProductCreateSchemaType } from "../../types"
-import { useStore } from "../../../../../hooks/api/store"
-import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
 import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
-import { createDataGridHelper } from "../../../../../components/data-grid/utils"
-import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
-import { useRegions } from "../../../../../hooks/api/regions"
-import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { getPriceColumns } from "../../../../../components/data-grid/data-grid-columns/price-columns"
+import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+import { useRouteModal } from "../../../../../components/modals"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
+import { useRegions } from "../../../../../hooks/api/regions"
+import { useStore } from "../../../../../hooks/api/store"
+import { ProductCreateSchemaType } from "../../types"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -25,6 +26,8 @@ export const ProductCreateVariantsForm = ({
   const { store, isPending, isError, error } = useStore()
 
   const { price_preferences: pricePreferences } = usePricePreferences({})
+
+  const { setCloseOnEscape } = useRouteModal()
 
   const currencyCodes = useMemo(
     () => store?.supported_currencies?.map((c) => c.currency_code) || [],
@@ -67,7 +70,12 @@ export const ProductCreateVariantsForm = ({
       {isPending && !store ? (
         <div>Loading...</div>
       ) : (
-        <DataGridRoot columns={columns} data={variantData} state={form} />
+        <DataGridRoot
+          columns={columns}
+          data={variantData}
+          state={form}
+          onEditingChange={(editing) => setCloseOnEscape(!editing)}
+        />
       )}
     </div>
   )
@@ -180,7 +188,7 @@ const useColumns = ({
         type: "boolean",
       }),
 
-      ...getPriceColumns({
+      ...getPriceColumns<HttpTypes.AdminProductVariant>({
         currencies,
         regions,
         pricePreferences,
