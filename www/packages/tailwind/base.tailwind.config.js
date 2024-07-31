@@ -299,13 +299,13 @@ module.exports = {
       },
       maxWidth: {
         // sidebar
-        "sidebar-xs": "276px",
-        "sidebar-sm": "276px",
-        "sidebar-md": "276px",
-        "sidebar-lg": "197px",
-        "sidebar-xl": "197px",
-        "sidebar-xxl": "197px",
-        "sidebar-xxxl": "197px",
+        "sidebar-xs": "300px",
+        "sidebar-sm": "300px",
+        "sidebar-md": "300px",
+        "sidebar-lg": "221px",
+        "sidebar-xl": "221px",
+        "sidebar-xxl": "221px",
+        "sidebar-xxxl": "221px",
         // main content
         "main-content-xs": "100%",
         "main-content-sm": "100%",

@@ -1302,6 +1302,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/icons@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@medusajs/icons@npm:1.2.2"
+  peerDependencies:
+    react: ^16.x || ^17.x || ^18.x
+  checksum: 610117b959ddbd68f927caa12e70fb5fc849e8c68a25ca38f4d137aca1363f36552455aa83669847bd42753cccf36ad57b82f9bd5be7794e5b23af1046f78967
+  languageName: node
+  linkType: hard
+
 "@medusajs/ui-preset@npm:^1.1.2":
   version: 1.1.2
   resolution: "@medusajs/ui-preset@npm:1.1.2"
@@ -14662,6 +14671,7 @@ turbo@latest:
   version: 0.0.0-use.local
   resolution: "types@workspace:packages/types"
   dependencies:
+    "@medusajs/icons": ^1.2.2
     "@types/node": ^20.11.20
     eslint-config-docs: "*"
     rimraf: ^5.0.5

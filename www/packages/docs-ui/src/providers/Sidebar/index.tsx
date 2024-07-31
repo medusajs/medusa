@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { getScrolledTop } from "@/utils"
 import { useIsBrowser } from "@/hooks"
 import {
+  NavigationDropdownItem,
   SidebarItemSections,
   SidebarItemType,
   SidebarSectionItemsType,
@@ -61,6 +62,7 @@ export type SidebarContextType = {
   shouldHandleHashChange: boolean
   sidebarRef: React.RefObject<HTMLDivElement>
   goBack: () => void
+  navigationDropdownItems: NavigationDropdownItem[]
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -173,6 +175,7 @@ export type SidebarProviderProps = {
   shouldHandlePathChange?: boolean
   scrollableElement?: Element | Window
   staticSidebarItems?: boolean
+  navigationDropdownItems: NavigationDropdownItem[]
 } & SidebarStyleOptions
 
 export const SidebarProvider = ({
@@ -186,6 +189,7 @@ export const SidebarProvider = ({
   staticSidebarItems = false,
   disableActiveTransition = false,
   noTitleStyling = false,
+  navigationDropdownItems,
 }: SidebarProviderProps) => {
   const [items, dispatch] = useReducer(reducer, {
     top: initialItems?.top || [],
@@ -435,6 +439,7 @@ export const SidebarProvider = ({
         shouldHandleHashChange,
         sidebarRef,
         goBack,
+        navigationDropdownItems,
       }}
     >
       {children}

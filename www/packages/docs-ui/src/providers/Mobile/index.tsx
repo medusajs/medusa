@@ -22,9 +22,9 @@ export const MobileProvider = ({ children }: MobileProviderProps) => {
   const [isMobile, setIsMobile] = useState(false)
 
   const handleResize = useCallback(() => {
-    if (window.innerWidth < 1025 && !isMobile) {
+    if (window.innerWidth < 1024 && !isMobile) {
       setIsMobile(true)
-    } else if (window.innerWidth >= 1025 && isMobile) {
+    } else if (window.innerWidth >= 1024 && isMobile) {
       setIsMobile(false)
     }
   }, [isMobile])

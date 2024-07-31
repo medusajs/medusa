@@ -1,3 +1,4 @@
+export * from "./use-click-outside"
 export * from "./use-collapsible"
 export * from "./use-collapsible-code-lines"
 export * from "./use-copy"

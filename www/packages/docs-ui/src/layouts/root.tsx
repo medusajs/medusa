@@ -1,10 +1,12 @@
 import React from "react"
 import clsx from "clsx"
 import { Sidebar, SidebarProps } from "@/components"
+import { MobileNavigation } from "../components/MobileNavigation"
 
 export type RootLayoutProps = {
   children: React.ReactNode
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
+  // todo remove
   NavbarComponent?: React.FC
   sidebarProps?: SidebarProps
   htmlClassName?: string
@@ -15,7 +17,6 @@ export type RootLayoutProps = {
 
 export const RootLayout = ({
   ProvidersComponent,
-  NavbarComponent,
   children,
   sidebarProps,
   htmlClassName,
@@ -30,12 +31,12 @@ export const RootLayout = ({
           "bg-medusa-bg-subtle font-base text-medium w-full",
           "text-medusa-fg-subtle",
           "h-screen overflow-hidden",
-          "grid grid-cols-1 lg:mx-auto lg:grid-cols-[197px_1fr]",
+          "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
           bodyClassName
         )}
       >
         <ProvidersComponent>
-          {NavbarComponent && <NavbarComponent />}
+          <MobileNavigation />
           <Sidebar {...sidebarProps} />
           <div
             className={clsx(
