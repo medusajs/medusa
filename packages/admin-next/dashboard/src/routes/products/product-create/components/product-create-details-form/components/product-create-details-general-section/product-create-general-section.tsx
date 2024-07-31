@@ -16,7 +16,7 @@ export const ProductCreateGeneralSection = ({
   const { t } = useTranslation()
 
   return (
-    <div id="general" className="flex flex-col gap-y-8">
+    <div id="general" className="flex flex-col gap-y-6">
       <div className="flex flex-col gap-y-2">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Form.Field
