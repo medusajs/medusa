@@ -1,5 +1,9 @@
 import { CreateCustomerDTO, CustomerDTO } from "@medusajs/types"
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
+import {
+  createWorkflow,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
 import { createCustomersStep } from "../steps"
 import { transform } from "@medusajs/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
@@ -12,7 +16,7 @@ type WorkflowInput = {
 export const createCustomerAccountWorkflowId = "create-customer-account"
 export const createCustomerAccountWorkflow = createWorkflow(
   createCustomerAccountWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<CustomerDTO> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<CustomerDTO> => {
     const customers = createCustomersStep([input.customersData])
 
     const customer = transform(
@@ -26,6 +30,6 @@ export const createCustomerAccountWorkflow = createWorkflow(
       value: customer.id,
     })
 
-    return customer
+    return new WorkflowResponse(customer)
   }
 )

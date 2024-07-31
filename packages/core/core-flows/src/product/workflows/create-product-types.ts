@@ -1,5 +1,9 @@
 import { ProductTypes } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { createProductTypesStep } from "../steps"
 
 type WorkflowInput = { product_types: ProductTypes.CreateProductTypeDTO[] }
@@ -9,7 +13,7 @@ export const createProductTypesWorkflow = createWorkflow(
   createProductTypesWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductTypeDTO[]> => {
-    return createProductTypesStep(input.product_types)
+  ): WorkflowResponse<ProductTypes.ProductTypeDTO[]> => {
+    return new WorkflowResponse(createProductTypesStep(input.product_types))
   }
 )

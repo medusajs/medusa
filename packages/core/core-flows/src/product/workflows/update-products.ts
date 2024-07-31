@@ -10,6 +10,7 @@ import {
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createRemoteLinkStep,
@@ -211,7 +212,7 @@ export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductDTO[]> => {
+  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
     const previousVariantIds = getVariantIdsForProductsStep(input)
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
@@ -250,6 +251,6 @@ export const updateProductsWorkflow = createWorkflow(
 
     createRemoteLinkStep(salesChannelLinks)
 
-    return updatedProducts
+    return new WorkflowResponse(updatedProducts)
   }
 )
