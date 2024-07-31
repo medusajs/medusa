@@ -17,7 +17,7 @@ export const configManager = new ConfigManager()
 
 container.register(
   ContainerRegistrationKeys.CONFIG_MODULE,
-  asFunction(() => configManager)
+  asFunction(() => configManager.config)
 )
 
 /**
