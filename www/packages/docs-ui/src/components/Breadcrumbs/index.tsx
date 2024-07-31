@@ -17,8 +17,13 @@ export const Breadcrumbs = () => {
       tempBreadcrumbItems = getBreadcrumbsOfItem(item.previousSidebar)
     }
 
+    const parentPath =
+      item.parentItem?.type === "link" ? item.parentItem.path : undefined
+    const firstItemPath =
+      item.default[0].type === "link" ? item.default[0].path : undefined
+
     tempBreadcrumbItems.set(
-      item.parentItem?.path || item.top[0].path || "/",
+      parentPath || firstItemPath || "/",
       item.parentItem?.childSidebarTitle || item.parentItem?.title || ""
     )
 

@@ -1,11 +1,11 @@
 import React from "react"
 import Link from "next/link"
 import clsx from "clsx"
-import { SidebarItemType } from "types"
+import { SidebarItem } from "types"
 import { ArrowUturnLeft } from "@medusajs/icons"
 
 type SidebarTitleProps = {
-  item: SidebarItemType
+  item: SidebarItem
 }
 
 export const SidebarTitle = ({ item }: SidebarTitleProps) => {
@@ -16,10 +16,16 @@ export const SidebarTitle = ({ item }: SidebarTitleProps) => {
         "border border-transparent",
         "text-medusa-fg-base text-compact-small-plus"
       )}
-      href={item.isPathHref && item.path ? item.path : `#${item.path}`}
-      replace={!item.isPathHref}
-      shallow={!item.isPathHref}
-      {...item.linkProps}
+      href={
+        item.type === "link"
+          ? item.isPathHref && item.path
+            ? item.path
+            : `#${item.path}`
+          : "#"
+      }
+      replace={item.type === "link" && !item.isPathHref}
+      shallow={item.type === "link" && !item.isPathHref}
+      {...(item.type === "link" ? item.linkProps : {})}
     >
       <ArrowUturnLeft className="mr-docs_[10px]" />
       <span>{item.childSidebarTitle || item.title}</span>

@@ -1,4 +1,4 @@
-import { SidebarItemType } from "types"
+import { SidebarItem } from "types"
 import { mobileSidebarItemsV1, mobileSidebarItemsV2 } from ".."
 
 type Options = {
@@ -9,10 +9,14 @@ type Options = {
 export function getMobileSidebarItems({
   baseUrl,
   version = "v1",
-}: Options): SidebarItemType[] {
+}: Options): SidebarItem[] {
   const mobileItems =
     version === "v2" ? mobileSidebarItemsV2 : mobileSidebarItemsV1
   return mobileItems.map((item) => {
+    if (item.type === "category") {
+      return item
+    }
+
     return {
       ...item,
       path: `${baseUrl}${item.path}`,

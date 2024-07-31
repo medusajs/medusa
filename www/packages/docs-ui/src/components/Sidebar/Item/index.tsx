@@ -8,7 +8,7 @@ import clsx from "clsx"
 import Link from "next/link"
 import { checkSidebarItemVisibility } from "@/utils"
 import { Loading } from "@/components"
-import { SidebarItemType } from "types"
+import { SidebarItem as SidebarItemType } from "types"
 
 export type SidebarItemProps = {
   item: SidebarItemType
@@ -62,12 +62,9 @@ export const SidebarItem = ({
         !canHaveTitleStyling && "text-compact-small-plus text-medusa-fg-subtle",
         canHaveTitleStyling &&
           "text-compact-x-small-plus text-medusa-fg-muted uppercase",
-        !item.path && "cursor-default",
-        item.path !== undefined &&
-          active &&
-          "text-medusa-fg-base bg-medusa-bg-component-hover"
+        active && "text-medusa-fg-base bg-medusa-bg-component-hover"
       ),
-    [canHaveTitleStyling, active, item.path]
+    [canHaveTitleStyling, active]
   )
 
   /**
@@ -150,13 +147,13 @@ export const SidebarItem = ({
       )}
       ref={ref}
     >
-      {item.path === undefined && (
+      {item.type === "category" && (
         <span className={classNames}>
           <span>{item.title}</span>
           {item.additionalElms}
         </span>
       )}
-      {item.path !== undefined && (
+      {item.type === "link" && (
         <Link
           href={item.isPathHref ? item.path : `#${item.path}`}
           className={classNames}

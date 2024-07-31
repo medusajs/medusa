@@ -1,7 +1,7 @@
 import React from "react"
 import { Badge, NavbarItem, HelpButton } from "@/components"
 import { OptionType } from "@/hooks"
-import { NavigationDropdownItem, SidebarItemType } from "types"
+import { NavigationDropdownItem, SidebarItem } from "types"
 import { NotificationItemType } from "@/providers"
 import { NavigationDropdownDocIcon } from "./components/Icons/NavigationDropdown/Doc"
 import { NavigationDropdownStoreIcon } from "./components/Icons/NavigationDropdown/Store"
@@ -225,38 +225,44 @@ export const navbarItemsV2: NavbarItem[] = [
   },
 ]
 
-export const mobileSidebarItemsV1: SidebarItemType[] = [
+export const mobileSidebarItemsV1: SidebarItem[] = [
   {
+    type: "link",
     title: "Docs",
     path: `/`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "User Guide",
     path: `/user-guide`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Store API",
     path: `/api/store`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Admin API",
     path: `/api/admin`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "UI",
     path: `/ui`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Learn Medusa V2",
     path: `/v2`,
     loaded: true,
@@ -265,38 +271,44 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
   },
 ]
 
-export const mobileSidebarItemsV2: SidebarItemType[] = [
+export const mobileSidebarItemsV2: SidebarItem[] = [
   {
+    type: "link",
     title: "Docs",
     path: `/v2`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Learning Resources",
     path: `/v2/resources`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Store API",
     path: `/v2/api/store`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Admin API",
     path: `/v2/api/admin`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "UI",
     path: `/ui`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Medusa v1",
     path: `/`,
     loaded: true,

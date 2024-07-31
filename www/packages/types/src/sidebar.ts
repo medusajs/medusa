@@ -1,30 +1,40 @@
 export enum SidebarItemSections {
-  TOP = "top",
-  BOTTOM = "bottom",
+  DEFAULT = "default",
   MOBILE = "mobile",
 }
 
-export type SidebarItemType = {
-  path?: string
+export type SidebarItemCommon = {
   title: string
-  pageTitle?: string
-  additionalElms?: React.ReactNode
-  children?: SidebarItemType[]
-  loaded?: boolean
-  isPathHref?: boolean
-  linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
+  children?: SidebarItem[]
   isChildSidebar?: boolean
   hasTitleStyling?: boolean
   childSidebarTitle?: string
+  loaded?: boolean
+  additionalElms?: React.ReactNode
 }
 
-export type SidebarSectionItemsType = {
-  [k in SidebarItemSections]: SidebarItemType[]
+export type SidebarItemLink = SidebarItemCommon & {
+  type: "link"
+  path: string
+  isPathHref?: boolean
+  linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
+  // TODO maybe remove?
+  pageTitle?: string
+}
+
+export type SidebarItemCategory = SidebarItemCommon & {
+  type: "category"
+}
+
+export type SidebarItem = SidebarItemLink | SidebarItemCategory
+
+export type SidebarSectionItems = {
+  [k in SidebarItemSections]: SidebarItem[]
 } & {
-  parentItem?: SidebarItemType
+  parentItem?: SidebarItem
 }
 
-export type RawSidebarItemType = SidebarItemType & {
+export type RawSidebarItemType = SidebarItem & {
   autogenerate_path?: string
   number?: string
 }

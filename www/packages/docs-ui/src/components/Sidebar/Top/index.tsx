@@ -2,7 +2,7 @@
 
 import React from "react"
 import { SidebarTitle } from "../Title"
-import { SidebarItemType } from "types"
+import { SidebarItem } from "types"
 import { SidebarTopSeparator } from "./Separator"
 import { SidebarTopNavigationDropdown } from "./NavigationDropdown"
 import { SearchModalOpener } from "../../.."
@@ -10,7 +10,7 @@ import { SidebarTopMobileClose } from "./MobileClose"
 
 export type SidebarTopProps = {
   banner?: React.ReactNode
-  parentItem?: SidebarItemType
+  parentItem?: SidebarItem
 }
 
 export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(

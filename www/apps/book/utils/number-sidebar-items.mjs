@@ -1,10 +1,11 @@
 /**
  *
- * @param {import("@/types").SidebarItemType[]} sidebarItems - The items to add numbers to their titles
+ * @param {import("@/types").SidebarItem[]} sidebarItems - The items to add numbers to their titles
  * @param {number[]} numbering - The current numbering level
- * @returns {import("@/types").SidebarItemType[]} The modified sidebar items
+ * @returns {import("@/types").SidebarItem[]} The modified sidebar items
  */
 export default function numberSidebarItems(sidebarItems, numbering = [1]) {
+  // TODO generate chapter titles
   if (!numbering.length) {
     numbering.push(1)
   }

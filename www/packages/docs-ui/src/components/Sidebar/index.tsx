@@ -9,6 +9,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside } from "../.."
+import { SidebarTopSeparator } from "./Top/Separator"
 
 export type SidebarProps = {
   className?: string
@@ -74,6 +75,7 @@ export const Sidebar = ({
           mobileSidebarOpen && [
             "!left-docs_0.5 !top-docs_0.5 z-50 shadow-elevation-modal",
             "rounded",
+            "lg:!left-0 lg:!top-0 lg:shadow-none",
           ],
           !desktopSidebarOpen && "!absolute !-left-full",
           className
@@ -105,7 +107,7 @@ export const Sidebar = ({
                 className="overflow-y-scroll mt-docs_0.75 clip"
                 ref={sidebarRef}
                 style={{
-                  maxHeight: `calc(100vh - ${sidebarTopHeight}px)`,
+                  maxHeight: `calc(100vh - ${sidebarTopHeight + 40}px)`,
                 }}
               >
                 {/* MOBILE SIDEBAR */}
@@ -122,27 +124,14 @@ export const Sidebar = ({
                       isMobile={true}
                     />
                   ))}
+                  <SidebarTopSeparator />
                 </div>
                 {/* DESKTOP SIDEBAR */}
-                <div>
-                  {!sidebarItems.top.length && !staticSidebarItems && (
+                <div className="mt-docs_0.75 lg:mt-docs-0">
+                  {!sidebarItems.default.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}
-                  {sidebarItems.top.map((item, index) => (
-                    <SidebarItem
-                      item={item}
-                      key={index}
-                      expandItems={expandItems}
-                      sidebarHasParent={sidebarHasParent}
-                    />
-                  ))}
-                </div>
-                {/* TODO remove to only have one sidebar items */}
-                <div className="mb-docs_1.5">
-                  {!sidebarItems.bottom.length && !staticSidebarItems && (
-                    <Loading className="px-0" />
-                  )}
-                  {sidebarItems.bottom.map((item, index) => (
+                  {sidebarItems.default.map((item, index) => (
                     <SidebarItem
                       item={item}
                       key={index}

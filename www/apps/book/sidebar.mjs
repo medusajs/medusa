@@ -1,7 +1,7 @@
 import numberSidebarItems from "./utils/number-sidebar-items.mjs"
 import { sidebarAttachHrefCommonOptions } from "./utils/sidebar-attach-common-options.mjs"
 
-/** @type {import('@/types').SidebarItemType[]} */
+/** @type {import('@/types').SidebarItem[]} */
 export const sidebar = sidebarAttachHrefCommonOptions(
   numberSidebarItems([
     {

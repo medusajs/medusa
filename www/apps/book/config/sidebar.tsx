@@ -19,8 +19,7 @@ const normalizeSidebarItems = (items: SidebarItemType[]) =>
 
 export const sidebarConfig = (baseUrl: string): SidebarConfig => {
   return {
-    top: normalizeSidebarItems(sidebar),
-    bottom: [],
+    default: normalizeSidebarItems(sidebar),
     mobile: getMobileSidebarItems({
       baseUrl,
       version: "v2",
