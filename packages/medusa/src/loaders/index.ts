@@ -121,7 +121,11 @@ async function loadEntrypoints(
 export async function initializeContainer(
   rootDirectory: string
 ): Promise<MedusaContainer> {
-  const configModule = configLoader(rootDirectory, "medusa-config.js")
+  const configExt = process[Symbol.for("ts-node.register.instance")]
+    ? ".ts"
+    : ".js"
+
+  const configModule = configLoader(rootDirectory, `medusa-config${configExt}`)
   const featureFlagRouter = await featureFlagsLoader(
     join(__dirname, "feature-flags")
   )
