@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Heart } from "@medusajs/icons"
+import { HeartBroken } from "@medusajs/icons"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
@@ -106,7 +106,7 @@ function WrittenOffQuantity({
       <Popover.Trigger asChild>
         <Button className="flex gap-2 px-2" variant="secondary" type="button">
           <div>
-            <Heart />
+            <HeartBroken />
           </div>
           {!!item.detail.written_off_quantity && (
             <span>{item.detail.written_off_quantity}</span>
