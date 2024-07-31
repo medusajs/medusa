@@ -4622,7 +4622,7 @@ __metadata:
     express-session: ^1.17.3
     ioredis: ^5.2.5
     ioredis-mock: 8.4.0
-    medusa-telemetry: ^0.0.18
+    medusa-telemetry: ^0.0.17
     morgan: ^1.9.1
     rimraf: ^3.0.2
     tsc-alias: ^1.8.6
@@ -22731,24 +22731,6 @@ __metadata:
     uuid: ^8.3.2
   languageName: unknown
   linkType: soft
-
-"medusa-telemetry@npm:^0.0.18":
-  version: 0.0.18
-  resolution: "medusa-telemetry@npm:0.0.18"
-  dependencies:
-    "@babel/runtime": ^7.22.10
-    axios: ^0.21.4
-    axios-retry: ^3.1.9
-    boxen: ^5.0.1
-    ci-info: ^3.2.0
-    configstore: 5.0.1
-    global: ^4.4.0
-    is-docker: ^2.2.1
-    remove-trailing-slash: ^0.1.1
-    uuid: ^8.3.2
-  checksum: 3571c3f578582667b3a48f2f3d9d27299a954fcc1e9165c2fdc441219d6faa0cd0f6be453f0edec783acea83500586c199a21d8b052e6ed3c815da85850fef7f
-  languageName: node
-  linkType: hard
 
 "medusa-test-utils@^1.1.42, medusa-test-utils@^1.1.43, medusa-test-utils@^1.1.44, medusa-test-utils@workspace:*, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/core/medusa-test-utils":
   version: 0.0.0-use.local
