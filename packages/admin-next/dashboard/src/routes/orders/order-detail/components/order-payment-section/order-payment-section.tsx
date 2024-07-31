@@ -2,7 +2,6 @@ import { ArrowDownRightMini, XCircle } from "@medusajs/icons"
 import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
-  Order,
 } from "@medusajs/medusa"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -30,11 +29,15 @@ type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
 }
 
-export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
-  const payments = order.payment_collections
-    .map((collection) => collection.payments)
+const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
+  return order.payment_collections
+    .map((collection: HttpTypes.AdminPaymentCollection) => collection.payments)
     .flat(1)
     .filter(Boolean)
+}
+
+export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
+  const payments = getPaymentsFromOrder(order)
 
   const refunds = payments
     .map((payment) => payment?.refunds)
@@ -43,41 +46,25 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
 
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header order={order} />
+      <Header />
+
       <PaymentBreakdown
         payments={payments}
         refunds={refunds}
         currencyCode={order.currency_code}
       />
+
       <Total payments={payments} currencyCode={order.currency_code} />
     </Container>
   )
 }
 
-const Header = ({ order }: { order: Order }) => {
+const Header = () => {
   const { t } = useTranslation()
-
-  const hasCapturedPayment = order.payment_collections.some(
-    (p) => !!p.captured_at
-  )
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("orders.payment.title")}</Heading>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: t("orders.payment.refund"),
-                icon: <ArrowDownRightMini />,
-                to: `/orders/${order.id}/refund`,
-                disabled: !hasCapturedPayment,
-              },
-            ],
-          },
-        ]}
-      />
     </div>
   )
 }
@@ -154,18 +141,21 @@ const Payment = ({
       return
     }
 
-    await mutateAsync(payment.id, {
-      onSuccess: () => {
-        toast.success(
-          t("orders.payment.capturePaymentSuccess", {
-            amount: formatCurrency(payment.amount, currencyCode),
-          })
-        )
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
+    await mutateAsync(
+      { amount: payment.amount },
+      {
+        onSuccess: () => {
+          toast.success(
+            t("orders.payment.capturePaymentSuccess", {
+              amount: formatCurrency(payment.amount, currencyCode),
+            })
+          )
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   }
 
   const [status, color] = (

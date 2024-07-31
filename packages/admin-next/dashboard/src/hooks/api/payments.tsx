@@ -37,11 +37,11 @@ export const useCapturePayment = (
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
     Error,
-    HttpTypes.AdminPaymentResponse
+    HttpTypes.AdminCapturePayment
   >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.payment.capture(paymentId),
+    mutationFn: (payload) => sdk.admin.payment.capture(paymentId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

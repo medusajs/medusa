@@ -24,6 +24,10 @@ export interface AdminPaymentCollectionFilters
   extends BasePaymentCollectionFilters {}
 export interface AdminPaymentSessionFilters extends BasePaymentSessionFilters {}
 
+export interface AdminCapturePayment {
+  amount?: number
+}
+
 export interface AdminPaymentResponse {
   payment: AdminPayment
 }
