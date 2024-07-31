@@ -1,0 +1,7 @@
+import { TypeList } from "docs-ui"
+
+# EntryStepInput
+
+The remote query's details.
+
+<TypeList types={[{"name":"fields","type":"`string`[]","description":"The fields to retrieve in the records.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entry_point","type":"`string`","description":"The name of the data model to retrieve its records.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variables","type":"`Record<string, any>`","description":"Filters, context variables, or pagination fields to apply when retrieving the records.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"throw_if_key_not_found","type":"`boolean`","description":"Throw an error if a record isn't found matching an ID specified in the filters.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"throw_if_relation_not_found","type":"`boolean` \\| `string`[]","description":"Throw an error if a specified relation isn't found.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"list","type":"`boolean`","description":"Whether to retrieve the records as an array. If disabled, only one record is retrieved as an object.","optional":true,"defaultValue":"true","expandable":false,"children":[]}]}  sectionTitle="EntryStepInput"/>

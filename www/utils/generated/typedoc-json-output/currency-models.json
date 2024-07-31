@@ -36,6 +36,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ISO 3-character currency code. For example, `USD`."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -64,6 +72,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The symbol of the currency. For example, `$`."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -81,6 +97,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The native symbol of the currency, if it has a different local symbol."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -98,6 +122,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The name of the currency"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -115,6 +147,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "How many digits are after the decimal separator for prices in this currency."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -132,6 +172,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The rounding percision of prices in this currency."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
