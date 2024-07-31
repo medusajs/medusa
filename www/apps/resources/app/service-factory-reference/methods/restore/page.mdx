@@ -28,7 +28,7 @@ For example, the returned object of the above example is:
 
 ```ts
 restoredPosts = {
-  post_id: ["123"]
+  post_id: ["123"],
 }
 ```
 
@@ -39,7 +39,7 @@ restoredPosts = {
 ```ts
 const restoredPosts = await postModuleService.restorePosts([
   "123",
-  "321"
+  "321",
 ])
 ```
 
@@ -57,8 +57,8 @@ For example, the returned object of the above example is:
 restoredPosts = {
   post_id: [
     "123",
-    "321"
-  ]
+    "321",
+  ],
 }
 ```
 
@@ -68,7 +68,7 @@ restoredPosts = {
 
 ```ts
 const restoredPosts = await postModuleService.restorePosts({
-  name: "My Post"
+  name: "My Post",
 })
 ```
 
@@ -91,7 +91,7 @@ For example, the returned object of the above example is:
 ```ts
 restoredPosts = {
   post_id: [
-    "123"
-  ]
+    "123",
+  ],
 }
 ```

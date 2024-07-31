@@ -20,10 +20,11 @@ Timeout doesn't stop the execution of a running step. The timeout only affects t
 
 For example:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["15"]]} collapsibleLines="1-12" expandButtonLabel="Show More"
+```ts title="src/workflows/hello-world.ts" highlights={[["16"]]} collapsibleLines="1-13" expandButtonLabel="Show More"
 import { 
   createStep,  
   createWorkflow,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 const step1 = createStep(
@@ -39,9 +40,9 @@ const myWorkflow = createWorkflow({
 }, function () {
   const str1 = step1()
 
-  return {
+  return new WorkflowResponse({
     message: str1,
-  }
+  })
 })
 
 export default myWorkflow

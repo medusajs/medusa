@@ -36,7 +36,7 @@ This applies to relations between data models of the same module. To retrieve li
 
 ```ts
 const post = await postModuleService.retrievePost("123", {
-  relations: ["author"]
+  relations: ["author"],
 })
 ```
 
@@ -54,7 +54,7 @@ The method returns the record as an object.
 
 ```ts
 const post = await postModuleService.retrievePost("123", {
-  select: ["id", "name"]
+  select: ["id", "name"],
 })
 ```
 
