@@ -1,5 +1,5 @@
 import { join } from "path"
-import { WortkflowLoader } from "../workflow-loader"
+import { WorkflowLoader } from "../workflow-loader"
 import { WorkflowManager } from "@medusajs/orchestration"
 import { orderWorkflowId } from "../__fixtures__/workflows/order-notifier"
 import { productWorkflowId } from "../__fixtures__/workflows/deep-workflows/product-updater"
@@ -8,7 +8,7 @@ describe("WorkflowLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "workflows")
 
   beforeAll(async () => {
-    await new WortkflowLoader(rootDir).load()
+    await new WorkflowLoader(rootDir).load()
   })
 
   it("should register each workflow in the '/workflows' folder and sub folder", async () => {

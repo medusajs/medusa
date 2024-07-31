@@ -3,7 +3,7 @@ import { logger } from "../logger"
 import { access, readdir } from "fs/promises"
 import { join } from "path"
 
-export class WortkflowLoader {
+export class WorkflowLoader {
   /**
    * The directory from which to load the workflows
    * @private
