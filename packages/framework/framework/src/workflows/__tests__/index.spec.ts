@@ -7,12 +7,6 @@ import { productWorkflowId } from "../__fixtures__/workflows/deep-workflows/prod
 describe("WorkflowLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "workflows")
 
-  const pluginOptions = {
-    important_data: {
-      enabled: true,
-    },
-  }
-
   beforeAll(async () => {
     await new WortkflowLoader(rootDir).load()
   })
