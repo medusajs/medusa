@@ -1,24 +1,23 @@
 "use client"
 
-import React, { useMemo, useRef } from "react"
+import React, { useMemo } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
 import { SidebarItem } from "./Item"
-import { SidebarTitle } from "./Title"
-import { SidebarBack } from "./Back"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
+import { SidebarTop, SidebarTopProps } from "./Top"
 
 export type SidebarProps = {
   className?: string
   expandItems?: boolean
-  banner?: React.ReactNode
+  sidebarTopProps?: Omit<SidebarTopProps, "parentItem">
 }
 
 export const Sidebar = ({
   className = "",
   expandItems = false,
-  banner,
+  sidebarTopProps,
 }: SidebarProps) => {
   const {
     items,
@@ -42,11 +41,11 @@ export const Sidebar = ({
   return (
     <aside
       className={clsx(
-        "clip bg-docs-bg dark:bg-docs-bg-dark block",
-        "border-medusa-border-base border-0 border-r border-solid",
-        "fixed -left-full top-0 h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
-        "lg:w-sidebar w-full",
-        mobileSidebarOpen && "!left-0 z-50 top-[57px]",
+        "clip bg-medusa-bg-base lg:bg-transparent block",
+        "fixed -left-full top-0 h-screen transition-[left] lg:relative lg:left-0 lg:h-auto",
+        "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
+        "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
+        mobileSidebarOpen && "!left-0 z-50",
         !desktopSidebarOpen && "!absolute !-left-full",
         className
       )}
@@ -54,21 +53,11 @@ export const Sidebar = ({
         animationFillMode: "forwards",
       }}
     >
-      <ul
-        className={clsx(
-          "sticky top-0 h-screen max-h-screen w-full list-none p-0",
-          "px-docs_1.5 pb-[57px] pt-docs_1.5",
-          "flex flex-col"
-        )}
+      <div
+        className={clsx("h-full w-full", "p-docs_0.75", "flex flex-col")}
         id="sidebar"
       >
-        {banner && <div className="mb-docs_1">{banner}</div>}
-        {sidebarItems.parentItem && (
-          <div className={clsx("mb-docs_1", !banner && "mt-docs_1.5")}>
-            <SidebarBack />
-            <SidebarTitle item={sidebarItems.parentItem} />
-          </div>
-        )}
+        <SidebarTop {...sidebarTopProps} parentItem={sidebarItems.parentItem} />
         <SwitchTransition>
           <CSSTransition
             key={sidebarItems.parentItem?.title || "home"}
@@ -79,8 +68,9 @@ export const Sidebar = ({
             }}
             timeout={200}
           >
-            <div className="overflow-auto" ref={sidebarRef}>
-              <div className={clsx("mb-docs_1.5 lg:hidden")}>
+            <div className="overflow-auto mt-docs_0.75" ref={sidebarRef}>
+              {/* MOBILE SIDEBAR */}
+              <div className={clsx("lg:hidden")}>
                 {!sidebarItems.mobile.length && !staticSidebarItems && (
                   <Loading className="px-0" />
                 )}
@@ -94,7 +84,8 @@ export const Sidebar = ({
                   />
                 ))}
               </div>
-              <div className={clsx("mb-docs_1.5")}>
+              {/* DESKTOP SIDEBAR */}
+              <div>
                 {!sidebarItems.top.length && !staticSidebarItems && (
                   <Loading className="px-0" />
                 )}
@@ -107,6 +98,7 @@ export const Sidebar = ({
                   />
                 ))}
               </div>
+              {/* TODO remove to only have one sidebar items */}
               <div className="mb-docs_1.5">
                 {!sidebarItems.bottom.length && !staticSidebarItems && (
                   <Loading className="px-0" />
@@ -123,7 +115,7 @@ export const Sidebar = ({
             </div>
           </CSSTransition>
         </SwitchTransition>
-      </ul>
+      </div>
     </aside>
   )
 }

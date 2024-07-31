@@ -40,10 +40,11 @@ export default function RootLayout({
   return (
     <TightLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
-        banner: <Bannerv2 />,
+        sidebarTopProps: {
+          banner: <Bannerv2 />,
+        },
       }}
       showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}

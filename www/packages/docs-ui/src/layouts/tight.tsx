@@ -9,24 +9,17 @@ export const TightLayout = ({
   ...props
 }: RootLayoutProps) => {
   return (
-    <RootLayout
-      {...props}
-      mainWrapperClasses={clsx(
-        props.mainWrapperClasses,
-        "grid grid-cols-1 px-docs_1.5 lg:mx-auto lg:grid-cols-[280px_1fr]"
-      )}
-    >
+    <RootLayout {...props}>
       <div
         className={clsx(
-          "relative flex w-full flex-1 items-start justify-center",
-          "px-docs_1 pb-docs_2 pt-docs_7 md:px-docs_2 lg:px-docs_4 lg:py-docs_7",
-          "mb-docs_4 sm:mb-0"
+          "h-full w-full",
+          "max-w-inner-content-xs sm:max-w-inner-content-sm md:max-w-inner-content-md",
+          "lg:max-w-inner-content-lg xl:max-w-inner-content-xl xxl:max-w-inner-content-xxl",
+          "xxxl:max-w-inner-content-xxxl"
         )}
       >
-        <main className="h-full w-full lg:max-w-[720px] lg:px-px">
-          {children}
-          {showPagination && <Pagination />}
-        </main>
+        {children}
+        {showPagination && <Pagination />}
       </div>
     </RootLayout>
   )
