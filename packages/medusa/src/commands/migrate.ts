@@ -1,9 +1,9 @@
-import { logger } from "@medusajs/framework"
+import { LinkLoader, logger } from "@medusajs/framework"
 import { runMedusaAppMigrations } from "../loaders/medusa-app"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
-import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
+import { join } from "path"
 
 const TERMINAL_SIZE = process.stdout.columns
 
@@ -52,14 +52,16 @@ const main = async function ({ directory }) {
   )
 
   const plugins = getResolvedPlugins(directory, configModule, true) || []
-  const pluginLinks = await resolvePluginsLinks(plugins, container)
+  const linksSourcePaths = plugins.map((plugin) =>
+    join(plugin.resolve, "links")
+  )
+  await new LinkLoader(linksSourcePaths).load()
 
   if (action === "run") {
     logger.info("Running migrations...")
 
     await runMedusaAppMigrations({
       configModule,
-      linkModules: pluginLinks,
       container,
       action: "run",
     })
@@ -74,7 +76,6 @@ const main = async function ({ directory }) {
       await runMedusaAppMigrations({
         moduleNames: modules,
         configModule,
-        linkModules: pluginLinks,
         container,
         action: "revert",
       })
@@ -100,7 +101,6 @@ const main = async function ({ directory }) {
     await runMedusaAppMigrations({
       moduleNames: modules,
       configModule,
-      linkModules: pluginLinks,
       container,
       action: "generate",
     })

@@ -4610,6 +4610,7 @@ __metadata:
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
     "@medusajs/medusa-cli": ^1.3.22
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
