@@ -1,0 +1,89 @@
+import { TypeList } from "docs-ui"
+
+# RemoteLink
+
+## constructor
+
+### Parameters
+
+<TypeList types={[{"name":"modulesLoaded","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"__joinerConfig","type":"[ModuleJoinerConfig](../../types/modules_sdk.ModuleJoinerConfig/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"alias","type":"[JoinerServiceConfigAlias](../../../types/interfaces/types.JoinerServiceConfigAlias/page.mdx) \\| [JoinerServiceConfigAlias](../../../types/interfaces/types.JoinerServiceConfigAlias/page.mdx)[]","description":"Property name to use as entrypoint to the service","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fieldAlias","type":"`Record<string, string \\| object>`","description":"alias for deeper nested relationships (e.g. &#123; 'price': 'prices.calculated\\_price\\_set.amount' &#125;)","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"args","type":"`Record<string, any>`","description":"Extra arguments to pass to the remoteFetchData callback","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"schema","type":"`string`","description":"GraphQL schema for the all module's available entities and fields","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relationships","type":"[ModuleJoinerRelationship](../../types/modules_sdk.ModuleJoinerRelationship/page.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extends","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"serviceName","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"primaryKeys","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isLink","type":"`boolean`","description":"If the module is a link module","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"linkableKeys","type":"`Record<string, string>`","description":"Keys that can be used to link to other modules. e.g &#123; product\\_id: \"Product\" &#125; \"Product\" being the entity it refers to","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isReadOnlyLink","type":"`boolean`","description":"If true it expands a RemoteQuery property but doesn't create a pivot table","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extraDataFields","type":"`string`[]","description":"Fields that will be part of the link record aside from the primary keys that can be updated\nIf not explicitly defined, this array will be populated by databaseConfig.extraFields","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"databaseConfig","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"__definition","type":"[ModuleDefinition](../../types/modules_sdk.ModuleDefinition/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"registrationName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"defaultPackage","type":"`string` \\| `false`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"defaultModuleDeclaration","type":"[InternalModuleDeclaration](../../types/modules_sdk.InternalModuleDeclaration/page.mdx) \\| [ExternalModuleDeclaration](../../types/modules_sdk.ExternalModuleDeclaration/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isRequired","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isQueryable","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"dependencies","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="new RemoteLink"/>
+
+___
+
+## Methods
+
+### addModule
+
+#### Parameters
+
+<TypeList types={[{"name":"mod","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"__joinerConfig","type":"[ModuleJoinerConfig](../../types/modules_sdk.ModuleJoinerConfig/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"alias","type":"[JoinerServiceConfigAlias](../../../types/interfaces/types.JoinerServiceConfigAlias/page.mdx) \\| [JoinerServiceConfigAlias](../../../types/interfaces/types.JoinerServiceConfigAlias/page.mdx)[]","description":"Property name to use as entrypoint to the service","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fieldAlias","type":"`Record<string, string \\| object>`","description":"alias for deeper nested relationships (e.g. &#123; 'price': 'prices.calculated\\_price\\_set.amount' &#125;)","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"args","type":"`Record<string, any>`","description":"Extra arguments to pass to the remoteFetchData callback","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"schema","type":"`string`","description":"GraphQL schema for the all module's available entities and fields","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relationships","type":"[ModuleJoinerRelationship](../../types/modules_sdk.ModuleJoinerRelationship/page.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extends","type":"`object`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"serviceName","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"primaryKeys","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isLink","type":"`boolean`","description":"If the module is a link module","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"linkableKeys","type":"`Record<string, string>`","description":"Keys that can be used to link to other modules. e.g &#123; product\\_id: \"Product\" &#125; \"Product\" being the entity it refers to","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isReadOnlyLink","type":"`boolean`","description":"If true it expands a RemoteQuery property but doesn't create a pivot table","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extraDataFields","type":"`string`[]","description":"Fields that will be part of the link record aside from the primary keys that can be updated\nIf not explicitly defined, this array will be populated by databaseConfig.extraFields","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"databaseConfig","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"__definition","type":"[ModuleDefinition](../../types/modules_sdk.ModuleDefinition/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"registrationName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"defaultPackage","type":"`string` \\| `false`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"defaultModuleDeclaration","type":"[InternalModuleDeclaration](../../types/modules_sdk.InternalModuleDeclaration/page.mdx) \\| [ExternalModuleDeclaration](../../types/modules_sdk.ExternalModuleDeclaration/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isRequired","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isQueryable","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"dependencies","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addModule"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addModule"/>
+
+### getLinkModule
+
+#### Parameters
+
+<TypeList types={[{"name":"moduleA","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"moduleAKey","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"moduleB","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"moduleBKey","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLinkModule"/>
+
+#### Returns
+
+<TypeList types={[{"name":"undefined \\| LoadedLinkModule","type":"`undefined` \\| `LoadedLinkModule`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLinkModule"/>
+
+### getRelationships
+
+#### Returns
+
+<TypeList types={[{"name":"Map","type":"Map&#60;string, Map&#60;string, RemoteRelationship[]&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"Map","type":"Map&#60;string, RemoteRelationship[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"RemoteRelationship[]","type":"`RemoteRelationship`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getRelationships"/>
+
+### create
+
+#### Parameters
+
+<TypeList types={[{"name":"link","type":"[LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx) \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;unknown[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"unknown[]","type":"`unknown`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="create"/>
+
+### dismiss
+
+#### Parameters
+
+<TypeList types={[{"name":"link","type":"[LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx) \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="dismiss"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;unknown[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"unknown[]","type":"`unknown`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="dismiss"/>
+
+### delete
+
+#### Parameters
+
+<TypeList types={[{"name":"removedServices","type":"[DeleteEntityInput](../../types/modules_sdk.DeleteEntityInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[null \\| CascadeError[], RemovedIds]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"null \\| CascadeError[]","type":"`null` \\| `CascadeError`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"RemovedIds","type":"`RemovedIds`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
+
+### restore
+
+#### Parameters
+
+<TypeList types={[{"name":"removedServices","type":"[DeleteEntityInput](../../types/modules_sdk.DeleteEntityInput/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="restore"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[null \\| CascadeError[], RemovedIds]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"null \\| CascadeError[]","type":"`null` \\| `CascadeError`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"RemovedIds","type":"`RemovedIds`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="restore"/>
+
+### list
+
+#### Parameters
+
+<TypeList types={[{"name":"link","type":"[LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx) \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"options","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"asLinkDefinition","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;(object \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx))[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"(object \\| LinkDefinition)[]","type":"(`object` \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx))[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"object \\| LinkDefinition","type":"`object` \\| [LinkDefinition](../../types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="list"/>
