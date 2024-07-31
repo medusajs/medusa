@@ -27,7 +27,7 @@ If no parameters are passed, the method returns an array with two items:
 
 ```ts
 const [posts, count] = await postModuleService.listAndCountPosts({
-  id: ["123", "321"]
+  id: ["123", "321"],
 })
 ```
 
@@ -60,7 +60,7 @@ This applies to relations between data models of the same module. To retrieve li
 
 ```ts
 const [posts, count] = await postModuleService.listAndCountPosts({}, {
-  relations: ["author"]
+  relations: ["author"],
 })
 ```
 
@@ -81,7 +81,7 @@ The method returns an array with two items:
 
 ```ts
 const [posts, count] = await postModuleService.listAndCountPosts({}, {
-  select: ["id", "name"]
+  select: ["id", "name"],
 })
 ```
 
@@ -105,7 +105,7 @@ The method returns an array with two items:
 ```ts
 const [posts, count] = await postModuleService.listAndCountPosts({}, {
   take: 20,
-  skip: 10
+  skip: 10,
 })
 ```
 
@@ -130,8 +130,8 @@ The method returns an array with two items:
 ```ts
 const [posts, count] = await postModuleService.listAndCountPosts({}, {
   order: {
-    name: "ASC"
-  }
+    name: "ASC",
+  },
 })
 ```
 

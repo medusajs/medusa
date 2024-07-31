@@ -292,12 +292,15 @@ In the compensation function, which runs if an error occurs in the workflow, it 
 Then, create the workflow at `src/workflows/marketplace/create-vendor-admin/index.ts` with the following content:
 
 export const vendorAdminWorkflowHighlights = [
-  ["20", "createVendorAdminStep", "Create the vendor admin."],
-  ["24", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
+  ["23", "createVendorAdminStep", "Create the vendor admin."],
+  ["27", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-admin/index.ts" highlights={vendorAdminWorkflowHighlights}
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { 
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
 } from "@medusajs/core-flows"
@@ -326,7 +329,7 @@ const createVendorAdminWorkflow = createWorkflow(
       value: vendorAdmin.id,
     })
 
-    return vendorAdmin
+    return new WorkflowResponse(vendorAdmin)
   }
 )
 
@@ -457,7 +460,7 @@ Next, create the file `src/api/middlewares.ts` with the following content:
 ```ts title="src/api/middlewares.ts"
 import { 
   defineMiddlewares,
-  authenticate
+  authenticate,
 } from "@medusajs/medusa"
 
 export default defineMiddlewares({
@@ -709,13 +712,13 @@ Finally, in `src/api/middlewares.ts`, apply a middleware on the create products 
 ```ts title="src/api/middlewares.ts"
 import { 
   defineMiddlewares,
-  authenticate
+  authenticate,
 } from "@medusajs/medusa"
 import { 
-  validateAndTransformBody
+  validateAndTransformBody,
 } from "@medusajs/medusa/dist/api/utils/validate-body"
 import { 
-  AdminCreateProduct
+  AdminCreateProduct,
 } from "@medusajs/medusa/dist/api/admin/products/validators"
 
 export default defineMiddlewares({
@@ -1002,7 +1005,7 @@ try {
       const items = vendorsItems[vendorId]
       const vendor = vendors.find((v) => v.id === vendorId)!
 
-      const {result: childOrder} = await createOrdersWorkflow(
+      const { result: childOrder } = await createOrdersWorkflow(
         container
       )
       .run({
@@ -1123,19 +1126,22 @@ The compensation function cancels all child orders received from the step. It us
 Finally, create the workflow at the file `src/workflows/marketplace/create-vendor-orders/index.ts`:
 
 export const createVendorOrdersWorkflowHighlights = [
-  ["18", "useRemoteQueryStep", "Retrieve the cart's details."],
-  ["26", "completeCartWorkflow", "Create the parent order from the cart."],
-  ["32", "groupVendorItemsStep", "Group the items by their vendor."],
-  ["39", "createVendorOrdersStep", "Create child orders for each vendor"],
-  ["44", "createRemoteLinkStep", "Create the links returned by the previous step."]
+  ["21", "useRemoteQueryStep", "Retrieve the cart's details."],
+  ["29", "completeCartWorkflow", "Create the parent order from the cart."],
+  ["35", "groupVendorItemsStep", "Group the items by their vendor."],
+  ["42", "createVendorOrdersStep", "Create child orders for each vendor"],
+  ["47", "createRemoteLinkStep", "Create the links returned by the previous step."]
 ]
 
-```ts title="src/workflows/marketplace/create-vendor-orders/index.ts" collapsibleLines="1-10" expandMoreLabel="Show Imports"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+```ts title="src/workflows/marketplace/create-vendor-orders/index.ts" collapsibleLines="1-13" expandMoreLabel="Show Imports"
+import { 
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
 import { 
   useRemoteQueryStep,
   createRemoteLinkStep,
-  completeCartWorkflow
+  completeCartWorkflow,
 } from "@medusajs/core-flows"
 import { CartDTO } from "@medusajs/types"
 import groupVendorItemsStep from "./steps/group-vendor-items"
@@ -1150,7 +1156,7 @@ const createVendorOrdersWorkflow = createWorkflow(
   (input: WorkflowInput) => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
-      fields: ['items.*'],
+      fields: ["items.*"],
       variables: { id: input.cart_id },
       list: false,
       throw_if_key_not_found: true,
@@ -1158,28 +1164,28 @@ const createVendorOrdersWorkflow = createWorkflow(
 
     const order = completeCartWorkflow.runAsStep({
       input: {
-        id: cart.id
-      }
+        id: cart.id,
+      },
     })
 
     const { vendorsItems } = groupVendorItemsStep({
-      cart
+      cart,
     })
 
     const { 
       orders: vendorOrders, 
-      linkDefs
+      linkDefs,
     } = createVendorOrdersStep({
       parentOrder: order,
-      vendorsItems
+      vendorsItems,
     })
 
     createRemoteLinkStep(linkDefs)
 
-    return {
+    return new WorkflowResponse({
       parent_order: order,
-      vendor_orders: vendorOrders
-    }
+      vendor_orders: vendorOrders,
+    })
   }
 )
 

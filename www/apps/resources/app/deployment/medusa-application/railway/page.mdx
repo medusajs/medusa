@@ -50,7 +50,7 @@ So, add the following configuration in `medusa-config.js`:
 module.exports = defineConfig({
   projectConfig: {
     // ...
-    workerMode: process.env.MEDUSA_WORKER_MODE
+    workerMode: process.env.MEDUSA_WORKER_MODE,
   },
 })
 
@@ -77,8 +77,8 @@ Add the following configuration in `medusa-config.js`:
 module.exports = defineConfig({
   // ...
   admin: {
-    disable: process.env.DISABLE_MEDUSA_ADMIN === "true"
-  }
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+  },
 })
 
 ```
@@ -93,7 +93,7 @@ Add the following configuration in `medusa-config.js` :
 module.exports = defineConfig({
   projectConfig: {
     // ...
-    redisUrl: process.env.REDIS_URL
+    redisUrl: process.env.REDIS_URL,
   },
 })
 
@@ -142,7 +142,7 @@ For example, add the following dependencies in `package.json` for the Cache, Eve
 Then, add these modules in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-import { Modules } from '@medusajs/utils'
+import { Modules } from "@medusajs/utils"
 
 module.exports = defineConfig({
   // ...
@@ -167,8 +167,8 @@ module.exports = defineConfig({
           url: process.env.REDIS_URL,
         },
       },
-    }
-  }
+    },
+  },
 })
 ```
 
@@ -293,7 +293,7 @@ module.exports = defineConfig({
   // ...
   admin: {
     // ...
-    backendUrl: process.env.MEDUSA_BACKEND_URL
+    backendUrl: process.env.MEDUSA_BACKEND_URL,
   },
 })
 ```

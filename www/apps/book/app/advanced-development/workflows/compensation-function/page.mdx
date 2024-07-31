@@ -54,10 +54,11 @@ const step2 = createStep(
 
 2. Use the steps in a workflow. For example:
 
-```ts title="src/workflows/hello-world.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
+```ts title="src/workflows/hello-world.ts" collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
   // other imports...
   createWorkflow,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 // ...
@@ -68,9 +69,9 @@ const myWorkflow = createWorkflow(
   const str1 = step1()
   step2()
 
-  return {
+  return new WorkflowResponse({
     message: str1,
-  }
+  })
 })
 
 export default myWorkflow
