@@ -210,6 +210,17 @@
       }
     }
   },
+  "dataGrid": {
+    "editColumns": "Edit columns",
+    "shortcuts": {
+      "label": "Shortcuts",
+      "commands": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "edit": "Edit the current cell"
+      }
+    }
+  },
   "filters": {
     "date": {
       "today": "Today",
@@ -323,7 +334,8 @@
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect the variants' order in your storefront.",
-          "alert": "Add options to create variants."
+          "alert": "Add options to create variants.",
+          "tip": "Variants left unchecked won't be created. You can always create and edit variants afterwards but this list fits the variations in your product options."
         },
         "productOptions": {
           "label": "Product options",
@@ -350,7 +362,22 @@
     },
     "import": {
       "header": "Import Product List",
-      "description": "Import products by providing a CSV file in a pre-defined format"
+      "description": "Import products by providing a CSV file in a pre-defined format",
+      "template": {
+        "title": "Unsure about how to arrange your list?",
+        "description": "Download the template below to ensure you are following the correct format."
+      },
+      "upload": {
+        "title": "Upload a CSV file",
+        "description": "Through imports you can add or update products. To update existing products you must use the existing handle and ID, to update existing variants you must use the existing ID. You will be asked for confirmation before we import products.",
+        "preprocessing": "Preprocessing...",
+        "productsToCreate": "Products will be created",
+        "productsToUpdate": "Products will be updated"
+      },
+      "success": {
+        "title": "We are processing your import",
+        "description": "Importing data may take a while. We will notify you when we are done."
+      }
     },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
@@ -362,6 +389,7 @@
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
+      "makeThumbnail": "Make thumbnail",
       "uploadImagesLabel": "Upload images",
       "uploadImagesHint": "Drag and drop images here or click to upload.",
       "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
@@ -2160,6 +2188,26 @@
     "delete": {
       "confirmation": "You are about to delete the product type {{value}}. This action cannot be undone.",
       "successToast": "Product type {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
+  "productTags": {
+    "domain": "Product Tags",
+    "create": {
+      "header": "Create Product Tag",
+      "subtitle": "Create a new product tag to categorize your products.",
+      "successToast": "Product tag {{value}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Product Tag",
+      "subtitle": "Edit the value of the product tag.",
+      "successToast": "Product tag {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
+      "successToast": "Product tag {{value}} was successfully deleted."
     },
     "fields": {
       "value": "Value"

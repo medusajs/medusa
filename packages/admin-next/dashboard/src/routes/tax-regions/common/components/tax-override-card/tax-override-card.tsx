@@ -1,8 +1,8 @@
 import {
-  ArrowDownRightMini,
-  PencilSquare,
-  Trash,
-  TriangleRightMini,
+    ArrowDownRightMini,
+    PencilSquare,
+    Trash,
+    TriangleRightMini,
 } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Badge, IconButton, StatusBadge, Text, Tooltip } from "@medusajs/ui"
@@ -17,7 +17,7 @@ import { useCollections } from "../../../../../hooks/api/collections"
 import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
 import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
-import { useTags } from "../../../../../hooks/api/tags"
+import { useProductTags } from "../../../../../hooks/api/tags"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { TaxRateRuleReferenceType } from "../../constants"
 import { useDeleteTaxRateAction } from "../../hooks"
@@ -277,7 +277,7 @@ const useReferenceValues = (
     }
   )
 
-  const tags = useTags(
+  const tags = useProductTags(
     {
       id: ids,
       limit: 10,

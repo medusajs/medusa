@@ -4,7 +4,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { WorkflowTypes } from "@medusajs/types"
-import { sendNotificationsStep } from "../../notification"
+import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 import {
   waitConfirmationProductImportStep,
   groupProductsForBatchStep,
@@ -30,6 +30,23 @@ export const importProductsWorkflow = createWorkflow(
 
     waitConfirmationProductImportStep()
 
+    // Q: Can we somehow access the error from the step that threw here? Or in a compensate step at least?
+    const failureNotification = transform({ input }, (data) => {
+      return [
+        {
+          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
+          to: "",
+          channel: "feed",
+          template: "admin-ui",
+          data: {
+            title: "Product import",
+            description: `Failed to import products from file ${data.input.filename}`,
+          },
+        },
+      ]
+    })
+    notifyOnFailureStep(failureNotification)
+
     batchProductsWorkflow.runAsStep({ input: batchRequest })
 
     const notifications = transform({ input }, (data) => {
@@ -46,8 +63,8 @@ export const importProductsWorkflow = createWorkflow(
         },
       ]
     })
-
     sendNotificationsStep(notifications)
+
     return summary
   }
 )
