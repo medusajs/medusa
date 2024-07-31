@@ -334,7 +334,8 @@
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect the variants' order in your storefront.",
-          "alert": "Add options to create variants."
+          "alert": "Add options to create variants.",
+          "tip": "Variants left unchecked won't be created. You can always create and edit variants afterwards but this list fits the variations in your product options."
         },
         "productOptions": {
           "label": "Product options",
@@ -388,6 +389,7 @@
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
+      "makeThumbnail": "Make thumbnail",
       "uploadImagesLabel": "Upload images",
       "uploadImagesHint": "Drag and drop images here or click to upload.",
       "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
@@ -2165,6 +2167,26 @@
     "delete": {
       "confirmation": "You are about to delete the product type {{value}}. This action cannot be undone.",
       "successToast": "Product type {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
+  "productTags": {
+    "domain": "Product Tags",
+    "create": {
+      "header": "Create Product Tag",
+      "subtitle": "Create a new product tag to categorize your products.",
+      "successToast": "Product tag {{value}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Product Tag",
+      "subtitle": "Edit the value of the product tag.",
+      "successToast": "Product tag {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
+      "successToast": "Product tag {{value}} was successfully deleted."
     },
     "fields": {
       "value": "Value"

@@ -51,6 +51,10 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/product-types",
       },
       {
+        label: t("productTags.domain"),
+        to: "/settings/product-tags",
+      },
+      {
         label: t("stockLocations.domain"),
         to: "/settings/locations",
       },

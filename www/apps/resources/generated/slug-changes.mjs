@@ -1100,6 +1100,26 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService/page.mdx"
   },
   {
+    "origSlug": "/references/helper_steps/functions/helper_steps.createRemoteLinkStep",
+    "newSlug": "/references/helper-steps/createRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.createRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep",
+    "newSlug": "/references/helper-steps/dismissRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.removeRemoteLinkStep",
+    "newSlug": "/references/helper-steps/removeRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.useRemoteQueryStep",
+    "newSlug": "/references/helper-steps/useRemoteQueryStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx"
+  },
+  {
     "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory",
     "newSlug": "/references/inventory-next/adjustInventory",
     "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory/page.mdx"
@@ -1333,6 +1353,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/fulfillment_models",
     "newSlug": "/references/fulfillment/models",
     "filePath": "/www/apps/resources/references/modules/fulfillment_models/page.mdx"
+  },
+  {
+    "origSlug": "/references/modules/helper_steps",
+    "newSlug": "/references/helper-steps",
+    "filePath": "/www/apps/resources/references/modules/helper_steps/page.mdx"
   },
   {
     "origSlug": "/references/modules/inventory_next_models",
