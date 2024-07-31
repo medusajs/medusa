@@ -27,5 +27,16 @@
 			"external_id": "The id of the notification in the external system.",
 			"provider": "The associated provider used to send the notification.\n\n@expandable"
 		}
+	},
+	"NotificationProvider": {
+		"filePath": "packages/modules/notification/src/models/notification-provider.ts",
+		"properties": {
+			"id": "The ID of the notification provider.",
+			"handle": "The handle of the notification provider",
+			"name": "The name of the notification provider",
+			"is_enabled": "Whether the notification provider is enabled.",
+			"channels": "The channels of the notification provider",
+			"notifications": "The associated notifications.\n\n@expandable"
+		}
 	}
 }
