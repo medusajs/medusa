@@ -124,6 +124,8 @@ paths:
     $ref: paths/admin_campaigns_{id}_promotions.yaml
   /admin/claims:
     $ref: paths/admin_claims.yaml
+  /admin/claims/{id}/cancel:
+    $ref: paths/admin_claims_{id}_cancel.yaml
   /admin/claims/{id}/claim-items:
     $ref: paths/admin_claims_{id}_claim-items.yaml
   /admin/claims/{id}/claim-items/{action_id}:

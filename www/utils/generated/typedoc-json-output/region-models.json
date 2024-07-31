@@ -48,6 +48,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ISO 2-character code of the country"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -76,6 +84,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ISO 3-character code of the country"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -93,6 +109,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ISO numeric code of the country"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -110,6 +134,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The name of the country"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -127,6 +159,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The display name of the country"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -145,6 +185,17 @@
 											"kind": 1024,
 											"flags": {
 												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The region it belongs to."
+													}
+												],
+												"modifierTags": [
+													"@expandable"
+												]
 											},
 											"type": {
 												"type": "reference",
@@ -171,6 +222,14 @@
 											"kind": 1024,
 											"flags": {
 												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Holds custom data in key-value pairs."
+													}
+												]
 											},
 											"type": {
 												"type": "reference",
@@ -856,6 +915,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ID of the region."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -884,6 +951,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The name of the region"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -901,6 +976,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ISO 3-character currency code of the region"
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -918,6 +1001,14 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Whether taxes are calculated automatically during checkout in the region."
+													}
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -935,6 +1026,17 @@
 											"variant": "declaration",
 											"kind": 1024,
 											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The countries that belong to the region."
+													}
+												],
+												"modifierTags": [
+													"@expandable"
+												]
+											},
 											"type": {
 												"type": "reference",
 												"target": {
@@ -960,6 +1062,14 @@
 											"kind": 1024,
 											"flags": {
 												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Holds custom data in key-value pairs."
+													}
+												]
 											},
 											"type": {
 												"type": "reference",
