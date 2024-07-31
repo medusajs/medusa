@@ -114,10 +114,7 @@ function transformActionsToItems({ orderChange }) {
   actions.forEach((item) => {
     if (item.action === ChangeActionType.RETURN_ITEM) {
       returnItems.push(item)
-    } else if (
-      item.action === ChangeActionType.ITEM_ADD ||
-      item.action === ChangeActionType.WRITE_OFF_ITEM
-    ) {
+    } else if (item.action === ChangeActionType.ITEM_ADD) {
       exchangeItems.push(item)
     }
   })
