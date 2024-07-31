@@ -62,16 +62,26 @@ const normalizeProductForExport = (product: HttpTypes.AdminProduct): object => {
     {}
   )
 
+  const flattenedCategories = product.categories?.reduce(
+    (acc: Record<string, string>, category, idx) => {
+      acc[beautifyKey(`product_category_${idx + 1}`)] = category.id
+      return acc
+    },
+    {}
+  )
+
   const res = {
     ...prefixFields(product, "product"),
     ...flattenedImages,
     ...flattenedTags,
     ...flattenedSalesChannels,
+    ...flattenedCategories,
   } as any
 
   delete res["Product Images"]
   delete res["Product Tags"]
   delete res["Product Sales Channels"]
+  delete res["Product Categories"]
 
   // We can decide if we want the metadata in the export and how that would look like
   delete res["Product Metadata"]

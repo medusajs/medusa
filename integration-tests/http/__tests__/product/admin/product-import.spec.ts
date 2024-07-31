@@ -32,6 +32,7 @@ medusaIntegrationTestRunner({
     let baseType
     let baseProduct
     let baseRegion
+    let baseCategory
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -76,6 +77,14 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.region
+
+      baseCategory = (
+        await api.post(
+          "/admin/product-categories",
+          { name: "Test", is_internal: false, is_active: true },
+          adminHeaders
+        )
+      ).data.product_category
     })
 
     afterEach(() => {
@@ -345,6 +354,56 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+      })
+
+      it("should import product with categories", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "product-with-categories.csv"),
+          { encoding: "utf-8" }
+        )
+
+        fileContent = fileContent.replace(/prod_\w*\d*/g, baseProduct.id)
+        fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
+        fileContent = fileContent.replace(/ptyp_\w*\d*/g, baseType.id)
+        fileContent = fileContent.replace(/pcat_\w*\d*/g, baseCategory.id)
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: fileContent,
+        })
+
+        const batchJobRes = await api.post("/admin/products/import", form, meta)
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 0,
+          toUpdate: 1,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
+
+        await subscriberExecution
+        const dbProducts = (
+          await api.get("/admin/products?fields=*categories", adminHeaders)
+        ).data.products
+
+        expect(dbProducts).toHaveLength(1)
+        expect(dbProducts[0]).toEqual(
+          expect.objectContaining({
+            id: baseProduct.id,
+            categories: [expect.objectContaining({ id: baseCategory.id })],
+          })
+        )
       })
 
       it("should fail on invalid region in prices being present in the CSV", async () => {
