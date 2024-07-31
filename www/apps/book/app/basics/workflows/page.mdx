@@ -56,6 +56,7 @@ Next, add the following to the same file to create the workflow using the `creat
 import {
   // other imports...
   createWorkflow,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 // ...
@@ -67,9 +68,9 @@ const myWorkflow = createWorkflow(
     // to pass input
     const str2 = step2(input)
 
-    return {
+    return new WorkflowResponse({
       message: str1,
-    }
+    })
   }
 )
 
@@ -77,6 +78,8 @@ export default myWorkflow
 ```
 
 This creates a `hello-world` workflow. When you create a workflow, it’s constructed but not executed yet.
+
+The workflow must return an instance of `WorkflowResponse`, whose first parameter is returned to workflow executors.
 
 ### 3. Execute the Workflow
 
@@ -223,19 +226,20 @@ Each step in the workflow receives as a second parameter a `context` object. The
 For example:
 
 export const highlights = [
-  ["11", "resolve", "Resolve the Product Module's main service."],
+  ["12", "resolve", "Resolve the Product Module's main service."],
   [
-    "11",
+    "12",
     "ModuleRegistrationName.PRODUCT",
     "The resource registration name imported from `@medusajs/modules-sdk`.",
   ],
 ]
 
-```ts title="src/workflows/product-count.ts" highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
+```ts title="src/workflows/product-count.ts" highlights={highlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
   createStep,
   StepResponse,
   createWorkflow,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
@@ -254,9 +258,9 @@ const myWorkflow = createWorkflow(
   function () {
     const count = step1()
 
-    return {
+    return new WorkflowResponse({
       count,
-    }
+    })
   }
 )
 
