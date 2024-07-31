@@ -1,4 +1,8 @@
-import { createStep, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
 
 export const productWorkflowId = "product-notifier-workflow"
 
@@ -7,5 +11,6 @@ const step = createStep("product-step", () => {
 })
 
 export const productUpdatedWorkflow = createWorkflow(productWorkflowId, () => {
-  return step()
+  step()
+  return new WorkflowResponse(void 0)
 })
