@@ -4613,6 +4613,7 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
+    "@medusajs/workflows-sdk": ^0.1.6
     "@types/express": ^4.17.17
     awilix: ^8.0.0
     cookie-parser: ^1.4.6
