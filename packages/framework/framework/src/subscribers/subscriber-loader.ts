@@ -130,10 +130,7 @@ export class SubscriberLoader {
       withFileTypes: true,
     }).then(async (entries) => {
       return entries.flatMap(async (entry) => {
-        if (
-          this.#excludes.length &&
-          this.#excludes.some((exclude) => exclude.test(entry.name))
-        ) {
+        if (this.#excludes.some((exclude) => exclude.test(entry.name))) {
           return
         }
 
