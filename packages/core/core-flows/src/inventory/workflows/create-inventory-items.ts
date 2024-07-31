@@ -1,5 +1,6 @@
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -81,6 +82,6 @@ export const createInventoryItemsWorkflow = createWorkflow(
 
     createInventoryLevelsWorkflow.runAsStep(inventoryLevelsInput)
 
-    return items
+    return new WorkflowResponse(items)
   }
 )

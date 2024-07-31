@@ -1,4 +1,9 @@
-import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
+import {
+  IDistributedSchedulerStorage,
+  SchedulerOptions,
+  WorkflowManager,
+  WorkflowScheduler,
+} from "@medusajs/orchestration"
 import {
   ModuleRegistrationName,
   composeMessage,
@@ -8,14 +13,14 @@ import {
 import { asValue } from "awilix"
 import {
   StepResponse,
+  WorkflowResponse,
   createStep,
   createWorkflow,
-  hook,
   parallelize,
   transform,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
-import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
+import { createHook } from "../create-hook"
 
 jest.setTimeout(30000)
 
@@ -109,7 +114,7 @@ describe("Workflow composer", function () {
       const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
 
       const workflow = createWorkflow("workflow1", function (input) {
-        return step1(input)
+        return new WorkflowResponse(step1(input))
       })
 
       const workflowInput = { test: "payload1" }
@@ -154,7 +159,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -239,13 +244,13 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflow2 = createWorkflow("workflow2", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -348,13 +353,13 @@ describe("Workflow composer", function () {
         createWorkflow("workflow1", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
 
         createWorkflow("workflow2", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
       ])
 
@@ -458,13 +463,13 @@ describe("Workflow composer", function () {
         createWorkflow("workflow1", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
 
         createWorkflow("workflow2", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
       ])
 
@@ -573,7 +578,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -675,7 +680,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const [ret2, ret3] = parallelize(step2(returnStep1), step3(returnStep1))
-        return step4({ one: ret2, two: ret3 })
+        return new WorkflowResponse(step4({ one: ret2, two: ret3 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -803,7 +808,7 @@ describe("Workflow composer", function () {
 
         const avg = transform({ obj: ret2 }, transform3Fn)
 
-        return step3(avg)
+        return new WorkflowResponse(step3(avg))
       })
 
       const workflowInput = { a: 1, b: 2 }
@@ -878,9 +883,7 @@ describe("Workflow composer", function () {
       expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
     })
 
-    it("should compose a new workflow exposing hooks and log warns if multiple handlers are registered for the same hook", async () => {
-      const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
-
+    it("should throw error when multiple handlers are defined for a single hook", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
         return { id: input, product: "product_1", variant: "variant_2" }
       })
@@ -896,64 +899,29 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const data = getData({ input })
 
-        const hookReturn = hook("changeProduct", {
+        const hookReturn = createHook("changeProduct", {
           opinionatedPropertyName: data,
         })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
 
-        return saveProduct({ product: transformedData })
+        return new WorkflowResponse(saveProduct({ product: data }), {
+          hooks: [hookReturn],
+        })
       })
 
-      workflow.changeProduct(({ opinionatedPropertyName }) => {
-        return {
-          newProperties: "new properties",
-          prod: opinionatedPropertyName.product + "**",
-          var: opinionatedPropertyName.variant + "**",
-          other: [1, 2, 3],
-          nested: {
-            a: {
-              b: "c",
-            },
-          },
-          moreProperties: "more properties",
-        }
-      })
-
-      workflow.changeProduct((theReturnOfThePreviousHook) => {
-        return {
-          ...theReturnOfThePreviousHook,
-          moreProperties: "2nd hook update",
-        }
-      })
+      workflow.hooks.changeProduct(() => {})
+      expect(() => workflow.hooks.changeProduct(() => {})).toThrow(
+        "Cannot define multiple hook handlers for the changeProduct hook"
+      )
 
       const workflowInput = "id_123"
       const { result: final } = await workflow().run({
         input: workflowInput,
       })
 
-      expect(warn).toHaveBeenCalledTimes(1)
       expect(final).toEqual({
         id: "id_123",
-        prod: "product_1**",
-        var: "variant_2**",
         variant: "variant_2",
         product: "Saved product - product_1",
-        newProperties: "new properties",
-        other: [1, 2, 3],
-        nested: {
-          a: {
-            b: "c",
-          },
-        },
-        moreProperties: "more properties",
       })
     })
   })
@@ -976,7 +944,7 @@ describe("Workflow composer", function () {
       const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
 
       const workflow = createWorkflow("workflow1", function (input) {
-        return step1(input)
+        return new WorkflowResponse(step1(input))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1005,7 +973,7 @@ describe("Workflow composer", function () {
       const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
 
       const workflow = createWorkflow("workflow1", function (input) {
-        return step1(input)
+        return new WorkflowResponse(step1(input))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1054,7 +1022,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1140,7 +1108,9 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2, input })
+        return new WorkflowResponse(
+          step3({ one: returnStep1, two: ret2, input })
+        )
       })
 
       const { result: workflowResult, transaction } = await workflow().run({
@@ -1215,13 +1185,13 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflow2 = createWorkflow("workflow2", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1324,13 +1294,13 @@ describe("Workflow composer", function () {
         createWorkflow("workflow1", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
 
         createWorkflow("workflow2", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
       ])
 
@@ -1434,13 +1404,13 @@ describe("Workflow composer", function () {
         createWorkflow("workflow1", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
 
         createWorkflow("workflow2", function (input) {
           const returnStep1 = step1(input)
           const ret2 = step2(returnStep1)
-          return step3({ one: returnStep1, two: ret2 })
+          return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
         }),
       ])
 
@@ -1549,7 +1519,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3({ one: returnStep1, two: ret2 })
+        return new WorkflowResponse(step3({ one: returnStep1, two: ret2 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1651,7 +1621,7 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const [ret2, ret3] = parallelize(step2(returnStep1), step3(returnStep1))
-        return step4({ one: ret2, two: ret3 })
+        return new WorkflowResponse(step4({ one: ret2, two: ret3 }))
       })
 
       const workflowInput = { test: "payload1" }
@@ -1779,7 +1749,7 @@ describe("Workflow composer", function () {
 
         const avg = transform({ obj: ret2 }, transform3Fn)
 
-        return step3(avg)
+        return new WorkflowResponse(step3(avg))
       })
 
       const workflowInput = { a: 1, b: 2 }
@@ -1858,9 +1828,7 @@ describe("Workflow composer", function () {
       expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
     })
 
-    it("should compose a new workflow exposing hooks and log warns if multiple handlers are registered for the same hook", async () => {
-      const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
-
+    it("should throw error when multiple handlers for the same hook are defined", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
         return new StepResponse({
           id: input,
@@ -1880,64 +1848,29 @@ describe("Workflow composer", function () {
       const workflow = createWorkflow("workflow1", function (input) {
         const data = getData({ input })
 
-        const hookReturn = hook("changeProduct", {
+        const hookReturn = createHook("changeProduct", {
           opinionatedPropertyName: data,
         })
-        const transformedData = transform(
-          { data, hookReturn },
-          ({ data, hookReturn }: { data: any; hookReturn: any }) => {
-            return {
-              ...data,
-              ...hookReturn,
-            }
-          }
-        )
 
-        return saveProduct({ product: transformedData })
+        return new WorkflowResponse(saveProduct({ product: data }), {
+          hooks: [hookReturn],
+        })
       })
 
-      workflow.changeProduct(({ opinionatedPropertyName }) => {
-        return {
-          newProperties: "new properties",
-          prod: opinionatedPropertyName.product + "**",
-          var: opinionatedPropertyName.variant + "**",
-          other: [1, 2, 3],
-          nested: {
-            a: {
-              b: "c",
-            },
-          },
-          moreProperties: "more properties",
-        }
-      })
-
-      workflow.changeProduct((theReturnOfThePreviousHook) => {
-        return {
-          ...theReturnOfThePreviousHook,
-          moreProperties: "2nd hook update",
-        }
-      })
+      workflow.hooks.changeProduct(() => {})
+      expect(() => workflow.hooks.changeProduct(() => {})).toThrow(
+        "Cannot define multiple hook handlers for the changeProduct hook"
+      )
 
       const workflowInput = "id_123"
       const { result: final } = await workflow().run({
         input: workflowInput,
       })
 
-      expect(warn).toHaveBeenCalledTimes(1)
       expect(final).toEqual({
         id: "id_123",
-        prod: "product_1**",
-        var: "variant_2**",
         variant: "variant_2",
         product: "Saved product - product_1",
-        newProperties: "new properties",
-        other: [1, 2, 3],
-        nested: {
-          a: {
-            b: "c",
-          },
-        },
-        moreProperties: "more properties",
       })
     })
   })
@@ -1954,7 +1887,7 @@ describe("Workflow composer", function () {
     const step1 = createStep("step1", mockStep1Fn, mockCompensateSte1)
 
     const workflow = createWorkflow("workflow1", function (input) {
-      return step1(input)
+      return new WorkflowResponse(step1(input))
     })
 
     const workflowInput = { test: "payload1" }
@@ -1998,7 +1931,7 @@ describe("Workflow composer", function () {
     const workflow = createWorkflow("workflow1", function () {
       const { property, obj } = step1()
 
-      return { someOtherName: property, obj }
+      return new WorkflowResponse({ someOtherName: property, obj })
     })
 
     const { result } = await workflow().run({
@@ -2032,7 +1965,7 @@ describe("Workflow composer", function () {
       const s1 = step1()
       const s2 = step2()
 
-      return [s1, s2]
+      return new WorkflowResponse([s1, s2])
     })
 
     const { result } = await workflow().run({
@@ -2068,7 +2001,7 @@ describe("Workflow composer", function () {
       const { obj } = step1()
       const s2 = step2()
 
-      return [{ step1_nested_obj: obj.nested }, s2]
+      return new WorkflowResponse([{ step1_nested_obj: obj.nested }, s2])
     })
 
     const { result } = await workflow().run({
@@ -2097,7 +2030,7 @@ describe("Workflow composer", function () {
     const step1 = createStep("step1", mockStep1Fn, mockCompensateSte1)
 
     const workflow = createWorkflow("workflow1", function (input) {
-      return step1(input)
+      return new WorkflowResponse(step1(input))
     })
 
     const workflowInput = { test: "payload1" }
@@ -2146,7 +2079,7 @@ describe("Workflow composer", function () {
       const { obj } = step1()
       const s2 = step2()
 
-      return [{ step1_nested_obj: obj.nested }, s2]
+      return new WorkflowResponse([{ step1_nested_obj: obj.nested }, s2])
     })
 
     expect(() =>
@@ -2155,7 +2088,7 @@ describe("Workflow composer", function () {
         const s2 = step2()
         step3()
 
-        return [{ step1_nested_obj: obj.nested }, s2]
+        return new WorkflowResponse([{ step1_nested_obj: obj.nested }, s2])
       })
     ).toThrowError(
       `Workflow with id "workflow1" and step definition already exists.`
@@ -2165,7 +2098,7 @@ describe("Workflow composer", function () {
       const { obj } = step1()
       const s2 = step2()
 
-      return [{ step1_nested_obj: obj.nested }, s2]
+      return new WorkflowResponse([{ step1_nested_obj: obj.nested }, s2])
     })
   })
 
@@ -2270,7 +2203,7 @@ describe("Workflow composer", function () {
 
     const workflow = createWorkflow("workflow1", function (input) {
       step1(input)
-      step2()
+      step2(input)
     })
 
     await workflow(container).run({

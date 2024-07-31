@@ -5,7 +5,12 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForImport } from "../helpers/normalize-for-import"
-import { IRegionModuleService } from "@medusajs/types"
+import {
+  IProductModuleService,
+  IRegionModuleService,
+  ISalesChannelModuleService,
+} from "@medusajs/types"
+import { normalizeV1Products } from "../helpers/normalize-v1-import"
 
 export const parseProductCsvStepId = "parse-product-csv"
 export const parseProductCsvStep = createStep(
@@ -14,9 +19,31 @@ export const parseProductCsvStep = createStep(
     const regionService = container.resolve<IRegionModuleService>(
       ModuleRegistrationName.REGION
     )
+    const productService = container.resolve<IProductModuleService>(
+      ModuleRegistrationName.PRODUCT
+    )
+    const salesChannelService = container.resolve<ISalesChannelModuleService>(
+      ModuleRegistrationName.SALES_CHANNEL
+    )
+
     const csvProducts = convertCsvToJson(fileContent)
 
-    csvProducts.forEach((product: any) => {
+    const [productTypes, productCollections, salesChannels] = await Promise.all(
+      [
+        productService.listProductTypes({}, { take: null }),
+        productService.listProductCollections({}, { take: null }),
+        salesChannelService.listSalesChannels({}, { take: null }),
+      ]
+    )
+
+    const v1Normalized = normalizeV1Products(csvProducts, {
+      productTypes,
+      productCollections,
+      salesChannels,
+    })
+
+    // We use the handle to group products and variants correctly.
+    v1Normalized.forEach((product: any) => {
       if (!product["Product Handle"]) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -27,10 +54,10 @@ export const parseProductCsvStep = createStep(
 
     const allRegions = await regionService.listRegions(
       {},
-      { select: ["id", "currency_code"], take: null }
+      { select: ["id", "name", "currency_code"], take: null }
     )
 
-    const normalizedData = normalizeForImport(csvProducts, allRegions)
+    const normalizedData = normalizeForImport(v1Normalized, allRegions)
     return new StepResponse(normalizedData)
   }
 )

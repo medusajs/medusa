@@ -5,6 +5,7 @@ import {
   transform,
   when,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { updateRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
@@ -15,7 +16,7 @@ export const updateRegionsWorkflow = createWorkflow(
   updateRegionsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowInput>
-  ): WorkflowData<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
+  ): WorkflowResponse<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
     const normalizedInput = transform(input, (data) => {
       const { selector, update } = data
       const { payment_providers = [], is_tax_inclusive, ...rest } = update
@@ -72,6 +73,6 @@ export const updateRegionsWorkflow = createWorkflow(
       input: upsertProvidersNormalizedInput,
     })
 
-    return regions
+    return new WorkflowResponse(regions)
   }
 )

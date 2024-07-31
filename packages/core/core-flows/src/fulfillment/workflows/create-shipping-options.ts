@@ -3,6 +3,7 @@ import {
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createShippingOptionsPriceSetsStep,
@@ -19,7 +20,7 @@ export const createShippingOptionsWorkflow = createWorkflow(
     input: WorkflowData<
       FulfillmentWorkflow.CreateShippingOptionsWorkflowInput[]
     >
-  ): WorkflowData<FulfillmentWorkflow.CreateShippingOptionsWorkflowOutput> => {
+  ): WorkflowResponse<FulfillmentWorkflow.CreateShippingOptionsWorkflowOutput> => {
     validateFulfillmentProvidersStep(input)
 
     const data = transform(input, (data) => {
@@ -81,7 +82,6 @@ export const createShippingOptionsWorkflow = createWorkflow(
     )
 
     setShippingOptionsPriceSetsStep(normalizedLinkData)
-
-    return createdShippingOptions
+    return new WorkflowResponse(createdShippingOptions)
   }
 )

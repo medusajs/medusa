@@ -1,5 +1,9 @@
 import { FulfillmentWorkflow } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateShippingProfilesStep } from "../steps/update-shipping-profiles"
 
 export const updateShippingProfilesWorkflowId =
@@ -8,9 +12,7 @@ export const updateShippingProfilesWorkflow = createWorkflow(
   updateShippingProfilesWorkflowId,
   (
     input: WorkflowData<FulfillmentWorkflow.UpdateShippingProfilesWorkflowInput>
-  ): WorkflowData<FulfillmentWorkflow.CreateShippingProfilesWorkflowOutput> => {
-    const shippingProfiles = updateShippingProfilesStep(input)
-
-    return shippingProfiles
+  ): WorkflowResponse<FulfillmentWorkflow.CreateShippingProfilesWorkflowOutput> => {
+    return new WorkflowResponse(updateShippingProfilesStep(input))
   }
 )
