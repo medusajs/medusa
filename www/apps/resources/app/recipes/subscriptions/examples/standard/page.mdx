@@ -582,14 +582,15 @@ The compensation function receives the subscription as a parameter. It cancels t
 Create the file `src/workflows/create-subscription/index.ts` with the following content:
 
 export const createSubscriptionWorkflowHighlights = [
-  ["24", "completeCartWorkflow", "Complete the cart and create the order."],
-  ["30", "createSubscriptionStep", "Create the subscription."],
-  ["37", "createRemoteLinkStep", "Create the links returned by the previous step."]
+  ["25", "completeCartWorkflow", "Complete the cart and create the order."],
+  ["31", "createSubscriptionStep", "Create the subscription."],
+  ["38", "createRemoteLinkStep", "Create the links returned by the previous step."]
 ]
 
-```ts title="src/workflows/create-subscription/index.ts" highlights={createSubscriptionWorkflowHighlights} collapsibleLines="1-12" expandMoreLabel="Show Imports"
+```ts title="src/workflows/create-subscription/index.ts" highlights={createSubscriptionWorkflowHighlights} collapsibleLines="1-13" expandMoreLabel="Show Imports"
 import { 
   createWorkflow,
+  WorkflowResponse
 } from "@medusajs/workflows-sdk"
 import { 
   createRemoteLinkStep,
@@ -626,10 +627,10 @@ const createSubscriptionWorkflow = createWorkflow(
 
     createRemoteLinkStep(linkDefs)
 
-    return {
+    return new WorkflowResponse({
       subscription: subscription,
       order: order,
-    }
+    })
   }
 )
 
@@ -1751,18 +1752,21 @@ This updates the subscription’s `last_order_date` and `next_order_date` proper
 Finally, create the file `src/workflows/create-subscription-order/index.ts` with the following content:
 
 export const createSubscriptionOrderWorkflowHighlights = [
-  ["30", "useRemoteQueryStep", "Retrieve the cart linked to the subscription."],
-  ["57", "createPaymentCollectionsStep", "Create a payment collection using the same information in the cart."],
-  ["64", "createPaymentSessionsWorkflow", "Create a payment session in the payment collection from the previous step."],
-  ["73", "authorizePaymentSessionStep", "Authorize the payment session created from the first step."],
-  ["78", "createSubscriptionOrderStep", "Create the new order for the subscription."],
-  ["84", "createRemoteLinkStep", "Create links returned by the previous step."],
-  ["86", "capturePaymentStep", "Capture the order’s payment."],
-  ["91", "updateSubscriptionStep", "Update the subscription’s `last_order_date` and `next_order_date`."]
+  ["33", "useRemoteQueryStep", "Retrieve the cart linked to the subscription."],
+  ["60", "createPaymentCollectionsStep", "Create a payment collection using the same information in the cart."],
+  ["67", "createPaymentSessionsWorkflow", "Create a payment session in the payment collection from the previous step."],
+  ["76", "authorizePaymentSessionStep", "Authorize the payment session created from the first step."],
+  ["81", "createSubscriptionOrderStep", "Create the new order for the subscription."],
+  ["87", "createRemoteLinkStep", "Create links returned by the previous step."],
+  ["89", "capturePaymentStep", "Capture the order’s payment."],
+  ["94", "updateSubscriptionStep", "Update the subscription’s `last_order_date` and `next_order_date`."]
 ]
 
-```ts title="src/workflows/create-subscription-order/index.ts" highlights={createSubscriptionOrderWorkflowHighlights} collapsibleLines="1-22" expandMoreLabel="Show Imports"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+```ts title="src/workflows/create-subscription-order/index.ts" highlights={createSubscriptionOrderWorkflowHighlights} collapsibleLines="1-25" expandMoreLabel="Show Imports"
+import { 
+  createWorkflow,
+  WorkflowResponse
+} from "@medusajs/workflows-sdk"
 import { 
   useRemoteQueryStep,
   createPaymentSessionsWorkflow,
@@ -1856,9 +1860,9 @@ const createSubscriptionOrderWorkflow = createWorkflow(
       subscription_id: input.subscription.id,
     })
 
-    return {
+    return new WorkflowResponse({
       order,
-    }
+    })
   }
 )
 
