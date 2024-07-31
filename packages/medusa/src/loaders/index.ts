@@ -13,8 +13,8 @@ import {
   container,
   expressLoader,
   featureFlagsLoader,
-  LinkLoader,
   JobLoader,
+  LinkLoader,
   logger,
   pgConnectionLoader,
   SubscriberLoader,
@@ -45,6 +45,7 @@ async function subscribersLoader(plugins: PluginDetails[]) {
    */
   await new SubscriberLoader(join(__dirname, "../subscribers")).load()
 
+  // TODO: make it the same as the other loaders, taking an array of paths to load from
   /**
    * Load subscribers from all the plugins.
    */
@@ -121,15 +122,11 @@ async function loadEntrypoints(
 export async function initializeContainer(
   rootDirectory: string
 ): Promise<MedusaContainer> {
-  const configModule = configLoader(rootDirectory, "medusa-config.js")
-  const featureFlagRouter = await featureFlagsLoader(
-    join(__dirname, "feature-flags")
-  )
+  configLoader(rootDirectory, "medusa-config.js")
+  await featureFlagsLoader(join(__dirname, "feature-flags"))
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
-    [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
