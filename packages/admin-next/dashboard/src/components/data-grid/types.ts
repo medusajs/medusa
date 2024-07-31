@@ -1,6 +1,8 @@
 import { CellContext } from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 
+export type CellType = "text" | "number" | "select" | "boolean"
+
 export type CellCoords = {
   row: number
   col: number

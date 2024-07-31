@@ -1,6 +1,6 @@
 import { FocusEvent, MouseEvent, createContext } from "react"
 import { Control, FieldValues, Path, UseFormRegister } from "react-hook-form"
-import { CellCoords } from "./types"
+import { CellCoords, CellType } from "./types"
 
 type DataGridContextType<TForm extends FieldValues> = {
   // Grid state
@@ -8,7 +8,7 @@ type DataGridContextType<TForm extends FieldValues> = {
   selection: Record<string, boolean>
   dragSelection: Record<string, boolean>
   // Cell handlers
-  registerCell: (coords: CellCoords, key: string) => void
+  registerCell: (coords: CellCoords, field: string, type: CellType) => void
   getIsCellSelected: (coords: CellCoords) => boolean
   getIsCellDragSelected: (coords: CellCoords) => boolean
   // Grid handlers

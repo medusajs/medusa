@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react"
 import { DataGridContext } from "./context"
+import { GridQueryTool } from "./models"
 import {
   CellCoords,
   DataGridCellContext,
@@ -31,7 +32,7 @@ const useDataGridContext = () => {
 type UseDataGridCellProps<TData, TValue> = {
   field: string
   context: CellContext<TData, TValue>
-  type: "text" | "number" | "select"
+  type: "text" | "number" | "select" | "boolean"
 }
 
 const textCharacterRegex = /^.$/u
@@ -69,8 +70,8 @@ export const useDataGridCell = <TData, TValue>({
   } = useDataGridContext()
 
   useEffect(() => {
-    registerCell(coords, field)
-  }, [coords, field, registerCell])
+    registerCell(coords, field, type)
+  }, [coords, field, type, registerCell])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -179,6 +180,10 @@ export const useDataGridCell = <TData, TValue>({
     return dragSelection[id] || false
   }, [dragSelection, id])
 
+  const fieldWithoutOverlay = useMemo(() => {
+    return type === "boolean" || type === "select"
+  }, [type])
+
   useEffect(() => {
     if (isAnchor && !containerRef.current?.contains(document.activeElement)) {
       containerRef.current?.focus()
@@ -190,7 +195,7 @@ export const useDataGridCell = <TData, TValue>({
       isAnchor,
       isSelected,
       isDragSelected,
-      showOverlay,
+      showOverlay: fieldWithoutOverlay ? false : showOverlay,
       innerProps: {
         ref: containerRef,
         onMouseOver: getWrapperMouseOverHandler(coords),
@@ -220,4 +225,18 @@ export const useDataGridCell = <TData, TValue>({
     control,
     renderProps,
   }
+}
+
+export const useGridQueryTool = (
+  containerRef: React.RefObject<HTMLElement>
+) => {
+  const queryToolRef = useRef<GridQueryTool | null>(null)
+
+  useEffect(() => {
+    if (containerRef.current) {
+      queryToolRef.current = new GridQueryTool(containerRef.current)
+    }
+  }, [containerRef])
+
+  return queryToolRef.current
 }

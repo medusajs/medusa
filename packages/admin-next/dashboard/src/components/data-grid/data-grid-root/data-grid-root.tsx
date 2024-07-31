@@ -12,7 +12,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
-import FocusTrap from "focus-trap-react"
+import { createFocusTrap, type FocusTrap } from "focus-trap"
 import {
   FocusEvent,
   MouseEvent,
@@ -26,13 +26,13 @@ import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../hooks/use-command-history"
 import { DataGridContext } from "../context"
+import { useGridQueryTool } from "../hooks"
 import { BulkUpdateCommand, Matrix, UpdateCommand } from "../models"
-import { CellCoords } from "../types"
+import { CellCoords, CellType } from "../types"
 import {
   convertArrayToPrimitive,
   generateCellId,
   getColumnName,
-  getColumnType,
   getRange,
   isCellMatch,
 } from "../utils"
@@ -74,10 +74,13 @@ export const DataGridRoot = <
 }: DataGridRootProps<TData, TFieldValues>) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const { redo, undo, execute } = useCommandHistory()
-  const { register, control, getValues, setValue } = state
+  const focusTrapElement = useRef<HTMLDivElement>(null)
+  const focusTrapRef = useRef<FocusTrap | null>(null)
 
   const [active, setActive] = useState(true)
+
+  const { redo, undo, execute } = useCommandHistory()
+  const { register, control, getValues, setValue } = state
 
   const [anchor, setAnchor] = useState<CellCoords | null>(null)
   const [rangeEnd, setRangeEnd] = useState<CellCoords | null>(null)
@@ -218,9 +221,96 @@ export const DataGridRoot = <
     [flatRows, visibleColumns]
   )
 
+  const queryTool = useGridQueryTool(containerRef)
+
+  useEffect(() => {
+    if (focusTrapElement.current && !focusTrapRef.current) {
+      focusTrapRef.current = createFocusTrap(focusTrapElement.current, {
+        initialFocus: () => {
+          if (!anchor) {
+            const coords = matrix.getFirstNavigableCell()
+
+            if (!coords) {
+              return undefined
+            }
+
+            const id = generateCellId(coords)
+
+            return containerRef.current?.querySelector(
+              `[data-container-id="${id}"]`
+            )
+          }
+
+          const id = generateCellId(anchor)
+
+          const anchorContainer = containerRef.current?.querySelector(
+            `[data-container-id="${id}`
+          ) as HTMLElement | null
+
+          return anchorContainer ?? undefined
+        },
+        onActivate: () => setActive(true),
+        onDeactivate: () => setActive(false),
+        fallbackFocus: () => {
+          if (!anchor) {
+            const coords = matrix.getFirstNavigableCell()
+
+            if (!coords) {
+              return containerRef.current!
+            }
+
+            const id = generateCellId(coords)
+
+            const firstCell = containerRef.current?.querySelector(
+              `[data-container-id="${id}"]`
+            ) as HTMLElement | null
+
+            if (firstCell) {
+              return firstCell
+            }
+
+            return containerRef.current!
+          }
+
+          const id = generateCellId(anchor)
+
+          const anchorContainer = containerRef.current?.querySelector(
+            `[data-container-id="${id}`
+          ) as HTMLElement | null
+
+          if (anchorContainer) {
+            return anchorContainer
+          }
+
+          return containerRef.current!
+        },
+        allowOutsideClick: true,
+        escapeDeactivates: false,
+      })
+
+      focusTrapRef.current.activate()
+    }
+  }, [anchor, focusTrapElement, matrix])
+
+  useEffect(() => {
+    if (!active && focusTrapRef.current) {
+      focusTrapRef.current.deactivate()
+    }
+
+    if (active && focusTrapRef.current) {
+      focusTrapRef.current.activate()
+    }
+
+    return () => {
+      if (focusTrapRef.current) {
+        focusTrapRef.current.deactivate()
+      }
+    }
+  }, [active])
+
   const registerCell = useCallback(
-    (coords: CellCoords, key: string) => {
-      matrix.registerField(coords.row, coords.col, key)
+    (coords: CellCoords, field: string, type: CellType) => {
+      matrix.registerField(coords.row, coords.col, field, type)
     },
     [matrix]
   )
@@ -308,7 +398,12 @@ export const DataGridRoot = <
         return
       }
 
-      const type = getColumnType(anchor, visibleColumns)
+      const type = matrix.getCellType(anchor)
+
+      if (!type) {
+        return
+      }
+
       const convertedValues = convertArrayToPrimitive(values, type)
 
       fields.forEach((field, index) => {
@@ -325,7 +420,7 @@ export const DataGridRoot = <
         setValue(field as Path<TFieldValues>, value)
       })
     },
-    [anchor, setValue, visibleColumns]
+    [matrix, anchor, setValue]
   )
 
   /**
@@ -338,11 +433,21 @@ export const DataGridRoot = <
    */
   const handleKeyboardNavigation = useCallback(
     (e: KeyboardEvent) => {
+      if (!anchor) {
+        return
+      }
+
+      const type = matrix.getCellType(anchor)
+
       /**
        * If the user is currently editing a cell, we don't want to
        * handle the keyboard navigation.
+       *
+       * If the cell is of type boolean, we don't want to ignore the
+       * keyboard navigation, as we want to allow the user to navigate
+       * away from the cell directly, as you cannot "enter" a boolean cell.
        */
-      if (isEditing) {
+      if (isEditing && type !== "boolean") {
         return
       }
 
@@ -416,29 +521,34 @@ export const DataGridRoot = <
 
       e.preventDefault()
 
-      const id = generateCellId(anchor)
-      const container = containerRef.current
+      const type = matrix.getCellType(anchor)
+      const field = matrix.getCellField(anchor)
 
-      if (!container) {
-        return
-      }
+      const input = queryTool?.getInput(anchor)
 
-      const input = container.querySelector(
-        `[data-cell-id="${id}"]`
-      ) as HTMLElement
-
-      if (!input) {
-        return
-      }
-
-      const field = input.getAttribute("data-field")
-
-      if (!field) {
+      if (!input || !field || !type) {
         return
       }
 
       const current = getValues(field as Path<TFieldValues>)
-      const next = "" as PathValue<TFieldValues, Path<TFieldValues>>
+
+      let next: boolean | string
+
+      switch (type) {
+        case "boolean":
+          if (typeof current === "boolean") {
+            next = !current
+          } else {
+            // If the value is currently undefined, we want to set it to true.
+            next = true
+          }
+          break
+        case "select":
+        case "number":
+        case "text":
+          next = ""
+          break
+      }
 
       const command = new UpdateCommand({
         next,
@@ -454,7 +564,7 @@ export const DataGridRoot = <
       execute(command)
       input.focus()
     },
-    [anchor, isEditing, setValue, getValues, execute]
+    [matrix, queryTool, anchor, isEditing, setValue, getValues, execute]
   )
 
   const handleEnterEditMode = useCallback(
@@ -472,40 +582,40 @@ export const DataGridRoot = <
         scrollToCell(pos, "vertical")
       } else {
         // If the the user is at the last cell, we want to focus the container of the cell.
-        const id = generateCellId(anchor)
-        const container = containerRef.current
+        const container = queryTool?.getContainer(anchor)
 
-        const cellContainer = container?.querySelector(
-          `[data-container-id="${id}"]`
-        ) as HTMLElement | null
-
-        cellContainer?.focus()
+        container?.focus()
       }
 
       onEditingChangeHandler(false)
     },
-    [matrix, scrollToCell, setSingleRange, onEditingChangeHandler]
+    [queryTool, matrix, scrollToCell, setSingleRange, onEditingChangeHandler]
   )
 
   const handleEnterNonEditMode = useCallback(
     (anchor: { row: number; col: number }) => {
-      const id = generateCellId(anchor)
-      const container = containerRef.current
-      if (!container) {
+      const input = queryTool?.getInput(anchor)
+
+      if (!input) {
         return
       }
 
-      const input = container.querySelector(
-        `[data-cell-id="${id}"]`
-      ) as HTMLElement
-      const field = input?.getAttribute("data-field")
-
-      if (input && field) {
-        input.focus()
-        onEditingChangeHandler(true)
-      }
+      input.focus()
+      onEditingChangeHandler(true)
     },
-    [onEditingChangeHandler]
+    [queryTool, onEditingChangeHandler]
+  )
+
+  const handleEnterKeyTextOrNumber = useCallback(
+    (e: KeyboardEvent, anchor: CellCoords) => {
+      if (isEditing) {
+        handleEnterEditMode(e, anchor)
+        return
+      }
+
+      handleEnterNonEditMode(anchor)
+    },
+    [handleEnterEditMode, handleEnterNonEditMode, isEditing]
   )
 
   const handleEnterKey = useCallback(
@@ -516,13 +626,49 @@ export const DataGridRoot = <
 
       e.preventDefault()
 
-      if (isEditing) {
-        handleEnterEditMode(e, anchor)
-      } else {
-        handleEnterNonEditMode(anchor)
+      const type = matrix.getCellType(anchor)
+
+      switch (type) {
+        case "text":
+        case "number":
+          handleEnterKeyTextOrNumber(e, anchor)
+          break
+        case "boolean": {
+          const input = queryTool?.getInput(anchor)
+          const field = matrix.getCellField(anchor)
+
+          if (!input || !field) {
+            return
+          }
+
+          const current = getValues(field as Path<TFieldValues>)
+
+          const next = typeof current === "boolean" ? !current : true
+
+          const command = new UpdateCommand({
+            next,
+            prev: current,
+            setter: (value) => {
+              setValue(field as Path<TFieldValues>, value)
+            },
+          })
+
+          execute(command)
+          input.focus()
+
+          break
+        }
       }
     },
-    [anchor, isEditing, handleEnterEditMode, handleEnterNonEditMode]
+    [
+      anchor,
+      matrix,
+      handleEnterKeyTextOrNumber,
+      queryTool,
+      getValues,
+      execute,
+      setValue,
+    ]
   )
 
   const handleDeleteKey = useCallback(
@@ -567,17 +713,10 @@ export const DataGridRoot = <
       e.stopPropagation()
 
       // Restore focus to the container element
-      const anchorContainer = containerRef.current?.querySelector(
-        `[data-container-id="${generateCellId(anchor)}"]`
-      ) as HTMLElement | null
-
-      if (!anchorContainer) {
-        return
-      }
-
-      anchorContainer.focus()
+      const container = queryTool?.getContainer(anchor)
+      container?.focus()
     },
-    [isEditing, anchor]
+    [queryTool, isEditing, anchor]
   )
 
   const handleTabKey = useCallback(
@@ -660,7 +799,7 @@ export const DataGridRoot = <
       return
     }
     const dragSelection = matrix.getFieldsInSelection(anchor, dragEnd)
-    const anchorField = matrix.getCellKey(anchor)
+    const anchorField = matrix.getCellField(anchor)
 
     if (!anchorField || !dragSelection.length) {
       return
@@ -972,71 +1111,7 @@ export const DataGridRoot = <
     <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col">
         <DataGridHeader grid={grid} />
-        <FocusTrap
-          active={active}
-          focusTrapOptions={{
-            initialFocus: () => {
-              if (!anchor) {
-                const coords = matrix.getFirstNavigableCell()
-
-                if (!coords) {
-                  return undefined
-                }
-
-                const id = generateCellId(coords)
-
-                return containerRef.current?.querySelector(
-                  `[data-container-id="${id}"]`
-                )
-              }
-
-              const id = generateCellId(anchor)
-
-              const anchorContainer = containerRef.current?.querySelector(
-                `[data-container-id="${id}`
-              ) as HTMLElement | null
-
-              return anchorContainer ?? undefined
-            },
-            onActivate: () => setActive(true),
-            onDeactivate: () => setActive(false),
-            fallbackFocus: () => {
-              if (!anchor) {
-                const coords = matrix.getFirstNavigableCell()
-
-                if (!coords) {
-                  return containerRef.current!
-                }
-
-                const id = generateCellId(coords)
-
-                const firstCell = containerRef.current?.querySelector(
-                  `[data-container-id="${id}"]`
-                ) as HTMLElement | null
-
-                if (firstCell) {
-                  return firstCell
-                }
-
-                return containerRef.current!
-              }
-
-              const id = generateCellId(anchor)
-
-              const anchorContainer = containerRef.current?.querySelector(
-                `[data-container-id="${id}`
-              ) as HTMLElement | null
-
-              if (anchorContainer) {
-                return anchorContainer
-              }
-
-              return containerRef.current!
-            },
-            allowOutsideClick: true,
-            escapeDeactivates: false,
-          }}
-        >
+        <div ref={focusTrapElement}>
           <div className="size-full overflow-hidden outline-none" tabIndex={-1}>
             <div tabIndex={0} className="outline-none focus:ring-2" />
             <div
@@ -1124,7 +1199,7 @@ export const DataGridRoot = <
               </div>
             </div>
           </div>
-        </FocusTrap>
+        </div>
       </div>
     </DataGridContext.Provider>
   )

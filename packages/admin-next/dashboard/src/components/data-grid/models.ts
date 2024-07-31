@@ -1,8 +1,9 @@
 import { Command } from "../../hooks/use-command-history"
-import { CellCoords } from "./types"
+import { CellCoords, CellType } from "./types"
+import { generateCellId } from "./utils"
 
 export class Matrix {
-  private cells: (string | null)[][]
+  private cells: ({ field: string; type: CellType } | null)[][]
 
   constructor(rows: number, cols: number) {
     this.cells = Array.from({ length: rows }, () => Array(cols).fill(null))
@@ -21,9 +22,12 @@ export class Matrix {
   }
 
   // Register a navigable cell with a unique key
-  registerField(row: number, col: number, key: string) {
+  registerField(row: number, col: number, field: string, type: CellType) {
     if (this._isValidPosition(row, col)) {
-      this.cells[row][col] = key
+      this.cells[row][col] = {
+        field,
+        type,
+      }
     }
   }
 
@@ -47,16 +51,24 @@ export class Matrix {
 
     for (let row = startRow; row <= endRow; row++) {
       if (this._isValidPosition(row, col) && this.cells[row][col] !== null) {
-        keys.push(this.cells[row][col] as string)
+        keys.push(this.cells[row][col]?.field as string)
       }
     }
 
     return keys
   }
 
-  getCellKey(cell: CellCoords): string | null {
+  getCellField(cell: CellCoords): string | null {
     if (this._isValidPosition(cell.row, cell.col)) {
-      return this.cells[cell.row][cell.col]
+      return this.cells[cell.row][cell.col]?.field || null
+    }
+
+    return null
+  }
+
+  getCellType(cell: CellCoords): CellType | null {
+    if (this._isValidPosition(cell.row, cell.col)) {
+      return this.cells[cell.row][cell.col]?.type || null
     }
 
     return null
@@ -176,6 +188,44 @@ export class Matrix {
       row: lastValidRow,
       col: lastValidCol,
     }
+  }
+}
+
+export class GridQueryTool {
+  private container: HTMLElement | null
+
+  constructor(container: HTMLElement | null) {
+    this.container = container
+  }
+
+  getInput(cell: CellCoords) {
+    const id = this._getCellId(cell)
+
+    const input = this.container?.querySelector(`[data-cell-id="${id}"]`)
+
+    if (!input) {
+      return null
+    }
+
+    return input as HTMLElement
+  }
+
+  getContainer(cell: CellCoords) {
+    const id = this._getCellId(cell)
+
+    const container = this.container?.querySelector(
+      `[data-container-id="${id}"]`
+    )
+
+    if (!container) {
+      return null
+    }
+
+    return container as HTMLElement
+  }
+
+  private _getCellId(cell: CellCoords): string {
+    return generateCellId(cell)
   }
 }
 
