@@ -3216,6 +3216,58 @@ export const filesMap = [
     "pathname": "/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService"
   },
   {
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.createRemoteLinkStep/page.mdx",
+    "pathname": "/references/helper_steps/functions/helper_steps.createRemoteLinkStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep/page.mdx",
+    "pathname": "/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx",
+    "pathname": "/references/helper_steps/functions/helper_steps.removeRemoteLinkStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx",
+    "pathname": "/references/helper_steps/functions/helper_steps.useRemoteQueryStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/interfaces/helper_steps.EntryStepInput/page.mdx",
+    "pathname": "/references/helper_steps/interfaces/helper_steps.EntryStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/interfaces/helper_steps.RemoteStepInput/page.mdx",
+    "pathname": "/references/helper_steps/interfaces/helper_steps.RemoteStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/interfaces/helper_steps.ServiceStepInput/page.mdx",
+    "pathname": "/references/helper_steps/interfaces/helper_steps.ServiceStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/types/helper_steps.DismissRemoteLinksStepInput/page.mdx",
+    "pathname": "/references/helper_steps/types/helper_steps.DismissRemoteLinksStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/variables/helper_steps.createLinksStepId/page.mdx",
+    "pathname": "/references/helper_steps/variables/helper_steps.createLinksStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/variables/helper_steps.dismissRemoteLinkStepId/page.mdx",
+    "pathname": "/references/helper_steps/variables/helper_steps.dismissRemoteLinkStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/variables/helper_steps.emitEventStepId/page.mdx",
+    "pathname": "/references/helper_steps/variables/helper_steps.emitEventStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/variables/helper_steps.removeRemoteLinkStepId/page.mdx",
+    "pathname": "/references/helper_steps/variables/helper_steps.removeRemoteLinkStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/variables/helper_steps.useRemoteQueryStepId/page.mdx",
+    "pathname": "/references/helper_steps/variables/helper_steps.useRemoteQueryStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.toJSON/page.mdx",
     "pathname": "/references/inventory_next/IBigNumber/methods/inventory_next.IBigNumber.toJSON"
   },
@@ -3740,6 +3792,10 @@ export const filesMap = [
     "pathname": "/references/modules/fulfillment_provider"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/helper_steps/page.mdx",
+    "pathname": "/references/modules/helper_steps"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/inventory_next/page.mdx",
     "pathname": "/references/modules/inventory_next"
   },
@@ -3754,6 +3810,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/medusa_config/page.mdx",
     "pathname": "/references/modules/medusa_config"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/modules_sdk/page.mdx",
+    "pathname": "/references/modules/modules_sdk"
   },
   {
     "filePath": "/www/apps/resources/references/modules/notification/page.mdx",
@@ -3870,6 +3930,198 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/workflows/page.mdx",
     "pathname": "/references/modules/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/classes/modules_sdk.RemoteLink/page.mdx",
+    "pathname": "/references/modules_sdk/classes/modules_sdk.RemoteLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/classes/modules_sdk.RemoteQuery/page.mdx",
+    "pathname": "/references/modules_sdk/classes/modules_sdk.RemoteQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/enums/modules_sdk.MODULE_RESOURCE_TYPE/page.mdx",
+    "pathname": "/references/modules_sdk/enums/modules_sdk.MODULE_RESOURCE_TYPE"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/enums/modules_sdk.MODULE_SCOPE/page.mdx",
+    "pathname": "/references/modules_sdk/enums/modules_sdk.MODULE_SCOPE"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/interfaces/modules_sdk.IMedusaInternalService/page.mdx",
+    "pathname": "/references/modules_sdk/interfaces/modules_sdk.IMedusaInternalService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/interfaces/modules_sdk.IModuleService/page.mdx",
+    "pathname": "/references/modules_sdk/interfaces/modules_sdk.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/interfaces/modules_sdk.ModuleImplementations/page.mdx",
+    "pathname": "/references/modules_sdk/interfaces/modules_sdk.ModuleImplementations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/interfaces/modules_sdk.ModuleServiceInitializeOptions/page.mdx",
+    "pathname": "/references/modules_sdk/interfaces/modules_sdk.ModuleServiceInitializeOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.Constructor/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ContainerLike/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ContainerLike"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.CustomModuleDefinition/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.CustomModuleDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.DeleteEntityInput/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.DeleteEntityInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ExternalModuleDeclaration/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ExternalModuleDeclaration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.GenerateMigrations/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.GenerateMigrations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.GetLinkExecutionPlanner/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.GetLinkExecutionPlanner"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.InternalModuleDeclaration/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.InternalModuleDeclaration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LinkDefinition/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LinkDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LinkModuleBootstrapOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LinkModuleBootstrapOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LinkModuleDefinition/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LinkModuleDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LoadedModule/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LoadedModule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LoaderOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LoaderOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LogLevel/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LogLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.LoggerOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.LoggerOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.MedusaAppOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.MedusaAppOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.MedusaAppOutput/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.MedusaAppOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.MedusaContainer/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.MedusaContainer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.MedusaModuleConfig/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.MedusaModuleConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.MigrationOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.MigrationOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleBootstrapDeclaration/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleBootstrapDeclaration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleBootstrapOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleBootstrapOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleConfig/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleDefinition/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleExports/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleExports"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleJoinerConfig/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleJoinerRelationship/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleLoaderFunction/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleLoaderFunction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleProvider/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleProviderExports/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleProviderExports"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleResolution/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleResolution"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModuleServiceInitializeCustomDataLayerOptions/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModuleServiceInitializeCustomDataLayerOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.ModulesResponse/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.ModulesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RegisterModuleJoinerConfig/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.RegisterModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RemoteQueryFunction/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.RemoteQueryFunction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RestoreEntityInput/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.RestoreEntityInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RevertMigrationFn/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.RevertMigrationFn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.RunMigrationFn/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.RunMigrationFn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules_sdk/types/modules_sdk.SharedResources/page.mdx",
+    "pathname": "/references/modules_sdk/types/modules_sdk.SharedResources"
   },
   {
     "filePath": "/www/apps/resources/references/notification/classes/notification.AbstractNotificationProviderService/page.mdx",
@@ -8510,6 +8762,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBaseReturnItem/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBaseReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchLink/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchLink"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchPriceListPrice/page.mdx",
