@@ -8517,12 +8517,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin@^7.1.15, @medusajs/admin@workspace:packages/admin":
+"@medusajs/admin@^7.1.16, @medusajs/admin@workspace:packages/admin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
     "@medusajs/admin-ui": ^2.1.16
-    "@medusajs/medusa": ^1.20.8
+    "@medusajs/medusa": ^1.20.9
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
     "@rollup/plugin-json": 6.0.0
@@ -9137,7 +9137,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.20.8, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.20.8, @medusajs/medusa@^1.20.9, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -39214,8 +39214,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
-    "@medusajs/admin": ^7.1.15
-    "@medusajs/medusa": ^1.20.8
+    "@medusajs/admin": ^7.1.16
+    "@medusajs/medusa": ^1.20.9
     "@medusajs/utils": ^1.11.10
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36

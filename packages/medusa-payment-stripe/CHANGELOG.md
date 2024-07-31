@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.0.11
+
+### Patch Changes
+
+- [#8234](https://github.com/medusajs/medusa/pull/8234) [`3a2a6bc3b3`](https://github.com/medusajs/medusa/commit/3a2a6bc3b3270c7adc05f5c4cf9aa30389689fdf) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Show correct paid amount in Stripe payment widget
+
 ## 6.0.10
 
 ### Patch Changes

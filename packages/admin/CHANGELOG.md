@@ -1,5 +1,11 @@
 # @medusajs/admin
 
+## 7.1.16
+
+### Patch Changes
+
+- [#8231](https://github.com/medusajs/medusa/pull/8231) [`0f76d9f7a4`](https://github.com/medusajs/medusa/commit/0f76d9f7a4a139377b35024b15c868a2023d24b6) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin): Allow `backend` arg to pass through in development
+
 ## 7.1.15
 
 ### Patch Changes
