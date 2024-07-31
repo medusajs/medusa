@@ -158,8 +158,8 @@ export default async ({
     linkModules: pluginLinks,
   })
 
-  const workflowsSourcePath = plugins.map((p) => p.resolve)
-  const workflowLoader = new WorkflowLoader(workflowsSourcePath)
+  const workflowsSourcePaths = plugins.map((p) => p.resolve)
+  const workflowLoader = new WorkflowLoader(workflowsSourcePaths)
   await workflowLoader.load()
 
   const entrypointsShutdown = await loadEntrypoints(
