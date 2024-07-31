@@ -654,7 +654,7 @@ medusaIntegrationTestRunner({
                   title: "Test variant",
                   sku: "test-sku-1-1",
                   barcode: "test-barcode-1-1",
-                  allow_backorder: true,
+                  allow_backorder: false,
                   manage_inventory: true,
                   prices: [
                     expect.objectContaining({

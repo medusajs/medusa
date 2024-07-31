@@ -132,11 +132,7 @@ export const useUpdateReturnItem = (
 export const useRemoveReturnItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<
-    HttpTypes.AdminReturnResponse,
-    Error,
-    HttpTypes.AdminAddReturnItems
-  >
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>

@@ -1,4 +1,8 @@
-import { IFileModuleService, HttpTypes } from "@medusajs/types"
+import {
+  IFileModuleService,
+  HttpTypes,
+  IRegionModuleService,
+} from "@medusajs/types"
 import { ModuleRegistrationName, convertJsonToCsv } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForExport } from "../helpers/normalize-for-export"
@@ -7,7 +11,16 @@ export const generateProductCsvStepId = "generate-product-csv"
 export const generateProductCsvStep = createStep(
   generateProductCsvStepId,
   async (products: HttpTypes.AdminProduct[], { container }) => {
-    const normalizedData = normalizeForExport(products)
+    const regionService = container.resolve<IRegionModuleService>(
+      ModuleRegistrationName.REGION
+    )
+
+    const regions = await regionService.listRegions(
+      {},
+      { select: ["id", "name", "currency_code"], take: null }
+    )
+
+    const normalizedData = normalizeForExport(products, { regions })
     const csvContent = convertJsonToCsv(normalizedData)
 
     const fileModule: IFileModuleService = container.resolve(
