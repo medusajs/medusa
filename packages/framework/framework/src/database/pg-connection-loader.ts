@@ -10,7 +10,9 @@ export function pgConnectionLoader(): ReturnType<
   typeof ModulesSdkUtils.createPgConnection
 > {
   if (container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
-    return container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
+    return container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ) as unknown as ReturnType<typeof ModulesSdkUtils.createPgConnection>
   }
 
   const configModule = configManager.config

@@ -13,12 +13,11 @@ const handleConfigError = (error: Error): void => {
   process.exit(1)
 }
 
-// TODO: Later on we could store the config manager into the unique container
 export const configManager = new ConfigManager()
 
 container.register(
   ContainerRegistrationKeys.CONFIG_MODULE,
-  asFunction(() => configManager)
+  asFunction(() => configManager.config)
 )
 
 /**

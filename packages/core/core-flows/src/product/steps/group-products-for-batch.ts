@@ -1,25 +1,26 @@
-import { HttpTypes, IProductModuleService, ProductTypes } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { HttpTypes, IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const groupProductsForBatchStepId = "group-products-for-batch"
 export const groupProductsForBatchStep = createStep(
   groupProductsForBatchStepId,
-  async (data: HttpTypes.AdminCreateProduct[], { container }) => {
+  async (
+    data: (HttpTypes.AdminCreateProduct & { id?: string })[],
+    { container }
+  ) => {
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )
 
     const existingProducts = await service.listProducts(
       {
-        // We already validate that there is handle in a previous step
-        handle: data.map((product) => product.handle) as string[],
+        // We use the ID to do product updates
+        id: data.map((product) => product.id).filter(Boolean) as string[],
       },
       { take: null, select: ["handle"] }
     )
-    const existingProductsMap = new Map(
-      existingProducts.map((p) => [p.handle, true])
-    )
+    const existingProductsSet = new Set(existingProducts.map((p) => p.id))
 
     const { toUpdate, toCreate } = data.reduce(
       (
@@ -30,14 +31,7 @@ export const groupProductsForBatchStep = createStep(
         product
       ) => {
         // There are few data normalizations to do if we are dealing with an update.
-        if (existingProductsMap.has(product.handle!)) {
-          if (!(product as any).id) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              "Product id is required when updating products in import"
-            )
-          }
-
+        if (product.id && existingProductsSet.has(product.id)) {
           acc.toUpdate.push(
             product as HttpTypes.AdminUpdateProduct & { id: string }
           )
@@ -46,7 +40,7 @@ export const groupProductsForBatchStep = createStep(
 
         // New products will be created with a new ID, even if there is one present in the CSV.
         // To add support for creating with predefined IDs we will need to do changes to the upsert method.
-        delete (product as any).id
+        delete product.id
         acc.toCreate.push(product)
         return acc
       },

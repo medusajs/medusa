@@ -13,6 +13,8 @@
     "./logger": "./dist/logger/index.js",
     "./database": "./dist/database/index.js",
     "./subscribers": "./dist/subscribers/index.js",
+    "./workflows": "./dist/workflows/index.js",
+    "./links": "./dist/links/index.js",
     "./jobs": "./dist/jobs/index.js"
   },
   "engines": {
@@ -31,8 +33,8 @@
   "scripts": {
     "watch": "tsc --watch -p ./tsconfig.build.json",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "prepublishOnly": "tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
-    "build": "rimraf dist && tsc --noEmit && yarn prepublishOnly",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
+    "build": "rimraf dist && tsc --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
@@ -47,6 +49,8 @@
   },
   "dependencies": {
     "@medusajs/medusa-cli": "^1.3.22",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
     "awilix": "^8.0.0",
@@ -55,7 +59,7 @@
     "express-session": "^1.17.3",
     "ioredis": "^5.2.5",
     "ioredis-mock": "8.4.0",
-    "medusa-telemetry": "^0.0.18",
+    "medusa-telemetry": "^0.0.17",
     "morgan": "^1.9.1"
   }
 }

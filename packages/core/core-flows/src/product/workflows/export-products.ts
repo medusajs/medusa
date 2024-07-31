@@ -6,7 +6,7 @@ import {
 import { WorkflowTypes } from "@medusajs/types"
 import { generateProductCsvStep, getAllProductsStep } from "../steps"
 import { useRemoteQueryStep } from "../../common"
-import { sendNotificationsStep } from "../../notification"
+import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 
 export const exportProductsWorkflowId = "export-products"
 export const exportProductsWorkflow = createWorkflow(
@@ -18,6 +18,22 @@ export const exportProductsWorkflow = createWorkflow(
       async: true,
       backgroundExecution: true,
     })
+
+    const failureNotification = transform({ input }, (data) => {
+      return [
+        {
+          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
+          to: "",
+          channel: "feed",
+          template: "admin-ui",
+          data: {
+            title: "Product export",
+            description: `Failed to export products, please try again later.`,
+          },
+        },
+      ]
+    })
+    notifyOnFailureStep(failureNotification)
 
     const file = generateProductCsvStep(products)
     const fileDetails = useRemoteQueryStep({
