@@ -7531,6 +7531,44 @@ export const generatedSidebar = [
             ]
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/references/helper-steps",
+        "title": "Helper Steps Reference",
+        "isChildSidebar": true,
+        "autogenerate_path": "/references/helper_steps/functions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/createRemoteLinkStep",
+            "title": "createRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/dismissRemoteLinkStep",
+            "title": "dismissRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/removeRemoteLinkStep",
+            "title": "removeRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/useRemoteQueryStep",
+            "title": "useRemoteQueryStep",
+            "children": []
+          }
+        ]
       }
     ]
   },
