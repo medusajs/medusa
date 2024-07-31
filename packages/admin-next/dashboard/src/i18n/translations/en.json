@@ -2172,6 +2172,26 @@
       "value": "Value"
     }
   },
+  "productTags": {
+    "domain": "Product Tags",
+    "create": {
+      "header": "Create Product Tag",
+      "subtitle": "Create a new product tag to categorize your products.",
+      "successToast": "Product tag {{value}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Product Tag",
+      "subtitle": "Edit the value of the product tag.",
+      "successToast": "Product tag {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
+      "successToast": "Product tag {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
   "notifications": {
     "domain": "Notifications",
     "emptyState": {
