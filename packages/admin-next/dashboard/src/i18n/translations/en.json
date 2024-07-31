@@ -858,6 +858,9 @@
       "refundableAmountLabel": "Refundable amount",
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
     },
+    "claims": {
+      "create": "Create Claim"
+    },
     "reservations": {
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"

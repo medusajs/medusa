@@ -7,7 +7,11 @@ import {
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { ArrowDownRightMini, ArrowUturnLeft } from "@medusajs/icons"
+import {
+  ArrowDownRightMini,
+  ArrowUturnLeft,
+  ExclamationCircle,
+} from "@medusajs/icons"
 import {
   Button,
   Container,
@@ -113,6 +117,11 @@ const Header = ({ order }: { order: AdminOrder }) => {
                 label: t("orders.returns.create"),
                 to: `/orders/${order.id}/returns`,
                 icon: <ArrowUturnLeft />,
+              },
+              {
+                label: t("orders.claims.create"),
+                to: `/orders/${order.id}/claims`,
+                icon: <ExclamationCircle />,
               },
             ],
           },
