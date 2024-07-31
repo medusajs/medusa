@@ -78,7 +78,11 @@ export function OrderReceiveReturn() {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("orders.receiveReturn.title")}</Heading>
+        <Heading>
+          {t("orders.returns.receive.title", {
+            returnId: return_id?.slice(-7),
+          })}
+        </Heading>
       </RouteDrawer.Header>
       {ready && (
         <OrderReceiveReturnForm

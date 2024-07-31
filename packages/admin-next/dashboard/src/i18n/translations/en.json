@@ -864,6 +864,7 @@
         "receive": "Return {{label}}",
         "restockAll": "Restock all items",
         "itemsLabel": "Items received",
+        "title": "Receive items for #{{returnId}}",
         "sendNotificationHint": "Notify customer about received return.",
         "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
         "writeOffInputLabel": "How many of the items are damaged?",
@@ -874,9 +875,6 @@
           "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
         }
       }
-    },
-    "receiveReturn" : {
-      "title": "Receive Return"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
