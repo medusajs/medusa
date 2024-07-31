@@ -1,11 +1,19 @@
-import { MedusaError, convertCsvToJson } from "@medusajs/utils"
+import {
+  MedusaError,
+  ModuleRegistrationName,
+  convertCsvToJson,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForImport } from "../helpers/normalize-for-import"
+import { IRegionModuleService } from "@medusajs/types"
 
 export const parseProductCsvStepId = "parse-product-csv"
 export const parseProductCsvStep = createStep(
   parseProductCsvStepId,
-  async (fileContent: string) => {
+  async (fileContent: string, { container }) => {
+    const regionService = container.resolve<IRegionModuleService>(
+      ModuleRegistrationName.REGION
+    )
     const csvProducts = convertCsvToJson(fileContent)
 
     csvProducts.forEach((product: any) => {
@@ -17,7 +25,12 @@ export const parseProductCsvStep = createStep(
       }
     })
 
-    const normalizedData = normalizeForImport(csvProducts)
+    const allRegions = await regionService.listRegions(
+      {},
+      { select: ["id", "currency_code"], take: null }
+    )
+
+    const normalizedData = normalizeForImport(csvProducts, allRegions)
     return new StepResponse(normalizedData)
   }
 )
