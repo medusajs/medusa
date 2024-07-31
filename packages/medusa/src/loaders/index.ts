@@ -125,15 +125,11 @@ export async function initializeContainer(
     ? ".ts"
     : ".js"
 
-  const configModule = configLoader(rootDirectory, `medusa-config${configExt}`)
-  const featureFlagRouter = await featureFlagsLoader(
-    join(__dirname, "feature-flags")
-  )
+  configLoader(rootDirectory, `medusa-config${configExt}`)
+  await featureFlagsLoader(join(__dirname, "feature-flags"))
 
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-    [ContainerRegistrationKeys.FEATURE_FLAG_ROUTER]: asValue(featureFlagRouter),
-    [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
     [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
   })
 
