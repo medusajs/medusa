@@ -7,13 +7,11 @@ export interface RequestItemReturnWorkflowInput {
   exchange_id?: string
   items: CreateReturnItem[]
 }
-export interface DeleteRequestItemReturnWorkflowInput {
-  return_id: string
-  action_id: string
-}
 
 export interface UpdateRequestItemReturnWorkflowInput {
   return_id: string
+  claim_id?: string
+  exchange_id?: string
   action_id: string
   data: {
     quantity?: BigNumberInput
@@ -37,7 +35,14 @@ export interface OrderClaimRequestItemReturnWorkflowInput {
   claim_id: string
   items: CreateReturnItem[]
 }
-export interface DeleteOrderClaimRequestItemReturnWorkflowInput {
+
+export interface DeleteRequestItemReturnWorkflowInput {
   return_id: string
   action_id: string
 }
+
+export interface DeleteRequestItemReceiveReturnWorkflowInput
+  extends DeleteRequestItemReturnWorkflowInput {}
+
+export interface DeleteOrderClaimRequestItemReturnWorkflowInput
+  extends DeleteRequestItemReturnWorkflowInput {}

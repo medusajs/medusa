@@ -126,9 +126,6 @@ medusaIntegrationTestRunner({
               stock_location_id: stockLocation.id,
             },
           },
-        ])
-
-        await remoteLinkService.create([
           {
             [Modules.STOCK_LOCATION]: {
               stock_location_id: stockLocation.id,
@@ -138,6 +135,12 @@ medusaIntegrationTestRunner({
             },
           },
         ])
+
+        await api.post(
+          `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
 
         shippingOption = (
           await api.post(

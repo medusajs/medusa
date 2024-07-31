@@ -96,6 +96,7 @@ export default class OrderShippingMethod {
 
   @ManyToOne(() => Return, {
     persist: false,
+    nullable: true,
   })
   return: Rel<Return>
 
@@ -111,6 +112,7 @@ export default class OrderShippingMethod {
 
   @ManyToOne(() => Exchange, {
     persist: false,
+    nullable: true,
   })
   exchange: Rel<Exchange>
 
@@ -126,6 +128,7 @@ export default class OrderShippingMethod {
 
   @ManyToOne(() => Claim, {
     persist: false,
+    nullable: true,
   })
   claim: Rel<Claim>
 

@@ -3,11 +3,13 @@ import {
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   setShippingOptionsPricesStep,
   upsertShippingOptionsStep,
 } from "../steps"
+import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
@@ -17,7 +19,9 @@ export const updateShippingOptionsWorkflow = createWorkflow(
     input: WorkflowData<
       FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[]
     >
-  ): WorkflowData<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
+  ): WorkflowResponse<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
+    validateFulfillmentProvidersStep(input)
+
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
         const prices = option.prices
@@ -63,6 +67,6 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       normalizedShippingOptionsPrices.shippingOptionsPrices
     )
 
-    return updatedShippingOptions
+    return new WorkflowResponse(updatedShippingOptions)
   }
 )

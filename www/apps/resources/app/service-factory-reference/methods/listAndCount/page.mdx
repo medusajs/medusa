@@ -1,0 +1,150 @@
+---
+sidebar_label: "listAndCount"
+---
+
+export const metadata = {
+  title: `listAndCount Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method retrieves a list of records with the total count.
+
+## Retrieve List of Records
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts()
+```
+
+If no parameters are passed, the method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved.
+2. The second is the total count of records.
+
+---
+
+## Filter Records
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts({
+  id: ["123", "321"],
+})
+```
+
+### Parameters
+
+To retrieve records matching a set of filters, pass an object of the filters as a first parameter.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved matching the specified filters.
+2. The second is the total count of records matching the specified filters.
+
+---
+
+## Retrieve Relations
+
+<Note>
+
+This applies to relations between data models of the same module. To retrieve linked records of different modules, use [remote query](!docs!/advanced-development/modules/remote-query).
+
+</Note>
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
+  relations: ["author"],
+})
+```
+
+### Parameters
+
+To retrieve records with their relations, pass as a second parameter an object having a `relations` property. Its value is an array of relation names.
+
+### Returns
+
+The method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved.
+2. The second is the total count of records.
+
+---
+
+## Select Properties
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
+  select: ["id", "name"],
+})
+```
+
+### Parameters
+
+By default, retrieved records have all their properties. To select specific properties to retrieve, pass in the second object parameter a `select` property.
+
+`select`'s value is an array of property names to retrieve.
+
+### Returns
+
+The method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved.
+2. The second is the total count of records.
+
+---
+
+## Paginate Relations
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
+  take: 20,
+  skip: 10,
+})
+```
+
+### Parameters
+
+To paginate the returned records, the second object parameter accepts the following properties:
+
+- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
+
+### Returns
+
+The method returns an array with two items:
+
+1. The first is an array of the records retrieved. The number of records is less than or equal to `take`'s value.
+2. The second is the total count of records.
+
+---
+
+## Sort Records
+
+```ts
+const [posts, count] = await postModuleService.listAndCountPosts({}, {
+  order: {
+    name: "ASC",
+  },
+})
+```
+
+### Parameters
+
+To sort records by one or more properties, pass to the second object parameter the `order` property. Its value is an object whose keys are the property names, and values can either be:
+
+- `ASC` to sort by this property in the ascending order.
+- `DESC` to sort by this property in the descending order.
+
+### Returns
+
+The method returns an array with two items:
+
+1. The first is an array of the first `15` records retrieved.
+2. The second is the total count of records.

@@ -22,10 +22,11 @@ A workflow is considered long-running if at least one step has its `async` confi
 
 For example, consider the following workflow and steps:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["14"]]} collapsibleLines="1-10" expandButtonLabel="Show More"
+```ts title="src/workflows/hello-world.ts" highlights={[["15"]]} collapsibleLines="1-11" expandButtonLabel="Show More"
 import { 
   createStep,  
   createWorkflow,
+  WorkflowResponse,
   StepResponse,
 } from "@medusajs/workflows-sdk"
 
@@ -54,9 +55,9 @@ const myWorkflow = createWorkflow(
   step2()
   const message = step3()
 
-  return {
+  return new WorkflowResponse({
     message,
-  }
+  })
 })
 
 export default myWorkflow

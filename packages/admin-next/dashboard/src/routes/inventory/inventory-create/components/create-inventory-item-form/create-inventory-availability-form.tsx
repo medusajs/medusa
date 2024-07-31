@@ -1,12 +1,13 @@
 import { useMemo } from "react"
 
-import { StockLocationDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { DataGridNumberCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-number-cell"
+import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
-import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
-import { DataGridNumberCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-number-cell"
+import { useRouteModal } from "../../../../../components/modals"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 
 type Props = {
@@ -15,21 +16,27 @@ type Props = {
 
 export const CreateInventoryAvailabilityForm = ({ form }: Props) => {
   const { isPending, stock_locations = [] } = useStockLocations({ limit: 999 })
+  const { setCloseOnEscape } = useRouteModal()
 
   const columns = useColumns()
 
   return (
-    <div className="flex size-full flex-col divide-y overflow-hidden">
+    <div className="size-full">
       {isPending ? (
         <div>Loading...</div>
       ) : (
-        <DataGridRoot columns={columns} data={stock_locations} state={form} />
+        <DataGridRoot
+          columns={columns}
+          data={stock_locations}
+          state={form}
+          onEditingChange={(editing) => setCloseOnEscape(!editing)}
+        />
       )}
     </div>
   )
 }
 
-const columnHelper = createDataGridHelper<StockLocationDTO>()
+const columnHelper = createDataGridHelper<HttpTypes.AdminStockLocation>()
 
 const useColumns = () => {
   const { t } = useTranslation()
@@ -65,6 +72,7 @@ const useColumns = () => {
           )
         },
         disableHiding: true,
+        type: "number",
       }),
     ],
     [t]

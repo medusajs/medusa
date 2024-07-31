@@ -10,6 +10,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
+import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostClaimsShippingActionReqSchemaType } from "../../../../validators"
 
 export const POST = async (
@@ -22,7 +23,7 @@ export const POST = async (
 
   const [claim] = await remoteQuery(
     remoteQueryObjectFromString({
-      entryPoint: "claim",
+      entryPoint: "order_claim",
       variables: {
         id,
       },
@@ -43,7 +44,7 @@ export const POST = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claim",
+    entryPoint: "order_claim",
     variables: {
       id,
       filters: {
@@ -71,7 +72,7 @@ export const DELETE = async (
 
   const [claim] = await remoteQuery(
     remoteQueryObjectFromString({
-      entryPoint: "claim",
+      entryPoint: "order_claim",
       variables: {
         id,
       },
@@ -93,19 +94,17 @@ export const DELETE = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "claim",
+    entryPoint: "return",
     variables: {
-      id,
-      filters: {
-        ...req.filterableFields,
-      },
+      id: claim.return_id,
     },
-    fields: req.remoteQueryConfig.fields,
+    fields: defaultAdminDetailsReturnFields,
   })
-  const [orderClaim] = await remoteQuery(queryObject)
+
+  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: orderPreview,
-    claim: orderClaim,
+    return: orderReturn,
   })
 }

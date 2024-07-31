@@ -93,6 +93,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [upload.single("file")],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/products/import/:transaction_id/confirm",
+    middlewares: [],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/products/:id",
     middlewares: [

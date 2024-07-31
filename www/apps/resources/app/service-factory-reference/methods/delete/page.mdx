@@ -1,0 +1,50 @@
+---
+sidebar_label: "delete"
+---
+
+export const metadata = {
+  title: `delete Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method deletes one or more records.
+
+## Delete One Record
+
+```ts
+await postModuleService.deletePosts("123")
+```
+
+To delete one record, pass its ID as a parameter of the method.
+
+---
+
+## Delete Multiple Records
+
+```ts
+await postModuleService.deletePosts([
+  "123",
+  "321",
+])
+```
+
+To delete multiple records, pass an array of IDs as a parameter of the method.
+
+---
+
+## Delete Records Matching Filters
+
+```ts
+await postModuleService.deletePosts({
+  name: "My Post",
+})
+```
+
+To delete records matching a set of filters, pass an object of filters as a parameter.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>

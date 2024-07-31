@@ -128,21 +128,24 @@ For example:
 
 export const highlights = [
   [
-    "7",
+    "10",
     "authenticate",
     "Only authenticated admin users can access routes starting with `/custom/admin`",
   ],
   [
-    "11",
+    "14",
     "authenticate",
     "Only authenticated customers can access routes starting with `/custom/customers`",
   ],
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+import { 
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/medusa"
 
-export const config: MiddlewaresConfig = {
+export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom/admin*",
@@ -153,7 +156,7 @@ export const config: MiddlewaresConfig = {
       middlewares: [authenticate("customer", ["session", "bearer"])],
     },
   ],
-}
+})
 ```
 
 The `authenticate` middleware function accepts three parameters:

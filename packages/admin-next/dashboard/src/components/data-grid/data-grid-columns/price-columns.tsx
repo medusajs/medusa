@@ -1,14 +1,12 @@
 import { HttpTypes } from "@medusajs/types"
-import { DataGridCurrencyCell } from "../data-grid-cells/data-grid-currency-cell"
-import { createDataGridHelper } from "../utils"
-import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge"
+import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
-import { CellContext } from "@tanstack/react-table"
+import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge"
+import { DataGridCurrencyCell } from "../data-grid-cells/data-grid-currency-cell"
 import { DataGridReadOnlyCell } from "../data-grid-cells/data-grid-readonly-cell"
+import { createDataGridHelper } from "../utils"
 
-const columnHelper = createDataGridHelper<string | HttpTypes.AdminRegion>()
-
-export const getPriceColumns = ({
+export const getPriceColumns = <TData,>({
   currencies,
   regions,
   pricePreferences,
@@ -19,15 +17,12 @@ export const getPriceColumns = ({
   currencies?: string[]
   regions?: HttpTypes.AdminRegion[]
   pricePreferences?: HttpTypes.AdminPricePreference[]
-  isReadyOnly?: (
-    context: CellContext<string | HttpTypes.AdminRegion, unknown>
-  ) => boolean
-  getFieldName: (
-    context: CellContext<string | HttpTypes.AdminRegion, unknown>,
-    value: string
-  ) => string
+  isReadyOnly?: (context: CellContext<TData, unknown>) => boolean
+  getFieldName: (context: CellContext<TData, unknown>, value: string) => string
   t: TFunction
-}) => {
+}): ColumnDef<TData, unknown>[] => {
+  const columnHelper = createDataGridHelper<TData>()
+
   return [
     ...(currencies?.map((currency) => {
       const preference = pricePreferences?.find(
@@ -60,6 +55,7 @@ export const getPriceColumns = ({
             />
           )
         },
+        type: "string",
       })
     }) ?? []),
     ...(regions?.map((region) => {
@@ -98,6 +94,7 @@ export const getPriceColumns = ({
             />
           )
         },
+        type: "string",
       })
     }) ?? []),
   ]

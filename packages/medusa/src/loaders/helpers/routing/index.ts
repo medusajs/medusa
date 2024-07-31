@@ -6,7 +6,7 @@ import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { authenticate, errorHandler } from "../../../utils/middlewares"
-import logger from "../../logger"
+import { logger } from "@medusajs/framework"
 import {
   AsyncRouteHandler,
   GlobalMiddlewareDescriptor,

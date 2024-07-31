@@ -11,6 +11,7 @@ import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { fulfillmentProvidersQueryKeys } from "./fulfillment-providers"
 
 const STOCK_LOCATIONS_QUERY_KEY = "stock_locations" as const
 export const stockLocationsQueryKeys = queryKeysFactory(
@@ -168,6 +169,31 @@ export const useCreateStockLocationFulfillmentSet = (
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
         refetchType: "all",
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateStockLocationFulfillmentProviders = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminStockLocationResponse,
+    FetchError,
+    HttpTypes.AdminBatchLink
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.stockLocation.updateFulfillmentProviders(id, payload),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
+      })
+      await queryClient.invalidateQueries({
+        queryKey: fulfillmentProvidersQueryKeys.all,
       })
 
       options?.onSuccess?.(data, variables, context)

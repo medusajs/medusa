@@ -1,12 +1,12 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  createMedusaContainer,
-  isDefined,
-  isString,
   MedusaContext,
   MedusaContextType,
   MedusaError,
   MedusaModuleType,
+  createMedusaContainer,
+  isDefined,
+  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -279,6 +279,13 @@ export class LocalWorkflow {
         transaction.on(
           DistributedTransactionEvent.COMPENSATE_STEP_FAILURE,
           eventWrapperMap.get("onCompensateStepFailure")
+        )
+      }
+
+      if (subscribe?.onStepSkipped) {
+        transaction.on(
+          DistributedTransactionEvent.STEP_SKIPPED,
+          eventWrapperMap.get("onStepSkipped")
         )
       }
     }

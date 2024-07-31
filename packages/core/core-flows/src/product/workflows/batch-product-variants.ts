@@ -1,5 +1,6 @@
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -25,7 +26,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
         UpdateProductVariantWorkflowInputDTO
       >
     >
-  ): WorkflowData<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
+  ): WorkflowResponse<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
     const normalizedInput = transform({ input }, (data) => {
       return {
         create: data.input.create ?? [],
@@ -46,7 +47,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
       })
     )
 
-    return transform({ res, input }, (data) => {
+    const response = transform({ res, input }, (data) => {
       return {
         created: data.res[0],
         updated: data.res[1],
@@ -57,5 +58,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
         },
       }
     })
+
+    return new WorkflowResponse(response)
   }
 )

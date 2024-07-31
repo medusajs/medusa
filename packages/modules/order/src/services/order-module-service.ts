@@ -41,7 +41,10 @@ import {
   OrderChange,
   OrderChangeAction,
   OrderClaim,
+  OrderClaimItem,
+  OrderClaimItemImage,
   OrderExchange,
+  OrderExchangeItem,
   OrderItem,
   OrderShippingMethod,
   OrderSummary,
@@ -116,7 +119,10 @@ const generateMethodForModels = {
   Return,
   ReturnItem,
   OrderClaim,
+  OrderClaimItem,
+  OrderClaimItemImage,
   OrderExchange,
+  OrderExchangeItem,
 }
 
 // TODO: rm template args here, keep it for later to not collide with carlos work at least as little as possible
@@ -139,7 +145,10 @@ export default class OrderModuleService<
     TReturn extends Return = Return,
     TReturnItem extends ReturnItem = ReturnItem,
     TClaim extends OrderClaim = OrderClaim,
-    TExchange extends OrderExchange = OrderExchange
+    TClaimItem extends OrderClaimItem = OrderClaimItem,
+    TClaimItemImage extends OrderClaimItemImage = OrderClaimItemImage,
+    TExchange extends OrderExchange = OrderExchange,
+    TExchangeItem extends OrderExchangeItem = OrderExchangeItem
   >
   extends ModulesSdkUtils.MedusaService<{
     Order: { dto: OrderTypes.OrderDTO }
@@ -159,10 +168,13 @@ export default class OrderModuleService<
     ReturnReason: { dto: OrderTypes.OrderReturnReasonDTO }
     OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
     Transaction: { dto: OrderTypes.OrderTransactionDTO }
-    Return: { dto: any } // TODO: Add return dto
-    ReturnItem: { dto: any } // TODO: Add return item dto
-    OrderClaim: { dto: any } // TODO: Add claim dto
-    OrderExchange: { dto: any } // TODO: Add exchange dto
+    Return: { dto: OrderTypes.ReturnDTO }
+    ReturnItem: { dto: OrderTypes.OrderReturnItemDTO }
+    OrderClaim: { dto: OrderTypes.OrderClaimDTO }
+    OrderClaimItem: { dto: OrderTypes.OrderClaimItemDTO }
+    OrderClaimItemImage: { dto: OrderTypes.OrderClaimItemImageDTO }
+    OrderExchange: { dto: OrderTypes.OrderExchangeDTO }
+    OrderExchangeItem: { dto: OrderTypes.OrderExchangeItemDTO }
   }>(generateMethodForModels)
   implements IOrderModuleService
 {
@@ -185,7 +197,10 @@ export default class OrderModuleService<
   protected returnService_: ModulesSdkTypes.IMedusaInternalService<TReturn>
   protected returnItemService_: ModulesSdkTypes.IMedusaInternalService<TReturnItem>
   protected orderClaimService_: ModulesSdkTypes.IMedusaInternalService<TClaim>
+  protected orderClaimItemService_: ModulesSdkTypes.IMedusaInternalService<TClaimItem>
+  protected orderClaimItemImageService_: ModulesSdkTypes.IMedusaInternalService<TClaimItemImage>
   protected orderExchangeService_: ModulesSdkTypes.IMedusaInternalService<TExchange>
+  protected orderExchangeItemService_: ModulesSdkTypes.IMedusaInternalService<TExchangeItem>
 
   constructor(
     {
@@ -3191,7 +3206,7 @@ export default class OrderModuleService<
     const ret = await this.cancelClaim_(data, sharedContext)
 
     return await this.retrieveOrderClaim(ret.id, {
-      relations: ["items"],
+      relations: ["additional_items", "claim_items"],
     })
   }
 

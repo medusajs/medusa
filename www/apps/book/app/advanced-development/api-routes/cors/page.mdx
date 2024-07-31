@@ -81,8 +81,8 @@ For example:
 export const highlights = [["25", "parseCorsOrigins", "A utility function that parses the CORS configurations in `medusa-config.js`"]]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import {
-  MiddlewaresConfig,
+import { defineMiddlewares } from "@medusajs/medusa"
+import type { 
   MedusaNextFunction, 
   MedusaRequest, 
   MedusaResponse, 
@@ -91,7 +91,7 @@ import { ConfigModule } from "@medusajs/types"
 import { parseCorsOrigins } from "@medusajs/utils"
 import cors from "cors"
 
-export const config: MiddlewaresConfig = {
+export default defineMiddlewares({
   routes: [
     {
       matcher: "/custom*",
@@ -114,7 +114,7 @@ export const config: MiddlewaresConfig = {
       ],
     },
   ],
-}
+})
 ```
 
 This retrieves the configurations exported from `medusa-config.js` and applies the `storeCors` to routes starting with `/custom`.

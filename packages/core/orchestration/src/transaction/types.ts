@@ -24,7 +24,7 @@ export type TransactionStepsDefinition = {
 
   /**
    * Indicates whether the workflow should continue even if there is a permanent failure in this step.
-   * In case it is set to true, the children steps of this step will not be executed and their status will be marked as TransactionStepState.SKIPPED.
+   * In case it is set to true, the children steps of this step will not be executed and their status will be marked as TransactionStepState.SKIPPED_FAILURE.
    */
   continueOnPermanentFailure?: boolean
 
@@ -164,6 +164,7 @@ export enum DistributedTransactionEvent {
   TIMEOUT = "timeout",
   STEP_BEGIN = "stepBegin",
   STEP_SUCCESS = "stepSuccess",
+  STEP_SKIPPED = "stepSkipped",
   STEP_FAILURE = "stepFailure",
   STEP_AWAITING = "stepAwaiting",
   COMPENSATE_STEP_SUCCESS = "compensateStepSuccess",
@@ -208,6 +209,11 @@ export type DistributedTransactionEvents = {
   }) => void
 
   onCompensateStepFailure?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
+
+  onStepSkipped?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
   }) => void

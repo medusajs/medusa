@@ -1,9 +1,15 @@
 import * as Handlebars from "handlebars"
-import { Reflection } from "typedoc"
+import { Reflection, SignatureReflection } from "typedoc"
+import { isWorkflowStep } from "../../utils/step-utils"
 
 export default function () {
   Handlebars.registerHelper("example", function (reflection: Reflection) {
-    const exampleTag = reflection.comment?.blockTags.find(
+    const isStep =
+      reflection.variant === "signature" &&
+      isWorkflowStep(reflection as SignatureReflection)
+    const targetReflection =
+      isStep && reflection.parent ? reflection.parent : reflection
+    const exampleTag = targetReflection.comment?.blockTags.find(
       (tag) => tag.tag === "@example"
     )
 
@@ -11,6 +17,6 @@ export default function () {
       return ""
     }
 
-    return Handlebars.helpers.commentTag(exampleTag, reflection)
+    return Handlebars.helpers.commentTag(exampleTag, targetReflection)
   })
 }

@@ -8,102 +8,140 @@ export const metadata = {
 
 # {metadata.title}
 
-<Note type="soon">
-
-The following deployment guide doesn't support Medusa v2 yet.
-
-</Note>
-
-This guide explains how to deploy the Medusa Admin separately from the Medusa application to Vercel.
+In this document, you’ll learn how to deploy the Next.js storefront to [Vercel](https://vercel.com).
 
 <Note title="Important">
 
-Per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the Next.js Starter on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
-
-</Note>
-
-[Vercel](https://vercel.com/) is a cloud platform for static sites and serverless functions. It provides developers with a platform to deploy web projects quickly and easily.
-
-<Note type="check">
-
-- Deployed Medusa application.
-- [Vercel account](https://vercel.com/)
-- [GitHub repository with the Next.js Starter's code](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
-
-</Note>
-
-## Deploy to Vercel
-
-This section covers how to deploy the storefront, either using the Vercel website or using Vercel’s CLI tool.
-
-### Option 1: Using the Vercel Website
-
-This section explains how to deploy the storefront using the Vercel website:
-
-1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
-2. Click on the “Add New…” button next to the search bar.
-3. Choose Project from the dropdown.
-4. In the new page that opens, find the Git repository that holds your Next.js Starter Template and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
-5. In the Configure Project form:
-    1. Open the Environment Variables collapsible, and add the following environment variables:
-        - `NEXT_PUBLIC_MEDUSA_BACKEND_URL`: the URL to your deployed Medusa application.
-        - `NEXT_PUBLIC_BASE_URL`: The URL of your storefront. If you don't have a domain ready yet, you can add it later. However, you may face some errors in your storefront.
-        - `REVALIDATE_SECRET`: A secret used for revalidating data. Learn more in the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#on-demand-revalidation).
-    2. You can optionally edit the Project Name.
-6. Once you’re done, click on the “Deploy” button.
-
-This will start the deployment of the storefront. Once it’s done, you’ll be redirected to the main dashboard of your new project.
-
-<Note>
-
-At this point, when you visit the storefront, you'll face errors related to Cross-Origin Resource Sharing (CORS). Before you start using the storefront, follow along the [Configure CORS on the storefront](#configure-cors-on-the-medusa-application) section.
-
-</Note>
-
-### Option 2: Using Vercel’s CLI Tool
-
-This section explains how to deploy the storefront using the Vercel CLI tool. You should have the CLI tool installed first, as explained in [Vercel’s documentation](https://vercel.com/docs/cli).
-
-In the directory holding your storefront, run the following command to deploy your storefront:
-
-```bash
-vercel --build-env NEXT_PUBLIC_MEDUSA_BACKEND_URL=<YOUR_APP_URL>
-vercel --build-env NEXT_PUBLIC_BASE_URL=<YOUR_BASE_URL>
-vercel --build-env REVALIDATE_SECRET=<YOUR_REVALIDATION_SECRET>
-```
-
-Where:
-
-- `<YOUR_APP_URL>`: the URL of your deployed Medusa application.
-- `<YOUR_BASE_URL>`: The URL of your storefront. If you don't have a domain ready yet, you can add it later. However, you may face some errors in your storefront.
-- `<YOUR_REVALIDATION_SECRET>`: A secret used for revalidating data. Learn more in the [Next.js documentation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#on-demand-revalidation).
-
-You’ll then be asked to log in if you haven’t already, and to choose the scope to deploy your project to. You can also decide to link the storefront to an existing project, or change the project’s name.
-
-When asked `In which directory is your code located?`, keep the default `./` and just press Enter.
-
-The project setup will then start. When asked if you want to modify the settings, answer `N` to keep the default settings.
-
-It'll take a couple of minutes for the deployment to finish. The link to the storefront will be shown in the final output of the command.
-
-<Note>
-
-At this point, when you visit the storefront, you'll face errors related to Cross-Origin Resource Sharing (CORS). Before you start using the storefront, follow along the [Configure CORS on the storefront](#configure-cors-on-the-medusa-application) section.
+As Medusa v2 is still in active development, it's highly recommended not to deploy it for production purposes. The deployment process may also change.
 
 </Note>
 
 ---
 
-## Configure CORS on the Medusa application
+<Note type="check">
 
-To send requests to the Medusa application from the Next.js Starter, set the `STORE_CORS` environment variable on your Medusa application to the deployed storefront's URL.
+- [Storefront codebase](../../../nextjs-starter/page.mdx) hosted in a GitHub repository.
+- [Deployed Medusa application](../../page.mdx#medusa-application) with at least one region.
 
-On your Medusa application, add the following environment variable:
+</Note>
 
-```bash
-STORE_CORS=<STOREFRONT_URL>
+## 1. Create Vercel Project
+
+On your Vercel dashboard:
+
+1. Click on the Add New button at the top right.
+2. Choose Project from the dropdown.
+3. In the list of repositories, click on the Import button of the storefront’s repository.
+
+This opens a form to configure your project.
+
+### Configure Storefront Project
+
+In the Configure Project form, choose Next.js for the Framework Preset field. This sets for you the build and install scripts, and the output directory
+
+<Details summaryContent="Expected Values">
+
+- `build` script:
+    
+```bash npm2yarn
+npm run build
 ```
 
-Where `<STOREFRONT_URL>` is the URL of your storefront.
+- `install` script:
 
-Then, restart your Medusa application. Once the application is running again, you can use your storefront.
+```bash npm2yarn
+npm install
+```
+
+- output directory: `.next`
+
+</Details>
+
+Then, expand the Environment Variables section and add the following variables:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL= # URL of Medusa application
+NEXT_PUBLIC_DEFAULT_REGION=us # or a different region that you prefer
+NEXT_PUBLIC_PUBLISHABLE_KEY= # publishable API key of the storefront's sales channel
+REVALIDATE_SECRET=supersecret # TODO generate random string
+```
+
+Where:
+
+1. `NEXT_PUBLIC_MEDUSA_BACKEND_URL` is the URL of your deployed Medusa application
+2. `NEXT_PUBLIC_DEFAULT_REGION` is the country code of a region to be used by default, if the customer hasn’t selected a region.
+3. `NEXT_PUBLIC_PUBLISHABLE_KEY` is the publishable API key of the storefront. You can create one or find the default one in the Medusa Admin dashboard.
+4. `REVALIDATE_SECRET` is a random string for [Next.js revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#on-demand-revalidation).
+
+Make sure to add other relevant environment variables. For example, if you’re using the Stripe Payment Module Provider in the Medusa application, add the `NEXT_PUBLIC_STRIPE_KEY` environment variable.
+
+### Deploy Application
+
+Click the  Deploy button when you’re done. The deployment will take a few minutes.
+
+Once the deployment is done, there’s still more work to do before you can use the storefront. Click on the Continue to Dashboard button to go to the project’s dashboard.
+
+---
+
+## 2. Set Storefront URL
+
+Vercel generates a random domain name for your project. You can use it or [set a custom domain name](https://vercel.com/guides/how-do-i-add-a-custom-domain-to-my-vercel-project).
+
+<Note title="Tip">
+
+Find your generated domain name at Settings → Domains in your project’s dashboard.
+
+</Note>
+
+Once you have your domain name:
+
+1. Go to Settings → Environment Variables
+2. Add a new environment variable:
+
+```bash
+NEXT_PUBLIC_BASE_URL=https://nextjs-storefront...
+```
+
+Set the value to the storefront’s URL.
+
+### Set STORE_CORS and AUTH_CORS in Deployed Medusa Application
+
+You must also set the `STORE_CORS` environment variable in your Medusa application to the storefront’s URL:
+
+```bash
+STORE_CORS=https://nextjs-storefront...
+```
+
+<Note title="Tip">
+
+If you have multiple storefront URLs, separate them by commas in `STORE_CORS`
+
+</Note>
+
+And add the URL to `AUTH_CORS`'s value:
+
+```bash
+AUTH_CORS=<OTHER_URLS>,https://nextjs-storefront...
+```
+
+Where `<OTHER_URLS>` are other storefront or admin URLs added previously to `AUTH_CORS`. 
+
+### Redeploy Storefront
+
+Once the environment variables changes are deployed in the Medusa application, do the following to redeploy the storefront:
+
+1. Go to Deployments in the storefront Vercel project.
+2. Find the last production deployment, and click on the three dots icon at the right.
+3. Choose Redeploy from the dropdown, and confirm redeployment in the new window.
+
+---
+
+## Test the Deployed Storefront
+
+Once the redeployment is done, test out the storefront by going to its URL. Try to browse the products or place an order to ensure everything is working as expected.
+
+---
+
+## Troubleshooting
+
+If you’re running into issues in your storefront, find the logs in your Vercel project’s dashboard under the Logs tab.

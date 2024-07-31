@@ -2,11 +2,13 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderClaimDTO,
+  OrderDTO,
   OrderWorkflow,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -59,9 +61,9 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
   updateClaimShippingMethodWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.UpdateClaimShippingMethodWorkflowInput>
-  ): WorkflowData {
+  ): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
-      entry_point: "claim",
+      entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
       variables: { id: input.claim_id },
       list: false,
@@ -115,6 +117,6 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
       updateOrderShippingMethodsStep([updateData.shippingMethod!])
     )
 
-    return previewOrderChangeStep(orderClaim.order_id)
+    return new WorkflowResponse(previewOrderChangeStep(orderClaim.order_id))
   }
 )

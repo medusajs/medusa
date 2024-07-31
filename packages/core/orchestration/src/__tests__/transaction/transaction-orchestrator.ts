@@ -1207,7 +1207,7 @@ describe("Transaction Orchestrator", () => {
       expect(
         transaction.getFlow().steps["_root.action1.action2.action4"].invoke
           .state
-      ).toBe(TransactionStepState.SKIPPED)
+      ).toBe(TransactionStepState.SKIPPED_FAILURE)
       expect(
         transaction.getFlow().steps["_root.action1.action2.action4"].invoke
           .status

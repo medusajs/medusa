@@ -8,6 +8,7 @@ import {
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -61,9 +62,9 @@ export const updateClaimItemWorkflow = createWorkflow(
   updateClaimItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.UpdateClaimItemWorkflowInput>
-  ): WorkflowData<OrderDTO> {
+  ): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
-      entry_point: "claim",
+      entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
       variables: { id: input.claim_id },
       list: false,
@@ -113,6 +114,6 @@ export const updateClaimItemWorkflow = createWorkflow(
 
     updateOrderChangeActionsStep([updateData])
 
-    return previewOrderChangeStep(order.id)
+    return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
 )

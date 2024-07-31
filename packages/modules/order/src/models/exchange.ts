@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
@@ -10,6 +11,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -19,7 +21,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { ExchangeItem, Transaction } from "@models"
+import { OrderExchangeItem, Transaction } from "@models"
 import Order from "./order"
 import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
@@ -51,6 +53,7 @@ const ReturnIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_exchange" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class OrderExchange {
   [OptionalProps]?: OptionalOrderExchangeProps
 
@@ -107,10 +110,10 @@ export default class OrderExchange {
   @Property({ columnType: "boolean", default: false })
   allow_backorder: boolean = false
 
-  @OneToMany(() => ExchangeItem, (item) => item.exchange, {
+  @OneToMany(() => OrderExchangeItem, (item) => item.exchange, {
     cascade: [Cascade.PERSIST],
   })
-  additional_items = new Collection<Rel<ExchangeItem>>(this)
+  additional_items = new Collection<Rel<OrderExchangeItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
