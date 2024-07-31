@@ -3,7 +3,13 @@ import DefaultKindGenerator, { GetDocBlockOptions } from "./default.js"
 import getBasePath from "../../utils/get-base-path.js"
 import { getDmlOutputBasePath } from "../../utils/get-output-base-paths.js"
 import path from "path"
-import { camelToWords, RELATION_NAMES, snakeToPascal } from "utils"
+import {
+  camelToWords,
+  RELATION_NAMES,
+  snakeToPascal,
+  camelToPascal,
+  isSnakeCase,
+} from "utils"
 import toJsonFormatted from "../../utils/to-json-formatted.js"
 import { DmlFile, DmlObject } from "types"
 
@@ -186,7 +192,9 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
       }
     }
 
-    return snakeToPascal(name.replace(/^"/, "").replace(/"$/, ""))
+    name = name.replace(/^"/, "").replace(/"$/, "")
+
+    return isSnakeCase(name) ? snakeToPascal(name) : camelToPascal(name)
   }
 
   /**

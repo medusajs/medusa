@@ -97,7 +97,7 @@ export function getFieldsInRange(
 }
 
 export function convertArrayToPrimitive<
-  T extends "boolean" | "number" | "string"
+  T extends "boolean" | "number" | "string",
 >(values: string[], type: T) {
   const convertedValues: any[] = []
 
@@ -222,10 +222,10 @@ export function getColumnName(column: Column<any, any>): string {
 }
 
 export function getColumnType(
-  cellId: string,
+  cell: CellCoords,
   columns: Column<any, any>[]
 ): DataGridColumnType {
-  const { col } = parseCellId(cellId)
+  const { col } = cell
 
   const column = columns[col]
 

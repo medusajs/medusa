@@ -33,6 +33,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
     ...modules,
     ...dmlModules.map((module) => `${module}-models`),
     "dml",
+    "helper-steps",
     "workflows",
   ],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],

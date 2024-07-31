@@ -41,6 +41,12 @@ export const PriceListPricesEdit = () => {
 
   return (
     <RouteFocusModal>
+      <RouteFocusModal.Title asChild>
+        <span className="sr-only">Edit Prices for {price_list?.title}</span>
+      </RouteFocusModal.Title>
+      <RouteFocusModal.Description className="sr-only">
+        Update prices for products in the price list
+      </RouteFocusModal.Description>
       {ready && (
         <PriceListPricesEditForm
           priceList={price_list}
