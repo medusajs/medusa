@@ -16,9 +16,9 @@ import {
   logger,
   pgConnectionLoader,
   SubscriberLoader,
+  WorkflowLoader,
 } from "@medusajs/framework"
 import { registerJobs } from "./helpers/register-jobs"
-import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 import loadMedusaApp from "./medusa-app"
@@ -158,7 +158,10 @@ export default async ({
     linkModules: pluginLinks,
   })
 
-  await registerWorkflows(plugins)
+  const workflowsSourcePath = plugins.map((p) => p.resolve)
+  const workflowLoader = new WorkflowLoader(workflowsSourcePath)
+  await workflowLoader.load()
+
   const entrypointsShutdown = await loadEntrypoints(
     plugins,
     container,
