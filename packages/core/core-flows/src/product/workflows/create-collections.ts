@@ -17,13 +17,13 @@ export const createCollectionsWorkflow = createWorkflow(
   createCollectionsWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
     const collections = createCollectionsStep(input.collections)
-    const collectionsStepCreated = createHook("collectionsStepCreated", {
+    const collectionsCreated = createHook("collectionsCreated", {
       collections,
       additional_data: input.additional_data,
     })
 
     return new WorkflowResponse(collections, {
-      hooks: [collectionsStepCreated],
+      hooks: [collectionsCreated],
     })
   }
 )

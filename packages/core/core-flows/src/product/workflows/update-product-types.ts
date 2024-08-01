@@ -21,10 +21,8 @@ export const updateProductTypesWorkflow = createWorkflow(
   (input: WorkflowData<WorkflowInput>) => {
     const updatedProductTypes = updateProductTypesStep(input)
     const productTypesUpdated = createHook("productTypesUpdated", {
-      selector: input.selector,
-      update: input.update,
-      additional_data: input.additional_data,
       product_types: updatedProductTypes,
+      additional_data: input.additional_data,
     })
 
     return new WorkflowResponse(updatedProductTypes, {

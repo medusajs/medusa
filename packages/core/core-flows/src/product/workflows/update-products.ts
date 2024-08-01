@@ -40,7 +40,11 @@ type UpdateProductsStepInput =
   | UpdateProductsStepInputSelector
   | UpdateProductsStepInputProducts
 
-type WorkflowInput = UpdateProductsStepInput
+type WorkflowInput = WorkflowData<
+  UpdateProductsStepInput & {
+    additional_data?: Record<string, unknown>
+  }
+>
 
 function prepareUpdateProductInput({
   input,
@@ -251,6 +255,7 @@ export const updateProductsWorkflow = createWorkflow(
 
     const productsUpdated = createHook("productsUpdated", {
       products: updatedProducts,
+      additional_data: input.additional_data,
     })
 
     return new WorkflowResponse(updatedProducts, {

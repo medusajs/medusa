@@ -136,11 +136,8 @@ export const updateProductVariantsWorkflow = createWorkflow(
     )
 
     const productVariantsUpdated = createHook("productVariantsUpdated", {
-      update: updateWithoutPrices.update,
-      selector: updateWithoutPrices.selector,
-      product_variants: updateWithoutPrices.product_variants,
+      product_variants: response,
       additional_data: input.additional_data,
-      variants: response,
     })
 
     return new WorkflowResponse(response, {

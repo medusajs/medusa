@@ -21,8 +21,6 @@ export const updateCollectionsWorkflow = createWorkflow(
   (input: WorkflowData<WorkflowInput>) => {
     const updatedCollections = updateCollectionsStep(input)
     const collectionsUpdated = createHook("collectionsUpdated", {
-      selector: input.selector,
-      update: input.update,
       additional_data: input.additional_data,
       collections: updateCollectionsStep,
     })
