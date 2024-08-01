@@ -17,8 +17,8 @@ import { DmlEntity } from "../dml"
  * @param loaders
  */
 export function Module<
-  const ServiceName extends string,
-  const Service extends Constructor<any>,
+  ServiceName extends string,
+  Service extends Constructor<any>,
   ModelObjects extends Record<string, IDmlEntity<any, any>> = Service extends {
     $modelObjects: any
   }
