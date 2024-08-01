@@ -8,6 +8,7 @@ import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Notification } from "./notification"
 import { Order } from "./order"
+import { Payment } from "./payment"
 import { PriceList } from "./price-list"
 import { PricePreference } from "./price-preference"
 import { Product } from "./product"
@@ -59,6 +60,7 @@ export class Admin {
   public productTag: ProductTag
   public user: User
   public currency: Currency
+  public payment: Payment
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -90,5 +92,6 @@ export class Admin {
     this.productTag = new ProductTag(client)
     this.user = new User(client)
     this.currency = new Currency(client)
+    this.payment = new Payment(client)
   }
 }
