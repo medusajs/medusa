@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 
 export const hooksRoutesMiddlewares: MiddlewareRoute[] = [
   {

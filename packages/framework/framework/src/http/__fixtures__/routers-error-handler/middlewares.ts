@@ -1,4 +1,4 @@
-import { defineMiddlewares } from "../../../../../utils/define-middlewares"
+import { defineMiddlewares } from "../../utils/define-middlewares"
 
 export default defineMiddlewares({
   errorHandler: (err, _req, res, _next) => {
