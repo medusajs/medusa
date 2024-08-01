@@ -104,24 +104,28 @@ function prepareSharedResourcesAndDeps(
  * @param linkModules
  * @param action
  */
-export async function runMedusaAppMigrations({
-  container,
-  moduleNames,
-  linkModules,
-  action = "run",
-}: {
-  container?: MedusaAppOptions["sharedContainer"]
-  linkModules?: MedusaAppOptions["linkModules"]
-} & (
-  | {
-      moduleNames?: never
-      action: "run"
-    }
-  | {
-      moduleNames: string[]
-      action: "revert" | "generate"
-    }
-)): Promise<void> {
+export async function runMedusaAppMigrations(
+  {
+    container,
+    moduleNames,
+    linkModules,
+    action = "run",
+  }: {
+    container?: MedusaAppOptions["sharedContainer"]
+    linkModules?: MedusaAppOptions["linkModules"]
+  } & (
+    | {
+        moduleNames?: never
+        action: "run"
+      }
+    | {
+        moduleNames: string[]
+        action: "revert" | "generate"
+      }
+  ) = {
+    action: "run",
+  }
+): Promise<void> {
   container ??= mainContainer
 
   const configModules = mergeDefaultModules(configManager.config.modules)
@@ -158,7 +162,7 @@ export async function getLinksExecutionPlanner({
 }: {
   container?: MedusaAppOptions["sharedContainer"]
   linkModules?: MedusaAppOptions["linkModules"]
-}): Promise<ILinkMigrationsPlanner> {
+} = {}): Promise<ILinkMigrationsPlanner> {
   container ??= mainContainer
 
   const configModules = mergeDefaultModules(configManager.config.modules)
