@@ -158,7 +158,6 @@
  *     description: The product's category id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's category id.
  *       items:
  *         type: string
@@ -169,7 +168,6 @@
  *     description: The product's sales channel id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's sales channel id.
  *       items:
  *         type: string
@@ -180,7 +178,6 @@
  *     description: The product's collection id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's collection id.
  *       items:
  *         type: string
@@ -191,7 +188,6 @@
  *     description: The product's tags.
  *     required: false
  *     schema:
- *       type: array
  *       description: The product's tags.
  *       items:
  *         type: string
@@ -202,7 +198,6 @@
  *     description: The product's type id.
  *     required: false
  *     schema:
- *       type: array
  *       description: The product's type id.
  *       items:
  *         type: string
