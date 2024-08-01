@@ -49,6 +49,7 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
       <Header />
 
       <PaymentBreakdown
+        order={order}
         payments={payments}
         refunds={refunds}
         currencyCode={order.currency_code}
@@ -115,10 +116,12 @@ const Refund = ({
 }
 
 const Payment = ({
+  order,
   payment,
   refunds,
   currencyCode,
 }: {
+  order: HttpTypes.AdminOrder
   payment: MedusaPayment
   refunds: MedusaRefund[]
   currencyCode: string
@@ -204,7 +207,7 @@ const Payment = ({
                 {
                   label: t("orders.payment.refund"),
                   icon: <XCircle />,
-                  to: `/orders/${payment.order_id}/refund?paymentId=${payment.id}`,
+                  to: `/orders/${order.id}/payments/${payment.id}/refund`,
                   disabled: !payment.captured_at,
                 },
               ],
@@ -236,10 +239,12 @@ const Payment = ({
 }
 
 const PaymentBreakdown = ({
+  order,
   payments,
   refunds,
   currencyCode,
 }: {
+  order: HttpTypes.AdminOrder
   payments: MedusaPayment[]
   refunds: MedusaRefund[]
   currencyCode: string
@@ -271,6 +276,7 @@ const PaymentBreakdown = ({
             return (
               <Payment
                 key={event.id}
+                order={order}
                 payment={event}
                 refunds={refunds.filter(
                   (refund) => refund.payment_id === event.id

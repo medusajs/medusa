@@ -14,8 +14,25 @@ export class Payment {
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<{ payment: HttpTypes.AdminPayment }>(
+    return await this.client.fetch<HttpTypes.AdminPaymentResponse>(
       `/admin/payments/${id}/capture`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async refund(
+    id: string,
+    body: HttpTypes.AdminRefundPayment,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminPaymentResponse>(
+      `/admin/payments/${id}/refund`,
       {
         method: "POST",
         headers,
