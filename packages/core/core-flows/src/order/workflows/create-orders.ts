@@ -14,7 +14,8 @@ import { findSalesChannelStep } from "../../definition/cart/steps/find-sales-cha
 import { getVariantPriceSetsStep } from "../../definition/cart/steps/get-variant-price-sets"
 import { validateVariantPricesStep } from "../../definition/cart/steps/validate-variant-prices"
 import { prepareLineItemData } from "../../definition/cart/utils/prepare-line-item-data"
-import { createOrdersStep } from "../steps"
+import { confirmVariantInventoryWorkflow } from "../../definition/cart/workflows/confirm-variant-inventory"
+import { createOrdersStep, updateOrderTaxLinesStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
 
@@ -134,7 +135,6 @@ export const createOrdersWorkflow = createWorkflow(
 
     validateVariantPricesStep({ variants })
 
-    /*
     confirmVariantInventoryWorkflow.runAsStep({
       input: {
         sales_channel_id: salesChannel.id,
@@ -142,7 +142,6 @@ export const createOrdersWorkflow = createWorkflow(
         items: input.items!,
       },
     })
-    */
 
     const priceSets = getVariantPriceSetsStep({
       variantIds,
@@ -168,6 +167,15 @@ export const createOrdersWorkflow = createWorkflow(
 
     const orders = createOrdersStep([orderToCreate])
     const order = transform({ orders }, (data) => data.orders?.[0])
+
+    /* TODO: Implement Order promotions
+    refreshOrderPromotionsStep({
+      id: order.id,
+      promo_codes: input.promo_codes,
+    })
+    */
+
+    updateOrderTaxLinesStep({ order_id: order.id })
 
     return new WorkflowResponse(order)
   }
