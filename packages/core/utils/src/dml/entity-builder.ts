@@ -109,7 +109,7 @@ export class EntityBuilder {
    *
    * export default MyCustom
    */
-  define<Schema extends DMLSchema, const TConfig extends IDmlEntityConfig>(
+  define<Schema extends DMLSchema, TConfig extends IDmlEntityConfig>(
     nameOrConfig: TConfig,
     schema: Schema
   ): DmlEntity<
