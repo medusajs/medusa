@@ -259,7 +259,11 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
     order.items?.forEach((i) => {
       returns.forEach((r) => {
         if (r.items.some((ri) => ri.item_id === i.id)) {
-          ret[i.id] = ret[i.id] ? ret[i.id].push(r) : [r]
+          if (ret[i.id]) {
+            ret[i.id].push(r)
+          } else {
+            ret[i.id] = [r]
+          }
         }
       })
     })

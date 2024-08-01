@@ -861,6 +861,7 @@
       "refundableAmountLabel": "Refundable amount",
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
       "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
+      "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
       "receive": {
         "action": "Receive items",
         "receive": "Return {{label}}",

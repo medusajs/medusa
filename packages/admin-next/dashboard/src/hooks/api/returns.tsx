@@ -138,6 +138,7 @@ export const useCancelReturnRequest = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+        refetchType: "all",
       })
 
       queryClient.invalidateQueries({
@@ -526,6 +527,7 @@ export const useCancelReceiveReturn = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+        refetchType: "all", // For some reason RQ will refetch this but will return stale record from the cache
       })
 
       queryClient.invalidateQueries({

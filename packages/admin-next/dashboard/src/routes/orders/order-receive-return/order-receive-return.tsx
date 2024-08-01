@@ -1,11 +1,10 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { Heading, toast } from "@medusajs/ui"
 import { useEffect } from "react"
 
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
 import { RouteDrawer } from "../../../components/modals"
-
 import { OrderReceiveReturnForm } from "./components/order-receive-return-form"
 import {
   useAddReceiveItems,
@@ -18,6 +17,7 @@ let IS_REQUEST_RUNNING = false
 export function OrderReceiveReturn() {
   const { id, return_id } = useParams()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   /**
    * HOOKS
@@ -42,38 +42,38 @@ export function OrderReceiveReturn() {
 
   useEffect(() => {
     ;(async function () {
-      if (IS_REQUEST_RUNNING || !preview || !orderReturn) {
+      if (IS_REQUEST_RUNNING || !preview) {
         return
       }
 
       if (preview.order_change) {
+        if (preview.order_change.change_type !== "return_receive") {
+          navigate(`/orders/${order.id}`, { replace: true })
+          toast.error(t("orders.returns.activeChangeError"))
+        }
         return
       }
 
       IS_REQUEST_RUNNING = true
 
       try {
-        await initiateReceiveReturn({})
+        const { return: _return } = await initiateReceiveReturn({})
 
         await addReceiveItems({
-          items: orderReturn.items.map((i) => ({
+          items: _return.items.map((i) => ({
             id: i.item_id,
             quantity: i.quantity,
           })),
         })
       } catch (e) {
         toast.error(e.message)
+      } finally {
+        IS_REQUEST_RUNNING = false
       }
-
-      IS_REQUEST_RUNNING = false
     })()
-  }, [preview, orderReturn])
+  }, [preview])
 
   const ready = order && orderReturn && preview
-
-  if (orderReturn && orderReturn?.status !== "requested") {
-    throw new Error("This return cannot be received.")
-  }
 
   return (
     <RouteDrawer>
