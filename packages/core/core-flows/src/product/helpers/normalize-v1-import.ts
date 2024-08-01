@@ -106,22 +106,28 @@ export const normalizeV1Products = (
     Object.entries(finalRes).forEach(([key, value]) => {
       if (key.startsWith("Price")) {
         delete finalRes[key]
-        finalRes[`Variant ${key}`] = value
+        if (value) {
+          finalRes[`Variant ${key}`] = value
+        }
       }
 
       if (key.startsWith("Option")) {
         delete finalRes[key]
-        finalRes[`Variant ${key}`] = value
+        if (value) {
+          finalRes[`Variant ${key}`] = value
+        }
       }
 
       if (key.startsWith("Image")) {
         delete finalRes[key]
-        finalRes[`Product Image ${key.split(" ")[1]}`] = value
+        if (value) {
+          finalRes[`Product Image ${key.split(" ")[1]}`] = value
+        }
       }
 
       if (key.startsWith("Sales Channel")) {
         delete finalRes[key]
-        if (key.endsWith("Id")) {
+        if (key.endsWith("Id") && value) {
           if (!salesChannelsMap.has(value)) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
@@ -132,6 +138,15 @@ export const normalizeV1Products = (
           finalRes[`Product Sales Channel ${key.split(" ")[2]}`] =
             salesChannelsMap.get(value)
         }
+      }
+
+      if (
+        key.startsWith("Product Category") &&
+        (key.endsWith("Handle") ||
+          key.endsWith("Name") ||
+          key.endsWith("Description"))
+      ) {
+        delete finalRes[key]
       }
 
       // Note: Product categories from v1 are not imported to v2

@@ -394,7 +394,7 @@ medusaIntegrationTestRunner({
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
         expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.status).toEqual("requested")
+        expect(returnOrder.status).toEqual("open")
         expect(returnOrder.id).toBeDefined()
       })
     })

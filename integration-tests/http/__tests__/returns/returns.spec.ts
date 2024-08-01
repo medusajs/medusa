@@ -413,7 +413,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             order_id: order.id,
-            status: "requested",
+            status: "open",
           })
         )
 
@@ -421,7 +421,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
-            change_type: "return",
+            change_type: "return_request",
             description: "Test",
             status: "pending",
             order_id: order.id,
@@ -485,7 +485,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        // Remove item return requesta
+        // Remove item return request
         const returnItemActionId =
           result.data.order_preview.items[0].actions[0].id
         result = await api.delete(
@@ -693,6 +693,9 @@ medusaIntegrationTestRunner({
 
         expect(result.data.return).toEqual(
           expect.objectContaining({
+            id: returnId,
+            status: "requested",
+            requested_at: expect.any(String),
             items: [
               expect.objectContaining({
                 reason: expect.objectContaining({
@@ -872,7 +875,7 @@ medusaIntegrationTestRunner({
           expect(result.data.order.order_change).toEqual(
             expect.objectContaining({
               return_id: returnId,
-              change_type: "return",
+              change_type: "return_receive",
               status: "pending",
               internal_note: "Test internal note",
             })

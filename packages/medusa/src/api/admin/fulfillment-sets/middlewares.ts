@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
