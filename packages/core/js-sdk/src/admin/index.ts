@@ -8,6 +8,7 @@ import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Notification } from "./notification"
 import { Order } from "./order"
+import { Payment } from "./payment"
 import { PriceList } from "./price-list"
 import { PricePreference } from "./price-preference"
 import { Product } from "./product"
@@ -27,6 +28,7 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
+import { Claim } from "./claim"
 
 export class Admin {
   public invite: Invite
@@ -51,12 +53,14 @@ export class Admin {
   public notification: Notification
   public order: Order
   public return: Return
+  public claim: Claim
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
   public productTag: ProductTag
   public user: User
   public currency: Currency
+  public payment: Payment
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -81,11 +85,13 @@ export class Admin {
     this.notification = new Notification(client)
     this.order = new Order(client)
     this.return = new Return(client)
+    this.claim = new Claim(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
     this.store = new Store(client)
     this.productTag = new ProductTag(client)
     this.user = new User(client)
     this.currency = new Currency(client)
+    this.payment = new Payment(client)
   }
 }

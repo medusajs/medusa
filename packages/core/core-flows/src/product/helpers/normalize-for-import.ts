@@ -13,7 +13,9 @@ export const normalizeForImport = (
       variants: HttpTypes.AdminCreateProductVariant[]
     }
   >()
-  const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
+  // Currently region names are treated as case-insensitive.
+  const regionsMap = new Map(regions.map((r) => [r.name.toLowerCase(), r]))
 
   rawProducts.forEach((rawProduct) => {
     const productInMap = productMap.get(rawProduct["Product Handle"])
@@ -68,12 +70,19 @@ const variantFieldsToOmit = new Map([["variant_product_id", true]])
 // These fields can have a numeric value, but they are stored as string in the DB so we need to normalize them
 const stringFields = [
   "product_tag_",
+  "variant_option_",
   "variant_barcode",
   "variant_sku",
   "variant_ean",
   "variant_upc",
   "variant_hs_code",
   "variant_mid_code",
+]
+
+const booleanFields = [
+  "product_discountable",
+  "variant_manage_inventory",
+  "variant_allow_backorder",
 ]
 
 const normalizeProductForImport = (
@@ -114,6 +123,14 @@ const normalizeProductForImport = (
       return
     }
 
+    if (normalizedKey.startsWith("product_category_")) {
+      response["categories"] = [
+        ...(response["categories"] || []),
+        { id: normalizedValue },
+      ]
+      return
+    }
+
     if (
       normalizedKey.startsWith("product_") &&
       !productFieldsToOmit.has(normalizedKey)
@@ -144,18 +161,19 @@ const normalizeVariantForImport = (
 
     if (normalizedKey.startsWith("variant_price_")) {
       const priceKey = normalizedKey.replace("variant_price_", "")
-      // Note: If we start using the region name instead of ID, this check might not always work.
-      if (priceKey.length === 3) {
+      // Note: Region prices should always have the currency in brackets, eg. "variant_price_region_name_[EUR]"
+      if (!priceKey.endsWith("]")) {
         response["prices"] = [
           ...(response["prices"] || []),
           { currency_code: priceKey.toLowerCase(), amount: normalizedValue },
         ]
       } else {
-        const region = regionsMap.get(priceKey)
+        const regionName = priceKey.split("_").slice(0, -1).join(" ")
+        const region = regionsMap.get(regionName)
         if (!region) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Region with ID ${priceKey} not found`
+            `Region with name ${regionName} not found`
           )
         }
 
@@ -164,7 +182,7 @@ const normalizeVariantForImport = (
           {
             amount: normalizedValue,
             currency_code: region.currency_code,
-            rules: { region_id: priceKey },
+            rules: { region_id: region.id },
           },
         ]
       }
@@ -218,9 +236,20 @@ const normalizeVariantForImport = (
 }
 
 const getNormalizedValue = (key: string, value: any): any => {
-  return stringFields.some((field) => key.startsWith(field))
-    ? value.toString()
+  let res = stringFields.some((field) => key.startsWith(field))
+    ? value?.toString()
     : value
+
+  if (booleanFields.some((field) => key.startsWith(field))) {
+    if (value === "TRUE") {
+      res = true
+    }
+    if (value === "FALSE") {
+      res = false
+    }
+  }
+
+  return res
 }
 
 const snakecaseKey = (key: string): string => {

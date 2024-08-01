@@ -2,6 +2,7 @@ import { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/types"
 import { MedusaError, deepFlatMap } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -24,7 +25,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
   confirmVariantInventoryWorkflowId,
   (
     input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>
-  ): WorkflowData<Output> => {
+  ): WorkflowResponse<Output> => {
     const confirmInventoryInput = transform({ input }, (data) => {
       const productVariantInventoryItems = new Map<string, any>()
       const stockLocationIds = new Set<string>()
@@ -111,6 +112,6 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
 
     confirmInventoryStep(confirmInventoryInput)
 
-    return confirmInventoryInput
+    return new WorkflowResponse(confirmInventoryInput)
   }
 )

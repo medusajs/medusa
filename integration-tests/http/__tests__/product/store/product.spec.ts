@@ -767,8 +767,9 @@ medusaIntegrationTestRunner({
       })
 
       it("returns a list of products filtered by variant options", async () => {
+        const option = product.options.find((o) => o.title === "size")
         const response = await api.get(
-          `/store/products?variants.options[option_id]=${product.options[1].id}&variants.options[value]=large`
+          `/store/products?variants.options[option_id]=${option?.id}&variants.options[value]=large`
         )
 
         expect(response.status).toEqual(200)

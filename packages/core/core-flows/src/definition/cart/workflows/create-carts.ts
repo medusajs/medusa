@@ -2,6 +2,7 @@ import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -28,7 +29,9 @@ import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collectio
 export const createCartWorkflowId = "create-cart"
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
-  (input: WorkflowData<CreateCartWorkflowInputDTO>): WorkflowData<CartDTO> => {
+  (
+    input: WorkflowData<CreateCartWorkflowInputDTO>
+  ): WorkflowResponse<CartDTO> => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
@@ -153,6 +156,6 @@ export const createCartWorkflow = createWorkflow(
       })
     )
 
-    return cart
+    return new WorkflowResponse(cart)
   }
 )

@@ -1860,6 +1860,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        path: "/references/helper-steps",
+        title: "Helper Steps Reference",
+        isChildSidebar: true,
+        autogenerate_path: "/references/helper_steps/functions",
+      },
     ],
   },
   {

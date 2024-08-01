@@ -3,9 +3,9 @@
   "include": ["src"],
   "exclude": [
     "dist",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
-    "./src/**/__fixtures__",
+    "src/**/__tests__",
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
     "node_modules"
   ],
 }

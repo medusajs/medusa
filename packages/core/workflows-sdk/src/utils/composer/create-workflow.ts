@@ -14,8 +14,9 @@ import {
   ReturnWorkflow,
   StepFunction,
   WorkflowData,
-  WorkflowDataProperties,
+  HookHandler,
 } from "./type"
+import { WorkflowResponse } from "./helpers/workflow-response"
 
 global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 
@@ -74,11 +75,7 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  * }
  */
 
-export function createWorkflow<
-  TData,
-  TResult,
-  THooks extends Record<string, Function> = Record<string, Function>
->(
+export function createWorkflow<TData, TResult, THooks extends any[]>(
   /**
    * The name of the workflow or its configuration.
    */
@@ -88,15 +85,9 @@ export function createWorkflow<
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
    * You'll have to use the {@link transform} function if you need to directly manipulate data.
    */
-  composer: (input: WorkflowData<TData>) =>
-    | void
-    | WorkflowData<TResult>
-    | {
-        [K in keyof TResult]:
-          | WorkflowData<TResult[K]>
-          | WorkflowDataProperties<TResult[K]>
-          | TResult[K]
-      }
+  composer: (
+    input: WorkflowData<TData>
+  ) => void | WorkflowResponse<TResult, THooks>
 ): ReturnWorkflow<TData, TResult, THooks> {
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig
@@ -110,14 +101,18 @@ export function createWorkflow<
   }
 
   const context: CreateWorkflowComposerContext = {
+    __type: OrchestrationUtils.SymbolMedusaWorkflowComposerContext,
     workflowId: name,
     flow: WorkflowManager.getEmptyTransactionDefinition(),
     handlers,
-    hooks_: [],
+    hooks_: {
+      declared: [],
+      registered: [],
+    },
     hooksCallback_: {},
     hookBinder: (name, fn) => {
-      context.hooks_.push(name)
-      return fn(context)
+      context.hooks_.declared.push(name)
+      context.hooksCallback_[name] = fn.bind(context)()
     },
     stepBinder: (fn) => {
       return fn.bind(context)()
@@ -169,28 +164,13 @@ export function createWorkflow<
     return expandedFlow
   }
 
-  let shouldRegisterHookHandler = true
-
-  for (const hook of context.hooks_) {
-    mainFlow[hook] = (fn) => {
-      context.hooksCallback_[hook] ??= []
-
-      if (!shouldRegisterHookHandler) {
-        console.warn(
-          `A hook handler has already been registered for the ${hook} hook. The current handler registration will be skipped.`
-        )
-        return
-      }
-
-      context.hooksCallback_[hook].push(fn)
-      shouldRegisterHookHandler = false
-    }
+  mainFlow.hooks = {} as Record<string, HookHandler>
+  for (const hook of context.hooks_.declared) {
+    mainFlow.hooks[hook] = context.hooksCallback_[hook].bind(context)
   }
 
   mainFlow.getName = () => name
-
   mainFlow.run = mainFlow().run
-
   mainFlow.runAsStep = ({
     input,
   }: {

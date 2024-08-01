@@ -7,6 +7,7 @@ import {
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -47,7 +48,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     exchange_id?: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowData<OrderDTO> {
+  }): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -167,6 +168,6 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
 
     createOrderChangeActionsStep([orderChangeActionInput])
 
-    return previewOrderChangeStep(order.id)
+    return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
 )
