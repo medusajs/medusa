@@ -33,7 +33,7 @@ async function createOrderChange(
       return_id: returnEntry.id,
       reference: "return",
       reference_id: returnEntry.id,
-      change_type: OrderChangeType.RETURN,
+      change_type: OrderChangeType.RETURN_RECEIVE,
       description: data.description,
       internal_note: data.internal_note,
       created_by: data.created_by,
