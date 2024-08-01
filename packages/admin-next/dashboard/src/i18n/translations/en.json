@@ -849,6 +849,7 @@
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
       "refundAmount": "Refund amount",
+      "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
       "reasonHint": "Choose why the customer want to return items.",
       "note": "Note",
@@ -861,7 +862,25 @@
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
-      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
+      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
+      "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
+      "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
+      "receive": {
+        "action": "Receive items",
+        "receive": "Return {{label}}",
+        "restockAll": "Restock all items",
+        "itemsLabel": "Items received",
+        "title": "Receive items for #{{returnId}}",
+        "sendNotificationHint": "Notify customer about received return.",
+        "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
+        "writeOffInputLabel": "How many of the items are damaged?",
+        "toast": {
+          "success": "Return received successfully.",
+          "errorLargeValue": "Quantity is greater than requested item quantity.",
+          "errorNegativeValue": "Quantity cannot be a negative value.",
+          "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
+        }
+      }
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -981,7 +1000,8 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return created",
+          "created": "Return #{{returnId}} created",
+          "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"
         },
