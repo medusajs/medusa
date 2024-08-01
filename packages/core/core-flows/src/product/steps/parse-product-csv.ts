@@ -52,12 +52,21 @@ export const parseProductCsvStep = createStep(
       }
     })
 
-    const allRegions = await regionService.listRegions(
-      {},
-      { select: ["id", "name", "currency_code"], take: null }
-    )
+    const [allRegions, allTags] = await Promise.all([
+      regionService.listRegions(
+        {},
+        { select: ["id", "name", "currency_code"], take: null }
+      ),
+      productService.listProductTags(
+        {},
+        { select: ["id", "value"], take: null }
+      ),
+    ])
 
-    const normalizedData = normalizeForImport(v1Normalized, allRegions)
+    const normalizedData = normalizeForImport(v1Normalized, {
+      regions: allRegions,
+      tags: allTags,
+    })
     return new StepResponse(normalizedData)
   }
 )
