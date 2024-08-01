@@ -12,6 +12,8 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     logger,
     container,
     featureFlagsLoader,
+    runMedusaAppMigrations,
+    getLinksExecutionPlanner,
   } = await import("@medusajs/framework")
 
   const configModule = configManager.config
@@ -24,15 +26,8 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   })
 
   try {
-    const {
-      runMedusaAppMigrations,
-      getLinksExecutionPlanner,
-    } = require("@medusajs/medusa/dist/loaders/medusa-app")
-    await runMedusaAppMigrations({ configModule, container })
-    const planner = await getLinksExecutionPlanner({
-      configModule,
-      container,
-    })
+    await runMedusaAppMigrations()
+    const planner = await getLinksExecutionPlanner()
 
     const actionPlan = await planner.createPlan()
     await planner.executePlan(actionPlan)

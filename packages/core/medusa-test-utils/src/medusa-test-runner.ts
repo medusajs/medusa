@@ -1,8 +1,5 @@
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  createMedusaContainer,
-} from "@medusajs/utils"
+import { createMedusaContainer } from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
@@ -200,13 +197,12 @@ export function medusaIntegrationTestRunner({
     const copiedContainer = createMedusaContainer({}, container)
 
     try {
-      const medusaAppLoaderRunner =
-        require("@medusajs/medusa/dist/loaders/medusa-app").runModulesLoader
+      const { runModulesLoader: medusaAppLoaderRunner } = await import(
+        "@medusajs/framework"
+      )
+
       await medusaAppLoaderRunner({
         container: copiedContainer,
-        configModule: container.resolve(
-          ContainerRegistrationKeys.CONFIG_MODULE
-        ),
       })
     } catch (error) {
       console.error("Error runner modules loaders", error?.message)

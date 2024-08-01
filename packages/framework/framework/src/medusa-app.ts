@@ -14,8 +14,8 @@ import {
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
-  MedusaContainer,
   ModuleDefinition,
+  ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -26,6 +26,8 @@ import {
 } from "@medusajs/utils"
 
 import { asValue } from "awilix"
+import { container as mainContainer } from "./container"
+import { configManager } from "./config"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -66,28 +68,50 @@ export function mergeDefaultModules(
   return configModules
 }
 
+function prepareSharedResourcesAndDeps(
+  container: Required<MedusaAppOptions>["sharedContainer"]
+) {
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
+  }
+
+  const sharedResourcesConfig: ModuleServiceInitializeOptions = {
+    database: {
+      clientUrl:
+        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
+          ?.config?.connection?.connectionString ??
+        configManager.config.projectConfig.databaseUrl,
+      driverOptions: configManager.config.projectConfig.databaseDriverOptions,
+      debug: configManager.config.projectConfig.databaseLogging ?? false,
+      schema: configManager.config.projectConfig.databaseSchema,
+      database: configManager.config.projectConfig.databaseName,
+    },
+  }
+
+  return { sharedResourcesConfig, injectedDependencies }
+}
+
 /**
  * Run, Revert or Generate the migrations for the medusa app.
  *
- * @param configModule
  * @param container
  * @param moduleNames
  * @param linkModules
  * @param action
  */
 export async function runMedusaAppMigrations({
-  configModule,
   container,
   moduleNames,
   linkModules,
   action = "run",
 }: {
-  configModule: {
-    modules?: CommonTypes.ConfigModule["modules"]
-    projectConfig: CommonTypes.ConfigModule["projectConfig"]
-  }
+  container?: MedusaAppOptions["sharedContainer"]
   linkModules?: MedusaAppOptions["linkModules"]
-  container: MedusaContainer
 } & (
   | {
       moduleNames?: never
@@ -98,26 +122,12 @@ export async function runMedusaAppMigrations({
       action: "revert" | "generate"
     }
 )): Promise<void> {
-  const injectedDependencies = {
-    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-      ContainerRegistrationKeys.PG_CONNECTION
-    ),
-    [ContainerRegistrationKeys.LOGGER]: container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    ),
-  }
+  container ??= mainContainer
 
-  const sharedResourcesConfig = {
-    database: {
-      clientUrl:
-        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
-          ?.config?.connection?.connectionString ??
-        configModule.projectConfig.databaseUrl,
-      driverOptions: configModule.projectConfig.databaseDriverOptions,
-      debug: !!(configModule.projectConfig.databaseLogging ?? false),
-    },
-  }
-  const configModules = mergeDefaultModules(configModule.modules)
+  const configModules = mergeDefaultModules(configManager.config.modules)
+
+  const { sharedResourcesConfig, injectedDependencies } =
+    prepareSharedResourcesAndDeps(container)
 
   const migrationOptions = {
     modulesConfig: configModules,
@@ -139,42 +149,21 @@ export async function runMedusaAppMigrations({
 /**
  * Return an instance of the link module migration planner.
  *
- * @param configModule
  * @param container
  * @param linkModules
  */
 export async function getLinksExecutionPlanner({
-  configModule,
   container,
   linkModules,
 }: {
-  configModule: {
-    modules?: CommonTypes.ConfigModule["modules"]
-    projectConfig: CommonTypes.ConfigModule["projectConfig"]
-  }
+  container?: MedusaAppOptions["sharedContainer"]
   linkModules?: MedusaAppOptions["linkModules"]
-  container: MedusaContainer
 }): Promise<ILinkMigrationsPlanner> {
-  const injectedDependencies = {
-    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-      ContainerRegistrationKeys.PG_CONNECTION
-    ),
-    [ContainerRegistrationKeys.LOGGER]: container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    ),
-  }
+  container ??= mainContainer
 
-  const sharedResourcesConfig = {
-    database: {
-      clientUrl:
-        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
-          ?.config?.connection?.connectionString ??
-        configModule.projectConfig.databaseUrl,
-      driverOptions: configModule.projectConfig.databaseDriverOptions,
-      debug: !!(configModule.projectConfig.databaseLogging ?? false),
-    },
-  }
-  const configModules = mergeDefaultModules(configModule.modules)
+  const configModules = mergeDefaultModules(configManager.config.modules)
+  const { sharedResourcesConfig, injectedDependencies } =
+    prepareSharedResourcesAndDeps(container)
 
   const migrationOptions = {
     modulesConfig: configModules,
@@ -192,31 +181,19 @@ export const loadMedusaApp = async (
     container,
     linkModules,
   }: {
-    container: MedusaContainer
+    container?: MedusaAppOptions["sharedContainer"]
     linkModules?: MedusaAppOptions["linkModules"]
-  },
+  } = {},
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
-  const injectedDependencies = {
-    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-      ContainerRegistrationKeys.PG_CONNECTION
-    ),
-    [ContainerRegistrationKeys.LOGGER]: container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    ),
-  }
+  container ??= mainContainer
 
   const configModule: ConfigModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
-  const sharedResourcesConfig = {
-    database: {
-      clientUrl: configModule.projectConfig.databaseUrl,
-      driverOptions: configModule.projectConfig.databaseDriverOptions,
-      debug: !!(configModule.projectConfig.databaseLogging ?? false),
-    },
-  }
+  const { sharedResourcesConfig, injectedDependencies } =
+    prepareSharedResourcesAndDeps(container)
 
   container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(undefined))
   container.register(ContainerRegistrationKeys.REMOTE_LINK, asValue(undefined))
@@ -267,39 +244,21 @@ export const loadMedusaApp = async (
 /**
  * Run the modules loader without taking care of anything else. This is useful for running the loader as a separate action or to re run all modules loaders.
  *
- * @param configModule
+ * @param linkModules extra link modules to be registered
  * @param container
  */
 export async function runModulesLoader({
-  configModule,
   linkModules,
   container,
 }: {
-  configModule: {
-    modules?: CommonTypes.ConfigModule["modules"]
-    projectConfig: CommonTypes.ConfigModule["projectConfig"]
-  }
-  container: MedusaContainer
   linkModules?: MedusaAppOptions["linkModules"]
+  container?: MedusaAppOptions["sharedContainer"]
 }): Promise<void> {
-  const injectedDependencies = {
-    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-      ContainerRegistrationKeys.PG_CONNECTION
-    ),
-    [ContainerRegistrationKeys.LOGGER]: container.resolve(
-      ContainerRegistrationKeys.LOGGER
-    ),
-  }
+  container ??= mainContainer
 
-  const sharedResourcesConfig = {
-    database: {
-      clientUrl: configModule.projectConfig.databaseUrl,
-      driverOptions: configModule.projectConfig.databaseDriverOptions,
-      debug: !!(configModule.projectConfig.databaseLogging ?? false),
-    },
-  }
-
-  const configModules = mergeDefaultModules(configModule.modules)
+  const { sharedResourcesConfig, injectedDependencies } =
+    prepareSharedResourcesAndDeps(container)
+  const configModules = mergeDefaultModules(configManager.config.modules)
 
   await MedusaApp({
     modulesConfig: configModules,
@@ -310,5 +269,3 @@ export async function runModulesLoader({
     loaderOnly: true,
   })
 }
-
-export default loadMedusaApp
