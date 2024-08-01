@@ -130,7 +130,7 @@ function WrittenOffQuantity({
                       max={item.quantity}
                       type="number"
                       value={value}
-                      className="bg-ui-bg-field-component text-right"
+                      className="bg-ui-bg-field-component text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       onChange={(e) => {
                         const value =
                           e.target.value === ""
