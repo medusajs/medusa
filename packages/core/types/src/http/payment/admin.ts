@@ -37,4 +37,8 @@ export interface AdminPaymentResponse {
   payment: AdminPayment
 }
 
+export interface AdminPaymentsResponse {
+  payments: AdminPayment[]
+}
+
 export interface AdminPaymentFilters extends BasePaymentFilters {}

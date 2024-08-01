@@ -8,6 +8,30 @@ export class Payment {
     this.client = client
   }
 
+  async list(query?: HttpTypes.AdminPaymentFilters, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminPaymentsResponse>(
+      `/admin/payments`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
+  async retrieve(
+    id: string,
+    query?: HttpTypes.AdminPaymentFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminPaymentResponse>(
+      `/admin/payments/${id}`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
   async capture(
     id: string,
     body: HttpTypes.AdminCapturePayment,

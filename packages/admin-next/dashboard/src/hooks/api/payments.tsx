@@ -50,7 +50,7 @@ export const usePayment = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.payments.retrievePayment(id, query),
+    queryFn: () => sdk.admin.payment.retrieve(id, query),
     queryKey: paymentQueryKeys.detail(id),
     ...options,
   })
