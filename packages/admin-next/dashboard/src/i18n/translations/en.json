@@ -826,7 +826,10 @@
         "requiresAction": "Requires action"
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
-      "capturePaymentSuccess": "Payment of {{amount}} successfully captured"
+      "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
+      "createRefund": "Create Refund",
+      "refundPaymentSuccess": "Refund of amount {{amount}} successful",
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
     },
 
     "edits": {

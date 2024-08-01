@@ -218,135 +218,48 @@ export interface IPaymentProvider {
   /**
    * @ignore
    *
-   * Return a unique identifier to retrieve the payment plugin provider
+   * Return a unique identifier to retrieve the payment module provider
    */
   getIdentifier(): string
 
-  /**
-   * This methods sends a request to the third-party provider to initialize the payment. It's called when the payment session is created.
-   *
-   * For example, in the Stripe provider, this method is used to create a Payment Intent for the customer.
-   *
-   * @param {CreatePaymentProviderSession} data - The data necessary to initiate the payment.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse>} Either the payment's data, which is stored in the `data` field
-   * of the payment session, or an error object.
-   */
   initiatePayment(
     data: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
-  /**
-   * This method is used to update a payment associated with a session in the third-party provider.
-   *
-   * @param {UpdatePaymentProviderSession} context - The data related to the update.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse | void>} Either the payment's data or an error object.
-   */
   updatePayment(
     context: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
 
-  /**
-   * This method is called before a payment session is deleted. It's used to perform any actions necessary before the deletion.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the Payment Session.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>} Either an error object or an empty object.
-   */
   deletePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
-  /**
-   * This method is called when a payment session should be authorized.
-   * You can interact with a third-party provider and perform the necessary actions to authorize the payment.
-   *
-   * Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/#3-authorize-payment-session)
-   * to learn more about how this fits into the payment flow and how to handle required actions.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the payment session.
-   * @param {Record<string, unknown>} context - The context of the authorization.
-   * @returns {Promise<PaymentProviderError | PaymentProviderAuthorizeResponse>} The authorization details or an error object. If
-   * the authorization details are returned, the `data` and `status` field are set in the associated payment session.
-   */
   authorizePayment(
     paymentSessionData: Record<string, unknown>,
     context: Record<string, unknown>
   ): Promise<PaymentProviderError | PaymentProviderAuthorizeResponse>
 
-  /**
-   * This method is called when a payment should be captured. The payment is captured in one of the following scenarios:
-   *
-   * - The payment provider supports automatically capturing the payment after authorization.
-   * - The merchant requests to capture the payment after its associated payment session was authorized.
-   * - A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
-   *
-   * In this method, you can interact with the third-party provider and perform any actions necessary to capture the payment.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the payment.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>} Either an error object or a value that's stored in the `data` field of the payment.
-   */
   capturePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
-  /**
-   * This method is called when a payment should be refunded. This is typically triggered manually by the merchant.
-   *
-   * In this method, you can interact with the third-party provider and perform any actions necessary to refund the payment.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of a Payment.
-   * @param {BigNumberInput} refundAmount - The amount to refund.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>} Either an error object or an object that's stored in the `data` field of the payment.
-   */
   refundPayment(
     paymentSessionData: Record<string, unknown>,
     refundAmount: BigNumberInput
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
-  /**
-   * This method is used to provide a uniform way of retrieving the payment information from the third-party provider.
-   *
-   * For example, in Stripe’s payment provider this method is used to retrieve the payment intent details from Stripe.
-   *
-   * @param {Record<string, unknown>} paymentSessionData -
-   * The `data` field of a payment session. Make sure to store in the `data` field any necessary data that would allow you to retrieve the payment data from the third-party provider.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["session_data"]>} Either an error object or the payment's data retrieved from a third-party provider.
-   */
   retrievePayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
-  /**
-   * This method is called when a payment is canceled.
-   *
-   * In this method, you can interact with the third-party provider and perform any actions necessary to cancel the payment.
-   *
-   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the payment.
-   * @returns {Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>} Either an error object or a value that's stored in the `data` field of the payment.
-   */
   cancelPayment(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]>
 
-  /**
-   * This method is used to get the status of a payment or a payment session.
-   *
-   * @param {Record<string, unknown>} paymentSessionData -
-   * The `data` field of a payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary.
-   * @returns {Promise<PaymentSessionStatus>} The status of the payment or payment session.
-   */
   getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus>
 
-  /**
-   * The method is called when a webhook event is received for this provider.
-   *
-   * The method is responsible for normalizing the received event and inform the Payment Module of actions to perform, such as authorize or capture payment.
-   *
-   * Learn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
-   *
-   * @param data - The webhook event's details.
-   */
   getWebhookActionAndData(
     data: ProviderWebhookPayload["payload"]
   ): Promise<WebhookActionResult>
