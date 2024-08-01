@@ -15,10 +15,10 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { updateOrderClaimsStep } from "../../steps/claim/update-order-claims"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
-import { createReturnsStep } from "../../steps/create-returns"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
-import { updateOrderClaimsStep } from "../../steps/update-order-claims"
+import { createReturnsStep } from "../../steps/return/create-returns"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
