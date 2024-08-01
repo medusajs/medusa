@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as queryConfig from "./query-config"
 import { StoreGetPaymentProvidersParams } from "./validators"

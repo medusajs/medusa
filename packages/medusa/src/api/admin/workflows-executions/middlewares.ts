@@ -7,7 +7,7 @@ import {
   AdminGetWorkflowExecutionsParams,
 } from "./validators"
 
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { validateAndTransformBody } from "../../utils/validate-body"
 

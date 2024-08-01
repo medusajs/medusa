@@ -1,5 +1,5 @@
 import { isPresent, ProductStatus } from "@medusajs/utils"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import {
   applyDefaultFilters,
