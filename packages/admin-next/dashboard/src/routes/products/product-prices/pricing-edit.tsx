@@ -35,6 +35,7 @@ export const PricingEdit = ({
 }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { mutateAsync, isPending } = useUpdateProductVariantsBatch(product.id)
 
   const { regions } = useRegions({ limit: 9999 })
   const regionsCurrencyMap = useMemo(() => {
@@ -70,8 +71,6 @@ export const PricingEdit = ({
     resolver: zodResolver(UpdateVariantPricesSchema, {}),
   })
 
-  const { mutateAsync, isPending } = useUpdateProductVariantsBatch(product.id)
-
   const handleSubmit = form.handleSubmit(async (values) => {
     const reqData = values.variants.map((variant, ind) => ({
       id: variants[ind].id,
@@ -100,18 +99,12 @@ export const PricingEdit = ({
 
           const amount = castNumber(value)
 
-          const pricePayload = existingId
-            ? {
-                id: existingId,
-                amount,
-              }
-            : { currency_code: currencyCode, amount }
-
-          if (regionId && !existingId) {
-            pricePayload.rules = { region_id: regionId }
+          return {
+            id: existingId,
+            currency_code: currencyCode,
+            amount,
+            ...(regionId ? { rules: { region_id: regionId } } : {}),
           }
-
-          return pricePayload
         }
       ),
     }))
