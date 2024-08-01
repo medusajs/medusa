@@ -60,6 +60,27 @@ export const ReturnCreateForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const itemsMap = useMemo(
+    () => new Map(order.items.map((i) => [i.id, i])),
+    [order.items]
+  )
+
+  /**
+   * Only consider items that belong to this return.
+   */
+  const previewItems = useMemo(
+    () =>
+      preview.items.filter(
+        (i) => !!i.actions?.find((a) => a.return_id === activeReturn.id)
+      ),
+    [preview.items]
+  )
+
+  const previewItemsMap = useMemo(
+    () => new Map(previewItems.map((i) => [i.id, i])),
+    [previewItems]
+  )
+
   /**
    * STATE
    */
@@ -140,16 +161,14 @@ export const ReturnCreateForm = ({
       )
 
       return Promise.resolve({
-        items: preview.items
-          .filter((i) => !!i.detail.return_requested_quantity)
-          .map((i) => ({
-            item_id: i.id,
-            quantity: i.detail.return_requested_quantity,
-            note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.internal_note,
-            reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.details?.reason_id,
-          })),
+        items: previewItems.map((i) => ({
+          item_id: i.id,
+          quantity: i.detail.return_requested_quantity,
+          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
+            ?.internal_note,
+          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
+            ?.reason_id,
+        })),
         option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
@@ -157,16 +176,6 @@ export const ReturnCreateForm = ({
     },
     resolver: zodResolver(ReturnCreateSchema),
   })
-
-  const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
-    [order.items]
-  )
-
-  const previewItemsMap = useMemo(
-    () => new Map(preview.items.map((i) => [i.id, i])),
-    [preview.items]
-  )
 
   const {
     fields: items,
@@ -181,7 +190,7 @@ export const ReturnCreateForm = ({
   useEffect(() => {
     const existingItemsMap = {}
 
-    preview.items.forEach((i) => {
+    previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
 
       /**
@@ -216,7 +225,7 @@ export const ReturnCreateForm = ({
         remove(ind)
       }
     })
-  }, [preview.items])
+  }, [previewItems])
 
   useEffect(() => {
     const method = preview.shipping_methods.find(
@@ -435,7 +444,7 @@ export const ReturnCreateForm = ({
                 currencyCode={order.currency_code}
                 form={form}
                 onRemove={() => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
@@ -444,7 +453,7 @@ export const ReturnCreateForm = ({
                   }
                 }}
                 onUpdate={(payload) => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
