@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import {
   AdminCreateShippingOption,
   AdminCreateShippingOptionRule,

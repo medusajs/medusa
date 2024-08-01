@@ -452,6 +452,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product/guides/price"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/guides/price-with-taxes/page.mdx",
+    "pathname": "/commerce-modules/product/guides/price-with-taxes"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/page.mdx",
     "pathname": "/commerce-modules/product"
   },

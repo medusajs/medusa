@@ -3,24 +3,20 @@ import {
   ModulesDefinition,
   registerMedusaModule,
 } from "@medusajs/modules-sdk"
-import {
-  configManager,
-  ConfigModule,
-  container,
-  featureFlagsLoader,
-  logger,
-} from "@medusajs/framework"
 import { ContainerRegistrationKeys, generateJwtToken } from "@medusajs/utils"
 import { asValue } from "awilix"
 import express from "express"
 import querystring from "querystring"
 import supertest from "supertest"
-import apiLoader from "../../../../api"
-import { getResolvedPlugins } from "../../../../helpers/resolve-plugins"
 
-import RoutesLoader from "../.."
 import { config } from "../mocks"
 import { MedusaContainer } from "@medusajs/types"
+import { configManager, ConfigModule } from "../../../config"
+import { container } from "../../../container"
+import { featureFlagsLoader } from "../../../feature-flags"
+import { logger } from "../../../logger"
+import { MedusaRequest } from "../../types"
+import { RoutesLoader } from "../../router"
 
 function asArray(resolvers) {
   return {
@@ -90,29 +86,18 @@ export const createServer = async (rootDir) => {
     next()
   })
 
-  const plugins = getResolvedPlugins(rootDir, config) || []
-
   await featureFlagsLoader()
   await moduleLoader({ container, moduleResolutions, logger })
 
   app.use((req, res, next) => {
-    req.scope = container.createScope() as MedusaContainer
+    ;(req as MedusaRequest).scope = container.createScope() as MedusaContainer
     next()
   })
 
-  // This where plugins normally load, but we simply load the routes
   await new RoutesLoader({
     app,
-    rootDir,
-    configModule: config,
+    sourceDir: rootDir,
   }).load()
-
-  // the apiLoader needs to be called after plugins otherwise the core middleware bleads into the plugins
-  await apiLoader({
-    container,
-    app: app,
-    plugins,
-  })
 
   const superRequest = supertest(app)
 
