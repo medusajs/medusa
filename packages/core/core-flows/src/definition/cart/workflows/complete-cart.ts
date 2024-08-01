@@ -108,8 +108,11 @@ export const completeCartWorkflow = createWorkflow(
       }
     })
 
-    const orders = createOrdersStep([cartToOrder])
-    const order = transform({ orders }, ({ orders }) => orders[0])
+    const createdOrders = createOrdersStep([cartToOrder])
+    const order = transform(
+      { createdOrders },
+      ({ createdOrders }) => createdOrders[0]
+    )
 
     createRemoteLinkStep([
       {
