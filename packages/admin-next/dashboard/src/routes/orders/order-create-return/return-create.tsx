@@ -39,8 +39,6 @@ export const ReturnCreate = () => {
         return
       }
 
-      console.log(preview.order_change)
-
       if (preview.order_change) {
         if (preview.order_change.change_type === "return_request") {
           setActiveReturnId(preview.order_change.return_id)
