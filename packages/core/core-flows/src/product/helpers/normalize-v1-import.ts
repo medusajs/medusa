@@ -140,6 +140,15 @@ export const normalizeV1Products = (
         }
       }
 
+      if (
+        key.startsWith("Product Category") &&
+        (key.endsWith("Handle") ||
+          key.endsWith("Name") ||
+          key.endsWith("Description"))
+      ) {
+        delete finalRes[key]
+      }
+
       // Note: Product categories from v1 are not imported to v2
     })
 
