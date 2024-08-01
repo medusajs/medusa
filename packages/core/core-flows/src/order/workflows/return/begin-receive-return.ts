@@ -60,7 +60,7 @@ export const beginReceiveReturnWorkflow = createWorkflow(
       { orderReturn, order, input },
       ({ orderReturn, order, input }) => {
         return {
-          change_type: "return" as const,
+          change_type: "return_receive" as const,
           order_id: order.id,
           return_id: orderReturn.id,
           created_by: input.created_by,
