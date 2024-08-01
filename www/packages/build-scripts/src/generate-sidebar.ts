@@ -35,17 +35,13 @@ async function getSidebarItems(
         true
       )
       if (nested && newItems.length > 1) {
-        items.push(
-          ...sidebarAttachHrefCommonOptions([
-            {
-              title:
-                fileBasename.charAt(0).toUpperCase() +
-                fileBasename.substring(1),
-              hasTitleStyling: true,
-              children: newItems,
-            },
-          ])
-        )
+        items.push({
+          type: "category",
+          title:
+            fileBasename.charAt(0).toUpperCase() + fileBasename.substring(1),
+          children: newItems,
+          loaded: true,
+        })
       } else {
         items.push(...sidebarAttachHrefCommonOptions(newItems))
       }
@@ -63,6 +59,7 @@ async function getSidebarItems(
 
     const newItem = sidebarAttachHrefCommonOptions([
       {
+        type: "link",
         path:
           frontmatter.slug ||
           filePath.replace(basePath, "").replace(`/${fileBasename}`, ""),

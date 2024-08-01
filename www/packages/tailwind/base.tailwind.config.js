@@ -627,6 +627,24 @@ module.exports = {
             backgroundColor: "transparent",
           },
         },
+        slideInDown: {
+          from: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutUp: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "hidden",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -639,9 +657,11 @@ module.exports = {
         fadeOutRight: "fadeOutRight 500ms",
         tada: "tada 1s",
         slideInRight: "slideInRight 500ms",
-        slideOutRight: "slideOutRight 500ms",
+        slideOutRight: "slideOutRight 150ms",
+        slideOutUp: "slideOutUp 500ms",
         slideInLeft: "slideInLeft 500ms",
         slideOutLeft: "slideOutLeft 500ms",
+        slideInDown: "slideInDown 150ms",
         pulsingDots: "pulsingDots 1s alternate infinite",
         minimize: "minimize 500ms",
         maximize: "maximize 500ms",

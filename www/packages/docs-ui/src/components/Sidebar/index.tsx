@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
@@ -9,7 +9,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside } from "../.."
-import { SidebarTopSeparator } from "./Top/Separator"
+import { SidebarSeparator } from "./Separator"
 
 export type SidebarProps = {
   className?: string
@@ -19,7 +19,7 @@ export type SidebarProps = {
 
 export const Sidebar = ({
   className = "",
-  expandItems = false,
+  expandItems = true,
   sidebarTopProps,
 }: SidebarProps) => {
   const sidebarTopRef = useRef<HTMLDivElement>(null)
@@ -45,11 +45,6 @@ export const Sidebar = ({
   const sidebarItems = useMemo(
     () => currentItems || items,
     [items, currentItems]
-  )
-
-  const sidebarHasParent = useMemo(
-    () => sidebarItems.parentItem !== undefined,
-    [sidebarItems]
   )
 
   useResizeObserver(sidebarTopRef, () => {
@@ -84,10 +79,7 @@ export const Sidebar = ({
           animationFillMode: "forwards",
         }}
       >
-        <ul
-          className={clsx("h-full w-full", "p-docs_0.75", "flex flex-col")}
-          id="sidebar"
-        >
+        <ul className={clsx("h-full w-full", "flex flex-col")} id="sidebar">
           <SidebarTop
             {...sidebarTopProps}
             parentItem={sidebarItems.parentItem}
@@ -104,7 +96,7 @@ export const Sidebar = ({
               timeout={200}
             >
               <div
-                className="overflow-y-scroll mt-docs_0.75 clip"
+                className={clsx("overflow-y-scroll clip", "p-docs_0.75")}
                 ref={sidebarRef}
                 style={{
                   maxHeight: `calc(100vh - ${sidebarTopHeight + 40}px)`,
@@ -120,11 +112,10 @@ export const Sidebar = ({
                       item={item}
                       key={index}
                       expandItems={expandItems}
-                      sidebarHasParent={sidebarHasParent}
-                      isMobile={true}
+                      hasNextItems={index !== sidebarItems.default.length - 1}
                     />
                   ))}
-                  <SidebarTopSeparator />
+                  <SidebarSeparator />
                 </div>
                 {/* DESKTOP SIDEBAR */}
                 <div className="mt-docs_0.75 lg:mt-docs-0">
@@ -136,7 +127,7 @@ export const Sidebar = ({
                       item={item}
                       key={index}
                       expandItems={expandItems}
-                      sidebarHasParent={sidebarHasParent}
+                      hasNextItems={index !== sidebarItems.default.length - 1}
                     />
                   ))}
                 </div>

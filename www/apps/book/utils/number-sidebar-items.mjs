@@ -9,7 +9,23 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
   if (!numbering.length) {
     numbering.push(1)
   }
+  const isTopItems = numbering.length === 1
+  /** @type {import("@/types").SidebarItem[]} */
+  const numberedItems = []
+  /** @type {import("@/types").SidebarItem | undefined} */
+  let parentItem
   sidebarItems.forEach((item) => {
+    if (isTopItems) {
+      // Add chapter category
+      numberedItems.push({
+        type: "category",
+        title: `Chapter ${padNumber(numbering[0])}`,
+        children: [],
+        loaded: true,
+      })
+
+      parentItem = numberedItems[numberedItems.length - 1]
+    }
     // append current number to the item's title
     item.number = `${numbering.join(".")}.`
     item.title = `${item.number} ${item.title.trim()}`
@@ -18,8 +34,23 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
       item.children = numberSidebarItems(item.children, [...numbering, 1])
     }
 
+    if (parentItem) {
+      parentItem.children.push(item)
+    } else {
+      numberedItems.push(item)
+    }
+
     numbering[numbering.length - 1]++
   })
 
-  return sidebarItems
+  return numberedItems
+}
+
+function padNumber(number) {
+  number = number.toString()
+  if (number.length < 2) {
+    number = `0` + number
+  }
+
+  return number
 }

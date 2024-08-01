@@ -18,6 +18,7 @@ export type SidebarItemLink = SidebarItemCommon & {
   path: string
   isPathHref?: boolean
   linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
+  childrenSameLevel?: boolean
   // TODO maybe remove?
   pageTitle?: string
 }
@@ -26,7 +27,15 @@ export type SidebarItemCategory = SidebarItemCommon & {
   type: "category"
 }
 
-export type SidebarItem = SidebarItemLink | SidebarItemCategory
+export type SidebarItemSubCategory = SidebarItemCommon & {
+  type: "sub-category"
+  childrenSameLevel?: boolean
+}
+
+export type SidebarItem =
+  | SidebarItemLink
+  | SidebarItemCategory
+  | SidebarItemSubCategory
 
 export type SidebarSectionItems = {
   [k in SidebarItemSections]: SidebarItem[]

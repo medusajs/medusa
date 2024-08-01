@@ -2,7 +2,7 @@
 
 import React from "react"
 import { NavigationDropdownItem } from "types"
-import { SidebarTopSeparator } from "../../../Separator"
+import { SidebarSeparator } from "../../../../Separator"
 import Link from "next/link"
 import clsx from "clsx"
 import { EllipseMiniSolid } from "@medusajs/icons"
@@ -17,7 +17,7 @@ export const SidebarTopNavigationDropdownMenuItem = ({
 }: SidebarTopNavigationDropdownMenuItemProps) => {
   switch (item.type) {
     case "divider":
-      return <SidebarTopSeparator className="my-docs_0.25" />
+      return <SidebarSeparator className="my-docs_0.25" />
     case "link":
       return (
         <Link

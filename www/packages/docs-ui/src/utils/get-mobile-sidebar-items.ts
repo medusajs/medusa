@@ -13,7 +13,7 @@ export function getMobileSidebarItems({
   const mobileItems =
     version === "v2" ? mobileSidebarItemsV2 : mobileSidebarItemsV1
   return mobileItems.map((item) => {
-    if (item.type === "category") {
+    if (item.type !== "link") {
       return item
     }
 

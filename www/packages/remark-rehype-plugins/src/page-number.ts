@@ -71,7 +71,7 @@ function findSidebarItem(
 ): RawSidebarItemType | undefined {
   let foundItem = undefined
   for (const item of sidebar) {
-    if (path === item.path) {
+    if (item.type === "link" && path === item.path) {
       foundItem = item
     } else if (item.children) {
       foundItem = findSidebarItem(item.children, path)

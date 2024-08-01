@@ -3,7 +3,7 @@
 import React from "react"
 import { SidebarTitle } from "../Title"
 import { SidebarItem } from "types"
-import { SidebarTopSeparator } from "./Separator"
+import { SidebarSeparator } from "../Separator"
 import { SidebarTopNavigationDropdown } from "./NavigationDropdown"
 import { SearchModalOpener } from "../../.."
 import { SidebarTopMobileClose } from "./MobileClose"
@@ -16,22 +16,22 @@ export type SidebarTopProps = {
 export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
   function SidebarTop({ banner, parentItem }, ref) {
     return (
-      <>
+      <div className="p-docs_0.75 pb-0">
         <SidebarTopMobileClose />
         <div ref={ref} className="hidden lg:block">
           <SidebarTopNavigationDropdown />
-          <SidebarTopSeparator />
+          <SidebarSeparator />
           <SearchModalOpener className="my-docs_0.75" />
           {/* {banner && <div className="my-docs_0.75">{banner}</div>} */}
           {parentItem && (
             <>
-              <SidebarTopSeparator />
+              <SidebarSeparator />
               <SidebarTitle item={parentItem} />
             </>
           )}
-          <SidebarTopSeparator />
+          <SidebarSeparator />
         </div>
-      </>
+      </div>
     )
   }
 )

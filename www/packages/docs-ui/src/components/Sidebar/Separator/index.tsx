@@ -3,13 +3,11 @@
 import clsx from "clsx"
 import React from "react"
 
-export type SidebarTopSeparatorProps = {
+export type SidebarSeparatorProps = {
   className?: string
 }
 
-export const SidebarTopSeparator = ({
-  className,
-}: SidebarTopSeparatorProps) => {
+export const SidebarSeparator = ({ className }: SidebarSeparatorProps) => {
   return (
     <span
       className={clsx(
