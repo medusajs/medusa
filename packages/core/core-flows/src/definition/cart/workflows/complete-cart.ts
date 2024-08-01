@@ -1,5 +1,5 @@
 import { OrderDTO } from "@medusajs/types"
-import { Modules, OrderEvents } from "@medusajs/utils"
+import { Modules, OrderEvents, OrderStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -12,8 +12,9 @@ import {
   emitEventStep,
   useRemoteQueryStep,
 } from "../../../common"
+import { createOrdersStep } from "../../../order/steps/create-orders"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
-import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
+import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
@@ -78,7 +79,37 @@ export const completeCartWorkflow = createWorkflow(
       }).config({ name: "final-cart" })
     )
 
-    const order = createOrderFromCartStep({ cart: finalCart })
+    const cartToOrder = transform({ input, cart }, ({ cart }) => {
+      const itemAdjustments = (cart.items || [])
+        ?.map((item) => item.adjustments || [])
+        .flat(1)
+      const shippingAdjustments = (cart.shipping_methods || [])
+        ?.map((sm) => sm.adjustments || [])
+        .flat(1)
+
+      const promoCodes = [...itemAdjustments, ...shippingAdjustments]
+        .map((adjustment) => adjustment.code)
+        .filter((code) => Boolean) as string[]
+
+      return {
+        region_id: cart.region?.id,
+        customer_id: cart.customer?.id,
+        sales_channel_id: cart.sales_channel_id,
+        status: OrderStatus.PENDING,
+        email: cart.email,
+        currency_code: cart.currency_code,
+        shipping_address: cart.shipping_address,
+        billing_address: cart.billing_address,
+        no_notification: false,
+        items: cart.items,
+        shipping_methods: cart.shipping_methods,
+        metadata: cart.metadata,
+        promo_codes: promoCodes,
+      }
+    })
+
+    const orders = createOrdersStep([cartToOrder])
+    const order = transform({ orders }, ({ orders }) => orders[0])
 
     createRemoteLinkStep([
       {
