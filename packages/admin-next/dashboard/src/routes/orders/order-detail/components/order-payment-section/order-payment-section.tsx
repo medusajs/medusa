@@ -138,6 +138,7 @@ const Payment = ({
       }),
       confirmText: t("actions.confirm"),
       cancelText: t("actions.cancel"),
+      variant: "confirmation",
     })
 
     if (!res) {
