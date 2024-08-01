@@ -4492,6 +4492,7 @@ __metadata:
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
     date-fns: ^3.6.0
+    focus-trap: ^7.5.4
     focus-trap-react: ^10.2.3
     framer-motion: ^11.0.3
     i18next: 23.7.11
