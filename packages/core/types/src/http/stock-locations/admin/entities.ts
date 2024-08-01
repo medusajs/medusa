@@ -1,3 +1,4 @@
+import { AdminFulfillmentProvider } from "../../fulfillment-provider"
 import { AdminFulfillmentSet } from "../../fulfillment-set"
 import { AdminSalesChannel } from "../../sales-channel"
 
@@ -19,5 +20,6 @@ export interface AdminStockLocation {
   address_id: string
   address?: AdminStockLocationAddress
   sales_channels?: AdminSalesChannel[]
+  fulfillment_providers?: AdminFulfillmentProvider[]
   fulfillment_sets?: AdminFulfillmentSet[]
 }

@@ -1,0 +1,125 @@
+export const metadata = {
+  title: `${pageNumber} Workflow Hooks`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn what a workflow hook is, how to expose it in your workflow, and how to consume the hook with a handler.
+
+## What is a Workflow Hook?
+
+A workflow hook is a point in a workflow where you can inject custom functionality as a step function, called a hook handler.
+
+Hook handlers receive input from the workflow to perform custom actions during the workflow's execution.
+
+<Note title="Use workflow hooks when" type="success">
+
+- Your workflow is reusable in other applications, and you allow performing an external action at some point in your workflow.
+
+</Note>
+
+<Note title="Don't use workflow hooks if" type="error">
+
+- Your workflow isn't reusable by other applications. Use a step that performs what a hook handler would instead.
+
+</Note>
+
+---
+
+## How to Expose a Hook in a Workflow?
+
+To expose a hook in your workflow, use the `createHook` function imported from `@medusajs/workflows-sdk`.
+
+For example:
+
+export const hookHighlights = [
+  ["13", "createHook", "Add a hook to the workflow."],
+  ["14", `"productCreated"`, "The hook's name."],
+  ["15", "productId", "The data to pass to the hook handler."],
+  ["19", "hooks", "Return the list of hooks in the workflow."]
+]
+
+```ts title="src/workflows/my-workflow/index.ts" highlights={hookHighlights}
+import {
+  createStep,
+  createHook,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
+import { createProductStep } from "./steps/create-product"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow", 
+  function (input) {
+    const product = createProductStep(input)
+    const productCreatedHook = createHook(
+      "productCreated", 
+      { productId: product.id }
+    )
+
+    return new WorkflowResponse(product, {
+      hooks: [productCreatedHook],
+    })
+  }
+)
+```
+
+The `createHook` function accepts two parameters:
+
+1. The first is a string indicating the hook's name. This is used to add a hook handler later.
+2. The second is the input to pass to the hook handler.
+
+The workflow must also pass an object having a `hooks` property as a second parameter to the `WorkflowResponse` constructor. Its value is an array of the workflow's hooks.
+
+---
+
+## How to Consume a Hook?
+
+You consume a hook by registering a hook handler on the workflow. A hook handler is registered in a TypeScript or JavaScript file created in the `src/workflows/hooks` directory.
+
+You'll find a workflow's exposed hooks in its `hooks` property.
+
+For example, to consume the hook of the workflow in the previous example, create the file `src/workflows/hooks/my-workflow.ts` with the following content:
+
+export const handlerHighlights = [
+  ["3", "productCreated", "Invoke the hook, passing it a step function as a parameter."],
+]
+
+```ts title="src/workflows/hooks/my-workflow.ts" highlights={handlerHighlights}
+import { myWorkflow } from "../my-workflow"
+
+myWorkflow.hooks.productCreated(
+  async ({ productId }, { container }) => {
+    // TODO perform an action
+  }
+)
+```
+
+<Note>
+
+A hook can have only one handler.
+
+</Note>
+
+The hook is available on the workflow's `hooks` property using its name `productCreated`. You invoke the hook, passing the handler as a parameter, which is a step function.
+
+Similar to a step, the handler receives the hook's input as a first parameter, and the container in the object as a second parameter.
+
+### Hook Handler Compensation
+
+You can also pass a compensation function as a second parameter:
+
+```ts
+import { myWorkflow } from "../my-workflow"
+
+myWorkflow.hooks.productCreated(
+  async ({ productId }, { container }) => {
+    // TODO perform an action
+  },
+  async () => {
+    // undo the performed action
+  }
+)
+```
+
+The compensation function is executed if an error occurs in the workflow to undo the actions performed by the hook handler.

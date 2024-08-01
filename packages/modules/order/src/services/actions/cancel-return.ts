@@ -59,8 +59,6 @@ export async function cancelReturn(
       reference_id: returnOrder.id,
       details: {
         reference_id: item.item_id,
-        order_id: returnOrder.order_id,
-        return_id: returnOrder.id,
         quantity: item.quantity,
       },
     })

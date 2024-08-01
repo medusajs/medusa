@@ -123,7 +123,7 @@ const Header = () => {
           ) : (
             <Skeleton className="h-6 w-6 rounded-md" />
           )}
-          <div className="block overflow-hidden">
+          <div className="block overflow-hidden text-left">
             {name ? (
               <Text
                 size="small"

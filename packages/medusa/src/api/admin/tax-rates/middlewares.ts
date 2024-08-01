@@ -9,7 +9,7 @@ import {
   AdminUpdateTaxRate,
 } from "./validators"
 
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [

@@ -1,6 +1,7 @@
 import { StoreDTO, StoreWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
   when,
@@ -13,7 +14,7 @@ type WorkflowInputData = StoreWorkflow.UpdateStoreWorkflowInput
 export const updateStoresWorkflowId = "update-stores"
 export const updateStoresWorkflow = createWorkflow(
   updateStoresWorkflowId,
-  (input: WorkflowData<WorkflowInputData>): WorkflowData<StoreDTO[]> => {
+  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       if (!data.input.update.supported_currencies?.length) {
         return data.input
@@ -53,6 +54,6 @@ export const updateStoresWorkflow = createWorkflow(
       updatePricePreferencesAsArrayStep(upsertPricePreferences)
     })
 
-    return stores
+    return new WorkflowResponse(stores)
   }
 )

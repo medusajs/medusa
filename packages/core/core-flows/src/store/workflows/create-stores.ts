@@ -1,6 +1,7 @@
 import { StoreDTO, StoreWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -12,7 +13,7 @@ type WorkflowInputData = { stores: StoreWorkflow.CreateStoreWorkflowInput[] }
 export const createStoresWorkflowId = "create-stores"
 export const createStoresWorkflow = createWorkflow(
   createStoresWorkflowId,
-  (input: WorkflowData<WorkflowInputData>): WorkflowData<StoreDTO[]> => {
+  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       return data.input.stores.map((store) => {
         return {
@@ -49,6 +50,6 @@ export const createStoresWorkflow = createWorkflow(
     })
 
     updatePricePreferencesAsArrayStep(upsertPricePreferences)
-    return stores
+    return new WorkflowResponse(stores)
   }
 )

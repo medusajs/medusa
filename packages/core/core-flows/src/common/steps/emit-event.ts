@@ -12,6 +12,9 @@ type Input = {
 }
 
 export const emitEventStepId = "emit-event-step"
+/**
+ * @ignore
+ */
 export const emitEventStep = createStep(
   emitEventStepId,
   async (input: Input, context) => {

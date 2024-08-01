@@ -14,6 +14,19 @@ export class PermanentStepFailureError extends Error {
   }
 }
 
+export class SkipStepResponse extends Error {
+  static isSkipStepResponse(error: Error): error is SkipStepResponse {
+    return (
+      error instanceof SkipStepResponse || error?.name === "SkipStepResponse"
+    )
+  }
+
+  constructor(message?: string) {
+    super(message)
+    this.name = "SkipStepResponse"
+  }
+}
+
 export class TransactionStepTimeoutError extends Error {
   static isTransactionStepTimeoutError(
     error: Error

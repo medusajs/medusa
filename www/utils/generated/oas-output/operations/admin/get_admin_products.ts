@@ -173,7 +173,6 @@
  *     description: The product's tags.
  *     required: false
  *     schema:
- *       type: object
  *       description: The product's tags.
  *       properties:
  *         value:

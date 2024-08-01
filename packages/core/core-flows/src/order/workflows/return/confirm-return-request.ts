@@ -4,19 +4,25 @@ import {
   OrderDTO,
   ReturnDTO,
 } from "@medusajs/types"
-import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
+  ChangeActionType,
+  Modules,
+  OrderChangeStatus,
+  ReturnStatus,
+} from "@medusajs/utils"
+import {
+  WorkflowResponse,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
   when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
-import { previewOrderChangeStep } from "../../steps"
+import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsStep } from "../../steps/create-return-items"
+import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -111,15 +117,12 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
       continue
     }
 
-    for (const action of modifiedShippingMethod_.actions) {
-      if (
+    returnShippingMethod = modifiedShippingMethod_.actions.find((action) => {
+      return (
         action.action === ChangeActionType.SHIPPING_ADD &&
         action.return_id === orderReturn.id
-      ) {
-        returnShippingMethod = shippingMethod
-        break
-      }
-    }
+      )
+    })
   }
   return returnShippingMethod.shipping_option_id
 }
@@ -127,7 +130,7 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "location_id", "canceled_at"],
@@ -184,7 +187,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    const createdReturnItems = createReturnItemsStep({
+    const createdReturnItems = createReturnItemsFromActionsStep({
       returnId: orderReturn.id,
       changes: returnItemActions,
     })
@@ -235,8 +238,17 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       createRemoteLinkStep(link)
     })
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    parallelize(
+      updateReturnsStep([
+        {
+          id: orderReturn.id,
+          status: ReturnStatus.REQUESTED,
+          requested_at: new Date(),
+        },
+      ]),
+      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    )
 
-    return orderPreview
+    return new WorkflowResponse(orderPreview)
   }
 )

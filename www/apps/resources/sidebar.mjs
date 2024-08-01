@@ -1537,16 +1537,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
-            children: [
-              {
-                path: "/storefront-development/products/price/examples/show-price",
-                title: "Example: Show Variant Price",
-              },
-              {
-                path: "/storefront-development/products/price/examples/sale-price",
-                title: "Example: Show Sale Price",
-              },
-            ],
+            autogenerate_path: "storefront-development/products/price/examples",
           },
           {
             path: "/storefront-development/products/categories",
@@ -1868,6 +1859,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             autogenerate_path: "/service-factory-reference/tips",
           },
         ],
+      },
+      {
+        path: "/references/helper-steps",
+        title: "Helper Steps Reference",
+        isChildSidebar: true,
+        autogenerate_path: "/references/helper_steps/functions",
       },
     ],
   },

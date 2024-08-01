@@ -1,6 +1,7 @@
 import { FulfillmentWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -18,8 +19,10 @@ export const createShipmentWorkflow = createWorkflow(
       shipped_at: new Date(),
     }))
 
-    return updateFulfillmentWorkflow.runAsStep({
-      input: update,
-    })
+    return new WorkflowResponse(
+      updateFulfillmentWorkflow.runAsStep({
+        input: update,
+      })
+    )
   }
 )

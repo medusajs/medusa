@@ -4,6 +4,7 @@ import {
 } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -118,6 +119,6 @@ export const addToCartWorkflow = createWorkflow(
       refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
     )
 
-    return items
+    return new WorkflowResponse(items)
   }
 )

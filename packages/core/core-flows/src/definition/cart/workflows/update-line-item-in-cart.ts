@@ -1,6 +1,7 @@
 import { UpdateLineItemInCartWorkflowInputDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -97,6 +98,6 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 
-    return updatedItem
+    return new WorkflowResponse(updatedItem)
   }
 )

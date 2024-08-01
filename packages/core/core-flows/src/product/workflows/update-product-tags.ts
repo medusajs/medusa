@@ -1,5 +1,9 @@
 import { ProductTypes } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { updateProductTagsStep } from "../steps"
 
 type UpdateProductTagsStepInput = {
@@ -14,7 +18,7 @@ export const updateProductTagsWorkflow = createWorkflow(
   updateProductTagsWorkflowId,
   (
     input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductTagDTO[]> => {
-    return updateProductTagsStep(input)
+  ): WorkflowResponse<ProductTypes.ProductTagDTO[]> => {
+    return new WorkflowResponse(updateProductTagsStep(input))
   }
 )

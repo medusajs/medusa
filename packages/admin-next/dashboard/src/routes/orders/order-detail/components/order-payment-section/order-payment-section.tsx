@@ -2,8 +2,8 @@ import { ArrowDownRightMini, XCircle } from "@medusajs/icons"
 import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
-  Order,
 } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Button,
@@ -11,56 +11,60 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   Tooltip,
+  usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useCapturePayment } from "../../../../../hooks/api"
+import { formatCurrency } from "../../../../../lib/format-currency"
 import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 
 type OrderPaymentSectionProps = {
-  order: Order
+  order: HttpTypes.AdminOrder
+}
+
+const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
+  return order.payment_collections
+    .map((collection: HttpTypes.AdminPaymentCollection) => collection.payments)
+    .flat(1)
+    .filter(Boolean)
 }
 
 export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
+  const payments = getPaymentsFromOrder(order)
+
+  const refunds = payments
+    .map((payment) => payment?.refunds)
+    .flat(1)
+    .filter(Boolean)
+
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header order={order} />
+      <Header />
+
       <PaymentBreakdown
-        payments={order.payments}
-        refunds={order.refunds}
+        payments={payments}
+        refunds={refunds}
         currencyCode={order.currency_code}
       />
-      <Total payments={order.payments} currencyCode={order.currency_code} />
+
+      <Total payments={payments} currencyCode={order.currency_code} />
     </Container>
   )
 }
 
-const Header = ({ order }: { order: Order }) => {
+const Header = () => {
   const { t } = useTranslation()
-
-  const hasCapturedPayment = order.payments.some((p) => !!p.captured_at)
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("orders.payment.title")}</Heading>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: t("orders.payment.refund"),
-                icon: <ArrowDownRightMini />,
-                to: `/orders/${order.id}/refund`,
-                disabled: !hasCapturedPayment,
-              },
-            ],
-          },
-        ]}
-      />
     </div>
   )
 }
@@ -120,6 +124,39 @@ const Payment = ({
   currencyCode: string
 }) => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
+  const { mutateAsync } = useCapturePayment(payment.id)
+
+  const handleCapture = async () => {
+    const res = await prompt({
+      title: t("orders.payment.capture"),
+      description: t("orders.payment.capturePayment", {
+        amount: formatCurrency(payment.amount, currencyCode),
+      }),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(
+      { amount: payment.amount },
+      {
+        onSuccess: () => {
+          toast.success(
+            t("orders.payment.capturePaymentSuccess", {
+              amount: formatCurrency(payment.amount, currencyCode),
+            })
+          )
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+  }
 
   const [status, color] = (
     payment.captured_at ? ["Captured", "green"] : ["Pending", "orange"]
@@ -185,7 +222,8 @@ const Payment = ({
               })}
             </Text>
           </div>
-          <Button size="small" variant="secondary">
+
+          <Button size="small" variant="secondary" onClick={handleCapture}>
             {t("orders.payment.capture")}
           </Button>
         </div>
