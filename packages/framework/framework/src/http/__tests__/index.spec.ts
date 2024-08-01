@@ -1,7 +1,6 @@
 import express from "express"
 import { resolve } from "path"
 import {
-  config,
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
   storeGlobalMiddlewareMock,
@@ -230,8 +229,7 @@ describe("RoutesLoader", function () {
       )
       const err = await new RoutesLoader({
         app,
-        rootDir,
-        configModule: config,
+        sourceDir: rootDir,
       })
         .load()
         .catch((e) => e)

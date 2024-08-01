@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response, raw } from "express"
+import { NextFunction, raw, Request, Response } from "express"
 import {
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
   storeGlobalMiddlewareMock,
 } from "../mocks"
-import { defineMiddlewares } from "../../../../../utils/define-middlewares"
+import { defineMiddlewares } from "../../utils/define-middlewares"
 
 const customersGlobalMiddleware = (
   req: Request,
