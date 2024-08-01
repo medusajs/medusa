@@ -16,13 +16,13 @@ import {
   createWorkflow,
   parallelize,
   transform,
-  when
+  when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
+import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,

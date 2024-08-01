@@ -18,7 +18,6 @@ import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 
@@ -33,7 +32,7 @@ const validationStep = createStep(
     orderExchange: OrderExchangeDTO
     orderChange: OrderChangeDTO
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderExchange, "Exchange")
     throwIfOrderChangeIsNotActive({ orderChange })
   }
@@ -102,7 +101,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
           details: {
             reference_id: lineItems[index].id,
             quantity: item.quantity,
-            unit_price: item.unit_price,
+            unit_price: item.unit_price ?? lineItems[index].unit_price,
             metadata: item.metadata,
           },
         }))

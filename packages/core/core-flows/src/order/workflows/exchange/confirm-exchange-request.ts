@@ -2,15 +2,10 @@ import {
   FulfillmentWorkflow,
   OrderChangeActionDTO,
   OrderChangeDTO,
-  OrderClaimDTO,
   OrderDTO,
+  OrderExchangeDTO,
 } from "@medusajs/types"
-import {
-  ChangeActionType,
-  Modules,
-  OrderChangeStatus,
-  ReturnStatus,
-} from "@medusajs/utils"
+import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -22,9 +17,9 @@ import {
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create-fulfillment"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
-import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
-import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
+import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
+import { createOrderExchangeItemsFromActionsStep } from "../../steps/exchange/create-exchange-items-from-actions"
 import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
@@ -32,22 +27,22 @@ import {
 } from "../../utils/order-validation"
 
 type WorkflowInput = {
-  claim_id: string
+  exchange_id: string
 }
 
 const validationStep = createStep(
-  "validate-confirm-claim-request",
+  "validate-confirm-exchange-request",
   async function ({
     order,
     orderChange,
-    orderClaim,
+    orderExchange,
   }: {
     order: OrderDTO
-    orderClaim: OrderClaimDTO
+    orderExchange: OrderExchangeDTO
     orderChange: OrderChangeDTO
   }) {
     throwIfIsCancelled(order, "Order")
-    throwIfIsCancelled(orderClaim, "Claim")
+    throwIfIsCancelled(orderExchange, "Exchange")
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
@@ -112,25 +107,22 @@ function prepareFulfillmentData({
 }
 
 function transformActionsToItems({ orderChange }) {
-  const claimItems: OrderChangeActionDTO[] = []
+  const exchangeItems: OrderChangeActionDTO[] = []
   const returnItems: OrderChangeActionDTO[] = []
 
   const actions = orderChange.actions ?? []
   actions.forEach((item) => {
     if (item.action === ChangeActionType.RETURN_ITEM) {
       returnItems.push(item)
-    } else if (
-      item.action === ChangeActionType.ITEM_ADD ||
-      item.action === ChangeActionType.WRITE_OFF_ITEM
-    ) {
-      claimItems.push(item)
+    } else if (item.action === ChangeActionType.ITEM_ADD) {
+      exchangeItems.push(item)
     }
   })
 
   return {
-    claimItems: {
-      changes: claimItems,
-      claimId: claimItems?.[0]?.claim_id!,
+    exchangeItems: {
+      changes: exchangeItems,
+      exchangeId: exchangeItems?.[0]?.exchange_id!,
     },
     returnItems: {
       changes: returnItems,
@@ -139,13 +131,13 @@ function transformActionsToItems({ orderChange }) {
   }
 }
 
-function extractShippingOption({ orderPreview, orderClaim, returnId }) {
+function extractShippingOption({ orderPreview, orderExchange, returnId }) {
   if (!orderPreview.shipping_methods?.length) {
     return
   }
 
   let returnShippingMethod
-  let claimShippingMethod
+  let exchangeShippingMethod
   for (const shippingMethod of orderPreview.shipping_methods) {
     const modifiedShippingMethod_ = shippingMethod as any
     if (!modifiedShippingMethod_.actions) {
@@ -156,8 +148,8 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
       if (action.action === ChangeActionType.SHIPPING_ADD) {
         if (action.return_id === returnId) {
           returnShippingMethod = shippingMethod
-        } else if (action.claim_id === orderClaim.id) {
-          claimShippingMethod = shippingMethod
+        } else if (action.exchange_id === orderExchange.id) {
+          exchangeShippingMethod = shippingMethod
         }
       }
     }
@@ -165,18 +157,18 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 
   return {
     returnShippingMethod,
-    claimShippingMethod,
+    exchangeShippingMethod,
   }
 }
 
-export const confirmClaimRequestWorkflowId = "confirm-claim-request"
-export const confirmClaimRequestWorkflow = createWorkflow(
-  confirmClaimRequestWorkflowId,
+export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
+export const confirmExchangeRequestWorkflow = createWorkflow(
+  confirmExchangeRequestWorkflowId,
   function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
-    const orderClaim: OrderClaimDTO = useRemoteQueryStep({
-      entry_point: "order_claim",
+    const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
+      entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],
-      variables: { id: input.claim_id },
+      variables: { id: input.exchange_id },
       list: false,
       throw_if_key_not_found: true,
     })
@@ -194,7 +186,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         "items.variant_barcode",
         "shipping_address.*",
       ],
-      variables: { id: orderClaim.order_id },
+      variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -204,7 +196,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       fields: [
         "id",
         "actions.id",
-        "actions.claim_id",
+        "actions.exchange_id",
         "actions.return_id",
         "actions.action",
         "actions.details",
@@ -214,25 +206,25 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       ],
       variables: {
         filters: {
-          order_id: orderClaim.order_id,
-          claim_id: orderClaim.id,
+          order_id: orderExchange.order_id,
+          exchange_id: orderExchange.id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    validationStep({ order, orderExchange, orderChange })
 
-    const { claimItems, returnItems } = transform(
+    const { exchangeItems, returnItems } = transform(
       { orderChange },
       transformActionsToItems
     )
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    const [createClaimItems, createdReturnItems] = parallelize(
-      createOrderClaimItemsFromActionsStep(claimItems),
+    const [createExchangeItems, createdReturnItems] = parallelize(
+      createOrderExchangeItemsFromActionsStep(exchangeItems),
       createReturnItemsFromActionsStep(returnItems),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
@@ -244,28 +236,23 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       }
     )
 
-    updateReturnsStep([
-      {
-        id: returnId,
-        status: ReturnStatus.REQUESTED,
-        requested_at: new Date(),
-      },
-    ])
+    const exchangeId = transform(
+      { createExchangeItems },
+      ({ createExchangeItems }) => {
+        return createExchangeItems?.[0]?.exchange_id
+      }
+    )
 
-    const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
-      return createClaimItems?.[0]?.claim_id
-    })
-
-    const { returnShippingMethod, claimShippingMethod } = transform(
-      { orderPreview, orderClaim, returnId },
+    const { returnShippingMethod, exchangeShippingMethod } = transform(
+      { orderPreview, orderExchange, returnId },
       extractShippingOption
     )
 
-    when({ claimShippingMethod }, ({ claimShippingMethod }) => {
-      return !!claimShippingMethod
+    when({ exchangeShippingMethod }, ({ exchangeShippingMethod }) => {
+      return !!exchangeShippingMethod
     }).then(() => {
-      const claim: OrderClaimDTO = useRemoteQueryStep({
-        entry_point: "order_claim",
+      const exchange: OrderExchangeDTO = useRemoteQueryStep({
+        entry_point: "order_exchange",
         fields: [
           "id",
           "version",
@@ -276,12 +263,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
           "additional_items.variant_sku",
           "additional_items.variant_barcode",
         ],
-        variables: { id: claimId },
+        variables: { id: exchangeId },
         list: false,
         throw_if_key_not_found: true,
-      }).config({ name: "claim-query" })
+      }).config({ name: "exchange-query" })
 
-      const claimShippingOption = useRemoteQueryStep({
+      const exchangeShippingOption = useRemoteQueryStep({
         entry_point: "shipping_options",
         fields: [
           "id",
@@ -290,17 +277,17 @@ export const confirmClaimRequestWorkflow = createWorkflow(
           "service_zone.fulfillment_set.location.address.*",
         ],
         variables: {
-          id: claimShippingMethod.shipping_option_id,
+          id: exchangeShippingMethod.shipping_option_id,
         },
         list: false,
         throw_if_key_not_found: true,
-      }).config({ name: "claim-shipping-option" })
+      }).config({ name: "exchange-shipping-option" })
 
       const fulfillmentData = transform(
         {
           order,
-          items: claim.additional_items! ?? [],
-          shippingOption: claimShippingOption,
+          items: exchange.additional_items! ?? [],
+          shippingOption: exchangeShippingOption,
           deliveryAddress: order.shipping_address,
         },
         prepareFulfillmentData
@@ -318,7 +305,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       })
 
       createRemoteLinkStep(link).config({
-        name: "claim-shipping-fulfillment-link",
+        name: "exchange-shipping-fulfillment-link",
       })
     })
 
@@ -338,7 +325,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         },
         list: false,
         throw_if_key_not_found: true,
-      }).config({ name: "claim-return-shipping-option" })
+      }).config({ name: "exchange-return-shipping-option" })
 
       const fulfillmentData = transform(
         {
@@ -365,7 +352,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       )
 
       createRemoteLinkStep(returnLink).config({
-        name: "claim-return-shipping-fulfillment-link",
+        name: "exchange-return-shipping-fulfillment-link",
       })
     })
 
