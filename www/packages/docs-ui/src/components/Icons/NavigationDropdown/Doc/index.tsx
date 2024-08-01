@@ -11,7 +11,11 @@ export const NavigationDropdownDocIcon = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <rect width="20" height="20" className="fill-medusa-fg-base" />
+      <rect
+        width="20"
+        height="20"
+        className="fill-medusa-fg-base dark:fill-medusa-bg-base"
+      />
       <g clipPath="url(#clip0_9988_95547)">
         <path
           d="M14.25 16H7.25C6.009 16 5 14.991 5 13.75C5 13.336 5.336 13 5.75 13C6.164 13 6.5 13.336 6.5 13.75C6.5 14.164 6.836 14.5 7.25 14.5H14.25C14.664 14.5 15 14.836 15 15.25C15 15.664 14.664 16 14.25 16Z"

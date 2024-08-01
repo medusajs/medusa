@@ -12,7 +12,7 @@ export const TightLayout = ({
     <RootLayout {...props}>
       <div
         className={clsx(
-          "h-full w-full",
+          "w-full h-fit",
           "max-w-inner-content-xs sm:max-w-inner-content-sm md:max-w-inner-content-md",
           "lg:max-w-inner-content-lg xl:max-w-inner-content-xl xxl:max-w-inner-content-xxl",
           "xxxl:max-w-inner-content-xxxl"

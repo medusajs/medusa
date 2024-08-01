@@ -43,9 +43,9 @@ export const RootLayout = ({
               "lg:mt-docs_0.5 lg:mr-docs_0.5",
               "bg-medusa-bg-base rounded",
               "shadow-elevation-card-rest",
-              "pt-docs_4 lg:pt-docs_6",
-              "flex justify-center items-center",
-              "h-full w-full max-h-screen",
+              "pt-docs_4 lg:pt-docs_6 pb-docs_4",
+              "flex justify-center",
+              "h-screen w-full",
               "overflow-y-scroll overflow-x-hidden",
               mainWrapperClasses
             )}

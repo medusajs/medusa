@@ -10,6 +10,7 @@ import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside } from "../.."
 import { SidebarSeparator } from "./Separator"
+import { SidebarActions } from "./Actions"
 
 export type SidebarProps = {
   className?: string
@@ -23,7 +24,7 @@ export const Sidebar = ({
   sidebarTopProps,
 }: SidebarProps) => {
   const sidebarTopRef = useRef<HTMLDivElement>(null)
-  const [sidebarTopHeight, setSidebarHeight] = useState(0)
+  const sidebarActionsRef = useRef<HTMLDivElement>(null)
   const {
     items,
     currentItems,
@@ -32,6 +33,10 @@ export const Sidebar = ({
     desktopSidebarOpen,
     staticSidebarItems,
     sidebarRef,
+    sidebarTopHeight,
+    setSidebarTopHeight,
+    sidebarActionsHeight,
+    setSidebarActionsHeight,
   } = useSidebar()
   useClickOutside({
     elmRef: sidebarRef,
@@ -48,7 +53,11 @@ export const Sidebar = ({
   )
 
   useResizeObserver(sidebarTopRef, () => {
-    setSidebarHeight(sidebarTopRef.current?.clientHeight || 0)
+    setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
+  })
+
+  useResizeObserver(sidebarActionsRef, () => {
+    setSidebarActionsHeight(sidebarActionsRef.current?.clientHeight || 0)
   })
 
   return (
@@ -79,7 +88,7 @@ export const Sidebar = ({
           animationFillMode: "forwards",
         }}
       >
-        <ul className={clsx("h-full w-full", "flex flex-col")} id="sidebar">
+        <ul className={clsx("h-full w-full", "flex flex-col")}>
           <SidebarTop
             {...sidebarTopProps}
             parentItem={sidebarItems.parentItem}
@@ -99,8 +108,11 @@ export const Sidebar = ({
                 className={clsx("overflow-y-scroll clip", "p-docs_0.75")}
                 ref={sidebarRef}
                 style={{
-                  maxHeight: `calc(100vh - ${sidebarTopHeight + 40}px)`,
+                  maxHeight: `calc(100vh - ${
+                    sidebarTopHeight + sidebarActionsHeight + 24
+                  }px)`,
                 }}
+                id="sidebar"
               >
                 {/* MOBILE SIDEBAR */}
                 <div className={clsx("lg:hidden")}>
@@ -134,6 +146,7 @@ export const Sidebar = ({
               </div>
             </CSSTransition>
           </SwitchTransition>
+          <SidebarActions ref={sidebarActionsRef} />
         </ul>
       </aside>
     </>

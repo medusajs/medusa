@@ -2,7 +2,7 @@
 
 // @refresh reset
 
-import React, { useEffect, useMemo, useRef } from "react"
+import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import { SidebarItemLink as SidebarItemlinkType } from "types"
 import {
   checkSidebarItemVisibility,
@@ -28,6 +28,7 @@ export const SidebarItemLink = ({
     setMobileSidebarOpen: setSidebarOpen,
     disableActiveTransition,
     sidebarRef,
+    sidebarTopHeight,
   } = useSidebar()
   const { isMobile } = useMobile()
   const active = useMemo(
@@ -36,61 +37,47 @@ export const SidebarItemLink = ({
   )
   const ref = useRef<HTMLLIElement>(null)
 
-  /**
-   * Tries to place the item in the center of the sidebar
-   */
-  const newTopCalculator = (): number => {
+  const newTopCalculator = useCallback(() => {
     if (!sidebarRef.current || !ref.current) {
       return 0
     }
+
     const sidebarBoundingRect = sidebarRef.current.getBoundingClientRect()
-    const sidebarHalf = sidebarBoundingRect.height / 2
-    const itemTop = ref.current.offsetTop
-    const itemBottom =
-      itemTop + (ref.current.children.item(0) as HTMLElement)?.clientHeight
+    const itemBoundingRect = ref.current.getBoundingClientRect()
 
-    // try deducting half
-    let newTop = itemTop - sidebarHalf
-    let newBottom = newTop + sidebarBoundingRect.height
-    if (newTop <= itemTop && newBottom >= itemBottom) {
-      return newTop
-    }
-
-    // try adding half
-    newTop = itemTop + sidebarHalf
-    newBottom = newTop + sidebarBoundingRect.height
-    if (newTop <= itemTop && newBottom >= itemBottom) {
-      return newTop
-    }
-
-    //return the item's top minus some top margin
-    return itemTop - sidebarBoundingRect.top
-  }
+    return (
+      itemBoundingRect.top -
+      (sidebarBoundingRect.top + sidebarTopHeight) +
+      sidebarRef.current.scrollTop
+    )
+  }, [sidebarTopHeight, sidebarRef, ref])
 
   useEffect(() => {
-    if (
-      active &&
-      ref.current &&
-      sidebarRef.current &&
-      window.innerWidth >= 1025
-    ) {
-      if (
-        !disableActiveTransition &&
-        !checkSidebarItemVisibility(
-          (ref.current.children.item(0) as HTMLElement) || ref.current,
-          !disableActiveTransition
-        )
-      ) {
+    if (active && ref.current && sidebarRef.current && !isMobile) {
+      const isVisible = checkSidebarItemVisibility(
+        (ref.current.children.item(0) as HTMLElement) || ref.current,
+        !disableActiveTransition
+      )
+      if (isVisible) {
+        return
+      }
+      if (!disableActiveTransition) {
         ref.current.scrollIntoView({
           block: "center",
         })
-      } else if (disableActiveTransition) {
+      } else {
         sidebarRef.current.scrollTo({
           top: newTopCalculator(),
         })
       }
     }
-  }, [active, sidebarRef.current, disableActiveTransition])
+  }, [
+    active,
+    sidebarRef.current,
+    disableActiveTransition,
+    isMobile,
+    newTopCalculator,
+  ])
 
   const hasChildren = useMemo(() => {
     return !item.isChildSidebar && (item.children?.length || 0) > 0
