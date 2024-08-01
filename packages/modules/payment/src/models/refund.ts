@@ -33,6 +33,9 @@ export default class Refund {
   })
   payment!: Rel<Payment>
 
+  @Property({ columnType: "text", nullable: true })
+  payment_id: string
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",

@@ -7,6 +7,7 @@ import { isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -16,14 +17,14 @@ import { createProductVariantsWorkflow } from "./create-product-variants"
 
 type WorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
+  additional_data?: Record<string, unknown>
 }
 
 export const createProductsWorkflowId = "create-products"
+
 export const createProductsWorkflow = createWorkflow(
   createProductsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
+  (input: WorkflowData<WorkflowInput>) => {
     // Passing prices to the product module will fail, we want to keep them for after the product is created.
     const productWithoutExternalRelations = transform({ input }, (data) =>
       data.input.products.map((p) => ({
@@ -98,6 +99,13 @@ export const createProductsWorkflow = createWorkflow(
       }
     )
 
-    return new WorkflowResponse(response)
+    const productsCreated = createHook("productsCreated", {
+      products: response,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(response, {
+      hooks: [productsCreated],
+    })
   }
 )
