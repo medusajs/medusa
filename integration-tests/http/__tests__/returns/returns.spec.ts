@@ -421,7 +421,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
-            change_type: "return",
+            change_type: "return_request",
             description: "Test",
             status: "pending",
             order_id: order.id,
@@ -875,7 +875,7 @@ medusaIntegrationTestRunner({
           expect(result.data.order.order_change).toEqual(
             expect.objectContaining({
               return_id: returnId,
-              change_type: "return",
+              change_type: "return_receive",
               status: "pending",
               internal_note: "Test internal note",
             })

@@ -259,7 +259,12 @@ export interface CreateOrderChangeDTO {
   return_id?: string
   claim_id?: string
   exchange_id?: string
-  change_type?: "return" | "exchange" | "claim" | "edit"
+  change_type?:
+    | "return_request"
+    | "return_receive"
+    | "exchange"
+    | "claim"
+    | "edit"
   description?: string
   internal_note?: string | null
   requested_by?: string
