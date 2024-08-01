@@ -31,6 +31,10 @@ const DEFAULT_RELATIONS = [
   "*fulfillments",
   "*fulfillments.items",
   "*fulfillments.labels",
+  "*fulfillments.labels",
+  "*payment_collections",
+  "*payment_collections.payments",
+  "*payment_collections.payments.refunds",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(
