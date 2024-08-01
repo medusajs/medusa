@@ -140,6 +140,12 @@ medusaIntegrationTestRunner({
         },
         currency_code: "usd",
         customer_id: "joe",
+        transactions: [
+          {
+            amount: 20,
+            currency_code: "usd",
+          },
+        ],
       })
 
       shippingProfile = (
@@ -328,6 +334,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(
           `/admin/returns/${returnId2}/shipping-method`,
           {
@@ -335,6 +342,7 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
         await api.post(`/admin/returns/${returnId2}/request`, {}, adminHeaders)
 
         const returnId = result.data.return.id
@@ -405,7 +413,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             order_id: order.id,
-            status: "requested",
+            status: "open",
           })
         )
 
@@ -413,7 +421,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             return_id: returnId,
-            change_type: "return",
+            change_type: "return_request",
             description: "Test",
             status: "pending",
             order_id: order.id,
@@ -477,7 +485,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        // Remove item return requesta
+        // Remove item return request
         const returnItemActionId =
           result.data.order_preview.items[0].actions[0].id
         result = await api.delete(
@@ -685,6 +693,9 @@ medusaIntegrationTestRunner({
 
         expect(result.data.return).toEqual(
           expect.objectContaining({
+            id: returnId,
+            status: "requested",
+            requested_at: expect.any(String),
             items: [
               expect.objectContaining({
                 reason: expect.objectContaining({
@@ -864,7 +875,7 @@ medusaIntegrationTestRunner({
           expect(result.data.order.order_change).toEqual(
             expect.objectContaining({
               return_id: returnId,
-              change_type: "return",
+              change_type: "return_receive",
               status: "pending",
               internal_note: "Test internal note",
             })
@@ -899,6 +910,24 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+
+          const receiveItemActionId =
+            result.data.order_preview.items[0].actions[0].id
+
+          // invalid update (quantity 0)
+          result = await api
+            .post(
+              `/admin/returns/${returnId}/receive-items/${receiveItemActionId}`,
+              {
+                quantity: 0,
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(result.response.data.message).toEqual(
+            `Quantity to receive return of item ${item.id} is required.`
           )
 
           result = await api.post(

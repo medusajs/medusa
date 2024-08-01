@@ -111,13 +111,11 @@ export interface BaseProductListParams
   handle?: string | string[]
   id?: string | string[]
   is_giftcard?: boolean
-  tags?: {
-    value?: string[]
-  }
+  tags?: string | string[]
   type_id?: string | string[]
-  category_id?: string | string[] | OperatorMap<string>
-  categories?: { id: OperatorMap<string> } | { id: OperatorMap<string[]> }
-  collection_id?: string | string[] | OperatorMap<string>
+  category_id?: string | string[]
+  categories?: string | string[]
+  collection_id?: string | string[]
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
   deleted_at?: OperatorMap<string>

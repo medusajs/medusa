@@ -3143,7 +3143,6 @@ paths:
           description: The product's category id.
           required: true
           schema:
-            type: array
             description: The product's category id.
             items:
               type: string
@@ -3154,7 +3153,6 @@ paths:
           description: The product's sales channel id.
           required: true
           schema:
-            type: array
             description: The product's sales channel id.
             items:
               type: string
@@ -3165,7 +3163,6 @@ paths:
           description: The product's collection id.
           required: true
           schema:
-            type: array
             description: The product's collection id.
             items:
               type: string
@@ -3176,7 +3173,6 @@ paths:
           description: The product's tags.
           required: false
           schema:
-            type: array
             description: The product's tags.
             items:
               type: string
@@ -3187,7 +3183,6 @@ paths:
           description: The product's type id.
           required: false
           schema:
-            type: array
             description: The product's type id.
             items:
               type: string
@@ -5487,6 +5482,11 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminImportProductRequest
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/File'
     AdminImportProductResponse:
       type: object
       description: SUMMARY
@@ -5617,21 +5617,24 @@ components:
         metadata:
           type: object
           description: The order's metadata.
+    AdminPostCancelClaimReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostCancelClaimReqSchema
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The claim's no notification.
     AdminPostCancelReturnReqSchema:
       type: object
       description: SUMMARY
       x-schemaName: AdminPostCancelReturnReqSchema
-      required:
-        - internal_note
       properties:
         no_notification:
           type: boolean
           title: no_notification
           description: The return's no notification.
-        internal_note:
-          type: string
-          title: internal_note
-          description: The return's internal note.
     AdminPostClaimItemsReqSchema:
       type: object
       description: SUMMARY
@@ -5655,6 +5658,13 @@ components:
                 type: number
                 title: quantity
                 description: The item's quantity.
+              reason:
+                type: string
+                enum:
+                  - missing_item
+                  - wrong_item
+                  - production_failure
+                  - other
               description:
                 type: string
                 title: description
@@ -5663,9 +5673,6 @@ components:
                 type: string
                 title: internal_note
                 description: The item's internal note.
-              metadata:
-                type: object
-                description: The item's metadata.
     AdminPostClaimsAddItemsReqSchema:
       type: object
       description: SUMMARY
@@ -5709,6 +5716,13 @@ components:
           type: number
           title: quantity
           description: The claim's quantity.
+        reason:
+          type: string
+          enum:
+            - missing_item
+            - wrong_item
+            - production_failure
+            - other
         internal_note:
           type: string
           title: internal_note
@@ -8522,6 +8536,52 @@ components:
             - unexpected_state
             - invalid_argument
             - unknown_error
+    File:
+      type: object
+      description: The product's file.
+      x-schemaName: File
+      required:
+        - lastModified
+        - name
+        - webkitRelativePath
+        - size
+        - type
+        - arrayBuffer
+        - stream
+        - text
+      properties:
+        lastModified:
+          type: number
+          title: lastModified
+          description: The file's lastmodified.
+        name:
+          type: string
+          title: name
+          description: The file's name.
+        webkitRelativePath:
+          type: string
+          title: webkitRelativePath
+          description: The file's webkitrelativepath.
+        size:
+          type: number
+          title: size
+          description: The file's size.
+        type:
+          type: string
+          title: type
+          description: The file's type.
+        arrayBuffer:
+          type: object
+          description: The file's arraybuffer.
+        slice:
+          type: object
+          description: The file's slice.
+        stream:
+          type: object
+          description: The file's stream.
+        text:
+          type: object
+          description: The file's text.
     StoreAddCartLineItem:
       type: object
       description: SUMMARY

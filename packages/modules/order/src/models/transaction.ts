@@ -108,6 +108,7 @@ export default class Transaction {
 
   @ManyToOne(() => Return, {
     persist: false,
+    nullable: true,
   })
   return: Rel<Return>
 
@@ -123,6 +124,7 @@ export default class Transaction {
 
   @ManyToOne(() => Exchange, {
     persist: false,
+    nullable: true,
   })
   exchange: Rel<Exchange>
 
@@ -138,6 +140,7 @@ export default class Transaction {
 
   @ManyToOne(() => Claim, {
     persist: false,
+    nullable: true,
   })
   claim: Rel<Claim>
 

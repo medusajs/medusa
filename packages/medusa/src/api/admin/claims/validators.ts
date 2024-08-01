@@ -1,4 +1,4 @@
-import { ClaimType } from "@medusajs/utils"
+import { ClaimReason, ClaimType } from "@medusajs/utils"
 import { z } from "zod"
 import {
   createFindParams,
@@ -82,9 +82,7 @@ export type AdminPostReceiveClaimItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostCancelClaimReqSchema = z.object({
-  return_id: z.string(),
   no_notification: z.boolean().optional(),
-  internal_note: z.string().nullish(),
 })
 export type AdminPostCancelClaimReqSchemaType = z.infer<
   typeof AdminPostCancelClaimReqSchema
@@ -150,9 +148,9 @@ export const AdminPostClaimItemsReqSchema = z.object({
     z.object({
       id: z.string(),
       quantity: z.number(),
+      reason: z.nativeEnum(ClaimReason).optional(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
     })
   ),
 })
@@ -164,7 +162,7 @@ export type AdminPostClaimItemsReqSchemaType = z.infer<
 export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
-  reason_id: z.string().nullish().optional(),
+  reason: z.nativeEnum(ClaimReason).nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
 
@@ -174,6 +172,7 @@ export type AdminPostClaimsRequestItemsActionReqSchemaType = z.infer<
 
 export const AdminPostClaimsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
+  reason: z.nativeEnum(ClaimReason).nullish().optional(),
   internal_note: z.string().nullish().optional(),
 })
 

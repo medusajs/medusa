@@ -1,12 +1,13 @@
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminPostCancelClaimReqSchema,
+  AdminPostClaimItemsReqSchema,
   AdminPostClaimsAddItemsReqSchema,
-  AdminPostClaimsConfirmRequestReqSchema,
   AdminPostClaimsRequestItemsActionReqSchema,
   AdminPostClaimsRequestReturnItemsReqSchema,
   AdminPostClaimsShippingActionReqSchema,
@@ -51,7 +52,7 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/claims/:id/claim-items",
     middlewares: [
-      validateAndTransformBody(AdminPostClaimsRequestReturnItemsReqSchema),
+      validateAndTransformBody(AdminPostClaimItemsReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -209,12 +210,10 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-
   {
     method: ["POST"],
     matcher: "/admin/claims/:id/request",
     middlewares: [
-      validateAndTransformBody(AdminPostClaimsConfirmRequestReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -225,5 +224,21 @@ export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/claims/:id/request",
     middlewares: [],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/claims/:id",
+    middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/claims/:id/cancel",
+    middlewares: [
+      validateAndTransformBody(AdminPostCancelClaimReqSchema),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

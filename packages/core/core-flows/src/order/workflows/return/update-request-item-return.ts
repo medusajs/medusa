@@ -8,6 +8,7 @@ import {
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -74,7 +75,7 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
   updateRequestItemReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.UpdateRequestItemReturnWorkflowInput>
-  ): WorkflowData<OrderDTO> {
+  ): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -97,7 +98,7 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
       variables: {
         filters: {
           order_id: orderReturn.order_id,
-          return_id: orderReturn.id,
+          claim_id: input.claim_id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
@@ -127,6 +128,6 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
 
     updateOrderChangeActionsStep([updateData])
 
-    return previewOrderChangeStep(order.id)
+    return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
 )

@@ -1,3 +1,4 @@
+import { ClaimReason } from "../../order/mutations"
 import { BigNumberInput } from "../../totals"
 
 interface NewItem {
@@ -24,6 +25,11 @@ export interface OrderClaimAddNewItemWorkflowInput {
   items: NewItem[]
 }
 
+export interface OrderExchangeAddNewItemWorkflowInput {
+  exchange_id: string
+  items: NewItem[]
+}
+
 export interface OrderAddLineItemWorkflowInput {
   order_id: string
   items: NewItem[]
@@ -47,6 +53,15 @@ export interface UpdateClaimAddNewItemWorkflowInput {
   }
 }
 
+export interface UpdateExchangeAddNewItemWorkflowInput {
+  exchange_id: string
+  action_id: string
+  data: {
+    quantity?: BigNumberInput
+    internal_note?: string | null
+  }
+}
+
 export interface OrderExchangeItemWorkflowInput {
   exchange_id: string
   items: ExistingItem[]
@@ -63,7 +78,7 @@ export interface UpdateExchangeAddItemWorkflowInput {
 
 export interface OrderClaimItemWorkflowInput {
   claim_id: string
-  items: ExistingItem[]
+  items: (ExistingItem & { reason?: ClaimReason })[]
 }
 
 export interface UpdateClaimItemWorkflowInput {
@@ -71,6 +86,7 @@ export interface UpdateClaimItemWorkflowInput {
   action_id: string
   data: {
     quantity?: BigNumberInput
+    reason_id?: ClaimReason
     internal_note?: string | null
   }
 }
@@ -82,5 +98,10 @@ export interface DeleteOrderExchangeItemActionWorkflowInput {
 
 export interface DeleteOrderClaimItemActionWorkflowInput {
   claim_id: string
+  action_id: string
+}
+
+export interface DeleteOrderExchangeItemActionWorkflowInput {
+  exchange_id: string
   action_id: string
 }

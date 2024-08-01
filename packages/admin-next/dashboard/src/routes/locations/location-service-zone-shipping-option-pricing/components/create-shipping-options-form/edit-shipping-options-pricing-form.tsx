@@ -12,12 +12,12 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals/index"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
 import { useShippingOptionPriceColumns } from "../../../common/hooks/use-shipping-option-price-columns"
-import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 const getInitialCurrencyPrices = (
   prices: HttpTypes.AdminShippingOptionPrice[]
@@ -110,6 +110,8 @@ export function EditShippingOptionsPricingForm({
   })
 
   const { price_preferences: pricePreferences } = usePricePreferences({})
+
+  const { setCloseOnEscape } = useRouteModal()
 
   const columns = useShippingOptionPriceColumns({
     currencies,
@@ -234,7 +236,12 @@ export function EditShippingOptionsPricingForm({
 
         <RouteFocusModal.Body>
           <div className="flex size-full flex-col divide-y overflow-hidden">
-            <DataGridRoot data={data} columns={columns} state={form} />
+            <DataGridRoot
+              data={data}
+              columns={columns}
+              state={form}
+              onEditingChange={(editing) => setCloseOnEscape(!editing)}
+            />
           </div>
         </RouteFocusModal.Body>
       </form>

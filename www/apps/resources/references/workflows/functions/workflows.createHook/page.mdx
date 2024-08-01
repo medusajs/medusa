@@ -1,0 +1,28 @@
+---
+slug: /references/workflows/createHook
+sidebar_label: createHook
+---
+
+import { TypeList } from "docs-ui"
+
+# createHook - Workflows API Reference
+
+This documentation provides a reference to the `createHook` . It belongs to the `@medusajs/workflows-sdk` package.
+
+Define a workflow hook to be executed within steps. The created hook
+is exposed publicly for the workflow consumers to inject and run
+custom logic.
+
+Hooks behaves like steps
+
+## Type Parameters
+
+<TypeList types={[{"name":"Name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createHook"/>
+
+## Parameters
+
+<TypeList types={[{"name":"name","type":"Name","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"input","type":"TInvokeInput","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createHook"/>
+
+## Returns
+
+<TypeList types={[{"name":"Hook","type":"[Hook](../../types/workflows.Hook/page.mdx)&#60;Name, TInvokeInput&#62;","optional":false,"defaultValue":"","description":"Define a workflow hook to be executed within steps. The created hook\nis exposed publicly for the workflow consumers to inject and run\ncustom logic.\n\nHooks behaves like steps","expandable":false,"children":[]}]}  sectionTitle="createHook"/>

@@ -2,13 +2,13 @@ import boxen from "boxen"
 import chalk from "chalk"
 import checkbox from "@inquirer/checkbox"
 
-import Logger from "../loaders/logger"
+import { LinkLoader, logger } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
-import { resolvePluginsLinks } from "../loaders/helpers/resolve-plugins-links"
 import { getLinksExecutionPlanner } from "../loaders/medusa-app"
 import { LinkMigrationsPlannerAction } from "@medusajs/types"
+import { join } from "path"
 
 type Action = "sync"
 
@@ -103,15 +103,17 @@ const main = async function ({ directory }) {
     )
 
     const plugins = getResolvedPlugins(directory, configModule, true) || []
-    const pluginLinks = await resolvePluginsLinks(plugins, container)
+    const linksSourcePaths = plugins.map((plugin) =>
+      join(plugin.resolve, "links")
+    )
+    await new LinkLoader(linksSourcePaths).load()
 
     const planner = await getLinksExecutionPlanner({
       configModule,
-      linkModules: pluginLinks,
       container,
     })
 
-    Logger.info("Syncing links...")
+    logger.info("Syncing links...")
 
     const actionPlan = await planner.createPlan()
     const groupActionPlan = groupByActionPlan(actionPlan)
@@ -162,13 +164,13 @@ const main = async function ({ directory }) {
     }
 
     if (actionsToExecute.length) {
-      Logger.info("Links sync completed")
+      logger.info("Links sync completed")
     } else {
-      Logger.info("Database already up-to-date")
+      logger.info("Database already up-to-date")
     }
     process.exit()
   } catch (e) {
-    Logger.error(e)
+    logger.error(e)
     process.exit(1)
   }
 }

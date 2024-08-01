@@ -1,151 +1,211 @@
 import { Command } from "../../hooks/use-command-history"
+import { CellCoords } from "./types"
 
-/**
- * A sorted set implementation that uses binary search to find the insertion index.
- */
-export class SortedSet<T> {
-  private items: T[] = []
+export class Matrix {
+  private cells: (string | null)[][]
 
-  constructor(initialItems?: T[]) {
-    if (initialItems) {
-      this.insertMultiple(initialItems)
-    }
+  constructor(rows: number, cols: number) {
+    this.cells = Array.from({ length: rows }, () => Array(cols).fill(null))
   }
 
-  insert(value: T): void {
-    const insertionIndex = this.findInsertionIndex(value)
-
-    if (this.items[insertionIndex] !== value) {
-      this.items.splice(insertionIndex, 0, value)
-    }
-  }
-
-  remove(value: T): void {
-    const index = this.findInsertionIndex(value)
-
-    if (this.items[index] === value) {
-      this.items.splice(index, 1)
-    }
-  }
-
-  getPrev(value: T): T | null {
-    const index = this.findInsertionIndex(value)
-    if (index === 0) {
-      return null
-    }
-
-    return this.items[index - 1]
-  }
-
-  getNext(value: T): T | null {
-    const index = this.findInsertionIndex(value)
-    if (index === this.items.length - 1) {
-      return null
-    }
-
-    return this.items[index + 1]
-  }
-
-  getFirst(): T | null {
-    if (this.items.length === 0) {
-      return null
-    }
-
-    return this.items[0]
-  }
-
-  getLast(): T | null {
-    if (this.items.length === 0) {
-      return null
-    }
-
-    return this.items[this.items.length - 1]
-  }
-
-  toArray(): T[] {
-    return [...this.items]
-  }
-
-  private insertMultiple(values: T[]): void {
-    values.forEach((value) => this.insert(value))
-  }
-
-  private findInsertionIndex(value: T): number {
-    let left = 0
-    let right = this.items.length - 1
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2)
-      if (this.items[mid] === value) {
-        return mid
-      } else if (this.items[mid] < value) {
-        left = mid + 1
-      } else {
-        right = mid - 1
+  getFirstNavigableCell(): CellCoords | null {
+    for (let row = 0; row < this.cells.length; row++) {
+      for (let col = 0; col < this.cells[0].length; col++) {
+        if (this.cells[row][col] !== null) {
+          return { row, col }
+        }
       }
     }
-    return left
+
+    return null
+  }
+
+  // Register a navigable cell with a unique key
+  registerField(row: number, col: number, key: string) {
+    if (this._isValidPosition(row, col)) {
+      this.cells[row][col] = key
+    }
+  }
+
+  getFieldsInSelection(
+    start: CellCoords | null,
+    end: CellCoords | null
+  ): string[] {
+    const keys: string[] = []
+
+    if (!start || !end) {
+      return keys
+    }
+
+    if (start.col !== end.col) {
+      throw new Error("Selection must be in the same column")
+    }
+
+    const startRow = Math.min(start.row, end.row)
+    const endRow = Math.max(start.row, end.row)
+    const col = start.col
+
+    for (let row = startRow; row <= endRow; row++) {
+      if (this._isValidPosition(row, col) && this.cells[row][col] !== null) {
+        keys.push(this.cells[row][col] as string)
+      }
+    }
+
+    return keys
+  }
+
+  getCellKey(cell: CellCoords): string | null {
+    if (this._isValidPosition(cell.row, cell.col)) {
+      return this.cells[cell.row][cell.col]
+    }
+
+    return null
+  }
+
+  getIsCellSelected(
+    cell: CellCoords | null,
+    start: CellCoords | null,
+    end: CellCoords | null
+  ): boolean {
+    if (!cell || !start || !end) {
+      return false
+    }
+
+    if (start.col !== end.col) {
+      throw new Error("Selection must be in the same column")
+    }
+
+    const startRow = Math.min(start.row, end.row)
+    const endRow = Math.max(start.row, end.row)
+    const col = start.col
+
+    return cell.col === col && cell.row >= startRow && cell.row <= endRow
+  }
+
+  getValidMovement(
+    row: number,
+    col: number,
+    direction: string,
+    metaKey: boolean = false
+  ): CellCoords {
+    const [dRow, dCol] = this._getDirectionDeltas(direction)
+
+    if (metaKey) {
+      return this._getLastValidCellInDirection(row, col, dRow, dCol)
+    } else {
+      let newRow = row + dRow
+      let newCol = col + dCol
+
+      if (
+        newRow < 0 ||
+        newRow >= this.cells.length ||
+        newCol < 0 ||
+        newCol >= this.cells[0].length
+      ) {
+        return { row, col }
+      }
+
+      while (
+        this._isValidPosition(newRow, newCol) &&
+        this.cells[newRow][newCol] === null
+      ) {
+        newRow += dRow
+        newCol += dCol
+
+        if (
+          newRow < 0 ||
+          newRow >= this.cells.length ||
+          newCol < 0 ||
+          newCol >= this.cells[0].length
+        ) {
+          return { row, col }
+        }
+      }
+
+      return this._isValidPosition(newRow, newCol)
+        ? { row: newRow, col: newCol }
+        : { row, col }
+    }
+  }
+
+  private _isValidPosition(row: number, col: number): boolean {
+    return (
+      row >= 0 &&
+      row < this.cells.length &&
+      col >= 0 &&
+      col < this.cells[0].length
+    )
+  }
+
+  private _getDirectionDeltas(direction: string): [number, number] {
+    switch (direction) {
+      case "ArrowUp":
+        return [-1, 0]
+      case "ArrowDown":
+        return [1, 0]
+      case "ArrowLeft":
+        return [0, -1]
+      case "ArrowRight":
+        return [0, 1]
+      default:
+        return [0, 0]
+    }
+  }
+
+  private _getLastValidCellInDirection(
+    row: number,
+    col: number,
+    dRow: number,
+    dCol: number
+  ): CellCoords {
+    let newRow = row
+    let newCol = col
+    let lastValidRow = row
+    let lastValidCol = col
+
+    while (this._isValidPosition(newRow + dRow, newCol + dCol)) {
+      newRow += dRow
+      newCol += dCol
+      if (this.cells[newRow][newCol] !== null) {
+        lastValidRow = newRow
+        lastValidCol = newCol
+      }
+    }
+
+    return {
+      row: lastValidRow,
+      col: lastValidCol,
+    }
   }
 }
 
-export type PasteCommandArgs = {
-  selection: Record<string, boolean>
+export type BulkUpdateCommandArgs = {
+  fields: string[]
   next: string[]
   prev: string[]
-  setter: (selection: Record<string, boolean>, values: string[]) => void
+  setter: (fields: string[], values: string[]) => void
 }
 
-export class DeleteCommand implements Command {
-  private _selection: Record<string, boolean>
+export class BulkUpdateCommand implements Command {
+  private _fields: string[]
 
   private _prev: string[]
   private _next: string[]
 
-  private _setter: (
-    selection: Record<string, boolean>,
-    values: string[]
-  ) => void
+  private _setter: (string: string[], values: string[]) => void
 
-  constructor({ selection, prev, next, setter }: PasteCommandArgs) {
-    this._selection = selection
+  constructor({ fields, prev, next, setter }: BulkUpdateCommandArgs) {
+    this._fields = fields
     this._prev = prev
     this._next = next
     this._setter = setter
   }
 
   execute(): void {
-    this._setter(this._selection, this._next)
+    this._setter(this._fields, this._next)
   }
   undo(): void {
-    this._setter(this._selection, this._prev)
-  }
-  redo(): void {
-    this.execute()
-  }
-}
-
-export class PasteCommand implements Command {
-  private _selection: Record<string, boolean>
-
-  private _prev: string[]
-  private _next: string[]
-
-  private _setter: (
-    selection: Record<string, boolean>,
-    values: string[]
-  ) => void
-
-  constructor({ selection, prev, next, setter }: PasteCommandArgs) {
-    this._selection = selection
-    this._prev = prev
-    this._next = next
-    this._setter = setter
-  }
-
-  execute(): void {
-    this._setter(this._selection, this._next)
-  }
-  undo(): void {
-    this._setter(this._selection, this._prev)
+    this._setter(this._fields, this._prev)
   }
   redo(): void {
     this.execute()

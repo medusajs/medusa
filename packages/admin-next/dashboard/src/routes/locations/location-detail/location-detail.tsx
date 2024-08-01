@@ -10,6 +10,7 @@ import after from "virtual:medusa/widgets/location/details/after"
 import before from "virtual:medusa/widgets/location/details/before"
 import sideAfter from "virtual:medusa/widgets/location/details/side/after"
 import sideBefore from "virtual:medusa/widgets/location/details/side/before"
+import LocationsFulfillmentProvidersSection from "./components/location-fulfillment-providers-section/location-fulfillment-providers-section"
 import { detailsFields } from "./const"
 
 export const LocationDetail = () => {
@@ -23,15 +24,7 @@ export const LocationDetail = () => {
     isPending: isLoading,
     isError,
     error,
-  } = useStockLocation(
-    location_id!,
-    {
-      fields: detailsFields,
-    },
-    {
-      initialData,
-    }
-  )
+  } = useStockLocation(location_id!, { fields: detailsFields }, { initialData })
 
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
   if (isLoading || !location) {
@@ -73,7 +66,10 @@ export const LocationDetail = () => {
               </div>
             )
           })}
+
           <LocationsSalesChannelsSection location={location} />
+          <LocationsFulfillmentProvidersSection location={location} />
+
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>

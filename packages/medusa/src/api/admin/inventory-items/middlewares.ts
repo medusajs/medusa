@@ -1,5 +1,5 @@
 import * as QueryConfig from "./query-config"
-import { MiddlewareRoute } from "../../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateInventoryItem,

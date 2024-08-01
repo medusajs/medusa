@@ -3,14 +3,6 @@ export enum TransactionHandlerType {
   COMPENSATE = "compensate",
 }
 
-export enum TransactionStepStatus {
-  IDLE = "idle",
-  OK = "ok",
-  WAITING = "waiting_response",
-  TEMPORARY_FAILURE = "temp_failure",
-  PERMANENT_FAILURE = "permanent_failure",
-}
-
 export enum TransactionState {
   NOT_STARTED = "not_started",
   INVOKING = "invoking",
@@ -30,5 +22,14 @@ export enum TransactionStepState {
   FAILED = "failed",
   DORMANT = "dormant",
   SKIPPED = "skipped",
+  SKIPPED_FAILURE = "skipped_failure",
   TIMEOUT = "timeout",
+}
+
+export enum TransactionStepStatus {
+  IDLE = "idle",
+  OK = "ok",
+  WAITING = "waiting_response",
+  TEMPORARY_FAILURE = "temp_failure",
+  PERMANENT_FAILURE = "permanent_failure",
 }

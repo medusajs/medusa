@@ -1,6 +1,7 @@
 import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
+import { adminClaimRoutesMiddlewares } from "./admin/claims/middlewares"
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
 import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
@@ -17,13 +18,14 @@ import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
 import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middlewares"
 import { adminPricePreferencesRoutesMiddlewares } from "./admin/price-preferences/middlewares"
 import { adminProductCategoryRoutesMiddlewares } from "./admin/product-categories/middlewares"
-import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminProductTagRoutesMiddlewares } from "./admin/product-tags/middlewares"
+import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
 import { adminReturnReasonRoutesMiddlewares } from "./admin/return-reasons/middlewares"
+import { adminReturnRoutesMiddlewares } from "./admin/returns/middlewares"
 import { adminSalesChannelRoutesMiddlewares } from "./admin/sales-channels/middlewares"
 import { adminShippingOptionRoutesMiddlewares } from "./admin/shipping-options/middlewares"
 import { adminShippingProfilesMiddlewares } from "./admin/shipping-profiles/middlewares"
@@ -35,6 +37,7 @@ import { adminUploadRoutesMiddlewares } from "./admin/uploads/middlewares"
 import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
+
 import { hooksRoutesMiddlewares } from "./hooks/middlewares"
 import { storeCartRoutesMiddlewares } from "./store/carts/middlewares"
 import { storeCollectionRoutesMiddlewares } from "./store/collections/middlewares"
@@ -48,7 +51,6 @@ import { storeProductRoutesMiddlewares } from "./store/products/middlewares"
 import { storeRegionRoutesMiddlewares } from "./store/regions/middlewares"
 import { storeReturnReasonRoutesMiddlewares } from "./store/return-reasons/middlewares"
 import { storeShippingOptionRoutesMiddlewares } from "./store/shipping-options/middlewares"
-import { adminReturnRoutesMiddlewares } from "./admin/returns/middlewares"
 
 export default defineMiddlewares([
   ...adminCustomerGroupRoutesMiddlewares,
@@ -103,4 +105,5 @@ export default defineMiddlewares([
   ...storeProductRoutesMiddlewares,
   ...storeReturnReasonRoutesMiddlewares,
   ...adminReturnReasonRoutesMiddlewares,
+  ...adminClaimRoutesMiddlewares,
 ])

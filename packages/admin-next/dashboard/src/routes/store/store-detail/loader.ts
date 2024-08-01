@@ -1,18 +1,18 @@
-import { storeQueryKeys } from "../../../hooks/api/store"
-import { client } from "../../../lib/client"
+import { HttpTypes } from "@medusajs/types"
+
+import { retrieveActiveStore, storeQueryKeys } from "../../../hooks/api/store"
 import { queryClient } from "../../../lib/query-client"
-import { StoreRes } from "../../../types/api-responses"
 
 const storeDetailQuery = () => ({
   queryKey: storeQueryKeys.details(),
-  queryFn: async () => client.stores.retrieve(),
+  queryFn: async () => retrieveActiveStore(),
 })
 
 export const storeLoader = async () => {
   const query = storeDetailQuery()
 
   return (
-    queryClient.getQueryData<StoreRes>(query.queryKey) ??
+    queryClient.getQueryData<HttpTypes.AdminStoreResponse>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

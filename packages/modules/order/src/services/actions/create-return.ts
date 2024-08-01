@@ -34,7 +34,6 @@ function createReturnItems(em, data, returnRef, actions) {
       reference_id: returnRef.id,
       details: {
         reference_id: item.id,
-        return_id: returnRef.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },
@@ -115,7 +114,7 @@ async function createOrderChange(
     {
       order_id: data.order_id,
       return_id: returnRef.id,
-      change_type: OrderChangeType.RETURN,
+      change_type: OrderChangeType.RETURN_REQUEST,
       reference: "return",
       reference_id: returnRef.id,
       description: data.description,

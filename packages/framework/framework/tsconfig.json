@@ -23,7 +23,6 @@
     "paths": {
     },
   },
-
   "include": ["src"],
   "exclude": [
     "dist",

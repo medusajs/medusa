@@ -59,9 +59,7 @@ const CreateInventoryItemSchema = zod.object({
   // metadata: zod.record(zod.string(), zod.unknown()).optional(),
 })
 
-type CreateInventoryItemFormProps = {}
-
-export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
+export function CreateInventoryItemForm() {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
@@ -237,12 +235,12 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
 
           <RouteFocusModal.Body
             className={clx(
-              "flex h-full w-fit flex-col items-center divide-y overflow-hidden",
+              "flex h-full w-full flex-col items-center divide-y overflow-hidden",
               { "mx-auto": tab === Tab.DETAILS }
             )}
           >
             <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-              <div className="container mx-auto w-[720px] px-1 py-8">
+              <div className="mx-auto w-[720px] px-1 py-8">
                 <Heading level="h2" className="mb-12 mt-8 text-2xl">
                   {t("inventory.create.title")}
                 </Heading>
@@ -534,8 +532,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
 
             <ProgressTabs.Content
               value={Tab.AVAILABILITY}
-              className="h-full w-full"
-              style={{ width: "100vw" }}
+              className="size-full"
             >
               <CreateInventoryAvailabilityForm form={form} />
             </ProgressTabs.Content>

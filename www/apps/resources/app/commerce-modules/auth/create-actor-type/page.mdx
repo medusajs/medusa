@@ -37,10 +37,10 @@ Start by creating a workflow that does two things:
 For example, create the file `src/workflows/create-manager.ts`. with the following content:
 
 export const workflowHighlights = [
-  ["20", "createManagerStep", "Thi step creates a manager."],
-  ["37", "createManagerWorkflow", "The workflow used to create a manager and set its auth identity's actor type."],
-  ["44", "setAuthAppMetadataStep", "Set the actor type of the manager's associated auth identity."],
-  ["46", '"manager"', "The actor type of the manager."]
+  ["21", "createManagerStep", "Thi step creates a manager."],
+  ["38", "createManagerWorkflow", "The workflow used to create a manager and set its auth identity's actor type."],
+  ["45", "setAuthAppMetadataStep", "Set the actor type of the manager's associated auth identity."],
+  ["47", '"manager"', "The actor type of the manager."]
 ]
 
 ```ts title="src/workflows/create-manager.ts" highlights={workflowHighlights}
@@ -48,6 +48,7 @@ import {
   createWorkflow, 
   createStep,
   StepResponse,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
@@ -93,7 +94,7 @@ const createManagerWorkflow = createWorkflow(
       value: manager.id,
     })
 
-    return manager
+    return new WorkflowResponse(manager)
   }
 )
 
@@ -184,7 +185,7 @@ export const middlewareHighlights = [
 ```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
 import { 
   defineMiddlewares,
-  authenticate
+  authenticate,
 } from "@medusajs/medusa"
 
 export default defineMiddlewares({
