@@ -99,13 +99,13 @@ export const createProductsWorkflow = createWorkflow(
       }
     )
 
-    const productCreated = createHook("productCreated", {
+    const productsCreated = createHook("productsCreated", {
       products: response,
       additional_data: input.additional_data,
     })
 
     return new WorkflowResponse(response, {
-      hooks: [productCreated],
+      hooks: [productsCreated],
     })
   }
 )
