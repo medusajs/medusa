@@ -27,6 +27,7 @@ type UpdateProductsStepInputSelector = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   }
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInputProducts = {
@@ -34,17 +35,14 @@ type UpdateProductsStepInputProducts = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInput =
   | UpdateProductsStepInputSelector
   | UpdateProductsStepInputProducts
 
-type WorkflowInput = WorkflowData<
-  UpdateProductsStepInput & {
-    additional_data?: Record<string, unknown>
-  }
->
+type WorkflowInput = UpdateProductsStepInput
 
 function prepareUpdateProductInput({
   input,
