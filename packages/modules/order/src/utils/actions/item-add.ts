@@ -1,9 +1,4 @@
-import {
-  ChangeActionType,
-  MathBN,
-  MedusaError,
-  isDefined,
-} from "@medusajs/utils"
+import { ChangeActionType, MathBN, MedusaError } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
@@ -45,7 +40,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
   validate({ action }) {
     const refId = action.details?.reference_id
 
-    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
+    if (action.amount == null && action.details?.unit_price == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Unit price of item ${refId} is required if no action.amount is provided.`
