@@ -78,7 +78,6 @@ const Refund = ({
   currencyCode: string
 }) => {
   const { t } = useTranslation()
-  const hasPayment = refund.payment_id !== null
 
   const BadgeComponent = (
     <Badge size="2xsmall" className="cursor-default select-none capitalize">
@@ -94,17 +93,20 @@ const Refund = ({
 
   return (
     <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
-      <div>
-        {hasPayment && <ArrowDownRightMini className="text-ui-fg-muted" />}
-        <Text size="small" leading="compact" weight="plus">
-          {t("orders.payment.refund")}
-        </Text>
+      <div className="flex flex-row">
+        <div className="self-center pr-3">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+        </div>
+        <div>
+          <Text size="small" leading="compact" weight="plus">
+            {t("orders.payment.refund")}
+          </Text>
+          <Text size="small" leading="compact">
+            {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
+          </Text>
+        </div>
       </div>
-      <div className="flex items-center justify-end">
-        <Text size="small" leading="compact">
-          {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
-        </Text>
-      </div>
+      <div className="flex items-center justify-end"></div>
       <div className="flex items-center justify-end">{Render}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
