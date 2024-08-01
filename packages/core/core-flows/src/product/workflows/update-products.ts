@@ -7,6 +7,7 @@ import {
 } from "@medusajs/types"
 import { arrayDifference, Modules } from "@medusajs/utils"
 import {
+  createHook,
   createWorkflow,
   transform,
   WorkflowData,
@@ -210,9 +211,7 @@ function prepareToDeleteSalesChannelLinks({
 export const updateProductsWorkflowId = "update-products"
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
+  (input: WorkflowData<WorkflowInput>) => {
     const previousVariantIds = getVariantIdsForProductsStep(input)
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
@@ -248,9 +247,14 @@ export const updateProductsWorkflow = createWorkflow(
     })
 
     dismissRemoteLinkStep(toDeleteSalesChannelLinks)
-
     createRemoteLinkStep(salesChannelLinks)
 
-    return new WorkflowResponse(updatedProducts)
+    const productsUpdated = createHook("productsUpdated", {
+      products: updatedProducts,
+    })
+
+    return new WorkflowResponse(updatedProducts, {
+      hooks: [productsUpdated],
+    })
   }
 )

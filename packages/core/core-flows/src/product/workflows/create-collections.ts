@@ -9,7 +9,7 @@ import { createCollectionsStep } from "../steps"
 
 type WorkflowInput = {
   collections: ProductTypes.CreateProductCollectionDTO[]
-  additional_data: Record<string, unknown>
+  additional_data?: Record<string, unknown>
 }
 
 export const createCollectionsWorkflowId = "create-collections"
