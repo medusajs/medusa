@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,
@@ -17,7 +16,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
+import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,

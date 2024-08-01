@@ -7,7 +7,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderClaimsStep } from "../../steps/create-claims"
+import { createOrderClaimsStep } from "../../steps/claim/create-claims"
 import { createOrderChangeStep } from "../../steps/create-order-change"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 
