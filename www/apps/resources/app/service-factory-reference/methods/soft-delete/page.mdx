@@ -30,7 +30,7 @@ For example, the returned object of the above example is:
 
 ```ts
 deletedPosts = {
-  post_id: ["123"]
+  post_id: ["123"],
 }
 ```
 
@@ -41,7 +41,7 @@ deletedPosts = {
 ```ts
 const deletedPosts = await postModuleService.softDeletePosts([
   "123",
-  "321"
+  "321",
 ])
 ```
 
@@ -59,8 +59,8 @@ For example, the returned object of the above example is:
 deletedPosts = {
   post_id: [
     "123",
-    "321"
-  ]
+    "321",
+  ],
 }
 ```
 
@@ -70,7 +70,7 @@ deletedPosts = {
 
 ```ts
 const deletedPosts = await postModuleService.softDeletePosts({
-  name: "My Post"
+  name: "My Post",
 })
 ```
 
@@ -92,6 +92,6 @@ For example, the returned object of the above example is:
 
 ```ts
 deletedPosts = {
-  post_id: ["123"]
+  post_id: ["123"],
 }
 ```

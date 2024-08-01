@@ -15,7 +15,7 @@ This method updates one or more records of the data model.
 ```ts
 const post = await postModuleService.updatePosts({
   id: "123",
-  name: "My Post"
+  name: "My Post",
 })
 ```
 
@@ -37,12 +37,12 @@ The method returns the updated record as an object.
 const posts = await postModuleService.updatePosts([
   {
     id: "123",
-    name: "My Post"
+    name: "My Post",
   },
   {
     id: "321",
-    published_at: new Date()
-  }
+    published_at: new Date(),
+  },
 ])
 ```
 
@@ -63,11 +63,11 @@ The method returns an array of objects of updated records.
 ```ts
 const posts = await postModuleService.updatePosts({
   selector: {
-    name: "My Post"
+    name: "My Post",
   },
   data: {
-    published_at: new Date()
-  }
+    published_at: new Date(),
+  },
 })
 ```
 
@@ -98,22 +98,22 @@ The method returns an array of objects of updated records.
 const posts = await postModuleService.updatePosts([
   {
     selector: {
-      name: "My Post"
+      name: "My Post",
     },
     data: {
-      published_at: new Date()
-    }
+      published_at: new Date(),
+    },
   },
   {
     selector: {
-      name: "Another Post"
+      name: "Another Post",
     },
     data: {
       metadata: {
-        external_id: "123"
-      }
-    }
-  }
+        external_id: "123",
+      },
+    },
+  },
 ])
 ```
 

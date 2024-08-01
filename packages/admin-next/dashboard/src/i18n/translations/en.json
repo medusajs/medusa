@@ -809,7 +809,7 @@
       "title": "Payments",
       "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
-      "capture": "Capture",
+      "capture": "Capture payment",
       "refund": "Refund",
       "statusLabel": "Payment status",
       "statusTitle": "Payment Status",
@@ -824,7 +824,9 @@
         "refunded": "Refunded",
         "canceled": "Canceled",
         "requiresAction": "Requires action"
-      }
+      },
+      "capturePayment": "Payment of {{amount}} will be captured.",
+      "capturePaymentSuccess": "Payment of {{amount}} successfully captured"
     },
 
     "edits": {

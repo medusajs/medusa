@@ -123,6 +123,14 @@ const normalizeProductForImport = (
       return
     }
 
+    if (normalizedKey.startsWith("product_category_")) {
+      response["categories"] = [
+        ...(response["categories"] || []),
+        { id: normalizedValue },
+      ]
+      return
+    }
+
     if (
       normalizedKey.startsWith("product_") &&
       !productFieldsToOmit.has(normalizedKey)

@@ -3630,6 +3630,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user_models/classes/user_models.User/page.mdx"
   },
   {
+    "origSlug": "/references/workflows/functions/workflows.createHook",
+    "newSlug": "/references/workflows/createHook",
+    "filePath": "/www/apps/resources/references/workflows/functions/workflows.createHook/page.mdx"
+  },
+  {
     "origSlug": "/references/workflows/functions/workflows.createStep",
     "newSlug": "/references/workflows/createStep",
     "filePath": "/www/apps/resources/references/workflows/functions/workflows.createStep/page.mdx"
