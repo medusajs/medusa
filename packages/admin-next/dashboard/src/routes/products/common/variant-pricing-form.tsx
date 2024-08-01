@@ -20,9 +20,9 @@ type VariantPricingFormProps = {
 export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   const { store } = useStore()
   const { regions } = useRegions({ limit: 9999 })
-  const { setCloseOnEscape } = useRouteModal()
-
   const { price_preferences: pricePreferences } = usePricePreferences({})
+
+  const { setCloseOnEscape } = useRouteModal()
 
   const columns = useVariantPriceGridColumns({
     currencies: store?.supported_currencies,
