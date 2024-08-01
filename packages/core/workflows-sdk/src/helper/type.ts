@@ -44,9 +44,21 @@ export type FlowCancelOptions = {
   container?: LoadedModule[] | MedusaContainer
 }
 
+/**
+ * The details of a workflow's execution.
+ */
 export type WorkflowResult<TResult = unknown> = {
+  /**
+   * Any errors that occured in the workflow.
+   */
   errors: TransactionStepError[]
+  /**
+   * The transaction details of the workflow's execution.
+   */
   transaction: DistributedTransaction
+  /**
+   * The result returned by the workflow.
+   */
   result: TResult
 }
 
