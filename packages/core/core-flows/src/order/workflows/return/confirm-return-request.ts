@@ -4,18 +4,23 @@ import {
   OrderDTO,
   ReturnDTO,
 } from "@medusajs/types"
-import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
+  ChangeActionType,
+  Modules,
+  OrderChangeStatus,
+  ReturnStatus,
+} from "@medusajs/utils"
+import {
   WorkflowResponse,
   createStep,
   createWorkflow,
+  parallelize,
   transform,
-  when,
+  when
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
-import { previewOrderChangeStep } from "../../steps"
+import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
 import {
@@ -233,7 +238,16 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       createRemoteLinkStep(link)
     })
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    parallelize(
+      updateReturnsStep([
+        {
+          id: orderReturn.id,
+          status: ReturnStatus.REQUESTED,
+          requested_at: new Date(),
+        },
+      ]),
+      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    )
 
     return new WorkflowResponse(orderPreview)
   }
