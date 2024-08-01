@@ -216,11 +216,28 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & {
+  /**
+   * This method executes the workflow as a step. Useful when running a workflow within another.
+   * 
+   * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/execute-another-workflow).
+   * 
+   * @param param0 - The options to execute the workflow.
+   * @returns The workflow's result
+   */
   runAsStep: ({
     input,
   }: {
+    /**
+     * The workflow's input.
+     */
     input: TData | WorkflowData<TData>
   }) => ReturnType<StepFunction<TData, TResult>>
+  /**
+   * This method executes a workflow.
+   * 
+   * @param args - The options to execute the workflow.
+   * @returns Details of the workflow's execution, including its result.
+   */
   run: <TDataOverride = undefined, TResultOverride = undefined>(
     ...args: Parameters<
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
@@ -228,8 +245,19 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   ) => ReturnType<
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>["run"]
   >
+  /**
+   * This method retrieves the workflow's name.
+   */
   getName: () => string
+  /**
+   * This method sets the workflow's configurations.
+   */
   config: (config: TransactionModelOptions) => void
+  /**
+   * The workflow's exposed hooks, used to register a handler to consume the hook.
+   * 
+   * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook#how-to-consume-a-hook).
+   */
   hooks: ConvertHooksToFunctions<THooks>
 }
 

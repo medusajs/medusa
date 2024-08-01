@@ -46,9 +46,12 @@ export const importProductsWorkflow = createWorkflow(
         },
       ]
     })
+
     notifyOnFailureStep(failureNotification)
 
-    batchProductsWorkflow.runAsStep({ input: batchRequest })
+    batchProductsWorkflow
+      .runAsStep({ input: batchRequest })
+      .config({ async: true, backgroundExecution: true })
 
     const notifications = transform({ input }, (data) => {
       return [
