@@ -1,16 +1,13 @@
-import { ConfigModule } from "@medusajs/types"
 import { parseCorsOrigins, promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
 import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
-import { extname, join, sep } from "path"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { authenticate, errorHandler } from "../../../utils/middlewares"
-import { logger } from "@medusajs/framework"
+import { extname, join, parse, sep } from "path"
 import {
-  AsyncRouteHandler,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
+  MedusaRequest,
+  MedusaResponse,
   MiddlewareRoute,
   MiddlewaresConfig,
   MiddlewareVerb,
@@ -19,6 +16,9 @@ import {
   RouteDescriptor,
   RouteVerb,
 } from "./types"
+import { authenticate, errorHandler } from "./middlewares"
+import { configManager } from "../config"
+import { logger } from "../logger"
 
 const log = ({
   activityId,
@@ -163,40 +163,68 @@ function getBodyParserMiddleware(args?: ParserConfigArgs) {
   ]
 }
 
-export class RoutesLoader {
-  protected routesMap = new Map<string, RouteDescriptor>()
-  protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
+// TODO this router would need a proper rework, but it is out of scope right now
 
-  protected app: Express
-  protected router: Router
-  protected activityId?: string
-  protected rootDir: string
-  protected configModule: ConfigModule
-  protected excludes: RegExp[] = [
+class ApiRoutesLoader {
+  /**
+   * Map of router path and its descriptor
+   * @private
+   */
+  #routesMap = new Map<string, RouteDescriptor>()
+
+  /**
+   * Global middleware descriptors
+   * @private
+   */
+  #globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
+
+  /**
+   * An express instance
+   * @private
+   */
+  readonly #app: Express
+
+  /**
+   * A router to assign the route to
+   * @private
+   */
+  readonly #router: Router
+
+  /**
+   * An eventual activity id for information tracking
+   * @private
+   */
+  readonly #activityId?: string
+
+  /**
+   * The list of file names to exclude from the routes scan
+   * @private
+   */
+  #excludes: RegExp[] = [
     /\.DS_Store/,
-    /(\.ts\.map|\.js\.map|\.d\.ts)/,
+    /(\.ts\.map|\.js\.map|\.d\.ts|\.md)/,
     /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
+
+  /**
+   * Path from where to load the routes from
+   * @private
+   */
+  readonly #sourceDir: string
 
   constructor({
     app,
     activityId,
-    rootDir,
-    configModule,
-    excludes = [],
+    sourceDir,
   }: {
     app: Express
     activityId?: string
-    rootDir: string
-    configModule: ConfigModule
-    excludes?: RegExp[]
+    sourceDir: string
   }) {
-    this.app = app
-    this.router = Router()
-    this.activityId = activityId
-    this.rootDir = rootDir
-    this.configModule = configModule
-    this.excludes.push(...(excludes ?? []))
+    this.#app = app
+    this.#router = Router()
+    this.#activityId = activityId
+    this.#sourceDir = sourceDir
   }
 
   /**
@@ -215,7 +243,7 @@ export class RoutesLoader {
   }): void {
     if (!config?.routes && !config?.errorHandler) {
       log({
-        activityId: this.activityId,
+        activityId: this.#activityId,
         message: `Empty middleware config. Skipping middleware application.`,
       })
 
@@ -255,7 +283,7 @@ export class RoutesLoader {
         if (match?.[1] && !Number.isInteger(match?.[1])) {
           if (parameters.has(match?.[1])) {
             log({
-              activityId: this.activityId,
+              activityId: this.#activityId,
               message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
             })
 
@@ -289,12 +317,12 @@ export class RoutesLoader {
    */
   protected async createRoutesConfig(): Promise<void> {
     await promiseAll(
-      [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
+      [...this.#routesMap.values()].map(async (descriptor: RouteDescriptor) => {
         const absolutePath = descriptor.absolutePath
         const route = descriptor.route
 
         return await import(absolutePath).then((import_) => {
-          const map = this.routesMap
+          const map = this.#routesMap
 
           const config: RouteConfig = {
             routes: [],
@@ -353,7 +381,7 @@ export class RoutesLoader {
               })
             } else {
               log({
-                activityId: this.activityId,
+                activityId: this.#activityId,
                 message: `Skipping handler ${handler} in ${absolutePath}. Invalid HTTP method: ${handler}.`,
               })
             }
@@ -361,7 +389,7 @@ export class RoutesLoader {
 
           if (!config.routes?.length) {
             log({
-              activityId: this.activityId,
+              activityId: this.#activityId,
               message: `No valid route handlers detected in ${absolutePath}. Skipping route configuration.`,
             })
 
@@ -376,29 +404,20 @@ export class RoutesLoader {
     )
   }
 
-  protected createRoutesDescriptor({
-    childPath,
-    parentPath,
-  }: {
-    childPath: string
-    parentPath?: string
-  }) {
+  protected createRoutesDescriptor(path: string) {
     const descriptor: RouteDescriptor = {
-      absolutePath: childPath,
-      relativePath: "",
+      absolutePath: path,
+      relativePath: path,
       route: "",
       priority: Infinity,
     }
 
-    if (parentPath) {
-      childPath = childPath.replace(parentPath, "")
-    }
-
+    const childPath = path.replace(this.#sourceDir, "")
     descriptor.relativePath = childPath
 
     let routeToParse = childPath
 
-    const pathSegments = childPath.split(sep)
+    const pathSegments = routeToParse.split(sep)
     const lastSegment = pathSegments[pathSegments.length - 1]
 
     if (lastSegment.startsWith("route")) {
@@ -409,40 +428,36 @@ export class RoutesLoader {
     descriptor.route = this.parseRoute(routeToParse)
     descriptor.priority = calculatePriority(descriptor.route)
 
-    this.routesMap.set(childPath, descriptor)
+    this.#routesMap.set(path, descriptor)
   }
 
-  protected async createMiddlewaresDescriptor({
-    dirPath,
-  }: {
-    dirPath: string
-  }) {
-    const files = await readdir(dirPath)
+  protected async createMiddlewaresDescriptor() {
+    const filePaths = await readdir(this.#sourceDir)
 
-    const middlewareFilePath = files
-      .filter((path) => {
-        if (
-          this.excludes.length &&
-          this.excludes.some((exclude) => exclude.test(path))
-        ) {
-          return false
-        }
+    const filteredFilePaths = filePaths.filter((path) => {
+      const pathToCheck = path.replace(this.#sourceDir, "")
+      return !pathToCheck
+        .split(sep)
+        .some((segment) =>
+          this.#excludes.some((exclude) => exclude.test(segment))
+        )
+    })
 
-        return true
-      })
-      .find((file) => {
-        return file.replace(/\.[^/.]+$/, "") === MIDDLEWARES_NAME
-      })
+    const middlewareFilePath = filteredFilePaths.find((file) => {
+      return file.replace(/\.[^/.]+$/, "") === MIDDLEWARES_NAME
+    })
 
     if (!middlewareFilePath) {
       log({
-        activityId: this.activityId,
-        message: `No middleware files found in ${dirPath}. Skipping middleware configuration.`,
+        activityId: this.#activityId,
+        message: `No middleware files found in ${
+          this.#sourceDir
+        }. Skipping middleware configuration.`,
       })
       return
     }
 
-    const absolutePath = join(dirPath, middlewareFilePath)
+    const absolutePath = join(this.#sourceDir, middlewareFilePath)
 
     try {
       await import(absolutePath).then((import_) => {
@@ -452,7 +467,7 @@ export class RoutesLoader {
 
         if (!middlewaresConfig) {
           log({
-            activityId: this.activityId,
+            activityId: this.#activityId,
             message: `No middleware configuration found in ${absolutePath}. Skipping middleware configuration.`,
           })
           return
@@ -471,11 +486,11 @@ export class RoutesLoader {
 
         this.validateMiddlewaresConfig(descriptor)
 
-        this.globalMiddlewaresDescriptor = descriptor
+        this.#globalMiddlewaresDescriptor = descriptor
       })
     } catch (error) {
       log({
-        activityId: this.activityId,
+        activityId: this.#activityId,
         message: `Failed to load middleware configuration in ${absolutePath}. Skipping middleware configuration.`,
       })
 
@@ -483,54 +498,34 @@ export class RoutesLoader {
     }
   }
 
-  protected async createRoutesMap({
-    dirPath,
-    parentPath,
-  }: {
-    dirPath: string
-    parentPath?: string
-  }): Promise<void> {
+  protected async createRoutesMap(): Promise<void> {
     await promiseAll(
-      await readdir(dirPath, { withFileTypes: true }).then((entries) => {
-        return entries
-          .filter((entry) => {
-            if (
-              this.excludes.length &&
-              this.excludes.some((exclude) => exclude.test(entry.name))
-            ) {
-              return false
-            }
+      await readdir(this.#sourceDir, {
+        recursive: true,
+        withFileTypes: true,
+      }).then((entries) => {
+        const fileEntries = entries.filter((entry) => {
+          const fullPathFromSource = join(entry.path, entry.name).replace(
+            this.#sourceDir,
+            ""
+          )
+          const isExcluded = fullPathFromSource
+            .split(sep)
+            .some((segment) =>
+              this.#excludes.some((exclude) => exclude.test(segment))
+            )
 
-            let name = entry.name
+          return (
+            !entry.isDirectory() &&
+            !isExcluded &&
+            parse(entry.name).name === ROUTE_NAME
+          )
+        })
 
-            const extension = extname(name)
-
-            if (extension) {
-              name = name.replace(extension, "")
-            }
-
-            if (entry.isFile() && name !== ROUTE_NAME) {
-              return false
-            }
-
-            return true
-          })
-          .map(async (entry) => {
-            const childPath = join(dirPath, entry.name)
-
-            if (entry.isDirectory()) {
-              return await this.createRoutesMap({
-                dirPath: childPath,
-                parentPath: parentPath ?? dirPath,
-              })
-            }
-
-            return this.createRoutesDescriptor({
-              childPath,
-              parentPath,
-            })
-          })
-          .flat(Infinity)
+        return fileEntries.map(async (entry) => {
+          const path = join(entry.path, entry.name)
+          return this.createRoutesDescriptor(path)
+        })
       })
     )
   }
@@ -539,7 +534,7 @@ export class RoutesLoader {
    * Apply the most specific body parser middleware to the router
    */
   applyBodyParserMiddleware(path: string, method: RouteVerb): void {
-    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+    const middlewareDescriptor = this.#globalMiddlewaresDescriptor
 
     const mostSpecificConfig = findMatch(
       path,
@@ -548,13 +543,13 @@ export class RoutesLoader {
     )
 
     if (!mostSpecificConfig || mostSpecificConfig?.bodyParser === undefined) {
-      this.router[method.toLowerCase()](path, ...getBodyParserMiddleware())
+      this.#router[method.toLowerCase()](path, ...getBodyParserMiddleware())
 
       return
     }
 
     if (mostSpecificConfig?.bodyParser) {
-      this.router[method.toLowerCase()](
+      this.#router[method.toLowerCase()](
         path,
         ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)
       )
@@ -572,7 +567,7 @@ export class RoutesLoader {
    * that they are applied before any other middleware.
    */
   applyRouteSpecificMiddlewares(): void {
-    const prioritizedRoutes = prioritize([...this.routesMap.values()])
+    const prioritizedRoutes = prioritize([...this.#routesMap.values()])
 
     for (const descriptor of prioritizedRoutes) {
       if (!descriptor.config?.routes?.length) {
@@ -591,11 +586,11 @@ export class RoutesLoader {
         /**
          * Apply the admin cors
          */
-        this.router.use(
+        this.#router.use(
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.http.adminCors
+              configManager.config.projectConfig.http.adminCors
             ),
             credentials: true,
           })
@@ -606,11 +601,11 @@ export class RoutesLoader {
         /**
          * Apply the auth cors
          */
-        this.router.use(
+        this.#router.use(
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.http.authCors
+              configManager.config.projectConfig.http.authCors
             ),
             credentials: true,
           })
@@ -621,11 +616,11 @@ export class RoutesLoader {
         /**
          * Apply the store cors
          */
-        this.router.use(
+        this.#router.use(
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.http.storeCors
+              configManager.config.projectConfig.http.storeCors
             ),
             credentials: true,
           })
@@ -634,7 +629,7 @@ export class RoutesLoader {
 
       // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
       if (!config.optedOutOfAuth && config.routeType === "store") {
-        this.router.use(
+        this.#router.use(
           descriptor.route,
           authenticate("customer", ["bearer", "session"], {
             allowUnauthenticated: true,
@@ -644,7 +639,7 @@ export class RoutesLoader {
 
       if (!config.optedOutOfAuth && config.routeType === "admin") {
         // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
-        this.router.use(
+        this.#router.use(
           descriptor.route,
           authenticate("user", ["bearer", "session", "api-key"])
         )
@@ -664,7 +659,7 @@ export class RoutesLoader {
    * Apply the error handler middleware to the router
    */
   applyErrorHandlerMiddleware(): void {
-    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+    const middlewareDescriptor = this.#globalMiddlewaresDescriptor
     const errorHandlerFn = middlewareDescriptor?.config?.errorHandler
 
     /**
@@ -678,7 +673,7 @@ export class RoutesLoader {
      * If the user has provided a custom error handler then use it
      */
     if (errorHandlerFn) {
-      this.router.use(errorHandlerFn)
+      this.#router.use(errorHandlerFn as any)
       return
     }
 
@@ -686,17 +681,17 @@ export class RoutesLoader {
      * If the user has not provided a custom error handler then use the
      * default one.
      */
-    this.router.use(errorHandler())
+    this.#router.use(errorHandler() as any)
   }
 
   protected async registerRoutes(): Promise<void> {
-    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+    const middlewareDescriptor = this.#globalMiddlewaresDescriptor
 
     const shouldWrapHandler = middlewareDescriptor?.config
       ? middlewareDescriptor.config.errorHandler !== false
       : true
 
-    const prioritizedRoutes = prioritize([...this.routesMap.values()])
+    const prioritizedRoutes = prioritize([...this.#routesMap.values()])
 
     for (const descriptor of prioritizedRoutes) {
       if (!descriptor.config?.routes?.length) {
@@ -707,7 +702,7 @@ export class RoutesLoader {
 
       for (const route of routes) {
         log({
-          activityId: this.activityId,
+          activityId: this.#activityId,
           message: `Registering route [${route.method?.toUpperCase()}] - ${
             descriptor.route
           }`,
@@ -718,16 +713,16 @@ export class RoutesLoader {
          * we wrap the handler in a try/catch block.
          */
         const handler = shouldWrapHandler
-          ? wrapHandler(route.handler as AsyncRouteHandler)
+          ? wrapHandler(route.handler as Parameters<typeof wrapHandler>[0])
           : route.handler
 
-        this.router[route.method!.toLowerCase()](descriptor.route, handler)
+        this.#router[route.method!.toLowerCase()](descriptor.route, handler)
       }
     }
   }
 
   protected async registerMiddlewares(): Promise<void> {
-    const descriptor = this.globalMiddlewaresDescriptor
+    const descriptor = this.#globalMiddlewaresDescriptor
 
     if (!descriptor) {
       return
@@ -757,17 +752,17 @@ export class RoutesLoader {
 
       for (const method of methods) {
         log({
-          activityId: this.activityId,
+          activityId: this.#activityId,
           message: `Registering middleware [${method}] - ${route.matcher}`,
         })
 
-        this.router[method.toLowerCase()](route.matcher, ...route.middlewares)
+        this.#router[method.toLowerCase()](route.matcher, ...route.middlewares)
       }
     }
   }
 
   async load() {
-    performance && performance.mark("file-base-routing-start" + this.rootDir)
+    performance && performance.mark("file-base-routing-start" + this.#sourceDir)
 
     let apiExists = true
 
@@ -778,15 +773,15 @@ export class RoutesLoader {
      * directory does not exist.
      */
     try {
-      await readdir(this.rootDir)
+      await readdir(this.#sourceDir)
     } catch (_error) {
       apiExists = false
     }
 
     if (apiExists) {
-      await this.createMiddlewaresDescriptor({ dirPath: this.rootDir })
+      await this.createMiddlewaresDescriptor()
 
-      await this.createRoutesMap({ dirPath: this.rootDir })
+      await this.createRoutesMap()
       await this.createRoutesConfig()
 
       this.applyRouteSpecificMiddlewares()
@@ -802,28 +797,78 @@ export class RoutesLoader {
        * This prevents middleware from a plugin from
        * bleeding into the global middleware stack.
        */
-      this.app.use("/", this.router)
+      this.#app.use("/", this.#router)
     }
 
-    performance && performance.mark("file-base-routing-end" + this.rootDir)
+    performance && performance.mark("file-base-routing-end" + this.#sourceDir)
     const timeSpent =
       performance &&
       performance
         .measure(
-          "file-base-routing-measure" + this.rootDir,
-          "file-base-routing-start" + this.rootDir,
-          "file-base-routing-end" + this.rootDir
+          "file-base-routing-measure" + this.#sourceDir,
+          "file-base-routing-start" + this.#sourceDir,
+          "file-base-routing-end" + this.#sourceDir
         )
         ?.duration?.toFixed(2)
 
     log({
-      activityId: this.activityId,
+      activityId: this.#activityId,
       message: `Routes loaded in ${timeSpent} ms`,
     })
 
-    this.routesMap.clear()
-    this.globalMiddlewaresDescriptor = undefined
+    this.#routesMap.clear()
+    this.#globalMiddlewaresDescriptor = undefined
   }
 }
 
-export default RoutesLoader
+export class RoutesLoader {
+  /**
+   * An express instance
+   * @private
+   */
+  readonly #app: Express
+
+  /**
+   * An eventual activity id for information tracking
+   * @private
+   */
+  readonly #activityId?: string
+
+  /**
+   * Path from where to load the routes from
+   * @private
+   */
+  readonly #sourceDir: string | string[]
+
+  constructor({
+    app,
+    activityId,
+    sourceDir,
+  }: {
+    app: Express
+    activityId?: string
+    sourceDir: string | string[]
+  }) {
+    this.#app = app
+    this.#activityId = activityId
+    this.#sourceDir = sourceDir
+  }
+
+  async load() {
+    const normalizedSourcePath = Array.isArray(this.#sourceDir)
+      ? this.#sourceDir
+      : [this.#sourceDir]
+
+    const promises = normalizedSourcePath.map(async (sourcePath) => {
+      const apiRoutesLoader = new ApiRoutesLoader({
+        app: this.#app,
+        activityId: this.#activityId,
+        sourceDir: sourcePath,
+      })
+
+      await apiRoutesLoader.load()
+    })
+
+    await promiseAll(promises)
+  }
+}

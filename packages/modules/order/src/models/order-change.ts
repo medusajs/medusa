@@ -4,7 +4,6 @@ import {
   DALUtils,
   generateEntityId,
   OrderChangeStatus,
-  OrderChangeType,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -21,6 +20,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
+import { } from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"
@@ -56,12 +56,6 @@ const OrderExchangeIdIndex = createPsqlIndexStatementHelper({
 const OrderChangeStatusIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "status",
-  where: "deleted_at IS NOT NULL",
-})
-
-const OrderChangeTypeIndex = createPsqlIndexStatementHelper({
-  tableName: "order_change",
-  columns: "change_type",
   where: "deleted_at IS NOT NULL",
 })
 
@@ -153,9 +147,8 @@ export default class OrderChange {
   @VersionIndex.MikroORMIndex()
   version: number
 
-  @Enum({ items: () => OrderChangeType, nullable: true })
-  @OrderChangeTypeIndex.MikroORMIndex()
-  change_type: OrderChangeType | null = null
+  @Property({ columnType: "text", nullable: true })
+  change_type: string | null = null
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
