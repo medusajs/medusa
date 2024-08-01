@@ -123,6 +123,14 @@ const normalizeProductForImport = (
       return
     }
 
+    if (normalizedKey.startsWith("product_category_")) {
+      response["categories"] = [
+        ...(response["categories"] || []),
+        { id: normalizedValue },
+      ]
+      return
+    }
+
     if (
       normalizedKey.startsWith("product_") &&
       !productFieldsToOmit.has(normalizedKey)
@@ -228,20 +236,24 @@ const normalizeVariantForImport = (
 }
 
 const getNormalizedValue = (key: string, value: any): any => {
-  let res = stringFields.some((field) => key.startsWith(field))
-    ? value?.toString()
-    : value
+  if (value === "\r") {
+    return ""
+  }
+
+  if (stringFields.some((field) => key.startsWith(field))) {
+    return value?.toString()
+  }
 
   if (booleanFields.some((field) => key.startsWith(field))) {
     if (value === "TRUE") {
-      res = true
+      return true
     }
     if (value === "FALSE") {
-      res = false
+      return false
     }
   }
 
-  return res
+  return value
 }
 
 const snakecaseKey = (key: string): string => {

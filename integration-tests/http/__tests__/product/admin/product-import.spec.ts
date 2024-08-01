@@ -32,6 +32,7 @@ medusaIntegrationTestRunner({
     let baseType
     let baseProduct
     let baseRegion
+    let baseCategory
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -76,6 +77,14 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.region
+
+      baseCategory = (
+        await api.post(
+          "/admin/product-categories",
+          { name: "Test", is_internal: false, is_active: true },
+          adminHeaders
+        )
+      ).data.product_category
     })
 
     afterEach(() => {
@@ -103,11 +112,11 @@ medusaIntegrationTestRunner({
           )
 
           fileContent = fileContent.replace(
-            /prod_01J3CRPNVGRZ01A8GH8FQYK10Z/g,
+            /prod_01J44RRJZ3M5F63NY82434RNM5/g,
             baseProduct.id
           )
           fileContent = fileContent.replace(
-            /variant_01J3CRPNW5J6EBVVQP1TN33A58/g,
+            /variant_01J44RRJZW1T9KQB6XG7Q6K61F/g,
             baseProduct.variants[0].id
           )
           fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
@@ -216,16 +225,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 100,
+                        currency_code: "dkk",
+                        amount: 30,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 45,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 30,
+                        currency_code: "usd",
+                        amount: 100,
                       }),
                     ],
                     options: [
@@ -243,16 +252,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 200,
+                        currency_code: "dkk",
+                        amount: 50,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 65,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 50,
+                        currency_code: "usd",
+                        amount: 200,
                       }),
                     ],
                     options: [
@@ -317,16 +326,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 100,
+                        currency_code: "dkk",
+                        amount: 30,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 45,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 30,
+                        currency_code: "usd",
+                        amount: 100,
                       }),
                     ],
                     options: [
@@ -345,6 +354,56 @@ medusaIntegrationTestRunner({
             ])
           )
         })
+      })
+
+      it("should import product with categories", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "product-with-categories.csv"),
+          { encoding: "utf-8" }
+        )
+
+        fileContent = fileContent.replace(/prod_\w*\d*/g, baseProduct.id)
+        fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
+        fileContent = fileContent.replace(/ptyp_\w*\d*/g, baseType.id)
+        fileContent = fileContent.replace(/pcat_\w*\d*/g, baseCategory.id)
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: fileContent,
+        })
+
+        const batchJobRes = await api.post("/admin/products/import", form, meta)
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 0,
+          toUpdate: 1,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
+
+        await subscriberExecution
+        const dbProducts = (
+          await api.get("/admin/products?fields=*categories", adminHeaders)
+        ).data.products
+
+        expect(dbProducts).toHaveLength(1)
+        expect(dbProducts[0]).toEqual(
+          expect.objectContaining({
+            id: baseProduct.id,
+            categories: [expect.objectContaining({ id: baseCategory.id })],
+          })
+        )
       })
 
       it("should fail on invalid region in prices being present in the CSV", async () => {
@@ -444,10 +503,11 @@ medusaIntegrationTestRunner({
           toUpdate: 0,
         })
 
-        await api
-          .post(`/admin/products/import/${transactionId}/confirm`, {}, meta)
-          // TODO: Currently the `setStepSuccess` waits for the whole workflow to finish before returning.
-          .catch((e) => e)
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
 
         await subscriberExecution
         const notifications = (

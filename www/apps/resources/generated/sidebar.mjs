@@ -7215,6 +7215,13 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/references/workflows/createHook",
+                "title": "createHook",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/references/workflows/createStep",
                 "title": "createStep",
                 "children": []

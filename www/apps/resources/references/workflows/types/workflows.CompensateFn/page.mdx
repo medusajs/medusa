@@ -1,0 +1,21 @@
+import { TypeList } from "docs-ui"
+
+# CompensateFn
+
+ **CompensateFn**: (`input`: T \| `undefined`, `context`: [StepExecutionContext](../../interfaces/workflows.StepExecutionContext/page.mdx)) => `unknown` \| Promise&#60;unknown&#62;
+
+The type of compensation function passed to a step.
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"The type of the argument passed to the compensation function. If not specified, then it will be the same type as the invocation function's output.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CompensateFn"/>
+
+## Type declaration
+
+### Parameters
+
+<TypeList types={[{"name":"input","type":"T \\| `undefined`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[StepExecutionContext](../../interfaces/workflows.StepExecutionContext/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"workflowId","type":"`string`","description":"The ID of the workflow.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attempt","type":"`number`","description":"The attempt number of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"The idempoency key of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stepName","type":"`string`","description":"The name of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"`\"invoke\"` \\| `\"compensate\"`","description":"The action of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer/page.mdx)","description":"The container used to access resources, such as services, in the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`TransactionMetadata`","description":"Metadata passed in the input.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"unknown \\| Promise&#60;unknown&#62;","type":"`unknown` \\| Promise&#60;unknown&#62;","optional":false,"defaultValue":"","description":"There's no expected type to be returned by the compensation function.","expandable":false,"children":[]}]}  sectionTitle="__type"/>
