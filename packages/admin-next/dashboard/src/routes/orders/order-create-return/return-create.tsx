@@ -37,7 +37,7 @@ export const ReturnCreate = () => {
        * Active return already exists
        */
       if (preview.order_change?.change_type === "return") {
-        setActiveReturnId(preview.order_change.return.id)
+        setActiveReturnId(preview.order_change.return_id)
         return
       }
 

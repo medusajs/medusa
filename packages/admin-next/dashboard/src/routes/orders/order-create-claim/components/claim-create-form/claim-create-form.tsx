@@ -12,12 +12,7 @@ import {
 } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import {
-  AdminClaim,
-  AdminOrder,
-  InventoryLevelDTO,
-  ReturnDTO,
-} from "@medusajs/types"
+import { AdminClaim, AdminOrder, InventoryLevelDTO } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 
 import {
@@ -27,27 +22,25 @@ import {
   useStackedModal,
 } from "../../../../../components/modals"
 
-import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
+import { ClaimCreateSchema, ReturnCreateSchemaType } from "./schema"
 import { AddClaimItemsTable } from "../add-claim-items-table"
 import { Form } from "../../../../../components/common/form"
-import { ClaimItem } from "./claim-item"
+import { ClaimInboundItem } from "./claim-inbound-item.tsx"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import {
-  useAddReturnItem,
-  useAddReturnShipping,
-  useCancelReturnRequest,
-  useConfirmReturnRequest,
-  useDeleteReturnShipping,
-  useRemoveReturnItem,
-  useUpdateReturn,
-  useUpdateReturnItem,
-  useUpdateReturnShipping,
-} from "../../../../../hooks/api/returns"
+
 import { currencies } from "../../../../../lib/data/currencies"
 import { sdk } from "../../../../../lib/client"
+import {
+  useAddClaimInboundItems,
+  useAddClaimInboundShipping,
+  useDeleteClaimInboundShipping,
+  useRemoveClaimInboundItem,
+  useUpdateClaimInboundItem,
+  useUpdateClaimInboundShipping,
+} from "../../../../../hooks/api/claims"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -92,45 +85,45 @@ export const ClaimCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmReturnRequest, isPending: isConfirming } =
-    useConfirmReturnRequest(claim.id, order.id)
+  const { mutateAsync: confirmClaimRequest, isPending: isConfirming } = {} // useConfirmClaimRequest(claim.id, order.id)
 
-  const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
-    useCancelReturnRequest(claim.id, order.id)
-  const { mutateAsync: updateReturnRequest, isPending: isUpdating } =
-    useUpdateReturn(claim.id, order.id)
+  const { mutateAsync: cancelClaimRequest, isPending: isCanceling } = {} // useCancelClaimRequest(claim.id, order.id)
 
-  const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
-    useAddReturnShipping(claim.id, order.id)
+  const { mutateAsync: updateClaimRequest, isPending: isUpdating } = {} // useUpdateClaim(claim.id, order.id)
 
   const {
-    mutateAsync: updateReturnShipping,
-    isPending: isUpdatingReturnShipping,
-  } = useUpdateReturnShipping(claim.id, order.id)
+    mutateAsync: addInboundShipping,
+    isPending: isAddingInboundShipping,
+  } = useAddClaimInboundShipping(claim.id, order.id)
 
   const {
-    mutateAsync: deleteReturnShipping,
-    isPending: isDeletingReturnShipping,
-  } = useDeleteReturnShipping(claim.id, order.id)
+    mutateAsync: updateInboundShipping,
+    isPending: isUpdatingInboundShipping,
+  } = useUpdateClaimInboundShipping(claim.id, order.id)
 
-  const { mutateAsync: addReturnItem, isPending: isAddingReturnItem } =
-    useAddReturnItem(claim.id, order.id)
+  const {
+    mutateAsync: deleteInboundShipping,
+    isPending: isDeletingInboundShipping,
+  } = useDeleteClaimInboundShipping(claim.id, order.id)
 
-  const { mutateAsync: removeReturnItem, isPending: isRemovingReturnItem } =
-    useRemoveReturnItem(claim.id, order.id)
+  const { mutateAsync: addInboundItem, isPending: isAddingInboundItem } =
+    useAddClaimInboundItems(claim.id, order.id)
 
-  const { mutateAsync: updateReturnItem, isPending: isUpdatingReturnItem } =
-    useUpdateReturnItem(claim.id, order.id)
+  const { mutateAsync: updateInboundItem, isPending: isUpdatingInboundItem } =
+    useUpdateClaimInboundItem(claim.id, order.id)
+
+  const { mutateAsync: removeInboundItem, isPending: isRemovingInboundItem } =
+    useRemoveClaimInboundItem(claim.id, order.id)
 
   const isRequestLoading =
     isConfirming ||
     isCanceling ||
-    isAddingReturnShipping ||
-    isUpdatingReturnShipping ||
-    isDeletingReturnShipping ||
-    isAddingReturnItem ||
-    isRemovingReturnItem ||
-    isUpdatingReturnItem ||
+    isAddingInboundShipping ||
+    isUpdatingInboundShipping ||
+    isDeletingInboundShipping ||
+    isAddingInboundItem ||
+    isRemovingInboundItem ||
+    isUpdatingInboundItem ||
     isUpdating
 
   /**
@@ -138,31 +131,26 @@ export const ClaimCreateForm = ({
    */
 
   const form = useForm<ReturnCreateSchemaType>({
-    /**
-     * TODO: reason selection once Return reason settings are added
-     */
     defaultValues: () => {
       const method = preview.shipping_methods.find(
         (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
       )
 
       return Promise.resolve({
-        items: preview.items
-          .filter((i) => !!i.detail.return_requested_quantity)
-          .map((i) => ({
-            item_id: i.id,
-            quantity: i.detail.return_requested_quantity,
-            note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.internal_note,
-            reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.details?.reason_id,
-          })),
-        option_id: method ? method.shipping_option_id : "",
+        inbound_items: preview.items.map((i) => ({
+          item_id: i.id,
+          quantity: i.detail.return_requested_quantity,
+          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
+            ?.internal_note,
+          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
+            ?.reason_id,
+        })),
+        inbound_option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
       })
     },
-    resolver: zodResolver(ReturnCreateSchema),
+    resolver: zodResolver(ClaimCreateSchema),
   })
 
   const itemsMap = useMemo(
@@ -241,7 +229,7 @@ export const ClaimCreateForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await confirmReturnRequest({ no_notification: !data.send_notification })
+      await confirmClaimRequest({ no_notification: !data.send_notification })
 
       handleSuccess()
     } catch (e) {
@@ -253,7 +241,7 @@ export const ClaimCreateForm = ({
   })
 
   const onItemsSelected = () => {
-    addReturnItem({
+    addInboundItem({
       items: selectedItems.map((id) => ({
         id,
         quantity: 1,
@@ -264,18 +252,18 @@ export const ClaimCreateForm = ({
   }
 
   const onLocationChange = async (selectedLocationId: string) => {
-    await updateReturnRequest({ location_id: selectedLocationId })
+    await updateClaimRequest({ location_id: selectedLocationId })
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
     const promises = preview.shipping_methods
       .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
       .filter(Boolean)
-      .map(deleteReturnShipping)
+      .map(deleteInboundShipping)
 
     await Promise.all(promises)
 
-    await addReturnShipping({ shipping_option_id: selectedOptionId })
+    await addInboundShipping({ shipping_option_id: selectedOptionId })
   }
 
   useEffect(() => {
@@ -359,7 +347,7 @@ export const ClaimCreateForm = ({
      */
     return () => {
       if (IS_CANCELING) {
-        cancelReturnRequest()
+        cancelClaimRequest()
         // TODO: add this on ESC press
         IS_CANCELING = false
       }
@@ -385,7 +373,7 @@ export const ClaimCreateForm = ({
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
-            <Heading level="h1">{t("orders.returns.create")}</Heading>
+            <Heading level="h1">{t("orders.claims.create")}</Heading>
             <div className="mt-8 flex items-center justify-between">
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
               <StackedFocusModal id="items">
@@ -441,7 +429,7 @@ export const ClaimCreateForm = ({
               />
             )}
             {items.map((item, index) => (
-              <ClaimItem
+              <ClaimInboundItem
                 key={item.id}
                 item={itemsMap.get(item.item_id)!}
                 previewItem={previewItemsMap.get(item.item_id)!}
@@ -453,7 +441,7 @@ export const ClaimCreateForm = ({
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                   if (actionId) {
-                    removeReturnItem(actionId)
+                    removeInboundItem(actionId)
                   }
                 }}
                 onUpdate={(payload) => {
@@ -462,7 +450,7 @@ export const ClaimCreateForm = ({
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                   if (actionId) {
-                    updateReturnItem({ ...payload, actionId })
+                    updateInboundItem({ ...payload, actionId })
                   }
                 }}
                 index={index}
@@ -618,7 +606,7 @@ export const ClaimCreateForm = ({
                         })
 
                         if (actionId) {
-                          updateReturnShipping({
+                          updateInboundShipping({
                             actionId,
                             custom_price:
                               typeof customShippingAmount === "string"
@@ -647,7 +635,7 @@ export const ClaimCreateForm = ({
 
               <div className="mt-4 flex items-center justify-between border-t border-dotted pt-4">
                 <span className="txt-small font-medium">
-                  {t("orders.returns.refundAmount")}
+                  {t("orders.claims.refundAmount")}
                 </span>
                 <span className="txt-small font-medium">
                   {getStylizedAmount(

@@ -56,7 +56,10 @@ export const useClaims = (
 export const useCreateClaim = (
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    {
+      claim: HttpTypes.AdminClaimResponse
+      order: HttpTypes.AdminOrderResponse
+    },
     Error,
     HttpTypes.AdminCreateClaim
   >
@@ -231,7 +234,7 @@ export const useAddClaimInboundItems = (
   })
 }
 
-export const useUpdateClaimInboundItems = (
+export const useUpdateClaimInboundItem = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<

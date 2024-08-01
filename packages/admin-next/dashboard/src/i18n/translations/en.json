@@ -861,7 +861,10 @@
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
     },
     "claims": {
-      "create": "Create Claim"
+      "create": "Create Claim",
+      "outbound": "Outbound",
+      "refundAmount": "Estimated difference",
+      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change."
     },
     "reservations": {
       "allocatedLabel": "Allocated",

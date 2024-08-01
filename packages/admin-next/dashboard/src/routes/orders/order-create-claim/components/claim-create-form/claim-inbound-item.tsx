@@ -25,7 +25,7 @@ type OrderEditItemProps = {
   form: UseFormReturn<any>
 }
 
-function ClaimItem({
+function ClaimInboundItem({
   item,
   previewItem,
   currencyCode,
@@ -243,4 +243,4 @@ function ClaimItem({
   )
 }
 
-export { ClaimItem }
+export { ClaimInboundItem }

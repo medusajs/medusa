@@ -1,7 +1,7 @@
 import { z } from "zod"
 
-export const ReturnCreateSchema = z.object({
-  items: z.array(
+export const ClaimCreateSchema = z.object({
+  inbound_items: z.array(
     z.object({
       item_id: z.string(),
       quantity: z.number(),
@@ -9,11 +9,15 @@ export const ReturnCreateSchema = z.object({
       note: z.string().optional().nullable(),
     })
   ),
+  outbound_items: z.array(
+    z.object({
+      item_id: z.string(), // TODO: variant id?
+      quantity: z.number(),
+    })
+  ),
   location_id: z.string().optional(),
-  option_id: z.string(),
+  inbound_option_id: z.string(),
   send_notification: z.boolean().optional(),
-  // TODO: implement this
-  receive_now: z.boolean().optional(),
 })
 
-export type ReturnCreateSchemaType = z.infer<typeof ReturnCreateSchema>
+export type ReturnCreateSchemaType = z.infer<typeof ClaimCreateSchema>
