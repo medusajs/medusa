@@ -19,6 +19,7 @@ import {
   SidebarItem,
   SidebarSectionItems,
   SidebarItemLink,
+  InteractiveSidebarItem,
 } from "types"
 
 export type CurrentItemsState = SidebarSectionItems & {
@@ -34,7 +35,7 @@ export type SidebarContextType = {
   items: SidebarSectionItems
   currentItems: CurrentItemsState | undefined
   activePath: string | null
-  getActiveItem: () => SidebarItem | undefined
+  getActiveItem: () => InteractiveSidebarItem | undefined
   setActivePath: (path: string | null) => void
   isItemActive: (item: SidebarItem, checkChildren?: boolean) => boolean
   addItems: (item: SidebarItem[], options?: ActionOptionsType) => void
@@ -74,7 +75,10 @@ export type ActionType = {
   options?: ActionOptionsType
 }
 
-const areItemsEqual = (itemA: SidebarItem, itemB: SidebarItem) => {
+const areItemsEqual = (itemA: SidebarItem, itemB: SidebarItem): boolean => {
+  if (itemA.type === "separator" || itemB.type === "separator") {
+    return false
+  }
   const hasSameTitle = itemA.title === itemB.title
   const hasSamePath =
     itemA.type === "link" && itemB.type === "link" && itemA.path === itemB.path
@@ -86,9 +90,12 @@ const findItem = (
   section: SidebarItem[],
   item: Partial<SidebarItem>,
   checkChildren = true
-): SidebarItem | undefined => {
-  let foundItem: SidebarItem | undefined
+): InteractiveSidebarItem | undefined => {
+  let foundItem: InteractiveSidebarItem | undefined
   section.some((i) => {
+    if (i.type === "separator") {
+      return false
+    }
     if (areItemsEqual(item as SidebarItem, i)) {
       foundItem = i
     } else if (checkChildren && i.children) {
@@ -135,6 +142,9 @@ export const reducer = (
       return {
         ...state,
         [sectionName]: sectionItems.map((i) => {
+          if (i.type === "separator") {
+            return i
+          }
           if (parent && areItemsEqual(i, parent as SidebarItem)) {
             return {
               ...i,
@@ -213,8 +223,8 @@ export const SidebarProvider = ({
     }
 
     return (
-      findItemInSection(items.mobile, { path: activePath }) ||
-      findItemInSection(items.default, { path: activePath })
+      findItemInSection(items.mobile, { path: activePath, type: "link" }) ||
+      findItemInSection(items.default, { path: activePath, type: "link" })
     )
   }, [activePath, items, findItemInSection])
 
@@ -258,23 +268,27 @@ export const SidebarProvider = ({
   }
 
   const getCurrentSidebar = useCallback(
-    (searchItems: SidebarItem[]): SidebarItem | undefined => {
-      let currentSidebar: SidebarItem | undefined
+    (searchItems: SidebarItem[]): InteractiveSidebarItem | undefined => {
+      let currentSidebar: InteractiveSidebarItem | undefined
       searchItems.some((item) => {
-        if (item.isChildSidebar) {
-          if (isItemActive(item)) {
-            currentSidebar = item
-          } else if (item.children?.length) {
-            const childSidebar =
-              getCurrentSidebar(item.children) ||
-              findItem(item.children, { path: activePath || undefined })
+        if (item.type === "separator") {
+          return false
+        }
+        if (item.isChildSidebar && isItemActive(item)) {
+          currentSidebar = item
+        }
 
-            if (childSidebar) {
-              currentSidebar = childSidebar.isChildSidebar ? childSidebar : item
-            }
+        if (!currentSidebar && item.children?.length) {
+          const childSidebar =
+            getCurrentSidebar(item.children) ||
+            findItem(item.children, {
+              path: activePath || undefined,
+              type: "link",
+            })
+
+          if (childSidebar) {
+            currentSidebar = childSidebar.isChildSidebar ? childSidebar : item
           }
-        } else if (item.children?.length) {
-          currentSidebar = getCurrentSidebar(item.children)
         }
 
         return currentSidebar !== undefined
@@ -386,12 +400,12 @@ export const SidebarProvider = ({
     if (
       currentSidebar.isChildSidebar &&
       currentSidebar.children &&
-      currentItems?.parentItem &&
-      !areItemsEqual(currentItems?.parentItem, currentSidebar)
+      (!currentItems?.parentItem ||
+        !areItemsEqual(currentItems?.parentItem, currentSidebar))
     ) {
       const { children, ...parentItem } = currentSidebar
       const hasPreviousSidebar =
-        currentItems.previousSidebar?.parentItem?.type === "link" &&
+        currentItems?.previousSidebar?.parentItem?.type === "link" &&
         parentItem.type === "link" &&
         currentItems.previousSidebar.parentItem.path !== parentItem.path
 

@@ -93,7 +93,7 @@ export const SidebarItemLink = ({
   }, [active, sidebarRef.current, disableActiveTransition])
 
   const hasChildren = useMemo(() => {
-    return item.children?.length || 0 > 0
+    return !item.isChildSidebar && (item.children?.length || 0) > 0
   }, [item.children])
 
   return (

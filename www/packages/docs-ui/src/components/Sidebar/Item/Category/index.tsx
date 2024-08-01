@@ -38,7 +38,7 @@ export const SidebarItemCategory = ({
   return (
     <div
       className={clsx(
-        "my-docs_1.5 w-full lg:bg-medusa-bg-subtle relative overflow-hidden",
+        "my-docs_0.75 w-full lg:bg-medusa-bg-subtle relative overflow-hidden",
         className
       )}
     >
@@ -82,7 +82,7 @@ export const SidebarItemCategory = ({
             "ease-ease",
             "flex flex-col gap-docs_0.125",
             "z-[1] relative",
-            !open && "overflow-hidden m-0 h-0"
+            !expandItems && "overflow-hidden m-0 h-0"
           )}
           ref={childrenRef}
         >

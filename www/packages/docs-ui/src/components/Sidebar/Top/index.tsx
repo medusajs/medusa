@@ -2,7 +2,7 @@
 
 import React from "react"
 import { SidebarTitle } from "../Title"
-import { SidebarItem } from "types"
+import { InteractiveSidebarItem, SidebarItem } from "types"
 import { SidebarSeparator } from "../Separator"
 import { SidebarTopNavigationDropdown } from "./NavigationDropdown"
 import { SearchModalOpener } from "../../.."
@@ -10,7 +10,7 @@ import { SidebarTopMobileClose } from "./MobileClose"
 
 export type SidebarTopProps = {
   banner?: React.ReactNode
-  parentItem?: SidebarItem
+  parentItem?: InteractiveSidebarItem
 }
 
 export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
@@ -21,7 +21,7 @@ export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
         <div ref={ref} className="hidden lg:block">
           <SidebarTopNavigationDropdown />
           <SidebarSeparator />
-          <SearchModalOpener className="my-docs_0.75" />
+          <SearchModalOpener />
           {/* {banner && <div className="my-docs_0.75">{banner}</div>} */}
           {parentItem && (
             <>
@@ -29,7 +29,7 @@ export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
               <SidebarTitle item={parentItem} />
             </>
           )}
-          <SidebarSeparator />
+          <SidebarSeparator className="!mb-0" />
         </div>
       </div>
     )

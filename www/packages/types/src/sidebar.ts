@@ -32,18 +32,24 @@ export type SidebarItemSubCategory = SidebarItemCommon & {
   childrenSameLevel?: boolean
 }
 
-export type SidebarItem =
+export type SidebarItemSeparator = {
+  type: "separator"
+}
+
+export type InteractiveSidebarItem =
   | SidebarItemLink
   | SidebarItemCategory
   | SidebarItemSubCategory
 
+export type SidebarItem = InteractiveSidebarItem | SidebarItemSeparator
+
 export type SidebarSectionItems = {
   [k in SidebarItemSections]: SidebarItem[]
 } & {
-  parentItem?: SidebarItem
+  parentItem?: InteractiveSidebarItem
 }
 
-export type RawSidebarItemType = SidebarItem & {
+export type RawSidebarItem = SidebarItem & {
   autogenerate_path?: string
   number?: string
 }

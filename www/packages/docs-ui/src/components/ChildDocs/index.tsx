@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react"
 import { Card, CardList, MDXComponents, useSidebar } from "../.."
-import { SidebarItem } from "types"
+import { InteractiveSidebarItem, SidebarItem } from "types"
 
 type ChildDocsProps = {
   onlyTopLevel?: boolean
@@ -29,6 +29,9 @@ export const ChildDocs = ({
   }, [showItems, hideItems])
 
   const filterCondition = (item: SidebarItem): boolean => {
+    if (item.type === "separator") {
+      return false
+    }
     switch (filterType) {
       case "hide":
         return (
@@ -50,7 +53,11 @@ export const ChildDocs = ({
       .filter(filterCondition)
       .map((item) => Object.assign({}, item))
       .map((item) => {
-        if (item.children && filterType === "hide") {
+        if (
+          item.type !== "separator" &&
+          item.children &&
+          filterType === "hide"
+        ) {
           item.children = filterItems(item.children)
         }
 
@@ -77,20 +84,30 @@ export const ChildDocs = ({
     }
   }, [currentItems, type, getActiveItem, filterItems])
 
-  const getTopLevelElms = (items?: SidebarItem[]) => (
-    <CardList
-      items={
-        items?.map((childItem) => ({
-          title: childItem.title,
-          href: childItem.type === "link" ? childItem.path : "",
-          showLinkIcon: false,
-        })) || []
-      }
-    />
-  )
+  const getTopLevelElms = (items?: SidebarItem[]) => {
+    return (
+      <CardList
+        items={
+          (
+            items?.filter(
+              (childItem) => childItem.type !== "separator"
+            ) as InteractiveSidebarItem[]
+          )?.map((childItem) => ({
+            title: childItem.title,
+            href: childItem.type === "link" ? childItem.path : "",
+            showLinkIcon: false,
+          })) || []
+        }
+      />
+    )
+  }
 
   const getAllLevelsElms = (items?: SidebarItem[]) =>
-    items?.map((item, key) => {
+    (
+      items?.filter(
+        (childItem) => childItem.type !== "separator"
+      ) as InteractiveSidebarItem[]
+    )?.map((item, key) => {
       const HeadingComponent = item.children?.length
         ? MDXComponents["h2"]
         : undefined
@@ -102,7 +119,11 @@ export const ChildDocs = ({
               {!hideTitle && <HeadingComponent>{item.title}</HeadingComponent>}
               <CardList
                 items={
-                  item.children?.map((childItem) => ({
+                  (
+                    item.children?.filter(
+                      (childItem) => childItem.type !== "separator"
+                    ) as InteractiveSidebarItem[]
+                  ).map((childItem) => ({
                     title: childItem.title,
                     href: childItem.type === "link" ? childItem.path : "",
                     showLinkIcon: false,

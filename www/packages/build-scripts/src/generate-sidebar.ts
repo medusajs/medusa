@@ -1,4 +1,8 @@
-import type { RawSidebarItemType } from "types"
+import type {
+  InteractiveSidebarItem,
+  RawSidebarItem,
+  SidebarItemLink,
+} from "types"
 import findPageHeading from "./utils/find-page-heading.js"
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "fs"
 import path from "path"
@@ -6,7 +10,7 @@ import { sidebarAttachHrefCommonOptions } from "./index.js"
 import { getFrontMatterUtil } from "remark-rehype-plugins"
 import findMetadataTitle from "./utils/find-metadata-title.js"
 
-type ItemsToAdd = RawSidebarItemType & {
+type ItemsToAdd = InteractiveSidebarItem & {
   sidebar_position?: number
 }
 
@@ -36,14 +40,16 @@ async function getSidebarItems(
       )
       if (nested && newItems.length > 1) {
         items.push({
-          type: "category",
+          type: "sub-category",
           title:
             fileBasename.charAt(0).toUpperCase() + fileBasename.substring(1),
           children: newItems,
           loaded: true,
         })
       } else {
-        items.push(...sidebarAttachHrefCommonOptions(newItems))
+        items.push(
+          ...(sidebarAttachHrefCommonOptions(newItems) as ItemsToAdd[])
+        )
       }
       continue
     }
@@ -69,7 +75,7 @@ async function getSidebarItems(
           findPageHeading(fileContent) ||
           "",
       },
-    ])[0]
+    ])[0] as SidebarItemLink
 
     items.push({
       ...newItem,
@@ -94,9 +100,10 @@ async function getSidebarItems(
   return items
 }
 
-async function checkItem(
-  item: RawSidebarItemType
-): Promise<RawSidebarItemType> {
+async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
+  if (item.type === "separator") {
+    return item
+  }
   if (item.autogenerate_path) {
     item.children = (await getSidebarItems(item.autogenerate_path)).map(
       (child) => {
@@ -116,7 +123,7 @@ async function checkItem(
   return item
 }
 
-export async function generateSidebar(sidebar: RawSidebarItemType[]) {
+export async function generateSidebar(sidebar: RawSidebarItem[]) {
   const path = await import("path")
   const { writeFileSync } = await import("fs")
 

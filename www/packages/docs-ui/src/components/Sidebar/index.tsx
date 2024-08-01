@@ -118,7 +118,7 @@ export const Sidebar = ({
                   <SidebarSeparator />
                 </div>
                 {/* DESKTOP SIDEBAR */}
-                <div className="mt-docs_0.75 lg:mt-docs-0">
+                <div className="mt-docs_0.75 lg:mt-0">
                   {!sidebarItems.default.length && !staticSidebarItems && (
                     <Loading className="px-0" />
                   )}

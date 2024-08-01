@@ -9,7 +9,7 @@ import React, {
 } from "react"
 import { useSidebar } from "../Sidebar"
 import { usePrevious } from "@uidotdev/usehooks"
-import { SidebarItem } from "types"
+import { InteractiveSidebarItem, SidebarItem } from "types"
 
 export type Page = {
   title: string
@@ -27,7 +27,7 @@ export const PaginationContext = createContext<PaginationContextType | null>(
   null
 )
 
-type SidebarItemWithParent = SidebarItem & {
+type SidebarItemWithParent = InteractiveSidebarItem & {
   parent?: SidebarItem
 }
 
@@ -49,7 +49,7 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
   const [prevPage, setPrevPage] = useState<Page | undefined>()
 
   const getFirstChild = (
-    item: SidebarItem
+    item: InteractiveSidebarItem
   ): SidebarItemWithParent | undefined => {
     const children = getChildrenWithPages(item)
     if (!children?.length) {
@@ -65,12 +65,14 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
   }
 
   const getChildrenWithPages = (
-    item: SidebarItem
+    item: InteractiveSidebarItem
   ): SidebarItemWithParent[] | undefined => {
     return item.children?.filter(
       (childItem) =>
-        childItem.type === "link" || getChildrenWithPages(childItem)?.length
-    )
+        childItem.type === "link" ||
+        (childItem.type !== "separator" &&
+          getChildrenWithPages(childItem)?.length)
+    ) as SidebarItemWithParent[]
   }
 
   const getPrevItem = (
@@ -82,6 +84,9 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
       .slice(0, index)
       .reverse()
       .some((item) => {
+        if (item.type === "separator") {
+          return false
+        }
         if (item.children?.length) {
           const childItem = getPrevItem(item.children, item.children.length)
           if (childItem) {
@@ -106,6 +111,10 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
   ): SidebarItemWithParent | undefined => {
     let foundItem: SidebarItemWithParent | undefined
     items.slice(index + 1).some((item) => {
+      if (item.type === "separator") {
+        return false
+      }
+
       if (item.type === "link") {
         foundItem = item
       } else if (item.children?.length) {
@@ -145,7 +154,7 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
         return true
       }
 
-      if (item.children?.length) {
+      if (item.type !== "separator" && item.children?.length) {
         const childrenResult = searchItems(item.children)
 
         if (childrenResult.foundActive) {
@@ -178,7 +187,10 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
           ? {
               title: result.prevItem.title,
               link: result.prevItem.type === "link" ? result.prevItem.path : "",
-              parentTitle: result.prevItem.parent?.title,
+              parentTitle:
+                result.prevItem.parent?.type !== "separator"
+                  ? result.prevItem.parent?.title
+                  : undefined,
             }
           : undefined
       )
@@ -187,7 +199,10 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
           ? {
               title: result.nextItem.title,
               link: result.nextItem.type === "link" ? result.nextItem.path : "",
-              parentTitle: result.nextItem.parent?.title,
+              parentTitle:
+                result.nextItem.parent?.type !== "separator"
+                  ? result.nextItem.parent?.title
+                  : undefined,
             }
           : undefined
       )

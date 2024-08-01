@@ -269,6 +269,10 @@ module.exports = {
         "code-fade-bottom-to-top-dark": `linear-gradient(180deg, rgba(47, 47, 50, 0.00) 0%, #2F2F32 100%)`,
         "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
         "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
+        "border-dotted":
+          "linear-gradient(to right, #D4D4D8 33%, rgba(255,255,255,0) 0%)",
+        "border-dotted-dark":
+          "linear-gradient(to right, rgba(69, 69, 71) 33%, rgba(255,255,255,0) 0%)",
       },
       screens: {
         xs: "568px",

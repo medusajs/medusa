@@ -15,6 +15,9 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
   /** @type {import("@/types").SidebarItem | undefined} */
   let parentItem
   sidebarItems.forEach((item) => {
+    if (item.type === "separator") {
+      ;(parentItem?.children || numberedItems).push(item)
+    }
     if (isTopItems) {
       // Add chapter category
       numberedItems.push({
@@ -34,11 +37,7 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
       item.children = numberSidebarItems(item.children, [...numbering, 1])
     }
 
-    if (parentItem) {
-      parentItem.children.push(item)
-    } else {
-      numberedItems.push(item)
-    }
+    ;(parentItem?.children || numberedItems).push(item)
 
     numbering[numbering.length - 1]++
   })

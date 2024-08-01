@@ -11,10 +11,9 @@ export const SidebarSeparator = ({ className }: SidebarSeparatorProps) => {
   return (
     <span
       className={clsx(
-        "block w-full h-px relative",
-        "after:content-[''] after:absolute after:w-full after:h-full",
-        "after:border-t after:border-dotted after:-bottom-px after:left-0",
-        "after:border-medusa-border-strong",
+        "block w-full h-px relative my-docs_0.75",
+        "bg-border-dotted dark:bg-border-dotted-dark",
+        "bg-[length:3px_1px] bg-repeat-x bg-bottom",
         className
       )}
     ></span>

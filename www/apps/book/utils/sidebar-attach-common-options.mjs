@@ -12,6 +12,10 @@ const commonOptions = {
  */
 export function sidebarAttachHrefCommonOptions(sidebar, nested = false) {
   return sidebar.map((item) => {
+    if (item.type === "separator") {
+      return item
+    }
+
     const updatedItem = {
       ...commonOptions,
       ...item,
