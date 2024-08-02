@@ -22,7 +22,7 @@ export const updateCollectionsWorkflow = createWorkflow(
     const updatedCollections = updateCollectionsStep(input)
     const collectionsUpdated = createHook("collectionsUpdated", {
       additional_data: input.additional_data,
-      collections: updateCollectionsStep,
+      collections: updatedCollections,
     })
 
     return new WorkflowResponse(updatedCollections, {
