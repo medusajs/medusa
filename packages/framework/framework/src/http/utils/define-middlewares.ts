@@ -7,7 +7,7 @@ import {
   MiddlewareVerb,
   ParserConfig,
 } from "../types"
-import { ZodObject } from "zod"
+import zod, { ZodRawShape } from "zod"
 
 /**
  * A helper function to configure the routes by defining custom middleware,
@@ -19,7 +19,7 @@ export function defineMiddlewares<
     method?: MiddlewareVerb | MiddlewareVerb[]
     matcher: string | RegExp
     bodyParser?: ParserConfig
-    additionalDataValidator?: ZodObject<any, any>
+    additionalDataValidator?: ZodRawShape
     // eslint-disable-next-line space-before-function-paren
     middlewares?: (<Req extends MedusaRequest>(
       req: Req,
@@ -47,7 +47,7 @@ export function defineMiddlewares<
        */
       if (additionalDataValidator) {
         customMiddleware.push((req, _, next) => {
-          req.additionalDataValidator = additionalDataValidator
+          req.additionalDataValidator = zod.object(additionalDataValidator)
           next()
         })
       }
