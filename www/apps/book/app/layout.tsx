@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
-
-import Navbar from "@/components/Navbar"
 import Providers from "@/providers"
 import "./globals.css"
 import { Bannerv2, TightLayout } from "docs-ui"
