@@ -1,4 +1,4 @@
-import { FlagSettings } from "../../types/feature-flags"
+import { FlagSettings } from "@medusajs/framework"
 
 const AnalyticsFeatureFlag: FlagSettings = {
   key: "analytics",

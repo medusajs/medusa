@@ -41,8 +41,10 @@
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
     "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^8.5.9",
     "cross-env": "^7.0.3",
     "rimraf": "^3.0.2",
+    "supertest": "^4.0.2",
     "tsc-alias": "^1.8.6",
     "typescript": "^5.1.6",
     "vite": "^5.2.11"
@@ -55,11 +57,14 @@
     "@medusajs/workflows-sdk": "^0.1.6",
     "awilix": "^8.0.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "ioredis": "^5.2.5",
     "ioredis-mock": "8.4.0",
+    "jsonwebtoken": "^9.0.2",
     "medusa-telemetry": "^0.0.17",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "zod": "3.22.4"
   }
 }

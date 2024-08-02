@@ -37,6 +37,7 @@ type ReflectionFormatterOptions = {
   maxLevel?: number | undefined
   project?: ProjectReflection
   type?: ParameterStyle
+  isTypeParams?: boolean
 }
 
 export default function reflectionFormatter({
@@ -123,10 +124,13 @@ export function reflectionComponentFormatter({
   level = 1,
   maxLevel,
   project,
+  isTypeParams,
 }: ReflectionFormatterOptions): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
   const optional =
-    reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
+    isTypeParams ||
+    reflection.flags.isOptional ||
+    reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
   const componentItem: Parameter = {
     name: reflection.name,

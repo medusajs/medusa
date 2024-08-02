@@ -4279,6 +4279,13 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/product/guides/price",
                 "title": "Get Product Variant Prices",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/guides/price-with-taxes",
+                "title": "Get Variant Price with Taxes",
+                "children": []
               }
             ]
           },
