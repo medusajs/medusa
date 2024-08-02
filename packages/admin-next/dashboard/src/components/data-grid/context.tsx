@@ -5,8 +5,7 @@ import { CellCoords, CellType } from "./types"
 type DataGridContextType<TForm extends FieldValues> = {
   // Grid state
   anchor: CellCoords | null
-  selection: Record<string, boolean>
-  dragSelection: Record<string, boolean>
+  trapActive: boolean
   // Cell handlers
   registerCell: (coords: CellCoords, field: string, type: CellType) => void
   getIsCellSelected: (coords: CellCoords) => boolean
@@ -15,6 +14,7 @@ type DataGridContextType<TForm extends FieldValues> = {
   setIsEditing: (value: boolean) => void
   setIsSelecting: (value: boolean) => void
   setRangeEnd: (coords: CellCoords) => void
+  setSingleRange: (coords: CellCoords) => void
   // Form state and handlers
   register: UseFormRegister<TForm>
   control: Control<TForm>

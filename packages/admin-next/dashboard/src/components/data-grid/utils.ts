@@ -96,19 +96,35 @@ export function getFieldsInRange(
   return fields
 }
 
-function convertToNumber(value: string): number {
+function convertToNumber(value: string | number): number {
+  if (typeof value === "number") {
+    return value
+  }
+
   const converted = Number(value)
+
   if (isNaN(converted)) {
     throw new Error(`String "${value}" cannot be converted to number.`)
   }
+
   return converted
 }
 
-function convertToBoolean(value: string): boolean {
+function convertToBoolean(value: string | boolean): boolean {
+  if (typeof value === "boolean") {
+    return value
+  }
+
+  if (typeof value === "undefined" || value === null) {
+    return false
+  }
+
   const lowerValue = value.toLowerCase()
+
   if (lowerValue === "true" || lowerValue === "false") {
     return lowerValue === "true"
   }
+
   throw new Error(`String "${value}" cannot be converted to boolean.`)
 }
 
@@ -116,10 +132,7 @@ function convertToString(value: string): string {
   return String(value)
 }
 
-export function convertArrayToPrimitive(
-  values: string[],
-  type: CellType
-): any[] {
+export function convertArrayToPrimitive(values: any[], type: CellType): any[] {
   switch (type) {
     case "number":
       return values.map(convertToNumber)

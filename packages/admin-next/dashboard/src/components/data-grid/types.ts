@@ -49,6 +49,7 @@ export interface InputProps {
 interface InnerProps {
   ref: RefObject<HTMLDivElement>
   onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
+  onMouseDown: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void
   onFocus: (e: React.FocusEvent<HTMLElement>) => void
   "data-container-id": string

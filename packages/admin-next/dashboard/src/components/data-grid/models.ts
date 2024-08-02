@@ -231,18 +231,18 @@ export class GridQueryTool {
 
 export type BulkUpdateCommandArgs = {
   fields: string[]
-  next: string[]
-  prev: string[]
-  setter: (fields: string[], values: string[]) => void
+  next: any[]
+  prev: any[]
+  setter: (fields: string[], values: any[]) => void
 }
 
 export class BulkUpdateCommand implements Command {
   private _fields: string[]
 
-  private _prev: string[]
-  private _next: string[]
+  private _prev: any[]
+  private _next: any[]
 
-  private _setter: (string: string[], values: string[]) => void
+  private _setter: (fields: string[], any: string[]) => void
 
   constructor({ fields, prev, next, setter }: BulkUpdateCommandArgs) {
     this._fields = fields

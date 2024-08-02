@@ -58,14 +58,15 @@ export const useDataGridCell = <TData, TValue>({
     register,
     control,
     anchor,
-    selection,
-    dragSelection,
     setIsEditing,
+    setSingleRange,
     setIsSelecting,
     setRangeEnd,
     getWrapperFocusHandler,
     getWrapperMouseOverHandler,
     getInputChangeHandler,
+    getIsCellSelected,
+    getIsCellDragSelected,
     registerCell,
   } = useDataGridContext()
 
@@ -99,11 +100,36 @@ export const useDataGridCell = <TData, TValue>({
       }
 
       if (containerRef.current) {
+        setSingleRange(coords)
         setIsSelecting(true)
         containerRef.current.focus()
       }
     },
-    [setIsSelecting, setRangeEnd, coords]
+    [setIsSelecting, setRangeEnd, setSingleRange, coords]
+  )
+
+  const handleBooleanInnerMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      if (e.detail === 2) {
+        inputRef.current?.focus()
+        return
+      }
+
+      if (e.shiftKey) {
+        setRangeEnd(coords)
+        return
+      }
+
+      if (containerRef.current) {
+        setSingleRange(coords)
+        setIsSelecting(true)
+        containerRef.current.focus()
+      }
+    },
+    [setIsSelecting, setSingleRange, setRangeEnd, coords]
   )
 
   const handleInputBlur = useCallback(() => {
@@ -172,14 +198,6 @@ export const useDataGridCell = <TData, TValue>({
     return anchor ? isCellMatch(coords, anchor) : false
   }, [anchor, coords])
 
-  const isSelected = useMemo(() => {
-    return selection[id] || false
-  }, [selection, id])
-
-  const isDragSelected = useMemo(() => {
-    return dragSelection[id] || false
-  }, [dragSelection, id])
-
   const fieldWithoutOverlay = useMemo(() => {
     return type === "boolean" || type === "select"
   }, [type])
@@ -193,12 +211,14 @@ export const useDataGridCell = <TData, TValue>({
   const renderProps: DataGridCellRenderProps = {
     container: {
       isAnchor,
-      isSelected,
-      isDragSelected,
+      isSelected: getIsCellSelected(coords),
+      isDragSelected: getIsCellDragSelected(coords),
       showOverlay: fieldWithoutOverlay ? false : showOverlay,
       innerProps: {
         ref: containerRef,
         onMouseOver: getWrapperMouseOverHandler(coords),
+        onMouseDown:
+          type === "boolean" ? handleBooleanInnerMouseDown : undefined,
         onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
         "data-container-id": id,

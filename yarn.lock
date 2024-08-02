@@ -4480,7 +4480,6 @@ __metadata:
     "@medusajs/ui": 3.0.0
     "@medusajs/ui-preset": 1.1.3
     "@radix-ui/react-collapsible": 1.1.0
-    "@radix-ui/react-hover-card": 1.1.1
     "@tanstack/react-query": ^5.28.14
     "@tanstack/react-table": 8.10.7
     "@tanstack/react-virtual": ^3.8.3
@@ -4492,7 +4491,6 @@ __metadata:
     autoprefixer: ^10.4.17
     cmdk: ^0.2.0
     date-fns: ^3.6.0
-    focus-trap: ^7.5.4
     focus-trap-react: ^10.2.3
     framer-motion: ^11.0.3
     i18next: 23.7.11
@@ -4502,6 +4500,7 @@ __metadata:
     match-sorter: ^6.3.4
     postcss: ^8.4.33
     prettier: ^3.1.1
+    prop-types: ^15.8.1
     qs: ^6.12.0
     react: ^18.2.0
     react-country-flag: ^3.1.0
@@ -4511,7 +4510,6 @@ __metadata:
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-nestable: ^3.0.2
-    react-resizable-panels: ^2.0.16
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
     tsup: ^8.0.2
@@ -6567,33 +6565,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 2593d4bbd4a3525624675ec1d5a591a44f015f43f449b99a5a33228159b83f445e8f1c6bc6f9f2011387abaeadd3df406623c08d4e795b7ae509795652a1d069
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-hover-card@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@radix-ui/react-hover-card@npm:1.1.1"
-  dependencies:
-    "@radix-ui/primitive": 1.1.0
-    "@radix-ui/react-compose-refs": 1.1.0
-    "@radix-ui/react-context": 1.1.0
-    "@radix-ui/react-dismissable-layer": 1.1.0
-    "@radix-ui/react-popper": 1.2.0
-    "@radix-ui/react-portal": 1.1.1
-    "@radix-ui/react-presence": 1.1.0
-    "@radix-ui/react-primitive": 2.0.0
-    "@radix-ui/react-use-controllable-state": 1.1.0
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: d27f89258caec7660113f6bdfcffdd8999c8ac25761eb099b467cdb6c2cdea14c2953a100130e212cfb2621f9718b6291e292be915280698e0cfd4c1b3ed29af
   languageName: node
   linkType: hard
 
@@ -26296,16 +26267,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: dcd523ada602bd0a839c2032cadf0b3e4af55ee85acefee3760976a9cceaa4606927801b093bbb8bf3c2989c71e048f5428c2c6eb9e6681762e86356833d039b
-  languageName: node
-  linkType: hard
-
-"react-resizable-panels@npm:^2.0.16":
-  version: 2.0.19
-  resolution: "react-resizable-panels@npm:2.0.19"
-  peerDependencies:
-    react: ^16.14.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
-  checksum: eb9cb511aec917895dba842cb933c9885ea510f752b4f3b8c358bf33be8b7b6bf2fc4a81db7a16977e6b09f614a14c6652f15232ff03bce68a8845dcf179abf7
   languageName: node
   linkType: hard
 
