@@ -1,4 +1,8 @@
-import { IProductModuleService, ProductCategoryDTO } from "@medusajs/types"
+import {
+  IProductModuleService,
+  ProductCategoryDTO,
+  ProductTagDTO,
+} from "@medusajs/types"
 import { kebabCase, Modules, ProductStatus } from "@medusajs/utils"
 import {
   Product,
@@ -104,6 +108,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             categories.push(await service.createProductCategories(entry))
           }
 
+          const tags: ProductTagDTO[] = []
+          for (const entry of tagsData) {
+            tags.push(await service.createProductTags(entry))
+          }
+
           productCategoryOne = categories[0]
           productCategoryTwo = categories[1]
 
@@ -125,7 +134,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             status: ProductStatus.PUBLISHED,
             categories: [{ id: productCategoryOne.id }],
             collection_id: productCollectionOne.id,
-            tags: tagsData,
+            tags: [{ id: tags[0].id }],
             options: [
               {
                 title: "size",
@@ -437,6 +446,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
             value: "tag 2",
           }
 
+          await service.createProductTags(newTagData)
+
           const updateData = {
             id: productTwo.id,
             categories: [
@@ -446,7 +457,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
             collection_id: productCollectionTwo.id,
             type_id: productTypeTwo.id,
-            tags: [newTagData],
+            tags: [{ id: newTagData.id }],
           }
 
           await service.upsertProducts([updateData])

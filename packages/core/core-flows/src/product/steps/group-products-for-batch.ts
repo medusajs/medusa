@@ -38,9 +38,13 @@ export const groupProductsForBatchStep = createStep(
           return acc
         }
 
-        // New products will be created with a new ID, even if there is one present in the CSV.
+        // New products and variants will be created with a new ID, even if there is one present in the CSV.
         // To add support for creating with predefined IDs we will need to do changes to the upsert method.
         delete product.id
+        product.variants?.forEach((variant) => {
+          delete (variant as any).id
+        })
+
         acc.toCreate.push(product)
         return acc
       },
