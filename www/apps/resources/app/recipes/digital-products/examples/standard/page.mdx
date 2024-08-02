@@ -1432,7 +1432,125 @@ To use this digital product in later steps (such as to create an order), you mus
 
 ---
 
-## Step 10: Customize Cart Completion
+## Step 10: Create Digital Product Fulfillment Module Provider
+
+In this step, you'll create a fulfillment module provider for digital products. It doesn't have any real fulfillment functionality as digital products aren't physically fulfilled.
+
+### Create Module Provider Service
+
+Start by creating the `src/modules/digital-product-fulfillment` directory.
+
+Then, create the file `src/modules/digital-product-fulfillment/service.ts` with the following content:
+
+```ts title="src/modules/digital-product-fulfillment/service.ts"
+import { AbstractFulfillmentProviderService } from "@medusajs/utils"
+
+class DigitalProductFulfillmentService extends AbstractFulfillmentProviderService {
+  static identifier = "digital"
+
+  constructor() {
+    super()
+  }
+
+  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
+    return [
+      {
+        id: "digital-fulfillment",
+      },
+    ]
+  }
+
+  async validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<any> {
+    return data
+  }
+
+  async validateOption(data: Record<string, any>): Promise<boolean> {
+    return true
+  }
+
+  async createFulfillment(): Promise<Record<string, any>> {
+    // No data is being sent anywhere
+    return {}
+  }
+
+  async cancelFulfillment(): Promise<any> {
+    return {}
+  }
+
+  async createReturnFulfillment(): Promise<any> {
+    return {}
+  }
+}
+
+export default DigitalProductFulfillmentService
+```
+
+The fulfillment provider registers one fulfillment option, and doesn't perform actual fulfillment.
+
+### Create Module Provider Definition
+
+Then, create the module provider's definition in the file `src/modules/digital-product-fulfillment/index.ts`:
+
+```ts title="src/modules/digital-product-fulfillment/index.ts"
+import { ModuleProviderExports } from "@medusajs/types"
+import DigitalProductFulfillmentService from "./service"
+
+const services = [DigitalProductFulfillmentService]
+
+const providerExport: ModuleProviderExports = {
+  services,
+}
+
+export default providerExport
+```
+
+### Register Module Provider in Medusa's Configurations
+
+Finally, register the module provider in `medusa-config.js`:
+
+```js title="medusa-config.js"
+// other imports...
+import { 
+  Modules
+} from '@medusajs/utils'
+
+module.exports = defineConfig({
+  modules: {
+    // ...
+    [Modules.FULFILLMENT]: {
+      resolve: "@medusajs/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/fulfillment-manual",
+            id: "manual",
+          },
+          {
+            resolve: "./modules/digital-product-fulfillment",
+            id: "digital"
+          }
+        ],
+      },
+    },
+  }
+})
+```
+
+This registers the digital product fulfillment as a module provider of the Fulfillment Module.
+
+### Add Fulfillment Provider to Location
+
+In the Medusa Admin, go to Settings -> Location & Shipping, and add the fulfillment provider and a shipping option for it in a location.
+
+This is necessary to use the fulfillment provider's shipping option during checkout.
+
+---
+
+## Step 11: Customize Cart Completion
 
 In this step, you’ll customize the cart completion flow to not only create a Medusa order, but also create a digital product order.
 
@@ -1444,7 +1562,9 @@ graph TD
   useRemoteQueryStep --> when{order has digital products?}
   when -->|Yes| createDigitalProductOrderStep
   createDigitalProductOrderStep --> createRemoteLinkStep["createRemoteLinkStep (Medusa)"]
-  createRemoteLinkStep --> End
+  createRemoteLinkStep --> createOrderFulfillmentWorkflow["createOrderFulfillmentWorkflow (Medusa)"]
+  createOrderFulfillmentWorkflow --> emitEventStep["emitEventStep (Medusa)"]
+  emitEventStep --> End
   when -->|No| End
 ```
 
@@ -1455,6 +1575,8 @@ The workflow has the following steps:
 3. If the order has digital products, you:
     1. create the digital product order.
     2. link the digital product order with the Medusa order. Medusa provides a `createRemoteLinkStep` in the `@medusajs/core-flows` package that can be used here.
+    3. Create a fulfillment for the digital products in the order. Medusa provides a `createOrderFulfillmentWorkflow` in the `@medusajs/core-flows` package that you can use as a step here.
+    4. Emit the `digital_product_order.created` custom event to handle it later in a subscriber and send the customer an email. Medusa provides a `emitEventStep` in the `@medusajs/core-flows` that you can use as a step here.
 
 You’ll only implement the `3.a` step of the workflow.
 
@@ -1539,7 +1661,9 @@ export const createDpoWorkflowHighlights = [
   ["56", "when", "Check whether the order has any digital products."],
   ["61", "then", "Perform the callback function if an order has digital products."],
   ["64", "createDigitalProductOrderStep", "Create the digital product order."],
-  ["66", "createRemoteLinkStep", "Link the digital product order to the Medusa order."]
+  ["66", "createRemoteLinkStep", "Link the digital product order to the Medusa order."],
+  ["75", "createOrderFulfillmentWorkflow", "Create a fulfillment for the digital products in the order."],
+  ["89", "emitEventStep", "Emit the `digital_product_order.created` event."]
 ]
 
 ```ts title="src/workflows/create-digital-product-order/index.ts" highlights={createDpoWorkflowHighlights} collapsibleLines="1-17" expandMoreLabel="Show Imports"
@@ -1553,10 +1677,10 @@ import {
   completeCartWorkflow,
   useRemoteQueryStep,
   createRemoteLinkStep,
+  createOrderFulfillmentWorkflow,
+  emitEventStep
 } from "@medusajs/core-flows"
-import {
-  Modules,
-} from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import createDigitalProductOrderStep from "./steps/create-digital-product-order"
 import { DIGITAL_PRODUCT_MODULE } from "../../modules/digital-product"
 
@@ -1569,8 +1693,8 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   (input: WorkflowInput) => {
     const order = completeCartWorkflow.runAsStep({
       input: {
-        id: input.cart_id,
-      },
+        id: input.cart_id
+      }
     })
 
     const { items } = useRemoteQueryStep({
@@ -1579,28 +1703,26 @@ const createDigitalProductOrderWorkflow = createWorkflow(
         "*",
         "items.*",
         "items.variant.*",
-        "items.variant.digital_product.*",
+        "items.variant.digital_product.*"
       ],
       variables: {
         filters: {
-          id: order.id,
-        },
+          id: order.id
+        }
       },
       throw_if_key_not_found: true,
-      list: false,
+      list: false
     })
 
     const itemsWithDigitalProducts = transform({
-      items,
+      items
     },
     (data) => {
       return data.items.filter((item) => item.variant.digital_product !== undefined)
     }
     )
 
-    const digital_product_order = when(
-      itemsWithDigitalProducts, 
-      (itemsWithDigitalProducts) => {
+    const digital_product_order = when(itemsWithDigitalProducts, (itemsWithDigitalProducts) => {
       return itemsWithDigitalProducts.length
     })
     .then(() => {
@@ -1610,19 +1732,40 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   
       createRemoteLinkStep([{
         [DIGITAL_PRODUCT_MODULE]: {
-          digital_product_order_id: digital_product_order.id,
+          digital_product_order_id: digital_product_order.id
         },
         [Modules.ORDER]: {
-          order_id: order.id,
-        },
+          order_id: order.id
+        }
       }])
+
+      createOrderFulfillmentWorkflow.runAsStep({
+        input: {
+          order_id: order.id,
+          items: transform({
+            itemsWithDigitalProducts
+          }, (data) => {
+            return data.itemsWithDigitalProducts.map((item) => ({
+              id: item.id,
+              quantity: item.quantity
+            }))
+          })
+        }
+      })
+  
+      emitEventStep({
+        eventName: "digital_product_order.created",
+        data: {
+          id: digital_product_order.id
+        }
+      })
 
       return digital_product_order
     })
 
     return new WorkflowResponse({
       order,
-      digital_product_order,
+      digital_product_order
     })
   }
 )
@@ -1637,6 +1780,8 @@ This creates the workflow `createDigitalProductOrderWorkflow`. It runs the follo
 3. Use `when` to check whether the order has digital products. If so:
     1. Use the `createDigitalProductOrderStep` to create the digital product order.
     2. Use the `createRemoteLinkStep` to link the digital product order to the Medusa order.
+    3. Use the `createOrderFulfillmentWorkflow` to create a fulfillment for the digital products in the order.
+    4. Use the `emitEventStep` to emit a custom event.
 
 The workflow returns the Medusa order and the digital product order, if created.
 
@@ -1682,73 +1827,137 @@ In a later step, you’ll add an API route to allow customers to view and downlo
 
 ---
 
-## Step 11: Fulfill Digital Products Scheduled Job
+## Step 12: Handle the Digital Product Order Event
 
-In this step, you’ll create a scheduled job that automatically fulfills digital products.
+In this step, you'll create a subscriber that listens to the `digital_product_order.created` event and sends a customer an email with the digital products they purchased.
 
-<Note type="soon">
+Create the file `digital-product/src/subscribers/handle-digital-order.ts` with the following content:
 
-The fulfillment provider is under development, so this scheduled job doesn’t currently cover how to create fulfillment.
+export const subscriberHighlight = [
+  ["20", "notificationModuleService", "Resolve the Notification Module's service to use it later to send a notification."],
+  ["22", "fileModuleService", "Resolve the File Module's service to use it later to retrieve a media's URL."],
+  ["26", "query", "Assemble the query to retrieve the digital product order."]
+]
 
-</Note>
-
-Create the file `src/jobs/create-digital-fulfillment.ts` with the following content:
-
-```ts title="src/jobs/create-digital-fulfillment.ts"
-import {
-  MedusaContainer,
+```ts title="digital-product/src/subscribers/handle-digital-order.ts" highlights={subscriberHighlight} collapsibleLines="1-14" expandMoreLabel="Show Imports"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/medusa"
+import { 
+  INotificationModuleService,
+  IFileModuleService
 } from "@medusajs/types"
-import DigitalProductModuleService from "../modules/digital-product/service"
-import { DIGITAL_PRODUCT_MODULE } from "../modules/digital-product"
-import { OrderStatus } from "../modules/digital-product/types"
+import { 
+  ModuleRegistrationName,
+  remoteQueryObjectFromString
+} from "@medusajs/utils"
+import { MediaType } from "../modules/digital-product/types"
 
-export default async function createDigitalFulfillment(
-  container: MedusaContainer
-) {
-  const digitalProductModuleService: DigitalProductModuleService = container
-    .resolve(DIGITAL_PRODUCT_MODULE)
+async function digitalProductOrderCreatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const remoteQuery = container.resolve("remoteQuery")
+  const notificationModuleService: INotificationModuleService = container
+    .resolve(ModuleRegistrationName.NOTIFICATION)
+  const fileModuleService: IFileModuleService = container.resolve(
+    ModuleRegistrationName.FILE
+  )
 
-  const limit = 20
-  let page = 0
-  let pagesCount = 0
-
-  do {
-    const [
-      digitalProductOrders, 
-      count,
-    ] = await digitalProductModuleService.listAndCountDigitalProductOrders({
-      status: OrderStatus.PENDING,
-    }, {
-      skip: page * limit,
-      take: limit,
-    })
-
-    // TODO create fulfillment for the digital product's items.
-
-    if (!pagesCount) {
-      pagesCount = count / limit
+  const query = remoteQueryObjectFromString({
+    entryPoint: "digital_product_order",
+    fields: [
+      "*",
+      "products.*",
+      "products.medias.*",
+      "order.*"
+    ],
+    variables: {
+      filters: {
+        id: data.id
+      }
     }
+  })
 
-    page++
-    
-  } while (false)
+  const digitalProductOrder = (await remoteQuery(query))[0]
+
+  // TODO format and send notification
 }
 
-export const config = {
-  name: "create-digital-fulfillment",
-  schedule: "*/5 * * * *", // Check every 5 minutes
+export default digitalProductOrderCreatedHandler
+
+export const config: SubscriberConfig = {
+  event: "digital_product_order.created",
 }
 ```
 
-This creates a scheduled job that runs every five minutes. This scheduled job finds the digital product orders whose status is `pending` to fulfill them. 
+This adds a subscriber that listens to the `digital_product_order.created` event. For now, it just resolves dependencies and retrieves the digital product order.
 
-### Further Reads
+Next, replace the `TODO` with the following:
 
-- [How to Create a Scheduled Job](!docs!/basics/scheduled-jobs)
+export const subscriber2Highlights = [
+  ["1", "notificationData", "Format the data to be sent as a notification payload."],
+  ["10", "retrieveFile", "Retrieve the media's URL using the File Module's service."],
+  ["22", "createNotifications", "Send the notification to the customer."],
+  ["24", `"digital-order-template"`, "Replace with a real template ID."]
+]
+
+```ts highlights={subscriber2Highlights}
+const notificationData = await Promise.all(
+  digitalProductOrder.products.map(async (product) => {
+    const medias = []
+
+    await Promise.all(
+      product.medias
+      .filter((media) => media.type === MediaType.MAIN)
+      .map(async (media) => {
+        medias.push(
+          (await fileModuleService.retrieveFile(media.fileId)).url
+        )
+      })
+    )
+
+    return {
+      name: product.name,
+      medias
+    }
+  })
+)
+
+await notificationModuleService.createNotifications({
+  to: digitalProductOrder.order.email,
+  template: "digital-order-template",
+  channel: "email",
+  data: {
+    products: notificationData
+  }
+})
+```
+
+First, you format the data payload to send in the notification by retrieving the URLs of the purchased products' main medias. You use the File Module's service to retrieve the media URLs.
+
+Then, you use the Notification Module's service to send the notification as an email.
+
+<Note title="Tip">
+
+Replace the `digital-order-template` with a real template ID from your third-party notification service.
+
+</Note>
+
+### Test Subscriber Out
+
+To test out the subscriber, place an order with digital products. This triggers the `digital_product_order.created` event which executes the subscriber.
+
+<Note title="Tip">
+
+Check out the [integrations page](../../../../integrations/page.mdx) to find notification and file modules.
+
+</Note>
 
 ---
 
-## Step 12: Create Store API Routes
+## Step 13: Create Store API Routes
 
 In this step, you’ll create three store API routes:
 
@@ -1989,7 +2198,7 @@ You’ll test out these API routes in the next step.
 
 ---
 
-## Step 13: Customize Next.js Starter
+## Step 14: Customize Next.js Starter
 
 In this section, you’ll customize the [Next.js Starter storefront](../../../../nextjs-starter/page.mdx) to:
 
