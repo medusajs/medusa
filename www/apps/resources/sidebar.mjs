@@ -1560,6 +1560,18 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        type: "link",
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/digital-products/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
         path: "/recipes/b2b",
         title: "B2B",
       },
@@ -1567,11 +1579,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/recipes/commerce-automation",
         title: "Commerce Automation",
-      },
-      {
-        type: "link",
-        path: "/recipes/digital-products",
-        title: "Digital Products",
       },
       {
         type: "link",
