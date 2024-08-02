@@ -2,11 +2,10 @@ import boxen from "boxen"
 import chalk from "chalk"
 import checkbox from "@inquirer/checkbox"
 
-import { LinkLoader, logger } from "@medusajs/framework"
+import { LinkLoader, logger, MedusaAppLoader } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
-import { getLinksExecutionPlanner } from "../loaders/medusa-app"
 import { LinkMigrationsPlannerAction } from "@medusajs/types"
 import { join } from "path"
 
@@ -28,7 +27,7 @@ function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
  * Creates the link description for printing it to the
  * console
  *
- * @param action: LinkMigrationsPlannerAction
+ * @param action LinkMigrationsPlannerAction
  */
 function buildLinkDescription(action: LinkMigrationsPlannerAction) {
   const { linkDescriptor } = action
@@ -102,16 +101,15 @@ const main = async function ({ directory }) {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
 
+    const medusaAppLoader = new MedusaAppLoader()
+
     const plugins = getResolvedPlugins(directory, configModule, true) || []
     const linksSourcePaths = plugins.map((plugin) =>
       join(plugin.resolve, "links")
     )
     await new LinkLoader(linksSourcePaths).load()
 
-    const planner = await getLinksExecutionPlanner({
-      configModule,
-      container,
-    })
+    const planner = await medusaAppLoader.getLinksExecutionPlanner()
 
     logger.info("Syncing links...")
 
