@@ -223,6 +223,7 @@ export class SubscriberLoader {
       try {
         await access(sourcePath)
       } catch {
+        logger.info(`No subscribers to load from ${sourcePath}. skipped.`)
         return
       }
 
