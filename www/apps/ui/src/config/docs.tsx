@@ -1,281 +1,361 @@
 import { ArrowUpRightOnBox } from "@medusajs/icons"
-import { NavbarItem, getMobileSidebarItems, getNavbarItems } from "docs-ui"
-import { SidebarSectionItemsType } from "types"
+import { getMobileSidebarItems } from "docs-ui"
+import { SidebarSectionItems } from "types"
 import { siteConfig } from "./site"
 
 type DocsConfig = {
-  mainNav: NavbarItem[]
-  sidebar: SidebarSectionItemsType
+  sidebar: SidebarSectionItems
 }
 
 export const docsConfig: DocsConfig = {
-  mainNav: getNavbarItems({
-    basePath: siteConfig.baseUrl,
-    activePath: process.env.NEXT_PUBLIC_BASE_PATH || "/ui",
-    version: "v1",
-  }),
   sidebar: {
-    top: [
+    default: [
       {
-        title: "Getting Started",
-        children: [
-          {
-            title: "Introduction",
-            path: "/",
-            loaded: true,
-            isPathHref: true,
-          },
-        ],
+        type: "link",
+        title: "Introduction",
+        path: "/",
+        loaded: true,
+        isPathHref: true,
       },
       {
+        type: "separator",
+      },
+      {
+        type: "category",
         title: "Installation",
+        loaded: true,
         children: [
           {
+            type: "link",
             title: "Medusa Admin Extension",
             path: "/installation/medusa-admin-extension",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Standalone Project",
             path: "/installation/standalone-project",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Upgrade Guides",
             path: `${process.env.NEXT_PUBLIC_DOCS_URL}/upgrade-guides/medusa-ui`,
             isPathHref: true,
-            additionalElms: <ArrowUpRightOnBox />,
-            linkProps: {
-              target: "_blank",
-              rel: "noreferrer",
-            },
+            loaded: true,
           },
         ],
       },
-    ],
-    bottom: [
       {
+        type: "category",
         title: "Colors",
+        loaded: true,
         children: [
           {
+            type: "link",
             title: "Overview",
             path: "/colors/overview",
             isPathHref: true,
+            loaded: true,
           },
         ],
       },
       {
+        type: "link",
         title: "Icons",
-        children: [
-          {
-            title: "Overview",
-            path: "/icons/overview",
-            isPathHref: true,
-          },
-        ],
+        path: "/icons/overview",
+        isPathHref: true,
+        loaded: true,
       },
       {
+        type: "separator",
+      },
+      {
+        type: "category",
         title: "Components",
+        loaded: true,
         children: [
           {
+            type: "link",
             title: "Alert",
             path: "/components/alert",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Avatar",
             path: "/components/avatar",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Badge",
             path: "/components/badge",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Button",
             path: "/components/button",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Calendar",
             path: "/components/calendar",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Checkbox",
             path: "/components/checkbox",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Code Block",
             path: "/components/code-block",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Command",
             path: "/components/command",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Command Bar",
             path: "/components/command-bar",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Container",
             path: "/components/container",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Copy",
             path: "/components/copy",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Currency Input",
             path: "/components/currency-input",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Date Picker",
             path: "/components/date-picker",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Drawer",
             path: "/components/drawer",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Dropdown Menu",
             path: "/components/dropdown-menu",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Focus Modal",
             path: "/components/focus-modal",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Heading",
             path: "/components/heading",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Icon Badge",
             path: "/components/icon-badge",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Icon Button",
             path: "/components/icon-button",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Input",
             path: "/components/input",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Kbd",
             path: "/components/kbd",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Label",
             path: "/components/label",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Progress Accordion",
             path: "/components/progress-accordion",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Progress Tabs",
             path: "/components/progress-tabs",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Prompt",
             path: "/components/prompt",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Radio Group",
             path: "/components/radio-group",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Select",
             path: "/components/select",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Status Badge",
             path: "/components/status-badge",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Switch",
             path: "/components/switch",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Table",
             path: "/components/table",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Tabs",
             path: "/components/tabs",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Text",
             path: "/components/text",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Textarea",
             path: "/components/textarea",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Toast",
             path: "/components/toast",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "Tooltip",
             path: "/components/tooltip",
             isPathHref: true,
+            loaded: true,
           },
         ],
       },
       {
+        type: "category",
         title: "Hooks",
+        loaded: true,
         children: [
           {
+            type: "link",
             title: "usePrompt",
             path: "/hooks/use-prompt",
             isPathHref: true,
+            loaded: true,
           },
           {
+            type: "link",
             title: "useToggleState",
             path: "/hooks/use-toggle-state",
             isPathHref: true,
+            loaded: true,
           },
         ],
       },
       {
+        type: "category",
         title: "Utils",
+        loaded: true,
         children: [
           {
+            type: "link",
             title: "clx",
             path: "/utils/clx",
             isPathHref: true,
+            loaded: true,
           },
         ],
       },

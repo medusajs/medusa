@@ -29,7 +29,7 @@ export const SidebarTopNavigationDropdownSelected = ({
       onClick={onClick}
     >
       <SidebarTopNavigationDropdownIcon icon={item.icon} />
-      <span className="text-medusa-fg-base whitespace-nowrap">
+      <span className="text-medusa-fg-base whitespace-nowrap flex-1">
         {item.title}
       </span>
       <TrianglesMini className="text-medusa-fg-muted" />
