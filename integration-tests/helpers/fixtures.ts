@@ -8,7 +8,6 @@ export const getProductFixture = (
   status: "draft",
   // BREAKING: Images input changed from string[] to {url: string}[]
   images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
-  tags: [{ value: "123" }, { value: "456" }],
   // BREAKING: Options input changed from {title: string}[] to {title: string, values: string[]}[]
   options: [
     { title: "size", values: ["large", "small"] },
