@@ -65,7 +65,7 @@ export interface AdminCreateProduct {
   type_id?: string
   collection_id?: string
   categories?: { id: string }[]
-  tags?: { id?: string; value?: string }[]
+  tags?: { id: string }[]
   options?: AdminCreateProductOption[]
   variants?: AdminCreateProductVariant[]
   sales_channels?: { id: string }[]
@@ -115,9 +115,9 @@ export interface AdminUpdateProduct {
   type_id?: string | null
   collection_id?: string | null
   categories?: { id: string }[]
-  tags?: { id?: string; value?: string }[]
+  tags?: { id: string }[]
   options?: AdminUpdateProductOption[]
-  variants?: AdminCreateProductVariant[]
+  variants?: (AdminCreateProductVariant | AdminUpdateProductVariant)[]
   sales_channels?: { id: string }[]
   weight?: number | null
   length?: number | null

@@ -40,7 +40,7 @@ export const ProductOrganizationSection = ({
           product.tags?.length
             ? product.tags.map((tag) => (
                 <Badge key={tag.id} className="w-fit" size="2xsmall" asChild>
-                  <Link to={`/products?tags=${tag.id}`}>{tag.value}</Link>
+                  <Link to={`/products?tag_id=${tag.id}`}>{tag.value}</Link>
                 </Badge>
               ))
             : undefined
