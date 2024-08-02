@@ -59,7 +59,9 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       (data) => {
         return {
           ids:
-            data.paymentCollection?.payment_sessions?.map((ps) => ps.id) || [],
+            data.paymentCollection?.payment_sessions
+              ?.map((ps) => ps.id)
+              ?.flat(1) || [],
         }
       }
     )
@@ -70,10 +72,10 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       }
 
       return {
-        selector: { id: cart.payment_collection.id },
+        selector: { id: data.cart.payment_collection.id },
         update: {
-          amount: cart.total,
-          currency_code: cart.currency_code,
+          amount: data.cart.total,
+          currency_code: data.cart.currency_code,
         },
       }
     })

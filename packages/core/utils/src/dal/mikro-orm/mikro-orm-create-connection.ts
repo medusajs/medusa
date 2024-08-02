@@ -1,7 +1,7 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { FilterDef } from "@mikro-orm/core/typings"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { isString } from "../../common"
+import { FilterDef } from "@mikro-orm/core/typings"
 
 export class CustomTsMigrationGenerator extends TSMigrationGenerator {
   createStatement(sql: string, padLeft: number): string {
