@@ -52,7 +52,7 @@ export default {
 This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Notification Provider Module, add it to the \`providers\` array of the Notification Module:
+To use your Notification Module Provider, add it to the \`providers\` array of the Notification Module:
 
 <Note>
 

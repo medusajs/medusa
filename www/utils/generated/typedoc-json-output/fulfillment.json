@@ -45178,10 +45178,6 @@
 						"types": [
 							{
 								"type": "literal",
-								"value": "return"
-							},
-							{
-								"type": "literal",
 								"value": "exchange"
 							},
 							{
@@ -45191,6 +45187,10 @@
 							{
 								"type": "literal",
 								"value": "edit"
+							},
+							{
+								"type": "literal",
+								"value": "return"
 							}
 						]
 					}

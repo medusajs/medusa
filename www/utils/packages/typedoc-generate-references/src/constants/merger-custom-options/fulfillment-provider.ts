@@ -48,7 +48,7 @@ export default {
 This exports the module's definition, indicating that the \`MyFulfillmentProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your Fulfillment Provider Module, add it to the \`providers\` array of the Fulfillment Module:
+To use your Fulfillment Module Provider, add it to the \`providers\` array of the Fulfillment Module:
 
 \`\`\`js title="medusa-config.js"
 import { Modules } from "@medusajs/utils"
