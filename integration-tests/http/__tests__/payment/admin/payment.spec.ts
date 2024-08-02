@@ -122,7 +122,7 @@ medusaIntegrationTestRunner({
       )
     })
 
-    it("should fix a bug where payment collection of other orders get updated", async () => {
+    it("should not update payment collection of other orders", async () => {
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await seedStorefrontDefaults(container, "dkk")
 
