@@ -1988,7 +1988,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create an order and create item reservations", async () => {
+        it.only("should create an order and create item reservations", async () => {
           const cart = (
             await api.post(`/store/carts`, {
               currency_code: "usd",
@@ -2075,6 +2075,18 @@ medusaIntegrationTestRunner({
               }),
             }),
           })
+
+          const order = (
+            await api.get(
+              `/admin/orders/${response.data.order.id}`,
+              adminHeaders
+            )
+          ).data.order
+
+          console.log(
+            "order -- ",
+            JSON.stringify(order.payment_collections, null, 4)
+          )
 
           const reservation = await api.get(`/admin/reservations`, adminHeaders)
           const reservationItem = reservation.data.reservations[0]
