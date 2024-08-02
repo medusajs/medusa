@@ -2,10 +2,12 @@ import React from "react"
 import clsx from "clsx"
 import { Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
+import { Toc } from "../components/Toc"
 
 export type RootLayoutProps = {
   children: React.ReactNode
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
+  showToc?: boolean
   // todo remove
   NavbarComponent?: React.FC
   sidebarProps?: SidebarProps
@@ -22,6 +24,7 @@ export const RootLayout = ({
   htmlClassName,
   bodyClassName,
   mainWrapperClasses,
+  showToc = true,
 }: RootLayoutProps) => {
   return (
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
@@ -53,6 +56,7 @@ export const RootLayout = ({
           >
             {children}
           </div>
+          {showToc && <Toc />}
         </ProvidersComponent>
       </body>
     </html>

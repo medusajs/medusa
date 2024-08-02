@@ -32,6 +32,7 @@ export default function RootLayout({
         expandItems: false,
       }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      showToc={false}
     >
       {children}
     </WideLayout>
