@@ -5,9 +5,13 @@ import {
   OrderClaimDTO,
   OrderDTO,
 } from "@medusajs/types"
-import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
+  ChangeActionType,
+  Modules,
+  OrderChangeStatus,
+  ReturnStatus,
+} from "@medusajs/utils"
+import {
   WorkflowResponse,
   createStep,
   createWorkflow,
@@ -18,10 +22,10 @@ import {
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create-fulfillment"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
-import { previewOrderChangeStep } from "../../steps"
+import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
+import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
-import { createOrderClaimItemsFromActionsStep } from "../../steps/create-claim-items-from-actions"
-import { createReturnItemsFromActionsStep } from "../../steps/create-return-items-from-actions"
+import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
@@ -239,6 +243,14 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         return createdReturnItems?.[0]?.return_id
       }
     )
+
+    updateReturnsStep([
+      {
+        id: returnId,
+        status: ReturnStatus.REQUESTED,
+        requested_at: new Date(),
+      },
+    ])
 
     const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
       return createClaimItems?.[0]?.claim_id

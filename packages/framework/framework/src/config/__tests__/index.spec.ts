@@ -26,5 +26,16 @@ describe("configLoader", () => {
 
     expect(configModule).toBeDefined()
     expect(configModule.projectConfig.databaseName).toBe("foo")
+    expect(configModule.projectConfig.workerMode).toBe("shared")
+
+    process.env.MEDUSA_WORKER_MODE = "worker"
+
+    configLoader(entryDirectory, "medusa-config-2.js")
+
+    configModule = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
+
+    expect(configModule).toBeDefined()
+    expect(configModule.projectConfig.databaseName).toBe("foo")
+    expect(configModule.projectConfig.workerMode).toBe("worker")
   })
 })

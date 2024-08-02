@@ -8,7 +8,7 @@ import {
 import { useRemoteQueryStep } from "../../../common"
 
 import { ReturnDTO } from "@medusajs/types"
-import { receiveReturnStep } from "../../steps/receive-return"
+import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInReturn,

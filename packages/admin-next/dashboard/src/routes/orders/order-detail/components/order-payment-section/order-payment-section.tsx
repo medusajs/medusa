@@ -24,6 +24,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
@@ -46,9 +47,10 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
 
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header />
+      <Header order={order} />
 
       <PaymentBreakdown
+        order={order}
         payments={payments}
         refunds={refunds}
         currencyCode={order.currency_code}
@@ -59,12 +61,17 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
   )
 }
 
-const Header = () => {
+const Header = ({ order }) => {
   const { t } = useTranslation()
+  const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("orders.payment.title")}</Heading>
+
+      <StatusBadge color={color} className="text-nowrap">
+        {label}
+      </StatusBadge>
     </div>
   )
 }
@@ -77,7 +84,6 @@ const Refund = ({
   currencyCode: string
 }) => {
   const { t } = useTranslation()
-  const hasPayment = refund.payment_id !== null
 
   const BadgeComponent = (
     <Badge size="2xsmall" className="cursor-default select-none capitalize">
@@ -93,17 +99,20 @@ const Refund = ({
 
   return (
     <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
-      <div>
-        {hasPayment && <ArrowDownRightMini className="text-ui-fg-muted" />}
-        <Text size="small" leading="compact" weight="plus">
-          {t("orders.payment.refund")}
-        </Text>
+      <div className="flex flex-row">
+        <div className="self-center pr-3">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+        </div>
+        <div>
+          <Text size="small" leading="compact" weight="plus">
+            {t("orders.payment.refund")}
+          </Text>
+          <Text size="small" leading="compact">
+            {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
+          </Text>
+        </div>
       </div>
-      <div className="flex items-center justify-end">
-        <Text size="small" leading="compact">
-          {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
-        </Text>
-      </div>
+      <div className="flex items-center justify-end"></div>
       <div className="flex items-center justify-end">{Render}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
@@ -115,10 +124,12 @@ const Refund = ({
 }
 
 const Payment = ({
+  order,
   payment,
   refunds,
   currencyCode,
 }: {
+  order: HttpTypes.AdminOrder
   payment: MedusaPayment
   refunds: MedusaRefund[]
   currencyCode: string
@@ -135,6 +146,7 @@ const Payment = ({
       }),
       confirmText: t("actions.confirm"),
       cancelText: t("actions.cancel"),
+      variant: "confirmation",
     })
 
     if (!res) {
@@ -204,7 +216,7 @@ const Payment = ({
                 {
                   label: t("orders.payment.refund"),
                   icon: <XCircle />,
-                  to: `/orders/${payment.order_id}/refund?paymentId=${payment.id}`,
+                  to: `/orders/${order.id}/payments/${payment.id}/refund`,
                   disabled: !payment.captured_at,
                 },
               ],
@@ -236,10 +248,12 @@ const Payment = ({
 }
 
 const PaymentBreakdown = ({
+  order,
   payments,
   refunds,
   currencyCode,
 }: {
+  order: HttpTypes.AdminOrder
   payments: MedusaPayment[]
   refunds: MedusaRefund[]
   currencyCode: string
@@ -271,6 +285,7 @@ const PaymentBreakdown = ({
             return (
               <Payment
                 key={event.id}
+                order={order}
                 payment={event}
                 refunds={refunds.filter(
                   (refund) => refund.payment_id === event.id

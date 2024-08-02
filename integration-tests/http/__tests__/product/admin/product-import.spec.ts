@@ -33,6 +33,10 @@ medusaIntegrationTestRunner({
     let baseProduct
     let baseRegion
     let baseCategory
+    let baseTag1
+    let baseTag2
+    let baseTag3
+    let newTag
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -57,11 +61,32 @@ medusaIntegrationTestRunner({
         )
       ).data.product_type
 
+      baseTag1 = (
+        await api.post("/admin/product-tags", { value: "123" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag2 = (
+        await api.post("/admin/product-tags", { value: "123_1" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag3 = (
+        await api.post("/admin/product-tags", { value: "456" }, adminHeaders)
+      ).data.product_tag
+
+      newTag = (
+        await api.post(
+          "/admin/product-tags",
+          { value: "new-tag" },
+          adminHeaders
+        )
+      ).data.product_tag
+
       baseProduct = (
         await api.post(
           "/admin/products",
           getProductFixture({
             title: "Base product",
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
           }),
           adminHeaders
         )
@@ -112,11 +137,11 @@ medusaIntegrationTestRunner({
           )
 
           fileContent = fileContent.replace(
-            /prod_01J3CRPNVGRZ01A8GH8FQYK10Z/g,
+            /prod_01J44RRJZ3M5F63NY82434RNM5/g,
             baseProduct.id
           )
           fileContent = fileContent.replace(
-            /variant_01J3CRPNW5J6EBVVQP1TN33A58/g,
+            /variant_01J44RRJZW1T9KQB6XG7Q6K61F/g,
             baseProduct.variants[0].id
           )
           fileContent = fileContent.replace(/pcol_\w*\d*/g, baseCollection.id)
@@ -225,16 +250,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 100,
+                        currency_code: "dkk",
+                        amount: 30,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 45,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 30,
+                        currency_code: "usd",
+                        amount: 100,
                       }),
                     ],
                     options: [
@@ -252,16 +277,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 200,
+                        currency_code: "dkk",
+                        amount: 50,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 65,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 50,
+                        currency_code: "usd",
+                        amount: 200,
                       }),
                     ],
                     options: [
@@ -326,16 +351,16 @@ medusaIntegrationTestRunner({
                     manage_inventory: true,
                     prices: [
                       expect.objectContaining({
-                        currency_code: "usd",
-                        amount: 100,
+                        currency_code: "dkk",
+                        amount: 30,
                       }),
                       expect.objectContaining({
                         currency_code: "eur",
                         amount: 45,
                       }),
                       expect.objectContaining({
-                        currency_code: "dkk",
-                        amount: 30,
+                        currency_code: "usd",
+                        amount: 100,
                       }),
                     ],
                     options: [

@@ -16,12 +16,12 @@ import {
   JobLoader,
   LinkLoader,
   logger,
+  MedusaAppLoader,
   pgConnectionLoader,
   SubscriberLoader,
   WorkflowLoader,
 } from "@medusajs/framework"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
-import loadMedusaApp from "./medusa-app"
 
 type Options = {
   directory: string
@@ -40,23 +40,15 @@ const shouldLoadBackgroundProcessors = (configModule) => {
 }
 
 async function subscribersLoader(plugins: PluginDetails[]) {
-  /**
-   * Load subscribers from the medusa/medusa package
-   */
-  await new SubscriberLoader(join(__dirname, "../subscribers")).load()
+  const pluginSubscribersSourcePaths = [
+    /**
+     * Load subscribers from the medusa/medusa package. Remove once the medusa core is converted to a plugin
+     */
+    join(__dirname, "../subscribers"),
+  ].concat(plugins.map((plugin) => join(plugin.resolve, "subscribers")))
 
-  // TODO: make it the same as the other loaders, taking an array of paths to load from
-  /**
-   * Load subscribers from all the plugins.
-   */
-  await Promise.all(
-    plugins.map(async (pluginDetails) => {
-      await new SubscriberLoader(
-        join(pluginDetails.resolve, "subscribers"),
-        pluginDetails.options
-      ).load()
-    })
-  )
+  const subscriberLoader = new SubscriberLoader(pluginSubscribersSourcePaths)
+  await subscriberLoader.load()
 }
 
 async function jobsLoader(plugins: PluginDetails[]) {
@@ -157,9 +149,7 @@ export default async ({
     onApplicationStart,
     onApplicationShutdown,
     onApplicationPrepareShutdown,
-  } = await loadMedusaApp({
-    container,
-  })
+  } = await new MedusaAppLoader().load()
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths)

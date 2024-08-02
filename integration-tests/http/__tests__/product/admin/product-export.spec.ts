@@ -14,7 +14,6 @@ jest.setTimeout(50000)
 const compareCSVs = async (filePath, expectedFilePath) => {
   const asLocalPath = filePath.replace("http://localhost:9000", process.cwd())
   let fileContent = await fs.readFile(asLocalPath, { encoding: "utf-8" })
-
   let fixturesContent = await fs.readFile(expectedFilePath, {
     encoding: "utf-8",
   })
@@ -51,6 +50,9 @@ medusaIntegrationTestRunner({
     let baseType
     let baseRegion
     let baseCategory
+    let baseTag1
+    let baseTag2
+    let newTag
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -103,6 +105,22 @@ medusaIntegrationTestRunner({
         )
       ).data.product_category
 
+      baseTag1 = (
+        await api.post("/admin/product-tags", { value: "123" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag2 = (
+        await api.post("/admin/product-tags", { value: "456" }, adminHeaders)
+      ).data.product_tag
+
+      newTag = (
+        await api.post(
+          "/admin/product-tags",
+          { value: "new-tag" },
+          adminHeaders
+        )
+      ).data.product_tag
+
       baseProduct = (
         await api.post(
           "/admin/products",
@@ -112,6 +130,7 @@ medusaIntegrationTestRunner({
             collection_id: baseCollection.id,
             type_id: baseType.id,
             categories: [{ id: baseCategory.id }],
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
             variants: [
               {
                 title: "Test variant",
@@ -167,7 +186,7 @@ medusaIntegrationTestRunner({
           getProductFixture({
             title: "Proposed product",
             status: "proposed",
-            tags: [{ value: "new-tag" }],
+            tags: [{ id: newTag.id }],
             type_id: baseType.id,
           }),
           adminHeaders
@@ -259,6 +278,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             getProductFixture({
               title: "Product with prices",
+              tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
               variants: [
                 {
                   title: "Test variant",

@@ -1,0 +1,213 @@
+---
+sidebar_label: "Get Variant Price with Taxes"
+---
+
+export const metadata = {
+  title: `Calculate Product Variant Price with Taxes`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to calculate a product variant's price with taxes.
+
+## Step 0: Resolve Resources
+
+You'll need the following resources for the taxes calculation:
+
+1. Remote query to retrieve the product's variants' prices for a context. Learn more about that in [this guide](../price/page.mdx).
+2. The Tax Module's main service to get the tax lines for each product.
+
+```ts
+// other imports...
+import {
+  ModuleRegistrationName
+} from "@medusajs/utils"
+
+// In an API route, workflow step, etc...
+const remoteQuery = container.resolve("remoteQuery")
+const taxModuleService = container.resolve(
+  ModuleRegistrationName.TAX
+)
+```
+
+---
+
+## Step 1: Retrieve Prices for a Context
+
+After resolving the resources, use the remote query to retrieve the products with the variants' prices for a context:
+
+```ts
+// other imports...
+import {
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+
+// ...
+const query = remoteQueryObjectFromString({
+  entryPoint: "product",
+  fields: [
+    "*",
+    "variants.*",
+    "variants.calculated_price.*"
+  ],
+  variables: {
+    filters: {
+      id
+    },
+    "variants.calculated_price": {
+      context: {
+        region_id,
+        currency_code,
+      }
+    }
+  }
+})
+
+const products = await remoteQuery(query)
+```
+
+<Note>
+
+Learn more about retrieving product variants' prices for a context in [this guide](../price/page.mdx).
+
+</Note>
+
+---
+
+## Step 2: Get Tax Lines for Products
+
+To retrieve the tax line of each product, first, add the following utility method:
+
+```ts
+// other imports...
+import {
+  HttpTypes,
+  TaxableItemDTO
+} from "@medusajs/types"
+
+// ...
+const asTaxItem = (product: HttpTypes.StoreProduct): TaxableItemDTO[] => {
+  return product.variants
+    ?.map((variant) => {
+      if (!variant.calculated_price) {
+        return
+      }
+
+      return {
+        id: variant.id,
+        product_id: product.id,
+        product_name: product.title,
+        product_categories: product.categories?.map((c) => c.name),
+        product_category_id: product.categories?.[0]?.id,
+        product_sku: variant.sku,
+        product_type: product.type,
+        product_type_id: product.type_id,
+        quantity: 1,
+        unit_price: variant.calculated_price.calculated_amount,
+        currency_code: variant.calculated_price.currency_code,
+      }
+    })
+    .filter((v) => !!v) as unknown as TaxableItemDTO[]
+}
+```
+
+This formats the products as items to calculate tax lines for.
+
+Then, use it when retrieving the tax lines of the products retrieved earlier:
+
+```ts
+// other imports...
+import {
+  ItemTaxLineDTO
+} from "@medusajs/types"
+
+// ...
+const taxLines = (await taxModuleService.getTaxLines(
+  products.map(asTaxItem).flat(),
+  {
+    // example of context properties. You can pass other ones.
+    address: {
+      country_code,
+    }
+  }
+)) as unknown as ItemTaxLineDTO[]
+```
+
+You use the Tax Module's main service's [getTaxLines method](/references/tax/getTaxLines) to retrieve the tax line. 
+
+For the first parameter, you use the `asTaxItem` function to format the products as expected by the `getTaxLines` method.
+
+For the second parameter, you pass the current context. You can pass other details such as the customer's ID.
+
+<Note>
+
+Learn about the other context properties to pass in [the getTaxLines method's reference](/references/tax/getTaxLines).
+
+</Note>
+
+---
+
+## Step 3: Calculate Price with Tax for Variant
+
+To calculate the price with and without taxes for a variant, first, group the tax lines retrieved in the previous step by variant IDs:
+
+export const taxLineHighlights = [
+  ["3", "variantId", "The variant's ID is stored in the `line_item_id` property since tax lines are for cart items."]
+]
+
+```ts highlights={taxLineHighlights}
+const taxLinesMap = new Map<string, ItemTaxLineDTO[]>()
+taxLines.forEach((taxLine) => {
+  const variantId = taxLine.line_item_id
+  if (!taxLinesMap.has(variantId)) {
+    taxLinesMap.set(variantId, [])
+  }
+
+  taxLinesMap.get(variantId)?.push(taxLine)
+})
+```
+
+Notice that the variant's ID is stored in the `line_item_id` property of a tax line since tax lines are used for line items in a cart.
+
+Then, loop over the products and their variants to retrieve the prices with and without taxes:
+
+export const calculateTaxHighlights = [
+  ["13", "taxLinesForVariant", "Retrieve the variant's tax line from the map."],
+  ["14", "priceWithTax", "The product variant's price with taxes applied."],
+  ["14", "priceWithoutTax", "The product variant's price without taxes applied."],
+  ["14", "calculateAmountsWithTax", "Use utility to calculate prices with and without taxes."]
+]
+
+```ts highlights={calculateTaxHighlights}
+// other imports...
+import {
+  calculateAmountsWithTax
+} from "@medusajs/utils"
+
+// ...
+products.forEach((product) => {
+  product.variants?.forEach((variant) => {
+    if (!variant.calculated_price) {
+      return
+    }
+
+    const taxLinesForVariant = taxLinesMap.get(variant.id) || []
+    const { priceWithTax, priceWithoutTax } = calculateAmountsWithTax({
+      taxLines: taxLinesForVariant,
+      amount: variant.calculated_price!.calculated_amount!,
+      includesTax:
+        variant.calculated_price!.is_calculated_price_tax_inclusive!,
+    })
+
+    // do something with prices...
+  })
+})
+```
+
+For each product variant, you:
+
+1. Retrieve its tax lines from the `taxLinesMap`.
+2. Calculate its prices with and without taxes using the `calculateAmountsWithTax` function imported from `@medusajs/utils`.
+3. The `calculateAmountsWithTax` function returns an object having two properties:
+    - `priceWithTax`: The variant's price with the taxes applied.
+    - `priceWithoutTax`: The variant's price without taxes applied.

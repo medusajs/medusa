@@ -11,5 +11,5 @@ export interface AdminNotification {
   original_notification_id?: string | null
   external_id?: string | null
   provider_id: string
-  created_at: Date
+  created_at: string
 }
