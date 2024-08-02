@@ -3,10 +3,10 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { adminHeaders } from "../../../../helpers/create-admin-user"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
-import { createOrderSeeder } from "../../__fixtures__/order"
 
-const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-const { createAdminUser } = require("../../../../helpers/create-admin-user")
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { createOrderSeeder } from "../../fixtures/order"
 
 jest.setTimeout(30000)
 
