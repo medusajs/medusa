@@ -26,7 +26,7 @@ export class SubscriberLoader {
    * The base directory from which to scan for the subscribers
    * @private
    */
-  #sourceDir: string
+  #sourceDir: string | string[]
 
   /**
    * The list of file names to exclude from the subscriber scan
@@ -46,7 +46,10 @@ export class SubscriberLoader {
    */
   #subscriberDescriptors: Map<string, SubscriberModule<any>> = new Map()
 
-  constructor(sourceDir: string, options: Record<string, unknown> = {}) {
+  constructor(
+    sourceDir: string | string[],
+    options: Record<string, unknown> = {}
+  ) {
     this.#sourceDir = sourceDir
     this.#pluginOptions = options
   }
@@ -213,20 +216,20 @@ export class SubscriberLoader {
   }
 
   async load() {
-    let hasSubscriberDir = false
+    const normalizeSourcePaths = Array.isArray(this.#sourceDir)
+      ? this.#sourceDir
+      : [this.#sourceDir]
+    const promises = normalizeSourcePaths.map(async (sourcePath) => {
+      try {
+        await access(sourcePath)
+      } catch {
+        return
+      }
 
-    try {
-      await access(this.#sourceDir)
-      hasSubscriberDir = true
-    } catch (err) {
-      logger.debug(`No subscriber directory found in ${this.#sourceDir}`)
-    }
+      return await this.createMap(sourcePath)
+    })
 
-    if (!hasSubscriberDir) {
-      return
-    }
-
-    await this.createMap(this.#sourceDir)
+    await promiseAll(promises)
 
     for (const [
       fileName,
@@ -238,8 +241,6 @@ export class SubscriberLoader {
         handler,
       })
     }
-
-    logger.debug(`Subscribers registered.`)
 
     /**
      * Return the file paths of the registered subscribers, to prevent the
