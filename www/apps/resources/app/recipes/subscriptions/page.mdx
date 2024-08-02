@@ -27,7 +27,9 @@ For example, a customer can purchase a book subscription box for a period of thr
 
 Subscriptions have details related to the subscription interval, subscription period, and more.
 
-To store the subscription details, create a data model in a module. The module's main service provides data management feature of the data model.
+To store the subscription details, create a data model in a new subscription module. The module's main service provides data management feature of the data model.
+
+You can link the subscription data model to models of other modules, such as the Order Module's `Order` data model.
 
 <CardList items={[
   {
@@ -48,46 +50,43 @@ To store the subscription details, create a data model in a module. The module's
 
 ---
 
-## Implement Subscription Approach
+## Define Module Links
 
-There are different ways to implement subscriptions in your Medusa application. This recipe provides two options: using Stripe subscriptions, or implementing subscriptions logic within the application, independent of a specific payment provider.
+Define a module link that links a data model from your subscription module with a data model from another module.
 
-### Option 1: Using Stripe Subscriptions
+For example, you can link the subscription data model to the Order Module's `Order` data model.
 
-Stripe provides a [subscription payments feature](https://stripe.com/docs/billing/subscriptions/overview) that allows you to authorize payment on a subscription basis within Stripe. Stripe then handles checking for recurring payments and capturing payment at the specified interval.
-
-This approach allows you to delegate the complications of implementing the subscription logic to Stripe, but doesn't support using other payment providers.
-
-Although Medusa provides a Stripe module provider, it doesn't handle subscriptions. You can create a custom Stripe Subscription payment module.
+If you want to create subscriptions on the product level, you can link the subscription data model to the Product Module's `Product` data model.
 
 <Card
-  href="/references/payment/provider"
-  title="Create Payment Module Provider"
-  text="Learn how to create a payment module provider."
+  href="!docs!/advanced-development/modules/module-links"
+  title="Define a Module Link"
+  text="Learn how to define a module link."
   startIcon={<AcademicCapSolid />}
   showLinkIcon={false}
 />
 
-### Option 2: Custom Subscription Logic
+---
+
+## Implement Subscription Approach
+
+There are different ways to implement subscriptions in your Medusa application. This recipe covers two options.
+
+### Option 1: Custom Subscription Logic
 
 By implementing the subscription logic within your application, you have full control over the subscription logic. You'll also be independent of payment providers, providing customers with more than one payment provider.
 
 Implementing the logic depends on your use case, but you'll mainly implement the following:
 
-1. Create a subscriber that listens to the `order.placed` event to save the subscription details or perform other actions.
+1. Create an API route in place of the [Complete Cart Store API Route](!api!/store#carts_postcartsidcomplete) that creates a subscription for the order.
 2. Create a scheduled job that checks daily for subscriptions that need renewal.
-
-<Note type="soon">
-
-- The `order.placed` event isn't emitted yet.
-
-</Note>
+3. Create a scheduled job that checks daily for subscriptions that are expired.
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "!docs!/basics/events-and-subscribers",
-    title: "Create a Subscriber",
-    text: "Learn how to create a subscriber.",
+    href: "!docs!/basics/api-routes",
+    title: "Create an API Route",
+    text: "Learn how to create an API route.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -100,11 +99,27 @@ Implementing the logic depends on your use case, but you'll mainly implement the
   }
 ]} />
 
+### Option 2: Using Stripe Subscriptions
+
+Stripe provides a [subscription payments feature](https://stripe.com/docs/billing/subscriptions/overview) that allows you to authorize payment on a subscription basis within Stripe. Stripe then handles checking for recurring payments and capturing payment at the specified interval.
+
+This approach allows you to delegate the complications of implementing the subscription logic to Stripe, but doesn't support using other payment providers.
+
+Although Medusa provides a Stripe module provider, it doesn't handle subscriptions. You can create a custom Stripe Subscription module provider.
+
+<Card
+  href="/references/payment/provider"
+  title="Create Payment Module Provider"
+  text="Learn how to create a payment module provider."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
 ---
 
 ## Customize Admin
 
-You can extend the admin to provide an interface to manage your custom features.
+You can extend the admin to provide an interface to manage your custom features, such as view the subscriptions.
 
 Extend the Medusa Admin to add widgets to existing pages or add new pages.
 
