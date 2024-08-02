@@ -24,6 +24,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
@@ -46,7 +47,7 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
 
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header />
+      <Header order={order} />
 
       <PaymentBreakdown
         order={order}
@@ -60,12 +61,17 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
   )
 }
 
-const Header = () => {
+const Header = ({ order }) => {
   const { t } = useTranslation()
+  const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("orders.payment.title")}</Heading>
+
+      <StatusBadge color={color} className="text-nowrap">
+        {label}
+      </StatusBadge>
     </div>
   )
 }

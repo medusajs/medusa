@@ -1,9 +1,12 @@
+import { IPaymentModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { adminHeaders } from "../../../../helpers/create-admin-user"
-import { IPaymentModuleService } from "@medusajs/types"
+import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
+import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
-const { medusaIntegrationTestRunner } = require("medusa-test-utils")
-const { createAdminUser } = require("../../../../helpers/create-admin-user")
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { createOrderSeeder } from "../../fixtures/order"
 
 jest.setTimeout(30000)
 
@@ -12,10 +15,12 @@ medusaIntegrationTestRunner({
     let paymentModule: IPaymentModuleService
     let paymentCollection
     let payment
+    let container
 
     beforeEach(async () => {
-      paymentModule = getContainer().resolve(ModuleRegistrationName.PAYMENT)
-      await createAdminUser(dbConnection, adminHeaders, getContainer())
+      container = getContainer()
+      paymentModule = container.resolve(ModuleRegistrationName.PAYMENT)
+      await createAdminUser(dbConnection, adminHeaders, container)
 
       const collection = (
         await api.post(
@@ -51,7 +56,7 @@ medusaIntegrationTestRunner({
       payment = payments[0]
     })
 
-    it("Captures an authorized payment", async () => {
+    it("should capture an authorized payment", async () => {
       const response = await api.post(
         `/admin/payments/${payment.id}/capture`,
         undefined,
@@ -75,7 +80,7 @@ medusaIntegrationTestRunner({
       expect(response.status).toEqual(200)
     })
 
-    it("Refunds an captured payment", async () => {
+    it("should refund a captured payment", async () => {
       await api.post(
         `/admin/payments/${payment.id}/capture`,
         undefined,
@@ -113,6 +118,62 @@ medusaIntegrationTestRunner({
             }),
           ],
           amount: 1000,
+        })
+      )
+    })
+
+    it("should not update payment collection of other orders", async () => {
+      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
+      await seedStorefrontDefaults(container, "dkk")
+
+      let order1 = await createOrderSeeder({ api })
+
+      expect(order1).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          payment_status: "authorized",
+        })
+      )
+
+      const order1Payment = order1.payment_collections[0].payments[0]
+
+      const result = await api.post(
+        `/admin/payments/${order1Payment.id}/capture?fields=*payment_collection`,
+        {
+          amount: order1Payment.amount,
+        },
+        adminHeaders
+      )
+
+      order1 = (await api.get(`/admin/orders/${order1.id}`, adminHeaders)).data
+        .order
+
+      expect(order1).toEqual(
+        expect.objectContaining({
+          id: order1.id,
+          payment_status: "captured",
+        })
+      )
+
+      let order2 = await createOrderSeeder({ api })
+
+      order2 = (await api.get(`/admin/orders/${order2.id}`, adminHeaders)).data
+        .order
+
+      expect(order2).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          payment_status: "authorized",
+        })
+      )
+
+      order1 = (await api.get(`/admin/orders/${order1.id}`, adminHeaders)).data
+        .order
+
+      expect(order1).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          payment_status: "captured",
         })
       )
     })
