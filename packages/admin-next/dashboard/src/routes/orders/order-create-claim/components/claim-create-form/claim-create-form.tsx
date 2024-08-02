@@ -127,6 +127,27 @@ export const ClaimCreateForm = ({
     isUpdating
 
   /**
+   * Only consider items that belong to this claim.
+   */
+  const previewItems = useMemo(
+    () =>
+      preview.items.filter(
+        (i) => !!i.actions?.find((a) => a.claim_id === claim.id)
+      ),
+    [preview.items]
+  )
+
+  const itemsMap = useMemo(
+    () => new Map(order.items.map((i) => [i.id, i])),
+    [order.items]
+  )
+
+  const previewItemsMap = useMemo(
+    () => new Map(previewItems.map((i) => [i.id, i])),
+    [previewItems]
+  )
+
+  /**
    * FORM
    */
 
@@ -137,7 +158,7 @@ export const ClaimCreateForm = ({
       )
 
       return Promise.resolve({
-        inbound_items: preview.items.map((i) => ({
+        inbound_items: previewItems.map((i) => ({
           item_id: i.id,
           quantity: i.detail.return_requested_quantity,
           note: i.actions?.find((a) => a.action === "RETURN_ITEM")
@@ -153,38 +174,21 @@ export const ClaimCreateForm = ({
     resolver: zodResolver(ClaimCreateSchema),
   })
 
-  const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
-    [order.items]
-  )
-
-  const previewItemsMap = useMemo(
-    () => new Map(preview.items.map((i) => [i.id, i])),
-    [preview.items]
-  )
-
   const {
     fields: items,
     append,
     remove,
     update,
   } = useFieldArray({
-    name: "items",
+    name: "inbound_items",
     control: form.control,
   })
 
   useEffect(() => {
     const existingItemsMap = {}
 
-    preview.items.forEach((i) => {
+    previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
-
-      /**
-       * THESE ITEMS ARE REMOVED FROM RETURN REQUEST
-       */
-      if (!i.detail.return_requested_quantity) {
-        return
-      }
 
       existingItemsMap[i.id] = true
 
@@ -211,7 +215,7 @@ export const ClaimCreateForm = ({
         remove(ind)
       }
     })
-  }, [preview.items])
+  }, [previewItems])
 
   useEffect(() => {
     const method = preview.shipping_methods.find(
@@ -436,7 +440,7 @@ export const ClaimCreateForm = ({
                 currencyCode={order.currency_code}
                 form={form}
                 onRemove={() => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
@@ -445,7 +449,7 @@ export const ClaimCreateForm = ({
                   }
                 }}
                 onUpdate={(payload) => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 

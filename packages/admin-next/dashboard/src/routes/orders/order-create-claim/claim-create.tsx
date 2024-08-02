@@ -8,7 +8,7 @@ import { RouteFocusModal } from "../../../components/modals"
 import { ClaimCreateForm } from "./components/claim-create-form"
 
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { useClaim, useClaims, useCreateClaim } from "../../../hooks/api/claims"
+import { useClaims, useCreateClaim } from "../../../hooks/api/claims"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 
 let IS_REQUEST_RUNNING = false
@@ -47,24 +47,18 @@ export const ClaimCreate = () => {
 
   useEffect(() => {
     async function run() {
-      if (IS_REQUEST_RUNNING || !order || !preview) {
+      if (IS_REQUEST_RUNNING || !preview) {
         return
       }
 
-      /**
-       * Active claim already exists
-       */
-      if (preview.order_change?.change_type === "claim") {
-        setActiveClaimId(preview.order_change.claim_id)
-        return
-      }
+      if (preview.order_change) {
+        if (preview.order_change.change_type === "claim") {
+          setActiveClaimId(preview.order_change.claim_id)
+        } else {
+          navigate(`/orders/${preview.id}`, { replace: true })
+          toast.error(t("orders.claims.activeChangeError"))
+        }
 
-      if (
-        preview.order_change &&
-        preview.order_change.change_type !== "claim"
-      ) {
-        navigate(`/orders/${order.id}`, { replace: true })
-        toast.error(t("orders.claims.activeChangeError"))
         return
       }
 
@@ -72,12 +66,12 @@ export const ClaimCreate = () => {
 
       try {
         const { claim } = await createClaim({
-          order_id: order.id,
+          order_id: preview.id,
           type: "replace",
         })
         setActiveClaimId(claim.id)
       } catch (e) {
-        navigate(`/orders/${order.id}`, { replace: true })
+        navigate(`/orders/${preview.id}`, { replace: true })
         toast.error(e.message)
       } finally {
         IS_REQUEST_RUNNING = false
@@ -85,7 +79,7 @@ export const ClaimCreate = () => {
     }
 
     run()
-  }, [order, preview])
+  }, [preview])
 
   return (
     <RouteFocusModal>

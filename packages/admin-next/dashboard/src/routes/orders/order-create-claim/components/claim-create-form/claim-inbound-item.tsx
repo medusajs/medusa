@@ -38,7 +38,7 @@ function ClaimInboundItem({
 
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
 
-  const formItem = form.watch(`items.${index}`)
+  const formItem = form.watch(`inbound_items.${index}`)
 
   const showReturnReason = typeof formItem.reason_id === "string"
   const showNote = typeof formItem.note === "string"
@@ -65,7 +65,7 @@ function ClaimInboundItem({
           <div className="flex flex-grow items-center gap-2">
             <Form.Field
               control={form.control}
-              name={`items.${index}.quantity`}
+              name={`inbound_items.${index}.quantity`}
               render={({ field }) => {
                 return (
                   <Form.Item>
@@ -113,12 +113,13 @@ function ClaimInboundItem({
                   !showReturnReason && {
                     label: t("actions.addReason"),
                     onClick: () =>
-                      form.setValue(`items.${index}.reason_id`, ""),
+                      form.setValue(`inbound_items.${index}.reason_id`, ""),
                     icon: <ChatBubble />,
                   },
                   !showNote && {
                     label: t("actions.addNote"),
-                    onClick: () => form.setValue(`items.${index}.note`, ""),
+                    onClick: () =>
+                      form.setValue(`inbound_items.${index}.note`, ""),
                     icon: <DocumentText />,
                   },
                   {
@@ -147,7 +148,7 @@ function ClaimInboundItem({
               <div className="flex-grow">
                 <Form.Field
                   control={form.control}
-                  name={`items.${index}.reason_id`}
+                  name={`inbound_items.${index}.reason_id`}
                   render={({ field: { ref, value, onChange, ...field } }) => {
                     return (
                       <Form.Item>
@@ -178,7 +179,7 @@ function ClaimInboundItem({
                 variant="transparent"
                 onClick={() => {
                   onUpdate({ reason_id: null }) // TODO BE: we should be able to set to unset reason here
-                  form.setValue(`items.${index}.reason_id`, "")
+                  form.setValue(`inbound_items.${index}.reason_id`, "")
                 }}
               >
                 <XMark className="text-ui-fg-muted" />
