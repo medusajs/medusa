@@ -7,7 +7,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 
-import { HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import { refetchEntity } from "../../../../../utils/refetch-entity"
 import {
   remapKeysForProduct,
@@ -36,9 +36,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    HttpTypes.AdminUpdateProductVariant & {
-      additional_data?: Record<string, unknown>
-    }
+    HttpTypes.AdminUpdateProductVariant & AdditionalData
   >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {

@@ -1,5 +1,5 @@
 import { createProductsWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -31,9 +31,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    HttpTypes.AdminCreateProduct & {
-      additional_data?: Record<string, unknown>
-    }
+    HttpTypes.AdminCreateProduct & AdditionalData
   >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {

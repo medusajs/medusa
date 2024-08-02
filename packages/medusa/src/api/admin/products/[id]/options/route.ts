@@ -5,7 +5,7 @@ import {
 
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
 import { remapKeysForProduct, remapProductResponse } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import {
   refetchEntities,
   refetchEntity,
@@ -34,9 +34,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    HttpTypes.AdminCreateProductOption & {
-      additional_data?: Record<string, unknown>
-    }
+    HttpTypes.AdminCreateProductOption & AdditionalData
   >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
