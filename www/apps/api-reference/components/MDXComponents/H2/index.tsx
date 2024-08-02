@@ -44,6 +44,7 @@ const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
 
     addItems([
       {
+        type: "link",
         path: `${id}`,
         title: children as string,
         loaded: true,

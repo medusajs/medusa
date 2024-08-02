@@ -1,5 +1,4 @@
 import "./globals.css"
-import Navbar from "@/components/Navbar"
 import Providers from "../providers"
 import { WideLayout } from "docs-ui"
 import { Inter, Roboto_Mono } from "next/font/google"
@@ -29,7 +28,9 @@ export default function RootLayout({
   return (
     <WideLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
+      sidebarProps={{
+        expandItems: false,
+      }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
     >
       {children}

@@ -3,6 +3,7 @@
 import { createContext, useEffect } from "react"
 import { capitalize, useSidebar } from "docs-ui"
 import { useArea } from "./area"
+import { SidebarItemLink } from "types"
 
 const PageTitleContext = createContext(null)
 
@@ -25,7 +26,9 @@ const PageTitleProvider = ({ children }: PageTitleProviderProps) => {
         document.title = `${activeItem?.title} - ${titleSuffix}`
       } else {
         // find the child that matches the active path
-        const item = activeItem?.children?.find((i) => i.path === activePath)
+        const item = activeItem?.children?.find(
+          (i) => i.type === "link" && i.path === activePath
+        ) as SidebarItemLink
         if (item) {
           document.title = `${item.title} - ${titleSuffix}`
         }

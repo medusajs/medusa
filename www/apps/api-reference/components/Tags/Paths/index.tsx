@@ -14,7 +14,7 @@ import { useBaseSpecs } from "@/providers/base-specs"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { useLoading } from "@/providers/loading"
 import DividedLoading from "@/components/DividedLoading"
-import { SidebarItemSections, SidebarItemType } from "types"
+import { SidebarItemSections, SidebarItem, SidebarItemCategory } from "types"
 import basePathUrl from "../../../utils/base-path-url"
 
 const TagOperation = dynamic<TagOperationProps>(
@@ -56,16 +56,17 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   useEffect(() => {
     if (paths) {
       const parentItem = findItemInSection(
-        items[SidebarItemSections.BOTTOM],
-        { path: tagSlugName },
+        items[SidebarItemSections.DEFAULT],
+        { title: tag.name },
         false
-      )
-      const pathItems: SidebarItemType[] = getTagChildSidebarItems(paths)
+      ) as SidebarItemCategory
+      const pathItems: SidebarItem[] = getTagChildSidebarItems(paths)
       if ((parentItem?.children?.length || 0) < pathItems.length) {
         addItems(pathItems, {
-          section: SidebarItemSections.BOTTOM,
+          section: SidebarItemSections.DEFAULT,
           parent: {
-            path: tagSlugName,
+            title: tag.name,
+            path: "",
             changeLoaded: true,
           },
         })

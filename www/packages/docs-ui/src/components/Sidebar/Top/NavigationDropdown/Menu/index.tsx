@@ -8,11 +8,13 @@ import { SidebarTopNavigationDropdownMenuItem } from "./Item"
 export type SidebarTopNavigationDropdownMenuProps = {
   items: NavigationDropdownItem[]
   open: boolean
+  onSelect: () => void
 }
 
 export const SidebarTopNavigationDropdownMenu = ({
   items,
   open,
+  onSelect,
 }: SidebarTopNavigationDropdownMenuProps) => {
   return (
     <ul
@@ -23,7 +25,11 @@ export const SidebarTopNavigationDropdownMenu = ({
       )}
     >
       {items.map((item, index) => (
-        <SidebarTopNavigationDropdownMenuItem item={item} key={index} />
+        <SidebarTopNavigationDropdownMenuItem
+          item={item}
+          key={index}
+          onSelect={onSelect}
+        />
       ))}
     </ul>
   )

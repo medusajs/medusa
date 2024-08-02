@@ -326,6 +326,8 @@ module.exports = {
         "inner-content-xl": "640px",
         "inner-content-xxl": "640px",
         "inner-content-xxxl": "640px",
+        // wide layout
+        "wide-content": "1112px",
         // TODO maybe remove
         // "main-content": "1239px",
         // "main-content-hidden-sidebar": "1440px",

@@ -4,7 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import { SidebarItemCategory as SidebarItemCategoryType } from "types"
-import { Loading, SidebarItem } from "../../../.."
+import { Loading, SidebarItem, useSidebar } from "../../../.."
 import clsx from "clsx"
 import { MinusMini, PlusMini } from "@medusajs/icons"
 import { CSSTransition } from "react-transition-group"
@@ -22,6 +22,7 @@ export const SidebarItemCategory = ({
   const [showLoading, setShowLoading] = useState(false)
   const [open, setOpen] = useState(expandItems)
   const childrenRef = useRef<HTMLUListElement>(null)
+  const { isCategoryChildrenActive } = useSidebar()
 
   useEffect(() => {
     if (open && !item.loaded) {
@@ -34,6 +35,21 @@ export const SidebarItemCategory = ({
       setShowLoading(false)
     }
   }, [item])
+
+  useEffect(() => {
+    if (!item.autoExpandOnActive) {
+      return
+    }
+
+    const isActive = isCategoryChildrenActive(item)
+    if (isActive && !open) {
+      setOpen(true)
+    }
+  }, [item.autoExpandOnActive, isCategoryChildrenActive, open])
+
+  const handleOpen = () => {
+    item.onOpen?.()
+  }
 
   return (
     <div
@@ -51,7 +67,12 @@ export const SidebarItemCategory = ({
           "z-[2] lg:bg-medusa-bg-subtle"
         )}
         tabIndex={-1}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => {
+          if (!open) {
+            handleOpen()
+          }
+          setOpen((prev) => !prev)
+        }}
       >
         <span className="text-compact-x-small-plus">{item.title}</span>
         {item.additionalElms}

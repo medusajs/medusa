@@ -10,10 +10,12 @@ import { SidebarTopNavigationDropdownIcon } from "../../Icon"
 
 export type SidebarTopNavigationDropdownMenuItemProps = {
   item: NavigationDropdownItem
+  onSelect: () => void
 }
 
 export const SidebarTopNavigationDropdownMenuItem = ({
   item,
+  onSelect,
 }: SidebarTopNavigationDropdownMenuItemProps) => {
   switch (item.type) {
     case "divider":
@@ -26,6 +28,8 @@ export const SidebarTopNavigationDropdownMenuItem = ({
             "hover:bg-medusa-bg-component-hover",
             "block rounded-docs_xs"
           )}
+          prefetch={false}
+          onClick={onSelect}
         >
           <li
             className={clsx(

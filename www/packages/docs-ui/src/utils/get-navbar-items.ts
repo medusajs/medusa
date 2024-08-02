@@ -50,7 +50,7 @@ export function getNavDropdownItems({
     return {
       ...item,
       isActive: activePath === item.path,
-      href: `${basePath}${item.path}`,
+      path: `${basePath}${item.path}`,
     }
   })
 }

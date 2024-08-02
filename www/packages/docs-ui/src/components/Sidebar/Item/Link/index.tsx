@@ -101,6 +101,7 @@ export const SidebarItemLink = ({
             "hover:bg-medusa-bg-base-hover lg:hover:bg-medusa-bg-subtle-hover",
           ],
           "text-compact-small-plus",
+          "flex justify-between items-center",
           className
         )}
         scroll={true}

@@ -49,6 +49,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     addItems(
       [
         {
+          type: "link",
           path: schemaSlug,
           title: `${formattedName} Object`,
           additionalElms: <Badge variant="neutral">Schema</Badge>,
@@ -56,8 +57,9 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
         },
       ],
       {
-        section: SidebarItemSections.BOTTOM,
+        section: SidebarItemSections.DEFAULT,
         parent: {
+          title: tagName,
           path: tagSlugName,
           changeLoaded: true,
         },

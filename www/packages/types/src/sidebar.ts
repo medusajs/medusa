@@ -25,6 +25,8 @@ export type SidebarItemLink = SidebarItemCommon & {
 
 export type SidebarItemCategory = SidebarItemCommon & {
   type: "category"
+  onOpen?: () => void
+  autoExpandOnActive?: boolean
 }
 
 export type SidebarItemSubCategory = SidebarItemCommon & {

@@ -42,7 +42,11 @@ export const SidebarTopNavigationDropdown = () => {
           onClick={() => setMenuOpen((prev) => !prev)}
         />
       )}
-      <SidebarTopNavigationDropdownMenu items={items} open={menuOpen} />
+      <SidebarTopNavigationDropdownMenu
+        items={items}
+        open={menuOpen}
+        onSelect={() => setMenuOpen(false)}
+      />
     </div>
   )
 }
