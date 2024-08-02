@@ -17,6 +17,10 @@ export const createDefaultSalesChannelStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
+    if (!salesChannelService) {
+      return new StepResponse(void 0)
+    }
+
     let shouldDelete = false
     let [salesChannel] = await salesChannelService.listSalesChannels(
       {},
