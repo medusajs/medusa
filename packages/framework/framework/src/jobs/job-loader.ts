@@ -129,6 +129,7 @@ export class JobLoader {
       try {
         await access(sourcePath)
       } catch {
+        logger.info(`No job to load from ${sourcePath}. skipped.`)
         return
       }
 
