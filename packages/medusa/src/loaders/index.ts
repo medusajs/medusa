@@ -15,8 +15,8 @@ import {
   featureFlagsLoader,
   JobLoader,
   LinkLoader,
-  loadMedusaApp,
   logger,
+  MedusaAppLoader,
   pgConnectionLoader,
   SubscriberLoader,
   WorkflowLoader,
@@ -157,7 +157,7 @@ export default async ({
     onApplicationStart,
     onApplicationShutdown,
     onApplicationPrepareShutdown,
-  } = await loadMedusaApp()
+  } = await new MedusaAppLoader().load()
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths)

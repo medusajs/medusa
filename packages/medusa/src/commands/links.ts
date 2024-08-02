@@ -2,11 +2,7 @@ import boxen from "boxen"
 import chalk from "chalk"
 import checkbox from "@inquirer/checkbox"
 
-import {
-  getLinksExecutionPlanner,
-  LinkLoader,
-  logger,
-} from "@medusajs/framework"
+import { LinkLoader, logger, MedusaAppLoader } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
@@ -105,15 +101,15 @@ const main = async function ({ directory }) {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
 
+    const medusaAppLoader = new MedusaAppLoader()
+
     const plugins = getResolvedPlugins(directory, configModule, true) || []
     const linksSourcePaths = plugins.map((plugin) =>
       join(plugin.resolve, "links")
     )
     await new LinkLoader(linksSourcePaths).load()
 
-    const planner = await getLinksExecutionPlanner({
-      container,
-    })
+    const planner = await medusaAppLoader.getLinksExecutionPlanner()
 
     logger.info("Syncing links...")
 

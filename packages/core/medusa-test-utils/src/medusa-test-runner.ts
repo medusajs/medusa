@@ -197,13 +197,12 @@ export function medusaIntegrationTestRunner({
     const copiedContainer = createMedusaContainer({}, container)
 
     try {
-      const { runModulesLoader: medusaAppLoaderRunner } = await import(
-        "@medusajs/framework"
-      )
+      const { MedusaAppLoader } = await import("@medusajs/framework")
 
-      await medusaAppLoaderRunner({
+      const medusaAppLoader = new MedusaAppLoader({
         container: copiedContainer,
       })
+      await medusaAppLoader.runModulesLoader()
     } catch (error) {
       console.error("Error runner modules loaders", error?.message)
       throw error

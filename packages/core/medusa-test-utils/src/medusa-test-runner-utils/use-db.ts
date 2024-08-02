@@ -7,16 +7,12 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   }
 
   const {
-    configManager,
     pgConnectionLoader,
     logger,
     container,
     featureFlagsLoader,
-    runMedusaAppMigrations,
-    getLinksExecutionPlanner,
+    MedusaAppLoader,
   } = await import("@medusajs/framework")
-
-  const configModule = configManager.config
 
   const pgConnection = pgConnectionLoader()
   await featureFlagsLoader()
@@ -26,8 +22,9 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   })
 
   try {
-    await runMedusaAppMigrations()
-    const planner = await getLinksExecutionPlanner()
+    const medusaAppLoader = new MedusaAppLoader()
+    await medusaAppLoader.runModulesMigrations()
+    const planner = await medusaAppLoader.getLinksExecutionPlanner()
 
     const actionPlan = await planner.createPlan()
     await planner.executePlan(actionPlan)
