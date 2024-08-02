@@ -43,7 +43,7 @@ export const ClaimCreate = () => {
     if (claims) {
       return claims.find((c) => c.id === activeClaimId)
     }
-  }, [claims])
+  }, [claims, activeClaimId])
 
   useEffect(() => {
     async function run() {

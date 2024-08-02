@@ -78,6 +78,11 @@ export const useCreateClaim = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: claimsQueryKeys.lists(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -106,6 +111,7 @@ export const useCancelClaim = (
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.lists(),
       })
