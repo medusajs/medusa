@@ -2,6 +2,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/",
     "title": "Introduction",
     "children": []
@@ -9,6 +10,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "title": "Tips",
     "hasTitleStyling": true,
     "autogenerate_path": "/tips",
@@ -16,6 +18,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/tips/bulk-editor",
         "title": "Bulk Editor",
         "children": []
@@ -23,6 +26,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/tips/languages",
         "title": "Admin Languages",
         "children": []
@@ -30,6 +34,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/tips/lists",
         "title": "Lists",
         "children": []
@@ -37,8 +42,12 @@ export const generatedSidebar = [
     ]
   },
   {
+    "type": "separator"
+  },
+  {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/orders",
     "title": "Orders",
     "hasTitleStyling": true,
@@ -47,6 +56,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/manage",
         "title": "Manage Details",
         "children": []
@@ -54,6 +64,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/payments",
         "title": "Manage Payments",
         "children": []
@@ -61,6 +72,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/fulfillments",
         "title": "Manage Fulfillments",
         "children": []
@@ -68,6 +80,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/edit",
         "title": "Edit an Order’s Items",
         "children": []
@@ -75,6 +88,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/drafts",
         "title": "Manage Draft Orders",
         "children": []
@@ -82,6 +96,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/returns",
         "title": "Manage Returns",
         "children": []
@@ -89,6 +104,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/exchange",
         "title": "Manage Exchanges",
         "children": []
@@ -96,6 +112,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/claims",
         "title": "Manage Order's Claims",
         "children": []
@@ -103,6 +120,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/orders/export",
         "title": "Export Orders",
         "children": []
@@ -112,6 +130,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/products",
     "title": "Products",
     "hasTitleStyling": true,
@@ -120,6 +139,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/manage",
         "title": "Manage Products",
         "children": []
@@ -127,6 +147,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/collections",
         "title": "Manage Product Collections",
         "children": []
@@ -134,6 +155,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/categories",
         "title": "Manage Product Categories",
         "children": []
@@ -141,12 +163,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/gift-cards",
         "title": "Gift Cards",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/products/gift-cards/product-gift-card",
             "title": "Manage a Product Gift Card",
             "children": [],
@@ -155,6 +179,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/products/gift-cards/customer-gift-card",
             "title": "Manage a Customer Gift Card",
             "children": [],
@@ -165,6 +190,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/import",
         "title": "Import Products",
         "children": []
@@ -172,6 +198,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/products/export",
         "title": "Export Products",
         "children": []
@@ -181,6 +208,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/inventory",
     "title": "Inventory",
     "hasTitleStyling": true,
@@ -189,6 +217,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/inventory/inventory",
         "title": "Manage Inventory",
         "children": []
@@ -196,6 +225,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/inventory/reservations",
         "title": "Manage Reservations",
         "children": []
@@ -205,6 +235,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/customers",
     "title": "Customers",
     "hasTitleStyling": true,
@@ -213,6 +244,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/customers/manage",
         "title": "Manage Customers",
         "children": []
@@ -220,6 +252,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/customers/groups",
         "title": "Manage Customer Groups",
         "children": []
@@ -229,6 +262,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/discounts",
     "title": "Discounts",
     "hasTitleStyling": true,
@@ -237,6 +271,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/discounts/create",
         "title": "Create a Discount",
         "children": []
@@ -244,6 +279,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/discounts/manage",
         "title": "Manage Discounts",
         "children": []
@@ -253,6 +289,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/pricing",
     "title": "Pricing",
     "hasTitleStyling": true,
@@ -261,6 +298,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/pricing/create",
         "title": "Create a Price List",
         "children": []
@@ -268,6 +306,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/pricing/manage",
         "title": "Manage Price Lists",
         "children": []
@@ -277,6 +316,7 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "path": "/settings",
     "title": "Settings",
     "hasTitleStyling": true,
@@ -285,6 +325,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/profile",
         "title": "Profile",
         "children": []
@@ -292,6 +333,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/store",
         "title": "Store",
         "children": []
@@ -299,12 +341,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/users",
         "title": "Users",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/users/invites",
             "title": "Manage Invites",
             "children": [],
@@ -315,12 +359,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/regions",
         "title": "Regions",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/regions/manage",
             "title": "Manage Regions",
             "children": [],
@@ -329,6 +375,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/regions/countries",
             "title": "Manage Countries",
             "children": [],
@@ -337,6 +384,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/regions/providers",
             "title": "Manage Providers",
             "children": [],
@@ -345,6 +393,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/regions/shipping-options",
             "title": "Manage Shipping Options",
             "children": [],
@@ -355,6 +404,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/return-reasons",
         "title": "Return Reasons",
         "children": []
@@ -362,12 +412,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/taxes",
         "title": "Taxes",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/taxes/manage",
             "title": "Manage Taxes",
             "children": [],
@@ -376,6 +428,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/taxes/tax-rates",
             "title": "Manage Tax Rates",
             "children": [],
@@ -386,6 +439,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/locations",
         "title": "Locations",
         "children": []
@@ -393,12 +447,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/sales-channels",
         "title": "Sales Channels",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/sales-channels/manage",
             "title": "Manage Sales Channels",
             "children": [],
@@ -407,6 +463,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/sales-channels/products",
             "title": "Manage Products",
             "children": [],
@@ -417,18 +474,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/settings/developer",
         "title": "Developer",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/developer/api-key-management",
             "title": "API Key Management",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/settings/developer/api-key-management/sales-channels",
                 "title": "Manage Sales Channels",
                 "children": [],
@@ -440,6 +500,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/settings/developer/executions",
             "title": "Executions",
             "children": [],

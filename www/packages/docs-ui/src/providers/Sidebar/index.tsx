@@ -29,7 +29,6 @@ export type CurrentItemsState = SidebarSectionItems & {
 
 export type SidebarStyleOptions = {
   disableActiveTransition?: boolean
-  noTitleStyling?: boolean
 }
 
 export type SidebarContextType = {
@@ -206,7 +205,6 @@ export const SidebarProvider = ({
   scrollableElement,
   staticSidebarItems = false,
   disableActiveTransition = false,
-  noTitleStyling = false,
   navigationDropdownItems,
   resetOnCondition,
 }: SidebarProviderProps) => {
@@ -462,7 +460,6 @@ export const SidebarProvider = ({
         getActiveItem,
         staticSidebarItems,
         disableActiveTransition,
-        noTitleStyling,
         shouldHandleHashChange,
         sidebarRef,
         goBack,
