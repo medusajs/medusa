@@ -48,9 +48,6 @@ export type SidebarContextType = {
   ) => SidebarItem | undefined
   mobileSidebarOpen: boolean
   setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
-  isSidebarEmpty: () => boolean
-  desktopSidebarOpen: boolean
-  setDesktopSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
   staticSidebarItems?: boolean
   shouldHandleHashChange: boolean
   sidebarRef: React.RefObject<HTMLDivElement>
@@ -122,7 +119,6 @@ const findItem = (
 
 export const reducer = (state: SidebarSectionItems, actionData: ActionType) => {
   if (actionData.type === "replace") {
-    console.log(actionData.replacementItems)
     return actionData.replacementItems
   }
   const { type, options } = actionData
@@ -223,7 +219,6 @@ export const SidebarProvider = ({
   >()
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
-  const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
   const [sidebarTopHeight, setSidebarTopHeight] = useState(0)
   const [sidebarActionsHeight, setSidebarActionsHeight] = useState(0)
   const sidebarRef = useRef<HTMLDivElement>(null)
@@ -276,16 +271,6 @@ export const SidebarProvider = ({
     },
     [isItemActive]
   )
-
-  const isSidebarEmpty = useCallback((): boolean => {
-    return Object.values(items).every((sectionItems) => {
-      if (!Array.isArray(sectionItems)) {
-        return true
-      }
-
-      return sectionItems.length === 0
-    })
-  }, [items])
 
   const init = () => {
     const currentPath = location.hash.replace("#", "")
@@ -474,10 +459,7 @@ export const SidebarProvider = ({
         findItemInSection,
         mobileSidebarOpen,
         setMobileSidebarOpen,
-        isSidebarEmpty,
         getActiveItem,
-        desktopSidebarOpen,
-        setDesktopSidebarOpen,
         staticSidebarItems,
         disableActiveTransition,
         noTitleStyling,

@@ -30,7 +30,6 @@ export const Sidebar = ({
     currentItems,
     mobileSidebarOpen,
     setMobileSidebarOpen,
-    desktopSidebarOpen,
     staticSidebarItems,
     sidebarRef,
     sidebarTopHeight,
@@ -81,7 +80,6 @@ export const Sidebar = ({
             "rounded",
             "lg:!left-0 lg:!top-0 lg:shadow-none",
           ],
-          !desktopSidebarOpen && "!absolute !-left-full",
           className
         )}
         style={{
