@@ -8,8 +8,6 @@ export type RootLayoutProps = {
   children: React.ReactNode
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
   showToc?: boolean
-  // todo remove
-  NavbarComponent?: React.FC
   sidebarProps?: SidebarProps
   htmlClassName?: string
   bodyClassName?: string
