@@ -10,13 +10,13 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     title: "Introduction",
   },
   {
-    type: "link",
+    type: "separator",
+  },
+  {
+    type: "category",
     title: "Tips",
     hasTitleStyling: true,
     autogenerate_path: "/tips",
-  },
-  {
-    type: "separator",
   },
   {
     type: "category",

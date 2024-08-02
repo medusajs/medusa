@@ -8,9 +8,12 @@ export const generatedSidebar = [
     "children": []
   },
   {
+    "type": "separator"
+  },
+  {
     "loaded": true,
     "isPathHref": true,
-    "type": "link",
+    "type": "category",
     "title": "Tips",
     "hasTitleStyling": true,
     "autogenerate_path": "/tips",
@@ -40,9 +43,6 @@ export const generatedSidebar = [
         "children": []
       }
     ]
-  },
-  {
-    "type": "separator"
   },
   {
     "loaded": true,
