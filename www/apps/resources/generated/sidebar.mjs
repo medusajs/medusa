@@ -4924,6 +4924,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/product/guides/price-with-taxes",
                 "title": "Get Variant Price with Taxes",
                 "children": []
@@ -7345,6 +7346,39 @@ export const generatedSidebar = [
         "loaded": true,
         "isPathHref": true,
         "type": "link",
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/subscriptions/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/digital-products/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
         "path": "/recipes/b2b",
         "title": "B2B",
         "children": []
@@ -7355,14 +7389,6 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/recipes/commerce-automation",
         "title": "Commerce Automation",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/digital-products",
-        "title": "Digital Products",
         "children": []
       },
       {
@@ -7419,14 +7445,6 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/recipes/pos",
         "title": "POS",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "type": "link",
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
         "children": []
       }
     ]
@@ -8345,6 +8363,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/references/workflows/createHook",
+                "title": "createHook",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/references/workflows/createStep",
                 "title": "createStep",
                 "children": []
@@ -8706,6 +8732,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/references/helper-steps/createRemoteLinkStep",
             "title": "createRemoteLinkStep",
             "children": []
@@ -8713,6 +8740,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/references/helper-steps/dismissRemoteLinkStep",
             "title": "dismissRemoteLinkStep",
             "children": []
@@ -8720,6 +8748,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/references/helper-steps/removeRemoteLinkStep",
             "title": "removeRemoteLinkStep",
             "children": []
@@ -8727,6 +8756,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/references/helper-steps/useRemoteQueryStep",
             "title": "useRemoteQueryStep",
             "children": []

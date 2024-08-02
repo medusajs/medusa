@@ -1,5 +1,4 @@
-import { LinkLoader, logger } from "@medusajs/framework"
-import { runMedusaAppMigrations } from "../loaders/medusa-app"
+import { LinkLoader, logger, MedusaAppLoader } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
@@ -51,6 +50,8 @@ const main = async function ({ directory }) {
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
+  const medusaAppLoader = new MedusaAppLoader()
+
   const plugins = getResolvedPlugins(directory, configModule, true) || []
   const linksSourcePaths = plugins.map((plugin) =>
     join(plugin.resolve, "links")
@@ -60,9 +61,7 @@ const main = async function ({ directory }) {
   if (action === "run") {
     logger.info("Running migrations...")
 
-    await runMedusaAppMigrations({
-      configModule,
-      container,
+    await medusaAppLoader.runModulesMigrations({
       action: "run",
     })
 
@@ -73,10 +72,8 @@ const main = async function ({ directory }) {
     logger.info("Reverting migrations...")
 
     try {
-      await runMedusaAppMigrations({
+      await medusaAppLoader.runModulesMigrations({
         moduleNames: modules,
-        configModule,
-        container,
         action: "revert",
       })
       console.log(new Array(TERMINAL_SIZE).join("-"))
@@ -98,10 +95,8 @@ const main = async function ({ directory }) {
   } else if (action === "generate") {
     logger.info("Generating migrations...")
 
-    await runMedusaAppMigrations({
+    await medusaAppLoader.runModulesMigrations({
       moduleNames: modules,
-      configModule,
-      container,
       action: "generate",
     })
 

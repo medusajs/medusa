@@ -13,16 +13,18 @@ export class ConfigManager {
    * A flag to specify if we are in production or not, determine whether an error would be critical and thrown or just logged as a warning in developement
    * @private
    */
-  readonly #isProduction: boolean = ["production", "prod"].includes(
-    process.env.NODE_ENV || ""
-  )
+  get #isProduction(): boolean {
+    return ["production", "prod"].includes(process.env.NODE_ENV || "")
+  }
 
   /**
    * The worker mode
    * @private
    */
-  readonly #envWorkMode?: ConfigModule["projectConfig"]["workerMode"] = process
-    .env.MEDUSA_WORKER_MODE as ConfigModule["projectConfig"]["workerMode"]
+  get #envWorkMode(): ConfigModule["projectConfig"]["workerMode"] {
+    return process.env
+      .MEDUSA_WORKER_MODE as ConfigModule["projectConfig"]["workerMode"]
+  }
 
   /**
    * The config object after loading it
