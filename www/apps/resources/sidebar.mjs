@@ -1314,16 +1314,22 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+        children: [
+          {
+            path: "/recipes/subscriptions/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
         path: "/recipes/b2b",
         title: "B2B",
       },
       {
         path: "/recipes/commerce-automation",
         title: "Commerce Automation",
-      },
-      {
-        path: "/recipes/digital-products",
-        title: "Digital Products",
       },
       {
         path: "/recipes/ecommerce",
