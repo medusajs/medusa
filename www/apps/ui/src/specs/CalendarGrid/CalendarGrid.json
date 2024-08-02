@@ -1,0 +1,17 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "CalendarGrid",
+  "props": {
+    "state": {
+      "required": true,
+      "tsType": {
+        "name": "CalendarState"
+      },
+      "description": ""
+    }
+  },
+  "composes": [
+    "AriaCalendarGridProps"
+  ]
+}
