@@ -78,6 +78,7 @@ export interface AdminCreateProduct {
   origin_country?: string
   material?: string
   metadata?: Record<string, unknown>
+  additional_data?: Record<string, unknown>
 }
 
 export interface AdminUpdateProductVariant {

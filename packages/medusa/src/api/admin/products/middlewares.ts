@@ -68,7 +68,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/batch",
     middlewares: [
       validateAndTransformBody(
-        createBatchBody(AdminCreateProduct, AdminBatchUpdateProduct)
+        createBatchBody(AdminCreateProduct(), AdminBatchUpdateProduct)
       ),
       validateAndTransformQuery(
         AdminGetProductParams,

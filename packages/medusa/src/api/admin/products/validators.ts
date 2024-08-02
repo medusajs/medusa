@@ -1,6 +1,6 @@
 import { BatchMethodRequest } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
-import { z } from "zod"
+import { z, ZodObject } from "zod"
 import { GetProductsParams } from "../../utils/common-validators"
 import {
   createFindParams,
@@ -199,8 +199,8 @@ export const AdminCreateProductProductCategory = z.object({
   id: z.string(),
 })
 
-export type AdminCreateProductType = z.infer<typeof AdminCreateProduct>
-export const AdminCreateProduct = z
+export type AdminCreateProductType = z.infer<typeof _AdminCreateProduct>
+const _AdminCreateProduct = z
   .object({
     title: z.string(),
     subtitle: z.string().nullish(),
@@ -227,8 +227,21 @@ export const AdminCreateProduct = z
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
     metadata: z.record(z.unknown()).nullish(),
+    additional_data: z.record(z.unknown()).nullish(),
   })
   .strict()
+
+export const AdminCreateProduct = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminCreateProduct
+  }
+
+  return _AdminCreateProduct.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export type AdminUpdateProductType = z.infer<typeof AdminUpdateProduct>
 export const AdminUpdateProduct = z
