@@ -27,6 +27,8 @@ import {
   AdminUpdateProductOption,
   AdminUpdateProductVariant,
   AdminUpdateVariantInventoryItem,
+  CreateProduct,
+  CreateProductVariant,
 } from "./validators"
 import multer from "multer"
 
@@ -68,7 +70,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/batch",
     middlewares: [
       validateAndTransformBody(
-        createBatchBody(AdminCreateProduct(), AdminBatchUpdateProduct)
+        createBatchBody(CreateProduct, AdminBatchUpdateProduct)
       ),
       validateAndTransformQuery(
         AdminGetProductParams,
@@ -166,10 +168,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/products/:id/variants/batch",
     middlewares: [
       validateAndTransformBody(
-        createBatchBody(
-          AdminCreateProductVariant(),
-          AdminBatchUpdateProductVariant
-        )
+        createBatchBody(CreateProductVariant, AdminBatchUpdateProductVariant)
       ),
       validateAndTransformQuery(
         AdminGetProductVariantParams,
