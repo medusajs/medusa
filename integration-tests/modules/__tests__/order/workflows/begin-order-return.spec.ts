@@ -121,6 +121,17 @@ async function prepareDataFixtures({ container }) {
         stock_location_id: location.id,
       },
       [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: "manual_test-provider",
+      },
+    },
+  ])
+
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: location.id,
+      },
+      [Modules.FULFILLMENT]: {
         fulfillment_set_id: fulfillmentSet.id,
       },
     },
@@ -383,7 +394,7 @@ medusaIntegrationTestRunner({
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
         expect(returnOrder.order_id).toEqual(order.id)
-        expect(returnOrder.status).toEqual("requested")
+        expect(returnOrder.status).toEqual("open")
         expect(returnOrder.id).toBeDefined()
       })
     })

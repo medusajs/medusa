@@ -9,6 +9,7 @@ import {
 import * as core from "express-serve-static-core"
 import { FindConfig } from "./common"
 
+// TODO this will be reqorked and move to the framework at a later point unless decided otherwise
 export interface MedusaRequest<Body = unknown>
   extends Request<core.ParamsDictionary, any, Body> {
   validatedBody: Body

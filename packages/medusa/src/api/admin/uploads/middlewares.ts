@@ -1,5 +1,5 @@
 import multer from "multer"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { retrieveUploadConfig } from "./query-config"
 import { AdminGetUploadParams } from "./validators"

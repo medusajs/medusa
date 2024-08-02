@@ -1,4 +1,5 @@
-import { MiddlewareRoute } from "../../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import { AdminFulfillmentProvidersParams } from "./validators"
@@ -12,6 +13,11 @@ export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
         AdminFulfillmentProvidersParams,
         QueryConfig.listTransformQueryConfig
       ),
+      maybeApplyLinkFilter({
+        entryPoint: "location_fulfillment_provider",
+        resourceId: "fulfillment_provider_id",
+        filterableField: "stock_location_id",
+      }),
     ],
   },
 ]

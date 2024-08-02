@@ -158,7 +158,6 @@
  *     description: The product's category id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's category id.
  *       items:
  *         type: string
@@ -169,7 +168,6 @@
  *     description: The product's sales channel id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's sales channel id.
  *       items:
  *         type: string
@@ -180,7 +178,6 @@
  *     description: The product's collection id.
  *     required: true
  *     schema:
- *       type: array
  *       description: The product's collection id.
  *       items:
  *         type: string
@@ -191,7 +188,6 @@
  *     description: The product's tags.
  *     required: false
  *     schema:
- *       type: array
  *       description: The product's tags.
  *       items:
  *         type: string
@@ -202,7 +198,6 @@
  *     description: The product's type id.
  *     required: false
  *     schema:
- *       type: array
  *       description: The product's type id.
  *       items:
  *         type: string
@@ -213,7 +208,7 @@
  *     description: The product's created at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's created at.
  *       required:
  *         - $eq
@@ -241,12 +236,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: The product's updated at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's updated at.
  *       required:
  *         - $eq
@@ -274,12 +270,13 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: The product's deleted at.
  *     required: false
  *     schema:
- *       type: object
+ *       type: string
  *       description: The product's deleted at.
  *       required:
  *         - $eq
@@ -307,6 +304,7 @@
  *         $gte: {}
  *         $lt: {}
  *         $lte: {}
+ *       title: deleted_at
  *   - name: country_code
  *     in: query
  *     description: The product's country code.

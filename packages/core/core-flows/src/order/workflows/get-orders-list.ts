@@ -2,6 +2,7 @@ import { OrderDTO, OrderDetailDTO } from "@medusajs/types"
 import { deduplicate } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -26,7 +27,7 @@ export const getOrdersListWorkflow = createWorkflow(
       fields: string[]
       variables?: Record<string, any>
     }>
-  ): WorkflowData<OrderOutput> => {
+  ): WorkflowResponse<OrderOutput> => {
     const fields = transform(input, ({ fields }) => {
       return deduplicate([
         ...fields,
@@ -89,6 +90,6 @@ export const getOrdersListWorkflow = createWorkflow(
       }
     )
 
-    return aggregatedOrders
+    return new WorkflowResponse(aggregatedOrders)
   }
 )

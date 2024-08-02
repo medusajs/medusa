@@ -7,9 +7,13 @@ export const defaultAdminReturnFields = [
   "location_id",
   "order_version",
   "status",
+  "metadata",
+  "no_notification",
   "refund_amount",
   "created_at",
   "updated_at",
+  "canceled_at",
+  "requested_at",
 ]
 
 export const defaultAdminDetailsReturnFields = [

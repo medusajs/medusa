@@ -10,6 +10,7 @@ export interface FileType {
 
 export interface FileUploadProps {
   label: string
+  multiple?: boolean
   hint?: string
   hasError?: boolean
   formats: string[]
@@ -19,6 +20,7 @@ export interface FileUploadProps {
 export const FileUpload = ({
   label,
   hint,
+  multiple = true,
   hasError,
   formats,
   onUploaded,
@@ -130,7 +132,7 @@ export const FileUpload = ({
         onChange={handleFileChange}
         type="file"
         accept={formats.join(",")}
-        multiple
+        multiple={multiple}
       />
     </div>
   )

@@ -37,6 +37,7 @@ import {
   useConfirmReturnRequest,
   useDeleteReturnShipping,
   useRemoveReturnItem,
+  useUpdateReturn,
   useUpdateReturnItem,
   useUpdateReturnShipping,
 } from "../../../../../hooks/api/returns"
@@ -51,8 +52,6 @@ type ReturnCreateFormProps = {
 
 let selectedItems: string[] = []
 
-let IS_CANCELING = false
-
 export const ReturnCreateForm = ({
   order,
   preview,
@@ -60,6 +59,27 @@ export const ReturnCreateForm = ({
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const itemsMap = useMemo(
+    () => new Map(order.items.map((i) => [i.id, i])),
+    [order.items]
+  )
+
+  /**
+   * Only consider items that belong to this return.
+   */
+  const previewItems = useMemo(
+    () =>
+      preview.items.filter(
+        (i) => !!i.actions?.find((a) => a.return_id === activeReturn.id)
+      ),
+    [preview.items]
+  )
+
+  const previewItemsMap = useMemo(
+    () => new Map(previewItems.map((i) => [i.id, i])),
+    [previewItems]
+  )
 
   /**
    * STATE
@@ -91,6 +111,8 @@ export const ReturnCreateForm = ({
 
   const { mutateAsync: cancelReturnRequest, isPending: isCanceling } =
     useCancelReturnRequest(activeReturn.id, order.id)
+  const { mutateAsync: updateReturnRequest, isPending: isUpdating } =
+    useUpdateReturn(activeReturn.id, order.id)
 
   const { mutateAsync: addReturnShipping, isPending: isAddingReturnShipping } =
     useAddReturnShipping(activeReturn.id, order.id)
@@ -122,7 +144,8 @@ export const ReturnCreateForm = ({
     isDeletingReturnShipping ||
     isAddingReturnItem ||
     isRemovingReturnItem ||
-    isUpdatingReturnItem
+    isUpdatingReturnItem ||
+    isUpdating
 
   /**
    * FORM
@@ -138,16 +161,14 @@ export const ReturnCreateForm = ({
       )
 
       return Promise.resolve({
-        items: preview.items
-          .filter((i) => !!i.detail.return_requested_quantity)
-          .map((i) => ({
-            item_id: i.id,
-            quantity: i.detail.return_requested_quantity,
-            note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.internal_note,
-            reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")
-              ?.details?.reason_id,
-          })),
+        items: previewItems.map((i) => ({
+          item_id: i.id,
+          quantity: i.detail.return_requested_quantity,
+          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
+            ?.internal_note,
+          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
+            ?.reason_id,
+        })),
         option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
@@ -155,16 +176,6 @@ export const ReturnCreateForm = ({
     },
     resolver: zodResolver(ReturnCreateSchema),
   })
-
-  const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
-    [order.items]
-  )
-
-  const previewItemsMap = useMemo(
-    () => new Map(preview.items.map((i) => [i.id, i])),
-    [preview.items]
-  )
 
   const {
     fields: items,
@@ -179,7 +190,7 @@ export const ReturnCreateForm = ({
   useEffect(() => {
     const existingItemsMap = {}
 
-    preview.items.forEach((i) => {
+    previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
 
       /**
@@ -214,7 +225,7 @@ export const ReturnCreateForm = ({
         remove(ind)
       }
     })
-  }, [preview.items])
+  }, [previewItems])
 
   useEffect(() => {
     const method = preview.shipping_methods.find(
@@ -252,6 +263,10 @@ export const ReturnCreateForm = ({
     })
 
     setIsOpen("items", false)
+  }
+
+  const onLocationChange = async (selectedLocationId: string) => {
+    await updateReturnRequest({ location_id: selectedLocationId })
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
@@ -340,19 +355,6 @@ export const ReturnCreateForm = ({
     })
   }, [items])
 
-  useEffect(() => {
-    /**
-     * Unmount hook
-     */
-    return () => {
-      if (IS_CANCELING) {
-        cancelReturnRequest()
-        // TODO: add this on ESC press
-        IS_CANCELING = false
-      }
-    }
-  }, [])
-
   const returnTotal = preview.return_requested_total
 
   const shippingTotal = useMemo(() => {
@@ -366,7 +368,14 @@ export const ReturnCreateForm = ({
   const refundAmount = returnTotal - shippingTotal
 
   return (
-    <RouteFocusModal.Form form={form}>
+    <RouteFocusModal.Form
+      form={form}
+      onClose={(isSubmitSuccessful) => {
+        if (!isSubmitSuccessful) {
+          cancelReturnRequest()
+        }
+      }}
+    >
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
 
@@ -435,7 +444,7 @@ export const ReturnCreateForm = ({
                 currencyCode={order.currency_code}
                 form={form}
                 onRemove={() => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
@@ -444,7 +453,7 @@ export const ReturnCreateForm = ({
                   }
                 }}
                 onUpdate={(payload) => {
-                  const actionId = preview.items
+                  const actionId = previewItems
                     .find((i) => i.id === item.item_id)
                     ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
@@ -477,6 +486,7 @@ export const ReturnCreateForm = ({
                               value={value}
                               onChange={(v) => {
                                 onChange(v)
+                                onLocationChange(v)
                               }}
                               {...field}
                               options={(stock_locations ?? []).map(
@@ -682,12 +692,7 @@ export const ReturnCreateForm = ({
           <div className="flex w-full items-center justify-end gap-x-4">
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
-                <Button
-                  type="button"
-                  onClick={() => (IS_CANCELING = true)}
-                  variant="secondary"
-                  size="small"
-                >
+                <Button type="button" variant="secondary" size="small">
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>

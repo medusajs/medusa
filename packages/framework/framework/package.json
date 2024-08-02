@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/framework",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Framework",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,25 +8,14 @@
     "dist"
   ],
   "exports": {
-    ".": {
-      "node": "./dist/index.js",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "require": "./dist/config/index.js",
-      "node": "./dist/config/index.js"
-    },
-    "./logger": {
-      "types": "./dist/logger/index.d.ts",
-      "import": "./dist/logger/index.js",
-      "require": "./dist/logger/index.js",
-      "node": "./dist/logger/index.js"
-    }
+    ".": "./dist/index.js",
+    "./config": "./dist/config/index.js",
+    "./logger": "./dist/logger/index.js",
+    "./database": "./dist/database/index.js",
+    "./subscribers": "./dist/subscribers/index.js",
+    "./workflows": "./dist/workflows/index.js",
+    "./links": "./dist/links/index.js",
+    "./jobs": "./dist/jobs/index.js"
   },
   "engines": {
     "node": ">=20"
@@ -42,25 +31,40 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "watch": "tsc --build --watch -p ./tsconfig.build.json",
+    "watch": "tsc --watch -p ./tsconfig.build.json",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
-    "build": "rimraf dist && tsc --build  && tsc-alias",
+    "build": "rimraf dist && tsc --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
   "devDependencies": {
-    "@medusajs/types": "^1.11.17-preview-20240510084332",
+    "@medusajs/types": "^1.11.16",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^8.5.9",
     "cross-env": "^7.0.3",
-    "ioredis": "^5.2.5",
     "rimraf": "^3.0.2",
+    "supertest": "^4.0.2",
     "tsc-alias": "^1.8.6",
     "typescript": "^5.1.6",
     "vite": "^5.2.11"
   },
   "dependencies": {
-    "@medusajs/medusa-cli": "^1.3.23",
-    "@medusajs/utils": "^1.12.0-preview-20240724081425",
-    "awilix": "^8.0.0"
+    "@medusajs/medusa-cli": "^1.3.22",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
+    "@medusajs/utils": "^1.11.9",
+    "@medusajs/workflows-sdk": "^0.1.6",
+    "awilix": "^8.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "ioredis": "^5.2.5",
+    "ioredis-mock": "8.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "medusa-telemetry": "^0.0.17",
+    "morgan": "^1.9.1",
+    "zod": "3.22.4"
   }
 }

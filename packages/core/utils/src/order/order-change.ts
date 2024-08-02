@@ -22,7 +22,8 @@ export enum OrderChangeStatus {
 }
 
 export enum OrderChangeType {
-  RETURN = "return",
+  RETURN_REQUEST = "return_request",
+  RETURN_RECEIVE = "return_receive",
   EXCHANGE = "exchange",
   CLAIM = "claim",
   EDIT = "edit",

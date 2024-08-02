@@ -1,19 +1,20 @@
 import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderClaimsStep } from "../../steps/create-claims"
+import { createOrderClaimsStep } from "../../steps/claim/create-claims"
 import { createOrderChangeStep } from "../../steps/create-order-change"
-import { throwIfOrderIsCancelled } from "../../utils/order-validation"
+import { throwIfIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(
   "begin-claim-order-validation",
   async function ({ order }: { order: OrderDTO }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
   }
 )
 
@@ -22,7 +23,7 @@ export const beginClaimOrderWorkflow = createWorkflow(
   beginClaimOrderWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.BeginOrderClaimWorkflowInput>
-  ): WorkflowData<OrderChangeDTO> {
+  ): WorkflowResponse<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status"],
@@ -54,6 +55,6 @@ export const beginClaimOrderWorkflow = createWorkflow(
         }
       }
     )
-    return createOrderChangeStep(orderChangeInput)
+    return new WorkflowResponse(createOrderChangeStep(orderChangeInput))
   }
 )

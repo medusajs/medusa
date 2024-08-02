@@ -1,9 +1,7 @@
 import {
-  AdminApiKeyResponse,
   AdminProductCategoryResponse,
   AdminTaxRegionResponse,
   HttpTypes,
-  SalesChannelDTO,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -61,6 +59,14 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "create",
                     lazy: () => import("../../routes/products/product-create"),
+                  },
+                  {
+                    path: "import",
+                    lazy: () => import("../../routes/products/product-import"),
+                  },
+                  {
+                    path: "export",
+                    lazy: () => import("../../routes/products/product-export"),
                   },
                 ],
               },
@@ -218,6 +224,11 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/orders/order-create-fulfillment"),
                   },
                   {
+                    path: "returns/:return_id/receive",
+                    lazy: () =>
+                      import("../../routes/orders/order-receive-return"),
+                  },
+                  {
                     path: "allocate-items",
                     lazy: () =>
                       import("../../routes/orders/order-allocate-items"),
@@ -231,6 +242,11 @@ export const RouteMap: RouteObject[] = [
                     path: "returns",
                     lazy: () =>
                       import("../../routes/orders/order-create-return"),
+                  },
+                  {
+                    path: "payments/:paymentId/refund",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-refund"),
                   },
                 ],
               },
@@ -704,6 +720,10 @@ export const RouteMap: RouteObject[] = [
                 path: "currencies",
                 lazy: () => import("../../routes/store/store-add-currencies"),
               },
+              {
+                path: "metadata/edit",
+                lazy: () => import("../../routes/store/store-metadata"),
+              },
             ],
           },
           {
@@ -727,7 +747,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/users/user-detail"),
                 handle: {
-                  crumb: (data: { user: UserDTO }) => data.user.email,
+                  crumb: (data: HttpTypes.AdminUserResponse) => data.user.email,
                 },
                 children: [
                   {
@@ -764,7 +784,7 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/sales-channels/sales-channel-detail"),
                 handle: {
-                  crumb: (data: { sales_channel: SalesChannelDTO }) =>
+                  crumb: (data: HttpTypes.AdminSalesChannelResponse) =>
                     data.sales_channel.name,
                 },
                 children: [
@@ -860,6 +880,13 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/locations/location-sales-channels"),
                   },
                   {
+                    path: "fulfillment-providers",
+                    lazy: () =>
+                      import(
+                        "../../routes/locations/location-fulfillment-providers"
+                      ),
+                  },
+                  {
                     path: "fulfillment-set/:fset_id",
                     children: [
                       {
@@ -925,7 +952,43 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
-
+          {
+            path: "product-tags",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Product Tags",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/product-tags/product-tag-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/product-tags/product-tag-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/product-tags/product-tag-detail"),
+                handle: {
+                  crumb: (data: HttpTypes.AdminProductTagResponse) =>
+                    data.product_tag.value,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/product-tags/product-tag-edit"),
+                  },
+                ],
+              },
+            ],
+          },
           {
             path: "workflows",
             element: <Outlet />,
@@ -1032,7 +1095,7 @@ export const RouteMap: RouteObject[] = [
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: AdminApiKeyResponse) => {
+                  crumb: (data: HttpTypes.AdminApiKeyResponse) => {
                     return data.api_key.title
                   },
                 },
@@ -1091,7 +1154,7 @@ export const RouteMap: RouteObject[] = [
                     "../../routes/api-key-management/api-key-management-detail"
                   ),
                 handle: {
-                  crumb: (data: AdminApiKeyResponse) => {
+                  crumb: (data: HttpTypes.AdminApiKeyResponse) => {
                     return data.api_key.title
                   },
                 },

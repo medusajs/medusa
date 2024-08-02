@@ -163,24 +163,25 @@ Workflows guarantee data consistency through their compensation feature. You can
     For example, create the following workflow in `src/workflows/create-product.ts`:
 
 export const workflowHighlights = [
-  ["18", "createInErpStep", "A step that creates a product in the ERP system."],
-  ["21", "erpModuleService", "Resolve the ERP Module's main service."],
-  ["24", "productModuleService", "Resolve the Product Module's main service."],
-  ["28", "retrieve", "Retrieve the created product's data."],
-  ["30", "createProduct", "Create the product in the ERP system."],
-  ["34", "update", "Update the product in Medusa with the ID of the ERP product."],
-  ["43", "erpId", "Pass the ERP product's ID to the compensation function."],
-  ["44", "productId", "Pass the product's ID to the compensation function."],
-  ["46", "", "Define a compensation function that rolls back changes when an error occurs."],
-  ["53", "deleteProduct", "Undo creating the product in the ERP system by deleting it."],
-  ["54", "update", "Update the product in Medusa to remove the ERP product's ID."]
+  ["19", "createInErpStep", "A step that creates a product in the ERP system."],
+  ["22", "erpModuleService", "Resolve the ERP Module's main service."],
+  ["25", "productModuleService", "Resolve the Product Module's main service."],
+  ["29", "retrieve", "Retrieve the created product's data."],
+  ["31", "createProduct", "Create the product in the ERP system."],
+  ["35", "update", "Update the product in Medusa with the ID of the ERP product."],
+  ["44", "erpId", "Pass the ERP product's ID to the compensation function."],
+  ["45", "productId", "Pass the product's ID to the compensation function."],
+  ["47", "", "Define a compensation function that rolls back changes when an error occurs."],
+  ["54", "deleteProduct", "Undo creating the product in the ERP system by deleting it."],
+  ["55", "update", "Update the product in Medusa to remove the ERP product's ID."]
 ]
 
-    ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+    ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
     import {
       createStep,
       StepResponse,
-      createWorkflow
+      createWorkflow,
+      WorkflowResponse,
     } from "@medusajs/workflows-sdk"
     import { IProductModuleService } from "@medusajs/types"
     import { ModuleRegistrationName } from "@medusajs/utils"
@@ -240,7 +241,7 @@ export const workflowHighlights = [
     >("create-product-in-systems", function (input) {
       const erpData = createInErpStep(input)
 
-      return erpData
+      return new WorkflowResponse(erpData)
     })
 
     export default createProductWorkflow
@@ -347,10 +348,10 @@ For example, suppose an administrator changes the product data in the ERP system
     Then, create the file `src/api/middlewares.ts` with the following content:
 
     ```ts title="src/api/middlewares.ts"
-    import { MiddlewaresConfig } from "@medusajs/medusa"
+    import { defineMiddlewares } from "@medusajs/medusa"
     import { raw } from "body-parser"
-    
-    export const config: MiddlewaresConfig = {
+
+    export default defineMiddlewares({
       routes: [
         {
           method: ["POST", "PUT"],
@@ -359,7 +360,7 @@ For example, suppose an administrator changes the product data in the ERP system
           middlewares: [raw({ type: "application/json" })],
         },
       ],
-    }
+    })
     ```
 
     This replaces the default JSON middleware with the raw middleware, which is useful for webhook routes.

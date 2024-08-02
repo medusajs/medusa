@@ -4,7 +4,7 @@ import {
   OnChangeFn,
   RowSelectionState,
 } from "@tanstack/react-table"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -18,14 +18,16 @@ import {
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { pricePreferencesQueryKeys } from "../../../../../hooks/api/price-preferences"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { queryClient } from "../../../../../lib/query-client"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
-import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 type AddCurrenciesFormProps = {
   store: HttpTypes.AdminStore
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
 const AddCurrenciesSchema = zod.object({
@@ -36,7 +38,10 @@ const AddCurrenciesSchema = zod.object({
 const PAGE_SIZE = 50
 const PREFIX = "ac"
 
-export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
+export const AddCurrenciesForm = ({
+  store,
+  pricePreferences,
+}: AddCurrenciesFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
@@ -55,20 +60,16 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     placeholderData: keepPreviousData,
   })
 
-  const {
-    price_preferences: pricePreferences,
-    isPending: isPricePreferencesPending,
-    isError: isPricePreferencesError,
-    error: pricePreferencesError,
-  } = usePricePreferences({
-    attribute: "currency_code",
-    value: store.supported_currencies?.map((c) => c.currency_code),
-  })
-
   const form = useForm<zod.infer<typeof AddCurrenciesSchema>>({
     defaultValues: {
       currencies: [],
-      pricePreferences: {},
+      pricePreferences: pricePreferences?.reduce((acc, curr) => {
+        if (curr.value) {
+          acc[curr.value] = curr.is_tax_inclusive
+        }
+
+        return acc
+      }, {} as Record<string, boolean>),
     },
     resolver: zodResolver(AddCurrenciesSchema),
   })
@@ -99,15 +100,6 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     },
     [setValue]
   )
-
-  useEffect(() => {
-    setPricePreferences(
-      pricePreferences?.reduce((acc: Record<string, boolean>, curr) => {
-        acc[curr.value] = curr.is_tax_inclusive
-        return acc
-      }, {})
-    )
-  }, [pricePreferences, setPricePreferences])
 
   const columns = useColumns(pricePreferenceValues, setPricePreferences)
 
@@ -152,6 +144,13 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
       {
         onSuccess: () => {
           toast.success(t("store.toast.currenciesUpdated"))
+
+          // We invalidate all price preferences queries to ensure that if a currency is added
+          // as being tax inclusive, it will be reflected in the table view immediately.
+          queryClient.invalidateQueries({
+            queryKey: pricePreferencesQueryKeys.all,
+          })
+
           handleSuccess()
         },
         onError: (error) => {
@@ -277,16 +276,18 @@ const useColumns = (
           const isPreSelected = !row.getCanSelect()
           const isTaxInclusive = pricePreferences[row.original.code]
           return (
-            <Switch
-              disabled={isPreSelected}
-              checked={isTaxInclusive ?? false}
-              onCheckedChange={(val) => {
-                setPricePreferences({
-                  ...pricePreferences,
-                  [row.original.code]: val,
-                })
-              }}
-            />
+            <div className="flex items-center justify-end">
+              <Switch
+                disabled={isPreSelected}
+                checked={isTaxInclusive ?? false}
+                onCheckedChange={(val) => {
+                  setPricePreferences({
+                    ...pricePreferences,
+                    [row.original.code]: val,
+                  })
+                }}
+              />
+            </div>
           )
         },
       }),

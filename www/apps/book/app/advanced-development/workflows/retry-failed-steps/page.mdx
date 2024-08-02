@@ -14,10 +14,11 @@ You can configure the step to retry on failure. The `createStep` function can ac
 
 For example:
 
-```ts title="src/workflows/hello-world.ts" highlights={[["9"]]} collapsibleLines="1-5" expandButtonLabel="Show Imports"
+```ts title="src/workflows/hello-world.ts" highlights={[["10"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { 
   createStep, 
   createWorkflow,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 const step1 = createStep(
@@ -37,9 +38,9 @@ const myWorkflow = createWorkflow(
   function () {
   const str1 = step1()
 
-  return {
+  return new WorkflowResponse({
     message: str1,
-  }
+  })
 })
 
 export default myWorkflow

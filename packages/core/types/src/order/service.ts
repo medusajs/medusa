@@ -22,8 +22,10 @@ import {
   OrderChangeDTO,
   OrderChangeReturn,
   OrderClaimDTO,
+  OrderClaimItemDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderExchangeItemDTO,
   OrderItemDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
@@ -48,8 +50,10 @@ import {
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
+  CreateOrderClaimItemDTO,
   CreateOrderDTO,
   CreateOrderExchangeDTO,
+  CreateOrderExchangeItemDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderReturnDTO,
@@ -1889,6 +1893,26 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderReturnItemDTO[]>
 
+  createOrderClaimItems(
+    data: CreateOrderClaimItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderClaimItemDTO>
+
+  createOrderClaimItems(
+    data: CreateOrderClaimItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderClaimItemDTO[]>
+
+  createOrderExchangeItems(
+    data: CreateOrderExchangeItemDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeItemDTO>
+
+  createOrderExchangeItems(
+    data: CreateOrderExchangeItemDTO[],
+    sharedContext?: Context
+  ): Promise<OrderExchangeItemDTO[]>
+
   createReturns(
     data: CreateOrderReturnDTO,
     sharedContext?: Context
@@ -1959,6 +1983,13 @@ export interface IOrderModuleService extends IModuleService {
 
   deleteOrderClaims(ids: string[], sharedContext?: Context): Promise<void>
 
+  deleteOrderClaimItems(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteOrderClaimItemImages(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
   softDeleteOrderClaims<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -1998,6 +2029,11 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderExchangeDTO>
 
   deleteOrderExchanges(ids: string[], sharedContext?: Context): Promise<void>
+
+  deleteOrderExchangeItems(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   softDeleteOrderExchanges<TReturnableLinkableKeys extends string = string>(
     ids: string[],

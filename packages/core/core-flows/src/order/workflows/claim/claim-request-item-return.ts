@@ -7,22 +7,22 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
+  WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
   when,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { updateOrderClaimsStep } from "../../steps/claim/update-order-claims"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
-import { createReturnsStep } from "../../steps/create-returns"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
-import { updateOrderClaimsStep } from "../../steps/update-order-claims"
+import { createReturnsStep } from "../../steps/return/create-returns"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
@@ -40,7 +40,7 @@ const validationStep = createStep(
     orderChange: OrderChangeDTO
     items: OrderWorkflow.OrderClaimRequestItemReturnWorkflowInput["items"]
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderClaim, "Claim")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
@@ -53,7 +53,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
   orderClaimRequestItemReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderClaimRequestItemReturnWorkflowInput>
-  ): WorkflowData<OrderDTO> {
+  ): WorkflowResponse<OrderDTO> {
     const orderClaim = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "order_id", "return_id", "canceled_at"],
@@ -157,6 +157,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
           details: {
             reference_id: item.id,
             quantity: item.quantity,
+            reason_id: item.reason_id,
             metadata: item.metadata,
           },
         }))
@@ -165,6 +166,6 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     createOrderChangeActionsStep(orderChangeActionInput)
 
-    return previewOrderChangeStep(orderClaim.order_id)
+    return new WorkflowResponse(previewOrderChangeStep(orderClaim.order_id))
   }
 )

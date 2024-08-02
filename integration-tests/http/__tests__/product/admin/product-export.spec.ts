@@ -12,13 +12,15 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 jest.setTimeout(50000)
 
 const compareCSVs = async (filePath, expectedFilePath) => {
-  let fileContent = await fs.readFile(filePath, { encoding: "utf-8" })
+  const asLocalPath = filePath.replace("http://localhost:9000", process.cwd())
+  let fileContent = await fs.readFile(asLocalPath, { encoding: "utf-8" })
   let fixturesContent = await fs.readFile(expectedFilePath, {
     encoding: "utf-8",
   })
+  await fs.rm(path.dirname(asLocalPath), { recursive: true, force: true })
 
   // Normalize csv data to get rid of dynamic data
-  const idsToReplace = ["prod_", "pcol_", "variant_", "ptyp_"]
+  const idsToReplace = ["prod_", "pcol_", "variant_", "ptyp_", "pcat_"]
   const dateRegex =
     /(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})\.(\d{3})Z/g
   idsToReplace.forEach((prefix) => {
@@ -46,6 +48,11 @@ medusaIntegrationTestRunner({
     let publishedCollection
 
     let baseType
+    let baseRegion
+    let baseCategory
+    let baseTag1
+    let baseTag2
+    let newTag
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -54,6 +61,17 @@ medusaIntegrationTestRunner({
 
     beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      baseRegion = (
+        await api.post(
+          "/admin/regions",
+          {
+            name: "Test region",
+            currency_code: "USD",
+          },
+          adminHeaders
+        )
+      ).data.region
 
       baseCollection = (
         await api.post(
@@ -79,6 +97,30 @@ medusaIntegrationTestRunner({
         )
       ).data.product_type
 
+      baseCategory = (
+        await api.post(
+          "/admin/product-categories",
+          { name: "Test", is_internal: false, is_active: true },
+          adminHeaders
+        )
+      ).data.product_category
+
+      baseTag1 = (
+        await api.post("/admin/product-tags", { value: "123" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag2 = (
+        await api.post("/admin/product-tags", { value: "456" }, adminHeaders)
+      ).data.product_tag
+
+      newTag = (
+        await api.post(
+          "/admin/product-tags",
+          { value: "new-tag" },
+          adminHeaders
+        )
+      ).data.product_tag
+
       baseProduct = (
         await api.post(
           "/admin/products",
@@ -87,6 +129,8 @@ medusaIntegrationTestRunner({
             description: "test-product-description\ntest line 2",
             collection_id: baseCollection.id,
             type_id: baseType.id,
+            categories: [{ id: baseCategory.id }],
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
             variants: [
               {
                 title: "Test variant",
@@ -142,7 +186,7 @@ medusaIntegrationTestRunner({
           getProductFixture({
             title: "Proposed product",
             status: "proposed",
-            tags: [{ value: "new-tag" }],
+            tags: [{ id: newTag.id }],
             type_id: baseType.id,
           }),
           adminHeaders
@@ -168,8 +212,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
 
         await subscriberExecution
         const notifications = (
@@ -193,12 +237,93 @@ medusaIntegrationTestRunner({
 
         await compareCSVs(
           notifications[0].data.file.url,
-          path.join(__dirname, "__fixtures__", "exported-products.csv")
+          path.join(__dirname, "__fixtures__", "exported-products-comma.csv")
         )
-        await fs.rm(path.dirname(notifications[0].data.file.url), {
-          force: true,
-          recursive: true,
-        })
+      })
+
+      it("should export a csv file with categories", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        const batchJobRes = await api.post(
+          `/admin/products/export?id=${baseProduct.id}&fields=*categories`,
+          {},
+          adminHeaders
+        )
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        await compareCSVs(
+          notifications[0].data.file.url,
+          path.join(__dirname, "__fixtures__", "product-with-categories.csv")
+        )
+      })
+
+      it("should export a csv file with region prices", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          "notification.notification.created",
+          eventBus
+        )
+
+        const productWithRegionPrices = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product with prices",
+              tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
+              variants: [
+                {
+                  title: "Test variant",
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 100,
+                    },
+                    {
+                      currency_code: "usd",
+                      rules: {
+                        region_id: baseRegion.id,
+                      },
+                      amount: 45,
+                    },
+                  ],
+                  options: {
+                    size: "large",
+                    color: "green",
+                  },
+                },
+              ],
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const batchJobRes = await api.post(
+          "/admin/products/export?id=" + productWithRegionPrices.id,
+          {},
+          adminHeaders
+        )
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        await compareCSVs(
+          notifications[0].data.file.url,
+          path.join(__dirname, "__fixtures__", "prices-with-region.csv")
+        )
       })
 
       it("should export a csv file filtered by specific products", async () => {
@@ -214,8 +339,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const workflowId = batchJobRes.data.workflow_id
-        expect(workflowId).toBeTruthy()
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
 
         await subscriberExecution
         const notifications = (
@@ -228,124 +353,7 @@ medusaIntegrationTestRunner({
           notifications[0].data.file.url,
           path.join(__dirname, "__fixtures__", "filtered-products.csv")
         )
-
-        await fs.rm(path.dirname(notifications[0].data.file.url), {
-          force: true,
-          recursive: true,
-        })
       })
-
-      //   it("should be able to import an exported csv file", async () => {
-      //     const api = useApi()
-
-      //     const batchPayload = {
-      //       type: "product-export",
-      //       context: {
-      //         batch_size: 1,
-      //         filterable_fields: { collection_id: "test-collection" },
-      //         order: "created_at",
-      //       },
-      //     }
-
-      //     const batchJobRes = await api.post(
-      //       "/admin/batch-jobs",
-      //       batchPayload,
-      //       adminReqConfig
-      //     )
-      //     let batchJobId = batchJobRes.data.batch_job.id
-
-      //     expect(batchJobId).toBeTruthy()
-
-      //     // Pull to check the status until it is completed
-      //     let batchJob
-      //     let shouldContinuePulling = true
-      //     while (shouldContinuePulling) {
-      //       const res = await api.get(
-      //         `/admin/batch-jobs/${batchJobId}`,
-      //         adminReqConfig
-      //       )
-
-      //       await new Promise((resolve, _) => {
-      //         setTimeout(resolve, 1000)
-      //       })
-
-      //       batchJob = res.data.batch_job
-      //       shouldContinuePulling = !(
-      //         batchJob.status === "completed" || batchJob.status === "failed"
-      //       )
-      //     }
-
-      //     expect(batchJob.status).toBe("completed")
-
-      //     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
-      //     const isFileExists = (await fs.stat(exportFilePath)).isFile()
-
-      //     expect(isFileExists).toBeTruthy()
-
-      //     const data = (await fs.readFile(exportFilePath)).toString()
-      //     const [header, ...lines] = data.split("\r\n").filter((l) => l)
-
-      //     expect(lines.length).toBe(4)
-
-      //     const csvLine = lines[0].split(";")
-      //     expect(csvLine[0]).toBe("test-product")
-      //     expect(csvLine[2]).toBe("Test product")
-
-      //     csvLine[2] = "Updated test product"
-      //     lines.splice(0, 1, csvLine.join(";"))
-
-      //     await fs.writeFile(exportFilePath, [header, ...lines].join("\r\n"))
-
-      //     const importBatchJobRes = await api.post(
-      //       "/admin/batch-jobs",
-      //       {
-      //         type: "product-import",
-      //         context: {
-      //           fileKey: exportFilePath,
-      //         },
-      //       },
-      //       adminReqConfig
-      //     )
-
-      //     batchJobId = importBatchJobRes.data.batch_job.id
-
-      //     expect(batchJobId).toBeTruthy()
-
-      //     shouldContinuePulling = true
-      //     while (shouldContinuePulling) {
-      //       const res = await api.get(
-      //         `/admin/batch-jobs/${batchJobId}`,
-      //         adminReqConfig
-      //       )
-
-      //       await new Promise((resolve, _) => {
-      //         setTimeout(resolve, 1000)
-      //       })
-
-      //       batchJob = res.data.batch_job
-
-      //       shouldContinuePulling = !(
-      //         batchJob.status === "completed" || batchJob.status === "failed"
-      //       )
-      //     }
-
-      //     expect(batchJob.status).toBe("completed")
-
-      //     const productsResponse = await api.get(
-      //       "/admin/products",
-      //       adminReqConfig
-      //     )
-      //     expect(productsResponse.data.count).toBe(5)
-      //     expect(productsResponse.data.products).toEqual(
-      //       expect.arrayContaining([
-      //         expect.objectContaining({
-      //           id: csvLine[0],
-      //           handle: csvLine[1],
-      //           title: csvLine[2],
-      //         }),
-      //       ])
-      //     )
-      //   })
     })
   },
 })

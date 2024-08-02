@@ -18,6 +18,7 @@ medusaIntegrationTestRunner({
     let store
     let appContainer
     let collection
+    let tag
     let product
     let product1
     let product2
@@ -496,6 +497,9 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.collection
+        tag = (
+          await api.post("/admin/product-tags", { value: "tag1" }, adminHeaders)
+        ).data.product_tag
         ;[product, [variant]] = await createProducts({
           title: "test product 1",
           collection_id: collection.id,
@@ -504,7 +508,7 @@ medusaIntegrationTestRunner({
             { title: "size", values: ["large", "small"] },
             { title: "color", values: ["green"] },
           ],
-          tags: [{ value: "tag1" }],
+          tags: [{ id: tag.id }],
           variants: [
             {
               title: "test variant 1",
@@ -726,7 +730,7 @@ medusaIntegrationTestRunner({
 
       it("returns a list of products with a given tag", async () => {
         const response = await api.get(
-          `/store/products?tags[]=${product.tags[0].id}`
+          `/store/products?tag_id[]=${product.tags[0].id}`
         )
 
         expect(response.status).toEqual(200)
@@ -767,8 +771,9 @@ medusaIntegrationTestRunner({
       })
 
       it("returns a list of products filtered by variant options", async () => {
+        const option = product.options.find((o) => o.title === "size")
         const response = await api.get(
-          `/store/products?variants.options[option_id]=${product.options[1].id}&variants.options[value]=large`
+          `/store/products?variants.options[option_id]=${option?.id}&variants.options[value]=large`
         )
 
         expect(response.status).toEqual(200)

@@ -6,11 +6,13 @@ async function resolveProperty(property, transactionContext) {
   if (property?.__type === OrchestrationUtils.SymbolInputReference) {
     return transactionContext.payload
   } else if (
+    property?.__type === OrchestrationUtils.SymbolMedusaWorkflowResponse
+  ) {
+    return resolveValue(property.$result, transactionContext)
+  } else if (
     property?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
   ) {
     return await property.__resolver(transactionContext)
-  } else if (property?.__type === OrchestrationUtils.SymbolWorkflowHook) {
-    return await property.__value(transactionContext)
   } else if (property?.__type === OrchestrationUtils.SymbolWorkflowStep) {
     const output =
       invokeRes[property.__step__]?.output ?? invokeRes[property.__step__]

@@ -6,6 +6,33 @@ import { ContainerRegistrationKeys } from "@medusajs/utils"
 type RemoveRemoteLinksStepInput = DeleteEntityInput | DeleteEntityInput[]
 
 export const removeRemoteLinkStepId = "remove-remote-links"
+/**
+ * This step deletes linked records of a record.
+ * 
+ * Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)
+ * 
+ * @example
+ * import { 
+ *   createWorkflow
+ * } from "@medusajs/workflows-sdk"
+ * import {
+ *   removeRemoteLinkStep
+ * } from "@medusajs/core-flows"
+ * import {
+ *   Modules
+ * } from "@medusajs/utils"
+ * 
+ * const helloWorldWorkflow = createWorkflow(
+ *   "hello-world",
+ *   () => {
+ *     removeRemoteLinkStep([{
+ *       [Modules.PRODUCT]: {
+ *         product_id: "prod_123",
+ *       },
+ *     }])
+ *   }
+ * )
+ */
 export const removeRemoteLinkStep = createStep(
   removeRemoteLinkStepId,
   async (data: RemoveRemoteLinksStepInput, { container }) => {

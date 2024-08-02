@@ -702,25 +702,20 @@ export interface FilterableProductProps
    */
   tags?: {
     /**
-     * Values to filter product tags by.
+     * Filter a product by the IDs of their associated tags.
      */
-    value?: string[]
+    id?: string[]
   }
   /**
    * Filters on a product's variant properties.
    */
   variants?: {
-    options: { value: string; option_id: string }
+    options?: { value: string; option_id: string }
   }
   /**
    * Filter a product by the ID of the associated type
    */
   type_id?: string | string[]
-  /**
-   * @deprecated - Use `categories` instead
-   * Filter a product by the IDs of their associated categories.
-   */
-  category_id?: string | string[] | OperatorMap<string>
   /**
    * Filter a product by the IDs of their associated categories.
    */
@@ -1417,9 +1412,9 @@ export interface CreateProductDTO {
    */
   collection_id?: string
   /**
-   * The associated tags to be created or updated.
+   * The tags to be associated with the product.
    */
-  tags?: UpsertProductTagDTO[]
+  tag_ids?: string[]
   /**
    * The product categories to associate with the product.
    */
@@ -1533,9 +1528,9 @@ export interface UpdateProductDTO {
    */
   collection_id?: string | null
   /**
-   * The associated tags to create or update.
+   * The tags to associate with the product
    */
-  tags?: UpsertProductTagDTO[]
+  tag_ids?: string[]
   /**
    * The product categories to associate with the product.
    */

@@ -1,0 +1,137 @@
+---
+sidebar_label: "update"
+---
+
+export const metadata = {
+  title: `update Method - Service Factory Reference`,
+}
+
+# {metadata.title}
+
+This method updates one or more records of the data model.
+
+## Update One Record
+
+```ts
+const post = await postModuleService.updatePosts({
+  id: "123",
+  name: "My Post",
+})
+```
+
+### Parameters
+
+To update one record, pass an object that at least has an `id` property, identifying the ID of the record to update.
+
+You can pass in the same object any other properties to update.
+
+### Returns
+
+The method returns the updated record as an object.
+
+---
+
+## Update Multiple Records
+
+```ts
+const posts = await postModuleService.updatePosts([
+  {
+    id: "123",
+    name: "My Post",
+  },
+  {
+    id: "321",
+    published_at: new Date(),
+  },
+])
+```
+
+### Parameters
+
+To update multiple records, pass an array of objects. Each object has at least an `id` property, identifying the ID of the record to update.
+
+You can pass in each object any other properties to update.
+
+### Returns
+
+The method returns an array of objects of updated records.
+
+---
+
+## Update Records Matching a Filter
+
+```ts
+const posts = await postModuleService.updatePosts({
+  selector: {
+    name: "My Post",
+  },
+  data: {
+    published_at: new Date(),
+  },
+})
+```
+
+### Parameters
+
+To update records that match specified filters, pass as a parameter an object having two properties:
+
+- `selector`: An object of filters that a record must match to be updated.
+- `data`: An object of the properties to update in every record that match the filters in `selector`.
+
+In the example above, you update the `published_at` property of every post record whose name is `My Post`.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an array of objects of updated records.
+
+---
+
+## Multiple Record Updates with Filters
+
+```ts
+const posts = await postModuleService.updatePosts([
+  {
+    selector: {
+      name: "My Post",
+    },
+    data: {
+      published_at: new Date(),
+    },
+  },
+  {
+    selector: {
+      name: "Another Post",
+    },
+    data: {
+      metadata: {
+        external_id: "123",
+      },
+    },
+  },
+])
+```
+
+### Parameters
+
+To update records matching different sets of filters, pass an array of objects, each having two properties:
+
+- `selector`: An object of filters that a record must match to be updated.
+- `data`: An object of the properties to update in every record that match the filters in `selector`.
+
+In the example above, you update the `published_at` property of post records whose name is `My Post`, and update the `metadata` property of post records whose name is `Another Post`.
+
+<Note>
+
+Learn more about accepted filters in [this documentation](../../tips/filtering/page.mdx).
+
+</Note>
+
+### Returns
+
+The method returns an array of objects of updated records.

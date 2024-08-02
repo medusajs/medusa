@@ -78,6 +78,44 @@ export interface AdminConfirmReturnRequest {
   no_notification?: boolean
 }
 
+export interface AdminUpdateReturnRequest {
+  location_id?: string
+  no_notification?: boolean
+  metadata?: Record<string, unknown> | null
+}
+
+export interface AdminConfirmReceiveReturn {
+  no_notification?: boolean
+}
+
+export interface AdminInitiateReceiveReturn {
+  internal_note?: string
+  description?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface AdminReceiveItems {
+  items: { id: string; quantity: number; internal_note?: string }[]
+}
+
+export interface AdminDismissItems {
+  items: { id: string; quantity: number; internal_note?: string }[]
+}
+
+export interface AdminUpdateReceiveItems {
+  quantity?: number
+  internal_note?: string
+  reason_id?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface AdminUpdateDismissItems {
+  quantity?: number
+  internal_note?: string
+  reason_id?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface AdminReturnFilters extends FindParams {
   id?: string[] | string | OperatorMap<string | string[]>
   order_id?: string[] | string | OperatorMap<string | string[]>

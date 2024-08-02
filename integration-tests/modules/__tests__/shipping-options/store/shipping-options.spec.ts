@@ -65,7 +65,6 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test fixture",
-              tags: [{ value: "123" }, { value: "456" }],
               options: [
                 { title: "size", values: ["large", "small"] },
                 { title: "color", values: ["green"] },
@@ -126,9 +125,6 @@ medusaIntegrationTestRunner({
               stock_location_id: stockLocation.id,
             },
           },
-        ])
-
-        await remoteLinkService.create([
           {
             [Modules.STOCK_LOCATION]: {
               stock_location_id: stockLocation.id,
@@ -138,6 +134,12 @@ medusaIntegrationTestRunner({
             },
           },
         ])
+
+        await api.post(
+          `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
+          { add: ["manual_test-provider"] },
+          adminHeaders
+        )
 
         shippingOption = (
           await api.post(

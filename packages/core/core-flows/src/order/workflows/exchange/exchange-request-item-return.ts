@@ -7,22 +7,22 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
+  WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
   when,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
-import { createReturnsStep } from "../../steps/create-returns"
+import { updateOrderExchangesStep } from "../../steps/exchange/update-order-exchanges"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
-import { updateOrderExchangesStep } from "../../steps/update-order-exchanges"
+import { createReturnsStep } from "../../steps/return/create-returns"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
-  throwIfOrderIsCancelled,
 } from "../../utils/order-validation"
 
 const validationStep = createStep(
@@ -40,7 +40,7 @@ const validationStep = createStep(
     orderChange: OrderChangeDTO
     items: OrderWorkflow.OrderExchangeRequestItemReturnWorkflowInput["items"]
   }) {
-    throwIfOrderIsCancelled({ order })
+    throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderExchange, "Exchange")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
@@ -54,7 +54,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
   orderExchangeRequestItemReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderExchangeRequestItemReturnWorkflowInput>
-  ): WorkflowData<OrderDTO> {
+  ): WorkflowResponse<OrderDTO> {
     const orderExchange = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "order_id", "return_id", "canceled_at"],
@@ -112,7 +112,10 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
         },
       },
       list: false,
-    }).config({ name: "order-change-query" })
+    }).config({
+      name: "order-change-query",
+      status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+    })
 
     validationStep({
       order,
@@ -155,6 +158,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
           details: {
             reference_id: item.id,
             quantity: item.quantity,
+            reason_id: item.reason_id,
             metadata: item.metadata,
           },
         }))
@@ -163,6 +167,6 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
 
     createOrderChangeActionsStep(orderChangeActionInput)
 
-    return previewOrderChangeStep(orderExchange.order_id)
+    return new WorkflowResponse(previewOrderChangeStep(orderExchange.order_id))
   }
 )

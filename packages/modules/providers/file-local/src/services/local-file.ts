@@ -12,8 +12,13 @@ export class LocalFileService extends AbstractFileProviderService {
   constructor(_, options: LocalFileServiceOptions) {
     super()
     this.uploadDir_ = options?.upload_dir || path.join(process.cwd(), "static")
+
+    // Since there is no way to serve private files through a static server, we simply place them in `static`.
+    // This means that the files will be available publicly if the filename is known. Since the local file provider
+    // is for development only, this shouldn't be an issue. If you really want to use it in production (and you shouldn't)
+    // You can change the private upload dir to `/private` but none of the functionalities where you use a presigned URL will work.
     this.privateUploadDir_ =
-      options?.private_upload_dir || path.join(process.cwd(), "private")
+      options?.private_upload_dir || path.join(process.cwd(), "static")
     this.backendUrl_ = options?.backend_url || "http://localhost:9000/static"
   }
 
@@ -72,8 +77,7 @@ export class LocalFileService extends AbstractFileProviderService {
     return
   }
 
-  // For private files, we simply return the file path, which can then be loaded manually by the backend.
-  // The local file provider doesn't support presigned URLs for private files.
+  // The local file provider doesn't support presigned URLs for private files (i.e files not placed in /static).
   async getPresignedDownloadUrl(
     file: FileTypes.ProviderGetFileDTO
   ): Promise<string> {
@@ -89,10 +93,6 @@ export class LocalFileService extends AbstractFileProviderService {
         MedusaError.Types.NOT_FOUND,
         `File with key ${file.fileKey} not found`
       )
-    }
-
-    if (isPrivate) {
-      return filePath
     }
 
     return this.getUploadFileUrl(file.fileKey)

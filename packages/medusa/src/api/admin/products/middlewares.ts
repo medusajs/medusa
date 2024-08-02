@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { unlessPath } from "../../utils/unless-path"
 import { validateAndTransformBody } from "../../utils/validate-body"
@@ -91,6 +91,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/import",
     middlewares: [upload.single("file")],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products/import/:transaction_id/confirm",
+    middlewares: [],
   },
   {
     method: ["GET"],

@@ -1,29 +1,41 @@
 import { updateProductsStep } from "../steps/update-products"
 
-import { ProductTypes } from "@medusajs/types"
+import {
+  CreateMoneyAmountDTO,
+  ProductTypes,
+  UpdateProductVariantWorkflowInputDTO,
+} from "@medusajs/types"
 import { arrayDifference, Modules } from "@medusajs/utils"
 import {
+  createHook,
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createRemoteLinkStep,
   dismissRemoteLinkStep,
   useRemoteQueryStep,
 } from "../../common"
+import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
+import { getVariantIdsForProductsStep } from "../steps/get-variant-ids-for-products"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
-  update: ProductTypes.UpdateProductDTO & {
+  update: Omit<ProductTypes.UpdateProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
+    variants?: UpdateProductVariantWorkflowInputDTO[]
   }
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInputProducts = {
-  products: (ProductTypes.UpsertProductDTO & {
+  products: (Omit<ProductTypes.UpsertProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
+    variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInput =
@@ -46,6 +58,10 @@ function prepareUpdateProductInput({
       products: input.products.map((p) => ({
         ...p,
         sales_channels: undefined,
+        variants: p.variants?.map((v) => ({
+          ...v,
+          prices: undefined,
+        })),
       })),
     }
   }
@@ -55,6 +71,10 @@ function prepareUpdateProductInput({
     update: {
       ...input.update,
       sales_channels: undefined,
+      variants: input.update?.variants?.map((v) => ({
+        ...v,
+        prices: undefined,
+      })),
     },
   }
 }
@@ -120,19 +140,67 @@ function prepareSalesChannelLinks({
   return []
 }
 
-function prepareToDeleteLinks({
-  currentLinks,
+function prepareVariantPrices({
+  input,
+  updatedProducts,
 }: {
-  currentLinks: {
+  updatedProducts: ProductTypes.ProductDTO[]
+  input: WorkflowInput
+}): {
+  variant_id: string
+  product_id: string
+  prices?: CreateMoneyAmountDTO[]
+}[] {
+  if ("products" in input) {
+    if (!input.products.length) {
+      return []
+    }
+
+    // Note: We rely on the ordering of input and update here.
+    return input.products.flatMap((product, i) => {
+      if (!product.variants?.length) {
+        return []
+      }
+
+      const updatedProduct = updatedProducts[i]
+      return product.variants.map((variant, j) => {
+        const updatedVariant = updatedProduct.variants[j]
+
+        return {
+          product_id: updatedProduct.id,
+          variant_id: updatedVariant.id,
+          prices: variant.prices,
+        }
+      })
+    })
+  }
+
+  if (input.selector && input.update?.variants?.length) {
+    return updatedProducts.flatMap((p) => {
+      return input.update.variants!.map((variant, i) => ({
+        product_id: p.id,
+        variant_id: p.variants[i].id,
+        prices: variant.prices,
+      }))
+    })
+  }
+
+  return []
+}
+
+function prepareToDeleteSalesChannelLinks({
+  currentSalesChannelLinks,
+}: {
+  currentSalesChannelLinks: {
     product_id: string
     sales_channel_id: string
   }[]
 }) {
-  if (!currentLinks.length) {
+  if (!currentSalesChannelLinks.length) {
     return []
   }
 
-  return currentLinks.map(({ product_id, sales_channel_id }) => ({
+  return currentSalesChannelLinks.map(({ product_id, sales_channel_id }) => ({
     [Modules.PRODUCT]: {
       product_id,
     },
@@ -145,10 +213,8 @@ function prepareToDeleteLinks({
 export const updateProductsWorkflowId = "update-products"
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductDTO[]> => {
-    // TODO: Delete price sets for removed variants
+  (input: WorkflowData<WorkflowInput>) => {
+    const previousVariantIds = getVariantIdsForProductsStep(input)
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
@@ -157,23 +223,41 @@ export const updateProductsWorkflow = createWorkflow(
       updateProductIds
     )
 
-    const currentLinks = useRemoteQueryStep({
-      entry_point: "product_sales_channel",
-      fields: ["product_id", "sales_channel_id"],
-      variables: { filters: { product_id: updatedProductIds } },
-    })
-
-    const toDeleteLinks = transform({ currentLinks }, prepareToDeleteLinks)
-
     const salesChannelLinks = transform(
       { input, updatedProducts },
       prepareSalesChannelLinks
     )
 
-    dismissRemoteLinkStep(toDeleteLinks)
+    const variantPrices = transform(
+      { input, updatedProducts },
+      prepareVariantPrices
+    )
 
+    const currentSalesChannelLinks = useRemoteQueryStep({
+      entry_point: "product_sales_channel",
+      fields: ["product_id", "sales_channel_id"],
+      variables: { filters: { product_id: updatedProductIds } },
+    })
+
+    const toDeleteSalesChannelLinks = transform(
+      { currentSalesChannelLinks },
+      prepareToDeleteSalesChannelLinks
+    )
+
+    upsertVariantPricesWorkflow.runAsStep({
+      input: { variantPrices, previousVariantIds },
+    })
+
+    dismissRemoteLinkStep(toDeleteSalesChannelLinks)
     createRemoteLinkStep(salesChannelLinks)
 
-    return updatedProducts
+    const productsUpdated = createHook("productsUpdated", {
+      products: updatedProducts,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(updatedProducts, {
+      hooks: [productsUpdated],
+    })
   }
 )

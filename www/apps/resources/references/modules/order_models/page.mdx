@@ -15,17 +15,17 @@ This documentation provides a reference to the data models in the Order Module
 erDiagram
 	OrderClaim }|--|{ Order : order
 	OrderClaim ||--|| Return : return
-	OrderClaim ||--|| ClaimItem : additional_items
+	OrderClaim ||--|| OrderClaimItem : additional_items
 	OrderClaim ||--|| OrderShippingMethod : shipping_methods
 	OrderClaim ||--|| Transaction : transactions
-	ClaimItem ||--|| ClaimItemImage : images
-	ClaimItem }|--|{ LineItem : item
+	OrderClaimItem ||--|| OrderClaimItemImage : images
+	OrderClaimItem }|--|{ LineItem : item
 	OrderExchange }|--|{ Order : order
 	OrderExchange ||--|| Return : return
-	OrderExchange ||--|| ExchangeItem : additional_items
+	OrderExchange ||--|| OrderExchangeItem : additional_items
 	OrderExchange ||--|| OrderShippingMethod : shipping_methods
 	OrderExchange ||--|| Transaction : transactions
-	ExchangeItem }|--|{ LineItem : item
+	OrderExchangeItem }|--|{ LineItem : item
 	LineItem ||--|| LineItemTaxLine : tax_lines
 	LineItem ||--|| LineItemAdjustment : adjustments
 	Order }|--|{ Address : shipping_address
@@ -59,10 +59,10 @@ erDiagram
 ## Classes
 
 - [Address](../../order_models/classes/order_models.Address/page.mdx)
-- [ClaimItemImage](../../order_models/classes/order_models.ClaimItemImage/page.mdx)
-- [ClaimItem](../../order_models/classes/order_models.ClaimItem/page.mdx)
+- [OrderClaimItemImage](../../order_models/classes/order_models.OrderClaimItemImage/page.mdx)
+- [OrderClaimItem](../../order_models/classes/order_models.OrderClaimItem/page.mdx)
 - [OrderClaim](../../order_models/classes/order_models.OrderClaim/page.mdx)
-- [ExchangeItem](../../order_models/classes/order_models.ExchangeItem/page.mdx)
+- [OrderExchangeItem](../../order_models/classes/order_models.OrderExchangeItem/page.mdx)
 - [OrderExchange](../../order_models/classes/order_models.OrderExchange/page.mdx)
 - [LineItemAdjustment](../../order_models/classes/order_models.LineItemAdjustment/page.mdx)
 - [LineItemTaxLine](../../order_models/classes/order_models.LineItemTaxLine/page.mdx)

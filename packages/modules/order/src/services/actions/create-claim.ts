@@ -12,7 +12,7 @@ import {
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { ClaimItem, OrderClaim, Return, ReturnItem } from "@models"
+import { OrderClaim, OrderClaimItem, Return, ReturnItem } from "@models"
 
 function createClaimAndReturnEntities(em, data, order) {
   const claimReference = em.create(OrderClaim, {
@@ -46,8 +46,6 @@ function createReturnItem(em, item, claimReference, returnReference, actions) {
     reference_id: returnReference.id,
     details: {
       reference_id: item.id,
-      return_id: returnReference.id,
-      claim_id: claimReference.id,
       quantity: item.quantity,
       metadata: item.metadata,
     },
@@ -77,7 +75,6 @@ function createClaimAndReturnItems(
       reference_id: claimReference.id,
       details: {
         reference_id: item.id,
-        claim_id: claimReference.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },
@@ -89,7 +86,7 @@ function createClaimAndReturnItems(
         : undefined
     )
 
-    return em.create(ClaimItem, {
+    return em.create(OrderClaimItem, {
       item_id: item.id,
       reason: item.reason,
       quantity: item.quantity,
@@ -111,8 +108,8 @@ async function processAdditionalItems(
   sharedContext
 ) {
   const itemsToAdd: any[] = []
-  const additionalNewItems: ClaimItem[] = []
-  const additionalItems: ClaimItem[] = []
+  const additionalNewItems: OrderClaimItem[] = []
+  const additionalItems: OrderClaimItem[] = []
   data.additional_items?.forEach((item) => {
     const hasItem = item.id
       ? order.items.find((o) => o.item.id === item.id)
@@ -127,14 +124,13 @@ async function processAdditionalItems(
         reference_id: claimReference.id,
         details: {
           reference_id: item.id,
-          claim_id: claimReference.id,
           quantity: item.quantity,
           metadata: item.metadata,
         },
       })
 
       additionalItems.push(
-        em.create(ClaimItem, {
+        em.create(OrderClaimItem, {
           item_id: item.id,
           quantity: item.quantity,
           note: item.note,
@@ -146,7 +142,7 @@ async function processAdditionalItems(
       itemsToAdd.push(item)
 
       additionalNewItems.push(
-        em.create(ClaimItem, {
+        em.create(OrderClaimItem, {
           quantity: item.quantity,
           note: item.note,
           metadata: item.metadata,

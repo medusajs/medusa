@@ -8,6 +8,7 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import {
   StepResponse,
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -89,7 +90,7 @@ const maybeListTaxRateRuleIdsStep = createStep(
 export const updateTaxRatesWorkflowId = "update-tax-rates"
 export const updateTaxRatesWorkflow = createWorkflow(
   updateTaxRatesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<TaxRateDTO[]> => {
+  (input: WorkflowData<WorkflowInput>): WorkflowResponse<TaxRateDTO[]> => {
     const cleanedUpdateInput = transform(input, (data) => {
       // Transform clones data so we can safely modify it
       if (data.update.rules) {
@@ -145,6 +146,6 @@ export const updateTaxRatesWorkflow = createWorkflow(
     createTaxRateRulesStep(rulesWithRateId)
     // end of COPY-PASTE from set-tax-rate-rules.ts
 
-    return updatedRates
+    return new WorkflowResponse(updatedRates)
   }
 )

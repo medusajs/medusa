@@ -259,7 +259,12 @@ export interface CreateOrderChangeDTO {
   return_id?: string
   claim_id?: string
   exchange_id?: string
-  change_type?: "return" | "exchange" | "claim" | "edit"
+  change_type?:
+    | "return_request"
+    | "return_receive"
+    | "exchange"
+    | "claim"
+    | "edit"
   description?: string
   internal_note?: string | null
   requested_by?: string
@@ -437,6 +442,13 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   exchange_id?: string
 }
 
+export type ReturnStatus =
+  | "open"
+  | "requested"
+  | "received"
+  | "partially_received"
+  | "canceled"
+
 export interface UpdateReturnDTO {
   id: string
   location_id?: string
@@ -453,6 +465,8 @@ export interface UpdateReturnDTO {
     return_id?: string | null
     metadata?: Record<string, unknown> | null
   }[]
+  status?: ReturnStatus
+  requested_at?: Date
 }
 
 export interface UpdateOrderClaimDTO {
@@ -478,6 +492,32 @@ export interface CreateOrderReturnItemDTO {
   item_id: string
   quantity?: BigNumberInput
   reason_id?: string
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderClaimItemDTO {
+  claim_id: string
+  item_id: string
+  reason?: ClaimReason
+  is_additional_item?: boolean
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
+  note?: string
+  metadata?: Record<string, unknown> | null
+}
+
+export interface CreateOrderExchangeItemDTO {
+  exchange_id: string
+  item_id: string
+  quantity?: BigNumberInput
   note?: string
   metadata?: Record<string, unknown> | null
 }
@@ -510,7 +550,7 @@ export type ClaimReason =
 export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   type: OrderClaimType
   claim_items?: (BaseOrderBundledItemActionsDTO & {
-    reason: ClaimReason
+    reason?: ClaimReason
     images?: {
       url: string
       metadata?: Record<string, unknown> | null

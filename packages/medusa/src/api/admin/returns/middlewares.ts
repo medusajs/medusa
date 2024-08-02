@@ -1,17 +1,18 @@
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
+  AdminPostCancelReturnReqSchema,
   AdminPostReceiveReturnItemsReqSchema,
   AdminPostReceiveReturnsReqSchema,
-  AdminPostCancelReturnReqSchema,
   AdminPostReturnsConfirmRequestReqSchema,
   AdminPostReturnsReqSchema,
   AdminPostReturnsRequestItemsActionReqSchema,
   AdminPostReturnsRequestItemsReqSchema,
+  AdminPostReturnsReturnReqSchema,
   AdminPostReturnsShippingActionReqSchema,
   AdminPostReturnsShippingReqSchema,
 } from "./validators"
@@ -31,6 +32,17 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/returns/:id",
     middlewares: [
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/returns/:id",
+    middlewares: [
+      validateAndTransformBody(AdminPostReturnsReturnReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

@@ -12,13 +12,12 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
-import { createCompleteReturnStep } from "../../steps/create-complete-return"
-import { receiveReturnStep } from "../../steps/receive-return"
+import { createCompleteReturnStep } from "../../steps/return/create-complete-return"
+import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
@@ -50,7 +49,10 @@ function prepareShippingMethodData({
     adjustments: [],
   }
 
-  if (isDefined(inputShippingOption.price) && inputShippingOption.price >= 0) {
+  if (
+    isDefined(inputShippingOption.price) &&
+    MathBN.gte(inputShippingOption.price, 0)
+  ) {
     obj.amount = inputShippingOption.price
   } else {
     if (returnShippingOption.price_type === "calculated") {
@@ -288,27 +290,26 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     const returnFulfillment =
       createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
 
+    const returnCreated = createCompleteReturnStep({
+      order_id: input.order_id,
+      items: input.items,
+      shipping_method: shippingMethodData,
+      created_by: input.created_by,
+    })
+
     const link = transform(
-      { order_id: input.order_id, fulfillment: returnFulfillment },
+      { returnCreated, fulfillment: returnFulfillment },
       (data) => {
         return [
           {
-            [Modules.ORDER]: { order_id: data.order_id },
+            [Modules.ORDER]: { return_id: data.returnCreated.id },
             [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
           },
         ]
       }
     )
 
-    const [returnCreated] = parallelize(
-      createCompleteReturnStep({
-        order_id: input.order_id,
-        items: input.items,
-        shipping_method: shippingMethodData,
-        created_by: input.created_by,
-      }),
-      createRemoteLinkStep(link)
-    )
+    createRemoteLinkStep(link)
 
     const receiveItems = transform(
       {

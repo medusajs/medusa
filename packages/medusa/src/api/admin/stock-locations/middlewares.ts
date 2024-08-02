@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
@@ -74,6 +74,17 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/stock-locations/:id/sales-channels",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/fulfillment-providers",
     middlewares: [
       validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(

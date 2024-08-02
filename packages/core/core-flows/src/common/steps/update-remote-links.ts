@@ -6,7 +6,7 @@ export const updateRemoteLinksStepId = "update-remote-links-step"
 export const updateRemoteLinksStep = createStep(
   updateRemoteLinksStepId,
   async (data: LinkDefinition[], { container }) => {
-    if (!data.length) {
+    if (!data?.length) {
       return new StepResponse([], [])
     }
 

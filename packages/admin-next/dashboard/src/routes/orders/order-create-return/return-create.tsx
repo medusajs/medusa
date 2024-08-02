@@ -1,5 +1,8 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
+
+import { toast } from "@medusajs/ui"
 
 import { RouteFocusModal } from "../../../components/modals"
 import { ReturnCreateForm } from "./components/return-create-form"
@@ -13,11 +16,14 @@ let IS_REQUEST_RUNNING = false
 export const ReturnCreate = () => {
   const { id } = useParams()
 
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+
   const { order } = useOrder(id!, {
     fields: DEFAULT_FIELDS,
   })
 
-  const { order: preview } = useOrderPreview(id!)
+  const { order: preview } = useOrderPreview(id!, undefined, {})
 
   const [activeReturnId, setActiveReturnId] = useState()
 
@@ -29,28 +35,36 @@ export const ReturnCreate = () => {
 
   useEffect(() => {
     async function run() {
-      if (IS_REQUEST_RUNNING || !order || !preview) {
+      if (IS_REQUEST_RUNNING || !preview) {
         return
       }
 
-      /**
-       * Active return already exists
-       */
-      if (preview.order_change?.change_type === "return") {
-        setActiveReturnId(preview.order_change.return.id)
+      if (preview.order_change) {
+        if (preview.order_change.change_type === "return_request") {
+          setActiveReturnId(preview.order_change.return_id)
+        } else {
+          navigate(`/orders/${order.id}`, { replace: true })
+          toast.error(t("orders.returns.activeChangeError"))
+        }
+
         return
       }
 
       IS_REQUEST_RUNNING = true
 
-      const orderReturn = await initiateReturn({ order_id: order.id })
-      setActiveReturnId(orderReturn.id)
-
-      IS_REQUEST_RUNNING = false
+      try {
+        const orderReturn = await initiateReturn({ order_id: order.id })
+        setActiveReturnId(orderReturn.id)
+      } catch (e) {
+        navigate(`/orders/${order.id}`, { replace: true })
+        toast.error(e.message)
+      } finally {
+        IS_REQUEST_RUNNING = false
+      }
     }
 
     run()
-  }, [order, preview])
+  }, [preview])
 
   return (
     <RouteFocusModal>

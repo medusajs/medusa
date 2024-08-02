@@ -257,6 +257,7 @@ export function CreateShippingOptionsForm({
                 form={form}
                 zone={zone}
                 isReturn={isReturn}
+                locationId={locationId}
               />
             </ProgressTabs.Content>
             <ProgressTabs.Content value={Tab.PRICING} className="size-full">

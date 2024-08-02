@@ -48,7 +48,7 @@ export default {
 This exports the module's definition, indicating that the \`MyFileProviderService\` is the module's service.`,
       `## 4. Use Module
 
-To use your File Provider Module, add it to the \`providers\` array of the File Module:
+To use your File Module Provider, add it to the \`providers\` array of the File Module:
 
 <Note>
 

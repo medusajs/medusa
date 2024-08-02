@@ -1,6 +1,7 @@
 import { InviteWorkflow, UserDTO } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -14,7 +15,7 @@ export const acceptInviteWorkflow = createWorkflow(
   acceptInviteWorkflowId,
   (
     input: WorkflowData<InviteWorkflow.AcceptInviteWorkflowInputDTO>
-  ): WorkflowData<UserDTO[]> => {
+  ): WorkflowResponse<UserDTO[]> => {
     const invite = validateTokenStep(input.invite_token)
 
     const createUserInput = transform(
@@ -44,6 +45,6 @@ export const acceptInviteWorkflow = createWorkflow(
     setAuthAppMetadataStep(authUserInput)
     deleteInvitesStep([invite.id])
 
-    return users
+    return new WorkflowResponse(users)
   }
 )

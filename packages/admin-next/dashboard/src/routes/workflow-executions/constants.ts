@@ -4,13 +4,18 @@ export const STEP_IN_PROGRESS_STATES = [
   TransactionStepState.COMPENSATING,
   TransactionStepState.INVOKING,
 ]
+
+export const STEP_SKIPPED_STATES = [
+  TransactionStepState.SKIPPED,
+  TransactionStepState.SKIPPED_FAILURE,
+]
 export const STEP_OK_STATES = [TransactionStepState.DONE]
+
 export const STEP_ERROR_STATES = [
   TransactionStepState.FAILED,
   TransactionStepState.REVERTED,
   TransactionStepState.TIMEOUT,
   TransactionStepState.DORMANT,
-  TransactionStepState.SKIPPED,
 ]
 export const STEP_INACTIVE_STATES = [TransactionStepState.NOT_STARTED]
 

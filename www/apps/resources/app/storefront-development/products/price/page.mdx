@@ -10,7 +10,7 @@ In this document, you'll learn how to show a product's variants' prices in the s
 
 ## Pricing Query Parameters
 
-When you retrieve products either with the [List Products](!api!/store#products_getproducts) or [Retrieve Products](!api!/store#products_getproductsid) API routes, you must pass include in the beginning of the `fields` query parameter the value `*variants.calculated_price`.
+When you retrieve products either with the [List Products](!api!/store#products_getproducts) or [Retrieve Products](!api!/store#products_getproductsid) API routes, you must include in the beginning of the `fields` query parameter the value `*variants.calculated_price`.
 
 You also must pass at least one of the following query parameters to retrieve the correct product variant price:
 
@@ -18,6 +18,29 @@ You also must pass at least one of the following query parameters to retrieve th
 - `country_code`: The customer's country code. This parameter must be included if you want to apply taxes on the product's price.
 - `customer_id`: The ID of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
 - `customer_group_id`: The ID of the group of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
+
+For example:
+
+```ts
+const queryParams = new URLSearchParams({
+  fields: `*variants.calculated_price`,
+  region_id: region.id,
+})
+
+fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+  },
+})
+.then((res) => res.json())
+.then(({ product }) => {
+  // TODO use product
+  console.log(product)
+})
+```
+
+In this example, you pass the selected region's ID as a query parameter with the `fields` query parameter set to `*variants.calculated_price`.
 
 ---
 
@@ -81,9 +104,8 @@ If you pass the parameters mentioned above, each variant has a `calculated_price
   </Table.Body>
 </Table>
 
----
-
 ## Examples
 
-- [React Example: Show Product Variant's Price](./examples/show-price/page.mdx).
-- [React Example: Show Product Variant's Sale Price](./examples/sale-price/page.mdx).
+- [Example: Show Product Variant's Price](./examples/show-price/page.mdx).
+- [Example: Show Product Variant's Sale Price](./examples/sale-price/page.mdx).
+- [Example: Show Product Variant's Price with Taxes](./examples/tax-price/page.mdx).

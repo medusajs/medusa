@@ -11,6 +11,7 @@ servers:
 tags:
   - name: Api Keys
   - name: Campaigns
+  - name: Claims
   - name: Collections
     x-associatedSchema:
       $ref: '#/components/schemas/AdminCollection'
@@ -1222,6 +1223,1685 @@ paths:
             -H 'x-medusa-access-token: {api_token}'
       tags:
         - Campaigns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims:
+    get:
+      operationId: GetClaims
+      summary: List Claims
+      description: Retrieve a list of claims. The claims can be filtered by fields such as `id`. The claims can also be sorted or paginated.
+      x-authenticated: true
+      parameters:
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/claims' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostClaims
+      summary: Create Claim
+      description: Create a claim.
+      x-authenticated: true
+      parameters:
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderClaimsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "type": "{value}",
+              "order_id": "{value}",
+              "metadata": {}
+            }'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/cancel:
+    post:
+      operationId: PostClaimsIdCancel
+      summary: Add Cancels to Claim
+      description: Add a list of cancels to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostCancelClaimReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/cancel' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/claim-items:
+    post:
+      operationId: PostClaimsIdClaimItems
+      summary: Add Claim Items to Claim
+      description: Add a list of claim items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimItemsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/claim-items' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/claim-items/{action_id}:
+    post:
+      operationId: PostClaimsIdClaimItemsAction_id
+      summary: Add Claim Items to Claim
+      description: Add a list of claim items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsItemsActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/claim-items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteClaimsIdClaimItemsAction_id
+      summary: Remove Claim Items from Claim
+      description: Remove a list of claim items from a claim. This doesn't delete the Claim Item, only the association between the Claim Item and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/claim-items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/inbound/items:
+    post:
+      operationId: PostClaimsIdInboundItems
+      summary: Add Items to Claim
+      description: Add a list of items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsRequestItemsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/inbound/items' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/inbound/items/{action_id}:
+    post:
+      operationId: PostClaimsIdInboundItemsAction_id
+      summary: Add Items to Claim
+      description: Add a list of items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsRequestItemsActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/inbound/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteClaimsIdInboundItemsAction_id
+      summary: Remove Items from Claim
+      description: Remove a list of items from a claim. This doesn't delete the Item, only the association between the Item and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/inbound/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/inbound/shipping-method:
+    post:
+      operationId: PostClaimsIdInboundShippingMethod
+      summary: Add Shipping Methods to Claim
+      description: Add a list of shipping methods to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsShippingReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "shipping_option_id": "{value}"
+            }'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/inbound/shipping-method/{action_id}:
+    post:
+      operationId: PostClaimsIdInboundShippingMethodAction_id
+      summary: Add Shipping Methods to Claim
+      description: Add a list of shipping methods to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsShippingActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteClaimsIdInboundShippingMethodAction_id
+      summary: Remove Shipping Methods from Claim
+      description: Remove a list of shipping methods from a claim. This doesn't delete the Shipping Method, only the association between the Shipping Method and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/outbound/items:
+    post:
+      operationId: PostClaimsIdOutboundItems
+      summary: Add Items to Claim
+      description: Add a list of items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsAddItemsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/outbound/items' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/outbound/items/{action_id}:
+    post:
+      operationId: PostClaimsIdOutboundItemsAction_id
+      summary: Add Items to Claim
+      description: Add a list of items to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsItemsActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/outbound/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteClaimsIdOutboundItemsAction_id
+      summary: Remove Items from Claim
+      description: Remove a list of items from a claim. This doesn't delete the Item, only the association between the Item and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/outbound/shipping-method:
+    post:
+      operationId: PostClaimsIdOutboundShippingMethod
+      summary: Add Shipping Methods to Claim
+      description: Add a list of shipping methods to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsShippingReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/outbound/shipping-method' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "shipping_option_id": "{value}"
+            }'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/outbound/shipping-method/{action_id}:
+    post:
+      operationId: PostClaimsIdOutboundShippingMethodAction_id
+      summary: Add Shipping Methods to Claim
+      description: Add a list of shipping methods to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostClaimsShippingActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteClaimsIdOutboundShippingMethodAction_id
+      summary: Remove Shipping Methods from Claim
+      description: Remove a list of shipping methods from a claim. This doesn't delete the Shipping Method, only the association between the Shipping Method and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The claim's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/claims/{id}/request:
+    post:
+      operationId: PostClaimsIdRequest
+      summary: Add Requests to Claim
+      description: Add a list of requests to a claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/claims/{id}/request' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+    delete:
+      operationId: DeleteClaimsIdRequest
+      summary: Remove Requests from Claim
+      description: Remove a list of requests from a claim. This doesn't delete the Request, only the association between the Request and the claim.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The claim's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/claims/{id}/request' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Claims
       responses:
         '400':
           $ref: '#/components/responses/400_error'
@@ -3889,6 +5569,20 @@ paths:
             type: string
             title: q
             description: The fulfillment provider's q.
+        - name: stock_location_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: stock_location_id
+                description: The fulfillment provider's stock location id.
+              - type: array
+                description: The fulfillment provider's stock location id.
+                items:
+                  type: string
+                  title: stock_location_id
+                  description: The stock location id's details.
       security:
         - api_token: []
         - cookie_auth: []
@@ -5049,7 +6743,6 @@ paths:
           description: The inventory item's weight.
           required: false
           schema:
-            type: object
             description: The inventory item's weight.
             required:
               - $eq
@@ -5082,7 +6775,6 @@ paths:
           description: The inventory item's length.
           required: false
           schema:
-            type: object
             description: The inventory item's length.
             required:
               - $eq
@@ -5115,7 +6807,6 @@ paths:
           description: The inventory item's height.
           required: false
           schema:
-            type: object
             description: The inventory item's height.
             required:
               - $eq
@@ -5148,7 +6839,6 @@ paths:
           description: The inventory item's width.
           required: false
           schema:
-            type: object
             description: The inventory item's width.
             required:
               - $eq
@@ -6338,7 +8028,7 @@ paths:
           description: The invite's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The invite's created at.
             required:
               - $eq
@@ -6366,12 +8056,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The invite's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The invite's updated at.
             required:
               - $eq
@@ -6399,12 +8090,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The invite's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The invite's deleted at.
             required:
               - $eq
@@ -6432,6 +8124,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -7988,7 +9681,7 @@ paths:
           description: The payment's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The payment's created at.
             required:
               - $eq
@@ -8016,12 +9709,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The payment's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The payment's updated at.
             required:
               - $eq
@@ -8049,12 +9743,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The payment's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The payment's deleted at.
             required:
               - $eq
@@ -8082,6 +9777,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -9670,7 +11366,7 @@ paths:
           description: The product category's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's created at.
             required:
               - $eq
@@ -9698,12 +11394,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The product category's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's updated at.
             required:
               - $eq
@@ -9731,12 +11428,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The product category's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product category's deleted at.
             required:
               - $eq
@@ -9764,6 +11462,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -10427,7 +12126,7 @@ paths:
           description: The product tag's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product tag's created at.
             required:
               - $eq
@@ -10455,12 +12154,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The product tag's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product tag's updated at.
             required:
               - $eq
@@ -10488,12 +12188,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The product tag's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product tag's deleted at.
             required:
               - $eq
@@ -10521,6 +12222,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -10987,7 +12689,7 @@ paths:
           description: The product type's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product type's created at.
             required:
               - $eq
@@ -11015,12 +12717,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The product type's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product type's updated at.
             required:
               - $eq
@@ -11048,12 +12751,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The product type's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The product type's deleted at.
             required:
               - $eq
@@ -11081,6 +12785,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -11623,7 +13328,6 @@ paths:
           description: The product's tags.
           required: false
           schema:
-            type: object
             description: The product's tags.
             properties:
               value:
@@ -25817,6 +27521,88 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /admin/products/import/{transaction_id}/confirm:
+    post:
+      operationId: PostProductsImportTransaction_idConfirm
+      summary: Add Confirms to Product
+      description: Add a list of confirms to a product.
+      x-authenticated: true
+      parameters:
+        - name: transaction_id
+          in: path
+          description: The product's transaction id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/products/import/{transaction_id}/confirm' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Products
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema: {}
   /admin/products/{id}:
     get:
       operationId: GetProductsId
@@ -28687,7 +30473,7 @@ paths:
           description: The promotion's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The promotion's created at.
             required:
               - $eq
@@ -28715,12 +30501,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The promotion's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The promotion's updated at.
             required:
               - $eq
@@ -28748,12 +30535,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The promotion's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The promotion's deleted at.
             required:
               - $eq
@@ -28781,6 +30569,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -30589,7 +32378,7 @@ paths:
           description: The region's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The region's created at.
             required:
               - $eq
@@ -30617,12 +32406,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The region's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The region's updated at.
             required:
               - $eq
@@ -30650,12 +32440,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The region's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The region's deleted at.
             required:
               - $eq
@@ -30683,6 +32474,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -31259,7 +33051,6 @@ paths:
           description: The reservation's quantity.
           required: false
           schema:
-            type: object
             description: The reservation's quantity.
             required:
               - $eq
@@ -31292,7 +33083,7 @@ paths:
           description: The reservation's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The reservation's created at.
             required:
               - $eq
@@ -31320,12 +33111,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The reservation's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The reservation's updated at.
             required:
               - $eq
@@ -31353,12 +33145,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The reservation's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The reservation's deleted at.
             required:
               - $eq
@@ -31386,6 +33179,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
       security:
         - api_token: []
         - cookie_auth: []
@@ -32409,6 +34203,92 @@ paths:
           source: |-
             curl '{backend_url}/admin/returns/{id}' \
             -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Returns
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostReturnsId
+      summary: Update a Return
+      description: Update a return's details.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The return's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsReturnReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/returns/{id}' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "metadata": {}
+            }'
       tags:
         - Returns
       responses:
@@ -34051,7 +35931,7 @@ paths:
           description: The sales channel's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The sales channel's created at.
             required:
               - $eq
@@ -34079,12 +35959,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The sales channel's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The sales channel's updated at.
             required:
               - $eq
@@ -34112,12 +35993,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The sales channel's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The sales channel's deleted at.
             required:
               - $eq
@@ -34145,6 +36027,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: location_id
           in: query
           required: false
@@ -34759,7 +36642,7 @@ paths:
           description: The shipping option's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping option's created at.
             required:
               - $eq
@@ -34787,12 +36670,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The shipping option's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping option's updated at.
             required:
               - $eq
@@ -34820,12 +36704,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The shipping option's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping option's deleted at.
             required:
               - $eq
@@ -34853,6 +36738,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
       security:
         - api_token: []
         - cookie_auth: []
@@ -35719,7 +37605,7 @@ paths:
           description: The shipping profile's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping profile's created at.
             required:
               - $eq
@@ -35747,12 +37633,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The shipping profile's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping profile's updated at.
             required:
               - $eq
@@ -35780,12 +37667,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The shipping profile's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The shipping profile's deleted at.
             required:
               - $eq
@@ -35813,6 +37701,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -36376,7 +38265,7 @@ paths:
           description: The stock location's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The stock location's created at.
             required:
               - $eq
@@ -36404,12 +38293,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The stock location's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The stock location's updated at.
             required:
               - $eq
@@ -36437,12 +38327,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The stock location's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The stock location's deleted at.
             required:
               - $eq
@@ -36470,6 +38361,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -36811,6 +38703,105 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/stock-locations/{id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Stock Locations
+      responses:
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/stock-locations/{id}/fulfillment-providers:
+    post:
+      operationId: PostStockLocationsIdFulfillmentProviders
+      summary: Add Fulfillment Providers to Stock Location
+      description: Add a list of fulfillment providers to a stock location.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The stock location's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: SUMMARY
+              properties:
+                add:
+                  type: array
+                  description: The stock location's add.
+                  items:
+                    type: string
+                    title: add
+                    description: The add's details.
+                remove:
+                  type: array
+                  description: The stock location's remove.
+                  items:
+                    type: string
+                    title: remove
+                    description: The remove's details.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/stock-locations/{id}/fulfillment-providers' \
             -H 'x-medusa-access-token: {api_token}'
       tags:
         - Stock Locations
@@ -37421,7 +39412,7 @@ paths:
           description: The tax rate's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax rate's created at.
             required:
               - $eq
@@ -37449,12 +39440,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The tax rate's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax rate's updated at.
             required:
               - $eq
@@ -37482,12 +39474,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The tax rate's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax rate's deleted at.
             required:
               - $eq
@@ -37515,6 +39508,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -38257,7 +40251,7 @@ paths:
           description: The tax region's created at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax region's created at.
             required:
               - $eq
@@ -38285,12 +40279,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: created_at
         - name: updated_at
           in: query
           description: The tax region's updated at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax region's updated at.
             required:
               - $eq
@@ -38318,12 +40313,13 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: updated_at
         - name: deleted_at
           in: query
           description: The tax region's deleted at.
           required: false
           schema:
-            type: object
+            type: string
             description: The tax region's deleted at.
             required:
               - $eq
@@ -38351,6 +40347,7 @@ paths:
               $gte: {}
               $lt: {}
               $lte: {}
+            title: deleted_at
         - name: $and
           in: query
           required: false
@@ -41454,12 +43451,12 @@ components:
       description: SUMMARY
       x-schemaName: AdminExportProductResponse
       required:
-        - workflow_id
+        - transaction_id
       properties:
-        workflow_id:
+        transaction_id:
           type: string
-          title: workflow_id
-          description: The product's workflow id.
+          title: transaction_id
+          description: The product's transaction id.
     AdminFulfillmentProvider:
       type: object
       description: The shipping option's provider.
@@ -41560,17 +43557,38 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminImportProductRequest
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/File'
     AdminImportProductResponse:
       type: object
       description: SUMMARY
       x-schemaName: AdminImportProductResponse
       required:
-        - workflow_id
+        - transaction_id
+        - summary
       properties:
-        workflow_id:
+        transaction_id:
           type: string
-          title: workflow_id
-          description: The product's workflow id.
+          title: transaction_id
+          description: The product's transaction id.
+        summary:
+          type: object
+          description: The product's summary.
+          required:
+            - toCreate
+            - toUpdate
+          properties:
+            toCreate:
+              type: number
+              title: toCreate
+              description: The summary's tocreate.
+            toUpdate:
+              type: number
+              title: toUpdate
+              description: The summary's toupdate.
     AdminOrderCancelFulfillment:
       type: object
       description: SUMMARY
@@ -41674,21 +43692,187 @@ components:
         metadata:
           type: object
           description: The order's metadata.
+    AdminPostCancelClaimReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostCancelClaimReqSchema
+      properties:
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The claim's no notification.
     AdminPostCancelReturnReqSchema:
       type: object
       description: SUMMARY
       x-schemaName: AdminPostCancelReturnReqSchema
-      required:
-        - internal_note
       properties:
         no_notification:
           type: boolean
           title: no_notification
           description: The return's no notification.
+    AdminPostClaimItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The claim's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - id
+              - quantity
+            properties:
+              id:
+                type: string
+                title: id
+                description: The item's ID.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              reason:
+                type: string
+                enum:
+                  - missing_item
+                  - wrong_item
+                  - production_failure
+                  - other
+              description:
+                type: string
+                title: description
+                description: The item's description.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+    AdminPostClaimsAddItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsAddItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The claim's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - variant_id
+              - quantity
+            properties:
+              variant_id:
+                type: string
+                title: variant_id
+                description: The item's variant id.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              unit_price:
+                type: number
+                title: unit_price
+                description: The item's unit price.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostClaimsItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The claim's quantity.
+        reason:
+          type: string
+          enum:
+            - missing_item
+            - wrong_item
+            - production_failure
+            - other
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: The claim's internal note.
+    AdminPostClaimsShippingActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsShippingActionReqSchema
+      properties:
+        custom_price:
+          type: number
+          title: custom_price
+          description: The claim's custom price.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
+    AdminPostClaimsShippingReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostClaimsShippingReqSchema
+      required:
+        - shipping_option_id
+      properties:
+        shipping_option_id:
+          type: string
+          title: shipping_option_id
+          description: The claim's shipping option id.
+        custom_price:
+          type: number
+          title: custom_price
+          description: The claim's custom price.
+        description:
+          type: string
+          title: description
+          description: The claim's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
+    AdminPostOrderClaimsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderClaimsReqSchema
+      required:
+        - type
+        - order_id
+        - metadata
+      properties:
+        type:
+          type: string
+          enum:
+            - refund
+            - replace
+        order_id:
+          type: string
+          title: order_id
+          description: The claim's order id.
+        description:
+          type: string
+          title: description
+          description: The claim's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The claim's internal note.
+        metadata:
+          type: object
+          description: The claim's metadata.
     AdminPostReceiveReturnsReqSchema:
       type: object
       description: SUMMARY
@@ -41812,18 +43996,18 @@ components:
         quantity:
           type: number
           title: quantity
-          description: The return's quantity.
+          description: The claim's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: The claim's internal note.
         reason_id:
           type: string
           title: reason_id
-          description: The return's reason id.
+          description: The claim's reason id.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The claim's metadata.
     AdminPostReturnsRequestItemsReqSchema:
       type: object
       description: SUMMARY
@@ -41831,7 +44015,7 @@ components:
       properties:
         items:
           type: array
-          description: The return's items.
+          description: The claim's items.
           items:
             type: object
             description: The item's items.
@@ -41862,6 +44046,24 @@ components:
               metadata:
                 type: object
                 description: The item's metadata.
+    AdminPostReturnsReturnReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostReturnsReturnReqSchema
+      required:
+        - metadata
+      properties:
+        location_id:
+          type: string
+          title: location_id
+          description: The return's location id.
+        no_notification:
+          type: boolean
+          title: no_notification
+          description: The return's no notification.
+        metadata:
+          type: object
+          description: The return's metadata.
     AdminPostReturnsShippingActionReqSchema:
       type: object
       description: SUMMARY
@@ -41888,22 +44090,22 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The return's shipping option id.
+          description: The claim's shipping option id.
         custom_price:
           type: number
           title: custom_price
-          description: The return's custom price.
+          description: The claim's custom price.
         description:
           type: string
           title: description
-          description: The return's description.
+          description: The claim's description.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: The claim's internal note.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The claim's metadata.
     AdminPrice:
       type: object
       description: The price's prices.
@@ -42051,13 +44253,13 @@ components:
           type: string
           title: id
           description: The parent's ID.
+        metadata:
+          type: object
+          description: The parent's metadata.
         handle:
           type: string
           title: handle
           description: The parent's handle.
-        metadata:
-          type: object
-          description: The parent's metadata.
         hs_code:
           type: string
           title: hs_code
@@ -44409,6 +46611,52 @@ components:
             - unexpected_state
             - invalid_argument
             - unknown_error
+    File:
+      type: object
+      description: The product's file.
+      x-schemaName: File
+      required:
+        - lastModified
+        - name
+        - webkitRelativePath
+        - size
+        - type
+        - arrayBuffer
+        - stream
+        - text
+      properties:
+        lastModified:
+          type: number
+          title: lastModified
+          description: The file's lastmodified.
+        name:
+          type: string
+          title: name
+          description: The file's name.
+        webkitRelativePath:
+          type: string
+          title: webkitRelativePath
+          description: The file's webkitrelativepath.
+        size:
+          type: number
+          title: size
+          description: The file's size.
+        type:
+          type: string
+          title: type
+          description: The file's type.
+        arrayBuffer:
+          type: object
+          description: The file's arraybuffer.
+        slice:
+          type: object
+          description: The file's slice.
+        stream:
+          type: object
+          description: The file's stream.
+        text:
+          type: object
+          description: The file's text.
     StoreAddCartLineItem:
       type: object
       description: SUMMARY
@@ -44606,13 +46854,13 @@ components:
           type: string
           title: id
           description: The product's ID.
+        metadata:
+          type: object
+          description: The product's metadata.
         handle:
           type: string
           title: handle
           description: The product's handle.
-        metadata:
-          type: object
-          description: The product's metadata.
         hs_code:
           type: string
           title: hs_code

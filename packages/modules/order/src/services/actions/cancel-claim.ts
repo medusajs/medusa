@@ -8,16 +8,16 @@ import { ChangeActionType, promiseAll } from "@medusajs/utils"
 async function createOrderChange(
   service,
   data,
-  returnRef,
+  claimOrder,
   actions,
   sharedContext
 ) {
   return await service.createOrderChange_(
     {
-      order_id: returnRef.order_id,
-      claim_id: returnRef.id,
-      reference: "return",
-      reference_id: returnRef.id,
+      order_id: claimOrder.order_id,
+      claim_id: claimOrder.id,
+      reference: "claim",
+      reference_id: claimOrder.id,
       description: data.description,
       internal_note: data.internal_note,
       created_by: data.created_by,
@@ -33,60 +33,40 @@ export async function cancelClaim(
   data: OrderTypes.CancelOrderClaimDTO,
   sharedContext?: Context
 ) {
-  const claimOrder = await this.retrieveClaim(
+  const claimOrder = await this.retrieveOrderClaim(
     data.claim_id,
     {
       select: [
         "id",
         "order_id",
-        "return.id",
-        "return.items.id",
-        "return.items.quantity",
         "claim_items.item_id",
+        "claim_items.is_additional_item",
         "claim_items.quantity",
         "additional_items.id",
         "additional_items.quantity",
+        "additional_items.is_additional_item",
       ],
-      relations: ["return.items", "additional_items", "shipping_methods"],
+      relations: ["claim_items", "additional_items", "shipping_methods"],
     },
     sharedContext
   )
 
   const actions: CreateOrderChangeActionDTO[] = []
 
-  claimOrder.return.items.forEach((item) => {
-    actions.push({
-      action: ChangeActionType.CANCEL_RETURN_ITEM,
-      order_id: claimOrder.order_id,
-      claim_id: claimOrder.id,
-      return_id: claimOrder.return.id,
-      reference: "return",
-      reference_id: claimOrder.return.id,
-      details: {
-        reference_id: item.id,
-        order_id: claimOrder.order_id,
-        claim_id: claimOrder.id,
-        return_id: claimOrder.return.id,
-        quantity: item.quantity,
-      },
-    })
-  })
-
-  claimOrder.claim_items.forEach((item) => {
+  claimOrder.claim_items?.forEach((item) => {
     actions.push({
       action: ChangeActionType.REINSTATE_ITEM,
       claim_id: claimOrder.id,
       reference: "claim",
       reference_id: claimOrder.id,
       details: {
-        reference_id: item.id,
-        claim_id: claimOrder.id,
+        reference_id: item.item_id,
         quantity: item.quantity,
       },
     })
   })
 
-  claimOrder.additional_items.forEach((item) => {
+  claimOrder.additional_items?.forEach((item) => {
     actions.push({
       action: ChangeActionType.ITEM_REMOVE,
       order_id: claimOrder.order_id,
@@ -94,9 +74,7 @@ export async function cancelClaim(
       reference: "claim",
       reference_id: claimOrder.id,
       details: {
-        reference_id: item.id,
-        order_id: claimOrder.order_id,
-        claim_id: claimOrder.id,
+        reference_id: item.item_id,
         quantity: item.quantity,
       },
     })
@@ -107,7 +85,6 @@ export async function cancelClaim(
       action: ChangeActionType.SHIPPING_REMOVE,
       order_id: claimOrder.order_id,
       claim_id: claimOrder.id,
-      return_id: claimOrder.return.id,
       reference: "claim",
       reference_id: shipping.id,
       amount: shipping.price,
@@ -123,7 +100,7 @@ export async function cancelClaim(
   )
 
   await promiseAll([
-    this.updateClaims(
+    this.updateOrderClaims(
       [
         {
           data: {

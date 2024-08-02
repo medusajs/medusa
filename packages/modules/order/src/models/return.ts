@@ -1,6 +1,7 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
+  DALUtils,
   MikroOrmBigNumberProperty,
   ReturnStatus,
   createPsqlIndexStatementHelper,
@@ -12,6 +13,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -60,6 +62,7 @@ const ClaimIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "return" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Return {
   [OptionalProps]?: OptionalReturnProps
 
@@ -111,8 +114,8 @@ export default class Return {
   @DisplayIdIndex.MikroORMIndex()
   display_id: number
 
-  @Enum({ items: () => ReturnStatus, default: ReturnStatus.REQUESTED })
-  status: ReturnStatus = ReturnStatus.REQUESTED
+  @Enum({ items: () => ReturnStatus, default: ReturnStatus.OPEN })
+  status: ReturnStatus = ReturnStatus.OPEN
 
   @Property({ columnType: "text", nullable: true })
   location_id: string | null = null
@@ -168,6 +171,9 @@ export default class Return {
   @Property({ columnType: "timestamptz", nullable: true })
   @ReturnDeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  requested_at: Date | null = null
 
   @Property({ columnType: "timestamptz", nullable: true })
   received_at: Date | null = null
