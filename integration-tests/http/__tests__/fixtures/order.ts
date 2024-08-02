@@ -63,7 +63,6 @@ export async function createOrderSeeder({ api }) {
       "/admin/products",
       {
         title: `Test fixture ${shippingProfile.id}`,
-        tags: [{ value: "123" }, { value: "456" }],
         options: [
           { title: "size", values: ["large", "small"] },
           { title: "color", values: ["green"] },
