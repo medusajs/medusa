@@ -242,6 +242,8 @@ export class SubscriberLoader {
       })
     }
 
+    logger.debug(`Subscribers registered.`)
+
     /**
      * Return the file paths of the registered subscribers, to prevent the
      * backwards compatible loader from trying to register them.
