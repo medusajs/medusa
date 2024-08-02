@@ -51,8 +51,8 @@ export const Notifications = () => {
     }
   }, [])
 
-  const handleOnOpen = (isOpen: boolean) => {
-    if (isOpen) {
+  const handleOnOpen = (shouldOpen: boolean) => {
+    if (shouldOpen) {
       setHasUnread(false)
       setOpen(true)
       localStorage.setItem(LAST_READ_NOTIFICATION_KEY, new Date().toISOString())

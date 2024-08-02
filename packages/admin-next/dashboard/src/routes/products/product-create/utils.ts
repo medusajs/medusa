@@ -17,7 +17,7 @@ export const normalizeProductFormValues = (
     status: values.status,
     is_giftcard: false,
     tags: values?.tags?.length
-      ? values.tags?.map((tag) => ({ value: tag }))
+      ? values.tags?.map((tag) => ({ id: tag }))
       : undefined,
     sales_channels: values?.sales_channels?.length
       ? values.sales_channels?.map((sc) => ({ id: sc.id }))
