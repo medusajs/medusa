@@ -7,6 +7,7 @@ import {
 } from "@medusajs/types"
 import { arrayDifference, Modules } from "@medusajs/utils"
 import {
+  createHook,
   createWorkflow,
   transform,
   WorkflowData,
@@ -26,6 +27,7 @@ type UpdateProductsStepInputSelector = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   }
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInputProducts = {
@@ -33,6 +35,7 @@ type UpdateProductsStepInputProducts = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
+  additional_data?: Record<string, unknown>
 }
 
 type UpdateProductsStepInput =
@@ -210,9 +213,7 @@ function prepareToDeleteSalesChannelLinks({
 export const updateProductsWorkflowId = "update-products"
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<ProductTypes.ProductDTO[]> => {
+  (input: WorkflowData<WorkflowInput>) => {
     const previousVariantIds = getVariantIdsForProductsStep(input)
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
@@ -248,9 +249,15 @@ export const updateProductsWorkflow = createWorkflow(
     })
 
     dismissRemoteLinkStep(toDeleteSalesChannelLinks)
-
     createRemoteLinkStep(salesChannelLinks)
 
-    return new WorkflowResponse(updatedProducts)
+    const productsUpdated = createHook("productsUpdated", {
+      products: updatedProducts,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(updatedProducts, {
+      hooks: [productsUpdated],
+    })
   }
 )

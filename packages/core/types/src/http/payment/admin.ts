@@ -2,6 +2,7 @@ import {
   BasePayment,
   BasePaymentCollection,
   BasePaymentCollectionFilters,
+  BasePaymentFilters,
   BasePaymentProvider,
   BasePaymentProviderFilters,
   BasePaymentSession,
@@ -28,6 +29,16 @@ export interface AdminCapturePayment {
   amount?: number
 }
 
+export interface AdminRefundPayment {
+  amount?: number
+}
+
 export interface AdminPaymentResponse {
   payment: AdminPayment
 }
+
+export interface AdminPaymentsResponse {
+  payments: AdminPayment[]
+}
+
+export interface AdminPaymentFilters extends BasePaymentFilters {}
