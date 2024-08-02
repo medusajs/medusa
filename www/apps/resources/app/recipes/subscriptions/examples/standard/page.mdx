@@ -255,7 +255,7 @@ To create a table for the `Subscription` data model in the database, start by ge
 npx medusa migrations generate subscriptionModuleService
 ```
 
-This generates a migration in the `src/modules/marketeplace/migrations` directory.
+This generates a migration in the `src/modules/subscriptions/migrations` directory.
 
 Then, to reflect the migration in the database, run the following command:
 
@@ -694,7 +694,7 @@ export const POST = async (
     },
   })
   
-  const { metadata } = await remoteQuery(query)
+  const { metadata } = (await remoteQuery(query))[0]
 
   if (!metadata?.subscription_interval || !metadata.subscription_period) {
     throw new MedusaError(
