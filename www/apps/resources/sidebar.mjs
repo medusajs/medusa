@@ -1314,11 +1314,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
+        path: "/recipes/digital-products",
+        title: "Digital Products",
         children: [
           {
-            path: "/recipes/subscriptions/examples/standard",
+            path: "/recipes/digital-products/examples/standard",
             title: "Example",
           },
         ],
