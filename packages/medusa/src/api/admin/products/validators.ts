@@ -1,7 +1,10 @@
 import { BatchMethodRequest } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
-import { GetProductsParams } from "../../utils/common-validators"
+import {
+  GetProductsParams,
+  transformProductParams,
+} from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -38,17 +41,19 @@ export type AdminGetProductsParamsType = z.infer<typeof AdminGetProductsParams>
 export const AdminGetProductsParams = createFindParams({
   offset: 0,
   limit: 50,
-}).merge(
-  z
-    .object({
-      variants: AdminGetProductVariantsParams.optional(),
-      price_list_id: z.string().array().optional(),
-      status: statusEnum.array().optional(),
-      $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
-      $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
-    })
-    .merge(GetProductsParams)
-)
+})
+  .merge(
+    z
+      .object({
+        variants: AdminGetProductVariantsParams.optional(),
+        price_list_id: z.string().array().optional(),
+        status: statusEnum.array().optional(),
+        $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
+        $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
+      })
+      .merge(GetProductsParams)
+  )
+  .transform(transformProductParams)
 
 export type AdminGetProductOptionsParamsType = z.infer<
   typeof AdminGetProductOptionsParams
@@ -195,7 +200,7 @@ export const AdminBatchUpdateProductVariant = AdminUpdateProductVariant.extend({
   id: z.string(),
 })
 
-export const AdminCreateProductProductCategory = z.object({
+export const IdAssociation = z.object({
   id: z.string(),
 })
 
@@ -213,8 +218,8 @@ export const AdminCreateProduct = z
     status: statusEnum.nullish().default(ProductStatus.DRAFT),
     type_id: z.string().nullish(),
     collection_id: z.string().nullish(),
-    categories: z.array(AdminCreateProductProductCategory).optional(),
-    tags: z.array(AdminUpdateProductTag).optional(),
+    categories: z.array(IdAssociation).optional(),
+    tags: z.array(IdAssociation).optional(),
     options: z.array(AdminCreateProductOption).optional(),
     variants: z.array(AdminCreateProductVariant).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
@@ -246,8 +251,8 @@ export const AdminUpdateProduct = z
     handle: z.string().nullish(),
     type_id: z.string().nullish(),
     collection_id: z.string().nullish(),
-    categories: z.array(AdminCreateProductProductCategory).optional(),
-    tags: z.array(AdminUpdateProductTag).optional(),
+    categories: z.array(IdAssociation).optional(),
+    tags: z.array(IdAssociation).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -270,13 +275,6 @@ export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
 
 export type AdminExportProductType = z.infer<typeof AdminExportProduct>
 export const AdminExportProduct = z.object({})
-
-// TODO: Handle in create and update product once ready
-// @IsOptional()
-// @Type(() => ProductProductCategoryReq)
-// @ValidateNested({ each: true })
-// @IsArray()
-// categories?: ProductProductCategoryReq[]
 
 export const AdminCreateVariantInventoryItem = z.object({
   required_quantity: z.number(),

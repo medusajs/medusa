@@ -18,6 +18,9 @@ medusaIntegrationTestRunner({
     let publishedCollection
 
     let baseType
+    let baseTag1
+    let baseTag2
+    let newTag
 
     beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
@@ -46,6 +49,22 @@ medusaIntegrationTestRunner({
         )
       ).data.product_type
 
+      baseTag1 = (
+        await api.post("/admin/product-tags", { value: "123" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag2 = (
+        await api.post("/admin/product-tags", { value: "456" }, adminHeaders)
+      ).data.product_tag
+
+      newTag = (
+        await api.post(
+          "/admin/product-tags",
+          { value: "new-tag" },
+          adminHeaders
+        )
+      ).data.product_tag
+
       baseProduct = (
         await api.post(
           "/admin/products",
@@ -54,6 +73,7 @@ medusaIntegrationTestRunner({
             collection_id: baseCollection.id,
             // BREAKING: Type input changed from {type: {value: string}} to {type_id: string}
             type_id: baseType.id,
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
           }),
           adminHeaders
         )
@@ -65,7 +85,7 @@ medusaIntegrationTestRunner({
           getProductFixture({
             title: "Proposed product",
             status: "proposed",
-            tags: [{ value: "new-tag" }],
+            tags: [{ id: newTag.id }],
             type_id: baseType.id,
           }),
           adminHeaders
@@ -79,6 +99,7 @@ medusaIntegrationTestRunner({
             title: "Published product",
             status: "published",
             collection_id: publishedCollection.id,
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
           }),
           adminHeaders
         )
@@ -507,7 +528,7 @@ medusaIntegrationTestRunner({
 
         it("returns a list of products with tags", async () => {
           const response = await api.get(
-            `/admin/products?tags[]=${baseProduct.tags[0].id}`,
+            `/admin/products?tag_id[]=${baseProduct.tags[0].id}`,
             adminHeaders
           )
 
@@ -534,7 +555,7 @@ medusaIntegrationTestRunner({
 
         it("returns a list of products with tags in a collection", async () => {
           const response = await api.get(
-            `/admin/products?collection_id[]=${baseCollection.id}&tags[]=${baseProduct.tags[0].id}`,
+            `/admin/products?collection_id[]=${baseCollection.id}&tag_id[]=${baseProduct.tags[0].id}`,
             adminHeaders
           )
 
@@ -1082,6 +1103,7 @@ medusaIntegrationTestRunner({
                 title: "Test create",
                 collection_id: baseCollection.id,
                 type_id: baseType.id,
+                tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
               }),
 
               adminHeaders
@@ -1276,7 +1298,7 @@ medusaIntegrationTestRunner({
             description: "test-product-description",
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
-            tags: [{ value: "123" }, { value: "456" }],
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
             variants: [
               {
                 title: "Test variant",
@@ -1306,7 +1328,7 @@ medusaIntegrationTestRunner({
             description: "test-product-description 1",
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
-            tags: [{ value: "123" }, { value: "456" }],
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
             variants: [
               {
                 title: "Test variant 1",
@@ -1406,7 +1428,7 @@ medusaIntegrationTestRunner({
                 ],
               },
             ],
-            tags: [{ value: "123" }],
+            tags: [{ id: baseTag1.id }],
             images: [{ url: "test-image-2.png" }],
             status: "published",
           }

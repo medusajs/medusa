@@ -78,9 +78,9 @@ export const ProductOrganizationForm = ({
         collection_id: data.collection_id || undefined,
         categories: data.category_ids.map((id) => ({ id })) || undefined,
         tags:
-          data.tag_ids?.map((t) => {
-            t
-          }) || undefined,
+          data.tag_ids?.map((t) => ({
+            id: t,
+          })) || undefined,
       },
       {
         onSuccess: ({ product }) => {

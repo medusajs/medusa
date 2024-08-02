@@ -25,7 +25,7 @@ export const fetchHighlights = [
 const queryParams = new URLSearchParams({
   fields: `*variants.calculated_price`,
   region_id: region.id,
-  country_code: region.countries[0].iso_2
+  country_code: region.countries[0].iso_2,
 })
 
 fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
@@ -135,7 +135,7 @@ export default function Product({ params: { id } }: Params) {
     const queryParams = new URLSearchParams({
       fields: `*variants.calculated_price`,
       region_id: region.id,
-      country_code: region.countries[0].iso_2
+      country_code: region.countries[0].iso_2,
     })
 
     fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {

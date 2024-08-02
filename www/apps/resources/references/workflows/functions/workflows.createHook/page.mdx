@@ -1,0 +1,55 @@
+---
+slug: /references/workflows/createHook
+sidebar_label: createHook
+---
+
+import { TypeList } from "docs-ui"
+
+# createHook - Workflows API Reference
+
+This documentation provides a reference to the `createHook` . It belongs to the `@medusajs/workflows-sdk` package.
+
+Expose a hook in your workflow where you can inject custom functionality as a step function. 
+
+A handler hook can later be registered to consume the hook and perform custom functionality.
+
+Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook).
+
+## Example
+
+```ts
+import {
+  createStep,
+  createHook,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
+import { createProductStep } from "./steps/create-product"
+
+export const myWorkflow = createWorkflow(
+  "my-workflow", 
+  function (input) {
+    const product = createProductStep(input)
+    const productCreatedHook = createHook(
+      "productCreated", 
+      { productId: product.id }
+    )
+
+    return new WorkflowResponse(product, {
+      hooks: [productCreatedHook],
+    })
+  }
+)
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"Name","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeInput","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createHook"/>
+
+## Parameters
+
+<TypeList types={[{"name":"name","type":"Name","description":"The hook's name. This is used when the hook handler is registered to consume the workflow.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"input","type":"TInvokeInput","description":"The input to pass to the hook handler.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createHook"/>
+
+## Returns
+
+<TypeList types={[{"name":"Hook","type":"[Hook](../../types/workflows.Hook/page.mdx)&#60;Name, TInvokeInput&#62;","optional":false,"defaultValue":"","description":"A workflow hook.","expandable":false,"children":[]}]}  sectionTitle="createHook"/>

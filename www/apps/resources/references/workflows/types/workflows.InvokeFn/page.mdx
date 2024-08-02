@@ -1,0 +1,21 @@
+import { TypeList } from "docs-ui"
+
+# InvokeFn
+
+ **InvokeFn**: (`input`: TInput, `context`: [StepExecutionContext](../../interfaces/workflows.StepExecutionContext/page.mdx)) => `void` \| [StepResponse](../../classes/workflows.StepResponse/page.mdx)&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62; \| Promise&#60;void \| [StepResponse](../../classes/workflows.StepResponse/page.mdx)&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62;&#62;
+
+The type of invocation function passed to a step.
+
+## Type Parameters
+
+<TypeList types={[{"name":"TInput","type":"`object`","description":"The type of the input that the function expects.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TOutput","type":"`object`","description":"The type of the output that the function returns.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TCompensateInput","type":"`object`","description":"The type of the input that the compensation function expects.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="InvokeFn"/>
+
+## Type declaration
+
+### Parameters
+
+<TypeList types={[{"name":"input","type":"TInput","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[StepExecutionContext](../../interfaces/workflows.StepExecutionContext/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"workflowId","type":"`string`","description":"The ID of the workflow.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attempt","type":"`number`","description":"The attempt number of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"The idempoency key of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stepName","type":"`string`","description":"The name of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"action","type":"`\"invoke\"` \\| `\"compensate\"`","description":"The action of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer/page.mdx)","description":"The container used to access resources, such as services, in the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`TransactionMetadata`","description":"Metadata passed in the input.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"void \\| StepResponse&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62; \\| Promise&#60;void \\| StepResponse&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62;&#62;","type":"`void` \\| [StepResponse](../../classes/workflows.StepResponse/page.mdx)&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62; \\| Promise&#60;void \\| [StepResponse](../../classes/workflows.StepResponse/page.mdx)&#60;TOutput, TCompensateInput extends undefined ? TOutput : TCompensateInput&#62;&#62;","optional":false,"defaultValue":"","description":"The expected output based on the type parameter `TOutput`.","expandable":false,"children":[]}]}  sectionTitle="__type"/>

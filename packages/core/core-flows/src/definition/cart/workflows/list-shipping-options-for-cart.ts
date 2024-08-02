@@ -4,6 +4,7 @@ import {
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 
@@ -108,6 +109,6 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       }
     )
 
-    return shippingOptionsWithPrice
+    return new WorkflowResponse(shippingOptionsWithPrice)
   }
 )

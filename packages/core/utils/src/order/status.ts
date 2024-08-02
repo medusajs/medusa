@@ -37,6 +37,10 @@ export enum OrderStatus {
  */
 export enum ReturnStatus {
   /**
+   * The return is open.
+   */
+  OPEN = "open",
+  /**
    * The return is requested.
    */
   REQUESTED = "requested",

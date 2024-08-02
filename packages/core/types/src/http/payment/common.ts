@@ -420,3 +420,7 @@ export interface BasePaymentProviderFilters
   id?: string | string[]
   region_id?: string | string[]
 }
+
+export interface BasePaymentFilters extends BaseFilterable<BasePaymentFilters> {
+  id?: string | string[]
+}

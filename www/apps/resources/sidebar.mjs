@@ -1549,6 +1549,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "link",
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+        children: [
+          {
+            type: "link",
+            path: "/recipes/subscriptions/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
         path: "/recipes/b2b",
         title: "B2B",
       },
@@ -1596,11 +1607,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/recipes/pos",
         title: "POS",
-      },
-      {
-        type: "link",
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
       },
     ],
   },
@@ -2239,6 +2245,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             autogenerate_path: "/service-factory-reference/tips",
           },
         ],
+      },
+      {
+        path: "/references/helper-steps",
+        title: "Helper Steps Reference",
+        isChildSidebar: true,
+        autogenerate_path: "/references/helper_steps/functions",
       },
     ],
   },

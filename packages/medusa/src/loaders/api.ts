@@ -1,8 +1,7 @@
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { Express } from "express"
-import path from "path"
+import { join } from "path"
 import qs from "qs"
-import { RoutesLoader } from "./helpers/routing"
+import { RoutesLoader } from "@medusajs/framework"
 import { MedusaContainer, PluginDetails } from "@medusajs/types"
 
 type Options = {
@@ -24,9 +23,7 @@ export default async ({ app, container, plugins }: Options) => {
     next()
   })
 
-  const configModule = container.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
+  const sourcePaths: string[] = []
 
   /**
    * Always load plugin routes before the Medusa core routes, since it
@@ -40,31 +37,27 @@ export default async ({ app, container, plugins }: Options) => {
    * route will never be resolved, because it will be handled by the
    * "/products/:id" route.
    */
-  await Promise.all(
-    plugins.map(async (pluginDetails) => {
-      return new RoutesLoader({
-        app: app,
-        configModule,
-        rootDir: path.join(pluginDetails.resolve, "api"),
-      }).load()
-    })
+  sourcePaths.push(
+    ...plugins.map((pluginDetails) => {
+      return join(pluginDetails.resolve, "api")
+    }),
+    /**
+     * Register the Medusa CORE API routes using the file based routing.
+     */
+    join(__dirname, "../api")
   )
 
   // TODO: Figure out why this is causing issues with test when placed inside ./api.ts
   // Adding this here temporarily
   // Test: (packages/medusa/src/api/routes/admin/currencies/update-currency.ts)
   try {
-    /**
-     * Register the Medusa CORE API routes using the file based routing.
-     */
     await new RoutesLoader({
       app: app,
-      rootDir: path.join(__dirname, "../api"),
-      configModule,
+      sourceDir: sourcePaths,
     }).load()
   } catch (err) {
     throw Error(
-      "An error occurred while registering Medusa Core API Routes. See error in logs for more details.",
+      "An error occurred while registering API Routes. See error in logs for more details.",
       { cause: err }
     )
   }

@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# ApplyStepOptions
+
+## Type parameters
+
+<TypeList types={[{"name":"TStepInputs","type":"&#123; [K in keyof TInvokeInput]: WorkflowData&#60;TInvokeInput[K]&#62; &#125;","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeInput","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeResultOutput","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeResultCompensateInput","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ApplyStepOptions"/>
+
+<TypeList types={[{"name":"stepName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"invokeFn","type":"[InvokeFn](../../types/workflows.InvokeFn/page.mdx)&#60;TInvokeInput, TInvokeResultOutput, TInvokeResultCompensateInput&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stepConfig","type":"`TransactionStepsDefinition`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"input","type":"TStepInputs","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"compensateFn","type":"[CompensateFn](../../types/workflows.CompensateFn/page.mdx)&#60;TInvokeResultCompensateInput&#62;","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ApplyStepOptions"/>

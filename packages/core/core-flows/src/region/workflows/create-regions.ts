@@ -4,6 +4,7 @@ import {
   parallelize,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { createRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
@@ -14,7 +15,7 @@ export const createRegionsWorkflow = createWorkflow(
   createRegionsWorkflowId,
   (
     input: WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowInput>
-  ): WorkflowData<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
+  ): WorkflowResponse<WorkflowTypes.RegionWorkflow.CreateRegionsWorkflowOutput> => {
     const data = transform(input, (data) => {
       const regionIndexToAdditionalData = data.regions.map((region, index) => {
         return {
@@ -81,6 +82,6 @@ export const createRegionsWorkflow = createWorkflow(
       })
     )
 
-    return regions
+    return new WorkflowResponse(regions)
   }
 )

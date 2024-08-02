@@ -1,4 +1,4 @@
-import { FlagSettings } from "../../types/feature-flags"
+import { FlagSettings } from "@medusajs/framework"
 
 const SalesChannelFeatureFlag: FlagSettings = {
   key: "sales_channels",

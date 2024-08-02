@@ -1,6 +1,7 @@
 import {
   BellAlert,
   BellAlertDone,
+  CircleFilledSolid,
   InformationCircleSolid,
 } from "@medusajs/icons"
 import { Drawer, Heading, IconButton, Text } from "@medusajs/ui"
@@ -10,7 +11,7 @@ import { HttpTypes } from "@medusajs/types"
 import { formatDistance } from "date-fns"
 import { InfiniteList } from "../../common/infinite-list"
 import { sdk } from "../../../lib/client"
-import { notificationQueryKeys } from "../../../hooks/api"
+import { notificationQueryKeys, useNotifications } from "../../../hooks/api"
 import { TFunction } from "i18next"
 import { FilePreview } from "../../common/file-preview"
 
@@ -24,9 +25,17 @@ interface NotificationData {
   }
 }
 
+const LAST_READ_NOTIFICATION_KEY = "notificationsLastReadAt"
+
 export const Notifications = () => {
-  const [open, setOpen] = useState(false)
   const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const [hasUnread, setHasUnread] = useUnreadNotifications()
+  // This is used to show the unread icon on the notification when the drawer is open,
+  // so it should lag behind the local storage data and should only be reset on close
+  const [lastReadAt, setLastReadAt] = useState(
+    localStorage.getItem(LAST_READ_NOTIFICATION_KEY)
+  )
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -42,14 +51,25 @@ export const Notifications = () => {
     }
   }, [])
 
+  const handleOnOpen = (shouldOpen: boolean) => {
+    if (shouldOpen) {
+      setHasUnread(false)
+      setOpen(true)
+      localStorage.setItem(LAST_READ_NOTIFICATION_KEY, new Date().toISOString())
+    } else {
+      setOpen(false)
+      setLastReadAt(localStorage.getItem(LAST_READ_NOTIFICATION_KEY))
+    }
+  }
+
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={handleOnOpen}>
       <Drawer.Trigger asChild>
         <IconButton
           variant="transparent"
           className="text-ui-fg-muted hover:text-ui-fg-subtle"
         >
-          <BellAlert />
+          {hasUnread ? <BellAlertDone /> : <BellAlert />}
         </IconButton>
       </Drawer.Trigger>
       <Drawer.Content>
@@ -77,6 +97,10 @@ export const Notifications = () => {
                 <Notification
                   key={notification.id}
                   notification={notification}
+                  unread={
+                    Date.parse(notification.created_at) >
+                    (lastReadAt ? Date.parse(lastReadAt) : 0)
+                  }
                 />
               )
             }}
@@ -89,8 +113,10 @@ export const Notifications = () => {
 
 const Notification = ({
   notification,
+  unread,
 }: {
   notification: HttpTypes.AdminNotification
+  unread?: boolean
 }) => {
   const data = notification.data as unknown as NotificationData | undefined
 
@@ -101,27 +127,35 @@ const Notification = ({
 
   return (
     <>
-      <div className="flex items-start justify-center gap-3 border-b p-6">
+      <div className="flex items-start justify-center gap-3 border-b p-6 relative">
         <div className="text-ui-fg-muted flex size-5 items-center justify-center">
           <InformationCircleSolid />
         </div>
         <div className="flex w-full flex-col gap-y-3">
           <div>
-            <div className="align-center flex flex-row justify-between">
+            <div className="items-center flex flex-row justify-between">
               <Text size="small" leading="compact" weight="plus">
                 {data.title}
               </Text>
-              <Text
-                as={"span"}
-                className="text-ui-fg-subtle"
-                size="small"
-                leading="compact"
-                weight="plus"
-              >
-                {formatDistance(notification.created_at, new Date(), {
-                  addSuffix: true,
-                })}
-              </Text>
+              <div className="items-center flex flex-row justify-center pr-4 relative">
+                <Text
+                  as={"span"}
+                  className="text-ui-fg-subtle"
+                  size="small"
+                  leading="compact"
+                  weight="plus"
+                >
+                  {formatDistance(notification.created_at, new Date(), {
+                    addSuffix: true,
+                  })}
+                </Text>
+                {unread && (
+                  <CircleFilledSolid
+                    className="text-ui-fg-interactive absolute top-1 right-0"
+                    style={{ transform: "scale(0.3)" }}
+                  />
+                )}
+              </div>
             </div>
             {!!data.description && (
               <Text
@@ -160,4 +194,32 @@ const NotificationsEmptyState = ({ t }: { t: TFunction }) => {
       </Text>
     </div>
   )
+}
+
+const useUnreadNotifications = () => {
+  const [hasUnread, setHasUnread] = useState(false)
+  const { notifications } = useNotifications(
+    { limit: 1, offset: 0, fields: "created_at" },
+    { refetchInterval: 3000 }
+  )
+  const lastNotification = notifications?.[0]
+
+  useEffect(() => {
+    if (!lastNotification) {
+      return
+    }
+
+    const lastNotificationAsTimestamp = Date.parse(lastNotification.created_at)
+
+    const lastReadDatetime = localStorage.getItem(LAST_READ_NOTIFICATION_KEY)
+    const lastReadAsTimestamp = lastReadDatetime
+      ? Date.parse(lastReadDatetime)
+      : 0
+
+    if (lastNotificationAsTimestamp > lastReadAsTimestamp) {
+      setHasUnread(true)
+    }
+  }, [lastNotification])
+
+  return [hasUnread, setHasUnread] as const
 }

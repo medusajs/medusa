@@ -1,8 +1,10 @@
 import {
+  createHook,
   createWorkflow,
   parallelize,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { removeRemoteLinkStep } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
@@ -14,7 +16,7 @@ type WorkflowInput = { ids: string[] }
 export const deleteProductsWorkflowId = "delete-products"
 export const deleteProductsWorkflow = createWorkflow(
   deleteProductsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<WorkflowInput>) => {
     const productsToDelete = getProductsStep({ ids: input.ids })
     const variantsToBeDeleted = transform({ productsToDelete }, (data) => {
       return data.productsToDelete
@@ -32,6 +34,12 @@ export const deleteProductsWorkflow = createWorkflow(
       deleteProductsStep(input.ids)
     )
 
-    return deletedProduct
+    const productsDeleted = createHook("productsDeleted", {
+      ids: input.ids,
+    })
+
+    return new WorkflowResponse(deletedProduct, {
+      hooks: [productsDeleted],
+    })
   }
 )

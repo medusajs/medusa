@@ -1,10 +1,14 @@
+import { ProductTypes } from "@medusajs/types"
 import { HttpTypes, RegionTypes } from "@medusajs/types"
 import { MedusaError, lowerCaseFirst } from "@medusajs/utils"
 
 // We want to convert the csv data format to a standard DTO format.
 export const normalizeForImport = (
   rawProducts: object[],
-  regions: RegionTypes.RegionDTO[]
+  additional: {
+    regions: RegionTypes.RegionDTO[]
+    tags: ProductTypes.ProductTagDTO[]
+  }
 ): HttpTypes.AdminCreateProduct[] => {
   const productMap = new Map<
     string,
@@ -13,13 +17,18 @@ export const normalizeForImport = (
       variants: HttpTypes.AdminCreateProductVariant[]
     }
   >()
-  const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
+  // Currently region names are treated as case-insensitive.
+  const regionsMap = new Map(
+    additional.regions.map((r) => [r.name.toLowerCase(), r])
+  )
+  const tagsMap = new Map(additional.tags.map((t) => [t.value, t]))
 
   rawProducts.forEach((rawProduct) => {
     const productInMap = productMap.get(rawProduct["Product Handle"])
     if (!productInMap) {
       productMap.set(rawProduct["Product Handle"], {
-        product: normalizeProductForImport(rawProduct),
+        product: normalizeProductForImport(rawProduct, tagsMap),
         variants: [normalizeVariantForImport(rawProduct, regionsMap)],
       })
       return
@@ -68,6 +77,7 @@ const variantFieldsToOmit = new Map([["variant_product_id", true]])
 // These fields can have a numeric value, but they are stored as string in the DB so we need to normalize them
 const stringFields = [
   "product_tag_",
+  "variant_option_",
   "variant_barcode",
   "variant_sku",
   "variant_ean",
@@ -76,8 +86,15 @@ const stringFields = [
   "variant_mid_code",
 ]
 
+const booleanFields = [
+  "product_discountable",
+  "variant_manage_inventory",
+  "variant_allow_backorder",
+]
+
 const normalizeProductForImport = (
-  rawProduct: object
+  rawProduct: object,
+  tagsMap: Map<string, ProductTypes.ProductTagDTO>
 ): HttpTypes.AdminCreateProduct => {
   const response = {}
 
@@ -99,16 +116,29 @@ const normalizeProductForImport = (
     }
 
     if (normalizedKey.startsWith("product_tag_")) {
-      response["tags"] = [
-        ...(response["tags"] || []),
-        { value: normalizedValue },
-      ]
+      const tag = tagsMap.get(normalizedValue)
+      if (!tag) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Tag with value ${normalizedValue} not found`
+        )
+      }
+
+      response["tags"] = [...(response["tags"] || []), { id: tag.id }]
       return
     }
 
     if (normalizedKey.startsWith("product_sales_channel_")) {
       response["sales_channels"] = [
         ...(response["sales_channels"] || []),
+        { id: normalizedValue },
+      ]
+      return
+    }
+
+    if (normalizedKey.startsWith("product_category_")) {
+      response["categories"] = [
+        ...(response["categories"] || []),
         { id: normalizedValue },
       ]
       return
@@ -144,18 +174,19 @@ const normalizeVariantForImport = (
 
     if (normalizedKey.startsWith("variant_price_")) {
       const priceKey = normalizedKey.replace("variant_price_", "")
-      // Note: If we start using the region name instead of ID, this check might not always work.
-      if (priceKey.length === 3) {
+      // Note: Region prices should always have the currency in brackets, eg. "variant_price_region_name_[EUR]"
+      if (!priceKey.endsWith("]")) {
         response["prices"] = [
           ...(response["prices"] || []),
           { currency_code: priceKey.toLowerCase(), amount: normalizedValue },
         ]
       } else {
-        const region = regionsMap.get(priceKey)
+        const regionName = priceKey.split("_").slice(0, -1).join(" ")
+        const region = regionsMap.get(regionName)
         if (!region) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Region with ID ${priceKey} not found`
+            `Region with name ${regionName} not found`
           )
         }
 
@@ -164,7 +195,7 @@ const normalizeVariantForImport = (
           {
             amount: normalizedValue,
             currency_code: region.currency_code,
-            rules: { region_id: priceKey },
+            rules: { region_id: region.id },
           },
         ]
       }
@@ -218,9 +249,24 @@ const normalizeVariantForImport = (
 }
 
 const getNormalizedValue = (key: string, value: any): any => {
-  return stringFields.some((field) => key.startsWith(field))
-    ? value.toString()
-    : value
+  if (value === "\r") {
+    return ""
+  }
+
+  if (stringFields.some((field) => key.startsWith(field))) {
+    return value?.toString()
+  }
+
+  if (booleanFields.some((field) => key.startsWith(field))) {
+    if (value === "TRUE") {
+      return true
+    }
+    if (value === "FALSE") {
+      return false
+    }
+  }
+
+  return value
 }
 
 const snakecaseKey = (key: string): string => {

@@ -17,8 +17,8 @@ const post = await postModuleService.createPosts({
   name: "My Post",
   published_at: new Date(),
   metadata: {
-     external_id: "1234"
-  }
+     external_id: "1234",
+  },
 })
 ```
 
@@ -32,12 +32,12 @@ If an object is passed of the method, an object of the created record is also re
 const posts = await postModuleService.createPosts([
   {
     name: "My Post",
-    published_at: new Date()
+    published_at: new Date(),
   },
   {
     name: "My Other Post",
-    published_at: new Date()
-  }
+    published_at: new Date(),
+  },
 ])
 ```
 

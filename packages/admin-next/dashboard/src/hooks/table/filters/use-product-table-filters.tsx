@@ -95,7 +95,7 @@ export const useProductTableFilters = (
 
   if (product_tags && !isProductTagExcluded) {
     const tagFilter: Filter = {
-      key: "tags",
+      key: "tag_id",
       label: t("fields.tag"),
       type: "select",
       multiple: true,
@@ -107,21 +107,6 @@ export const useProductTableFilters = (
 
     filters = [...filters, tagFilter]
   }
-
-  // if (product_tags) {
-  //   const tagFilter: Filter = {
-  //     key: "tags",
-  //     label: t("fields.tag"),
-  //     type: "select",
-  //     multiple: true,
-  //     options: product_tags.map((t) => ({
-  //       label: t.value,
-  //       value: t.id,
-  //     })),
-  //   }
-
-  //   filters = [...filters, tagFilter]
-  // }
 
   if (sales_channels) {
     const salesChannelFilter: Filter = {

@@ -1,13 +1,14 @@
 import { OrderWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 
 import { ReturnDTO } from "@medusajs/types"
-import { receiveReturnStep } from "../../steps/receive-return"
+import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInReturn,
@@ -35,7 +36,7 @@ export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(
   receiveAndCompleteReturnOrderWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.ReceiveCompleteOrderReturnWorkflowInput>
-  ): WorkflowData<ReturnDTO> {
+  ): WorkflowResponse<ReturnDTO | undefined> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "returns",
       fields: ["id", "canceled_at", "items.*"],
@@ -46,8 +47,6 @@ export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(
 
     validationStep({ orderReturn, input })
 
-    const received = receiveReturnStep(input)
-
-    return received
+    return new WorkflowResponse(receiveReturnStep(input))
   }
 )
