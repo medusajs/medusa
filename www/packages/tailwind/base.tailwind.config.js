@@ -286,21 +286,6 @@ module.exports = {
       transitionTimingFunction: {
         ease: "ease",
       },
-      // TODO maybe remove?
-      width: {
-        sidebar: "197px",
-        "sidebar-hidden": "0px",
-        "main-content": "1239px",
-        "main-content-hidden-sidebar": "1440px",
-        "ref-sidebar": "197px",
-        "ref-main": "calc(100% - 197px)",
-        // TODO check if it should be changed
-        "ref-content": "calc(100% - 484px)",
-      },
-      height: {
-        // TODO remove if no longer needed
-        navbar: "57px",
-      },
       maxWidth: {
         // sidebar
         "sidebar-xs": "300px",
@@ -328,11 +313,6 @@ module.exports = {
         "inner-content-xxxl": "640px",
         // wide layout
         "wide-content": "1112px",
-        // TODO maybe remove
-        // "main-content": "1239px",
-        // "main-content-hidden-sidebar": "1440px",
-        // xl: "1419px",
-        // xxl: "1440px",
       },
       minWidth: {
         xl: "1419px",

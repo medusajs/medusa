@@ -19,8 +19,6 @@ export type SidebarItemLink = SidebarItemCommon & {
   isPathHref?: boolean
   linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
   childrenSameLevel?: boolean
-  // TODO maybe remove?
-  pageTitle?: string
 }
 
 export type SidebarItemCategory = SidebarItemCommon & {
