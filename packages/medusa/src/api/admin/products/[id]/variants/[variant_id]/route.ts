@@ -35,16 +35,22 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProductVariant>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminUpdateProductVariant & {
+      additional_data?: Record<string, unknown>
+    }
+  >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const productId = req.params.id
   const variantId = req.params.variant_id
+  const { additional_data, ...update } = req.validatedBody
 
   await updateProductVariantsWorkflow(req.scope).run({
     input: {
       selector: { id: variantId, product_id: productId },
-      update: req.validatedBody,
+      update: update,
+      additional_data,
     },
   })
 

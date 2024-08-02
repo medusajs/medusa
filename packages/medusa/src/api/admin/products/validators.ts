@@ -81,21 +81,48 @@ export const AdminUpdateProductTag = z.object({
 })
 
 export type AdminCreateProductOptionType = z.infer<
-  typeof AdminCreateProductOption
+  typeof _AdminCreateProductOption
 >
-export const AdminCreateProductOption = z.object({
+const _AdminCreateProductOption = z.object({
   title: z.string(),
   values: z.array(z.string()),
 })
+export const AdminCreateProductOption = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminCreateProductOption.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return _AdminCreateProductOption.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export type AdminUpdateProductOptionType = z.infer<
-  typeof AdminUpdateProductOption
+  typeof _AdminUpdateProductOption
 >
-export const AdminUpdateProductOption = z.object({
+const _AdminUpdateProductOption = z.object({
   id: z.string().optional(),
   title: z.string().optional(),
   values: z.array(z.string()).optional(),
 })
+
+export const AdminUpdateProductOption = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminUpdateProductOption.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return _AdminUpdateProductOption.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export type AdminCreateVariantPriceType = z.infer<
   typeof AdminCreateVariantPrice
@@ -126,9 +153,9 @@ export const AdminCreateProductType = z.object({
 })
 
 export type AdminCreateProductVariantType = z.infer<
-  typeof AdminCreateProductVariant
+  typeof _AdminCreateProductVariant
 >
-export const AdminCreateProductVariant = z
+const _AdminCreateProductVariant = z
   .object({
     title: z.string(),
     sku: z.string().nullish(),
@@ -159,11 +186,24 @@ export const AdminCreateProductVariant = z
       .optional(),
   })
   .strict()
+export const AdminCreateProductVariant = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminCreateProductVariant.extend({
+      additional_data: z.record(z.string()).optional(),
+    })
+  }
+
+  return _AdminCreateProductVariant.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export type AdminUpdateProductVariantType = z.infer<
-  typeof AdminUpdateProductVariant
+  typeof _AdminUpdateProductVariant
 >
-export const AdminUpdateProductVariant = z
+const _AdminUpdateProductVariant = z
   .object({
     id: z.string().optional(),
     title: z.string().optional(),
@@ -188,12 +228,28 @@ export const AdminUpdateProductVariant = z
   })
   .strict()
 
+export const AdminUpdateProductVariant = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminUpdateProductVariant.extend({
+      additional_data: z.record(z.string()).optional(),
+    })
+  }
+
+  return _AdminUpdateProductVariant.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
 export type AdminBatchUpdateProductVariantType = z.infer<
   typeof AdminBatchUpdateProductVariant
 >
-export const AdminBatchUpdateProductVariant = AdminUpdateProductVariant.extend({
-  id: z.string(),
-})
+export const AdminBatchUpdateProductVariant = _AdminUpdateProductVariant.extend(
+  {
+    id: z.string(),
+  }
+)
 
 export const AdminCreateProductProductCategory = z.object({
   id: z.string(),
@@ -215,8 +271,8 @@ const _AdminCreateProduct = z
     collection_id: z.string().nullish(),
     categories: z.array(AdminCreateProductProductCategory).optional(),
     tags: z.array(AdminUpdateProductTag).optional(),
-    options: z.array(AdminCreateProductOption).optional(),
-    variants: z.array(AdminCreateProductVariant).optional(),
+    options: z.array(_AdminCreateProductOption).optional(),
+    variants: z.array(_AdminCreateProductVariant).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -227,7 +283,6 @@ const _AdminCreateProduct = z
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
     metadata: z.record(z.unknown()).nullish(),
-    additional_data: z.record(z.unknown()).nullish(),
   })
   .strict()
 
@@ -235,7 +290,9 @@ export const AdminCreateProduct = (
   additionalDataValidator?: ZodObject<any, any>
 ) => {
   if (!additionalDataValidator) {
-    return _AdminCreateProduct
+    return _AdminCreateProduct.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
   }
 
   return _AdminCreateProduct.extend({
@@ -243,14 +300,14 @@ export const AdminCreateProduct = (
   })
 }
 
-export type AdminUpdateProductType = z.infer<typeof AdminUpdateProduct>
-export const AdminUpdateProduct = z
+export type AdminUpdateProductType = z.infer<typeof _AdminUpdateProduct>
+const _AdminUpdateProduct = z
   .object({
     title: z.string().optional(),
     discountable: z.boolean().optional(),
     is_giftcard: z.boolean().optional(),
-    options: z.array(AdminUpdateProductOption).optional(),
-    variants: z.array(AdminUpdateProductVariant).optional(),
+    options: z.array(_AdminUpdateProductOption).optional(),
+    variants: z.array(_AdminUpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),
     description: z.string().nullish(),
@@ -274,10 +331,24 @@ export const AdminUpdateProduct = z
   })
   .strict()
 
+export const AdminUpdateProduct = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return _AdminUpdateProduct.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return _AdminUpdateProduct.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
 export type AdminBatchUpdateProductType = z.infer<
   typeof AdminBatchUpdateProduct
 >
-export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
+export const AdminBatchUpdateProduct = _AdminUpdateProduct.extend({
   id: z.string(),
 })
 

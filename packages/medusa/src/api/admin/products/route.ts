@@ -30,7 +30,11 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateProduct>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminCreateProduct & {
+      additional_data?: Record<string, unknown>
+    }
+  >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const { additional_data, ...products } = req.validatedBody

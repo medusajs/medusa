@@ -167,7 +167,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformBody(
         createBatchBody(
-          AdminCreateProductVariant,
+          AdminCreateProductVariant(),
           AdminBatchUpdateProductVariant
         )
       ),

@@ -33,18 +33,25 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateProductOption>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminCreateProductOption & {
+      additional_data?: Record<string, unknown>
+    }
+  >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const productId = req.params.id
+  const { additional_data, ...rest } = req.validatedBody
+
   await createProductOptionsWorkflow(req.scope).run({
     input: {
       product_options: [
         {
-          ...req.validatedBody,
+          ...rest,
           product_id: productId,
         },
       ],
+      additional_data,
     },
   })
 
