@@ -22,6 +22,7 @@ import {
   PaymentSessionDTO,
   ProviderWebhookPayload,
   RefundDTO,
+  RefundReasonDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
@@ -47,6 +48,7 @@ import {
   PaymentCollection,
   PaymentSession,
   Refund,
+  RefundReason,
 } from "@models"
 import { joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
@@ -67,6 +69,7 @@ const generateMethodForModels = {
   Payment,
   Capture,
   Refund,
+  RefundReason,
 }
 
 export default class PaymentModuleService
@@ -76,6 +79,7 @@ export default class PaymentModuleService
     Payment: { dto: PaymentDTO }
     Capture: { dto: CaptureDTO }
     Refund: { dto: RefundDTO }
+    RefundReason: { dto: RefundReasonDTO }
   }>(generateMethodForModels)
   implements IPaymentModuleService
 {
@@ -777,6 +781,8 @@ export default class PaymentModuleService
         payment: data.payment_id,
         amount: data.amount,
         created_by: data.created_by,
+        note: data.note,
+        refund_reason_id: data.refund_reason_id,
       },
       sharedContext
     )

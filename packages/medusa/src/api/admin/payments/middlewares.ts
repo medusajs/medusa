@@ -67,4 +67,15 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
+  {
+    method: ["POST"],
+    matcher: "/admin/payments/refund-reasons",
+    middlewares: [
+      validateAndTransformBody(AdminCreatePaymentRefund),
+      validateAndTransformQuery(
+        AdminGetPaymentParams,
+        queryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
 ]

@@ -1,12 +1,12 @@
 import { IPaymentModuleService } from "@medusajs/types"
 import { Module, Modules, promiseAll } from "@medusajs/utils"
+import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
   createPayments,
   createPaymentSessions,
 } from "../../../__fixtures__"
-import { PaymentModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -23,6 +23,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           "payment",
           "paymentCollection",
           "paymentProvider",
+          "refundReason",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -52,6 +53,14 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               primaryKey: "id",
               serviceName: "payment",
               field: "paymentProvider",
+            },
+          },
+          refundReason: {
+            id: {
+              linkable: "refund_reason_id",
+              primaryKey: "id",
+              serviceName: "payment",
+              field: "refundReason",
             },
           },
         })
