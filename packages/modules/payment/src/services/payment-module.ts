@@ -750,7 +750,7 @@ export default class PaymentModuleService
           "amount",
           "raw_amount",
         ],
-        relations: ["captures.raw_amount"],
+        relations: ["captures.raw_amount", "refunds.raw_amount"],
       },
       sharedContext
     )
@@ -763,9 +763,17 @@ export default class PaymentModuleService
       const amountAsBigNumber = new BigNumber(next.raw_amount)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundAmount = new BigNumber(data.amount)
+    const refundedAmount = payment.refunds.reduce((refundedAmount, next) => {
+      const amountAsBigNumber = new BigNumber(next.raw_amount)
+      return MathBN.add(refundedAmount, amountAsBigNumber)
+    }, MathBN.convert(0))
 
-    if (MathBN.lt(capturedAmount, refundAmount)) {
+    const totalRefundedAmount = MathBN.add(
+      refundedAmount,
+      new BigNumber(data.amount)
+    )
+
+    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You cannot refund more than what is captured on the payment.`
