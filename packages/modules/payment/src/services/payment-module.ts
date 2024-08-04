@@ -764,8 +764,7 @@ export default class PaymentModuleService
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
     const refundedAmount = payment.refunds.reduce((refundedAmount, next) => {
-      const amountAsBigNumber = new BigNumber(next.raw_amount)
-      return MathBN.add(refundedAmount, amountAsBigNumber)
+      return MathBN.add(refundedAmount, next.raw_amount))
     }, MathBN.convert(0))
 
     const totalRefundedAmount = MathBN.add(
