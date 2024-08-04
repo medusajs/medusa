@@ -769,7 +769,7 @@ export default class PaymentModuleService
 
     const totalRefundedAmount = MathBN.add(
       refundedAmount,
-      new BigNumber(data.amount)
+      data.amount
     )
 
     if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
