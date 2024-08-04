@@ -39,6 +39,7 @@ export class WorkflowLoader {
       try {
         await access(sourcePath)
       } catch {
+        logger.info(`No workflow to load from ${sourcePath}. skipped.`)
         return
       }
 

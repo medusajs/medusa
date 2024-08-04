@@ -39,6 +39,7 @@ export class LinkLoader {
       try {
         await access(sourcePath)
       } catch {
+        logger.info(`No link to load from ${sourcePath}. skipped.`)
         return
       }
 
