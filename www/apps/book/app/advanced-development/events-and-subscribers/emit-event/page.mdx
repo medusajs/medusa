@@ -1,0 +1,48 @@
+export const metadata = {
+  title: `${pageNumber} Emit an Event`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to emit an event in a workflow.
+
+## Emit Event Step
+
+Medusa provides an `emitEventStep` helper step in the `@medusajs/core-flows` package that emits an event.
+
+When you emit an event, you specify the event's name and data payload to pass with the event.
+
+For example:
+
+export const highlights = [
+  ["13", "emitEventStep", "Emit an event."],
+  ["14", `"custom.created"`, "The name of the event to emit."],
+  ["15", "data", "The data payload to pass with the event."]
+]
+
+```ts highlights={highlights}
+import { 
+  createWorkflow
+} from "@medusajs/workflows-sdk"
+import {
+  emitEventStep
+} from "@medusajs/core-flows"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    // ...
+
+    emitEventStep({
+      eventName: "custom.created",
+      data: {
+        id: "123"
+      }
+    })
+  }
+)
+```
+
+In this example, you emit the event `custom.created` and pass in the data payload an ID property.
+
+If you execute the workflow, the emit is emitted and any subscribers listening to the event are executed.
