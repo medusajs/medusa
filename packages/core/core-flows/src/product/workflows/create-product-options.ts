@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { AdditionalData, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -9,8 +9,7 @@ import { createProductOptionsStep } from "../steps"
 
 type WorkflowInput = {
   product_options: ProductTypes.CreateProductOptionDTO[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 export const createProductOptionsWorkflowId = "create-product-options"
 

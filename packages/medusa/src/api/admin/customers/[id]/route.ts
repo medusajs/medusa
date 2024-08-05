@@ -2,7 +2,7 @@ import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-import { AdminCustomer } from "@medusajs/types"
+import { AdditionalData, AdminCustomer } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -32,13 +32,16 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateCustomerType>,
+  req: AuthenticatedMedusaRequest<AdminUpdateCustomerType & AdditionalData>,
   res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
+
   await updateCustomersWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update: rest,
+      additional_data,
     },
   })
 

@@ -17,12 +17,8 @@ export function validateAndTransformBody(
   return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
     try {
       let schema: z.ZodObject<any, any> | z.ZodEffects<any, any>
-      const { body: bodyValidatorToMerge } = req.extendedValidators ?? {}
-
       if (typeof zodSchema === "function") {
-        schema = zodSchema(bodyValidatorToMerge)
-      } else if (bodyValidatorToMerge) {
-        schema = zodSchema.merge(bodyValidatorToMerge)
+        schema = zodSchema(req.additionalDataValidator)
       } else {
         schema = zodSchema
       }

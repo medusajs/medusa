@@ -32,7 +32,7 @@ const Tags = () => {
   const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
   const { addItems } = useSidebar()
-  const { area } = useArea()
+  const { area, prevArea } = useArea()
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
@@ -63,6 +63,11 @@ const Tags = () => {
 
   useEffect(() => {
     if (baseSpecs) {
+      if (prevArea !== area) {
+        setBaseSpecs(null)
+        return
+      }
+
       addItems(
         baseSpecs.tags?.map((tag) => {
           const tagPathName = getSectionId([tag.name.toLowerCase()])
