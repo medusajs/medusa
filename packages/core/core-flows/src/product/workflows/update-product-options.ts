@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { AdditionalData, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -10,8 +10,7 @@ import { updateProductOptionsStep } from "../steps"
 type UpdateProductOptionsStepInput = {
   selector: ProductTypes.FilterableProductOptionProps
   update: ProductTypes.UpdateProductOptionDTO
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 type WorkflowInput = UpdateProductOptionsStepInput
 

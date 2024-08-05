@@ -1,4 +1,5 @@
 import {
+  AdditionalData,
   CreateProductWorkflowInputDTO,
   PricingTypes,
   ProductTypes,
@@ -17,8 +18,7 @@ import { createProductVariantsWorkflow } from "./create-product-variants"
 
 type WorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 export const createProductsWorkflowId = "create-products"
 
