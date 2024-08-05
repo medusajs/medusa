@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { Logger, Message, Event } from "@medusajs/types"
+import { Event, Logger, Message } from "@medusajs/types"
 import {
   AbstractEventBusModuleService,
   isPresent,
@@ -216,7 +216,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * @return resolves to the results of the subscriber calls.
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
-    const { eventName, data } = job.data
+    const { data, name: eventName } = job
     const eventSubscribers = this.eventToSubscribersMap.get(eventName) || []
     const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
 
