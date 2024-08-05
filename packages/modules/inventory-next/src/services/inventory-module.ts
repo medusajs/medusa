@@ -278,6 +278,7 @@ export default class InventoryModuleService
       },
       context
     )
+
     const created = await this.reservationItemService_.create(input, context)
 
     const adjustments: Map<string, Map<string, number>> = input.reduce(

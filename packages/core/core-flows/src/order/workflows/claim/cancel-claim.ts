@@ -4,9 +4,12 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
+  transform,
   when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderClaimStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 import { cancelReturnWorkflow } from "../return/cancel-return"
@@ -54,7 +57,13 @@ export const cancelOrderClaimWorkflow = createWorkflow(
     const orderClaim: OrderClaimDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "order_claim",
-        fields: ["id", "return_id", "canceled_at", "fulfillments.canceled_at"],
+        fields: [
+          "id",
+          "return_id",
+          "canceled_at",
+          "fulfillments.canceled_at",
+          "additional_items.item_id",
+        ],
         variables: { id: input.claim_id },
         list: false,
         throw_if_key_not_found: true,
@@ -62,7 +71,14 @@ export const cancelOrderClaimWorkflow = createWorkflow(
 
     validateOrder({ orderClaim, input })
 
-    cancelOrderClaimStep({ claim_id: orderClaim.id })
+    const lineItemIds = transform({ orderClaim }, ({ orderClaim }) => {
+      return orderClaim.additional_items?.map((i) => i.item_id)
+    })
+
+    parallelize(
+      cancelOrderClaimStep({ claim_id: orderClaim.id }),
+      deleteReservationsByLineItemsStep(lineItemIds)
+    )
 
     when({ orderClaim }, ({ orderClaim }) => {
       return !!orderClaim.return_id

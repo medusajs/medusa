@@ -5,6 +5,7 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
@@ -94,7 +95,7 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
       if (salesChannelId && !hasSalesChannelStockLocation) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Sales channel ${salesChannelId} is not associated with any stock locations.`
+          `Sales channel ${salesChannelId} is not associated with any stock location.`
         )
       }
 
@@ -110,7 +111,11 @@ export const confirmVariantInventoryWorkflow = createWorkflow(
       return { items }
     })
 
-    confirmInventoryStep(confirmInventoryInput)
+    when({ input }, ({ input }) => {
+      return !input.skipInventoryCheck
+    }).then(() => {
+      confirmInventoryStep(confirmInventoryInput)
+    })
 
     return new WorkflowResponse(confirmInventoryInput)
   }

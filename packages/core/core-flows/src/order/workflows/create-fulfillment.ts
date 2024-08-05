@@ -3,6 +3,7 @@ import {
   FulfillmentDTO,
   FulfillmentWorkflow,
   OrderDTO,
+  OrderLineItemDTO,
   OrderWorkflow,
   ReservationItemDTO,
 } from "@medusajs/types"
@@ -50,13 +51,14 @@ function prepareRegisterOrderFulfillmentData({
   fulfillment,
   input,
   inputItemsMap,
+  itemsList,
 }) {
   return {
     order_id: order.id,
     reference: Modules.FULFILLMENT,
     reference_id: fulfillment.id,
     created_by: input.created_by,
-    items: order.items!.map((i) => {
+    items: (itemsList ?? order.items)!.map((i) => {
       const inputQuantity = inputItemsMap[i.id]?.quantity
       return {
         id: i.id,
@@ -72,6 +74,7 @@ function prepareFulfillmentData({
   shippingOption,
   shippingMethod,
   reservations,
+  itemsList,
 }: {
   order: OrderDTO
   input: OrderWorkflow.CreateOrderFulfillmentWorkflowInput
@@ -82,10 +85,11 @@ function prepareFulfillmentData({
   }
   shippingMethod: { data?: Record<string, unknown> | null }
   reservations: ReservationItemDTO[]
+  itemsList?: OrderLineItemDTO[]
 }) {
   const inputItems = input.items
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
-    order.items!.map((i) => [i.id, i])
+    (itemsList ?? order.items)!.map((i) => [i.id, i])
   )
   const reservationItemMap = new Map<string, ReservationItemDTO>(
     reservations.map((r) => [r.line_item_id as string, r])
@@ -132,7 +136,13 @@ function prepareFulfillmentData({
   }
 }
 
-function prepareInventoryUpdate({ reservations, order, input, inputItemsMap }) {
+function prepareInventoryUpdate({
+  reservations,
+  order,
+  input,
+  inputItemsMap,
+  itemsList,
+}) {
   const reservationMap = reservations.reduce((acc, reservation) => {
     acc[reservation.line_item_id as string] = reservation
     return acc
@@ -150,7 +160,8 @@ function prepareInventoryUpdate({ reservations, order, input, inputItemsMap }) {
     adjustment: BigNumberInput
   }[] = []
 
-  for (const item of order.items) {
+  const allItems = itemsList ?? order.items
+  for (const item of allItems) {
     const reservation = reservationMap[item.id]
     if (!reservation) {
       if (item.manage_inventory) {
@@ -205,7 +216,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "items.*",
         "items.variant.manage_inventory",
         "shipping_address.*",
-        "shipping_methods.shipping_option_id", // TODO: which shipping method to use when multiple?
+        "shipping_methods.shipping_option_id",
         "shipping_methods.data",
       ],
       variables: { id: input.order_id },
@@ -240,9 +251,12 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "get-shipping-option" })
 
-    const lineItemIds = transform({ order }, ({ order }) => {
-      return order.items?.map((i) => i.id)
-    })
+    const lineItemIds = transform(
+      { order, itemsList: input.items_list },
+      ({ order, itemsList }) => {
+        return (itemsList ?? order.items)!.map((i) => i.id)
+      }
+    )
     const reservations = useRemoteQueryStep({
       entry_point: "reservations",
       fields: [
@@ -260,14 +274,21 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     }).config({ name: "get-reservations" })
 
     const fulfillmentData = transform(
-      { order, input, shippingOption, shippingMethod, reservations },
+      {
+        order,
+        input,
+        shippingOption,
+        shippingMethod,
+        reservations,
+        itemsList: input.items_list,
+      },
       prepareFulfillmentData
     )
 
     const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     const registerOrderFulfillmentData = transform(
-      { order, fulfillment, input, inputItemsMap },
+      { order, fulfillment, input, inputItemsMap, itemsList: input.items_list },
       prepareRegisterOrderFulfillmentData
     )
 
@@ -284,7 +305,13 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     )
 
     const { toDelete, toUpdate, inventoryAdjustment } = transform(
-      { order, reservations, input, inputItemsMap },
+      {
+        order,
+        reservations,
+        input,
+        inputItemsMap,
+        itemsList: input.items_list,
+      },
       prepareInventoryUpdate
     )
 

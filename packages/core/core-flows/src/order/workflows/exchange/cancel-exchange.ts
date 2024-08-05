@@ -8,9 +8,12 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
+  transform,
   when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderExchangeStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 import { cancelReturnWorkflow } from "../return/cancel-return"
@@ -58,7 +61,13 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
     const orderExchange: OrderExchangeDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "order_exchange",
-        fields: ["id", "return_id", "canceled_at", "fulfillments.canceled_at"],
+        fields: [
+          "id",
+          "return_id",
+          "canceled_at",
+          "fulfillments.canceled_at",
+          "additional_items.item_id",
+        ],
         variables: { id: input.exchange_id },
         list: false,
         throw_if_key_not_found: true,
@@ -66,7 +75,14 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
 
     validateOrder({ orderExchange, input })
 
-    cancelOrderExchangeStep({ exchange_id: orderExchange.id })
+    const lineItemIds = transform({ orderExchange }, ({ orderExchange }) => {
+      return orderExchange.additional_items?.map((i) => i.item_id)
+    })
+
+    parallelize(
+      cancelOrderExchangeStep({ exchange_id: orderExchange.id }),
+      deleteReservationsByLineItemsStep(lineItemIds)
+    )
 
     when({ orderExchange }, ({ orderExchange }) => {
       return !!orderExchange.return_id

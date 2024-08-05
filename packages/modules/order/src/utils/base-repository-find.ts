@@ -1,6 +1,6 @@
 import { Constructor, Context, DAL } from "@medusajs/types"
 import { LoadStrategy } from "@mikro-orm/core"
-import { Order } from "@models"
+import { Order, OrderClaim } from "@models"
 import { mapRepositoryToOrderModel } from "."
 
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
@@ -36,6 +36,15 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
+      if (entity === OrderClaim) {
+        if (
+          config.options.populate.includes("additional_items") &&
+          !config.options.populate.includes("claim_items")
+        ) {
+          config.options.populate.push("claim_items")
+        }
+      }
+
       if (!config.options.populate.includes("order.items")) {
         config.options.populate.unshift("order.items")
       }
@@ -129,6 +138,15 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
+      if (entity === OrderClaim) {
+        if (
+          config.options.populate.includes("additional_items") &&
+          !config.options.populate.includes("claim_items")
+        ) {
+          config.options.populate.push("claim_items")
+        }
+      }
+
       // first relation is always order if the entity is not Order
       const index = config.options.populate.findIndex((p) => p === "order")
       if (index > -1) {

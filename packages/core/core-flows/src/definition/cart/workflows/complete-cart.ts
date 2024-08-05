@@ -63,6 +63,7 @@ export const completeCartWorkflow = createWorkflow(
 
     const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
       input: {
+        skipInventoryCheck: true,
         sales_channel_id,
         variants,
         items,

@@ -514,6 +514,15 @@ medusaIntegrationTestRunner({
         expect(result[0].claim_items).toHaveLength(1)
         expect(result[0].canceled_at).toBeNull()
 
+        const reservationsResponse = (
+          await api.get(
+            `/admin/reservations?location_id[]=${location.id}`,
+            adminHeaders
+          )
+        ).data
+
+        expect(reservationsResponse.reservations).toHaveLength(1)
+
         await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
 
         result = (
@@ -523,6 +532,15 @@ medusaIntegrationTestRunner({
           )
         ).data.claims
         expect(result[0].canceled_at).toBeDefined()
+
+        const reservationsResponseAfterCanceling = (
+          await api.get(
+            `/admin/reservations?location_id[]=${location.id}`,
+            adminHeaders
+          )
+        ).data
+
+        expect(reservationsResponseAfterCanceling.reservations).toHaveLength(0)
       })
     })
   },

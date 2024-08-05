@@ -5,7 +5,7 @@ import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type FulfillmentProviderValidationInput = {
   id?: string
@@ -70,11 +70,12 @@ export const validateFulfillmentProvidersStep = createStep(
     const serviceZoneQuery = remoteQueryObjectFromString({
       entryPoint: "service_zone",
       fields: ["id", "fulfillment_set.locations.fulfillment_providers.id"],
+      variables: {
+        id: input.map((d) => d.service_zone_id),
+      },
     })
 
-    const serviceZones = await remoteQuery(serviceZoneQuery, {
-      id: input.map((d) => d.service_zone_id),
-    })
+    const serviceZones = await remoteQuery(serviceZoneQuery)
 
     const serviceZonesMap = new Map<
       string,
@@ -93,8 +94,11 @@ export const validateFulfillmentProvidersStep = createStep(
       const fulfillmentProviders: string[] = []
 
       for (const stockLocation of stockLocations) {
-        const providersForStockLocation =
-          stockLocation.fulfillment_providers.map((fp) => fp.id)
+        const providersForStockLocation = (
+          stockLocation.fulfillment_providers ?? []
+        )
+          .filter(Boolean)
+          .map((fp) => fp.id)
 
         fulfillmentProviders.push(...providersForStockLocation)
       }
