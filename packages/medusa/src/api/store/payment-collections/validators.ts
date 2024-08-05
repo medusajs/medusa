@@ -23,8 +23,5 @@ export type StoreCreatePaymentCollectionType = z.infer<
 export const StoreCreatePaymentCollection = z
   .object({
     cart_id: z.string(),
-    region_id: z.string(),
-    currency_code: z.string(),
-    amount: z.number(),
   })
   .strict()

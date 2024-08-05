@@ -1542,10 +1542,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.post(`/store/payment-collections`, {
-            region_id: region.id,
             cart_id: cart.id,
-            amount: 0,
-            currency_code: cart.currency_code,
           })
 
           expect(response.status).toEqual(200)
@@ -1570,18 +1567,12 @@ medusaIntegrationTestRunner({
 
           const firstCollection = (
             await api.post(`/store/payment-collections`, {
-              region_id: region.id,
               cart_id: cart.id,
-              amount: 0,
-              currency_code: cart.currency_code,
             })
           ).data.payment_collection
 
           const response = await api.post(`/store/payment-collections`, {
             region_id: region.id,
-            cart_id: cart.id,
-            amount: 0,
-            currency_code: cart.currency_code,
           })
 
           expect(response.status).toEqual(200)
@@ -1608,19 +1599,13 @@ medusaIntegrationTestRunner({
 
           const firstCollection = (
             await api.post(`/store/payment-collections`, {
-              region_id: region.id,
               cart_id: firstCart.id,
-              amount: 0,
-              currency_code: firstCart.currency_code,
             })
           ).data.payment_collection
 
           const secondCollection = (
             await api.post(`/store/payment-collections`, {
-              region_id: region.id,
               cart_id: secondCart.id,
-              amount: 0,
-              currency_code: secondCart.currency_code,
             })
           ).data.payment_collection
 
@@ -2008,9 +1993,6 @@ medusaIntegrationTestRunner({
           const paymentCollection = (
             await api.post(`/store/payment-collections`, {
               cart_id: cart.id,
-              region_id: region.id,
-              currency_code: region.currency_code,
-              amount: cart.total,
             })
           ).data.payment_collection
 
@@ -2140,9 +2122,6 @@ medusaIntegrationTestRunner({
 
           await api.post(`/store/payment-collections`, {
             cart_id: cart.id,
-            region_id: region.id,
-            currency_code: region.currency_code,
-            amount: cart.total,
           })
 
           const error = await api
@@ -2192,9 +2171,6 @@ medusaIntegrationTestRunner({
           const paymentCollection = (
             await api.post(`/store/payment-collections`, {
               cart_id: cart.id,
-              region_id: region.id,
-              currency_code: region.currency_code,
-              amount: cart.total,
             })
           ).data.payment_collection
 
