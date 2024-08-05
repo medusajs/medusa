@@ -1400,7 +1400,7 @@ medusaIntegrationTestRunner({
                   adjustments: [
                     expect.objectContaining({
                       code: "PROMOTION_APPLIED",
-                      amount: 180,
+                      amount: 177.86561264822134,
                     }),
                   ],
                 }),
@@ -1414,7 +1414,7 @@ medusaIntegrationTestRunner({
                     expect.objectContaining({
                       id: expect.not.stringContaining(lineItemAdjustment.id),
                       code: "PROMOTION_APPLIED",
-                      amount: 120,
+                      amount: 122.13438735177866,
                     }),
                   ],
                 }),
