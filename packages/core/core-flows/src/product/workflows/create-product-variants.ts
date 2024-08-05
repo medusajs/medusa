@@ -1,5 +1,10 @@
 import { LinkDefinition } from "@medusajs/modules-sdk"
-import { InventoryTypes, PricingTypes, ProductTypes } from "@medusajs/types"
+import {
+  AdditionalData,
+  InventoryTypes,
+  PricingTypes,
+  ProductTypes,
+} from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -25,8 +30,7 @@ type WorkflowInput = {
       required_quantity?: number
     }[]
   })[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 const buildLink = (
   variant_id: string,

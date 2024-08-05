@@ -1634,6 +1634,83 @@ medusaIntegrationTestRunner({
           expect(response.data.product.images.length).toEqual(0)
         })
 
+        it("updating the product without variants keeps the variants and prices intact", async () => {
+          const payload = {
+            title: "Test an update",
+          }
+
+          await api
+            .post(`/admin/products/${baseProduct.id}`, payload, adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          const updatedProduct = (
+            await api.get(`/admin/products/${baseProduct.id}`, adminHeaders)
+          ).data.product
+
+          expect(updatedProduct.variants).toEqual([
+            expect.objectContaining({
+              id: baseProduct.variants[0].id,
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  currency_code: "eur",
+                  amount: 45,
+                }),
+                expect.objectContaining({
+                  currency_code: "dkk",
+                  amount: 30,
+                }),
+              ]),
+            }),
+          ])
+        })
+
+        it("updating the product variants without prices keeps the prices intact", async () => {
+          const payload = {
+            title: "Test an update",
+            variants: baseProduct.variants.map((variant) => ({
+              id: variant.id,
+              title: variant.id,
+            })),
+          }
+
+          await api
+            .post(`/admin/products/${baseProduct.id}`, payload, adminHeaders)
+            .catch((err) => {
+              console.log(err)
+            })
+
+          const updatedProduct = (
+            await api.get(`/admin/products/${baseProduct.id}`, adminHeaders)
+          ).data.product
+
+          expect(updatedProduct.variants).toEqual([
+            expect.objectContaining({
+              id: baseProduct.variants[0].id,
+              title: baseProduct.variants[0].id,
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  currency_code: "eur",
+                  amount: 45,
+                }),
+                expect.objectContaining({
+                  currency_code: "dkk",
+                  amount: 30,
+                }),
+              ]),
+            }),
+          ])
+        })
+
         it("updates a product by deleting a field from metadata", async () => {
           const created = (
             await api.post(
