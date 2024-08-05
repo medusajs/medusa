@@ -72,7 +72,7 @@ export const upsertVariantPricesWorkflow = createWorkflow(
             .map((v) => {
               const priceSetId = linksMap.get(v.variant_id)
 
-              if (!priceSetId) {
+              if (!priceSetId || !v.prices) {
                 return
               }
 

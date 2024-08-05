@@ -1,12 +1,12 @@
 import { IPaymentModuleService } from "@medusajs/types"
 import { Module, Modules, promiseAll } from "@medusajs/utils"
+import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
   createPayments,
   createPaymentSessions,
 } from "../../../__fixtures__"
-import { PaymentModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -685,6 +685,41 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             const error = await service
               .refundPayment({
                 amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
+
+          it("should throw if total refunded amount is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            const refundedPayment1 = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            expect(refundedPayment1).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+
+            const error = await service
+              .refundPayment({
+                amount: 60,
                 payment_id: "pay-id-1",
               })
               .catch((e) => e)

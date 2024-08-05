@@ -1,6 +1,7 @@
 import { updateProductsStep } from "../steps/update-products"
 
 import {
+  AdditionalData,
   CreateMoneyAmountDTO,
   ProductTypes,
   UpdateProductVariantWorkflowInputDTO,
@@ -19,7 +20,6 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
-import { getVariantIdsForProductsStep } from "../steps/get-variant-ids-for-products"
 
 type UpdateProductsStepInputSelector = {
   selector: ProductTypes.FilterableProductProps
@@ -27,16 +27,14 @@ type UpdateProductsStepInputSelector = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   }
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 type UpdateProductsStepInputProducts = {
   products: (Omit<ProductTypes.UpsertProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 type UpdateProductsStepInput =
   | UpdateProductsStepInputSelector
@@ -214,7 +212,36 @@ export const updateProductsWorkflowId = "update-products"
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
-    const previousVariantIds = getVariantIdsForProductsStep(input)
+    // We only get the variant ids of products that are updating the variants and prices.
+    const variantIdsSelector = transform({ input }, (data) => {
+      if ("products" in data.input) {
+        return {
+          filters: {
+            id: data.input.products
+              .filter((p) => !!p.variants)
+              .map((p) => p.id),
+          },
+        }
+      }
+
+      return {
+        filters: data.input.update?.variants ? data.input.selector : { id: [] },
+      }
+    })
+    const previousProductsWithVariants = useRemoteQueryStep({
+      entry_point: "product",
+      fields: ["variants.id"],
+      variables: variantIdsSelector,
+    }).config({ name: "get-previous-products-variants-step" })
+
+    const previousVariantIds = transform(
+      { previousProductsWithVariants },
+      (data) => {
+        return data.previousProductsWithVariants.flatMap((p) =>
+          p.variants?.map((v) => v.id)
+        )
+      }
+    )
 
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
@@ -237,7 +264,7 @@ export const updateProductsWorkflow = createWorkflow(
       entry_point: "product_sales_channel",
       fields: ["product_id", "sales_channel_id"],
       variables: { filters: { product_id: updatedProductIds } },
-    })
+    }).config({ name: "get-current-sales-channel-links-step" })
 
     const toDeleteSalesChannelLinks = transform(
       { currentSalesChannelLinks },

@@ -58,11 +58,7 @@ const getFilterableFields = <T extends RequestQueryFields>(obj: T): T => {
 }
 
 export function validateAndTransformQuery<TEntity extends BaseEntity>(
-  zodSchema:
-    | z.ZodObject<any, any>
-    | ((
-        customSchema?: z.ZodObject<any, any>
-      ) => z.ZodObject<any, any> | z.ZodEffects<any, any>),
+  zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>,
   queryConfig: QueryConfig<TEntity>
 ): (
   req: MedusaRequest,
@@ -75,18 +71,7 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
       delete req.allowed
       const query = normalizeQuery(req)
 
-      let schema: z.ZodObject<any, any> | z.ZodEffects<any, any>
-      const { queryParams: queryParamsToMerge } = req.extendedValidators ?? {}
-
-      if (typeof zodSchema === "function") {
-        schema = zodSchema(queryParamsToMerge)
-      } else if (queryParamsToMerge) {
-        schema = zodSchema.merge(queryParamsToMerge)
-      } else {
-        schema = zodSchema
-      }
-
-      const validated = await zodValidator(schema, query)
+      const validated = await zodValidator(zodSchema, query)
       const cnf = queryConfig.isList
         ? prepareListQuery(validated, { ...queryConfig, allowed })
         : prepareRetrieveQuery(validated, { ...queryConfig, allowed })

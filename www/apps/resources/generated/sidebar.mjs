@@ -7362,14 +7362,12 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "type": "link",
         "path": "/recipes/digital-products",
         "title": "Digital Products",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
-            "type": "link",
             "path": "/recipes/digital-products/examples/standard",
             "title": "Example",
             "children": []
