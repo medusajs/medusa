@@ -1,6 +1,5 @@
 import {
   AdditionalData,
-  CustomerDTO,
   CustomerUpdatableFields,
   FilterableCustomerProps,
 } from "@medusajs/types"

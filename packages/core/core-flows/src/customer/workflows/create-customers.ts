@@ -1,4 +1,4 @@
-import { CustomerDTO, CreateCustomerDTO, AdditionalData } from "@medusajs/types"
+import { CreateCustomerDTO, AdditionalData } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -10,6 +10,7 @@ import { createCustomersStep } from "../steps"
 type WorkflowInput = { customersData: CreateCustomerDTO[] } & AdditionalData
 
 export const createCustomersWorkflowId = "create-customers"
+
 export const createCustomersWorkflow = createWorkflow(
   createCustomersWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
