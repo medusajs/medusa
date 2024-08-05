@@ -13,6 +13,10 @@ export const createDefaultStoreStep = createStep(
   async (data: CreateDefaultStoreStepInput, { container }) => {
     const storeService = container.resolve(ModuleRegistrationName.STORE)
 
+    if (!storeService) {
+      return new StepResponse(void 0)
+    }
+
     let shouldDelete = false
     let [store] = await storeService.listStores({}, { take: 1 })
 

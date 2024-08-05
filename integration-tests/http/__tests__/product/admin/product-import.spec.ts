@@ -33,6 +33,10 @@ medusaIntegrationTestRunner({
     let baseProduct
     let baseRegion
     let baseCategory
+    let baseTag1
+    let baseTag2
+    let baseTag3
+    let newTag
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
@@ -57,11 +61,32 @@ medusaIntegrationTestRunner({
         )
       ).data.product_type
 
+      baseTag1 = (
+        await api.post("/admin/product-tags", { value: "123" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag2 = (
+        await api.post("/admin/product-tags", { value: "123_1" }, adminHeaders)
+      ).data.product_tag
+
+      baseTag3 = (
+        await api.post("/admin/product-tags", { value: "456" }, adminHeaders)
+      ).data.product_tag
+
+      newTag = (
+        await api.post(
+          "/admin/product-tags",
+          { value: "new-tag" },
+          adminHeaders
+        )
+      ).data.product_tag
+
       baseProduct = (
         await api.post(
           "/admin/products",
           getProductFixture({
             title: "Base product",
+            tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
           }),
           adminHeaders
         )
@@ -664,7 +689,21 @@ medusaIntegrationTestRunner({
                   barcode: "test-barcode-4",
                   allow_backorder: false,
                   manage_inventory: true,
-                  prices: [],
+                  prices: [
+                    expect.objectContaining({
+                      currency_code: "usd",
+                      amount: 100,
+                    }),
+
+                    expect.objectContaining({
+                      currency_code: "eur",
+                      amount: 45,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "dkk",
+                      amount: 30,
+                    }),
+                  ],
                   options: [
                     expect.objectContaining({
                       value: "Large",

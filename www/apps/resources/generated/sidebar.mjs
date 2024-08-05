@@ -6393,6 +6393,36 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/subscriptions/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/digital-products/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
         "path": "/recipes/b2b",
         "title": "B2B",
         "children": []
@@ -6402,13 +6432,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/commerce-automation",
         "title": "Commerce Automation",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/digital-products",
-        "title": "Digital Products",
         "children": []
       },
       {
@@ -6458,13 +6481,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/pos",
         "title": "POS",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
         "children": []
       }
     ]

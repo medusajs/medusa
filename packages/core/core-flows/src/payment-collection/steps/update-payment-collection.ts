@@ -6,6 +6,7 @@ import {
 import {
   ModuleRegistrationName,
   getSelectsAndRelationsFromObjectArray,
+  isPresent,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
@@ -18,6 +19,10 @@ export const updatePaymentCollectionStepId = "update-payment-collection"
 export const updatePaymentCollectionStep = createStep(
   updatePaymentCollectionStepId,
   async (data: StepInput, { container }) => {
+    if (!isPresent(data) || !isPresent(data.selector)) {
+      return new StepResponse([], [])
+    }
+
     const paymentModuleService = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )
@@ -42,7 +47,7 @@ export const updatePaymentCollectionStep = createStep(
     return new StepResponse(updated, prevData)
   },
   async (prevData, { container }) => {
-    if (!prevData) {
+    if (!prevData?.length) {
       return
     }
     const paymentModuleService = container.resolve<IPaymentModuleService>(

@@ -1,10 +1,14 @@
+import { ProductTypes } from "@medusajs/types"
 import { HttpTypes, RegionTypes } from "@medusajs/types"
 import { MedusaError, lowerCaseFirst } from "@medusajs/utils"
 
 // We want to convert the csv data format to a standard DTO format.
 export const normalizeForImport = (
   rawProducts: object[],
-  regions: RegionTypes.RegionDTO[]
+  additional: {
+    regions: RegionTypes.RegionDTO[]
+    tags: ProductTypes.ProductTagDTO[]
+  }
 ): HttpTypes.AdminCreateProduct[] => {
   const productMap = new Map<
     string,
@@ -15,13 +19,16 @@ export const normalizeForImport = (
   >()
 
   // Currently region names are treated as case-insensitive.
-  const regionsMap = new Map(regions.map((r) => [r.name.toLowerCase(), r]))
+  const regionsMap = new Map(
+    additional.regions.map((r) => [r.name.toLowerCase(), r])
+  )
+  const tagsMap = new Map(additional.tags.map((t) => [t.value, t]))
 
   rawProducts.forEach((rawProduct) => {
     const productInMap = productMap.get(rawProduct["Product Handle"])
     if (!productInMap) {
       productMap.set(rawProduct["Product Handle"], {
-        product: normalizeProductForImport(rawProduct),
+        product: normalizeProductForImport(rawProduct, tagsMap),
         variants: [normalizeVariantForImport(rawProduct, regionsMap)],
       })
       return
@@ -86,7 +93,8 @@ const booleanFields = [
 ]
 
 const normalizeProductForImport = (
-  rawProduct: object
+  rawProduct: object,
+  tagsMap: Map<string, ProductTypes.ProductTagDTO>
 ): HttpTypes.AdminCreateProduct => {
   const response = {}
 
@@ -108,10 +116,15 @@ const normalizeProductForImport = (
     }
 
     if (normalizedKey.startsWith("product_tag_")) {
-      response["tags"] = [
-        ...(response["tags"] || []),
-        { value: normalizedValue },
-      ]
+      const tag = tagsMap.get(normalizedValue)
+      if (!tag) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Tag with value ${normalizedValue} not found`
+        )
+      }
+
+      response["tags"] = [...(response["tags"] || []), { id: tag.id }]
       return
     }
 
