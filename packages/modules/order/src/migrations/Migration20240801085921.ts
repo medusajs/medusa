@@ -7,17 +7,20 @@ export class Migration20240801085921 extends Migration {
           ADD COLUMN IF NOT exists "requested_at" timestamptz NULL;
 
         
-        CREATE TYPE return_status_enum_new AS ENUM (
+        ALTER TABLE "return" ALTER COLUMN "status" DROP DEFAULT;
+        ALTER TABLE "return" ALTER COLUMN "status" TYPE text USING "status"::text;
+        DROP TYPE return_status_enum;
+
+        CREATE TYPE return_status_enum AS ENUM (
           'open',
           'requested',
           'received',
           'partially_received',
           'canceled'
         );
-        ALTER TABLE "return" ALTER COLUMN "status" DROP DEFAULT;
-        ALTER TABLE "return" ALTER COLUMN "status" TYPE return_status_enum_new USING "status"::text::return_status_enum_new;
-        ALTER TABLE "return" ALTER COLUMN "status" SET DEFAULT 'open';
-        DROP TYPE return_status_enum;
+        
+        ALTER TABLE "return" ALTER COLUMN "status" TYPE return_status_enum USING "status"::text::return_status_enum;
+        ALTER TABLE "return" ALTER COLUMN "status" SET DEFAULT 'open';        
       `)
   }
 }
