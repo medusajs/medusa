@@ -9,7 +9,6 @@ import waitOn from "wait-on"
 import ora, { Ora } from "ora"
 import fs from "fs"
 import path from "path"
-import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
 import createAbortController, {
   isAbortError,
@@ -27,6 +26,7 @@ import {
   installNextjsStarter,
   startNextjsStarter,
 } from "../utils/nextjs-utils.js"
+import { getNodeVersion } from "@medusajs/utils"
 
 const slugify = slugifyType.default
 
@@ -53,6 +53,13 @@ export default async ({
   withNextjsStarter = false,
   verbose = false,
 }: CreateOptions) => {
+  const nodeVersion = getNodeVersion()
+  if (nodeVersion < 20) {
+    logMessage({
+      message: `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`,
+      type: "error"
+    })
+  }
   track("CREATE_CLI_CMA")
 
   const spinner: Ora = ora()
