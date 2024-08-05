@@ -3,7 +3,6 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -90,10 +89,9 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    parallelize(
-      refreshCartShippingMethodsStep({ cart }),
-      refreshCartPromotionsStep({ id: input.cart.id })
-    )
+    refreshCartShippingMethodsStep({ cart })
+
+    refreshCartPromotionsStep({ id: input.cart.id })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: { cart_id: input.cart.id },
