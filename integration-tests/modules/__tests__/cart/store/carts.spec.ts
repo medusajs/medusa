@@ -1572,7 +1572,7 @@ medusaIntegrationTestRunner({
           ).data.payment_collection
 
           const response = await api.post(`/store/payment-collections`, {
-            region_id: region.id,
+            cart_id: cart.id,
           })
 
           expect(response.status).toEqual(200)

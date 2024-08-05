@@ -17,7 +17,7 @@ const validateExistingPaymentCollection = createStep(
   "validate-existing-payment-collection",
   ({ cart }: { cart: CartDTO & { payment_collection?: any } }) => {
     if (cart.payment_collection) {
-      throw new Error("Cart already has a payment collection")
+      throw new Error(`Cart ${cart.id} already has a payment collection`)
     }
   }
 )
