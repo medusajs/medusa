@@ -6408,13 +6408,13 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/recipes/subscriptions/examples/standard",
+            "path": "/recipes/digital-products/examples/standard",
             "title": "Example",
             "children": []
           }
