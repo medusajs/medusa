@@ -48,7 +48,7 @@ export class PaypalSdk {
    */
   async patchOrder(orderId: string, data?: PatchOrder[]): Promise<void> {
     const url = PaypalApiPath.PATCH_ORDER.replace("{id}", orderId)
-    return await this.httpClient_.request({ url, method: "PATCH" })
+    return await this.httpClient_.request({ url, data, method: "PATCH" })
   }
 
   /**
