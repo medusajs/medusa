@@ -46,7 +46,7 @@ export const RootLayout = ({
               "shadow-elevation-card-rest",
               "pt-docs_4 lg:pt-docs_6 pb-docs_4",
               "flex justify-center",
-              "h-screen w-full",
+              "h-screen w-full relative",
               "overflow-y-scroll overflow-x-hidden",
               mainWrapperClasses
             )}

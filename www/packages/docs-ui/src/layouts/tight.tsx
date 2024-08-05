@@ -2,7 +2,6 @@ import React from "react"
 import { RootLayout, RootLayoutProps } from "./root"
 import clsx from "clsx"
 import { Pagination } from ".."
-import { Toc } from "../components/Toc"
 
 export const TightLayout = ({
   children,

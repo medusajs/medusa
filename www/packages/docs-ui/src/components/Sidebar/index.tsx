@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo, useRef, useState } from "react"
+import React, { useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"

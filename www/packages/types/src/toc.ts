@@ -4,3 +4,8 @@ export type ToCItem = {
   level: number
   children?: ToCItem[]
 }
+
+export type ToCItemUi = Omit<ToCItem, "children"> & {
+  children?: ToCItemUi[]
+  associatedHeading: HTMLHeadingElement
+}
