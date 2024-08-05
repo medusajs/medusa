@@ -59,6 +59,7 @@ export const cancelOrderClaimWorkflow = createWorkflow(
         entry_point: "order_claim",
         fields: [
           "id",
+          "order_id",
           "return_id",
           "canceled_at",
           "fulfillments.canceled_at",
@@ -76,7 +77,10 @@ export const cancelOrderClaimWorkflow = createWorkflow(
     })
 
     parallelize(
-      cancelOrderClaimStep({ claim_id: orderClaim.id }),
+      cancelOrderClaimStep({
+        claim_id: orderClaim.id,
+        order_id: orderClaim.order_id,
+      }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )
 

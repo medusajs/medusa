@@ -536,8 +536,7 @@ export interface UpdateOrderExchangeWithSelectorDTO {
   selector: Partial<OrderExchangeDTO>
   data: Partial<UpdateOrderExchangeDTO>
 }
-export interface CancelOrderReturnDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+export interface CancelOrderReturnDTO extends BaseOrderBundledActionsDTO {
   return_id: string
 }
 
@@ -563,8 +562,7 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderClaimDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
   claim_id: string
 }
 
@@ -577,8 +575,7 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderExchangeDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   exchange_id: string
 }
 

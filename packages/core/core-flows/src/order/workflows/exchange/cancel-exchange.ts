@@ -63,6 +63,7 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
         entry_point: "order_exchange",
         fields: [
           "id",
+          "order_id",
           "return_id",
           "canceled_at",
           "fulfillments.canceled_at",
@@ -80,7 +81,10 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
     })
 
     parallelize(
-      cancelOrderExchangeStep({ exchange_id: orderExchange.id }),
+      cancelOrderExchangeStep({
+        exchange_id: orderExchange.id,
+        order_id: orderExchange.order_id,
+      }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )
 

@@ -489,7 +489,7 @@ medusaIntegrationTestRunner({
 
         result = (
           await api.get(
-            `/admin/exchanges?fields=*additional_items`,
+            `/admin/exchanges?fields=+metadata,*additional_items`,
             adminHeaders
           )
         ).data.exchanges
@@ -510,6 +510,7 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.exchanges
+
         expect(result[0].canceled_at).toBeDefined()
       })
     })
