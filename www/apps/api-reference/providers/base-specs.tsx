@@ -5,7 +5,7 @@ import { ReactNode, createContext, useContext, useState } from "react"
 
 type BaseSpecsContextType = {
   baseSpecs: ExpandedDocument | null
-  setBaseSpecs: (value: ExpandedDocument) => void
+  setBaseSpecs: React.Dispatch<React.SetStateAction<ExpandedDocument | null>>
   getSecuritySchema: (securityName: string) => SecuritySchemeObject | null
 }
 

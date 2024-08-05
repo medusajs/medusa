@@ -1,10 +1,10 @@
 import { BatchMethodRequest } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
-import { z } from "zod"
 import {
   GetProductsParams,
   transformProductParams,
 } from "../../utils/common-validators"
+import { z, ZodObject } from "zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -85,22 +85,45 @@ export const AdminUpdateProductTag = z.object({
   value: z.string().optional(),
 })
 
-export type AdminCreateProductOptionType = z.infer<
-  typeof AdminCreateProductOption
->
-export const AdminCreateProductOption = z.object({
+export type AdminCreateProductOptionType = z.infer<typeof CreateProductOption>
+export const CreateProductOption = z.object({
   title: z.string(),
   values: z.array(z.string()),
 })
+export const AdminCreateProductOption = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateProductOption.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
 
-export type AdminUpdateProductOptionType = z.infer<
-  typeof AdminUpdateProductOption
->
-export const AdminUpdateProductOption = z.object({
+  return CreateProductOption.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export type AdminUpdateProductOptionType = z.infer<typeof UpdateProductOption>
+export const UpdateProductOption = z.object({
   id: z.string().optional(),
   title: z.string().optional(),
   values: z.array(z.string()).optional(),
 })
+
+export const AdminUpdateProductOption = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return UpdateProductOption.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return UpdateProductOption.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export type AdminCreateVariantPriceType = z.infer<
   typeof AdminCreateVariantPrice
@@ -130,10 +153,8 @@ export const AdminCreateProductType = z.object({
   value: z.string(),
 })
 
-export type AdminCreateProductVariantType = z.infer<
-  typeof AdminCreateProductVariant
->
-export const AdminCreateProductVariant = z
+export type AdminCreateProductVariantType = z.infer<typeof CreateProductVariant>
+export const CreateProductVariant = z
   .object({
     title: z.string(),
     sku: z.string().nullish(),
@@ -164,11 +185,22 @@ export const AdminCreateProductVariant = z
       .optional(),
   })
   .strict()
+export const AdminCreateProductVariant = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateProductVariant.extend({
+      additional_data: z.record(z.string()).optional(),
+    })
+  }
 
-export type AdminUpdateProductVariantType = z.infer<
-  typeof AdminUpdateProductVariant
->
-export const AdminUpdateProductVariant = z
+  return CreateProductVariant.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export type AdminUpdateProductVariantType = z.infer<typeof UpdateProductVariant>
+export const UpdateProductVariant = z
   .object({
     id: z.string().optional(),
     title: z.string().optional(),
@@ -193,10 +225,24 @@ export const AdminUpdateProductVariant = z
   })
   .strict()
 
+export const AdminUpdateProductVariant = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return UpdateProductVariant.extend({
+      additional_data: z.record(z.string()).optional(),
+    })
+  }
+
+  return UpdateProductVariant.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
 export type AdminBatchUpdateProductVariantType = z.infer<
   typeof AdminBatchUpdateProductVariant
 >
-export const AdminBatchUpdateProductVariant = AdminUpdateProductVariant.extend({
+export const AdminBatchUpdateProductVariant = UpdateProductVariant.extend({
   id: z.string(),
 })
 
@@ -204,8 +250,8 @@ export const IdAssociation = z.object({
   id: z.string(),
 })
 
-export type AdminCreateProductType = z.infer<typeof AdminCreateProduct>
-export const AdminCreateProduct = z
+export type AdminCreateProductType = z.infer<typeof CreateProduct>
+export const CreateProduct = z
   .object({
     title: z.string(),
     subtitle: z.string().nullish(),
@@ -220,8 +266,8 @@ export const AdminCreateProduct = z
     collection_id: z.string().nullish(),
     categories: z.array(IdAssociation).optional(),
     tags: z.array(IdAssociation).optional(),
-    options: z.array(AdminCreateProductOption).optional(),
-    variants: z.array(AdminCreateProductVariant).optional(),
+    options: z.array(CreateProductOption).optional(),
+    variants: z.array(CreateProductVariant).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -235,14 +281,28 @@ export const AdminCreateProduct = z
   })
   .strict()
 
-export type AdminUpdateProductType = z.infer<typeof AdminUpdateProduct>
-export const AdminUpdateProduct = z
+export const AdminCreateProduct = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateProduct.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return CreateProduct.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export type AdminUpdateProductType = z.infer<typeof UpdateProduct>
+export const UpdateProduct = z
   .object({
     title: z.string().optional(),
     discountable: z.boolean().optional(),
     is_giftcard: z.boolean().optional(),
-    options: z.array(AdminUpdateProductOption).optional(),
-    variants: z.array(AdminUpdateProductVariant).optional(),
+    options: z.array(UpdateProductOption).optional(),
+    variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),
     description: z.string().nullish(),
@@ -266,10 +326,24 @@ export const AdminUpdateProduct = z
   })
   .strict()
 
+export const AdminUpdateProduct = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return UpdateProduct.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return UpdateProduct.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
 export type AdminBatchUpdateProductType = z.infer<
   typeof AdminBatchUpdateProduct
 >
-export const AdminBatchUpdateProduct = AdminUpdateProduct.extend({
+export const AdminBatchUpdateProduct = UpdateProduct.extend({
   id: z.string(),
 })
 
