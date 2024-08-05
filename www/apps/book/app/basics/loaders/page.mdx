@@ -19,7 +19,7 @@ A loader is created in a TypeScript or JavaScript file under a module's `loaders
 For example, create the file `src/modules/hello/loaders/hello-world.ts` with the following content:
 
 ```ts title="src/modules/hello/loaders/hello-world.ts"
-export default function helloWorldLoader() {
+export default async function helloWorldLoader() {
   console.log(
     "[HELLO MODULE] Just started the Medusa application!"
   )

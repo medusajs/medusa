@@ -56,7 +56,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { Logger } from "@medusajs/medusa"
 
-export default function helloWorldLoader({
+export default async function helloWorldLoader({
   container,
 }: LoaderOptions) {
   const logger: Logger = container.resolve("logger")
