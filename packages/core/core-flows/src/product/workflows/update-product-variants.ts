@@ -1,4 +1,4 @@
-import { PricingTypes, ProductTypes } from "@medusajs/types"
+import { AdditionalData, PricingTypes, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -23,9 +23,7 @@ type UpdateProductVariantsStepInput =
       })[]
     }
 
-type WorkflowInput = UpdateProductVariantsStepInput & {
-  additional_data?: Record<string, unknown>
-}
+type WorkflowInput = UpdateProductVariantsStepInput & AdditionalData
 
 export const updateProductVariantsWorkflowId = "update-product-variants"
 export const updateProductVariantsWorkflow = createWorkflow(
