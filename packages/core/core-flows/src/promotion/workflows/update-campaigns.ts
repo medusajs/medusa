@@ -1,4 +1,4 @@
-import { AdditionalData, CampaignDTO, UpdateCampaignDTO } from "@medusajs/types"
+import { AdditionalData, UpdateCampaignDTO } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
