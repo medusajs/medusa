@@ -23,7 +23,7 @@ export const createRefundReasonStep = createStep(
     }
 
     const service = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      ModuleRegistrationName.PAYMENT
     )
 
     await service.deleteRefundReasons(ids)
