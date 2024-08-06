@@ -106,10 +106,6 @@ function prepareFulfillmentData({
 }
 
 function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
-  if (!orderPreview.shipping_methods?.length) {
-    return
-  }
-
   let returnShippingMethod
   for (const shippingMethod of orderPreview.shipping_methods) {
     const modifiedShippingMethod_ = shippingMethod as any
@@ -124,6 +120,11 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
       )
     })
   }
+
+  if (!returnShippingMethod) {
+    return null
+  }
+
   return returnShippingMethod.shipping_option_id
 }
 
