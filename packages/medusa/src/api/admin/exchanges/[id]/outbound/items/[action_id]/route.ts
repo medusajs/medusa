@@ -1,6 +1,6 @@
 import {
-  removeAddItemClaimActionWorkflow,
-  updateClaimAddItemWorkflow,
+  removeItemExchangeActionWorkflow,
+  updateExchangeAddItemWorkflow,
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
@@ -10,26 +10,26 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostClaimsItemsActionReqSchemaType } from "../../../../validators"
+import { AdminPostExhangesItemsActionReqSchemaType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostClaimsItemsActionReqSchemaType>,
+  req: AuthenticatedMedusaRequest<AdminPostExhangesItemsActionReqSchemaType>,
   res: MedusaResponse
 ) => {
   const { id, action_id } = req.params
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const { result } = await updateClaimAddItemWorkflow(req.scope).run({
+  const { result } = await updateExchangeAddItemWorkflow(req.scope).run({
     input: {
       data: { ...req.validatedBody },
-      claim_id: id,
+      exchange_id: id,
       action_id,
     },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_claim",
+    entryPoint: "order_exchange",
     variables: {
       id,
       filters: {
@@ -39,11 +39,11 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderClaim] = await remoteQuery(queryObject)
+  const [orderExchange] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    claim: orderClaim,
+    exchange: orderExchange,
   })
 }
 
@@ -55,17 +55,17 @@ export const DELETE = async (
 
   const { id, action_id } = req.params
 
-  const { result: orderPreview } = await removeAddItemClaimActionWorkflow(
+  const { result: orderPreview } = await removeItemExchangeActionWorkflow(
     req.scope
   ).run({
     input: {
-      claim_id: id,
+      exchange_id: id,
       action_id,
     },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_claim",
+    entryPoint: "order_exchange",
     variables: {
       id,
       filters: {
@@ -74,10 +74,10 @@ export const DELETE = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-  const [orderClaim] = await remoteQuery(queryObject)
+  const [orderExchange] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: orderPreview,
-    claim: orderClaim,
+    exchange: orderExchange,
   })
 }

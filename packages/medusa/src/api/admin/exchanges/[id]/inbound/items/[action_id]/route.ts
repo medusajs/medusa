@@ -1,6 +1,6 @@
 import {
-  removeAddItemClaimActionWorkflow,
-  updateClaimAddItemWorkflow,
+  removeItemReturnActionWorkflow,
+  updateRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
@@ -10,40 +10,53 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostClaimsItemsActionReqSchemaType } from "../../../../validators"
+import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
+import { AdminPostExchangesRequestItemsReturnActionReqSchemaType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostClaimsItemsActionReqSchemaType>,
+  req: AuthenticatedMedusaRequest<AdminPostExchangesRequestItemsReturnActionReqSchemaType>,
   res: MedusaResponse
 ) => {
   const { id, action_id } = req.params
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const { result } = await updateClaimAddItemWorkflow(req.scope).run({
+  const [exchange] = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "order_exchange",
+      variables: {
+        id,
+      },
+      fields: ["return_id"],
+    }),
+    undefined,
+    {
+      throwIfKeyNotFound: true,
+    }
+  )
+
+  const { result } = await updateRequestItemReturnWorkflow(req.scope).run({
     input: {
       data: { ...req.validatedBody },
-      claim_id: id,
+      return_id: exchange.return_id,
+      exchange_id: exchange.id,
       action_id,
     },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_claim",
+    entryPoint: "return",
     variables: {
-      id,
-      filters: {
-        ...req.filterableFields,
-      },
+      id: exchange.return_id,
     },
-    fields: req.remoteQueryConfig.fields,
+    fields: defaultAdminDetailsReturnFields,
   })
 
-  const [orderClaim] = await remoteQuery(queryObject)
+  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    claim: orderClaim,
+    return: orderReturn,
   })
 }
 
@@ -55,17 +68,17 @@ export const DELETE = async (
 
   const { id, action_id } = req.params
 
-  const { result: orderPreview } = await removeAddItemClaimActionWorkflow(
+  const { result: orderPreview } = await removeItemReturnActionWorkflow(
     req.scope
   ).run({
     input: {
-      claim_id: id,
+      return_id: id,
       action_id,
     },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_claim",
+    entryPoint: "return",
     variables: {
       id,
       filters: {
@@ -74,10 +87,10 @@ export const DELETE = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-  const [orderClaim] = await remoteQuery(queryObject)
+  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: orderPreview,
-    claim: orderClaim,
+    return: orderReturn,
   })
 }

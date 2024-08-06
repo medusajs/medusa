@@ -1,30 +1,27 @@
-export const defaultAdminClaimFields = [
+export const defaultAdminExchangeFields = [
   "id",
   "type",
   "order_id",
   "return_id",
   "display_id",
   "order_version",
-  "refund_amount",
   "created_at",
   "updated_at",
   "canceled_at",
 ]
 
-export const defaultAdminDetailsClaimFields = [
-  ...defaultAdminClaimFields,
+export const defaultAdminDetailsExchangeFields = [
+  ...defaultAdminExchangeFields,
   "additional_items.*",
-  "claim_items.*",
-  "claim_items.reason.*",
 ]
 
 export const retrieveTransformQueryConfig = {
-  defaultFields: defaultAdminDetailsClaimFields,
+  defaultFields: defaultAdminDetailsExchangeFields,
   isList: false,
 }
 
 export const listTransformQueryConfig = {
-  defaults: defaultAdminClaimFields,
+  defaults: defaultAdminExchangeFields,
   defaultLimit: 20,
   isList: true,
 }

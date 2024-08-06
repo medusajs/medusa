@@ -52,6 +52,7 @@ function prepareFulfillmentData({
   items,
   shippingOption,
   deliveryAddress,
+  isReturn,
 }: {
   order: OrderDTO
   items: any[]
@@ -68,16 +69,17 @@ function prepareFulfillmentData({
     }
   }
   deliveryAddress?: Record<string, any>
+  isReturn?: boolean
 }) {
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
     order.items!.map((i) => [i.id, i])
   )
   const fulfillmentItems = items.map((i) => {
-    const orderItem = orderItemsMap.get(i.item_id)!
+    const orderItem = orderItemsMap.get(i.item_id) ?? i.item
     return {
       line_item_id: i.item_id,
-      quantity: i.quantity,
-      return_quantity: i.quantity,
+      quantity: !isReturn ? i.quantity : undefined,
+      return_quantity: isReturn ? i.quantity : undefined,
       title: orderItem.variant_title ?? orderItem.title,
       sku: orderItem.variant_sku || "",
       barcode: orderItem.variant_barcode || "",
@@ -257,11 +259,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
           "id",
           "version",
           "canceled_at",
-          "additional_items.id",
-          "additional_items.title",
-          "additional_items.variant_title",
-          "additional_items.variant_sku",
-          "additional_items.variant_barcode",
+          "additional_items.item_id",
+          "additional_items.quantity",
+          "additional_items.item.title",
+          "additional_items.item.variant_title",
+          "additional_items.item.variant_sku",
+          "additional_items.item.variant_barcode",
         ],
         variables: { id: exchangeId },
         list: false,
@@ -332,6 +335,7 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
           order,
           items: order.items!,
           shippingOption: returnShippingOption,
+          isReturn: true,
         },
         prepareFulfillmentData
       )
