@@ -360,7 +360,8 @@ describe("RedisEventBusService", () => {
 
         // TODO: The typing for this is all over the place
         await eventBus.worker_({
-          data: { eventName: "eventName", data: { test: 1 } },
+          name: "eventName",
+          data: { data: { test: 1 } },
           opts: { attempts: 1 },
         } as any)
 
@@ -393,7 +394,8 @@ describe("RedisEventBusService", () => {
         })
 
         result = await eventBus.worker_({
-          data: { eventName: "eventName", data: { test: 1 } },
+          name: "eventName",
+          data: { data: { test: 1 } },
           opts: { attempts: 1 },
           update: (data) => data,
         } as any)
@@ -428,8 +430,8 @@ describe("RedisEventBusService", () => {
 
         result = await eventBus
           .worker_({
+            name: "eventName",
             data: {
-              eventName: "eventName",
               data: {},
               completedSubscriberIds: ["1"],
             },
@@ -463,8 +465,8 @@ describe("RedisEventBusService", () => {
 
         result = await eventBus
           .worker_({
+            name: "eventName",
             data: {
-              eventName: "eventName",
               data: {},
               completedSubscriberIds: ["1"],
             },
