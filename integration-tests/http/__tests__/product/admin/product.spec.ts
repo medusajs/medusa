@@ -1081,7 +1081,7 @@ medusaIntegrationTestRunner({
 
           const variants = (
             await api.get(
-              `/admin/products/${product.id}/variants?fields=%2Binventory_quantity`,
+              `/admin/products/${product.id}/variants?fields=+inventory_quantity`,
               adminHeaders
             )
           ).data.variants
