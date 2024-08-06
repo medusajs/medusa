@@ -1,4 +1,5 @@
 import { Client } from "../client"
+import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
 import { Fulfillment } from "./fulfillment"
@@ -16,6 +17,7 @@ import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
+import { RefundReason } from "./refund-reasons"
 import { Region } from "./region"
 import { Return } from "./return"
 import { ReturnReason } from "./return-reason"
@@ -28,7 +30,6 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
-import { Claim } from "./claim"
 
 export class Admin {
   public invite: Invite
@@ -61,6 +62,7 @@ export class Admin {
   public user: User
   public currency: Currency
   public payment: Payment
+  public refundReason: RefundReason
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -93,5 +95,6 @@ export class Admin {
     this.user = new User(client)
     this.currency = new Currency(client)
     this.payment = new Payment(client)
+    this.refundReason = new RefundReason(client)
   }
 }

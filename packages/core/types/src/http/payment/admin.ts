@@ -8,6 +8,7 @@ import {
   BasePaymentProviderFilters,
   BasePaymentSession,
   BasePaymentSessionFilters,
+  BaseRefund,
   RefundReason,
 } from "./common"
 
@@ -33,6 +34,8 @@ export interface AdminCapturePayment {
 
 export interface AdminRefundPayment {
   amount?: number
+  refund_reason_id?: string | null
+  note?: string | null
 }
 
 export interface AdminPaymentResponse {
@@ -44,6 +47,21 @@ export interface AdminPaymentsResponse {
 }
 
 export interface AdminPaymentFilters extends BasePaymentFilters {}
+
+// Refund
+
+export interface AdminRefund extends BaseRefund {}
+export interface RefundFilters extends BaseFilterable<AdminRefund> {
+  id?: string | string[]
+}
+
+export interface AdminRefundResponse {
+  refund_reason: AdminRefund
+}
+
+export interface AdminRefundsResponse {
+  refund_reasons: AdminRefund[]
+}
 
 // Refund reason
 

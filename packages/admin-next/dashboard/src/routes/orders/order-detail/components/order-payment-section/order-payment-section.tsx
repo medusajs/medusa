@@ -1,4 +1,4 @@
-import { ArrowDownRightMini, XCircle } from "@medusajs/icons"
+import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
 import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
@@ -80,21 +80,24 @@ const Refund = ({
   refund,
   currencyCode,
 }: {
-  refund: MedusaRefund
+  refund: HttpTypes.AdminRefund
   currencyCode: string
 }) => {
   const { t } = useTranslation()
-
-  const BadgeComponent = (
-    <Badge size="2xsmall" className="cursor-default select-none capitalize">
-      {refund.reason}
+  const RefundReasonBadge = refund?.refund_reason && (
+    <Badge
+      size="2xsmall"
+      className="cursor-default select-none capitalize"
+      rounded="full"
+    >
+      {refund.refund_reason.label}
     </Badge>
   )
 
-  const Render = refund.note ? (
-    <Tooltip content={refund.note}>{BadgeComponent}</Tooltip>
-  ) : (
-    BadgeComponent
+  const RefundNoteIndicator = refund.note && (
+    <Tooltip content={refund.note}>
+      <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+    </Tooltip>
   )
 
   return (
@@ -105,7 +108,7 @@ const Refund = ({
         </div>
         <div>
           <Text size="small" leading="compact" weight="plus">
-            {t("orders.payment.refund")}
+            {t("orders.payment.refund")} {RefundNoteIndicator}
           </Text>
           <Text size="small" leading="compact">
             {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
@@ -113,7 +116,7 @@ const Refund = ({
         </div>
       </div>
       <div className="flex items-center justify-end"></div>
-      <div className="flex items-center justify-end">{Render}</div>
+      <div className="flex items-center justify-end">{RefundReasonBadge}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
           - {getLocaleAmount(refund.amount, currencyCode)}

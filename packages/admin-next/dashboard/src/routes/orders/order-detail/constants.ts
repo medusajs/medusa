@@ -35,6 +35,7 @@ const DEFAULT_RELATIONS = [
   "*payment_collections",
   "*payment_collections.payments",
   "*payment_collections.payments.refunds",
+  "*payment_collections.payments.refunds.refund_reason",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

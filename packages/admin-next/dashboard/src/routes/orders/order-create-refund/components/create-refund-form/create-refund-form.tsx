@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import { Button, CurrencyInput, toast } from "@medusajs/ui"
+import { Button, CurrencyInput, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { upperCaseFirst } from "../../../../../../../../core/utils/src/common/upper-case-first"
 import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useRefundPayment } from "../../../../../hooks/api"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
@@ -12,13 +14,19 @@ import { formatCurrency } from "../../../../../lib/format-currency"
 
 type CreateRefundFormProps = {
   payment: HttpTypes.AdminPayment
+  refundReasons: HttpTypes.AdminRefundReason[]
 }
 
 const CreateRefundSchema = zod.object({
   amount: zod.number(),
+  refund_reason_id: zod.string().nullish(),
+  note: zod.string().nullish(),
 })
 
-export const CreateRefundForm = ({ payment }: CreateRefundFormProps) => {
+export const CreateRefundForm = ({
+  payment,
+  refundReasons,
+}: CreateRefundFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const paymentAmount = payment.amount as unknown as number
@@ -36,6 +44,8 @@ export const CreateRefundForm = ({ payment }: CreateRefundFormProps) => {
     await mutateAsync(
       {
         amount: data.amount,
+        refund_reason_id: data.refund_reason_id,
+        note: data.note,
       },
       {
         onSuccess: () => {
@@ -102,6 +112,47 @@ export const CreateRefundForm = ({ payment }: CreateRefundFormProps) => {
                         symbol={getCurrencySymbol(payment.currency_code)}
                         value={field.value}
                       />
+                    </Form.Control>
+
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <Form.Field
+              control={form.control}
+              name="refund_reason_id"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.refundReason")}</Form.Label>
+
+                    <Form.Control>
+                      <Combobox
+                        {...field}
+                        options={refundReasons.map((pp) => ({
+                          label: upperCaseFirst(pp.label),
+                          value: pp.id,
+                        }))}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <Form.Field
+              control={form.control}
+              name={`note`}
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.note")}</Form.Label>
+
+                    <Form.Control>
+                      <Input {...field} />
                     </Form.Control>
 
                     <Form.ErrorMessage />
