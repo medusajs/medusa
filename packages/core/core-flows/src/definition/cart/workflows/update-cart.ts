@@ -17,7 +17,7 @@ import {
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
 export const updateCartWorkflow = createWorkflow(
@@ -82,15 +82,19 @@ export const updateCartWorkflow = createWorkflow(
 
     parallelize(
       refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesStep({ cart_or_cart_id: carts[0].id }),
-      refreshCartPromotionsStep({
-        id: input.id,
-        promo_codes: input.promo_codes,
-        action: PromotionActions.REPLACE,
-      }),
-      refreshPaymentCollectionForCartStep({
-        cart_id: input.id,
-      })
+      updateTaxLinesStep({ cart_or_cart_id: carts[0].id })
     )
+
+    refreshCartPromotionsStep({
+      id: input.id,
+      promo_codes: input.promo_codes,
+      action: PromotionActions.REPLACE,
+    })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: {
+        cart_id: input.id,
+      },
+    })
   }
 )
