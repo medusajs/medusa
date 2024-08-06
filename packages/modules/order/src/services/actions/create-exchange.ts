@@ -92,6 +92,7 @@ async function processAdditionalItems(
         details: {
           reference_id: item.id,
           quantity: item.quantity,
+          unit_price: item.unit_price ?? hasItem.item.unit_price,
           metadata: item.metadata,
         },
       })
@@ -111,6 +112,7 @@ async function processAdditionalItems(
       additionalNewItems.push(
         em.create(OrderExchangeItem, {
           quantity: item.quantity,
+          unit_price: item.unit_price,
           note: item.note,
           metadata: item.metadata,
           is_additional_item: true,

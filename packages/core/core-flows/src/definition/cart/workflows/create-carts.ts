@@ -21,7 +21,7 @@ import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 // TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
@@ -145,16 +145,18 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    parallelize(
-      refreshCartPromotionsStep({
-        id: cart.id,
-        promo_codes: input.promo_codes,
-      }),
-      updateTaxLinesStep({ cart_or_cart_id: cart.id }),
-      refreshPaymentCollectionForCartStep({
+    updateTaxLinesStep({ cart_or_cart_id: cart.id })
+
+    refreshCartPromotionsStep({
+      id: cart.id,
+      promo_codes: input.promo_codes,
+    })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: {
         cart_id: cart.id,
-      })
-    )
+      },
+    })
 
     return new WorkflowResponse(cart)
   }

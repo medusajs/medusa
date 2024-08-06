@@ -1,9 +1,4 @@
-import {
-  ChangeActionType,
-  MathBN,
-  MedusaError,
-  isDefined,
-} from "@medusajs/utils"
+import { ChangeActionType, MathBN, MedusaError } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
@@ -26,7 +21,7 @@ OrderChangeProcessing.registerActionType(
     },
     validate({ action, currentOrder }) {
       const refId = action.details?.reference_id
-      if (!isDefined(refId)) {
+      if (refId == null) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Reference ID is required."

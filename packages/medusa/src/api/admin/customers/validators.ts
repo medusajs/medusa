@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z, ZodObject } from "zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -42,7 +42,7 @@ export const AdminCustomersParams = createFindParams({
   })
 )
 
-export const AdminCreateCustomer = z.object({
+export const CreateCustomer = z.object({
   email: z.string().email().nullish(),
   company_name: z.string().nullish(),
   first_name: z.string().nullish(),
@@ -50,8 +50,21 @@ export const AdminCreateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminCreateCustomer = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateCustomer.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
 
-export const AdminUpdateCustomer = z.object({
+  return CreateCustomer.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export const UpdateCustomer = z.object({
   email: z.string().email().nullish(),
   company_name: z.string().nullish(),
   first_name: z.string().nullish(),
@@ -59,8 +72,21 @@ export const AdminUpdateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminUpdateCustomer = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return UpdateCustomer.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
 
-export const AdminCreateCustomerAddress = z.object({
+  return UpdateCustomer.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export const CreateCustomerAddress = z.object({
   address_name: z.string().nullish(),
   is_default_shipping: z.boolean().optional(),
   is_default_billing: z.boolean().optional(),
@@ -76,6 +102,19 @@ export const AdminCreateCustomerAddress = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminCreateCustomerAddress = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateCustomerAddress.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return CreateCustomerAddress.extend({
+    additional_data: additionalDataValidator,
+  })
+}
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
 
@@ -95,8 +134,8 @@ export const AdminCustomerAddressesParams = createFindParams({
 
 export type AdminCustomerParamsType = z.infer<typeof AdminCustomerParams>
 export type AdminCustomersParamsType = z.infer<typeof AdminCustomersParams>
-export type AdminCreateCustomerType = z.infer<typeof AdminCreateCustomer>
-export type AdminUpdateCustomerType = z.infer<typeof AdminUpdateCustomer>
+export type AdminCreateCustomerType = z.infer<typeof CreateCustomer>
+export type AdminUpdateCustomerType = z.infer<typeof UpdateCustomer>
 export type AdminCreateCustomerAddressType = z.infer<
-  typeof AdminCreateCustomerAddress
+  typeof CreateCustomerAddress
 >

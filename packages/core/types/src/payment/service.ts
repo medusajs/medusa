@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -9,21 +10,25 @@ import {
   FilterablePaymentProviderProps,
   FilterablePaymentSessionProps,
   FilterableRefundProps,
+  FilterableRefundReasonProps,
   PaymentCollectionDTO,
   PaymentDTO,
   PaymentProviderDTO,
   PaymentSessionDTO,
   RefundDTO,
+  RefundReasonDTO,
 } from "./common"
 import {
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
+  CreateRefundReasonDTO,
   PaymentCollectionUpdatableFields,
   ProviderWebhookPayload,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
+  UpdateRefundReasonDTO,
   UpsertPaymentCollectionDTO,
 } from "./mutations"
 
@@ -816,6 +821,199 @@ export interface IPaymentModuleService extends IModuleService {
     config?: FindConfig<RefundDTO>,
     sharedContext?: Context
   ): Promise<RefundDTO[]>
+
+  /**
+   * This method creates refund reasons.
+   *
+   * @param {CreateRefundReasonDTO[]} data - The refund reasons to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RefundReasonDTO[]>} The created refund reasons.
+   *
+   * @example
+   * const refundReasons =
+   *   await paymentModuleService.createRefundReasons([
+   *     {
+   *       label: "Too big",
+   *     },
+   *     {
+   *       label: "Too big",
+   *     },
+   *   ])
+   */
+  createRefundReasons(
+    data: CreateRefundReasonDTO[],
+    sharedContext?: Context
+  ): Promise<RefundReasonDTO[]>
+
+  /**
+   * This method creates a refund reason.
+   *
+   * @param {CreateRefundReasonDTO} data - The refund reason to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RefundReasonDTO>} The created refund reason.
+   *
+   * @example
+   * const refundReason =
+   *   await paymentModuleService.createRefundReasons({
+   *     label: "Too big",
+   *   })
+   */
+  createRefundReasons(
+    data: CreateRefundReasonDTO,
+    sharedContext?: Context
+  ): Promise<RefundReasonDTO>
+
+  /**
+   * This method deletes a refund reason by its ID.
+   *
+   * @param {string[]} refundReasonId - The refund reason's ID.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the refund reason is deleted successfully.
+   *
+   * @example
+   * await paymentModuleService.deleteRefundReasons([
+   *   "refr_123",
+   *   "refr_321",
+   * ])
+   */
+  deleteRefundReasons(
+    refundReasonId: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method deletes a refund reason by its ID.
+   *
+   * @param {string} refundReasonId - The refund reason's ID.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the refund reason is deleted successfully.
+   *
+   * @example
+   * await paymentModuleService.deleteRefundReasons(
+   *   "refr_123"
+   * )
+   */
+  deleteRefundReasons(
+    refundReasonId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method soft deletes refund reasons by their IDs.
+   *
+   * @param {string[]} refundReasonId - The IDs of refund reasons.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were also soft deleted.
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await paymentModule.softDeleteRefundReasons(["cus_123"])
+   */
+  softDeleteRefundReasons<TReturnableLinkableKeys extends string = string>(
+    refundReasonId: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  /**
+   * This method restores soft deleted refund reason by their IDs.
+   *
+   * @param {string[]} refundReasonId - The IDs of refund reasons.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the refund reason. You can pass to its `returnLinkableKeys`
+   * property any of the refund reason's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were restored.
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await paymentModule.restoreRefundReasons(["cus_123"])
+   */
+  restoreRefundReasons<TReturnableLinkableKeys extends string = string>(
+    refundReasonId: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  /**
+   * This method updates an existing refund reason.
+   *
+   * @param {UpdateRefundReasonDTO} data - The attributes to update in the refund reason.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RefundReasonDTO>} The updated refund reason.
+   *
+   * @example
+   * const refundReason =
+   *   await paymentModuleService.updateRefundReasons(
+   *     [{
+   *       id: "refr_test1",
+   *       amount: 3000,
+   *     }]
+   *   )
+   */
+  updateRefundReasons(
+    data: UpdateRefundReasonDTO[],
+    sharedContext?: Context
+  ): Promise<RefundReasonDTO[]>
+
+  updateRefundReasons(
+    data: UpdateRefundReasonDTO,
+    sharedContext?: Context
+  ): Promise<RefundReasonDTO>
+
+  /**
+   * This method retrieves a paginated list of refund reasons based on optional filters and configuration.
+   *
+   * @param {FilterableRefundReasonProps} filters - The filters to apply on the retrieved refund reason.
+   * @param {FindConfig<RefundReasonDTO>} config - The configurations determining how the refund reason is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a refund reason.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RefundReasonDTO[]>} The list of refund reasons.
+   *
+   * @example
+   * To retrieve a list of refund reasons using their IDs:
+   *
+   * ```ts
+   * const refundReasons =
+   *   await paymentModuleService.listRefundReasons({
+   *     id: ["refr_123", "refr_321"],
+   *   })
+   * ```
+   *
+   * To specify relations that should be retrieved within the refund :
+   *
+   * ```ts
+   * const refundReasons =
+   *   await paymentModuleService.listRefundReasons(
+   *     {
+   *       id: ["refr_123", "refr_321"],
+   *     },
+   *     {}
+   *   )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const refundReasons =
+   *   await paymentModuleService.listRefundReasons(
+   *     {
+   *       id: ["refr_123", "refr_321"],
+   *     },
+   *     {
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
+   * ```
+   *
+   *
+   */
+  listRefundReasons(
+    filters?: FilterableRefundReasonProps,
+    config?: FindConfig<RefundReasonDTO>,
+    sharedContext?: Context
+  ): Promise<RefundReasonDTO[]>
 
   /* ********** HOOKS ********** */
 

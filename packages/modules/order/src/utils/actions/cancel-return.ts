@@ -1,9 +1,4 @@
-import {
-  ChangeActionType,
-  MathBN,
-  MedusaError,
-  isDefined,
-} from "@medusajs/utils"
+import { ChangeActionType, MathBN, MedusaError } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
@@ -22,21 +17,14 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN_ITEM, {
 
     setActionReference(existing, action, options)
 
-    return action.details.unit_price * action.details.quantity
+    return MathBN.mult(existing.unit_price, action.details.quantity)
   },
   validate({ action, currentOrder }) {
     const refId = action.details?.reference_id
-    if (!isDefined(refId)) {
+    if (refId == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Details reference ID is required."
-      )
-    }
-
-    if (!isDefined(action.amount) && !isDefined(action.details?.unit_price)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Unit price of item ${action.reference_id} is required if no action.amount is provided.`
       )
     }
 

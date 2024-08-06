@@ -1,0 +1,14 @@
+Your AWS S3 bucket must have public access to buckets enabled. To do that:
+
+1. On your bucket's dashboard, click on the Permissions tab.
+2. Click on the Edit button of the Block public access (bucket settings) section.
+3. In the form that opens, don't toggle any checkboxes and click the "Save changes" button.
+4. Confirm saving the changes by entering `confirm` in the pop-up that shows.
+5. Back on the Permissions page, scroll to the Object Ownership section and click the Edit button.
+6. In the form that opens:
+    - Choose the "ACLs enabled" card.
+    - Click on the "Save changes" button.
+7. Back on the Permissions page, scroll to the "Access Control List (ACL)" section and click on the Edit button.
+8. In the form that opens, enable the Read permission for "Everyone (public access)".
+9. Check the "I understand the effects of these changes on my objects and buckets." checkbox.
+10. Click on the "Save changes" button.

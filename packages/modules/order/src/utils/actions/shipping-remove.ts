@@ -1,4 +1,4 @@
-import { ChangeActionType, MedusaError, isDefined } from "@medusajs/utils"
+import { ChangeActionType, MedusaError } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_REMOVE, {
@@ -22,13 +22,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_REMOVE, {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Reference ID is required."
-      )
-    }
-
-    if (!isDefined(action.amount)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Amount is required."
       )
     }
   },

@@ -6,6 +6,7 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
+import { getProductFixture } from "../../../../helpers/fixtures"
 import { createOrderSeeder } from "../../fixtures/order"
 
 jest.setTimeout(30000)
@@ -16,20 +17,59 @@ medusaIntegrationTestRunner({
     let paymentCollection
     let payment
     let container
+    let region
+    let product
+    let cart
 
     beforeEach(async () => {
       container = getContainer()
       paymentModule = container.resolve(ModuleRegistrationName.PAYMENT)
       await createAdminUser(dbConnection, adminHeaders, container)
 
+      region = (
+        await api.post(
+          "/admin/regions",
+          { name: "United States", currency_code: "usd", countries: ["us"] },
+          adminHeaders
+        )
+      ).data.region
+
+      product = (
+        await api.post(
+          "/admin/products",
+          getProductFixture({
+            title: "test",
+            status: "published",
+            variants: [
+              {
+                title: "Test variant",
+                manage_inventory: false,
+                prices: [
+                  {
+                    amount: 1000,
+                    currency_code: "usd",
+                    rules: { region_id: region.id },
+                  },
+                ],
+              },
+            ],
+          }),
+          adminHeaders
+        )
+      ).data.product
+
+      cart = (
+        await api.post("/store/carts", {
+          region_id: region.id,
+          items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        })
+      ).data.cart
+
       const collection = (
         await api.post(
           "/store/payment-collections",
           {
-            cart_id: "test-cart",
-            region_id: "test-region",
-            amount: 1000,
-            currency_code: "usd",
+            cart_id: cart.id,
           },
           adminHeaders
         )
@@ -87,14 +127,17 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
-      // refund
+      const refundReason = (
+        await api.post(`/admin/refund-reasons`, { label: "test" }, adminHeaders)
+      ).data.refund_reason
+
+      // BREAKING: reason is now refund_reason_id
       const response = await api.post(
         `/admin/payments/${payment.id}/refund`,
         {
           amount: 500,
-          // BREAKING: We should probably introduce reason and notes in V2 too
-          // reason: "return",
-          // note: "Do not like it",
+          refund_reason_id: refundReason.id,
+          note: "Do not like it",
         },
         adminHeaders
       )
@@ -115,6 +158,11 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               id: expect.any(String),
               amount: 500,
+              note: "Do not like it",
+              refund_reason_id: refundReason.id,
+              refund_reason: expect.objectContaining({
+                label: "test",
+              }),
             }),
           ],
           amount: 1000,
