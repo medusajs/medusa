@@ -7188,6 +7188,21 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Integrations",
+            "hasTitleStyling": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/troubleshooting/s3",
+                "title": "S3 Module Provider Errors",
+                "children": []
+              }
+            ]
           }
         ]
       }
@@ -7582,6 +7597,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/references/helper-steps/dismissRemoteLinkStep",
             "title": "dismissRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/emitEventStep",
+            "title": "emitEventStep",
             "children": []
           },
           {

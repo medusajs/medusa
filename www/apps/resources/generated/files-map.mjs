@@ -1004,6 +1004,10 @@ export const filesMap = [
     "pathname": "/troubleshooting"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/s3/page.mdx",
+    "pathname": "/troubleshooting/s3"
+  },
+  {
     "filePath": "/www/apps/resources/app/upgrade-guides/page.mdx",
     "pathname": "/upgrade-guides"
   },
@@ -3234,6 +3238,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep/page.mdx",
     "pathname": "/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.emitEventStep/page.mdx",
+    "pathname": "/references/helper_steps/functions/helper_steps.emitEventStep"
   },
   {
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx",
@@ -9530,6 +9538,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreFile/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreFile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdditionalData/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdditionalData"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminAcceptInvite/page.mdx",
