@@ -1,6 +1,7 @@
 import { updateProductsStep } from "../steps/update-products"
 
 import {
+  AdditionalData,
   CreateMoneyAmountDTO,
   ProductTypes,
   UpdateProductVariantWorkflowInputDTO,
@@ -26,16 +27,14 @@ type UpdateProductsStepInputSelector = {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   }
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 type UpdateProductsStepInputProducts = {
   products: (Omit<ProductTypes.UpsertProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 type UpdateProductsStepInput =
   | UpdateProductsStepInputSelector

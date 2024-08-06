@@ -57,6 +57,12 @@ export class AbstractNotificationProviderService
    * the notification.
    * 
    * @example
+   * // other imports...
+   * import { 
+   *   ProviderSendNotificationDTO,
+   *   ProviderSendNotificationResultsDTO
+   * } from "@medusajs/types"
+   * 
    * class MyNotificationProviderService extends AbstractNotificationProviderService {
    *   // ...
    *   async send(
