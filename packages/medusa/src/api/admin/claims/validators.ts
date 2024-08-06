@@ -143,6 +143,17 @@ export type AdminPostClaimsRequestReturnItemsReqSchemaType = z.infer<
   typeof AdminPostClaimsRequestReturnItemsReqSchema
 >
 
+export const AdminPostClaimsRequestItemsReturnActionReqSchema = z.object({
+  quantity: z.number().optional(),
+  internal_note: z.string().nullish().optional(),
+  reason_id: z.string().nullish().optional(),
+  metadata: z.record(z.unknown()).nullish().optional(),
+})
+
+export type AdminPostClaimsRequestItemsReturnActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsRequestItemsReturnActionReqSchema
+>
+
 export const AdminPostClaimItemsReqSchema = z.object({
   items: z.array(
     z.object({
