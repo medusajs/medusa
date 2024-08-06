@@ -7587,6 +7587,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/references/helper-steps/emitEventStep",
+            "title": "emitEventStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "path": "/references/helper-steps/removeRemoteLinkStep",
             "title": "removeRemoteLinkStep",
             "children": []
