@@ -536,6 +536,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -819,6 +828,16 @@
           "unique": true
         },
         {
+          "keyName": "IDX_payment_provider_id",
+          "columnNames": [
+            "provider_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_payment_provider_id\" ON \"payment\" (provider_id)"
+        },
+        {
           "keyName": "payment_pkey",
           "columnNames": [
             "id"
@@ -893,6 +912,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         },
         "created_at": {
           "name": "created_at",
