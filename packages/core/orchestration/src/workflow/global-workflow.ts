@@ -3,7 +3,7 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   DistributedTransactionEvents,
 } from "../transaction"
 import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
@@ -83,7 +83,7 @@ export class GlobalWorkflow extends WorkflowManager {
     workflowId: string,
     idempotencyKey: string,
     response?: unknown
-  ): Promise<DistributedTransaction> {
+  ): Promise<DistributedTransactionType> {
     if (!WorkflowManager.workflows.has(workflowId)) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
@@ -116,7 +116,7 @@ export class GlobalWorkflow extends WorkflowManager {
     workflowId: string,
     idempotencyKey: string,
     error?: Error | any
-  ): Promise<DistributedTransaction> {
+  ): Promise<DistributedTransactionType> {
     if (!WorkflowManager.workflows.has(workflowId)) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }

@@ -1,6 +1,6 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   DistributedTransactionEvents,
   LocalWorkflow,
   TransactionHandlerType,
@@ -66,7 +66,7 @@ function createContextualWorkflowRunner<
       isCancel = false,
       container: executionContainer,
     },
-    transactionOrIdOrIdempotencyKey: DistributedTransaction | string,
+    transactionOrIdOrIdempotencyKey: DistributedTransactionType | string,
     input: unknown,
     context: Context,
     events: DistributedTransactionEvents | undefined = {}
@@ -483,7 +483,7 @@ function attachOnFinishReleaseEvents(
   const onFinish = events.onFinish
 
   const wrappedOnFinish = async (args: {
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
     result?: unknown
     errors?: unknown[]
   }) => {

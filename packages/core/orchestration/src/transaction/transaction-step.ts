@@ -1,6 +1,6 @@
 import { MedusaError, TransactionStepState } from "@medusajs/utils"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   TransactionPayload,
 } from "./distributed-transaction"
 import { TransactionOrchestrator } from "./transaction-orchestrator"
@@ -15,7 +15,7 @@ export type TransactionStepHandler = (
   actionId: string,
   handlerType: TransactionHandlerType,
   payload: TransactionPayload,
-  transaction: DistributedTransaction,
+  transaction: DistributedTransactionType,
   step: TransactionStep,
   orchestrator: TransactionOrchestrator
 ) => Promise<unknown>

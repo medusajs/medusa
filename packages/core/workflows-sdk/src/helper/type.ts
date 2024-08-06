@@ -1,6 +1,6 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   DistributedTransactionEvents,
   LocalWorkflow,
   TransactionStepError,
@@ -36,7 +36,7 @@ export type FlowRegisterStepFailureOptions<TData = unknown> = {
 }
 
 export type FlowCancelOptions = {
-  transaction?: DistributedTransaction
+  transaction?: DistributedTransactionType
   transactionId?: string
   context?: Context
   throwOnError?: boolean
@@ -55,7 +55,7 @@ export type WorkflowResult<TResult = unknown> = {
   /**
    * The transaction details of the workflow's execution.
    */
-  transaction: DistributedTransaction
+  transaction: DistributedTransactionType
   /**
    * The result returned by the workflow.
    */

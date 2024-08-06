@@ -1,7 +1,7 @@
 import { TransactionStepState, TransactionStepStatus } from "@medusajs/utils"
 import { setTimeout } from "timers/promises"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   TransactionHandlerType,
   TransactionOrchestrator,
   TransactionPayload,
@@ -970,7 +970,7 @@ describe("Transaction Orchestrator", () => {
       actionId: string,
       functionHandlerType: TransactionHandlerType,
       payload: TransactionPayload,
-      transaction?: DistributedTransaction
+      transaction?: DistributedTransactionType
     ) {
       transactionInHandler = transaction
     }
