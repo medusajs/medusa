@@ -10,6 +10,7 @@ import {
 import { refetchCampaign } from "../helpers"
 import { AdminUpdateCampaignType } from "../validators"
 import { MedusaError } from "@medusajs/utils"
+import { AdditionalData } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -32,19 +33,20 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateCampaignType>,
+  req: AuthenticatedMedusaRequest<AdminUpdateCampaignType & AdditionalData>,
   res: MedusaResponse
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
   const campaignsData = [
     {
       id: req.params.id,
-      ...req.validatedBody,
+      ...rest,
     },
   ]
 
   await updateCampaigns.run({
-    input: { campaignsData },
+    input: { campaignsData, additional_data },
   })
 
   const campaign = await refetchCampaign(

@@ -1,3 +1,4 @@
+import { BaseFilterable } from "../../dal"
 import {
   BasePayment,
   BasePaymentCollection,
@@ -7,6 +8,7 @@ import {
   BasePaymentProviderFilters,
   BasePaymentSession,
   BasePaymentSessionFilters,
+  RefundReason,
 } from "./common"
 
 export interface AdminPaymentProvider extends BasePaymentProvider {
@@ -42,3 +44,23 @@ export interface AdminPaymentsResponse {
 }
 
 export interface AdminPaymentFilters extends BasePaymentFilters {}
+
+// Refund reason
+
+export interface AdminRefundReason extends RefundReason {}
+export interface RefundReasonFilters extends BaseFilterable<AdminRefundReason> {
+  id?: string | string[]
+}
+
+export interface RefundReasonResponse {
+  refund_reason: AdminRefundReason
+}
+
+export interface RefundReasonsResponse {
+  refund_reasons: AdminRefundReason[]
+}
+
+export interface AdminCreateRefundReason {
+  label: string
+  description?: string
+}

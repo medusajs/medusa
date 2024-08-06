@@ -55,5 +55,17 @@ export type AdminCreatePaymentRefundType = z.infer<
 export const AdminCreatePaymentRefund = z
   .object({
     amount: z.number().optional(),
+    refund_reason_id: z.string().optional(),
+    note: z.string().optional(),
+  })
+  .strict()
+
+export type AdminCreatePaymentRefundReasonType = z.infer<
+  typeof AdminCreatePaymentRefundReason
+>
+export const AdminCreatePaymentRefundReason = z
+  .object({
+    label: z.string(),
+    description: z.string().optional(),
   })
   .strict()
