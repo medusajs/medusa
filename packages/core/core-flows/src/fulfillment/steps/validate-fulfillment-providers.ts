@@ -26,9 +26,15 @@ export const validateFulfillmentProvidersStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const shippingOptions = await fulfillmentService.listShippingOptions({
-      id: input.map((d) => d.id).filter(Boolean) as string[],
-    })
+    const shippingOptions = await fulfillmentService.listShippingOptions(
+      {
+        id: input.map((d) => d.id).filter(Boolean) as string[],
+      },
+      {
+        select: ["id", "service_zone_id", "provider_id"],
+        take: null,
+      }
+    )
 
     const shippingOptionsMap = new Map<string, ShippingOptionDTO>(
       shippingOptions.map((so) => [so.id, so])
@@ -42,11 +48,17 @@ export const validateFulfillmentProvidersStep = createStep(
       if ("id" in data) {
         const existingShippingOption = shippingOptionsMap.get(data.id!)
 
+        if (!data.service_zone_id) {
+          data.service_zone_id = existingShippingOption?.service_zone_id!
+        }
+
+        if (!data.provider_id) {
+          data.provider_id = existingShippingOption?.provider_id!
+        }
+
         dataToValidate.push({
-          service_zone_id:
-            data.service_zone_id! || existingShippingOption?.service_zone_id!,
-          provider_id:
-            data.provider_id! || existingShippingOption?.provider_id!,
+          service_zone_id: data.service_zone_id!,
+          provider_id: data.provider_id!,
         })
 
         continue
@@ -89,8 +101,8 @@ export const validateFulfillmentProvidersStep = createStep(
     const invalidProviders: string[] = []
 
     for (const data of dataToValidate) {
-      const serviceZone = serviceZonesMap.get(data.service_zone_id)!
-      const stockLocations = serviceZone.fulfillment_set.locations
+      const serviceZone = serviceZonesMap.get(data.service_zone_id)
+      const stockLocations = serviceZone?.fulfillment_set?.locations ?? []
       const fulfillmentProviders: string[] = []
 
       for (const stockLocation of stockLocations) {
