@@ -1,6 +1,5 @@
 import {
   AdditionalData,
-  PromotionDTO,
   UpdatePromotionDTO,
 } from "@medusajs/types"
 import {
