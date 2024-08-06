@@ -126,7 +126,7 @@ medusaIntegrationTestRunner({
         const response = await api.get(
           "/admin/orders/" +
             created.id +
-            "?fields=%2Braw_total,%2Braw_subtotal,%2Braw_discount_total",
+            "?fields=+raw_total,+raw_subtotal,+raw_discount_total",
           adminHeaders
         )
 

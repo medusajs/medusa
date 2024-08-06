@@ -1,4 +1,5 @@
-import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger } from "docs-ui"
+import S3BucketAcl from "../../../troubleshooting/_sections/s3/aws-bucket-acl.mdx"
+import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger, DetailsList } from "docs-ui"
 
 export const metadata = {
   title: `S3 File Module Provider`,
@@ -22,45 +23,64 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
     <TabsContent value="aws">
 
     - [AWS account](https://console.aws.amazon.com/console/home?nc2=h_ct&src=header-signin).
-    - [S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) with the "Public Access setting" enabled.
-    - [AWS user with AmazonS3FullAccess permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-and-attach-iam-policy.html).
-    - [AWS user access key ID and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
-    - Change your [bucket's policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html) to the following:
-
-    ```json
-    {
-      "Version": "2012-10-17",
-      "Id": "Policy1397632521960",
-      "Statement": [
-        {
-          "Sid": "Stmt1397633323327",
-          "Effect": "Allow",
-          "Principal": {
-            "AWS": "*"
-          },
-          "Action": "s3:GetObject",
-          "Resource": "arn:aws:s3:::{bucket_name}/*"
-        }
-      ]
-    }
-    ```
-
-    Make sure to replace `{bucket_name}` with the name of the bucket you created.
+    - Create [AWS user with AmazonS3FullAccess permissions](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-and-attach-iam-policy.html).
+    - Create [AWS user access key ID and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+    - Create [S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) with the "Public Access setting" enabled:
+      1. On your bucket's dashboard, click on the Permissions tab.
+      2. Click on the Edit button of the Block public access (bucket settings) section.
+      3. In the form that opens, don't toggle any checkboxes and click the "Save changes" button.
+      4. Confirm saving the changes by entering `confirm` in the pop-up that shows.
+      5. Back on the Permissions page, scroll to the Object Ownership section and click the Edit button.
+      6. In the form that opens:
+          - Choose the "ACLs enabled" card.
+          - Click on the "Save changes" button.
+      7. Back on the Permissions page, scroll to the "Access Control List (ACL)" section and click on the Edit button.
+      8. In the form that opens, enable the Read permission for "Everyone (public access)".
+      9. Check the "I understand the effects of these changes on my objects and buckets." checkbox.
+      10. Click on the "Save changes" button.
 
     </TabsContent>
     <TabsContent value="minio">
 
     - [Install MinIO](https://min.io/docs/minio/linux/index.html).
     - Change port to `9001` using the [console address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-console-address) and [address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-address) CLI options.
-    - [MinIO bucket with public access policy](https://min.io/docs/minio/linux/administration/console/managing-objects.html#creating-buckets).
-    - [MinIO access and secret access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1).
+    - Create [MinIO access and secret access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1).
+    - Create a [MinIO bucket](https://min.io/docs/minio/linux/administration/console/managing-objects.html#creating-buckets) with public access policy:
+        - Go to the bucket's dashboard.
+        - Under the Summary section, click on the pencil icon next to Access Policy.
+        - In the pop-up, choose Custom from the dropdown.
+        - In the editor, enter the following:
+
+    ```json highlights={[["15", "{bucketname}", "Replace with the bucket's name."]]}
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+        "Action": [
+          "s3:GetObject"
+        ],
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+          "*"
+          ]
+        },
+        "Resource": [
+          "arn:aws:s3:::{bucketname}/*"
+        ]
+        }
+      ]
+    }
+    ```
+
+    Make sure to replace `{bucket_name}` with the name of the bucket you created. You can edit the access policy under the Summary section of your bucket's dashboard.
 
     </TabsContent>
     <TabsContent value="spaces">
 
-    - [DigitalOcean account](https://cloud.digitalocean.com/registrations/new).
-    - [DigitalOcean Spaces bucket](https://docs.digitalocean.com/products/spaces/how-to/create/).
-    - [DigitalOcean Spaces access and secret access keys](https://docs.digitalocean.com/products/spaces/how-to/manage-access/#access-keys).
+    - Create [DigitalOcean account](https://cloud.digitalocean.com/registrations/new).
+    - Create [DigitalOcean Spaces bucket](https://docs.digitalocean.com/products/spaces/how-to/create/).
+    - Create [DigitalOcean Spaces access and secret access keys](https://docs.digitalocean.com/products/spaces/how-to/manage-access/#access-keys).
 
     </TabsContent>
   </TabsContentWrapper>
@@ -139,7 +159,7 @@ module.exports = {
       The base URL to upload files to.
 
       - For AWS S3, the endpoint is of the format `https://{bucket}.s3.{region}.amazonaws.com`
-      - For MinIO, it's the URL to the MinIO server.
+      - For MinIO, it's the URL to the MinIO server with the bucket's name. For example, `https://{server-domain}/{bucket}`.
       - For DigitalOcean Spaces, it's either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.
       
       </Table.Cell>
@@ -192,6 +212,8 @@ module.exports = {
       <Table.Cell>
       
       The bucket's region code.
+
+      For MinIO, use `us-east-1`.
       
       </Table.Cell>
       <Table.Cell>
@@ -227,7 +249,7 @@ module.exports = {
       
       The URL to the AWS S3 (or compatible S3 API) server.
 
-      - For AWS S3, the endpoint is of the format `{bucket}.s3.{region}.amazonaws.com`
+      - For AWS S3, the endpoint is of the format `https://s3.{region}.amazonaws.com`
       - For MinIO, it's the URL to the MinIO server.
       - For DigitalOcean Spaces, it's the Spaces Origin Endpoint.
       
@@ -310,3 +332,16 @@ module.exports = {
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
+
+## Troubleshooting
+
+<DetailsList
+  sections={[
+    {
+      title: "AWS: The bucket does not allow ACLs (Enabling public access to bucket)",
+      content: <S3BucketAcl />
+    }
+  ]}
+/>
