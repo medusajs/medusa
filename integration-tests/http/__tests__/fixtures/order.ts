@@ -165,9 +165,6 @@ export async function createOrderSeeder({ api }) {
   const paymentCollection = (
     await api.post(`/store/payment-collections`, {
       cart_id: cart.id,
-      region_id: region.id,
-      currency_code: region.currency_code,
-      amount: cart.total,
     })
   ).data.payment_collection
 

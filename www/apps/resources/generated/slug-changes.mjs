@@ -1110,6 +1110,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep/page.mdx"
   },
   {
+    "origSlug": "/references/helper_steps/functions/helper_steps.emitEventStep",
+    "newSlug": "/references/helper-steps/emitEventStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.emitEventStep/page.mdx"
+  },
+  {
     "origSlug": "/references/helper_steps/functions/helper_steps.removeRemoteLinkStep",
     "newSlug": "/references/helper-steps/removeRemoteLinkStep",
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx"

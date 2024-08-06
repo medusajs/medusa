@@ -1,11 +1,10 @@
-import { isPresent } from "@medusajs/utils"
+import { MathBN, isPresent } from "@medusajs/utils"
 import {
-  StepResponse,
   WorkflowData,
-  createStep,
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updatePaymentCollectionStep } from "../../../payment-collection"
@@ -14,26 +13,6 @@ import { deletePaymentSessionsWorkflow } from "../../../payment-collection/workf
 type WorklowInput = {
   cart_id: string
 }
-
-interface StepInput {
-  cart_id: string
-}
-
-// We export a step running the workflow too, so that we can use it as a subworkflow e.g. in the update cart workflows
-export const refreshPaymentCollectionForCartStepId =
-  "refresh-payment-collection-for-cart"
-export const refreshPaymentCollectionForCartStep = createStep(
-  refreshPaymentCollectionForCartStepId,
-  async (data: StepInput, { container }) => {
-    await refreshPaymentCollectionForCartWorkflow(container).run({
-      input: {
-        cart_id: data.cart_id,
-      },
-    })
-
-    return new StepResponse(null)
-  }
-)
 
 export const refreshPaymentCollectionForCartWorkflowId =
   "refresh-payment-collection-for-cart"
@@ -44,9 +23,14 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       entry_point: "cart",
       fields: [
         "id",
-        "total",
+        "region_id",
         "currency_code",
+        "total",
+        "raw_total",
         "payment_collection.id",
+        "payment_collection.raw_amount",
+        "payment_collection.amount",
+        "payment_collection.currency_code",
         "payment_collection.payment_sessions.id",
       ],
       variables: { id: input.cart_id },
@@ -54,37 +38,51 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       list: false,
     })
 
-    const deletePaymentSessionInput = transform(
-      { paymentCollection: cart.payment_collection },
-      (data) => {
-        return {
-          ids:
-            data.paymentCollection?.payment_sessions
-              ?.map((ps) => ps.id)
-              ?.flat(1) || [],
+    when({ cart }, ({ cart }) => {
+      const valueIsEqual = MathBN.eq(
+        cart.payment_collection?.raw_amount ?? -1,
+        cart.raw_total
+      )
+
+      if (valueIsEqual) {
+        return cart.payment_collection.currency_code !== cart.currency_code
+      }
+
+      return true
+    }).then(() => {
+      const deletePaymentSessionInput = transform(
+        { paymentCollection: cart.payment_collection },
+        (data) => {
+          return {
+            ids:
+              data.paymentCollection?.payment_sessions
+                ?.map((ps) => ps.id)
+                ?.flat(1) || [],
+          }
         }
-      }
-    )
+      )
 
-    const updatePaymentCollectionInput = transform({ cart }, (data) => {
-      if (!isPresent(data.cart?.payment_collection?.id)) {
-        return
-      }
+      const updatePaymentCollectionInput = transform({ cart }, ({ cart }) => {
+        if (!isPresent(cart.payment_collection?.id)) {
+          return
+        }
 
-      return {
-        selector: { id: data.cart.payment_collection.id },
-        update: {
-          amount: data.cart.total,
-          currency_code: data.cart.currency_code,
-        },
-      }
+        return {
+          selector: { id: cart.payment_collection.id },
+          update: {
+            amount: cart.total,
+            currency_code: cart.currency_code,
+            region_id: cart.region_id,
+          },
+        }
+      })
+
+      parallelize(
+        deletePaymentSessionsWorkflow.runAsStep({
+          input: deletePaymentSessionInput,
+        }),
+        updatePaymentCollectionStep(updatePaymentCollectionInput)
+      )
     })
-
-    parallelize(
-      deletePaymentSessionsWorkflow.runAsStep({
-        input: deletePaymentSessionInput,
-      }),
-      updatePaymentCollectionStep(updatePaymentCollectionInput)
-    )
   }
 )
