@@ -92,9 +92,9 @@ export const completeCartWorkflow = createWorkflow(
           unitPrice: item.raw_unit_price ?? item.unit_price,
           isTaxInclusive: item.is_tax_inclusive,
           quantity: item.raw_quantity ?? item.quantity,
-          metadata: item?.metadata ?? {},
-          taxLines: item.tax_lines || [],
-          adjustments: item.adjustments || [],
+          metadata: item?.metadata,
+          taxLines: item.tax_lines ?? [],
+          adjustments: item.adjustments ?? [],
         })
       })
 
@@ -113,10 +113,10 @@ export const completeCartWorkflow = createWorkflow(
       })
 
       const itemAdjustments = allItems
-        .map((item) => item.adjustments || [])
+        .map((item) => item.adjustments ?? [])
         .flat(1)
       const shippingAdjustments = shippingMethods
-        .map((sm) => sm.adjustments || [])
+        .map((sm) => sm.adjustments ?? [])
         .flat(1)
 
       const promoCodes = [...itemAdjustments, ...shippingAdjustments]
