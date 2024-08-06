@@ -2,10 +2,10 @@ import {
   createStep,
   createWorkflow,
   StepResponse,
-  transform,
-  when,
   WorkflowData,
 } from "./composer"
+import { createHook } from "./composer/create-hook"
+import { WorkflowResponse } from "./composer/helpers/workflow-response"
 
 const step1 = createStep("step1", async (input: {}, context) => {
   return new StepResponse({ step1: "step1" })
@@ -24,12 +24,21 @@ const workflow = createWorkflow(
   "sub-workflow",
   function (input: WorkflowData<{ outsideWorkflowData: string }>) {
     step1()
+    const somethingHook = createHook("something", { id: "1" })
     step3()
-    return step2({ filters: { id: input.outsideWorkflowData } })
+    return new WorkflowResponse({ id: 1 }, { hooks: [somethingHook] })
   }
 )
 
-const workflow2 = createWorkflow("workflow", function () {
+workflow.hooks.something((input) => {
+  console.log("input>", input)
+})
+
+workflow.run().then((res) => {
+  console.log("res", res)
+})
+
+/*const workflow2 = createWorkflow("workflow", function () {
   const step1Res = step1()
 
   const step3Res = when({ value: true }, ({ value }) => {
@@ -45,13 +54,13 @@ const workflow2 = createWorkflow("workflow", function () {
   const workflowRes = workflow.asStep({ outsideWorkflowData: step1Res.step1 })
 
   return workflowRes
-})
+})*/
 
-workflow2()
-  .run({})
-  .then((res) => {
-    console.log(res.result)
-  })
+// workflow()
+//   .run({})
+//   .then((res) => {
+//     console.log(res.result)
+//   })
 
 /*const step1 = createStep("step1", async (input: {}, context) => {
   return new StepResponse({ step1: ["step1"] })

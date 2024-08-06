@@ -1,3 +1,4 @@
+import { AdminPaymentCollection } from "../payment/admin"
 import {
   BaseOrder,
   BaseOrderAddress,
@@ -6,7 +7,10 @@ import {
   BaseOrderShippingMethod,
 } from "./common"
 
-export interface AdminOrder extends BaseOrder {}
+export interface AdminOrder extends BaseOrder {
+  payment_collections: AdminPaymentCollection[]
+}
+
 export interface AdminOrderLineItem extends BaseOrderLineItem {}
 export interface AdminOrderFilters extends BaseOrderFilters {}
 export interface AdminOrderAddress extends BaseOrderAddress {}

@@ -2489,8 +2489,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createOrderClaimItems",
+                        "title": "createOrderClaimItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createOrderClaims",
                         "title": "createOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createOrderExchangeItems",
+                        "title": "createOrderExchangeItems",
                         "children": []
                       },
                       {
@@ -2608,8 +2622,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaimItemImages",
+                        "title": "deleteOrderClaimItemImages",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderClaimItems",
+                        "title": "deleteOrderClaimItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteOrderClaims",
                         "title": "deleteOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteOrderExchangeItems",
+                        "title": "deleteOrderExchangeItems",
                         "children": []
                       },
                       {
@@ -3236,27 +3271,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/models/ClaimItem",
-                        "title": "ClaimItem",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/order/models/ClaimItemImage",
-                        "title": "ClaimItemImage",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/order/models/ExchangeItem",
-                        "title": "ExchangeItem",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/order/models/LineItem",
                         "title": "LineItem",
                         "children": []
@@ -3306,8 +3320,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/models/OrderClaimItem",
+                        "title": "OrderClaimItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/OrderClaimItemImage",
+                        "title": "OrderClaimItemImage",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/models/OrderExchange",
                         "title": "OrderExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/OrderExchangeItem",
+                        "title": "OrderExchangeItem",
                         "children": []
                       },
                       {
@@ -4243,6 +4278,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/product/guides/price",
                 "title": "Get Product Variant Prices",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/product/guides/price-with-taxes",
+                "title": "Get Variant Price with Taxes",
                 "children": []
               }
             ]
@@ -6351,6 +6393,36 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/subscriptions/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/recipes/digital-products/examples/standard",
+            "title": "Example",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
         "path": "/recipes/b2b",
         "title": "B2B",
         "children": []
@@ -6360,13 +6432,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/commerce-automation",
         "title": "Commerce Automation",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/digital-products",
-        "title": "Digital Products",
         "children": []
       },
       {
@@ -6416,13 +6481,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/recipes/pos",
         "title": "POS",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
         "children": []
       }
     ]
@@ -6720,12 +6778,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
+            "autogenerate_path": "storefront-development/products/price/examples",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/show-price",
-                "title": "Example: Show Variant Price",
+                "title": "Example: Show Variant's Price",
                 "children": []
               },
               {
@@ -6733,6 +6792,13 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/storefront-development/products/price/examples/sale-price",
                 "title": "Example: Show Sale Price",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/price/examples/tax-price",
+                "title": "Example: Show Price with Taxes",
                 "children": []
               }
             ]
@@ -7122,6 +7188,21 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Integrations",
+            "hasTitleStyling": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/troubleshooting/s3",
+                "title": "S3 Module Provider Errors",
+                "children": []
+              }
+            ]
           }
         ]
       }
@@ -7169,6 +7250,13 @@ export const generatedSidebar = [
             "hasTitleStyling": true,
             "autogenerate_path": "/references/workflows/functions",
             "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/workflows/createHook",
+                "title": "createHook",
+                "children": []
+              },
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -7486,6 +7574,44 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/references/helper-steps",
+        "title": "Helper Steps Reference",
+        "isChildSidebar": true,
+        "autogenerate_path": "/references/helper_steps/functions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/createRemoteLinkStep",
+            "title": "createRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/dismissRemoteLinkStep",
+            "title": "dismissRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/removeRemoteLinkStep",
+            "title": "removeRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/useRemoteQueryStep",
+            "title": "useRemoteQueryStep",
+            "children": []
           }
         ]
       }

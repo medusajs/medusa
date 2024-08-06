@@ -1,3 +1,4 @@
+import { isPresent } from "@medusajs/utils"
 import {
   StepResponse,
   WorkflowData,
@@ -39,7 +40,7 @@ export const refreshPaymentCollectionForCartWorkflowId =
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
   (input: WorkflowData<WorklowInput>): WorkflowData<void> => {
-    const carts = useRemoteQueryStep({
+    const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: [
         "id",
@@ -50,30 +51,40 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       ],
       variables: { id: input.cart_id },
       throw_if_key_not_found: true,
+      list: false,
     })
 
-    const cart = transform({ carts }, (data) => data.carts[0])
     const deletePaymentSessionInput = transform(
       { paymentCollection: cart.payment_collection },
       (data) => {
         return {
           ids:
-            data.paymentCollection?.payment_sessions?.map((ps) => ps.id) || [],
+            data.paymentCollection?.payment_sessions
+              ?.map((ps) => ps.id)
+              ?.flat(1) || [],
         }
       }
     )
+
+    const updatePaymentCollectionInput = transform({ cart }, (data) => {
+      if (!isPresent(data.cart?.payment_collection?.id)) {
+        return
+      }
+
+      return {
+        selector: { id: data.cart.payment_collection.id },
+        update: {
+          amount: data.cart.total,
+          currency_code: data.cart.currency_code,
+        },
+      }
+    })
 
     parallelize(
       deletePaymentSessionsWorkflow.runAsStep({
         input: deletePaymentSessionInput,
       }),
-      updatePaymentCollectionStep({
-        selector: { id: cart.payment_collection.id },
-        update: {
-          amount: cart.total,
-          currency_code: cart.currency_code,
-        },
-      })
+      updatePaymentCollectionStep(updatePaymentCollectionInput)
     )
   }
 )

@@ -81,7 +81,10 @@ type Activity = {
 const useActivityItems = (order: AdminOrder) => {
   const { t } = useTranslation()
 
-  const { returns = [] } = useReturns({ order_id: order.id, fields: "*items" })
+  const { returns = [] } = useReturns({
+    order_id: order.id,
+    fields: "+received_at,*items",
+  })
 
   const notes = []
   const isLoading = false
@@ -169,11 +172,24 @@ const useActivityItems = (order: AdminOrder) => {
     }
 
     for (const ret of returns) {
+      // Always display created action
       items.push({
-        title: t("orders.activity.events.return.created"),
+        title: t("orders.activity.events.return.created", {
+          returnId: ret.id.slice(-7),
+        }),
         timestamp: ret.created_at,
-        children: <ReturnCreatedBody orderReturn={ret} />,
+        children: <ReturnBody orderReturn={ret} />,
       })
+
+      if (ret.status === "received" || ret.status === "partially_received") {
+        items.push({
+          title: t("orders.activity.events.return.received", {
+            returnId: ret.id.slice(-7),
+          }),
+          timestamp: ret.received_at,
+          children: <ReturnBody orderReturn={ret} />,
+        })
+      }
     }
 
     // for (const note of notes || []) {
@@ -242,13 +258,19 @@ const OrderActivityItem = ({
           <Text size="small" leading="compact" weight="plus">
             {title}
           </Text>
-          <Tooltip
-            content={getFullDate({ date: timestamp, includeTime: true })}
-          >
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {getRelativeDate(timestamp)}
-            </Text>
-          </Tooltip>
+          {timestamp && (
+            <Tooltip
+              content={getFullDate({ date: timestamp, includeTime: true })}
+            >
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                {getRelativeDate(timestamp)}
+              </Text>
+            </Tooltip>
+          )}
         </div>
         <div>{children}</div>
       </div>
@@ -392,7 +414,7 @@ const FulfillmentCreatedBody = ({
   )
 }
 
-const ReturnCreatedBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
   const { t } = useTranslation()
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {

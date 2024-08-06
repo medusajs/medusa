@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { resolveValue, StepResponse } from "./helpers"
+import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -15,6 +15,7 @@ import {
   StepFunctionResult,
   WorkflowData,
 } from "./type"
+import { createStepHandler } from "./helpers/create-step-handler"
 
 /**
  * The type of invocation function passed to a step.
@@ -25,7 +26,7 @@ import {
  *
  * @returns The expected output based on the type parameter `TOutput`.
  */
-type InvokeFn<TInput, TOutput, TCompensateInput> = (
+export type InvokeFn<TInput, TOutput, TCompensateInput> = (
   /**
    * The input of the step.
    */
@@ -53,7 +54,7 @@ type InvokeFn<TInput, TOutput, TCompensateInput> = (
  *
  * @returns There's no expected type to be returned by the compensation function.
  */
-type CompensateFn<T> = (
+export type CompensateFn<T> = (
   /**
    * The argument passed to the compensation function.
    */
@@ -64,7 +65,7 @@ type CompensateFn<T> = (
   context: StepExecutionContext
 ) => unknown | Promise<unknown>
 
-interface ApplyStepOptions<
+export interface ApplyStepOptions<
   TStepInputs extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
@@ -95,7 +96,7 @@ interface ApplyStepOptions<
  * @param invokeFn
  * @param compensateFn
  */
-function applyStep<
+export function applyStep<
   TInvokeInput,
   TStepInput extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
@@ -121,77 +122,12 @@ function applyStep<
       )
     }
 
-    const handler = {
-      invoke: async (stepArguments: WorkflowStepHandlerArguments) => {
-        const metadata = stepArguments.metadata
-        const idempotencyKey = metadata.idempotency_key
-
-        stepArguments.context!.idempotencyKey = idempotencyKey
-        const executionContext: StepExecutionContext = {
-          workflowId: metadata.model_id,
-          stepName: metadata.action,
-          action: "invoke",
-          idempotencyKey,
-          attempt: metadata.attempt,
-          container: stepArguments.container,
-          metadata,
-          eventGroupId:
-            stepArguments.transaction.getFlow()?.metadata?.eventGroupId ??
-            stepArguments.context!.eventGroupId,
-          transactionId: stepArguments.context!.transactionId,
-          context: stepArguments.context!,
-        }
-
-        const argInput = input ? await resolveValue(input, stepArguments) : {}
-        const stepResponse: StepResponse<any, any> = await invokeFn.apply(
-          this,
-          [argInput, executionContext]
-        )
-
-        const stepResponseJSON =
-          stepResponse?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
-            ? stepResponse.toJSON()
-            : stepResponse
-
-        return {
-          __type: OrchestrationUtils.SymbolWorkflowWorkflowData,
-          output: stepResponseJSON,
-        }
-      },
-      compensate: compensateFn
-        ? async (stepArguments: WorkflowStepHandlerArguments) => {
-            const metadata = stepArguments.metadata
-            const idempotencyKey = metadata.idempotency_key
-
-            stepArguments.context!.idempotencyKey = idempotencyKey
-
-            const executionContext: StepExecutionContext = {
-              workflowId: metadata.model_id,
-              stepName: metadata.action,
-              action: "compensate",
-              idempotencyKey,
-              attempt: metadata.attempt,
-              container: stepArguments.container,
-              metadata,
-              context: stepArguments.context!,
-            }
-
-            const stepOutput = (stepArguments.invoke[stepName] as any)?.output
-            const invokeResult =
-              stepOutput?.__type ===
-              OrchestrationUtils.SymbolWorkflowStepResponse
-                ? stepOutput.compensateInput &&
-                  deepCopy(stepOutput.compensateInput)
-                : stepOutput && deepCopy(stepOutput)
-
-            const args = [invokeResult, executionContext]
-            const output = await compensateFn.apply(this, args)
-            return {
-              output,
-            }
-          }
-        : undefined,
-    }
+    const handler = createStepHandler.bind(this)({
+      stepName,
+      input,
+      invokeFn,
+      compensateFn,
+    })
 
     wrapAsyncHandler(stepConfig, handler)
 
@@ -353,7 +289,7 @@ function wrapConditionalStep(
     }
 
     if (!canContinue) {
-      return
+      return StepResponse.skip()
     }
 
     return await originalInvoke(stepArguments)
@@ -450,19 +386,17 @@ export function createStep<
         }
       | undefined
   ): WorkflowData<TInvokeResultOutput> {
-    if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
+    const context = global[
+      OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+    ] as CreateWorkflowComposerContext
+
+    if (!context) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
     }
 
-    const stepBinder = (
-      global[
-        OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-      ] as CreateWorkflowComposerContext
-    ).stepBinder
-
-    return stepBinder<TInvokeResultOutput>(
+    return context.stepBinder<TInvokeResultOutput>(
       applyStep<
         TInvokeInput,
         { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },

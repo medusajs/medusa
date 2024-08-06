@@ -4,9 +4,7 @@ export async function configLoaderOverride(
   entryDirectory: string,
   override: { clientUrl: string; debug?: boolean }
 ) {
-  // in case it is not install as it is optional and required only when using this util
-  // @ts-ignore
-  const { configManager } = await import("@medusajs/framework/config")
+  const { configManager } = await import("@medusajs/framework")
   const { configModule, error } = getConfigFile<
     ReturnType<typeof configManager.loadConfig>
   >(entryDirectory, "medusa-config.js")
@@ -27,5 +25,8 @@ export async function configLoaderOverride(
           idle_in_transaction_session_timeout: 20000,
         }
 
-  configManager.loadConfig(configModule)
+  configManager.loadConfig({
+    projectConfig: configModule,
+    baseDir: entryDirectory,
+  })
 }

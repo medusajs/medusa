@@ -18,7 +18,7 @@ import {
   ProductType,
   ProductVariant,
 } from "@models"
-import { ProductCategoryService, ProductService } from "@services"
+import { ProductCategoryService } from "@services"
 
 import {
   arrayDifference,
@@ -55,7 +55,7 @@ import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  productService: ProductService
+  productService: ModulesSdkTypes.IMedusaInternalService<any, any>
   productVariantService: ModulesSdkTypes.IMedusaInternalService<any, any>
   productTagService: ModulesSdkTypes.IMedusaInternalService<any>
   productCategoryService: ProductCategoryService
@@ -102,7 +102,7 @@ export default class ProductModuleService
   implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly productService_: ProductService
+  protected readonly productService_: ModulesSdkTypes.IMedusaInternalService<Product>
   protected readonly productVariantService_: ModulesSdkTypes.IMedusaInternalService<ProductVariant>
   protected readonly productCategoryService_: ProductCategoryService
   protected readonly productTagService_: ModulesSdkTypes.IMedusaInternalService<ProductTag>
@@ -1571,7 +1571,7 @@ export default class ProductModuleService
     if (productData.handle && !isValidHandle(productData.handle)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Invalid product handle. It must contain URL safe characters"
+        `Invalid product handle '${productData.handle}'. It must contain URL safe characters`
       )
     }
   }
@@ -1609,26 +1609,6 @@ export default class ProductModuleService
       productData.discountable = false
     }
 
-    if (productData.tags?.length && productData.tags.some((t) => !t.id)) {
-      const dbTags = await this.productTagService_.list(
-        {
-          value: productData.tags
-            .map((t) => t.value)
-            .filter((v) => !!v) as string[],
-        },
-        { take: null },
-        sharedContext
-      )
-
-      productData.tags = productData.tags.map((tag) => {
-        const dbTag = dbTags.find((t) => t.value === tag.value)
-        return {
-          ...tag,
-          ...(dbTag ? { id: dbTag.id } : {}),
-        }
-      })
-    }
-
     if (productData.options?.length) {
       const dbOptions = await this.productOptionService_.list(
         { product_id: productData.id },
@@ -1650,6 +1630,13 @@ export default class ProductModuleService
           ...(dbOption ? { id: dbOption.id } : {}),
         }
       })
+    }
+
+    if (productData.tag_ids) {
+      ;(productData as any).tags = productData.tag_ids.map((cid) => ({
+        id: cid,
+      }))
+      delete productData.tag_ids
     }
 
     if (productData.category_ids) {

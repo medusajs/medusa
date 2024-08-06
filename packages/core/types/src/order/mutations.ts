@@ -860,9 +860,14 @@ export interface CreateOrderChangeDTO {
   /**
    * The type of the order change.
    */
-  change_type?: "return" | "exchange" | "claim" | "edit"
+  change_type?:
+    | "return_request"
+    | "return_receive"
+    | "exchange"
+    | "claim"
+    | "edit"
 
-  /**
+  /** 
    * The description of the order change.
    */
   description?: string
@@ -1536,6 +1541,16 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
 }
 
 /**
+ * A return's status.
+ */
+export type ReturnStatus =
+  | "open"
+  | "requested"
+  | "received"
+  | "partially_received"
+  | "canceled"
+
+/**
  * The attributes to update in the return.
  */
 export interface UpdateReturnDTO {
@@ -1609,6 +1624,8 @@ export interface UpdateReturnDTO {
      */
     metadata?: Record<string, unknown> | null
   }[]
+  status?: ReturnStatus
+  requested_at?: Date
 }
 
 /**

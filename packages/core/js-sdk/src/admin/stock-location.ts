@@ -105,4 +105,19 @@ export class StockLocation {
       }
     )
   }
+
+  async updateFulfillmentProviders(
+    id: string,
+    body: HttpTypes.AdminBatchLink,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminStockLocationResponse>(
+      `/admin/stock-locations/${id}/fulfillment-providers`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
 }

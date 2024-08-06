@@ -22,6 +22,13 @@
  *           type: number
  *           title: quantity
  *           description: The item's quantity.
+ *         reason:
+ *           type: string
+ *           enum:
+ *             - missing_item
+ *             - wrong_item
+ *             - production_failure
+ *             - other
  *         description:
  *           type: string
  *           title: description
@@ -30,9 +37,6 @@
  *           type: string
  *           title: internal_note
  *           description: The item's internal note.
- *         metadata:
- *           type: object
- *           description: The item's metadata.
  * 
 */
 

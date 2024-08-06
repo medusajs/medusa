@@ -82,9 +82,7 @@ export type AdminPostReceiveClaimItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostCancelClaimReqSchema = z.object({
-  return_id: z.string(),
   no_notification: z.boolean().optional(),
-  internal_note: z.string().nullish(),
 })
 export type AdminPostCancelClaimReqSchemaType = z.infer<
   typeof AdminPostCancelClaimReqSchema
@@ -164,7 +162,7 @@ export type AdminPostClaimItemsReqSchemaType = z.infer<
 export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
-  reason_id: z.string().nullish().optional(),
+  reason: z.nativeEnum(ClaimReason).nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
 

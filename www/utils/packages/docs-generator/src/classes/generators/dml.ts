@@ -61,7 +61,7 @@ class DmlGenerator extends AbstractGenerator {
         )
 
         this.generatorEventManager.emit(GeneratorEvent.FINISHED_GENERATE_EVENT)
-        console.log(`[OAS] Finished generating OAS for ${file.fileName}.`)
+        console.log(`[DML] Finished generating OAS for ${file.fileName}.`)
       })
     )
   }

@@ -61,6 +61,7 @@ export type SidebarContextType = {
   shouldHandleHashChange: boolean
   sidebarRef: React.RefObject<HTMLDivElement>
   goBack: () => void
+  resetItems: () => void
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -75,11 +76,16 @@ export type ActionOptionsType = {
   ignoreExisting?: boolean
 }
 
-export type ActionType = {
-  type: "add" | "update"
-  items: SidebarItemType[]
-  options?: ActionOptionsType
-}
+export type ActionType =
+  | {
+      type: "add" | "update"
+      items: SidebarItemType[]
+      options?: ActionOptionsType
+    }
+  | {
+      type: "replace"
+      replacementItems: SidebarSectionItemsType
+    }
 
 const findItem = (
   section: SidebarItemType[],
@@ -105,8 +111,15 @@ const findItem = (
 
 export const reducer = (
   state: SidebarSectionItemsType,
-  { type, items, options }: ActionType
+  actionData: ActionType
 ) => {
+  if (actionData.type === "replace") {
+    return actionData.replacementItems
+  }
+
+  const { type, options } = actionData
+  let { items } = actionData
+
   const {
     section = SidebarItemSections.TOP,
     parent,
@@ -173,6 +186,7 @@ export type SidebarProviderProps = {
   shouldHandlePathChange?: boolean
   scrollableElement?: Element | Window
   staticSidebarItems?: boolean
+  resetOnCondition?: () => boolean
 } & SidebarStyleOptions
 
 export const SidebarProvider = ({
@@ -186,6 +200,7 @@ export const SidebarProvider = ({
   staticSidebarItems = false,
   disableActiveTransition = false,
   noTitleStyling = false,
+  resetOnCondition,
 }: SidebarProviderProps) => {
   const [items, dispatch] = useReducer(reducer, {
     top: initialItems?.top || [],
@@ -315,6 +330,17 @@ export const SidebarProvider = ({
     router.replace(backItem.path!)
   }
 
+  const resetItems = useCallback(() => {
+    dispatch({
+      type: "replace",
+      replacementItems: {
+        top: initialItems?.top || [],
+        bottom: initialItems?.bottom || [],
+        mobile: initialItems?.mobile || [],
+      },
+    })
+  }, [initialItems])
+
   useEffect(() => {
     if (shouldHandleHashChange) {
       init()
@@ -413,6 +439,12 @@ export const SidebarProvider = ({
     }
   }, [getCurrentSidebar, activePath])
 
+  useEffect(() => {
+    if (resetOnCondition?.()) {
+      resetItems()
+    }
+  }, [resetOnCondition])
+
   return (
     <SidebarContext.Provider
       value={{
@@ -435,6 +467,7 @@ export const SidebarProvider = ({
         shouldHandleHashChange,
         sidebarRef,
         goBack,
+        resetItems,
       }}
     >
       {children}

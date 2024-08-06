@@ -1,4 +1,5 @@
 import {
+  AdditionalData,
   CreateProductWorkflowInputDTO,
   PricingTypes,
   ProductTypes,
@@ -6,6 +7,8 @@ import {
 import { isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
@@ -15,14 +18,13 @@ import { createProductVariantsWorkflow } from "./create-product-variants"
 
 type WorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
-}
+} & AdditionalData
 
 export const createProductsWorkflowId = "create-products"
+
 export const createProductsWorkflow = createWorkflow(
   createProductsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductDTO[]> => {
+  (input: WorkflowData<WorkflowInput>) => {
     // Passing prices to the product module will fail, we want to keep them for after the product is created.
     const productWithoutExternalRelations = transform({ input }, (data) =>
       data.input.products.map((p) => ({
@@ -76,22 +78,34 @@ export const createProductsWorkflow = createWorkflow(
     const createdVariants =
       createProductVariantsWorkflow.runAsStep(variantsInput)
 
-    return transform({ createdVariants, input, createdProducts }, (data) => {
-      const variantMap: Record<string, ProductTypes.ProductVariantDTO[]> = {}
+    const response = transform(
+      { createdVariants, input, createdProducts },
+      (data) => {
+        const variantMap: Record<string, ProductTypes.ProductVariantDTO[]> = {}
 
-      for (const variant of data.createdVariants) {
-        const array = variantMap[variant.product_id!] || []
+        for (const variant of data.createdVariants) {
+          const array = variantMap[variant.product_id!] || []
 
-        array.push(variant)
+          array.push(variant)
 
-        variantMap[variant.product_id!] = array
+          variantMap[variant.product_id!] = array
+        }
+
+        for (const product of data.createdProducts) {
+          product.variants = variantMap[product.id] || []
+        }
+
+        return data.createdProducts
       }
+    )
 
-      for (const product of data.createdProducts) {
-        product.variants = variantMap[product.id] || []
-      }
+    const productsCreated = createHook("productsCreated", {
+      products: response,
+      additional_data: input.additional_data,
+    })
 
-      return data.createdProducts
+    return new WorkflowResponse(response, {
+      hooks: [productsCreated],
     })
   }
 )

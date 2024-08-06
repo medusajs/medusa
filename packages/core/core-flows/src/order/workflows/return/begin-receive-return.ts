@@ -6,6 +6,7 @@ import {
 } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
@@ -36,7 +37,7 @@ export const beginReceiveReturnWorkflow = createWorkflow(
   beginReceiveReturnWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.BeginReceiveOrderReturnWorkflowInput>
-  ): WorkflowData<OrderChangeDTO> {
+  ): WorkflowResponse<OrderChangeDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -59,7 +60,7 @@ export const beginReceiveReturnWorkflow = createWorkflow(
       { orderReturn, order, input },
       ({ orderReturn, order, input }) => {
         return {
-          change_type: "return" as const,
+          change_type: "return_receive" as const,
           order_id: order.id,
           return_id: orderReturn.id,
           created_by: input.created_by,
@@ -68,6 +69,6 @@ export const beginReceiveReturnWorkflow = createWorkflow(
         }
       }
     )
-    return createOrderChangeStep(orderChangeInput)
+    return new WorkflowResponse(createOrderChangeStep(orderChangeInput))
   }
 )

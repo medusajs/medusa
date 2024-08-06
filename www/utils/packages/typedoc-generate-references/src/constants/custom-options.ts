@@ -38,6 +38,18 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "fulfillment-provider",
     parentIgnore: true,
   }),
+  "helper-steps": getOptions({
+    entryPointPath: "packages/core/core-flows/src/common/index.ts",
+    tsConfigName: "core-flows.json",
+    name: "helper-steps",
+    exclude: [
+      ...(baseOptions.exclude || []),
+      path.join(
+        rootPathPrefix,
+        "packages/core/core-flows/src/common/workflows/**.ts"
+      ),
+    ],
+  }),
   "medusa-config": getOptions({
     entryPointPath: "packages/core/types/src/common/config-module.ts",
     tsConfigName: "types.json",
@@ -103,6 +115,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       ...(baseOptions.exclude || []),
       ...modules.map((moduleName) => `**/${moduleName}/**/*.ts`),
     ],
+  }),
+  "modules-sdk": getOptions({
+    entryPointPath: "packages/core/modules-sdk/src/index.ts",
+    tsConfigName: "modules-sdk.json",
+    name: "modules-sdk",
   }),
   utils: getOptions({
     entryPointPath: "packages/core/utils/src/index.ts",

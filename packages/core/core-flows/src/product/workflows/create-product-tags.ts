@@ -1,15 +1,29 @@
-import { ProductTypes } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { AdditionalData, ProductTypes } from "@medusajs/types"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createHook,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 import { createProductTagsStep } from "../steps"
 
-type WorkflowInput = { product_tags: ProductTypes.CreateProductTagDTO[] }
+type WorkflowInput = {
+  product_tags: ProductTypes.CreateProductTagDTO[]
+} & AdditionalData
 
 export const createProductTagsWorkflowId = "create-product-tags"
+
 export const createProductTagsWorkflow = createWorkflow(
   createProductTagsWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowData<ProductTypes.ProductTagDTO[]> => {
-    return createProductTagsStep(input.product_tags)
+  (input: WorkflowData<WorkflowInput>) => {
+    const productTags = createProductTagsStep(input.product_tags)
+    const productTagsCreated = createHook("productTagsCreated", {
+      product_tags: productTags,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(productTags, {
+      hooks: [productTagsCreated],
+    })
   }
 )

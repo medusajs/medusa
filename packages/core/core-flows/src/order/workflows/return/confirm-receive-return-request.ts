@@ -15,6 +15,7 @@ import {
 } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -128,7 +129,7 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
 export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
 export const confirmReturnReceiveWorkflow = createWorkflow(
   confirmReturnReceiveWorkflowId,
-  function (input: WorkflowInput): WorkflowData<OrderDTO> {
+  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: [
@@ -276,6 +277,6 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
       adjustInventoryLevelsStep(inventoryAdjustment)
     )
 
-    return previewOrderChangeStep(order.id)
+    return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
 )

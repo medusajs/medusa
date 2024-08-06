@@ -8,7 +8,7 @@ import {
 } from "../../../../types/routing"
 import { remapKeysForProduct, remapProductResponse } from "../helpers"
 import { MedusaError } from "@medusajs/utils"
-import { HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import { refetchEntity } from "../../../utils/refetch-entity"
 
 export const GET = async (
@@ -31,13 +31,18 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProduct>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminUpdateProduct & AdditionalData
+  >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
+  const { additional_data, ...update } = req.validatedBody
+
   const { result } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody,
+      update,
+      additional_data,
     },
   })
 

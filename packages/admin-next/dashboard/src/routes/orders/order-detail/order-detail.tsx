@@ -6,6 +6,7 @@ import { OrderActivitySection } from "./components/order-activity-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
+import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
 import { DEFAULT_FIELDS } from "./constants"
 import { orderLoader } from "./loader"
@@ -51,7 +52,7 @@ export const OrderDetail = () => {
         <div className="flex w-full flex-col gap-y-3">
           <OrderGeneralSection order={order} />
           <OrderSummarySection order={order} />
-          {/* <OrderPaymentSection order={order} />*/}
+          <OrderPaymentSection order={order} />
           <OrderFulfillmentSection order={order} />
           {after.widgets.map((w, i) => {
             return (

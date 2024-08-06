@@ -1,8 +1,47 @@
+---
+sidebar_position: 1
+sidebar_label: "Example: Show Variant's Price"
+---
+
 export const metadata = {
-  title: `React Example: Show Product Variant's Price`,
+  title: `Example: Show Product Variant's Price`,
 }
 
 # {metadata.title}
+
+In this document, you'll learn how to display a product variant's price with a full React example.
+
+## Display Selected Variant Price
+
+Once the customer selects a variant, use its `calculated_price.calculated_amount` property to display its price:
+
+```ts
+const price = formatPrice(
+  selectedVariantPrice.calculated_price.calculated_amount
+)
+```
+
+You'll learn about the `formatPrice` function in the next section.
+
+---
+
+## Price Formatting
+
+To format the price, use JavaScript's [NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) utility. You pass it the amount and the currency code (which you retrieve from the selected region):
+
+```ts
+const formatPrice = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: region.currency_code,
+  })
+  .format(amount)
+}
+```
+
+---
+
+## Full React Example
 
 The following React-based storefront example retrieves the product's price based on the selected variant:
 
@@ -19,7 +58,7 @@ export const priceHighlights = [
   ["26", "queryParams", "Build the pricing query parameters."],
   ["58", "formatPrice", "A utility function to format an amount with its currency."],
   ["59", `"en-US"`, "If you use a different locale change it here."],
-  ["66", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
+  ["66", "selectedVariantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
   ["68", "selectedVariant", "Use the selected variant for pricing."],
   ["71", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
   ["79", "price", "Compute the price of the selected or cheapest variant."],
@@ -46,7 +85,7 @@ export default function Product({ params: { id } }: Params) {
     HttpTypes.StoreProduct | undefined
   >()
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
-  const { region } = useRegion
+  const { region } = useRegion()
 
   useEffect(() => {
     if (!loading) {
@@ -93,7 +132,7 @@ export default function Product({ params: { id } }: Params) {
     .format(amount)
   }
 
-  const variantPrice = useMemo(() => {
+  const selectedVariantPrice = useMemo(() => {
     if (selectedVariant) {
       return selectedVariant
     }
@@ -107,13 +146,13 @@ export default function Product({ params: { id } }: Params) {
   }, [selectedVariant, product])
 
   const price = useMemo(() => {
-    if (!variantPrice) {
+    if (!selectedVariantPrice) {
       return
     }
 
     // @ts-ignore
-    return formatPrice(variantPrice.calculated_price.calculated_amount)
-  }, [variantPrice])
+    return formatPrice(selectedVariantPrice.calculated_price.calculated_amount)
+  }, [selectedVariantPrice])
 
   return (
     <div>
@@ -173,17 +212,3 @@ In the example above, you:
     - If there isn't a selected variant, retrieve and choose the variant with the cheapest price.
 - Format the price based on the chosen variant in the previous step. The variant's `calculated_price.calculated_amount` field is used.
 - Display the formatted price to the customer. If there isn't a select variant, show a `From` label to indicate that the price shown is the cheapest.
-
-### Price Formatting
-
-To format the price, use JavaScript's [NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) utility. You pass it the amount and the currency code (which you retrieve from the selected region):
-
-```ts
-const formatPrice = (amount: number): string => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: region.currency_code,
-  })
-  .format(amount)
-}
-```

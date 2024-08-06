@@ -1,7 +1,8 @@
 import { OrderDTO } from "@medusajs/types"
-import { Modules, OrderEvents } from "@medusajs/utils"
+import { Modules, OrderEvents, OrderStatus } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
@@ -11,8 +12,9 @@ import {
   emitEventStep,
   useRemoteQueryStep,
 } from "../../../common"
+import { createOrdersStep } from "../../../order/steps/create-orders"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
-import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
+import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
@@ -20,7 +22,7 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
-  (input: WorkflowData<any>): WorkflowData<OrderDTO> => {
+  (input: WorkflowData<any>): WorkflowResponse<OrderDTO> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: completeCartFields,
@@ -77,7 +79,40 @@ export const completeCartWorkflow = createWorkflow(
       }).config({ name: "final-cart" })
     )
 
-    const order = createOrderFromCartStep({ cart: finalCart })
+    const cartToOrder = transform({ input, cart }, ({ cart }) => {
+      const itemAdjustments = (cart.items || [])
+        ?.map((item) => item.adjustments || [])
+        .flat(1)
+      const shippingAdjustments = (cart.shipping_methods || [])
+        ?.map((sm) => sm.adjustments || [])
+        .flat(1)
+
+      const promoCodes = [...itemAdjustments, ...shippingAdjustments]
+        .map((adjustment) => adjustment.code)
+        .filter((code) => Boolean) as string[]
+
+      return {
+        region_id: cart.region?.id,
+        customer_id: cart.customer?.id,
+        sales_channel_id: cart.sales_channel_id,
+        status: OrderStatus.PENDING,
+        email: cart.email,
+        currency_code: cart.currency_code,
+        shipping_address: cart.shipping_address,
+        billing_address: cart.billing_address,
+        no_notification: false,
+        items: cart.items,
+        shipping_methods: cart.shipping_methods,
+        metadata: cart.metadata,
+        promo_codes: promoCodes,
+      }
+    })
+
+    const createdOrders = createOrdersStep([cartToOrder])
+    const order = transform(
+      { createdOrders },
+      ({ createdOrders }) => createdOrders[0]
+    )
 
     createRemoteLinkStep([
       {
@@ -94,6 +129,6 @@ export const completeCartWorkflow = createWorkflow(
 
     emitEventStep({ eventName: OrderEvents.PLACED, data: { id: order.id } })
 
-    return order
+    return new WorkflowResponse(order)
   }
 )

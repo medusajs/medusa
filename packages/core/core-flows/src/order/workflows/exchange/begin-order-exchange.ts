@@ -1,13 +1,14 @@
 import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderExchangesStep } from "../../steps/create-exchanges"
 import { createOrderChangeStep } from "../../steps/create-order-change"
+import { createOrderExchangesStep } from "../../steps/exchange/create-exchange"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
 const validationStep = createStep(
@@ -22,7 +23,7 @@ export const beginExchangeOrderWorkflow = createWorkflow(
   beginExchangeOrderWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.BeginOrderExchangeWorkflowInput>
-  ): WorkflowData<OrderChangeDTO> {
+  ): WorkflowResponse<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status"],
@@ -53,6 +54,6 @@ export const beginExchangeOrderWorkflow = createWorkflow(
         }
       }
     )
-    return createOrderChangeStep(orderChangeInput)
+    return new WorkflowResponse(createOrderChangeStep(orderChangeInput))
   }
 )

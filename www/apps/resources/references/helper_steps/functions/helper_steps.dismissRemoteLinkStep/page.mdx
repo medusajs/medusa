@@ -1,0 +1,46 @@
+---
+slug: /references/helper-steps/dismissRemoteLinkStep
+sidebar_label: dismissRemoteLinkStep
+---
+
+import { TypeList } from "docs-ui"
+
+# dismissRemoteLinkStep - Helper Steps API Reference
+
+This documentation provides a reference to the `dismissRemoteLinkStep` step. It belongs to the `@medusajs/core-flows` package.
+
+## Example
+
+```ts
+import { 
+  createWorkflow
+} from "@medusajs/workflows-sdk"
+import {
+  dismissRemoteLinkStep
+} from "@medusajs/core-flows"
+import {
+  Modules
+} from "@medusajs/utils"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    dismissRemoteLinkStep([{
+      [Modules.PRODUCT]: {
+        product_id: "prod_123",
+      },
+      "helloModuleService": {
+        my_custom_id: "mc_123",
+      },
+    }])
+  }
+)
+```
+
+## Input
+
+<TypeList types={[{"name":"DismissRemoteLinksStepInput","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx) \\| [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="dismissRemoteLinkStep"/>
+
+## Output
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"`object` & `object`","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="dismissRemoteLinkStep"/>

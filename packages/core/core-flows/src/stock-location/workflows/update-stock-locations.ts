@@ -3,7 +3,11 @@ import {
   UpdateStockLocationInput,
   FilterableStockLocationProps,
 } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 
 import { updateStockLocationsStep } from "../steps"
 
@@ -14,7 +18,9 @@ interface WorkflowInput {
 export const updateStockLocationsWorkflowId = "update-stock-locations-workflow"
 export const updateStockLocationsWorkflow = createWorkflow(
   updateStockLocationsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<StockLocationDTO[]> => {
-    return updateStockLocationsStep(input)
+  (
+    input: WorkflowData<WorkflowInput>
+  ): WorkflowResponse<StockLocationDTO[]> => {
+    return new WorkflowResponse(updateStockLocationsStep(input))
   }
 )

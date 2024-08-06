@@ -12,6 +12,8 @@ export const defaultAdminReturnFields = [
   "refund_amount",
   "created_at",
   "updated_at",
+  "canceled_at",
+  "requested_at",
 ]
 
 export const defaultAdminDetailsReturnFields = [

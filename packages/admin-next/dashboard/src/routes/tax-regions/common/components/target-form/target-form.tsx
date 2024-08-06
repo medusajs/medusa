@@ -2,46 +2,46 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
-  OnChangeFn,
-  RowSelectionState,
-  createColumnHelper,
+    OnChangeFn,
+    RowSelectionState,
+    createColumnHelper,
 } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { useSearchParams } from "react-router-dom"
 import {
-  StackedDrawer,
-  StackedFocusModal,
+    StackedDrawer,
+    StackedFocusModal,
 } from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import {
-  useCollections,
-  useCustomerGroups,
-  useProductTypes,
-  useProducts,
-  useTags,
+    useCollections,
+    useCustomerGroups,
+    useProductTags,
+    useProductTypes,
+    useProducts,
 } from "../../../../../hooks/api"
 import {
-  useCollectionTableColumns,
-  useCustomerGroupTableColumns,
-  useProductTableColumns,
-  useProductTagTableColumns,
-  useProductTypeTableColumns,
+    useCollectionTableColumns,
+    useCustomerGroupTableColumns,
+    useProductTableColumns,
+    useProductTagTableColumns,
+    useProductTypeTableColumns,
 } from "../../../../../hooks/table/columns"
 import {
-  useCollectionTableFilters,
-  useCustomerGroupTableFilters,
-  useProductTableFilters,
-  useProductTagTableFilters,
-  useProductTypeTableFilters,
+    useCollectionTableFilters,
+    useCustomerGroupTableFilters,
+    useProductTableFilters,
+    useProductTagTableFilters,
+    useProductTypeTableFilters,
 } from "../../../../../hooks/table/filters"
 import {
-  useCollectionTableQuery,
-  useCustomerGroupTableQuery,
-  useProductTableQuery,
-  useProductTagTableQuery,
-  useProductTypeTableQuery,
+    useCollectionTableQuery,
+    useCustomerGroupTableQuery,
+    useProductTableQuery,
+    useProductTagTableQuery,
+    useProductTypeTableQuery,
 } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { TaxRateRuleReferenceType } from "../../constants"
@@ -664,7 +664,7 @@ const ProductTagTable = ({
     prefix: PREFIX_PRODUCT_TAG,
   })
 
-  const { product_tags, count, isLoading, isError, error } = useTags(
+  const { product_tags, count, isLoading, isError, error } = useProductTags(
     searchParams,
     {
       placeholderData: keepPreviousData,

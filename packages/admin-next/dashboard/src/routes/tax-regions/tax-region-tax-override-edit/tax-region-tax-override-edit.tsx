@@ -8,7 +8,7 @@ import { useCollections } from "../../../hooks/api/collections"
 import { useCustomerGroups } from "../../../hooks/api/customer-groups"
 import { useProductTypes } from "../../../hooks/api/product-types"
 import { useProducts } from "../../../hooks/api/products"
-import { useTags } from "../../../hooks/api/tags"
+import { useProductTags } from "../../../hooks/api/tags"
 import { useTaxRate } from "../../../hooks/api/tax-rates"
 import { TaxRateRuleReferenceType } from "../common/constants"
 import { TaxRegionTaxOverrideEditForm } from "./components/tax-region-tax-override-edit-form"
@@ -93,7 +93,7 @@ const useDefaultRulesValues = (
     },
     {
       ids: idsByReferenceType[TaxRateRuleReferenceType.PRODUCT_TAG],
-      hook: useTags,
+      hook: useProductTags,
       key: TaxRateRuleReferenceType.PRODUCT_TAG,
       getResult: (result: any) =>
         result.tags.map((tag: any) => ({

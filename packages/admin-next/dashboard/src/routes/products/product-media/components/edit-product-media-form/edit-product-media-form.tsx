@@ -187,7 +187,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
               <Fragment>
                 <CommandBar.Command
                   action={handlePromoteToThumbnail}
-                  label={"Make thumbnail"}
+                  label={t("products.media.makeThumbnail")}
                   shortcut="t"
                 />
                 <CommandBar.Seperator />

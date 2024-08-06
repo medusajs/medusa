@@ -6,7 +6,7 @@ import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
 import loaders from "../loaders"
-import Logger from "../loaders/logger"
+import { logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
@@ -24,17 +24,17 @@ export default async function ({ port, directory }) {
         expressApp: app,
       })
 
-      const serverActivity = Logger.activity(`Creating server`)
+      const serverActivity = logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
         app.listen(port).on("listening", () => {
-          Logger.success(serverActivity, `Server is ready on port: ${port}`)
+          logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })
       )
 
       // Handle graceful shutdown
       const gracefulShutDown = () => {
-        Logger.info("Gracefully shutting down server")
+        logger.info("Gracefully shutting down server")
         server
           .shutdown()
           .then(async () => {
@@ -42,7 +42,7 @@ export default async function ({ port, directory }) {
             process.exit(0)
           })
           .catch((e) => {
-            Logger.error("Error received when shutting down the server.", e)
+            logger.error("Error received when shutting down the server.", e)
             process.exit(1)
           })
       }
@@ -56,7 +56,7 @@ export default async function ({ port, directory }) {
 
       return { server }
     } catch (err) {
-      Logger.error("Error starting server", err)
+      logger.error("Error starting server", err)
       process.exit(1)
     }
   }

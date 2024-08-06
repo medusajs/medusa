@@ -121,7 +121,9 @@
     "select": "Select",
     "browse": "Browse",
     "logout": "Logout",
-    "hide": "Hide"
+    "hide": "Hide",
+    "export": "Export",
+    "import": "Import"
   },
   "operators": {
     "in": "In"
@@ -205,6 +207,17 @@
         "general": "General",
         "developer": "Developer",
         "myAccount": "My Account"
+      }
+    }
+  },
+  "dataGrid": {
+    "editColumns": "Edit columns",
+    "shortcuts": {
+      "label": "Shortcuts",
+      "commands": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "edit": "Edit the current cell"
       }
     }
   },
@@ -321,7 +334,8 @@
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect the variants' order in your storefront.",
-          "alert": "Add options to create variants."
+          "alert": "Add options to create variants.",
+          "tip": "Variants left unchecked won't be created. You can always create and edit variants afterwards but this list fits the variations in your product options."
         },
         "productOptions": {
           "label": "Product options",
@@ -329,6 +343,41 @@
         }
       },
       "successToast": "Product {{title}} was successfully created."
+    },
+    "export": {
+      "header": "Export Product List",
+      "description": "Export the product list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      },
+      "columns": {
+        "title": "Columns",
+        "description": "Customize the exported data to meet specific needs"
+      }
+    },
+    "import": {
+      "header": "Import Product List",
+      "description": "Import products by providing a CSV file in a pre-defined format",
+      "template": {
+        "title": "Unsure about how to arrange your list?",
+        "description": "Download the template below to ensure you are following the correct format."
+      },
+      "upload": {
+        "title": "Upload a CSV file",
+        "description": "Through imports you can add or update products. To update existing products you must use the existing handle and ID, to update existing variants you must use the existing ID. You will be asked for confirmation before we import products.",
+        "preprocessing": "Preprocessing...",
+        "productsToCreate": "Products will be created",
+        "productsToUpdate": "Products will be updated"
+      },
+      "success": {
+        "title": "We are processing your import",
+        "description": "Importing data may take a while. We will notify you when we are done."
+      }
     },
     "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
     "variants": "Variants",
@@ -340,6 +389,7 @@
     "media": {
       "label": "Media",
       "editHint": "Add media to the product to showcase it in your storefront.",
+      "makeThumbnail": "Make thumbnail",
       "uploadImagesLabel": "Upload images",
       "uploadImagesHint": "Drag and drop images here or click to upload.",
       "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
@@ -759,7 +809,7 @@
       "title": "Payments",
       "isReadyToBeCaptured": "Payment {{id}} is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
-      "capture": "Capture",
+      "capture": "Capture payment",
       "refund": "Refund",
       "statusLabel": "Payment status",
       "statusTitle": "Payment Status",
@@ -774,7 +824,12 @@
         "refunded": "Refunded",
         "canceled": "Canceled",
         "requiresAction": "Requires action"
-      }
+      },
+      "capturePayment": "Payment of {{amount}} will be captured.",
+      "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
+      "createRefund": "Create Refund",
+      "refundPaymentSuccess": "Refund of amount {{amount}} successful",
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
     },
 
     "edits": {
@@ -794,6 +849,7 @@
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
       "refundAmount": "Refund amount",
+      "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
       "reasonHint": "Choose why the customer want to return items.",
       "note": "Note",
@@ -806,7 +862,25 @@
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
-      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested"
+      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
+      "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
+      "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
+      "receive": {
+        "action": "Receive items",
+        "receive": "Return {{label}}",
+        "restockAll": "Restock all items",
+        "itemsLabel": "Items received",
+        "title": "Receive items for #{{returnId}}",
+        "sendNotificationHint": "Notify customer about received return.",
+        "inventoryWarning": "Please note that we will automatically adjust the inventory levels based on your input above.",
+        "writeOffInputLabel": "How many of the items are damaged?",
+        "toast": {
+          "success": "Return received successfully.",
+          "errorLargeValue": "Quantity is greater than requested item quantity.",
+          "errorNegativeValue": "Quantity cannot be a negative value.",
+          "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
+        }
+      }
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -926,7 +1000,8 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return created",
+          "created": "Return #{{returnId}} created",
+          "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"
         },
@@ -997,6 +1072,15 @@
     },
     "delete": {
       "confirmation": "You are about to delete the stock location {{name}}. This action cannot be undone."
+    },
+    "fulfillmentProviders": {
+      "header": "Fulfillment Providers",
+      "shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
+      "label": "Connected fulfillment providers",
+      "connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
+      "noProviders": "This Stock Location is not connected to any fulfillment providers.",
+      "action": "Connect Providers",
+      "successToast": "Fulfillment providers for stock location were successfully updated."
     },
     "fulfillmentSets": {
       "pickup": {
@@ -2063,6 +2147,8 @@
       "runningState": "Running...",
       "awaitingState": "Awaiting",
       "failedState": "Failed",
+      "skippedState": "Skipped",
+      "skippedFailureState": "Skipped (Failure)",
       "definitionLabel": "Definition",
       "outputLabel": "Output",
       "compensateInputLabel": "Compensate input",
@@ -2085,6 +2171,7 @@
     "step": {
       "state": {
         "skipped": "Skipped",
+        "skippedFailure": "Skipped (Failure)",
         "dormant": "Dormant",
         "timeout": "Timeout"
       }
@@ -2105,6 +2192,26 @@
     "delete": {
       "confirmation": "You are about to delete the product type {{value}}. This action cannot be undone.",
       "successToast": "Product type {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
+  "productTags": {
+    "domain": "Product Tags",
+    "create": {
+      "header": "Create Product Tag",
+      "subtitle": "Create a new product tag to categorize your products.",
+      "successToast": "Product tag {{value}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Product Tag",
+      "subtitle": "Edit the value of the product tag.",
+      "successToast": "Product tag {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
+      "successToast": "Product tag {{value}} was successfully deleted."
     },
     "fields": {
       "value": "Value"

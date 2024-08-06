@@ -1,3 +1,13 @@
-'type: docs':
-- changed-files:
-  - any-glob-to-any-file: www/**
+"type: docs":
+ - changed-files:
+    - any-glob-to-any-file: www/**
+ - head-branch: ["^docs"]
+
+"type: feature":
+ - head-branch: ["^feat"]
+
+"type: chore":
+ - head-branch: ["^chore"]
+
+"type: bug":
+ - head-branch: ["^fix"]

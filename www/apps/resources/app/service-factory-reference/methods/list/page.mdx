@@ -24,7 +24,7 @@ If no parameters are passed, the method returns an array of the first `15` recor
 
 ```ts
 const posts = await postModuleService.listPosts({
-  id: ["123", "321"]
+  id: ["123", "321"],
 })
 ```
 
@@ -54,7 +54,7 @@ This applies to relations between data models of the same module. To retrieve li
 
 ```ts
 const posts = await postModuleService.listPosts({}, {
-  relations: ["author"]
+  relations: ["author"],
 })
 ```
 
@@ -72,7 +72,7 @@ The method returns an array of the first `15` records matching the filters.
 
 ```ts
 const posts = await postModuleService.listPosts({}, {
-  select: ["id", "name"]
+  select: ["id", "name"],
 })
 ```
 
@@ -93,7 +93,7 @@ The method returns an array of the first `15` records matching the filters.
 ```ts
 const posts = await postModuleService.listPosts({}, {
   take: 20,
-  skip: 10
+  skip: 10,
 })
 ```
 
@@ -115,8 +115,8 @@ The method returns an array of records. The number of records is less than or eq
 ```ts
 const posts = await postModuleService.listPosts({}, {
   order: {
-    name: "ASC"
-  }
+    name: "ASC",
+  },
 })
 ```
 

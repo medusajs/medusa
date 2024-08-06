@@ -181,6 +181,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/events-and-subscribers/data-payload",
               title: "Events Data Payload",
             },
+            {
+              path: "/advanced-development/events-and-subscribers/emit-event",
+              title: "Emit an Event",
+            },
           ],
         },
         {
@@ -206,6 +210,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/workflows/compensation-function",
               title: "Compensation Function",
+            },
+            {
+              path: "/advanced-development/workflows/add-workflow-hook",
+              title: "Workflow Hooks",
             },
             {
               path: "/advanced-development/workflows/access-workflow-errors",

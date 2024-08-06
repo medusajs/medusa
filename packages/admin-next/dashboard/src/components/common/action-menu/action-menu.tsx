@@ -4,7 +4,7 @@ import { EllipsisHorizontal } from "@medusajs/icons"
 import { ReactNode } from "react"
 import { Link } from "react-router-dom"
 
-type Action = {
+export type Action = {
   icon: ReactNode
   label: string
   disabled?: boolean
@@ -19,7 +19,7 @@ type Action = {
     }
 )
 
-type ActionGroup = {
+export type ActionGroup = {
   actions: Action[]
 }
 

@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "../../types/middlewares"
+import { MiddlewareRoute } from "@medusajs/framework"
 import { authenticate } from "../../utils/middlewares/authenticate-middleware"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [

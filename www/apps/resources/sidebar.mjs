@@ -1304,16 +1304,32 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+        children: [
+          {
+            path: "/recipes/subscriptions/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+        children: [
+          {
+            path: "/recipes/digital-products/examples/standard",
+            title: "Example",
+          },
+        ],
+      },
+      {
         path: "/recipes/b2b",
         title: "B2B",
       },
       {
         path: "/recipes/commerce-automation",
         title: "Commerce Automation",
-      },
-      {
-        path: "/recipes/digital-products",
-        title: "Digital Products",
       },
       {
         path: "/recipes/ecommerce",
@@ -1342,10 +1358,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         path: "/recipes/pos",
         title: "POS",
-      },
-      {
-        path: "/recipes/subscriptions",
-        title: "Subscriptions",
       },
     ],
   },
@@ -1537,16 +1549,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/products/price",
             title: "Retrieve Variant Prices",
-            children: [
-              {
-                path: "/storefront-development/products/price/examples/show-price",
-                title: "Example: Show Variant Price",
-              },
-              {
-                path: "/storefront-development/products/price/examples/sale-price",
-                title: "Example: Show Sale Price",
-              },
-            ],
+            autogenerate_path: "storefront-development/products/price/examples",
           },
           {
             path: "/storefront-development/products/categories",
@@ -1776,6 +1779,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
             ],
           },
+          {
+            title: "Integrations",
+            hasTitleStyling: true,
+            children: [
+              {
+                path: "/troubleshooting/s3",
+                title: "S3 Module Provider Errors",
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1868,6 +1881,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             autogenerate_path: "/service-factory-reference/tips",
           },
         ],
+      },
+      {
+        path: "/references/helper-steps",
+        title: "Helper Steps Reference",
+        isChildSidebar: true,
+        autogenerate_path: "/references/helper_steps/functions",
       },
     ],
   },

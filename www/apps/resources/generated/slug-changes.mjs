@@ -1100,6 +1100,26 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService/page.mdx"
   },
   {
+    "origSlug": "/references/helper_steps/functions/helper_steps.createRemoteLinkStep",
+    "newSlug": "/references/helper-steps/createRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.createRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep",
+    "newSlug": "/references/helper-steps/dismissRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.dismissRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.removeRemoteLinkStep",
+    "newSlug": "/references/helper-steps/removeRemoteLinkStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/helper_steps/functions/helper_steps.useRemoteQueryStep",
+    "newSlug": "/references/helper-steps/useRemoteQueryStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx"
+  },
+  {
     "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory",
     "newSlug": "/references/inventory-next/adjustInventory",
     "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory/page.mdx"
@@ -1335,6 +1355,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/modules/fulfillment_models/page.mdx"
   },
   {
+    "origSlug": "/references/modules/helper_steps",
+    "newSlug": "/references/helper-steps",
+    "filePath": "/www/apps/resources/references/modules/helper_steps/page.mdx"
+  },
+  {
     "origSlug": "/references/modules/inventory_next_models",
     "newSlug": "/references/inventory-next/models",
     "filePath": "/www/apps/resources/references/modules/inventory_next_models/page.mdx"
@@ -1500,9 +1525,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems",
+    "newSlug": "/references/order/createOrderClaimItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaimItems/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims",
     "newSlug": "/references/order/createOrderClaims",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems",
+    "newSlug": "/references/order/createOrderExchangeItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchangeItems/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchanges",
@@ -1585,9 +1620,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages",
+    "newSlug": "/references/order/deleteOrderClaimItemImages",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItemImages/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems",
+    "newSlug": "/references/order/deleteOrderClaimItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaimItems/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims",
     "newSlug": "/references/order/deleteOrderClaims",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems",
+    "newSlug": "/references/order/deleteOrderExchangeItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchangeItems/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchanges",
@@ -2025,21 +2075,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.Address/page.mdx"
   },
   {
-    "origSlug": "/references/order_models/classes/order_models.ClaimItem",
-    "newSlug": "/references/order/models/ClaimItem",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItem/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ClaimItemImage",
-    "newSlug": "/references/order/models/ClaimItemImage",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItemImage/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ExchangeItem",
-    "newSlug": "/references/order/models/ExchangeItem",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ExchangeItem/page.mdx"
-  },
-  {
     "origSlug": "/references/order_models/classes/order_models.LineItem",
     "newSlug": "/references/order/models/LineItem",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItem/page.mdx"
@@ -2075,9 +2110,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaim/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderClaimItem",
+    "newSlug": "/references/order/models/OrderClaimItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderClaimItemImage",
+    "newSlug": "/references/order/models/OrderClaimItemImage",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaimItemImage/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderExchange",
     "newSlug": "/references/order/models/OrderExchange",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchange/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderExchangeItem",
+    "newSlug": "/references/order/models/OrderExchangeItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchangeItem/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.OrderItem",
@@ -3578,6 +3628,11 @@ export const slugChanges = [
     "origSlug": "/references/user_models/classes/user_models.User",
     "newSlug": "/references/user/models/User",
     "filePath": "/www/apps/resources/references/user_models/classes/user_models.User/page.mdx"
+  },
+  {
+    "origSlug": "/references/workflows/functions/workflows.createHook",
+    "newSlug": "/references/workflows/createHook",
+    "filePath": "/www/apps/resources/references/workflows/functions/workflows.createHook/page.mdx"
   },
   {
     "origSlug": "/references/workflows/functions/workflows.createStep",

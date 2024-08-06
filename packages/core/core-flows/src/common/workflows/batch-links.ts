@@ -2,6 +2,7 @@ import { LinkDefinition } from "@medusajs/modules-sdk"
 import { BatchWorkflowInput } from "@medusajs/types"
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
@@ -23,10 +24,10 @@ export const batchLinksWorkflow = createWorkflow(
       dismissRemoteLinkStep(input.delete || [])
     )
 
-    return {
+    return new WorkflowResponse({
       created,
       updated,
       deleted,
-    }
+    })
   }
 )

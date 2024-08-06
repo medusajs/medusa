@@ -9,6 +9,7 @@ import {
 import * as core from "express-serve-static-core"
 import { FindConfig } from "./common"
 
+// TODO this will be reqorked and move to the framework at a later point unless decided otherwise
 export interface MedusaRequest<Body = unknown>
   extends Request<core.ParamsDictionary, any, Body> {
   validatedBody: Body
@@ -62,14 +63,12 @@ export interface MedusaRequest<Body = unknown>
    * A generic context object that can be used across the request lifecycle
    */
   context?: Record<string, any>
+
   /**
-   * Custom validators for the request body and query params that will be
-   * merged with the original validator of the route.
+   * Custom validator to validate the `additional_data` property in
+   * requests that allows for additional_data
    */
-  extendedValidators?: {
-    body?: ZodObject<any, any>
-    queryParams?: ZodObject<any, any>
-  }
+  additionalDataValidator?: ZodObject<any, any>
 }
 
 export interface AuthContext {

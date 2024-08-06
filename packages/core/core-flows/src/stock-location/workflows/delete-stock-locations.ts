@@ -12,7 +12,6 @@ export const deleteStockLocationsWorkflow = createWorkflow(
   deleteStockLocationsWorkflowId,
   (input: WorkflowData<WorkflowInput>) => {
     const softDeletedEntities = deleteStockLocationsStep(input.ids)
-
     removeRemoteLinkStep(softDeletedEntities)
   }
 )
