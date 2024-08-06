@@ -17,7 +17,11 @@ import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-pa
 import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
-import { prepareLineItemData } from "../utils/prepare-line-item-data"
+import {
+  prepareAdjustmentsData,
+  prepareLineItemData,
+  prepareTaxLinesData,
+} from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
 export const completeCartWorkflowId = "complete-cart"
@@ -94,18 +98,24 @@ export const completeCartWorkflow = createWorkflow(
         })
       })
 
-      const shippinMethods = JSON.parse(
-        JSON.stringify(cart.shipping_methods ?? []),
-        (_, value) => {
-          delete value.id
-          return value
+      const shippingMethods = (cart.shipping_methods ?? []).map((sm) => {
+        return {
+          name: sm.name,
+          description: sm.description,
+          amount: sm.raw_amount ?? sm.amount,
+          is_tax_inclusive: sm.is_tax_inclusive,
+          shipping_option_id: sm.shipping_option_id,
+          data: sm.data,
+          metadata: sm.metadata,
+          tax_lines: prepareTaxLinesData(sm.tax_lines ?? []),
+          adjustments: prepareAdjustmentsData(sm.adjustments ?? []),
         }
-      )
+      })
 
       const itemAdjustments = allItems
         .map((item) => item.adjustments || [])
         .flat(1)
-      const shippingAdjustments = shippinMethods
+      const shippingAdjustments = shippingMethods
         .map((sm) => sm.adjustments || [])
         .flat(1)
 
@@ -124,7 +134,7 @@ export const completeCartWorkflow = createWorkflow(
         billing_address: cart.billing_address,
         no_notification: false,
         items: allItems,
-        shipping_methods: shippinMethods,
+        shipping_methods: shippingMethods,
         metadata: cart.metadata,
         promo_codes: promoCodes,
       }
