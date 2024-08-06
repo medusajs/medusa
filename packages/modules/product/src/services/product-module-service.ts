@@ -8,10 +8,10 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import {
-  Image as ProductImage,
   Product,
   ProductCategory,
   ProductCollection,
+  Image as ProductImage,
   ProductOption,
   ProductOptionValue,
   ProductTag,

@@ -112,7 +112,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -132,7 +132,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -176,7 +176,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -219,7 +219,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 1,
               removeOnComplete: 5,

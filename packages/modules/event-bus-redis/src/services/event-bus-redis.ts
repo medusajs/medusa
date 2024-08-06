@@ -14,7 +14,9 @@ type InjectedDependencies = {
   eventBusRedisConnection: Redis
 }
 
-type IORedisEventType<T = unknown> = Event<T> & {
+type IORedisEventType<T = unknown> = {
+  name: string
+  data: Omit<Event<T>, "name"> // See comment in `buildEvents` method
   opts: BulkJobOptions
 }
 
@@ -93,15 +95,22 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     }
 
     return eventsData.map((eventData) => {
-      const { options, ...eventBody } = eventData
+      // We want to preserve event data + metadata. However, bullmq only allows for a single data field.
+      // Therefore, upon adding jobs to the queue we will serialize the event data and metadata into a single field
+      // and upon processing the job, we will deserialize it back into the original format expected by the subscribers.
+      const event = {
+        data: eventData.data,
+        metadata: eventData.metadata,
+      }
 
       return {
-        ...eventBody,
+        data: event,
+        name: eventData.name,
         opts: {
           // options for event group
           ...opts,
           // options for a particular event
-          ...options,
+          ...eventData.options,
         },
       }
     })
@@ -216,8 +225,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * @return resolves to the results of the subscriber calls.
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
-    const { data, name: eventName } = job
-    const eventSubscribers = this.eventToSubscribersMap.get(eventName) || []
+    const { data, name } = job
+    const eventSubscribers = this.eventToSubscribersMap.get(name) || []
     const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
 
     const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
@@ -239,15 +248,15 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     if (isRetry) {
       if (isFinalAttempt) {
-        this.logger_.info(`Final retry attempt for ${eventName}`)
+        this.logger_.info(`Final retry attempt for ${name}`)
       }
 
       this.logger_.info(
-        `Retrying ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+        `Retrying ${name} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
       )
     } else {
       this.logger_.info(
-        `Processing ${eventName} which has ${eventSubscribers.length} subscribers`
+        `Processing ${name} which has ${eventSubscribers.length} subscribers`
       )
     }
 
@@ -255,7 +264,14 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
-        return await subscriber(data)
+        // Serialize the event data and metadata from a single field into the original format expected by the subscribers
+        const event = {
+          name,
+          data: data.data,
+          metadata: data.metadata,
+        }
+
+        return await subscriber(event)
           .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
@@ -263,7 +279,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           })
           .catch((err) => {
             this.logger_.warn(
-              `An error occurred while processing ${eventName}: ${err}`
+              `An error occurred while processing ${name}: ${err}`
             )
             return err
           })
@@ -291,7 +307,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       await job.updateData(job.data)
 
-      const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
+      const errorMessage = `One or more subscribers of ${name} failed. Retrying...`
 
       this.logger_.warn(errorMessage)
 
@@ -301,7 +317,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     if (didSubscribersFail && !isFinalAttempt) {
       // If retrying is not configured, we log a warning to allow server admins to recover manually
       this.logger_.warn(
-        `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
+        `One or more subscribers of ${name} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
       )
     }
 
