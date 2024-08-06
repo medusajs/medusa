@@ -101,7 +101,7 @@ const Refund = ({
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
+    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
       <div className="flex flex-row">
         <div className="self-center pr-3">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -115,7 +115,6 @@ const Refund = ({
           </Text>
         </div>
       </div>
-      <div className="flex items-center justify-end"></div>
       <div className="flex items-center justify-end">{RefundReasonBadge}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
