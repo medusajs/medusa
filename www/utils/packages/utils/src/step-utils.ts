@@ -10,11 +10,7 @@ export function isWorkflowStep(reflection: SignatureReflection): boolean {
 export function getStepInputType(
   reflection: SignatureReflection
 ): SomeType | undefined {
-  if (!isWorkflowStep(reflection)) {
-    return
-  }
-
-  if (!reflection.parameters?.length) {
+  if (!isWorkflowStep(reflection) || !reflection.parameters?.length) {
     return
   }
 

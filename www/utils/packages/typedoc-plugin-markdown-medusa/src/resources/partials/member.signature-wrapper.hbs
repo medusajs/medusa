@@ -4,6 +4,12 @@
 
 {{else}}
 
+{{#ifWorkflow}}
+
+{{> member.workflow}}
+
+{{else}}
+
 {{#ifWorkflowStep}}
 
 {{> member.step}}
@@ -13,5 +19,7 @@
 {{> member.signature}}
 
 {{/ifWorkflowStep}}
+
+{{/ifWorkflow}}
 
 {{/ifReactQueryType}}
