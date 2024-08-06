@@ -183,7 +183,6 @@ class WorkflowsPlugin {
       documentReflection.comment = new Comment()
       documentReflection.comment.modifierTags.add(stepModifier)
 
-      // TODO check if it's a step, hook, or another workflow
       parentReflection.documents?.push(documentReflection)
     })
   }
