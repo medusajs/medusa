@@ -319,9 +319,10 @@ const Total = ({
 }) => {
   const { t } = useTranslation()
 
+  const refunds = payments.map((payment) => payment.refunds).flat(1)
   const paid = payments.reduce((acc, payment) => acc + payment.amount, 0)
-  const refunded = payments.reduce(
-    (acc, payment) => acc + (payment.amount_refunded || 0),
+  const refunded = refunds.reduce(
+    (acc, refund) => acc + (refund.amount || 0),
     0
   )
 

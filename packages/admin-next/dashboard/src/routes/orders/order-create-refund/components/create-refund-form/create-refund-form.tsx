@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import { Button, CurrencyInput, Input, toast } from "@medusajs/ui"
+import { Button, CurrencyInput, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -20,7 +20,7 @@ type CreateRefundFormProps = {
 const CreateRefundSchema = zod.object({
   amount: zod.number(),
   refund_reason_id: zod.string().nullish(),
-  note: zod.string().nullish(),
+  note: zod.string().optional(),
 })
 
 export const CreateRefundForm = ({
@@ -34,6 +34,7 @@ export const CreateRefundForm = ({
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
       amount: paymentAmount,
+      note: "",
     },
     resolver: zodResolver(CreateRefundSchema),
   })
@@ -152,7 +153,7 @@ export const CreateRefundForm = ({
                     <Form.Label>{t("fields.note")}</Form.Label>
 
                     <Form.Control>
-                      <Input {...field} />
+                      <Textarea {...field} />
                     </Form.Control>
 
                     <Form.ErrorMessage />
