@@ -510,7 +510,6 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.exchanges
-
         expect(result[0].canceled_at).toBeDefined()
       })
     })
