@@ -3,6 +3,7 @@ import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import { TagOperationParametersObjectProps } from "../Object"
 import { Loading } from "docs-ui"
+import mergeAllOfTypes from "../../../../../../utils/merge-all-of-types"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("../Object"),
@@ -34,7 +35,9 @@ const TagOperationParametersUnion = ({
 }: TagOperationParametersUnionProps) => {
   const objectSchema = schema.anyOf
     ? schema.anyOf.find((item) => item.type === "object" && item.properties)
-    : schema.allOf?.find((item) => item.type === "object" && item.properties)
+    : schema.allOf
+    ? mergeAllOfTypes(schema)
+    : undefined
 
   if (!objectSchema) {
     return (
