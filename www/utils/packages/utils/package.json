@@ -11,7 +11,8 @@
   "scripts": {
     "build": "yarn clean && tsc",
     "lint": "eslint --ext .ts src",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "watch": "tsc --watch"
   },
   "peerDependencies": {
     "typedoc": "0.26.x"

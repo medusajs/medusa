@@ -2,7 +2,7 @@ import { MedusaError } from "@medusajs/utils"
 import { IDistributedSchedulerStorage, SchedulerOptions } from "../transaction"
 import { WorkflowDefinition } from "./workflow-manager"
 
-export class WorkflowScheduler {
+class WorkflowScheduler {
   private static storage: IDistributedSchedulerStorage
   public static setStorage(storage: IDistributedSchedulerStorage) {
     this.storage = storage
@@ -40,3 +40,9 @@ export class WorkflowScheduler {
     await WorkflowScheduler.storage.removeAll()
   }
 }
+
+global.WorkflowScheduler ??= WorkflowScheduler
+const GlobalWorkflowScheduler =
+  global.WorkflowScheduler as typeof WorkflowScheduler
+
+export { GlobalWorkflowScheduler as WorkflowScheduler }
