@@ -387,6 +387,14 @@ export class RedisDistributedTransactionStorage
           limit: schedulerOptions.numberOfExecutions,
           key: `${JobType.SCHEDULE}_${jobId}`,
         },
+        removeOnComplete: {
+          age: 86400,
+          count: 1000,
+        },
+        removeOnFail: {
+          age: 604800,
+          count: 5000,
+        },
       }
     )
   }
