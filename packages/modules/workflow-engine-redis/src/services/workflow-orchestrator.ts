@@ -1,5 +1,6 @@
 import {
   DistributedTransaction,
+  DistributedTransactionType,
   DistributedTransactionEvents,
   TransactionHandlerType,
   TransactionStep,
@@ -221,7 +222,7 @@ export class WorkflowOrchestratorService {
     transactionId: string,
     options?: WorkflowOrchestratorRunOptions<undefined>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<DistributedTransaction> {
+  ): Promise<DistributedTransactionType> {
     let { context, container } = options ?? {}
 
     if (!workflowId) {

@@ -1,5 +1,6 @@
 import {
   DistributedTransaction,
+  DistributedTransactionType,
   IDistributedSchedulerStorage,
   IDistributedTransactionStorage,
   SchedulerOptions,
@@ -256,7 +257,7 @@ export class RedisDistributedTransactionStorage
   }
 
   async scheduleRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -277,14 +278,14 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     await this.removeJob(JobType.RETRY, transaction, step)
   }
 
   async scheduleTransactionTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     timestamp: number,
     interval: number
   ): Promise<void> {
@@ -303,13 +304,13 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearTransactionTimeout(
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   ): Promise<void> {
     await this.removeJob(JobType.TRANSACTION_TIMEOUT, transaction)
   }
 
   async scheduleStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -330,7 +331,7 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     await this.removeJob(JobType.STEP_TIMEOUT, transaction, step)
@@ -338,7 +339,7 @@ export class RedisDistributedTransactionStorage
 
   private getJobId(
     type: JobType,
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step?: TransactionStep
   ) {
     const key = [type, transaction.modelId, transaction.transactionId]
@@ -355,7 +356,7 @@ export class RedisDistributedTransactionStorage
 
   private async removeJob(
     type: JobType,
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step?: TransactionStep
   ) {
     const jobId = this.getJobId(type, transaction, step)

@@ -1,4 +1,4 @@
-import { DistributedTransaction } from "./distributed-transaction"
+import { DistributedTransactionType } from "./distributed-transaction"
 import { TransactionStep } from "./transaction-step"
 export {
   TransactionHandlerType,
@@ -172,50 +172,52 @@ export enum DistributedTransactionEvent {
 }
 
 export type DistributedTransactionEvents = {
-  onBegin?: (args: { transaction: DistributedTransaction }) => void
-  onResume?: (args: { transaction: DistributedTransaction }) => void
+  onBegin?: (args: { transaction: DistributedTransactionType }) => void
+  onResume?: (args: { transaction: DistributedTransactionType }) => void
   onFinish?: (args: {
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
     result?: unknown
     errors?: unknown[]
   }) => void
-  onTimeout?: (args: { transaction: DistributedTransaction }) => void
+  onTimeout?: (args: { transaction: DistributedTransactionType }) => void
 
   onStepBegin?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
   onStepSuccess?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
   onStepFailure?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
   onStepAwaiting?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
-  onCompensateBegin?: (args: { transaction: DistributedTransaction }) => void
+  onCompensateBegin?: (args: {
+    transaction: DistributedTransactionType
+  }) => void
 
   onCompensateStepSuccess?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
   onCompensateStepFailure?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 
   onStepSkipped?: (args: {
     step: TransactionStep
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   }) => void
 }
 

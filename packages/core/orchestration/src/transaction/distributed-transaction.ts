@@ -74,7 +74,7 @@ export class TransactionPayload {
  * DistributedTransaction represents a distributed transaction, which is a transaction that is composed of multiple steps that are executed in a specific order.
  */
 
-export class DistributedTransaction extends EventEmitter {
+class DistributedTransaction extends EventEmitter {
   public modelId: string
   public transactionId: string
 
@@ -302,3 +302,12 @@ export class DistributedTransaction extends EventEmitter {
 DistributedTransaction.setStorage(
   new BaseInMemoryDistributedTransactionStorage()
 )
+
+global.DistributedTransaction ??= DistributedTransaction
+const GlobalDistributedTransaction =
+  global.DistributedTransaction as typeof DistributedTransaction
+
+export {
+  GlobalDistributedTransaction as DistributedTransaction,
+  DistributedTransaction as DistributedTransactionType,
+}

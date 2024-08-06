@@ -1,5 +1,5 @@
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   TransactionCheckpoint,
 } from "../distributed-transaction"
 import { TransactionStep } from "../transaction-step"
@@ -29,29 +29,31 @@ export interface IDistributedTransactionStorage {
     options?: TransactionOptions
   ): Promise<void>
   scheduleRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
   ): Promise<void>
   clearRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void>
   scheduleTransactionTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     timestamp: number,
     interval: number
   ): Promise<void>
   scheduleStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
   ): Promise<void>
-  clearTransactionTimeout(transaction: DistributedTransaction): Promise<void>
+  clearTransactionTimeout(
+    transaction: DistributedTransactionType
+  ): Promise<void>
   clearStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void>
 }
@@ -103,7 +105,7 @@ export abstract class DistributedTransactionStorage
   }
 
   async scheduleRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -112,14 +114,14 @@ export abstract class DistributedTransactionStorage
   }
 
   async clearRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     throw new Error("Method 'clearRetry' not implemented.")
   }
 
   async scheduleTransactionTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     timestamp: number,
     interval: number
   ): Promise<void> {
@@ -127,13 +129,13 @@ export abstract class DistributedTransactionStorage
   }
 
   async clearTransactionTimeout(
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   ): Promise<void> {
     throw new Error("Method 'clearTransactionTimeout' not implemented.")
   }
 
   async scheduleStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -142,7 +144,7 @@ export abstract class DistributedTransactionStorage
   }
 
   async clearStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     throw new Error("Method 'clearStepTimeout' not implemented.")
