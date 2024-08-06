@@ -26,7 +26,7 @@ import {
   installNextjsStarter,
   startNextjsStarter,
 } from "../utils/nextjs-utils.js"
-import { getNodeVersion } from "@medusajs/utils"
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 
 const slugify = slugifyType.default
 
@@ -54,7 +54,7 @@ export default async ({
   verbose = false,
 }: CreateOptions) => {
   const nodeVersion = getNodeVersion()
-  if (nodeVersion < 20) {
+  if (nodeVersion < MIN_SUPPORTED_NODE_VERSION) {
     logMessage({
       message: `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`,
       type: "error"

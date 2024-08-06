@@ -21,7 +21,7 @@ import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
 import path from "path"
-import { getNodeVersion } from "@medusajs/utils"
+import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -514,7 +514,7 @@ const attemptSeed = async (rootPath) => {
  */
 export const newStarter = async (args) => {
   const nodeVersion = getNodeVersion()
-  if (nodeVersion <= 20) {
+  if (nodeVersion < MIN_SUPPORTED_NODE_VERSION) {
     reporter.error(`Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`)
     process.exit(1)
   }

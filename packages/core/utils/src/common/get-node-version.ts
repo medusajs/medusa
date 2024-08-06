@@ -3,3 +3,5 @@ export function getNodeVersion(): number {
 
   return major
 }
+
+export const MIN_SUPPORTED_NODE_VERSION = 20
