@@ -2,13 +2,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {createCampaignsWorkflow} from "@medusajs/core-flows"
+import { createCampaignsWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import {AdminCreateCampaignType} from "./validators"
-import {refetchCampaign} from "./helpers"
+import { AdminCreateCampaignType } from "./validators"
+import { refetchCampaign } from "./helpers"
+import { AdditionalData } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -36,14 +37,15 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateCampaignType>,
+  req: AuthenticatedMedusaRequest<AdminCreateCampaignType & AdditionalData>,
   res: MedusaResponse
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
   const createCampaigns = createCampaignsWorkflow(req.scope)
-  const campaignsData = [req.validatedBody]
+  const campaignsData = [rest]
 
   const { result } = await createCampaigns.run({
-    input: { campaignsData },
+    input: { campaignsData, additional_data },
     context: {
       requestId: req.requestId,
     },
