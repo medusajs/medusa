@@ -16,6 +16,10 @@ import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
 import Helper from "./utils/helper"
 import { isWorkflow } from "utils"
 
+/**
+ * A plugin that extracts a workflow's steps, hooks, their types, and attaches them as
+ * documents to the workflow's reflection.
+ */
 class WorkflowsPlugin {
   protected app: Application
   protected helper: Helper
@@ -28,6 +32,9 @@ class WorkflowsPlugin {
     this.registerEventHandlers()
   }
 
+  /**
+   * Register the plugin's options.
+   */
   registerOptions() {
     this.app.options.addDeclaration({
       name: "enableWorkflowsPlugins",
@@ -37,14 +44,23 @@ class WorkflowsPlugin {
     })
   }
 
+  /**
+   * Register event handlers.
+   */
   registerEventHandlers() {
     this.app.converter.on(
       Converter.EVENT_RESOLVE_BEGIN,
-      this.handleDeclarationCreated.bind(this)
+      this.handleResolve.bind(this)
     )
   }
 
-  handleDeclarationCreated(context: Context) {
+  /**
+   * When the converter begins resolving a project, this method is triggered. It finds
+   * all signatures that are workflows and attaches the necessary information to them.
+   *
+   * @param context - The project's context.
+   */
+  handleResolve(context: Context) {
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
@@ -86,6 +102,11 @@ class WorkflowsPlugin {
     }
   }
 
+  /**
+   * Parse the steps of a workflow and attach them as documents to the parent reflection.
+   *
+   * @param param0 - The workflow's details.
+   */
   parseSteps({
     workflowId,
     constructorFn,
@@ -167,6 +188,12 @@ class WorkflowsPlugin {
     })
   }
 
+  /**
+   * Parse a step to retrieve its ID and reflection.
+   *
+   * @param param0 - The step's details.
+   * @returns The step's ID and reflection, if found.
+   */
   parseStep({
     initializer,
     context,
@@ -239,6 +266,12 @@ class WorkflowsPlugin {
     }
   }
 
+  /**
+   * This method creates a declaration reflection for a hook, since a hook doesn't have its own reflection.
+   *
+   * @param param0 - The hook's details.
+   * @returns The hook's reflection
+   */
   assembleHookReflection({
     stepId,
     context,
@@ -247,7 +280,7 @@ class WorkflowsPlugin {
     stepId: string
     context: Context
     inputSymbol: ts.Symbol
-  }) {
+  }): DeclarationReflection {
     const declarationReflection = context.createDeclarationReflection(
       ReflectionKind.Function,
       undefined,
