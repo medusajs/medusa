@@ -11,7 +11,7 @@ import { modules } from "./references.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
   "core-flows": getOptions({
-    entryPointPath: "packages/core/core-flows/src/product/index.ts",
+    entryPointPath: "packages/core/core-flows/src/index.ts",
     tsConfigName: "core-flows.json",
     name: "core-flows",
     plugin: ["typedoc-plugin-workflows"],
