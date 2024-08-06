@@ -7188,6 +7188,21 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Integrations",
+            "hasTitleStyling": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/troubleshooting/s3",
+                "title": "S3 Module Provider Errors",
+                "children": []
+              }
+            ]
           }
         ]
       }

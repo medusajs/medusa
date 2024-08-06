@@ -1004,6 +1004,10 @@ export const filesMap = [
     "pathname": "/troubleshooting"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/s3/page.mdx",
+    "pathname": "/troubleshooting/s3"
+  },
+  {
     "filePath": "/www/apps/resources/app/upgrade-guides/page.mdx",
     "pathname": "/upgrade-guides"
   },
