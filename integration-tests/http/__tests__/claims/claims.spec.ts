@@ -16,6 +16,7 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
+    let baseClaim
     let order, order2
     let returnShippingOption
     let shippingProfile
@@ -25,6 +26,7 @@ medusaIntegrationTestRunner({
     let inventoryItemExtra
     let location
     let productExtra
+    let item
     const shippingProviderId = "manual_test-provider"
 
     beforeEach(async () => {
@@ -354,7 +356,7 @@ medusaIntegrationTestRunner({
         )
       ).data.shipping_option
 
-      const item = order.items[0]
+      item = order.items[0]
 
       await api.post(
         `/admin/orders/${order.id}/fulfillments`,
@@ -381,20 +383,22 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
-    })
 
-    describe("Claims lifecycle", () => {
-      it("Full flow with 2 orders", async () => {
-        let result = await api.post(
+      baseClaim = (
+        await api.post(
           "/admin/claims",
           {
             order_id: order.id,
             type: ClaimType.REPLACE,
-            description: "Test",
+            description: "Base claim",
           },
           adminHeaders
         )
+      ).data.claim
+    })
 
+    describe("Claims lifecycle", () => {
+      it("Full flow with 2 orders", async () => {
         let r2 = await api.post(
           "/admin/claims",
           {
@@ -429,11 +433,11 @@ medusaIntegrationTestRunner({
         )
         await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
 
-        const claimId = result.data.claim.id
+        const claimId = baseClaim.id
 
         const item = order.items[0]
 
-        result = await api.post(
+        let result = await api.post(
           `/admin/claims/${claimId}/inbound/items`,
           {
             items: [
@@ -523,6 +527,106 @@ medusaIntegrationTestRunner({
           )
         ).data.claims
         expect(result[0].canceled_at).toBeDefined()
+      })
+    })
+
+    describe("GET /admin/claims/:id", () => {
+      beforeEach(async () => {
+        await api.post(
+          `/admin/claims/${baseClaim.id}/inbound/items`,
+          {
+            items: [
+              {
+                id: item.id,
+                reason_id: returnReason.id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/claims/${baseClaim.id}/inbound/shipping-method`,
+          {
+            shipping_option_id: returnShippingOption.id,
+          },
+          adminHeaders
+        )
+        // Claim Items
+        await api.post(
+          `/admin/claims/${baseClaim.id}/claim-items`,
+          {
+            items: [
+              {
+                id: item.id,
+                reason: ClaimReason.PRODUCTION_FAILURE,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/claims/${baseClaim.id}/request`,
+          {},
+          adminHeaders
+        )
+      })
+
+      it("should get an existing claim for given id", async () => {
+        let res = await api.get(`/admin/claims/${baseClaim.id}`, adminHeaders)
+        expect(res.status).toEqual(200)
+        expect(res.data.claim.id).toEqual(baseClaim.id)
+
+        let errorRes = await api
+          .get(`/admin/claims/invalid-claim-id`, adminHeaders)
+          .catch((e) => e)
+        expect(errorRes.response.status).toEqual(404)
+        expect(errorRes.response.data.message).toEqual(
+          "Claim with id: invalid-claim-id was not found"
+        )
+      })
+
+      it("should get an existing claim for given id", async () => {
+        let res = await api.get(`/admin/claims/${baseClaim.id}`, adminHeaders)
+        const keysInResponse = Object.keys(res.data.claim)
+
+        expect(res.status).toEqual(200)
+        expect(keysInResponse).toEqual(
+          expect.arrayContaining([
+            "id",
+            "created_at",
+            "updated_at",
+            "canceled_at",
+            "type",
+            "order_id",
+            "return_id",
+            "display_id",
+            "order_version",
+            "refund_amount",
+            "additional_items",
+            "claim_items",
+          ])
+        )
+      })
+
+      it("should get claim with claim items", async () => {
+        let res = await api.get(
+          `/admin/claims/${baseClaim.id}?fields=id,*claim_items`,
+          adminHeaders
+        )
+        expect(res.status).toEqual(200)
+        expect(res.data.claim.id).toEqual(baseClaim.id)
+        expect(res.data.claim.claim_items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              item_id: item.id,
+              reason: ClaimReason.PRODUCTION_FAILURE,
+            }),
+          ])
+        )
+        // additional items is one of the props that should be undefined
+        expect(res.data.claim.additional_items).toBeUndefined()
       })
     })
   },
