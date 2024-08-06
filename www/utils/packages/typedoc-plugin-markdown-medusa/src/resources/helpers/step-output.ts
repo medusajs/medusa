@@ -1,7 +1,7 @@
 import { MarkdownTheme } from "../../theme"
 import * as Handlebars from "handlebars"
 import { SignatureReflection } from "typedoc"
-import { getStepOutputType } from "../../utils/step-utils"
+import { getStepOutputType } from "utils"
 import { formatParameterComponent } from "../../utils/format-parameter-component"
 import { getReflectionTypeParameters } from "../../utils/reflection-type-parameters"
 
