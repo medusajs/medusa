@@ -985,6 +985,73 @@ medusaIntegrationTestRunner({
           expect(inventoryLevel[0].stocked_quantity).toEqual(3)
         })
       })
+
+      describe("POST /admin/returns/:id/request-items/:action_id", () => {
+        let returnId
+        let itemChange
+
+        beforeEach(async () => {
+          let result = await api.post(
+            "/admin/returns",
+            {
+              order_id: order.id,
+              description: "Test",
+              location_id: location.id,
+            },
+            adminHeaders
+          )
+
+          returnId = result.data.return.id
+        })
+
+        it("should unset reason and note", async () => {
+          const item = order.items[0]
+          let result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items`,
+              {
+                items: [
+                  {
+                    id: item.id,
+                    quantity: 2,
+                    reason_id: returnReason.id,
+                    internal_note: "Test note",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          itemChange = result.items[0].actions[0]
+
+          expect(result.items[0].actions[0]).toEqual(
+            expect.objectContaining({
+              details: expect.objectContaining({
+                reason_id: returnReason.id,
+              }),
+              internal_note: "Test note",
+            })
+          )
+
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items/${itemChange.id}`,
+              { quantity: 1, reason_id: null, internal_note: null },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          expect(result.items[0].actions[0]).toEqual(
+            expect.objectContaining({
+              details: expect.objectContaining({
+                reason_id: null,
+              }),
+              internal_note: null,
+            })
+          )
+        })
+      })
     })
   },
 })
