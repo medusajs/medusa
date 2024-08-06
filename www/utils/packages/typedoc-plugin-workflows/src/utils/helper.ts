@@ -108,9 +108,7 @@ export default class Helper {
    * @param initializer - The step's initializer.
    * @returns The step's modifier.
    */
-  getModifier(initializer: ts.CallExpression): StepModifier {
-    const stepType = this.getStepType(initializer)
-
+  getModifier(stepType: StepType): StepModifier {
     return `@${stepType}`
   }
 }

@@ -72,6 +72,8 @@ import stepOutputHelper from "./resources/helpers/step-output"
 import ifWorkflowHelper from "./resources/helpers/if-workflow"
 import workflowInputHelper from "./resources/helpers/workflow-input"
 import workflowOutputHelper from "./resources/helpers/workflow-output"
+import workflowDiagramHelper from "./resources/helpers/workflow-diagram"
+import workflowHooksHelper from "./resources/helpers/workflow-hooks"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -172,4 +174,6 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifWorkflowHelper()
   workflowInputHelper(theme)
   workflowOutputHelper(theme)
+  workflowDiagramHelper(theme)
+  workflowHooksHelper(theme)
 }

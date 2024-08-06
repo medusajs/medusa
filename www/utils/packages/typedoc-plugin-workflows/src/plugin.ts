@@ -15,6 +15,7 @@ import ts, { SyntaxKind, VariableStatement } from "typescript"
 import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
 import Helper from "./utils/helper"
 import { isWorkflow } from "utils"
+import { StepType } from "./types"
 
 /**
  * A plugin that extracts a workflow's steps, hooks, their types, and attaches them as
@@ -160,18 +161,18 @@ class WorkflowsPlugin {
         return
       }
 
-      const { stepId, stepReflection } =
+      const { stepType, stepReflection } =
         this.parseStep({
           initializer,
           context,
           workflow,
         }) || {}
 
-      if (!stepId || !stepReflection) {
+      if (!stepType || !stepReflection) {
         return
       }
 
-      const stepModifier = this.helper.getModifier(initializer)
+      const stepModifier = this.helper.getModifier(stepType)
 
       const documentReflection = new DocumentReflection(
         stepReflection.name,
@@ -203,8 +204,8 @@ class WorkflowsPlugin {
     workflow?: WorkflowDefinition
   }):
     | {
-        stepId: string
         stepReflection: DeclarationReflection
+        stepType: StepType
       }
     | undefined {
     const initializerName = this.helper.normalizeName(
@@ -213,11 +214,9 @@ class WorkflowsPlugin {
 
     let stepId: string | undefined
     let stepReflection: DeclarationReflection | undefined
+    let stepType = this.helper.getStepType(initializer)
 
-    if (
-      this.helper.getStepType(initializer) === "hook" &&
-      "symbol" in initializer.arguments[1]
-    ) {
+    if (stepType === "hook" && "symbol" in initializer.arguments[1]) {
       // get the hook's name from the first argument
       stepId = this.helper.normalizeName(initializer.arguments[0].getText())
       stepReflection = this.assembleHookReflection({
@@ -236,31 +235,37 @@ class WorkflowsPlugin {
         return
       }
 
-      const { initializer } =
+      const { initializer: originalInitializer } =
         this.helper.getReflectionSymbolAndInitializer({
           project: context.project,
           reflection: initializerReflection,
         }) || {}
 
-      if (!initializer) {
+      if (!originalInitializer) {
         return
       }
 
       stepId = this.helper.getStepOrWorkflowId(
-        initializer,
+        originalInitializer,
         context.project,
         true
       )
+      stepType = this.helper.getStepType(originalInitializer)
       stepReflection = initializerReflection
     }
 
     // check if is a step in the workflow
-    if (!stepId || !stepReflection || !workflow?.handlers_.get(stepId)) {
+    if (
+      !stepId ||
+      !stepType ||
+      !stepReflection ||
+      !workflow?.handlers_.get(stepId)
+    ) {
       return
     }
 
     return {
-      stepId,
+      stepType,
       stepReflection,
     }
   }
@@ -286,6 +291,14 @@ class WorkflowsPlugin {
       undefined,
       stepId
     )
+
+    declarationReflection.comment = new Comment()
+    declarationReflection.comment.summary = [
+      {
+        kind: "text",
+        text: "This step is a hook that you can inject custom functionality into.",
+      },
+    ]
     const signatureReflection = new SignatureReflection(
       stepId,
       ReflectionKind.SomeSignature,
@@ -299,6 +312,10 @@ class WorkflowsPlugin {
     )
 
     parameter.type = ReferenceType.createSymbolReference(inputSymbol, context)
+
+    if (parameter.type.name === "__object") {
+      parameter.type.name = "object"
+    }
 
     signatureReflection.parameters = []
 

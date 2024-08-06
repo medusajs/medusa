@@ -44,7 +44,12 @@ const mergerOptions: Partial<TypeDocOptions> = {
       sections: baseSectionsOptions,
       parameterStyle: "component",
       parameterComponent: "TypeList",
-      mdxImports: [`import { TypeList } from "docs-ui"`],
+      // TODO move to core-flows merger configurations
+      workflowDiagramComponent: "WorkflowDiagram",
+      mdxImports: [
+        // TODO move WorkflowDiagram import to core-flows merger configurations
+        `import { TypeList, WorkflowDiagram } from "docs-ui"`,
+      ],
     },
     internal: {
       maxLevel: 1,

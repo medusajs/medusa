@@ -5,6 +5,7 @@ export * from "./local-links.js"
 export * from "./page-number.js"
 export * from "./resolve-admonitions.js"
 export * from "./type-list-link-fixer.js"
+export * from "./workflow-diagram-link-fixer.js"
 
 export * from "./utils/fix-link.js"
 export * from "./utils/get-file-slug.js"
