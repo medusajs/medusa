@@ -10,7 +10,7 @@ import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside } from "../.."
 import { SidebarSeparator } from "./Separator"
-import { SidebarActions } from "./Actions"
+import { SidebarBottom } from "./Bottom"
 
 export type SidebarProps = {
   className?: string
@@ -23,8 +23,9 @@ export const Sidebar = ({
   expandItems = true,
   sidebarTopProps,
 }: SidebarProps) => {
+  const sidebarWrapperRef = useRef(null)
   const sidebarTopRef = useRef<HTMLDivElement>(null)
-  const sidebarActionsRef = useRef<HTMLDivElement>(null)
+  const sidebarBottomRef = useRef<HTMLDivElement>(null)
   const {
     items,
     currentItems,
@@ -34,11 +35,11 @@ export const Sidebar = ({
     sidebarRef,
     sidebarTopHeight,
     setSidebarTopHeight,
-    sidebarActionsHeight,
-    setSidebarActionsHeight,
+    sidebarBottomHeight: sidebarActionsHeight,
+    setSidebarBottomHeight: setSidebarActionsHeight,
   } = useSidebar()
   useClickOutside({
-    elmRef: sidebarRef,
+    elmRef: sidebarWrapperRef,
     onClickOutside: () => {
       if (mobileSidebarOpen) {
         setMobileSidebarOpen(false)
@@ -55,8 +56,8 @@ export const Sidebar = ({
     setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
   })
 
-  useResizeObserver(sidebarActionsRef, () => {
-    setSidebarActionsHeight(sidebarActionsRef.current?.clientHeight || 0)
+  useResizeObserver(sidebarBottomRef, () => {
+    setSidebarActionsHeight(sidebarBottomRef.current?.clientHeight || 0)
   })
 
   return (
@@ -72,7 +73,7 @@ export const Sidebar = ({
       <aside
         className={clsx(
           "bg-medusa-bg-base lg:bg-transparent block",
-          "fixed -left-full top-0 h-screen transition-[left] lg:relative lg:left-0 lg:h-auto",
+          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:left-0 lg:h-auto",
           "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
           "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
           mobileSidebarOpen && [
@@ -85,6 +86,7 @@ export const Sidebar = ({
         style={{
           animationFillMode: "forwards",
         }}
+        ref={sidebarWrapperRef}
       >
         <ul className={clsx("h-full w-full", "flex flex-col")}>
           <SidebarTop
@@ -107,7 +109,7 @@ export const Sidebar = ({
                 ref={sidebarRef}
                 style={{
                   maxHeight: `calc(100vh - ${
-                    sidebarTopHeight + sidebarActionsHeight + 24
+                    sidebarTopHeight + sidebarActionsHeight + 12
                   }px)`,
                 }}
                 id="sidebar"
@@ -144,7 +146,7 @@ export const Sidebar = ({
               </div>
             </CSSTransition>
           </SwitchTransition>
-          <SidebarActions ref={sidebarActionsRef} />
+          <SidebarBottom ref={sidebarBottomRef} />
         </ul>
       </aside>
     </>

@@ -68,6 +68,9 @@ module.exports = {
             error: "var(--docs-border-error)",
             danger: "var(--docs-border-danger)",
             transparent: "var(--docs-border-transparent)",
+            menu: {
+              top: "var(--docs-border-menu-top)",
+            },
           },
           button: {
             inverted: {

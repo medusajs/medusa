@@ -1,5 +1,6 @@
 export * from "./api-testing.js"
 export * from "./config.js"
 export * from "./general.js"
+export * from "./menu.js"
 export * from "./navigation-dropdown.js"
 export * from "./sidebar.js"
