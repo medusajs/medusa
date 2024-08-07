@@ -17,9 +17,14 @@ export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
 
 export const useClaim = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminClaimListParams,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminClaimResponse,
+      Error,
+      HttpTypes.AdminClaimResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -275,6 +280,10 @@ export const useRemoveClaimInboundItem = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.all,
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
