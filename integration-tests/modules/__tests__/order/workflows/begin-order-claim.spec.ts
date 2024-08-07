@@ -123,7 +123,7 @@ async function prepareDataFixtures({ container }) {
         stock_location_id: location.id,
       },
       [Modules.FULFILLMENT]: {
-        fulfillment_provider_id: "manual_test-provider",
+        fulfillment_provider_id: providerId,
       },
     },
     {

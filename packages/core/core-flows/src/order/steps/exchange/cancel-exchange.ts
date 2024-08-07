@@ -13,7 +13,7 @@ export const cancelOrderExchangeStep = createStep(
     )
 
     await service.cancelExchange(data)
-    return new StepResponse(void 0, data.return_id)
+    return new StepResponse(void 0, data.order_id)
   },
   async (orderId, { container }) => {
     if (!orderId) {
