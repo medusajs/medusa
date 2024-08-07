@@ -1,7 +1,6 @@
 import {
   BellAlert,
   BellAlertDone,
-  CircleFilledSolid,
   InformationCircleSolid,
 } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -132,15 +131,17 @@ const Notification = ({
           <InformationCircleSolid />
         </div>
         <div className="flex w-full flex-col gap-y-3">
-          <div>
-            <div className="items-center flex flex-row justify-between">
+          <div className="flex flex-col">
+            <div className="items-center flex justify-between">
               <Text size="small" leading="compact" weight="plus">
                 {data.title}
               </Text>
-              <div className="items-center flex flex-row justify-center pr-4 relative">
+              <div className="items-center flex justify-center align-center gap-2">
                 <Text
                   as={"span"}
-                  className="text-ui-fg-subtle"
+                  className={clx("text-ui-fg-subtle", {
+                    "text-ui-fg-base": unread,
+                  })}
                   size="small"
                   leading="compact"
                   weight="plus"
@@ -150,9 +151,9 @@ const Notification = ({
                   })}
                 </Text>
                 {unread && (
-                  <CircleFilledSolid
-                    className="text-ui-fg-interactive absolute top-1 right-0"
-                    style={{ transform: "scale(0.3)" }}
+                  <div
+                    className="h-2 w-2 rounded bg-ui-bg-interactive"
+                    role="status"
                   />
                 )}
               </div>
