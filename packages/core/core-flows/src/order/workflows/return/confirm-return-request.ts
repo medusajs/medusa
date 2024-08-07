@@ -107,7 +107,7 @@ function prepareFulfillmentData({
 
 function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
   let returnShippingMethod
-  for (const shippingMethod of orderPreview.shipping_methods) {
+  for (const shippingMethod of orderPreview.shipping_methods ?? []) {
     const modifiedShippingMethod_ = shippingMethod as any
     if (!modifiedShippingMethod_.actions) {
       continue

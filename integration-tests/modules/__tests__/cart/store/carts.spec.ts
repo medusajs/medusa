@@ -2032,6 +2032,7 @@ medusaIntegrationTestRunner({
               original_shipping_total: 0,
               items: [
                 expect.objectContaining({
+                  id: expect.stringContaining("ordli_"),
                   product_id: product.id,
                   unit_price: 100,
                   quantity: 1,
