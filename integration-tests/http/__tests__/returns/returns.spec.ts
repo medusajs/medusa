@@ -986,9 +986,8 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/returns/:id/request-items/:action_id", () => {
+      describe("POST /admin/returns/:id/request", () => {
         let returnId
-        let itemChange
 
         beforeEach(async () => {
           let result = await api.post(
@@ -1004,7 +1003,7 @@ medusaIntegrationTestRunner({
           returnId = result.data.return.id
         })
 
-        it("should unset reason and note", async () => {
+        it("should confirm return request", async () => {
           const item = order.items[0]
           let result = (
             await api.post(
@@ -1023,31 +1022,195 @@ medusaIntegrationTestRunner({
             )
           ).data.order_preview
 
-          itemChange = result.items[0].actions[0]
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.return
 
-          expect(result.items[0].actions[0]).toEqual(
+          expect(result).toEqual(
             expect.objectContaining({
-              details: expect.objectContaining({
-                reason_id: returnReason.id,
-              }),
-              internal_note: "Test note",
+              id: returnId,
+              status: "requested",
+              requested_at: expect.any(String),
+            })
+          )
+        })
+
+        it("should confirm return request with shipping", async () => {
+          const item = order.items[0]
+          let result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items`,
+              {
+                items: [
+                  {
+                    id: item.id,
+                    quantity: 2,
+                    reason_id: returnReason.id,
+                    internal_note: "Test note",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/shipping-method`,
+              {
+                shipping_option_id: returnShippingOption.id,
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  name: "Return shipping",
+                  amount: 1000,
+                  subtotal: 1000,
+                  total: 1000,
+                }),
+              ]),
             })
           )
 
           result = (
             await api.post(
-              `/admin/returns/${returnId}/request-items/${itemChange.id}`,
-              { quantity: 1, reason_id: null, internal_note: null },
+              `/admin/returns/${returnId}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.return
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: returnId,
+              status: "requested",
+              requested_at: expect.any(String),
+            })
+          )
+        })
+      })
+
+      describe("POST /admin/returns/:id/request", () => {
+        let returnId
+
+        beforeEach(async () => {
+          let result = await api.post(
+            "/admin/returns",
+            {
+              order_id: order.id,
+              description: "Test",
+              location_id: location.id,
+            },
+            adminHeaders
+          )
+
+          returnId = result.data.return.id
+        })
+
+        it("should confirm return request", async () => {
+          const item = order.items[0]
+          let result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items`,
+              {
+                items: [
+                  {
+                    id: item.id,
+                    quantity: 2,
+                    reason_id: returnReason.id,
+                    internal_note: "Test note",
+                  },
+                ],
+              },
               adminHeaders
             )
           ).data.order_preview
 
-          expect(result.items[0].actions[0]).toEqual(
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.return
+
+          expect(result).toEqual(
             expect.objectContaining({
-              details: expect.objectContaining({
-                reason_id: null,
-              }),
-              internal_note: null,
+              id: returnId,
+              status: "requested",
+              requested_at: expect.any(String),
+            })
+          )
+        })
+
+        it("should confirm return request with shipping", async () => {
+          const item = order.items[0]
+          let result = (
+            await api.post(
+              `/admin/returns/${returnId}/request-items`,
+              {
+                items: [
+                  {
+                    id: item.id,
+                    quantity: 2,
+                    reason_id: returnReason.id,
+                    internal_note: "Test note",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/shipping-method`,
+              {
+                shipping_option_id: returnShippingOption.id,
+              },
+              adminHeaders
+            )
+          ).data.order_preview
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: order.id,
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  name: "Return shipping",
+                  amount: 1000,
+                  subtotal: 1000,
+                  total: 1000,
+                }),
+              ]),
+            })
+          )
+
+          result = (
+            await api.post(
+              `/admin/returns/${returnId}/request`,
+              {},
+              adminHeaders
+            )
+          ).data.return
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: returnId,
+              status: "requested",
+              requested_at: expect.any(String),
             })
           )
         })
