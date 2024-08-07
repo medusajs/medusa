@@ -80,7 +80,7 @@
     "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "pg": "^8.11.2",
+    "pg": "^8.12.0",
     "qs": "^6.11.2",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "^0.13.11",
