@@ -1,10 +1,9 @@
 import React from "react"
 import { WorkflowDiagramArrow } from "../Arrow"
-import { WorkflowStep } from "types"
+import { WorkflowStepUi } from "types"
 
 export type WorkflowDiagramLineProps = {
-  // TODO
-  step: WorkflowStep[]
+  step: WorkflowStepUi[]
 }
 
 export const WorkflowDiagramLine = ({ step }: WorkflowDiagramLineProps) => {
