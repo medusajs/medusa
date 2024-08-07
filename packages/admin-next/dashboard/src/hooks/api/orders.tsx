@@ -6,10 +6,10 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 
+import { HttpTypes } from "@medusajs/types"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { sdk } from "../../lib/client"
-import { HttpTypes } from "@medusajs/types"
 
 const ORDERS_QUERY_KEY = "orders" as const
 const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -40,7 +40,12 @@ export const useOrder = (
 export const useOrderPreview = (
   id: string,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminOrderPreviewResponse,
+      Error,
+      HttpTypes.AdminOrderPreviewResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {

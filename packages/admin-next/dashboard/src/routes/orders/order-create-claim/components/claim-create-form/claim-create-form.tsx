@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PencilSquare } from "@medusajs/icons"
-import { AdminClaim, AdminOrder, InventoryLevelDTO } from "@medusajs/types"
+import {
+  AdminClaim,
+  AdminOrder,
+  AdminOrderPreview,
+  InventoryLevelDTO,
+} from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -46,7 +51,7 @@ import { currencies } from "../../../../../lib/data/currencies"
 type ReturnCreateFormProps = {
   order: AdminOrder
   claim: AdminClaim
-  preview: AdminOrder
+  preview: AdminOrderPreview
 }
 
 let itemsToAdd: string[] = []
@@ -134,14 +139,14 @@ export const ClaimCreateForm = ({
    */
   const previewItems = useMemo(
     () =>
-      preview.items.filter(
+      preview?.items?.filter(
         (i) => !!i.actions?.find((a) => a.claim_id === claim.id)
       ),
     [preview.items]
   )
 
   const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
+    () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
 
@@ -161,14 +166,18 @@ export const ClaimCreateForm = ({
       )
 
       return Promise.resolve({
-        inbound_items: previewItems.map((i) => ({
-          item_id: i.id,
-          quantity: i.detail.return_requested_quantity,
-          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-            ?.internal_note,
-          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
-            ?.reason_id,
-        })),
+        inbound_items: previewItems.map((i) => {
+          const returnAction = i.actions?.find(
+            (a) => a.action === "RETURN_ITEM"
+          )
+
+          return {
+            item_id: i.id,
+            quantity: i.detail.return_requested_quantity,
+            note: returnAction?.internal_note,
+            reason_id: returnAction?.details?.reason_id as string | undefined,
+          }
+        }),
         inbound_option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
@@ -188,7 +197,7 @@ export const ClaimCreateForm = ({
   })
 
   useEffect(() => {
-    const existingItemsMap = {}
+    const existingItemsMap: Record<string, boolean> = {}
 
     previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
@@ -205,7 +214,7 @@ export const ClaimCreateForm = ({
             ...items[ind],
             quantity: i.detail.return_requested_quantity,
             note: returnItemAction?.internal_note,
-            reason_id: returnItemAction?.details?.reason_id,
+            reason_id: returnItemAction?.details?.reason_id as string,
           })
         }
       } else {
@@ -226,13 +235,13 @@ export const ClaimCreateForm = ({
     )
 
     if (method) {
-      form.setValue("option_id", method.shipping_option_id)
+      form.setValue("inbound_option_id", method.shipping_option_id)
     }
   }, [preview.shipping_methods])
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
-  const shippingOptionId = form.watch("option_id")
+  const shippingOptionId = form.watch("inbound_option_id")
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -242,19 +251,25 @@ export const ClaimCreateForm = ({
     } catch (e) {
       toast.error(t("general.error"), {
         description: e.message,
-        dismissLabel: t("actions.close"),
       })
     }
   })
 
   const onItemsSelected = async () => {
     itemsToAdd.length &&
-      (await addInboundItem({
-        items: itemsToAdd.map((id) => ({
-          id,
-          quantity: 1,
-        })),
-      }))
+      (await addInboundItem(
+        {
+          items: itemsToAdd.map((id) => ({
+            id,
+            quantity: 1,
+          })),
+        },
+        {
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        }
+      ))
 
     for (const itemToRemove of itemsToRemove) {
       const actionId = previewItems
@@ -262,14 +277,18 @@ export const ClaimCreateForm = ({
         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
       if (actionId) {
-        await removeInboundItem(actionId)
+        await removeInboundItem(actionId, {
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        })
       }
     }
 
     setIsOpen("items", false)
   }
 
-  const onLocationChange = async (selectedLocationId: string) => {
+  const onLocationChange = async (selectedLocationId?: string | null) => {
     await updateClaimRequest({ location_id: selectedLocationId })
   }
 
@@ -281,12 +300,19 @@ export const ClaimCreateForm = ({
 
     await Promise.all(promises)
 
-    await addInboundShipping({ shipping_option_id: selectedOptionId })
+    await addInboundShipping(
+      { shipping_option_id: selectedOptionId },
+      {
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   }
 
   useEffect(() => {
     if (isShippingPriceEdit) {
-      document.getElementById("js-shipping-input").focus()
+      document.getElementById("js-shipping-input")?.focus()
     }
   }, [isShippingPriceEdit])
 
@@ -298,7 +324,7 @@ export const ClaimCreateForm = ({
     const allItemsHaveLocation = items
       .map((_i) => {
         const item = itemsMap.get(_i.item_id)
-        if (!item?.variant_id) {
+        if (!item?.variant_id || !item?.variant) {
           return true
         }
 
@@ -326,11 +352,12 @@ export const ClaimCreateForm = ({
       ;(
         await Promise.all(
           items.map(async (_i) => {
-            const item = itemsMap.get(_i.item_id)
+            const item = itemsMap.get(_i.item_id)!
 
-            if (!item.variant_id) {
+            if (!item.variant_id || !item.variant?.product) {
               return undefined
             }
+
             return await sdk.admin.product.retrieveVariant(
               item.variant.product.id,
               item.variant_id,
@@ -339,8 +366,9 @@ export const ClaimCreateForm = ({
           })
         )
       )
-        .filter((it) => it?.variant)
+        .filter((it) => !!it?.variant)
         .forEach((item) => {
+
           const { variant } = item
           const levels = variant.inventory[0]?.location_levels
 
@@ -365,23 +393,30 @@ export const ClaimCreateForm = ({
      */
     return () => {
       if (IS_CANCELING) {
-        cancelClaimRequest()
+        cancelClaimRequest(undefined, {
+          onSuccess: () => {
+            toast.success(t("orders.claims.actions.cancelClaim.successToast"))
+          },
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        })
+
         // TODO: add this on ESC press
         IS_CANCELING = false
       }
     }
   }, [])
 
-  const returnTotal = preview.return_requested_total
-
   const shippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
       (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
     )
 
-    return method?.total || 0
+    return (method?.total as number) || 0
   }, [preview.shipping_methods])
 
+  const returnTotal = preview.return_requested_total
   const refundAmount = returnTotal - shippingTotal
 
   return (
@@ -473,7 +508,11 @@ export const ClaimCreateForm = ({
                         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                       if (actionId) {
-                        removeInboundItem(actionId)
+                        removeInboundItem(actionId, {
+                          onError: (error) => {
+                            toast.error(error.message)
+                          },
+                        })
                       }
                     }}
                     onUpdate={(payload) => {
@@ -482,7 +521,14 @@ export const ClaimCreateForm = ({
                         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                       if (actionId) {
-                        updateInboundItem({ ...payload, actionId })
+                        updateInboundItem(
+                          { ...payload, actionId },
+                          {
+                            onError: (error) => {
+                              toast.error(error.message)
+                            },
+                          }
+                        )
                       }
                     }}
                     index={index}
@@ -543,16 +589,16 @@ export const ClaimCreateForm = ({
                   {/*TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
                   <Form.Field
                     control={form.control}
-                    name="option_id"
+                    name="inbound_option_id"
                     render={({ field: { value, onChange, ...field } }) => {
                       return (
                         <Form.Item>
                           <Form.Control>
                             <Combobox
-                              value={value}
-                              onChange={(v) => {
-                                onChange(v)
-                                onShippingOptionChange(v)
+                              value={value ?? undefined}
+                              onChange={(val) => {
+                                onChange(val)
+                                val && onShippingOptionChange(val)
                               }}
                               {...field}
                               options={(shipping_options ?? [])
@@ -640,13 +686,20 @@ export const ClaimCreateForm = ({
                         })
 
                         if (actionId) {
-                          updateInboundShipping({
-                            actionId,
-                            custom_price:
-                              typeof customShippingAmount === "string"
-                                ? null
-                                : customShippingAmount,
-                          })
+                          updateInboundShipping(
+                            {
+                              actionId,
+                              custom_price:
+                                typeof customShippingAmount === "string"
+                                  ? null
+                                  : customShippingAmount,
+                            },
+                            {
+                              onError: (error) => {
+                                toast.error(error.message)
+                              },
+                            }
+                          )
                         }
                         setIsShippingPriceEdit(false)
                       }}
@@ -656,7 +709,7 @@ export const ClaimCreateForm = ({
                       }
                       code={order.currency_code}
                       onValueChange={(value) =>
-                        setCustomShippingAmount(value ? parseInt(value) : "")
+                        value && setCustomShippingAmount(parseInt(value))
                       }
                       value={customShippingAmount}
                       disabled={showPlaceholder}

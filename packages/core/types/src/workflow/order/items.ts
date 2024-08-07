@@ -86,7 +86,7 @@ export interface UpdateClaimItemWorkflowInput {
   action_id: string
   data: {
     quantity?: BigNumberInput
-    reason_id?: ClaimReason
+    reason_id?: string | null
     internal_note?: string | null
   }
 }

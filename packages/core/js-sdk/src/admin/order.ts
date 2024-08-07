@@ -24,7 +24,7 @@ export class Order {
   }
 
   async retrievePreview(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
+    return await this.client.fetch<HttpTypes.AdminOrderPreviewResponse>(
       `/admin/orders/${id}/preview`,
       {
         headers,
