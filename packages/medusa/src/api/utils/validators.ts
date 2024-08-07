@@ -1,4 +1,21 @@
-import { z } from "zod"
+import { z, ZodObject } from "zod"
+
+/**
+ * Wraps the original schema to a function to accept and merge
+ * additional_data schema
+ */
+export const WithAdditionalData = (originalSchema: ZodObject<any, any>) => {
+  return (additionalDataValidator?: ZodObject<any, any>) => {
+    if (!additionalDataValidator) {
+      return originalSchema.extend({
+        additional_data: z.record(z.unknown()).nullish(),
+      })
+    }
+    return originalSchema.extend({
+      additional_data: additionalDataValidator,
+    })
+  }
+}
 
 export const createBatchBody = (
   createValidator: z.ZodType,
