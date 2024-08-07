@@ -264,7 +264,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
-        // Serialize the event data and metadata from a single field into the original format expected by the subscribers
+        // De-serialize the event data and metadata from a single field into the original format expected by the subscribers
         const event = {
           name,
           data: data.data,
