@@ -370,7 +370,7 @@ export const ClaimCreateForm = ({
         IS_CANCELING = false
       }
     }
-  }, [IS_CANCELING])
+  }, [])
 
   const returnTotal = preview.return_requested_total
 
