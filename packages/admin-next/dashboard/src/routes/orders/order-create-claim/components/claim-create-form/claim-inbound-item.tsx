@@ -81,7 +81,6 @@ function ClaimInboundItem({
                           field.onChange(payload)
 
                           if (payload) {
-                            // todo: move on blur
                             onUpdate({ quantity: payload })
                           }
                         }}
@@ -176,8 +175,9 @@ function ClaimInboundItem({
                 className="flex-shrink"
                 variant="transparent"
                 onClick={() => {
-                  onUpdate({ reason_id: null }) // TODO BE: we should be able to set to unset reason here
-                  form.setValue(`inbound_items.${index}.reason_id`, "")
+                  form.setValue(`inbound_items.${index}.reason_id`, null)
+
+                  onUpdate({ reason_id: null })
                 }}
               >
                 <XMark className="text-ui-fg-muted" />
@@ -200,17 +200,17 @@ function ClaimInboundItem({
               <div className="flex-grow">
                 <Form.Field
                   control={form.control}
-                  name={`items.${index}.note`}
-                  render={({ field: { ref, onChange, ...field } }) => {
+                  name={`inbound_items.${index}.note`}
+                  render={({ field: { ref, ...field } }) => {
                     return (
                       <Form.Item>
                         <Form.Control>
                           <Input
-                            onChange={onChange}
                             {...field}
-                            onBlur={() =>
+                            onBlur={() => {
+                              field.onChange(field.value)
                               onUpdate({ internal_note: field.value })
-                            }
+                            }}
                             className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
                           />
                         </Form.Control>
@@ -220,15 +220,14 @@ function ClaimInboundItem({
                   }}
                 />
               </div>
+
               <IconButton
                 type="button"
                 className="flex-shrink"
                 variant="transparent"
                 onClick={() => {
-                  form.setValue(`items.${index}.note`, {
-                    shouldDirty: true,
-                    shouldTouch: true,
-                  })
+                  form.setValue(`inbound_items.${index}.note`, null)
+
                   onUpdate({ internal_note: null })
                 }}
               >

@@ -1,4 +1,3 @@
-import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -6,25 +5,21 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
+import { HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
+import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const CLAIMS_QUERY_KEY = "claims" as const
 export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
 
 export const useClaim = (
   id: string,
-  query?: HttpTypes.AdminClaimListParams,
+  query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<
-      HttpTypes.AdminClaimResponse,
-      Error,
-      HttpTypes.AdminClaimResponse,
-      QueryKey
-    >,
+    UseQueryOptions<any, Error, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -61,7 +56,10 @@ export const useClaims = (
 export const useCreateClaim = (
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    {
+      claim: HttpTypes.AdminClaimResponse
+      order: HttpTypes.AdminOrderResponse
+    },
     Error,
     HttpTypes.AdminCreateClaim
   >
@@ -280,10 +278,6 @@ export const useRemoveClaimInboundItem = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
-      })
-
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -539,7 +533,6 @@ export const useCancelClaimRequest = (
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.lists(),
       })
-
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

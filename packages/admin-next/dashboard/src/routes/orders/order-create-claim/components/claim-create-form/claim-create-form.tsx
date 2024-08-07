@@ -161,14 +161,18 @@ export const ClaimCreateForm = ({
       )
 
       return Promise.resolve({
-        inbound_items: previewItems.map((i) => ({
-          item_id: i.id,
-          quantity: i.detail.return_requested_quantity,
-          note: i.actions?.find((a) => a.action === "RETURN_ITEM")
-            ?.internal_note,
-          reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
-            ?.reason_id,
-        })),
+        inbound_items: previewItems.map((i) => {
+          const returnAction = i.actions?.find(
+            (a) => a.action === "RETURN_ITEM"
+          )
+
+          return {
+            item_id: i.id,
+            quantity: i.detail.return_requested_quantity,
+            note: returnAction?.internal_note,
+            reason_id: returnAction?.details?.reason_id,
+          }
+        }),
         inbound_option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,

@@ -4,7 +4,7 @@ import {
   InformationCircleSolid,
 } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Drawer, Heading, IconButton, Text } from "@medusajs/ui"
+import { clx, Drawer, Heading, IconButton, Text } from "@medusajs/ui"
 import { formatDistance } from "date-fns"
 import { TFunction } from "i18next"
 import { useEffect, useState } from "react"
@@ -199,9 +199,9 @@ const NotificationsEmptyState = ({ t }: { t: TFunction }) => {
 
 const useUnreadNotifications = () => {
   const [hasUnread, setHasUnread] = useState(false)
-  const { notifications = [] } = useNotifications(
+  const { notifications } = useNotifications(
     { limit: 1, offset: 0, fields: "created_at" },
-    { refetchInterval: 3000, enabled: false }
+    { refetchInterval: 3000 }
   )
   const lastNotification = notifications?.[0]
 
