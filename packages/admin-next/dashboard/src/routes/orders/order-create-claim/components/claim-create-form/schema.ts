@@ -17,7 +17,7 @@ export const ClaimCreateSchema = z.object({
   //   })
   // ),
   location_id: z.string().optional(),
-  inbound_option_id: z.string().optional(),
+  inbound_option_id: z.string().nullish(),
   send_notification: z.boolean().optional(),
 })
 

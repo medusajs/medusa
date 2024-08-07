@@ -598,7 +598,7 @@ export const ClaimCreateForm = ({
                         <Form.Item>
                           <Form.Control>
                             <Combobox
-                              value={value}
+                              value={value ?? undefined}
                               onChange={(val) => {
                                 onChange(val)
                                 val && onShippingOptionChange(val)
