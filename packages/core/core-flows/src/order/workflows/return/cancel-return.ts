@@ -67,6 +67,7 @@ export const cancelReturnWorkflow = createWorkflow(
         entry_point: "return",
         fields: [
           "id",
+          "order_id",
           "canceled_at",
           "items.id",
           "items.received_quantity",
@@ -79,6 +80,9 @@ export const cancelReturnWorkflow = createWorkflow(
 
     validateOrder({ orderReturn, input })
 
-    cancelOrderReturnStep({ return_id: orderReturn.id })
+    cancelOrderReturnStep({
+      return_id: orderReturn.id,
+      order_id: orderReturn.order_id,
+    })
   }
 )

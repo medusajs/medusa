@@ -193,6 +193,10 @@ export interface ProductVariantDTO {
    */
   manage_inventory: boolean
   /**
+   * Whether the product variant's requires shipping.
+   */
+  requires_shipping: boolean
+  /**
    * The HS Code of the product variant.
    */
   hs_code: string | null

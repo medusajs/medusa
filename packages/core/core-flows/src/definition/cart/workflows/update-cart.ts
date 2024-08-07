@@ -1,7 +1,9 @@
-import { UpdateCartWorkflowInputDTO } from "@medusajs/types"
+import { AdditionalData, UpdateCartWorkflowInputDTO } from "@medusajs/types"
 import { MedusaError, PromotionActions, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -22,7 +24,7 @@ import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-colle
 export const updateCartWorkflowId = "update-cart"
 export const updateCartWorkflow = createWorkflow(
   updateCartWorkflowId,
-  (input: WorkflowData<UpdateCartWorkflowInputDTO>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateCartWorkflowInputDTO & AdditionalData>) => {
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
@@ -95,6 +97,15 @@ export const updateCartWorkflow = createWorkflow(
       input: {
         cart_id: input.id,
       },
+    })
+
+    const cartUpdated = createHook("cartUpdated", {
+      cart,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [cartUpdated],
     })
   }
 )

@@ -1,5 +1,3 @@
-import { kebabCase } from "./to-kebab-case"
-
 /**
  * Helper method to validate entity "handle" to be URL
  * friendly.

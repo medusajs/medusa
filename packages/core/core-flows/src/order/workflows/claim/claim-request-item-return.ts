@@ -86,8 +86,8 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     })
 
     const orderReturn: ReturnDTO = transform(
-      { createdReturn, existingOrderReturn, orderClaim },
-      ({ createdReturn, existingOrderReturn, orderClaim }) => {
+      { createdReturn, existingOrderReturn },
+      ({ createdReturn, existingOrderReturn }) => {
         return existingOrderReturn ?? (createdReturn?.[0] as ReturnDTO)
       }
     )
@@ -102,7 +102,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: ["id", "status", "canceled_at", "confirmed_at", "declined_at"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -113,7 +113,6 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
       list: false,
     }).config({
       name: "order-change-query",
-      status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
     })
 
     validationStep({

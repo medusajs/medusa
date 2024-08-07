@@ -14,6 +14,7 @@ const DEFAULT_PROPERTIES = [
   "shipping_tax_total",
   "tax_total",
   "refundable_total",
+  "order_change",
 ]
 
 const DEFAULT_RELATIONS = [

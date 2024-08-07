@@ -10,15 +10,15 @@ import {
 } from "@medusajs/types"
 import {
   ArrowDownRightMini,
-  ArrowLongRight,
   ArrowUturnLeft,
+  ExclamationCircle,
+  ArrowLongRight,
 } from "@medusajs/icons"
 import {
   Button,
   Container,
   Copy,
   Heading,
-  IconButton,
   StatusBadge,
   Text,
 } from "@medusajs/ui"
@@ -149,6 +149,11 @@ const Header = ({ order }: { order: AdminOrder }) => {
                 label: t("orders.returns.create"),
                 to: `/orders/${order.id}/returns`,
                 icon: <ArrowUturnLeft />,
+              },
+              {
+                label: t("orders.claims.create"),
+                to: `/orders/${order.id}/claims`,
+                icon: <ExclamationCircle />,
               },
             ],
           },
