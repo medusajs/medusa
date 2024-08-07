@@ -366,11 +366,8 @@ export const ClaimCreateForm = ({
           })
         )
       )
-        .filter((it) => it?.variant)
+        .filter((it) => !!it?.variant)
         .forEach((item) => {
-          if (!item) {
-            return
-          }
 
           const { variant } = item
           const levels = variant.inventory[0]?.location_levels
