@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { PencilSquare } from "@medusajs/icons"
+import { AdminClaim, AdminOrder, InventoryLevelDTO } from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -10,10 +11,9 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
+import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { AdminClaim, AdminOrder, InventoryLevelDTO } from "@medusajs/types"
-import { PencilSquare } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -22,25 +22,26 @@ import {
   useStackedModal,
 } from "../../../../../components/modals"
 
-import { ClaimCreateSchema, ReturnCreateSchemaType } from "./schema"
-import { AddClaimItemsTable } from "../add-claim-items-table"
 import { Form } from "../../../../../components/common/form"
-import { ClaimInboundItem } from "./claim-inbound-item.tsx"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { AddClaimItemsTable } from "../add-claim-items-table"
+import { ClaimInboundItem } from "./claim-inbound-item.tsx"
+import { ClaimCreateSchema, ReturnCreateSchemaType } from "./schema"
 
-import { currencies } from "../../../../../lib/data/currencies"
-import { sdk } from "../../../../../lib/client"
 import {
   useAddClaimInboundItems,
   useAddClaimInboundShipping,
+  useCancelClaimRequest,
   useDeleteClaimInboundShipping,
   useRemoveClaimInboundItem,
   useUpdateClaimInboundItem,
   useUpdateClaimInboundShipping,
 } from "../../../../../hooks/api/claims"
+import { sdk } from "../../../../../lib/client"
+import { currencies } from "../../../../../lib/data/currencies"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -48,7 +49,8 @@ type ReturnCreateFormProps = {
   preview: AdminOrder
 }
 
-let selectedItems: string[] = []
+let itemsToAdd: string[] = []
+let itemsToRemove: string[] = []
 
 let IS_CANCELING = false
 
@@ -87,7 +89,8 @@ export const ClaimCreateForm = ({
    */
   const { mutateAsync: confirmClaimRequest, isPending: isConfirming } = {} // useConfirmClaimRequest(claim.id, order.id)
 
-  const { mutateAsync: cancelClaimRequest, isPending: isCanceling } = {} // useCancelClaimRequest(claim.id, order.id)
+  const { mutateAsync: cancelClaimRequest, isPending: isCanceling } =
+    useCancelClaimRequest(claim.id, order.id)
 
   const { mutateAsync: updateClaimRequest, isPending: isUpdating } = {} // useUpdateClaim(claim.id, order.id)
 
@@ -244,13 +247,24 @@ export const ClaimCreateForm = ({
     }
   })
 
-  const onItemsSelected = () => {
-    addInboundItem({
-      items: selectedItems.map((id) => ({
-        id,
-        quantity: 1,
-      })),
-    })
+  const onItemsSelected = async () => {
+    itemsToAdd.length &&
+      (await addInboundItem({
+        items: itemsToAdd.map((id) => ({
+          id,
+          quantity: 1,
+        })),
+      }))
+
+    for (const itemToRemove of itemsToRemove) {
+      const actionId = previewItems
+        .find((i) => i.id === itemToRemove)
+        ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+
+      if (actionId) {
+        await removeInboundItem(actionId)
+      }
+    }
 
     setIsOpen("items", false)
   }
@@ -393,8 +407,18 @@ export const ClaimCreateForm = ({
                     items={order.items!}
                     selectedItems={items.map((i) => i.item_id)}
                     currencyCode={order.currency_code}
-                    onSelectionChange={(s) => (selectedItems = s)}
+                    onSelectionChange={(finalSelection) => {
+                      const alreadySelected = items.map((i) => i.item_id)
+
+                      itemsToAdd = finalSelection.filter(
+                        (selection) => !alreadySelected.includes(selection)
+                      )
+                      itemsToRemove = alreadySelected.filter(
+                        (selection) => !finalSelection.includes(selection)
+                      )
+                    }}
                   />
+
                   <StackedFocusModal.Footer>
                     <div className="flex w-full items-center justify-end gap-x-4">
                       <div className="flex items-center justify-end gap-x-2">
@@ -413,7 +437,7 @@ export const ClaimCreateForm = ({
                           variant="primary"
                           size="small"
                           role="button"
-                          onClick={() => onItemsSelected()}
+                          onClick={async () => await onItemsSelected()}
                         >
                           {t("actions.save")}
                         </Button>
@@ -423,6 +447,7 @@ export const ClaimCreateForm = ({
                 </StackedFocusModal.Content>
               </StackedFocusModal>
             </div>
+
             {showPlaceholder && (
               <div
                 style={{
@@ -432,34 +457,39 @@ export const ClaimCreateForm = ({
                 className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed"
               />
             )}
-            {items.map((item, index) => (
-              <ClaimInboundItem
-                key={item.id}
-                item={itemsMap.get(item.item_id)!}
-                previewItem={previewItemsMap.get(item.item_id)!}
-                currencyCode={order.currency_code}
-                form={form}
-                onRemove={() => {
-                  const actionId = previewItems
-                    .find((i) => i.id === item.item_id)
-                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
-                  if (actionId) {
-                    removeInboundItem(actionId)
-                  }
-                }}
-                onUpdate={(payload) => {
-                  const actionId = previewItems
-                    .find((i) => i.id === item.item_id)
-                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+            {items.map(
+              (item, index) =>
+                previewItemsMap.get(item.item_id) && (
+                  <ClaimInboundItem
+                    key={item.id}
+                    item={itemsMap.get(item.item_id)!}
+                    previewItem={previewItemsMap.get(item.item_id)!}
+                    currencyCode={order.currency_code}
+                    form={form}
+                    onRemove={() => {
+                      const actionId = previewItems
+                        .find((i) => i.id === item.item_id)
+                        ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
-                  if (actionId) {
-                    updateInboundItem({ ...payload, actionId })
-                  }
-                }}
-                index={index}
-              />
-            ))}
+                      if (actionId) {
+                        removeInboundItem(actionId)
+                      }
+                    }}
+                    onUpdate={(payload) => {
+                      const actionId = previewItems
+                        .find((i) => i.id === item.item_id)
+                        ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+
+                      if (actionId) {
+                        updateInboundItem({ ...payload, actionId })
+                      }
+                    }}
+                    index={index}
+                  />
+                )
+            )}
+
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/*LOCATION*/}

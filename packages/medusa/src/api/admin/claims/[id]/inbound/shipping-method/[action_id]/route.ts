@@ -1,5 +1,5 @@
 import {
-  removeReturnShippingMethodWorkflow,
+  removeClaimShippingMethodWorkflow,
   updateReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
 import {
@@ -76,7 +76,7 @@ export const DELETE = async (
       variables: {
         id,
       },
-      fields: ["return_id"],
+      fields: ["id", "return_id"],
     }),
     undefined,
     {
@@ -84,11 +84,11 @@ export const DELETE = async (
     }
   )
 
-  const { result: orderPreview } = await removeReturnShippingMethodWorkflow(
+  const { result: orderPreview } = await removeClaimShippingMethodWorkflow(
     req.scope
   ).run({
     input: {
-      return_id: claim.return_id,
+      claim_id: claim.id,
       action_id,
     },
   })
