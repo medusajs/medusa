@@ -213,6 +213,16 @@ export interface CreateRefundDTO {
   payment_id: string
 
   /**
+   * The associated refund reason's ID.
+   */
+  refund_reason_id?: string | null
+
+  /**
+   * A text field that adds some information about the refund
+   */
+  note?: string
+
+  /**
    * Who refunded the payment. For example,
    * a user's ID.
    */
@@ -322,4 +332,38 @@ export interface ProviderWebhookPayload {
      */
     headers: Record<string, unknown>
   }
+}
+
+export interface CreateRefundReasonDTO {
+  /**
+   * The label of the refund reason
+   */
+  label: string
+  /**
+   * The description of the refund reason
+   */
+  description?: string | null
+  /**
+   * The metadata of the refund reason
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+export interface UpdateRefundReasonDTO {
+  /**
+   * The id of the refund reason
+   */
+  id: string
+  /**
+   * The label of the refund reason
+   */
+  label?: string
+  /**
+   * The description of the refund reason
+   */
+  description?: string | null
+  /**
+   * The metadata of the refund reason
+   */
+  metadata?: Record<string, unknown> | null
 }

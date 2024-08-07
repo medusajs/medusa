@@ -1,5 +1,6 @@
 import {
   DistributedTransaction,
+  DistributedTransactionType,
   IDistributedSchedulerStorage,
   IDistributedTransactionStorage,
   SchedulerOptions,
@@ -256,7 +257,7 @@ export class RedisDistributedTransactionStorage
   }
 
   async scheduleRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -277,14 +278,14 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     await this.removeJob(JobType.RETRY, transaction, step)
   }
 
   async scheduleTransactionTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     timestamp: number,
     interval: number
   ): Promise<void> {
@@ -303,13 +304,13 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearTransactionTimeout(
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   ): Promise<void> {
     await this.removeJob(JobType.TRANSACTION_TIMEOUT, transaction)
   }
 
   async scheduleStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -330,7 +331,7 @@ export class RedisDistributedTransactionStorage
   }
 
   async clearStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     await this.removeJob(JobType.STEP_TIMEOUT, transaction, step)
@@ -338,7 +339,7 @@ export class RedisDistributedTransactionStorage
 
   private getJobId(
     type: JobType,
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step?: TransactionStep
   ) {
     const key = [type, transaction.modelId, transaction.transactionId]
@@ -355,7 +356,7 @@ export class RedisDistributedTransactionStorage
 
   private async removeJob(
     type: JobType,
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step?: TransactionStep
   ) {
     const jobId = this.getJobId(type, transaction, step)
@@ -374,10 +375,7 @@ export class RedisDistributedTransactionStorage
     const jobId =
       typeof jobDefinition === "string" ? jobDefinition : jobDefinition.jobId
 
-    // In order to ensure that the schedule configuration is always up to date, we first cancel an existing job, if there was one
-    // any only then we add the new one.
-    await this.remove(jobId)
-
+    // If it is the same key (eg. the same workflow name), the old one will get overridden.
     await this.queue.add(
       JobType.SCHEDULE,
       {
@@ -388,21 +386,22 @@ export class RedisDistributedTransactionStorage
         repeat: {
           pattern: schedulerOptions.cron,
           limit: schedulerOptions.numberOfExecutions,
+          key: `${JobType.SCHEDULE}_${jobId}`,
         },
-        jobId: `${JobType.SCHEDULE}_${jobId}`,
+        removeOnComplete: {
+          age: 86400,
+          count: 1000,
+        },
+        removeOnFail: {
+          age: 604800,
+          count: 5000,
+        },
       }
     )
   }
 
   async remove(jobId: string): Promise<void> {
-    const repeatableJobs = await this.queue.getRepeatableJobs()
-    const job = repeatableJobs.find(
-      (job) => job.id === `${JobType.SCHEDULE}_${jobId}`
-    )
-
-    if (job) {
-      await this.queue.removeRepeatableByKey(job.key)
-    }
+    await this.queue.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
   }
 
   async removeAll(): Promise<void> {

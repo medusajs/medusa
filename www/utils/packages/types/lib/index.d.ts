@@ -257,6 +257,11 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     normalizeDmlTypes: boolean
+    /**
+     * Whether to enable the workflows plugin.
+     * @defaultValue false
+     */
+    enableWorkflowsPlugins: boolean
   }
 }
 

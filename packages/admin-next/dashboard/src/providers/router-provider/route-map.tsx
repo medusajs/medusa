@@ -244,6 +244,11 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/orders/order-create-return"),
                   },
                   {
+                    path: "claims",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-claim"),
+                  },
+                  {
                     path: "payments/:paymentId/refund",
                     lazy: () =>
                       import("../../routes/orders/order-create-refund"),

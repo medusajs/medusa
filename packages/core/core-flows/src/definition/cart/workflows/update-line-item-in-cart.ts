@@ -3,7 +3,6 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -16,7 +15,7 @@ import {
   productVariantsFields,
 } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
 // - Validate shipping methods for new items (fulfillment module)
@@ -90,11 +89,13 @@ export const updateLineItemInCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    parallelize(
-      refreshCartShippingMethodsStep({ cart }),
-      refreshCartPromotionsStep({ id: input.cart.id }),
-      refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
-    )
+    refreshCartShippingMethodsStep({ cart })
+
+    refreshCartPromotionsStep({ id: input.cart.id })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: { cart_id: input.cart.id },
+    })
 
     const updatedItem = transform({ result }, (data) => data.result?.[0])
 

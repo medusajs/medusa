@@ -263,6 +263,21 @@ export interface BaseRefund {
   amount: BigNumberValue
 
   /**
+   * The id of the refund_reason that is associated with the refund
+   */
+  refund_reason_id?: string | null
+
+  /**
+   * The id of the refund_reason that is associated with the refund
+   */
+  refund_reason?: RefundReason | null
+
+  /**
+   * A field to add some additional information about the refund
+   */
+  note?: string | null
+
+  /**
    * The creation date of the refund.
    */
   created_at: Date
@@ -336,6 +351,33 @@ export interface BasePaymentSession {
    * @expandable
    */
   payment?: BasePayment
+}
+
+export interface RefundReason {
+  /**
+   * The ID of the refund reason
+   */
+  id: string
+  /**
+   * The label of the refund reason
+   */
+  label: string
+  /**
+   * The description of the refund reason
+   */
+  description?: string | null
+  /**
+   * The metadata of the refund reason
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * When the refund reason was created
+   */
+  created_at: Date | string
+  /**
+   * When the refund reason was updated
+   */
+  updated_at: Date | string
 }
 
 /**

@@ -1,5 +1,5 @@
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   IDistributedSchedulerStorage,
   IDistributedTransactionStorage,
   SchedulerOptions,
@@ -155,7 +155,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async scheduleRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -174,7 +174,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async clearRetry(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     const { modelId: workflowId, transactionId } = transaction
@@ -188,7 +188,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async scheduleTransactionTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     timestamp: number,
     interval: number
   ): Promise<void> {
@@ -206,7 +206,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async clearTransactionTimeout(
-    transaction: DistributedTransaction
+    transaction: DistributedTransactionType
   ): Promise<void> {
     const { modelId: workflowId, transactionId } = transaction
 
@@ -219,7 +219,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async scheduleStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep,
     timestamp: number,
     interval: number
@@ -238,7 +238,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async clearStepTimeout(
-    transaction: DistributedTransaction,
+    transaction: DistributedTransactionType,
     step: TransactionStep
   ): Promise<void> {
     const { modelId: workflowId, transactionId } = transaction

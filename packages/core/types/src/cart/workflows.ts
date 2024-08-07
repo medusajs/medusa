@@ -93,9 +93,6 @@ export interface UpdateCartWorkflowInputDTO {
 
 export interface CreatePaymentCollectionForCartWorkflowInputDTO {
   cart_id: string
-  region_id: string
-  currency_code: string
-  amount: BigNumberInput
   metadata?: Record<string, unknown>
 }
 
@@ -125,6 +122,7 @@ export interface CompleteCartWorkflowInputDTO {
 }
 
 export interface ConfirmVariantInventoryWorkflowInputDTO {
+  skipInventoryCheck?: boolean
   sales_channel_id: string
   variants: {
     id: string

@@ -9,7 +9,9 @@ export const defaultAdminPaymentFields = [
   "captures.amount",
   "refunds.id",
   "refunds.amount",
+  "refunds.note",
   "refunds.payment_id",
+  "refunds.refund_reason.label",
 ]
 
 export const listTransformQueryConfig = {

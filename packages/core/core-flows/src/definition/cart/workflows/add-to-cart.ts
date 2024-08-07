@@ -25,7 +25,7 @@ import {
 } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 export const addToCartWorkflowId = "add-to-cart"
 export const addToCartWorkflow = createWorkflow(
@@ -114,10 +114,16 @@ export const addToCartWorkflow = createWorkflow(
 
     parallelize(
       refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items }),
-      refreshCartPromotionsStep({ id: input.cart.id }),
-      refreshPaymentCollectionForCartStep({ cart_id: input.cart.id })
+      updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items })
     )
+
+    refreshCartPromotionsStep({ id: input.cart.id })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart.id,
+      },
+    })
 
     return new WorkflowResponse(items)
   }

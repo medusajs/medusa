@@ -1,6 +1,6 @@
 import * as Handlebars from "handlebars"
 import { Reflection, SignatureReflection } from "typedoc"
-import { isWorkflowStep } from "../../utils/step-utils"
+import { isWorkflowStep } from "utils"
 
 export default function () {
   Handlebars.registerHelper("example", function (reflection: Reflection) {

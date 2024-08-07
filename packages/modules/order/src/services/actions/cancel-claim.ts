@@ -43,6 +43,7 @@ export async function cancelClaim(
         "claim_items.is_additional_item",
         "claim_items.quantity",
         "additional_items.id",
+        "additional_items.item_id",
         "additional_items.quantity",
         "additional_items.is_additional_item",
       ],
