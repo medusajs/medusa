@@ -14,5 +14,7 @@ export const toHandle = (value: string): string => {
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
-  ).replace(/[^a-z0-9A-Z-_]/g, "")
+  )
+    .replace(/[^a-z0-9A-Z-]/g, "")
+    .replace(/-{2,}/g, "-")
 }

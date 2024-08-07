@@ -35,6 +35,14 @@ describe("normalizeHandle", function () {
         input: "_HELLO_WORLD",
         output: "-hello-world",
       },
+      {
+        input: "title: Hello - World",
+        output: "title-hello-world",
+      },
+      {
+        input: "hiphenated - title - __bold__",
+        output: "hiphenated-title-bold-",
+      },
     ]
 
     expectations.forEach((expectation) => {
