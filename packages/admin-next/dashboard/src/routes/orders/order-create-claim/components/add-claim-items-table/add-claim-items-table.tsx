@@ -1,11 +1,10 @@
-import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
-import { useMemo, useState } from "react"
-
 import {
   AdminOrderLineItem,
   DateComparisonOperator,
   NumericalComparisonOperator,
 } from "@medusajs/types"
+import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
+import { useMemo, useState } from "react"
 
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"

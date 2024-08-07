@@ -436,34 +436,36 @@ export const ReturnCreateForm = ({
                 className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed"
               />
             )}
-            {items.map((item, index) => (
-              <ReturnItem
-                key={item.id}
-                item={itemsMap.get(item.item_id)!}
-                previewItem={previewItemsMap.get(item.item_id)!}
-                currencyCode={order.currency_code}
-                form={form}
-                onRemove={() => {
-                  const actionId = previewItems
-                    .find((i) => i.id === item.item_id)
-                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+            {items
+              .filter((item) => !!previewItemsMap.get(item.item_id))
+              .map((item, index) => (
+                <ReturnItem
+                  key={item.id}
+                  item={itemsMap.get(item.item_id)!}
+                  previewItem={previewItemsMap.get(item.item_id)}
+                  currencyCode={order.currency_code}
+                  form={form}
+                  onRemove={() => {
+                    const actionId = previewItems
+                      .find((i) => i.id === item.item_id)
+                      ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
-                  if (actionId) {
-                    removeReturnItem(actionId)
-                  }
-                }}
-                onUpdate={(payload) => {
-                  const actionId = previewItems
-                    .find((i) => i.id === item.item_id)
-                    ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+                    if (actionId) {
+                      removeReturnItem(actionId)
+                    }
+                  }}
+                  onUpdate={(payload) => {
+                    const actionId = previewItems
+                      .find((i) => i.id === item.item_id)
+                      ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
-                  if (actionId) {
-                    updateReturnItem({ ...payload, actionId })
-                  }
-                }}
-                index={index}
-              />
-            ))}
+                    if (actionId) {
+                      updateReturnItem({ ...payload, actionId })
+                    }
+                  }}
+                  index={index}
+                />
+              ))}
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/*LOCATION*/}

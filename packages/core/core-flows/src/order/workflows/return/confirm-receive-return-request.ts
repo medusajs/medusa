@@ -14,7 +14,6 @@ import {
   deepFlatMap,
 } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,

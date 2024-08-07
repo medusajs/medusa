@@ -17,6 +17,11 @@ import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-pa
 import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
+import {
+  prepareAdjustmentsData,
+  prepareLineItemData,
+  prepareTaxLinesData,
+} from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
 export const completeCartWorkflowId = "complete-cart"
@@ -63,6 +68,7 @@ export const completeCartWorkflow = createWorkflow(
 
     const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
       input: {
+        skipInventoryCheck: true,
         sales_channel_id,
         variants,
         items,
@@ -80,11 +86,38 @@ export const completeCartWorkflow = createWorkflow(
     )
 
     const cartToOrder = transform({ input, cart }, ({ cart }) => {
-      const itemAdjustments = (cart.items || [])
-        ?.map((item) => item.adjustments || [])
+      const allItems = (cart.items ?? []).map((item) => {
+        return prepareLineItemData({
+          item,
+          variant: item.variant,
+          unitPrice: item.raw_unit_price ?? item.unit_price,
+          isTaxInclusive: item.is_tax_inclusive,
+          quantity: item.raw_quantity ?? item.quantity,
+          metadata: item?.metadata,
+          taxLines: item.tax_lines ?? [],
+          adjustments: item.adjustments ?? [],
+        })
+      })
+
+      const shippingMethods = (cart.shipping_methods ?? []).map((sm) => {
+        return {
+          name: sm.name,
+          description: sm.description,
+          amount: sm.raw_amount ?? sm.amount,
+          is_tax_inclusive: sm.is_tax_inclusive,
+          shipping_option_id: sm.shipping_option_id,
+          data: sm.data,
+          metadata: sm.metadata,
+          tax_lines: prepareTaxLinesData(sm.tax_lines ?? []),
+          adjustments: prepareAdjustmentsData(sm.adjustments ?? []),
+        }
+      })
+
+      const itemAdjustments = allItems
+        .map((item) => item.adjustments ?? [])
         .flat(1)
-      const shippingAdjustments = (cart.shipping_methods || [])
-        ?.map((sm) => sm.adjustments || [])
+      const shippingAdjustments = shippingMethods
+        .map((sm) => sm.adjustments ?? [])
         .flat(1)
 
       const promoCodes = [...itemAdjustments, ...shippingAdjustments]
@@ -101,8 +134,8 @@ export const completeCartWorkflow = createWorkflow(
         shipping_address: cart.shipping_address,
         billing_address: cart.billing_address,
         no_notification: false,
-        items: cart.items,
-        shipping_methods: cart.shipping_methods,
+        items: allItems,
+        shipping_methods: shippingMethods,
         metadata: cart.metadata,
         promo_codes: promoCodes,
       }

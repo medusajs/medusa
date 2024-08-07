@@ -400,7 +400,6 @@ export const ClaimCreateForm = ({
                     {t("actions.addItems")}
                   </a>
                 </StackedFocusModal.Trigger>
-
                 <StackedFocusModal.Content>
                   <StackedFocusModal.Header />
 
@@ -490,6 +489,7 @@ export const ClaimCreateForm = ({
                   />
                 )
             )}
+
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/*LOCATION*/}
