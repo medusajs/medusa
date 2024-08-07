@@ -1,7 +1,8 @@
 import { toHandle } from "../to-handle"
+import { isValidHandle } from "../validate-handle"
 
 describe("normalizeHandle", function () {
-  it("should generate URL friendly handles", function () {
+  describe("should generate URL friendly handles", function () {
     const expectations = [
       {
         input: "The fan boy's club",
@@ -22,6 +23,7 @@ describe("normalizeHandle", function () {
       {
         input: "-first-product",
         output: "-first-product",
+        invalid: true,
       },
       {
         input: "user.product",
@@ -30,10 +32,12 @@ describe("normalizeHandle", function () {
       {
         input: "_first-product",
         output: "-first-product",
+        invalid: true,
       },
       {
         input: "_HELLO_WORLD",
         output: "-hello-world",
+        invalid: true,
       },
       {
         input: "title: Hello - World",
@@ -42,11 +46,16 @@ describe("normalizeHandle", function () {
       {
         input: "hiphenated - title - __bold__",
         output: "hiphenated-title-bold-",
+        invalid: true,
       },
     ]
 
     expectations.forEach((expectation) => {
-      expect(toHandle(expectation.input)).toEqual(expectation.output)
+      const handle = toHandle(expectation.input)
+      it(`should convert "${expectation.input}" to "${expectation.output}"`, () => {
+        expect(handle).toEqual(expectation.output)
+        expect(isValidHandle(handle)).toBe(!expectation.invalid)
+      })
     })
   })
 })
