@@ -146,46 +146,44 @@ class WorkflowsPlugin {
         return
       }
 
-      const steps = this.parseSteps({
-        initializer,
-        context,
-        workflow,
-      })
+      const initializerName = this.helper.normalizeName(
+        initializer.expression.getText()
+      )
 
-      if (!steps.length) {
-        return
+      if (initializerName === "when") {
+        this.parseWhenStep({
+          initializer,
+          parentReflection,
+          context,
+          workflow,
+          stepDepth,
+        })
+      } else {
+        const steps = this.parseSteps({
+          initializer,
+          context,
+          workflow,
+        })
+
+        if (!steps.length) {
+          return
+        }
+
+        steps.forEach((step) => {
+          this.createStepDocumentReflection({
+            ...step,
+            depth: stepDepth,
+            parentReflection,
+          })
+        })
       }
-
-      steps.forEach(({ stepType, stepReflection }) => {
-        const stepModifier = this.helper.getModifier(stepType)
-
-        const documentReflection = new DocumentReflection(
-          stepReflection.name,
-          stepReflection,
-          [],
-          {}
-        )
-
-        documentReflection.comment = new Comment()
-        documentReflection.comment.modifierTags.add(stepModifier)
-        documentReflection.comment.blockTags.push(
-          new CommentTag(`@workflowDepth`, [
-            {
-              kind: "text",
-              text: `${stepDepth}`,
-            },
-          ])
-        )
-
-        parentReflection.documents?.push(documentReflection)
-      })
 
       stepDepth++
     })
   }
 
   /**
-   * Parse a step to retrieve its ID and reflection.
+   * Parses steps in an initializer, retrieving each of their ID and reflection.
    *
    * @param param0 - The step's details.
    * @returns The step's ID and reflection, if found.
@@ -283,6 +281,93 @@ class WorkflowsPlugin {
   }
 
   /**
+   * Parses the step in a `when` condition, and creates a `when` document with the steps as child documents.
+   *
+   * @param param0 - The when stp's details.
+   */
+  parseWhenStep({
+    initializer,
+    parentReflection,
+    context,
+    workflow,
+    stepDepth,
+  }: {
+    initializer: ts.CallExpression
+    parentReflection: DeclarationReflection
+    context: Context
+    workflow?: WorkflowDefinition
+    stepDepth: number
+  }) {
+    const whenInitializer = (initializer.expression as ts.CallExpression)
+      .expression as ts.CallExpression
+    const thenInitializer = initializer
+
+    if (
+      whenInitializer.arguments.length < 2 ||
+      (!ts.isFunctionExpression(whenInitializer.arguments[1]) &&
+        !ts.isArrowFunction(whenInitializer.arguments[1])) ||
+      thenInitializer.arguments.length < 1 ||
+      (!ts.isFunctionExpression(thenInitializer.arguments[0]) &&
+        !ts.isArrowFunction(thenInitializer.arguments[0]))
+    ) {
+      return
+    }
+
+    const whenCondition = whenInitializer.arguments[1].body.getText()
+
+    const thenStatements = (thenInitializer.arguments[0].body as ts.Block)
+      .statements
+
+    const documentReflection = new DocumentReflection(
+      "when",
+      parentReflection,
+      [],
+      {}
+    )
+
+    documentReflection.comment = new Comment()
+    documentReflection.comment.modifierTags.add(this.helper.getModifier(`when`))
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@workflowDepth`, [
+        {
+          kind: "text",
+          text: `${stepDepth}`,
+        },
+      ])
+    )
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@whenCondition`, [
+        {
+          kind: "text",
+          text: whenCondition,
+        },
+      ])
+    )
+
+    thenStatements.forEach((statement) => {
+      const initializer = this.getInitializerOfStatement(statement)
+
+      if (!initializer) {
+        return
+      }
+
+      this.parseSteps({
+        initializer,
+        context,
+        workflow,
+      }).forEach((step) => {
+        this.createStepDocumentReflection({
+          ...step,
+          depth: stepDepth,
+          parentReflection: documentReflection,
+        })
+      })
+    })
+
+    parentReflection.documents?.push(documentReflection)
+  }
+
+  /**
    * This method creates a declaration reflection for a hook, since a hook doesn't have its own reflection.
    *
    * @param param0 - The hook's details.
@@ -340,6 +425,53 @@ class WorkflowsPlugin {
     return declarationReflection
   }
 
+  /**
+   * Creates a document reflection for a step.
+   *
+   * @param param0 - The step's details.
+   */
+  createStepDocumentReflection({
+    stepType,
+    stepReflection,
+    depth,
+    parentReflection,
+  }: ParsedStep & {
+    depth: number
+    parentReflection: DeclarationReflection | DocumentReflection
+  }) {
+    const stepModifier = this.helper.getModifier(stepType)
+
+    const documentReflection = new DocumentReflection(
+      stepReflection.name,
+      stepReflection,
+      [],
+      {}
+    )
+
+    documentReflection.comment = new Comment()
+    documentReflection.comment.modifierTags.add(stepModifier)
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@workflowDepth`, [
+        {
+          kind: "text",
+          text: `${depth}`,
+        },
+      ])
+    )
+
+    if (parentReflection.isDocument()) {
+      parentReflection.addChild(documentReflection)
+    } else {
+      parentReflection.documents?.push(documentReflection)
+    }
+  }
+
+  /**
+   * Gets the initializer in a statement, if available.
+   *
+   * @param statement - The statement to search for an initializer in.
+   * @returns The initializer, if found.
+   */
   getInitializerOfStatement(
     statement: ts.Statement
   ): ts.CallExpression | undefined {
@@ -349,24 +481,75 @@ class WorkflowsPlugin {
         const variableInitializer = (statement as VariableStatement)
           .declarationList.declarations[0].initializer
 
-        if (variableInitializer && ts.isCallExpression(variableInitializer)) {
-          initializer = variableInitializer
+        if (!variableInitializer) {
+          return
         }
+
+        initializer = this.getInitializerOfExpression(variableInitializer)
         break
       case SyntaxKind.ExpressionStatement:
         const statementInitializer = (statement as ts.ExpressionStatement)
           .expression
-        if (ts.isCallExpression(statementInitializer)) {
-          initializer = statementInitializer
-        }
+
+        initializer = this.getInitializerOfExpression(statementInitializer)
         break
       case SyntaxKind.ReturnStatement:
         const returnInitializer = (statement as ts.ReturnStatement).expression
 
-        if (returnInitializer && ts.isCallExpression(returnInitializer)) {
-          initializer = returnInitializer
+        if (!returnInitializer) {
+          return
         }
+
+        initializer = this.getInitializerOfExpression(returnInitializer)
+
         break
+    }
+
+    return initializer ? this.cleanUpInitializer(initializer) : undefined
+  }
+
+  /**
+   * Finds a `CallExpression` in an expression and returns it, if available.
+   *
+   * @param expression - The expression to search in.
+   * @param skipCallCheck - Whether to skip the `CallExpression` check the first time. Useful for the {@link cleanUpInitializer} method.
+   * @returns The `CallExpression` if found.
+   */
+  getInitializerOfExpression(
+    expression: ts.Expression,
+    skipCallCheck = false
+  ): ts.CallExpression | undefined {
+    let initializer = expression
+    while (
+      (skipCallCheck || !ts.isCallExpression(initializer)) &&
+      "expression" in initializer
+    ) {
+      initializer = initializer.expression as ts.Expression
+      skipCallCheck = false
+    }
+
+    return initializer && ts.isCallExpression(initializer)
+      ? initializer
+      : undefined
+  }
+
+  /**
+   * Finds an inner call expression of a call expression, if the provided one is not allowed.
+   * This is useful for steps that chain a `.config` method, for example.
+   *
+   * @param initializer - The call expression to search in.
+   * @returns The call expression to be used.
+   */
+  cleanUpInitializer(initializer: ts.CallExpression): ts.CallExpression {
+    if (!("name" in initializer.expression)) {
+      return initializer
+    }
+
+    const initializerName = (initializer.expression.name as ts.Identifier)
+      .escapedText
+
+    if (initializerName === "config") {
+      return this.getInitializerOfExpression(initializer, true) || initializer
     }
 
     return initializer

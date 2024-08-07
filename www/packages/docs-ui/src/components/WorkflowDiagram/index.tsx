@@ -8,12 +8,11 @@ import {
   motion,
 } from "framer-motion"
 import React, { useEffect, useRef, useState } from "react"
-import { WorkflowDiagramNode } from "./Node"
-import { WorkflowDiagramLine } from "./Line"
 import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
 import { DropdownMenu, Text } from "@medusajs/ui"
 import { createNodeClusters, getNextCluster } from "../../utils"
 import { Workflow } from "types"
+import { WorkflowDiagramDepth } from "./Depth"
 
 export type WorkflowDiagramProps = {
   workflow: Workflow
@@ -137,14 +136,11 @@ export const WorkflowDiagram = ({ workflow }: WorkflowDiagramProps) => {
                     const next = getNextCluster(clusters, Number(depth))
 
                     return (
-                      <div key={depth} className="flex items-start">
-                        <div className="flex flex-col justify-center gap-y-docs_0.5">
-                          {cluster.map((step) => (
-                            <WorkflowDiagramNode key={step.name} step={step} />
-                          ))}
-                        </div>
-                        <WorkflowDiagramLine step={next} />
-                      </div>
+                      <WorkflowDiagramDepth
+                        cluster={cluster}
+                        next={next}
+                        key={depth}
+                      />
                     )
                   })}
                 </div>

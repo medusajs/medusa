@@ -6,7 +6,20 @@ export type WorkflowStep = {
   depth: number
 }
 
+export type WorkflowWhenSteps = {
+  type: "when"
+  condition: string
+  steps: WorkflowStep[]
+  depth: number
+}
+
+export type WorkflowStepUi = WorkflowStep & {
+  when?: WorkflowWhenSteps
+}
+
+export type WorkflowSteps = (WorkflowStepUi | WorkflowWhenSteps)[]
+
 export type Workflow = {
   name: string
-  steps: WorkflowStep[]
+  steps: WorkflowSteps
 }

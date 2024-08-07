@@ -15,10 +15,20 @@ export default class Helper {
   normalizeName(name: string) {
     const nameWithoutQuotes = name.replace(/^"/, "").replace(/"$/, "")
 
-    const endIndex = Math.min(
-      nameWithoutQuotes.indexOf("."),
-      nameWithoutQuotes.indexOf("(")
-    )
+    const dotPos = nameWithoutQuotes.indexOf(".")
+    const parenPos = nameWithoutQuotes.indexOf("(")
+
+    // If both indices of dot and parenthesis are -1, set endIndex to -1
+    // if one of them is -1, use the other's value
+    // if both aren't -1, use the minimum
+    const endIndex =
+      dotPos === -1 && parenPos === -1
+        ? -1
+        : dotPos === -1
+          ? parenPos
+          : parenPos === -1
+            ? dotPos
+            : Math.min(dotPos, parenPos)
 
     return nameWithoutQuotes.substring(
       0,
@@ -79,18 +89,24 @@ export default class Helper {
       checkWorkflowStep && this.getStepType(initializer) === "workflowStep"
     const idVarName = this.normalizeName(idVar.getText())
 
-    // load it from the project
-    const idVarReflection = project.getChildByName(idVarName)
+    let stepId: string | undefined
 
-    if (
-      !idVarReflection ||
-      !(idVarReflection instanceof DeclarationReflection) ||
-      idVarReflection.type?.type !== "literal"
-    ) {
-      return
+    if (!ts.isStringLiteral(initializer.arguments[0])) {
+      // load it from the project
+      const idVarReflection = project.getChildByName(idVarName)
+
+      if (
+        !idVarReflection ||
+        !(idVarReflection instanceof DeclarationReflection) ||
+        idVarReflection.type?.type !== "literal"
+      ) {
+        return
+      }
+
+      stepId = idVarReflection.type.value as string
+    } else {
+      stepId = idVarName
     }
-
-    const stepId = idVarReflection.type.value as string
 
     return isWorkflowStep ? `${stepId}-as-step` : stepId
   }
@@ -107,6 +123,8 @@ export default class Helper {
         return "workflowStep"
       case "createHook":
         return "hook"
+      case "when":
+        return "when"
       default:
         return "step"
     }
