@@ -47,7 +47,7 @@ function cleanUpReflectionType(reflection: Reflection): Reflection {
   }
 
   if (reflection.name === "additional_data") {
-    reflection.type = new IntrinsicType("object")
+    reflection.type = new IntrinsicType("object | undefined")
   }
 
   if (reflection instanceof DeclarationReflection && reflection.children) {

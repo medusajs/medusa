@@ -3,6 +3,7 @@ import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
   typeListLinkFixerPlugin,
+  workflowDiagramLinkFixerPlugin,
 } from "remark-rehype-plugins"
 import { slugChanges } from "./generated/slug-changes.mjs"
 import mdxPluginOptions from "./mdx-options.mjs"
@@ -15,6 +16,7 @@ const withMDX = mdx({
       [brokenLinkCheckerPlugin],
       [localLinksRehypePlugin],
       [typeListLinkFixerPlugin],
+      [workflowDiagramLinkFixerPlugin],
     ],
     remarkPlugins: mdxPluginOptions.options.remarkPlugins,
     jsx: true,

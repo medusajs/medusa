@@ -26,6 +26,11 @@ export default function (theme: MarkdownTheme) {
         const associatedReflection = theme.project
           ? getProjectChild(theme.project, document.name)
           : undefined
+        const depth =
+          document.comment
+            ?.getTag(`@workflowDepth`)
+            ?.content.find((tagContent) => tagContent.kind === "text")?.text ||
+          `${index}`
 
         steps.push({
           type,
@@ -37,18 +42,20 @@ export default function (theme: MarkdownTheme) {
             type === "hook" || !associatedReflection?.url
               ? `#${document.name}`
               : Handlebars.helpers.relativeURL(associatedReflection.url),
-          // TODO change
-          depth: index,
+          depth: parseInt(depth),
         })
       })
 
-      return formatWorkflowDiagramComponent({
-        component: workflowDiagramComponent,
-        componentItem: {
-          name: this.name,
-          steps,
-        },
-      })
+      return (
+        `${Handlebars.helpers.titleLevel} Diagram\n\n` +
+        formatWorkflowDiagramComponent({
+          component: workflowDiagramComponent,
+          componentItem: {
+            name: this.name,
+            steps,
+          },
+        })
+      )
     }
   )
 }

@@ -5,7 +5,7 @@ import clsx from "clsx"
 import Link from "next/link"
 import React from "react"
 import { WorkflowStep } from "types"
-import { Tooltip } from "../../.."
+import { MarkdownContent, Tooltip } from "../../.."
 
 export type WorkflowDiagramNodeProps = {
   step: WorkflowStep
@@ -42,16 +42,27 @@ export const WorkflowDiagramNode = ({ step }: WorkflowDiagramNodeProps) => {
   }
 
   return (
-    <Link
-      href={step.link || `#${step.name}`}
-      onClick={handleScrollTo}
-      className="focus-visible:shadow-borders-focus transition-fg rounded-docs_sm outline-none"
+    <Tooltip
+      tooltipClassName="!text-left"
+      tooltipChildren={
+        <>
+          <h4 className="text-compact-x-small-plus">{step.name}</h4>
+          {step.description && (
+            <MarkdownContent
+              allowedElements={["a", "strong", "code"]}
+              unwrapDisallowed={true}
+            >
+              {step.description}
+            </MarkdownContent>
+          )}
+        </>
+      }
+      clickable={true}
     >
-      <Tooltip
-        html={`<h4 class="text-compact-x-small-plus">${step.name}</h4>${
-          step.description ? `<span>${step.description}</span>` : ``
-        }`}
-        tooltipClassName="!text-left"
+      <Link
+        href={step.link || `#${step.name}`}
+        onClick={handleScrollTo}
+        className="focus-visible:shadow-borders-focus transition-fg rounded-docs_sm outline-none"
       >
         <div
           className={clsx(
@@ -80,7 +91,7 @@ export const WorkflowDiagramNode = ({ step }: WorkflowDiagramNodeProps) => {
             {stepId}
           </Text>
         </div>
-      </Tooltip>
-    </Link>
+      </Link>
+    </Tooltip>
   )
 }

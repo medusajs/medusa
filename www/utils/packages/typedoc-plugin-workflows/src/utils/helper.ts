@@ -13,7 +13,17 @@ export default class Helper {
    * @returns The normalized name.
    */
   normalizeName(name: string) {
-    return name.replace(".runAsStep", "").replace(/^"/, "").replace(/"$/, "")
+    const nameWithoutQuotes = name.replace(/^"/, "").replace(/"$/, "")
+
+    const endIndex = Math.min(
+      nameWithoutQuotes.indexOf("."),
+      nameWithoutQuotes.indexOf("(")
+    )
+
+    return nameWithoutQuotes.substring(
+      0,
+      endIndex === -1 ? nameWithoutQuotes.length : endIndex
+    )
   }
 
   /**
