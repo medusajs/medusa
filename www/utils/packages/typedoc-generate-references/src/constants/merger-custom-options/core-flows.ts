@@ -8,7 +8,6 @@ const coreFlowsOptions: FormattingOptionsType = {
       ...baseSectionsOptions,
       member_getterSetter: false,
     },
-    maxLevel: 2,
     workflowDiagramComponent: "WorkflowDiagram",
     mdxImports: [
       `import { TypeList } from "docs-ui"`,
@@ -35,7 +34,6 @@ const coreFlowsOptions: FormattingOptionsType = {
     },
   },
   "^core_flows/functions/.*Workflow/page\\.mdx": {
-    maxLevel: 1,
     reflectionDescription:
       "This documentation provides a reference to the `{{alias}}`. It belongs to the `@medusajs/core-flows` package.",
     frontmatterData: {
@@ -49,7 +47,6 @@ const coreFlowsOptions: FormattingOptionsType = {
     },
   },
   "^core_flows/functions/.*Step/page\\.mdx": {
-    maxLevel: 1,
     reflectionDescription:
       "This documentation provides a reference to the `{{alias}}`. It belongs to the `@medusajs/core-flows` package.",
     frontmatterData: {
