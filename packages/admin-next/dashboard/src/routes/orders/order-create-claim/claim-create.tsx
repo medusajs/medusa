@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -7,8 +7,8 @@ import { toast } from "@medusajs/ui"
 import { RouteFocusModal } from "../../../components/modals"
 import { ClaimCreateForm } from "./components/claim-create-form"
 
+import { useClaim, useCreateClaim } from "../../../hooks/api/claims"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { useClaims, useCreateClaim } from "../../../hooks/api/claims"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 
 let IS_REQUEST_RUNNING = false
@@ -23,27 +23,12 @@ export const ClaimCreate = () => {
   })
 
   const { order: preview } = useOrderPreview(id!)
-
-  const [activeClaimId, setActiveClaimId] = useState()
-
+  const [activeClaimId, setActiveClaimId] = useState<string>()
   const { mutateAsync: createClaim } = useCreateClaim(order.id)
 
-  // TODO: GET /claims/:id is not implemented
-  // const { claim } = useClaim(activeClaimId, undefined, {
-  //   enabled: !!activeClaimId,
-  // })
-
-  // TEMP HACK: until the endpoint above is implemented
-  const { claims } = useClaims(undefined, {
+  const { claim } = useClaim(activeClaimId!, undefined, {
     enabled: !!activeClaimId,
-    limit: 999,
   })
-
-  const claim = useMemo(() => {
-    if (claims) {
-      return claims.find((c) => c.id === activeClaimId)
-    }
-  }, [claims, activeClaimId])
 
   useEffect(() => {
     async function run() {
@@ -65,11 +50,12 @@ export const ClaimCreate = () => {
       IS_REQUEST_RUNNING = true
 
       try {
-        const { claim } = await createClaim({
+        const { claim: createdClaim } = await createClaim({
           order_id: preview.id,
           type: "replace",
         })
-        setActiveClaimId(claim.id)
+
+        setActiveClaimId(createdClaim.id)
       } catch (e) {
         navigate(`/orders/${preview.id}`, { replace: true })
         toast.error(e.message)

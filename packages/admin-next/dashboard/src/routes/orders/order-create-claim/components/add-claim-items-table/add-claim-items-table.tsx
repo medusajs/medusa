@@ -2,18 +2,18 @@ import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 
 import {
+  AdminOrderLineItem,
   DateComparisonOperator,
   NumericalComparisonOperator,
 } from "@medusajs/types"
-import { AdminOrderLineItem } from "@medusajs/types"
 
+import { DataTable } from "../../../../../components/table/data-table"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { getReturnableQuantity } from "../../../../../lib/rma"
 import { useClaimItemTableColumns } from "./use-claim-item-table-columns"
 import { useClaimItemTableFilters } from "./use-claim-item-table-filters"
 import { useClaimItemTableQuery } from "./use-claim-item-table-query"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { DataTable } from "../../../../../components/table/data-table"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { getReturnableQuantity } from "../../../../../lib/rma"
 
 const PAGE_SIZE = 50
 const PREFIX = "rit"

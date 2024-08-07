@@ -10,6 +10,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
+import { refetchEntity } from "../../../../../../utils/refetch-entity"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../../../returns/validators"
 
@@ -64,30 +65,28 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
   const { id, action_id } = req.params
+
+  const claim = await refetchEntity("order_claim", id, req.scope, ["return_id"])
 
   const { result: orderPreview } = await removeItemReturnActionWorkflow(
     req.scope
   ).run({
     input: {
-      return_id: id,
+      return_id: claim.return_id,
       action_id,
     },
   })
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "return",
-    variables: {
+  const orderReturn = await refetchEntity(
+    "return",
+    {
+      ...req.filterableFields,
       id,
-      filters: {
-        ...req.filterableFields,
-      },
     },
-    fields: req.remoteQueryConfig.fields,
-  })
-  const [orderReturn] = await remoteQuery(queryObject)
+    req.scope,
+    defaultAdminDetailsReturnFields
+  )
 
   res.json({
     order_preview: orderPreview,
