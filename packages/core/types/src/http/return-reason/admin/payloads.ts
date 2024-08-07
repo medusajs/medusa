@@ -2,7 +2,7 @@ import { AdminReturnReason } from "./entities"
 
 type AdminBaseReturnReasonPayload = Pick<
   AdminReturnReason,
-  "id" | "value" | "label" | "description"
+  "value" | "label" | "description"
 >
 
 export interface AdminCreateReturnReason extends AdminBaseReturnReasonPayload {
