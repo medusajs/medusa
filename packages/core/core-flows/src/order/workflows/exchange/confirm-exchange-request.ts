@@ -16,7 +16,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { confirmVariantInventoryWorkflow } from "../../../definition/cart/workflows/confirm-variant-inventory"
+import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -297,14 +297,16 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
         }
       })
 
-      const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
-        input: {
-          skipInventoryCheck: true,
-          sales_channel_id: (exchange as any).order.sales_channel_id,
-          variants,
-          items,
+      const formatedInventoryItems = transform(
+        {
+          input: {
+            sales_channel_id: (exchange as any).order.sales_channel_id,
+            variants,
+            items,
+          },
         },
-      })
+        prepareConfirmInventoryInput
+      )
 
       reserveInventoryStep(formatedInventoryItems)
     })

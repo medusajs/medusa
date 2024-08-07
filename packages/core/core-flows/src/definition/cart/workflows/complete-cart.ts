@@ -17,12 +17,12 @@ import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-pa
 import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"
+import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import {
   prepareAdjustmentsData,
   prepareLineItemData,
   prepareTaxLinesData,
 } from "../utils/prepare-line-item-data"
-import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 
 export const completeCartWorkflowId = "complete-cart"
 export const completeCartWorkflow = createWorkflow(
@@ -66,14 +66,16 @@ export const completeCartWorkflow = createWorkflow(
       }
     )
 
-    const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
-      input: {
-        skipInventoryCheck: true,
-        sales_channel_id,
-        variants,
-        items,
+    const formatedInventoryItems = transform(
+      {
+        input: {
+          sales_channel_id,
+          variants,
+          items,
+        },
       },
-    })
+      prepareConfirmInventoryInput
+    )
 
     const [, finalCart] = parallelize(
       reserveInventoryStep(formatedInventoryItems),
