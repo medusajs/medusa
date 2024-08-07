@@ -10,14 +10,59 @@ export class ReturnReason {
   }
 
   async list(
-    queryParams?: HttpTypes.AdminReturnReasonListParams,
+    queryParams?: HttpTypes.AdminReturnReason,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminReturnReasonsResponse>(
+    return await this.client.fetch<HttpTypes.AdminReturnReasonListResponse>(
       "/admin/return-reasons",
       {
         headers,
         query: queryParams,
+      }
+    )
+  }
+
+  async retrieve(
+    id: string,
+    query?: HttpTypes.AdminReturnReason,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnReasonResponse>(
+      `/admin/return-reasons/${id}`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
+  async create(
+    body: HttpTypes.AdminCreateReturnReason,
+    query?: HttpTypes.AdminReturnReasonParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminReturnReasonResponse>(
+      `/admin/return-reasons`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async delete(
+    id: string,
+    query?: HttpTypes.AdminReturnReasonParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnReasonDeleteResponse>(
+      `/admin/return-reasons/${id}`,
+      {
+        method: "DELETE",
+        headers,
+        query,
       }
     )
   }
