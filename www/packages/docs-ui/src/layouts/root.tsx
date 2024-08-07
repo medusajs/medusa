@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { Sidebar, SidebarProps } from "@/components"
+import { Bannerv2, Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
 
 export type RootLayoutProps = {
@@ -11,6 +11,7 @@ export type RootLayoutProps = {
   bodyClassName?: string
   mainWrapperClasses?: string
   showPagination?: boolean
+  showBanner?: boolean
 }
 
 export const RootLayout = ({
@@ -20,6 +21,7 @@ export const RootLayout = ({
   htmlClassName,
   bodyClassName,
   mainWrapperClasses,
+  showBanner = true,
 }: RootLayoutProps) => {
   return (
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
@@ -39,17 +41,26 @@ export const RootLayout = ({
           <div
             className={clsx(
               "lg:mt-docs_0.5 lg:mr-docs_0.5",
-              "bg-medusa-bg-base rounded",
-              "shadow-elevation-card-rest",
-              "pt-docs_4 lg:pt-docs_6 pb-docs_4",
-              "flex justify-center",
-              "h-screen w-full",
-              "overflow-y-scroll overflow-x-hidden",
+              "h-screen",
+              "flex flex-col gap-docs_0.5",
               mainWrapperClasses
             )}
-            id="main"
           >
-            {children}
+            {showBanner && <Bannerv2 />}
+            <div
+              className={clsx(
+                "bg-medusa-bg-base rounded",
+                "shadow-elevation-card-rest",
+                "pt-docs_4 lg:pt-docs_6 pb-docs_4",
+                "flex justify-center",
+                "h-full w-full",
+                "overflow-y-scroll overflow-x-hidden",
+                mainWrapperClasses
+              )}
+              id="main"
+            >
+              {children}
+            </div>
           </div>
         </ProvidersComponent>
       </body>

@@ -39,6 +39,7 @@ export default function RootLayout({
         expandItems: true,
       }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      showBanner={false}
     >
       {children}
     </TightLayout>
