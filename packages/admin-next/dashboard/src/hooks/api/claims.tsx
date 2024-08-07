@@ -539,6 +539,7 @@ export const useCancelClaimRequest = (
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.lists(),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

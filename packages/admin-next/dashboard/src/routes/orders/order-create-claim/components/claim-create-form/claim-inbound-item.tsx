@@ -1,16 +1,14 @@
-import { useTranslation } from "react-i18next"
-
-import React from "react"
+import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
+import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
 import { IconButton, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-import { HttpTypes, AdminOrderLineItem } from "@medusajs/types"
-import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
+import { useTranslation } from "react-i18next"
 
-import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
-import { Form } from "../../../../../components/common/form"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { Form } from "../../../../../components/common/form"
+import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { Combobox } from "../../../../../components/inputs/combobox"
+import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 
 type OrderEditItemProps = {
@@ -35,11 +33,9 @@ function ClaimInboundItem({
   index,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
-
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
 
   const formItem = form.watch(`inbound_items.${index}`)
-
   const showReturnReason = typeof formItem.reason_id === "string"
   const showNote = typeof formItem.note === "string"
 
@@ -48,15 +44,17 @@ function ClaimInboundItem({
       <div className="flex flex-col items-center gap-x-2 gap-y-2 border-b p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
+
           <div className="flex flex-col">
             <div>
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}{" "}
               </Text>
-              {item.variant.sku && <span>({item.variant.sku})</span>}
+
+              {item.variant?.sku && <span>({item.variant.sku})</span>}
             </div>
             <Text as="div" className="text-ui-fg-subtle txt-small">
-              {item.variant.product.title}
+              {item.variant?.product?.title}
             </Text>
           </div>
         </div>
@@ -71,12 +69,12 @@ function ClaimInboundItem({
                   <Form.Item>
                     <Form.Control>
                       <Input
+                        {...field}
                         className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
                         min={1}
                         max={item.quantity}
                         type="number"
-                        {...field}
-                        onChange={(e) => {
+                        onBlur={(e) => {
                           const val = e.target.value
                           const payload = val === "" ? null : Number(val)
 

@@ -249,12 +249,19 @@ export const ClaimCreateForm = ({
 
   const onItemsSelected = async () => {
     itemsToAdd.length &&
-      (await addInboundItem({
-        items: itemsToAdd.map((id) => ({
-          id,
-          quantity: 1,
-        })),
-      }))
+      (await addInboundItem(
+        {
+          items: itemsToAdd.map((id) => ({
+            id,
+            quantity: 1,
+          })),
+        },
+        {
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        }
+      ))
 
     for (const itemToRemove of itemsToRemove) {
       const actionId = previewItems
@@ -262,7 +269,11 @@ export const ClaimCreateForm = ({
         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
       if (actionId) {
-        await removeInboundItem(actionId)
+        await removeInboundItem(actionId, {
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        })
       }
     }
 
@@ -281,7 +292,14 @@ export const ClaimCreateForm = ({
 
     await Promise.all(promises)
 
-    await addInboundShipping({ shipping_option_id: selectedOptionId })
+    await addInboundShipping(
+      { shipping_option_id: selectedOptionId },
+      {
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   }
 
   useEffect(() => {
@@ -326,11 +344,12 @@ export const ClaimCreateForm = ({
       ;(
         await Promise.all(
           items.map(async (_i) => {
-            const item = itemsMap.get(_i.item_id)
+            const item = itemsMap.get(_i.item_id)!
 
-            if (!item.variant_id) {
+            if (!item.variant_id || !item.variant?.product) {
               return undefined
             }
+
             return await sdk.admin.product.retrieveVariant(
               item.variant.product.id,
               item.variant_id,
@@ -341,6 +360,10 @@ export const ClaimCreateForm = ({
       )
         .filter((it) => it?.variant)
         .forEach((item) => {
+          if (!item) {
+            return
+          }
+
           const { variant } = item
           const levels = variant.inventory[0]?.location_levels
 
@@ -365,7 +388,15 @@ export const ClaimCreateForm = ({
      */
     return () => {
       if (IS_CANCELING) {
-        cancelClaimRequest()
+        cancelClaimRequest(undefined, {
+          onSuccess: () => {
+            toast.success(t("orders.claims.actions.cancelClaim.successToast"))
+          },
+          onError: (error) => {
+            toast.error(error.message)
+          },
+        })
+
         // TODO: add this on ESC press
         IS_CANCELING = false
       }
@@ -474,7 +505,11 @@ export const ClaimCreateForm = ({
                         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                       if (actionId) {
-                        removeInboundItem(actionId)
+                        removeInboundItem(actionId, {
+                          onError: (error) => {
+                            toast.error(error.message)
+                          },
+                        })
                       }
                     }}
                     onUpdate={(payload) => {
@@ -483,7 +518,14 @@ export const ClaimCreateForm = ({
                         ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
                       if (actionId) {
-                        updateInboundItem({ ...payload, actionId })
+                        updateInboundItem(
+                          { ...payload, actionId },
+                          {
+                            onError: (error) => {
+                              toast.error(error.message)
+                            },
+                          }
+                        )
                       }
                     }}
                     index={index}
@@ -640,13 +682,20 @@ export const ClaimCreateForm = ({
                         })
 
                         if (actionId) {
-                          updateInboundShipping({
-                            actionId,
-                            custom_price:
-                              typeof customShippingAmount === "string"
-                                ? null
-                                : customShippingAmount,
-                          })
+                          updateInboundShipping(
+                            {
+                              actionId,
+                              custom_price:
+                                typeof customShippingAmount === "string"
+                                  ? null
+                                  : customShippingAmount,
+                            },
+                            {
+                              onError: (error) => {
+                                toast.error(error.message)
+                              },
+                            }
+                          )
                         }
                         setIsShippingPriceEdit(false)
                       }}

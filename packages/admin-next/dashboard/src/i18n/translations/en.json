@@ -886,7 +886,12 @@
       "create": "Create Claim",
       "outbound": "Outbound",
       "refundAmount": "Estimated difference",
-      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change."
+      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "actions": {
+        "cancelClaim": {
+          "successToast": "Claim was successfully canceled."
+        }
+      }
     },
     "reservations": {
       "allocatedLabel": "Allocated",

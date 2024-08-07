@@ -4,16 +4,16 @@ import {
   CircleFilledSolid,
   InformationCircleSolid,
 } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Drawer, Heading, IconButton, Text } from "@medusajs/ui"
+import { formatDistance } from "date-fns"
+import { TFunction } from "i18next"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { HttpTypes } from "@medusajs/types"
-import { formatDistance } from "date-fns"
-import { InfiniteList } from "../../common/infinite-list"
-import { sdk } from "../../../lib/client"
 import { notificationQueryKeys, useNotifications } from "../../../hooks/api"
-import { TFunction } from "i18next"
+import { sdk } from "../../../lib/client"
 import { FilePreview } from "../../common/file-preview"
+import { InfiniteList } from "../../common/infinite-list"
 
 interface NotificationData {
   title: string
@@ -198,9 +198,9 @@ const NotificationsEmptyState = ({ t }: { t: TFunction }) => {
 
 const useUnreadNotifications = () => {
   const [hasUnread, setHasUnread] = useState(false)
-  const { notifications } = useNotifications(
+  const { notifications = [] } = useNotifications(
     { limit: 1, offset: 0, fields: "created_at" },
-    { refetchInterval: 3000 }
+    { refetchInterval: 3000, enabled: false }
   )
   const lastNotification = notifications?.[0]
 
