@@ -121,7 +121,8 @@ export const CreateRefundForm = ({
               }}
             />
 
-            <Form.Field
+            {/* TODO: Bring this back when we have a refund reason management UI */}
+            {/* <Form.Field
               control={form.control}
               name="refund_reason_id"
               render={({ field }) => {
@@ -142,7 +143,7 @@ export const CreateRefundForm = ({
                   </Form.Item>
                 )
               }}
-            />
+            /> */}
 
             <Form.Field
               control={form.control}
