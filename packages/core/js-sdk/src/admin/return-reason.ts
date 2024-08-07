@@ -10,21 +10,21 @@ export class ReturnReason {
   }
 
   async list(
-    queryParams?: HttpTypes.AdminReturnReason,
+    query?: HttpTypes.AdminReturnReasonListParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminReturnReasonListResponse>(
       "/admin/return-reasons",
       {
         headers,
-        query: queryParams,
+        query,
       }
     )
   }
 
   async retrieve(
     id: string,
-    query?: HttpTypes.AdminReturnReason,
+    query?: HttpTypes.AdminReturnReasonParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminReturnReasonResponse>(
