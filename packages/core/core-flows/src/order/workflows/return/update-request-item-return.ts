@@ -5,13 +5,13 @@ import {
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import { ChangeActionType, isDefined, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
@@ -119,7 +119,9 @@ export const updateRequestItemReturnWorkflow = createWorkflow(
           id: input.action_id,
           details: {
             quantity: data.quantity ?? originalAction.details?.quantity,
-            reason_id: data.reason_id ?? originalAction.details?.reason_id,
+            reason_id: isDefined(data.reason_id)
+              ? data.reason_id
+              : originalAction.details?.reason_id,
           },
           internal_note: data.internal_note,
         }

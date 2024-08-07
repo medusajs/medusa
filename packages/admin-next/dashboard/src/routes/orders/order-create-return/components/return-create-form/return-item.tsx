@@ -177,8 +177,8 @@ function ReturnItem({
                 className="flex-shrink"
                 variant="transparent"
                 onClick={() => {
-                  onUpdate({ reason_id: null }) // TODO BE: we should be able to set to unset reason here
-                  form.setValue(`items.${index}.reason_id`, "")
+                  onUpdate({ reason_id: null })
+                  form.setValue(`items.${index}.reason_id`, null)
                 }}
               >
                 <XMark className="text-ui-fg-muted" />
