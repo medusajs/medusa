@@ -17,7 +17,7 @@ export const WorkflowDiagramStepNode = ({ step }: WorkflowDiagramNodeProps) => {
 
   return (
     <Tooltip
-      tooltipClassName="!text-left max-w-[200px] text-pretty"
+      tooltipClassName="!text-left max-w-full text-pretty overflow-scroll"
       tooltipChildren={
         <>
           <h4 className="text-compact-x-small-plus">{step.name}</h4>
