@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -5,12 +6,11 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import { ordersQueryKeys } from "./orders"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { ordersQueryKeys } from "./orders"
 
 const CLAIMS_QUERY_KEY = "claims" as const
 export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
@@ -56,10 +56,7 @@ export const useClaims = (
 export const useCreateClaim = (
   orderId: string,
   options?: UseMutationOptions<
-    {
-      claim: HttpTypes.AdminClaimResponse
-      order: HttpTypes.AdminOrderResponse
-    },
+    HttpTypes.AdminClaimResponse,
     Error,
     HttpTypes.AdminCreateClaim
   >

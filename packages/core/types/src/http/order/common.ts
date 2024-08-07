@@ -1,5 +1,6 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BigNumberValue } from "../../totals"
+import { BaseClaim } from "../claim/common"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
 
@@ -116,7 +117,7 @@ export interface BaseOrderLineItem {
   title: string
   subtitle: string | null
   thumbnail: string | null
-  variant?: BaseProductVariant
+  variant?: BaseProductVariant | null
   variant_id: string | null
   product?: BaseProduct
   product_id: string | null
@@ -304,4 +305,225 @@ export interface BaseOrder {
 export interface BaseOrderFilters extends BaseFilterable<BaseOrderFilters> {
   id?: string[] | string | OperatorMap<string | string[]>
   status?: string[] | string | OperatorMap<string | string[]>
+}
+
+export interface BaseOrderChange {
+  /**
+   * The ID of the order change
+   */
+  id: string
+
+  /**
+   * The version of the order change
+   */
+  version: number
+
+  /**
+   * The type of the order change
+   */
+  change_type?: "return" | "exchange" | "claim" | "edit"
+
+  /**
+   * The ID of the associated order
+   */
+  order_id: string
+
+  /**
+   * The ID of the associated return order
+   */
+  return_id: string
+
+  /**
+   * The ID of the associated exchange order
+   */
+  exchange_id: string
+
+  /**
+   * The ID of the associated claim order
+   */
+  claim_id: string
+
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: BaseOrder
+
+  /**
+   * The associated return order
+   *
+   * @expandable
+   */
+  return_order: any
+
+  /**
+   * The associated exchange order
+   *
+   * @expandable
+   */
+  exchange: any
+
+  /**
+   * The associated claim order
+   *
+   * @expandable
+   */
+  claim: BaseClaim
+
+  /**
+   * The actions of the order change
+   *
+   * @expandable
+   */
+  actions: BaseOrderChangeAction[]
+
+  /**
+   * The status of the order change
+   */
+  status: string
+
+  /**
+   * The requested by of the order change
+   */
+  requested_by: string | null
+
+  /**
+   * When the order change was requested
+   */
+  requested_at: Date | string | null
+
+  /**
+   * The confirmed by of the order change
+   */
+  confirmed_by: string | null
+
+  /**
+   * When the order change was confirmed
+   */
+  confirmed_at: Date | string | null
+
+  /**
+   * The declined by of the order change
+   */
+  declined_by: string | null
+
+  /**
+   * The declined reason of the order change
+   */
+  declined_reason: string | null
+
+  /**
+   * The metadata of the order change
+   */
+  metadata: Record<string, unknown> | null
+
+  /**
+   * When the order change was declined
+   */
+  declined_at: Date | string | null
+
+  /**
+   * The canceled by of the order change
+   */
+  canceled_by: string | null
+
+  /**
+   * When the order change was canceled
+   */
+  canceled_at: Date | string | null
+
+  /**
+   * When the order change was created
+   */
+  created_at: Date | string
+
+  /**
+   * When the order change was updated
+   */
+  updated_at: Date | string
+}
+
+/**
+ * The order change action details.
+ */
+export interface BaseOrderChangeAction {
+  /**
+   * The ID of the order change action
+   */
+  id: string
+
+  /**
+   * The ID of the associated order change
+   */
+  order_change_id: string | null
+
+  /**
+   * The associated order change
+   *
+   * @expandable
+   */
+  order_change: BaseOrderChange | null
+
+  /**
+   * The ID of the associated order
+   */
+  order_id: string | null
+
+  /**
+   * The ID of the associated return.
+   */
+  return_id: string | null
+
+  /**
+   * The ID of the associated claim.
+   */
+  claim_id: string | null
+
+  /**
+   * The ID of the associated exchange.
+   */
+  exchange_id: string | null
+
+  /**
+   * The associated order
+   *
+   * @expandable
+   */
+  order: BaseOrder | null
+
+  /**
+   * The reference of the order change action
+   */
+  reference: string
+
+  /**
+   * The ID of the reference
+   */
+  reference_id: string
+
+  /**
+   * The action of the order change action
+   */
+  action: string
+
+  /**
+   * The details of the order change action
+   */
+  details: Record<string, unknown> | null
+
+  /**
+   * The internal note of the order change action
+   */
+  internal_note: string | null
+
+  /**
+   * When the order change action was created
+   */
+  created_at: Date | string
+
+  /**
+   * When the order change action was updated
+   */
+  updated_at: Date | string
 }

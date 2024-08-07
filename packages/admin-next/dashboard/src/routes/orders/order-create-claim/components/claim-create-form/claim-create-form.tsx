@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PencilSquare } from "@medusajs/icons"
-import { AdminClaim, AdminOrder, InventoryLevelDTO } from "@medusajs/types"
+import {
+  AdminClaim,
+  AdminOrder,
+  AdminOrderPreview,
+  InventoryLevelDTO,
+} from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -46,7 +51,7 @@ import { currencies } from "../../../../../lib/data/currencies"
 type ReturnCreateFormProps = {
   order: AdminOrder
   claim: AdminClaim
-  preview: AdminOrder
+  preview: AdminOrderPreview
 }
 
 let itemsToAdd: string[] = []
@@ -134,14 +139,14 @@ export const ClaimCreateForm = ({
    */
   const previewItems = useMemo(
     () =>
-      preview.items.filter(
+      preview?.items?.filter(
         (i) => !!i.actions?.find((a) => a.claim_id === claim.id)
       ),
     [preview.items]
   )
 
   const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
+    () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
 
@@ -170,7 +175,7 @@ export const ClaimCreateForm = ({
             item_id: i.id,
             quantity: i.detail.return_requested_quantity,
             note: returnAction?.internal_note,
-            reason_id: returnAction?.details?.reason_id,
+            reason_id: returnAction?.details?.reason_id as string | undefined,
           }
         }),
         inbound_option_id: method ? method.shipping_option_id : "",
@@ -192,7 +197,7 @@ export const ClaimCreateForm = ({
   })
 
   useEffect(() => {
-    const existingItemsMap = {}
+    const existingItemsMap: Record<string, boolean> = {}
 
     previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
@@ -209,7 +214,7 @@ export const ClaimCreateForm = ({
             ...items[ind],
             quantity: i.detail.return_requested_quantity,
             note: returnItemAction?.internal_note,
-            reason_id: returnItemAction?.details?.reason_id,
+            reason_id: returnItemAction?.details?.reason_id as string,
           })
         }
       } else {
@@ -230,13 +235,13 @@ export const ClaimCreateForm = ({
     )
 
     if (method) {
-      form.setValue("option_id", method.shipping_option_id)
+      form.setValue("inbound_option_id", method.shipping_option_id)
     }
   }, [preview.shipping_methods])
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
-  const shippingOptionId = form.watch("option_id")
+  const shippingOptionId = form.watch("inbound_option_id")
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -246,7 +251,6 @@ export const ClaimCreateForm = ({
     } catch (e) {
       toast.error(t("general.error"), {
         description: e.message,
-        dismissLabel: t("actions.close"),
       })
     }
   })
@@ -284,7 +288,7 @@ export const ClaimCreateForm = ({
     setIsOpen("items", false)
   }
 
-  const onLocationChange = async (selectedLocationId: string) => {
+  const onLocationChange = async (selectedLocationId?: string | null) => {
     await updateClaimRequest({ location_id: selectedLocationId })
   }
 
@@ -308,7 +312,7 @@ export const ClaimCreateForm = ({
 
   useEffect(() => {
     if (isShippingPriceEdit) {
-      document.getElementById("js-shipping-input").focus()
+      document.getElementById("js-shipping-input")?.focus()
     }
   }, [isShippingPriceEdit])
 
@@ -320,7 +324,7 @@ export const ClaimCreateForm = ({
     const allItemsHaveLocation = items
       .map((_i) => {
         const item = itemsMap.get(_i.item_id)
-        if (!item?.variant_id) {
+        if (!item?.variant_id || !item?.variant) {
           return true
         }
 
@@ -407,16 +411,15 @@ export const ClaimCreateForm = ({
     }
   }, [])
 
-  const returnTotal = preview.return_requested_total
-
   const shippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
       (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
     )
 
-    return method?.total || 0
+    return (method?.total as number) || 0
   }, [preview.shipping_methods])
 
+  const returnTotal = preview.return_requested_total
   const refundAmount = returnTotal - shippingTotal
 
   return (
@@ -589,16 +592,16 @@ export const ClaimCreateForm = ({
                   {/*TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
                   <Form.Field
                     control={form.control}
-                    name="option_id"
+                    name="inbound_option_id"
                     render={({ field: { value, onChange, ...field } }) => {
                       return (
                         <Form.Item>
                           <Form.Control>
                             <Combobox
                               value={value}
-                              onChange={(v) => {
-                                onChange(v)
-                                onShippingOptionChange(v)
+                              onChange={(val) => {
+                                onChange(val)
+                                val && onShippingOptionChange(val)
                               }}
                               {...field}
                               options={(shipping_options ?? [])
@@ -709,7 +712,7 @@ export const ClaimCreateForm = ({
                       }
                       code={order.currency_code}
                       onValueChange={(value) =>
-                        setCustomShippingAmount(value ? parseInt(value) : "")
+                        value && setCustomShippingAmount(parseInt(value))
                       }
                       value={customShippingAmount}
                       disabled={showPlaceholder}

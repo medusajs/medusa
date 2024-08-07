@@ -5,18 +5,19 @@ export const ClaimCreateSchema = z.object({
     z.object({
       item_id: z.string(),
       quantity: z.number(),
-      reason_id: z.string().optional().nullable(),
-      note: z.string().optional().nullable(),
+      reason_id: z.string().nullish(),
+      note: z.string().nullish(),
     })
   ),
-  outbound_items: z.array(
-    z.object({
-      item_id: z.string(), // TODO: variant id?
-      quantity: z.number(),
-    })
-  ),
+  // TODO: Bring back when introducing outbound items
+  // outbound_items: z.array(
+  //   z.object({
+  //     item_id: z.string(), // TODO: variant id?
+  //     quantity: z.number(),
+  //   })
+  // ),
   location_id: z.string().optional(),
-  inbound_option_id: z.string(),
+  inbound_option_id: z.string().optional(),
   send_notification: z.boolean().optional(),
 })
 
