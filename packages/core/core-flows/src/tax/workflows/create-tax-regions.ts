@@ -6,12 +6,13 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createTaxRegionsStep } from "../steps"
 
-type WorkflowInput = CreateTaxRegionDTO[]
-
 export const createTaxRegionsWorkflowId = "create-tax-regions"
+/**
+ * This workflow creates one or more tax regions.
+ */
 export const createTaxRegionsWorkflow = createWorkflow(
   createTaxRegionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<TaxRegionDTO[]> => {
+  (input: WorkflowData<CreateTaxRegionDTO[]>): WorkflowResponse<TaxRegionDTO[]> => {
     return new WorkflowResponse(createTaxRegionsStep(input))
   }
 )

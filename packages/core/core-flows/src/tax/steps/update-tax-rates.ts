@@ -9,12 +9,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateTaxRatesStepInput = {
+export type UpdateTaxRatesStepInput = {
   selector: FilterableTaxRateProps
   update: UpdateTaxRateDTO
 }
 
 export const updateTaxRatesStepId = "update-tax-rates"
+/**
+ * This step updates tax rates matching the specified filters.
+ */
 export const updateTaxRatesStep = createStep(
   updateTaxRatesStepId,
   async (data: UpdateTaxRatesStepInput, { container }) => {
