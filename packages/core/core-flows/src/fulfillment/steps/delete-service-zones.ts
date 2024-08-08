@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteServiceZonesStepId = "delete-service-zones"
+/**
+ * This step deletes one or more service zones.
+ */
 export const deleteServiceZonesStep = createStep(
   deleteServiceZonesStepId,
   async (ids: string[], { container }) => {

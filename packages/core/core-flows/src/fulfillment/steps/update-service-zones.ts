@@ -5,12 +5,13 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = FulfillmentWorkflow.UpdateServiceZonesWorkflowInput
-
 export const updateServiceZonesStepId = "update-service-zones"
+/**
+ * This step updates service zones matching the specified filters.
+ */
 export const updateServiceZonesStep = createStep(
   updateServiceZonesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: FulfillmentWorkflow.UpdateServiceZonesWorkflowInput, { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
       ModuleRegistrationName.FULFILLMENT
     )
