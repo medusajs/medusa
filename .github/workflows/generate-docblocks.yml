@@ -22,6 +22,9 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -79,6 +82,9 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Build Dependencies
+        run: yarn build
+
       - name: Install www/utils Dependencies
         run: yarn
         working-directory: www/utils
@@ -130,6 +136,9 @@ jobs:
 
       - name: Install Dependencies
         run: yarn
+
+      - name: Build Dependencies
+        run: yarn build
 
       - name: Install www/utils Dependencies
         run: yarn
