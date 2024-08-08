@@ -7,15 +7,19 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ListLineItemsStepInput {
   filters: FilterableLineItemProps
   config?: FindConfig<CartLineItemDTO>
 }
 
 export const listLineItemsStepId = "list-line-items"
+/**
+ * This step retrieves a list of a cart's line items
+ * matching the specified filters.
+ */
 export const listLineItemsStep = createStep(
   listLineItemsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ListLineItemsStepInput, { container }) => {
     const service = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
     )

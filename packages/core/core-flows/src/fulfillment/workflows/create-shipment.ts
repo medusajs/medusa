@@ -9,6 +9,9 @@ import { validateShipmentStep } from "../steps"
 import { updateFulfillmentWorkflow } from "./update-fulfillment"
 
 export const createShipmentWorkflowId = "create-shipment-workflow"
+/**
+ * This workflow creates shipments for a fulfillment.
+ */
 export const createShipmentWorkflow = createWorkflow(
   createShipmentWorkflowId,
   (input: WorkflowData<FulfillmentWorkflow.CreateShipmentWorkflowInput>) => {
