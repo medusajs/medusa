@@ -69,7 +69,7 @@
     "express-session": "^1.17.3",
     "fs-exists-cached": "^1.0.0",
     "glob": "^7.1.6",
-    "ioredis": "^5.2.5",
+    "ioredis": "^5.4.1",
     "ioredis-mock": "8.4.0",
     "lodash": "^4.17.21",
     "medusa-telemetry": "^0.0.17",
