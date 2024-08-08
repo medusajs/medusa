@@ -1,4 +1,4 @@
-import { Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -84,7 +84,7 @@ const ReturnReasonRowActions = ({
   return (
     <ActionMenu
       groups={[
-        /* {
+        {
           actions: [
             {
               icon: <PencilSquare />,
@@ -92,7 +92,7 @@ const ReturnReasonRowActions = ({
               to: `${returnReason.id}/edit`,
             },
           ],
-        }, */
+        },
         {
           actions: [
             {
