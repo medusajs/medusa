@@ -10,6 +10,7 @@ import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 import { CreateCampaign } from "../campaigns/validators"
 
@@ -168,25 +169,15 @@ export const CreatePromotion = z
   })
   .strict()
 
-export const AdminCreatePromotion = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreatePromotion.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    }).refine(promoRefinement, {
+export const AdminCreatePromotion = WithAdditionalData(
+  CreatePromotion,
+  (schema) => {
+    return schema.refine(promoRefinement, {
       message:
         "Buyget promotions require at least one buy rule and quantities to be defined",
     })
   }
-
-  return CreatePromotion.extend({
-    additional_data: additionalDataValidator,
-  }).refine(promoRefinement, {
-    message:
-      "Buyget promotions require at least one buy rule and quantities to be defined",
-  })
-}
+)
 
 export type AdminUpdatePromotionType = z.infer<typeof UpdatePromotion>
 export const UpdatePromotion = z
@@ -201,22 +192,12 @@ export const UpdatePromotion = z
   })
   .strict()
 
-export const AdminUpdatePromotion = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdatePromotion.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    }).refine(promoRefinement, {
+export const AdminUpdatePromotion = WithAdditionalData(
+  UpdatePromotion,
+  (schema) => {
+    return schema.refine(promoRefinement, {
       message:
         "Buyget promotions require at least one buy rule and quantities to be defined",
     })
   }
-
-  return UpdatePromotion.extend({
-    additional_data: additionalDataValidator,
-  }).refine(promoRefinement, {
-    message:
-      "Buyget promotions require at least one buy rule and quantities to be defined",
-  })
-}
+)

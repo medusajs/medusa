@@ -9,6 +9,7 @@ import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 
 const statusEnum = z.nativeEnum(ProductStatus)
@@ -90,19 +91,7 @@ export const CreateProductOption = z.object({
   title: z.string(),
   values: z.array(z.string()),
 })
-export const AdminCreateProductOption = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateProductOption.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return CreateProductOption.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateProductOption = WithAdditionalData(CreateProductOption)
 
 export type AdminUpdateProductOptionType = z.infer<typeof UpdateProductOption>
 export const UpdateProductOption = z.object({
@@ -111,19 +100,7 @@ export const UpdateProductOption = z.object({
   values: z.array(z.string()).optional(),
 })
 
-export const AdminUpdateProductOption = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdateProductOption.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return UpdateProductOption.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminUpdateProductOption = WithAdditionalData(UpdateProductOption)
 
 export type AdminCreateVariantPriceType = z.infer<
   typeof AdminCreateVariantPrice
@@ -185,19 +162,8 @@ export const CreateProductVariant = z
       .optional(),
   })
   .strict()
-export const AdminCreateProductVariant = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateProductVariant.extend({
-      additional_data: z.record(z.string()).optional(),
-    })
-  }
-
-  return CreateProductVariant.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateProductVariant =
+  WithAdditionalData(CreateProductVariant)
 
 export type AdminUpdateProductVariantType = z.infer<typeof UpdateProductVariant>
 export const UpdateProductVariant = z
@@ -225,19 +191,8 @@ export const UpdateProductVariant = z
   })
   .strict()
 
-export const AdminUpdateProductVariant = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdateProductVariant.extend({
-      additional_data: z.record(z.string()).optional(),
-    })
-  }
-
-  return UpdateProductVariant.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminUpdateProductVariant =
+  WithAdditionalData(UpdateProductVariant)
 
 export type AdminBatchUpdateProductVariantType = z.infer<
   typeof AdminBatchUpdateProductVariant
@@ -281,19 +236,7 @@ export const CreateProduct = z
   })
   .strict()
 
-export const AdminCreateProduct = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateProduct.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return CreateProduct.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateProduct = WithAdditionalData(CreateProduct)
 
 export type AdminUpdateProductType = z.infer<typeof UpdateProduct>
 export const UpdateProduct = z
@@ -326,19 +269,7 @@ export const UpdateProduct = z
   })
   .strict()
 
-export const AdminUpdateProduct = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdateProduct.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return UpdateProduct.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminUpdateProduct = WithAdditionalData(UpdateProduct)
 
 export type AdminBatchUpdateProductType = z.infer<
   typeof AdminBatchUpdateProduct
