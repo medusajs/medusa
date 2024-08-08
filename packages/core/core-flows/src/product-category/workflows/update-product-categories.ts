@@ -6,13 +6,13 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateProductCategoriesStep } from "../steps"
 
-type WorkflowInputData =
-  ProductCategoryWorkflow.UpdateProductCategoriesWorkflowInput
-
 export const updateProductCategoriesWorkflowId = "update-product-categories"
+/**
+ * This workflow updates product categories matching specified filters.
+ */
 export const updateProductCategoriesWorkflow = createWorkflow(
   updateProductCategoriesWorkflowId,
-  (input: WorkflowData<WorkflowInputData>) => {
+  (input: WorkflowData<ProductCategoryWorkflow.UpdateProductCategoriesWorkflowInput>) => {
     return new WorkflowResponse(updateProductCategoriesStep(input))
   }
 )

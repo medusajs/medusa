@@ -7,6 +7,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updatePromotionsStepId = "update-promotions"
+/**
+ * This step updates one or more promotions.
+ */
 export const updatePromotionsStep = createStep(
   updatePromotionsStepId,
   async (data: UpdatePromotionDTO[], { container }) => {
