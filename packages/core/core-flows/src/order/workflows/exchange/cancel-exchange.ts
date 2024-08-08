@@ -18,7 +18,10 @@ import { cancelOrderExchangeStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 import { cancelReturnWorkflow } from "../return/cancel-return"
 
-const validateOrder = createStep(
+/**
+ * This step validates that an exchange can be canceled.
+ */
+export const cancelExchangeValidateOrder = createStep(
   "validate-exchange",
   ({
     orderExchange,
@@ -53,6 +56,9 @@ const validateOrder = createStep(
 )
 
 export const cancelOrderExchangeWorkflowId = "cancel-exchange"
+/**
+ * This workflow cancels a confirmed exchange.
+ */
 export const cancelOrderExchangeWorkflow = createWorkflow(
   cancelOrderExchangeWorkflowId,
   (
@@ -74,7 +80,7 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ orderExchange, input })
+    cancelExchangeValidateOrder({ orderExchange, input })
 
     const lineItemIds = transform({ orderExchange }, ({ orderExchange }) => {
       return orderExchange.additional_items?.map((i) => i.item_id)

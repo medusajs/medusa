@@ -27,11 +27,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested exchange can be confirmed.
+ */
+export const confirmExchangeRequestValidationStep = createStep(
   "validate-confirm-exchange-request",
   async function ({
     order,
@@ -165,9 +168,12 @@ function extractShippingOption({ orderPreview, orderExchange, returnId }) {
 }
 
 export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
+/**
+ * This workflow confirms an exchange request.
+ */
 export const confirmExchangeRequestWorkflow = createWorkflow(
   confirmExchangeRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmExchangeRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -217,7 +223,7 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderExchange, orderChange })
+    confirmExchangeRequestValidationStep({ order, orderExchange, orderChange })
 
     const { exchangeItems, returnItems } = transform(
       { orderChange },

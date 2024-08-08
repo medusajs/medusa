@@ -19,11 +19,15 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type CancelBeginOrderClaimWorkflowInput = {
   claim_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that the requested claim can be canceled by checking that it's not canceled,
+ * its order isn't canceled, and it hasn't been confirmed.
+ */
+export const cancelBeginOrderClaimValidationStep = createStep(
   "validate-cancel-begin-order-claim",
   async function ({
     order,
@@ -41,9 +45,12 @@ const validationStep = createStep(
 )
 
 export const cancelBeginOrderClaimWorkflowId = "cancel-begin-order-claim"
+/**
+ * This workflow cancels a requested order claim.
+ */
 export const cancelBeginOrderClaimWorkflow = createWorkflow(
   cancelBeginOrderClaimWorkflowId,
-  function (input: WorkflowInput): WorkflowData<void> {
+  function (input: CancelBeginOrderClaimWorkflowInput): WorkflowData<void> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "return_id", "canceled_at"],
@@ -73,7 +80,7 @@ export const cancelBeginOrderClaimWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    cancelBeginOrderClaimValidationStep({ order, orderClaim, orderChange })
 
     const shippingToRemove = transform(
       { orderChange, input },

@@ -22,7 +22,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that new items can be removed from a claim.
+ */
+export const removeClaimAddItemActionValidationStep = createStep(
   "remove-item-claim-add-action-validation",
   async function ({
     order,
@@ -54,6 +57,9 @@ const validationStep = createStep(
 )
 
 export const removeAddItemClaimActionWorkflowId = "remove-item-claim-add-action"
+/**
+ * This workflow removes new items from a claim.
+ */
 export const removeAddItemClaimActionWorkflow = createWorkflow(
   removeAddItemClaimActionWorkflowId,
   function (
@@ -88,7 +94,7 @@ export const removeAddItemClaimActionWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderClaim, orderChange })
+    removeClaimAddItemActionValidationStep({ order, input, orderClaim, orderChange })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
