@@ -5,6 +5,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const deleteReservationsByLineItemsStepId =
   "delete-reservations-by-line-items"
+/**
+ * This step deletes reservations by their associated line items.
+ */
 export const deleteReservationsByLineItemsStep = createStep(
   deleteReservationsByLineItemsStepId,
   async (ids: string[], { container }) => {

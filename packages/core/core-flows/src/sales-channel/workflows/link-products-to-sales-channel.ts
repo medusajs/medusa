@@ -6,6 +6,9 @@ import { detachProductsFromSalesChannelsStep } from "../steps"
 
 export const linkProductsToSalesChannelWorkflowId =
   "link-products-to-sales-channel"
+/**
+ * This workflow creates or dismisses links between product and sales channel records.
+ */
 export const linkProductsToSalesChannelWorkflow = createWorkflow(
   linkProductsToSalesChannelWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {

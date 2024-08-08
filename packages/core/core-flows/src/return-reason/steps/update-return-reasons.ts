@@ -16,6 +16,9 @@ type UpdateReturnReasonStepInput = {
 }
 
 export const updateReturnReasonStepId = "update-return-reasons"
+/**
+ * This step updates return reasons matching the specified filters.
+ */
 export const updateReturnReasonsStep = createStep(
   updateReturnReasonStepId,
   async (data: UpdateReturnReasonStepInput, { container }) => {

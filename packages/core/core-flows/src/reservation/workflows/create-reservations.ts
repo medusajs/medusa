@@ -8,6 +8,9 @@ import { WorkflowTypes } from "@medusajs/types"
 import { createReservationsStep } from "../steps"
 
 export const createReservationsWorkflowId = "create-reservations-workflow"
+/**
+ * This workflow creates one or more reservations.
+ */
 export const createReservationsWorkflow = createWorkflow(
   createReservationsWorkflowId,
   (

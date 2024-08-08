@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createRegionsStepId = "create-regions"
+/**
+ * This step creates one or more regions.
+ */
 export const createRegionsStep = createStep(
   createRegionsStepId,
   async (data: CreateRegionDTO[], { container }) => {
