@@ -287,6 +287,9 @@ module.exports = {
       transitionTimingFunction: {
         ease: "ease",
       },
+      width: {
+        toc: "221px",
+      },
       maxWidth: {
         // sidebar
         "sidebar-xs": "300px",

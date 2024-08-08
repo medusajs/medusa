@@ -2,10 +2,12 @@ import React from "react"
 import clsx from "clsx"
 import { Bannerv2, Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
+import { Toc } from "../components/Toc"
 
 export type RootLayoutProps = {
   children: React.ReactNode
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
+  showToc?: boolean
   sidebarProps?: SidebarProps
   htmlClassName?: string
   bodyClassName?: string
@@ -21,6 +23,7 @@ export const RootLayout = ({
   htmlClassName,
   bodyClassName,
   mainWrapperClasses,
+  showToc = true,
   showBanner = true,
 }: RootLayoutProps) => {
   return (
@@ -38,29 +41,32 @@ export const RootLayout = ({
         <ProvidersComponent>
           <MobileNavigation />
           <Sidebar {...sidebarProps} />
-          <div
-            className={clsx(
-              "lg:mt-docs_0.5 lg:mr-docs_0.5",
-              "h-screen",
-              "flex flex-col gap-docs_0.5",
-              mainWrapperClasses
-            )}
-          >
-            {showBanner && <Bannerv2 />}
+          <div className={clsx("relative", "h-screen", "flex")}>
             <div
               className={clsx(
-                "bg-medusa-bg-base rounded",
-                "shadow-elevation-card-rest",
-                "pt-docs_4 lg:pt-docs_6 pb-docs_4",
-                "flex justify-center",
-                "h-full w-full",
-                "overflow-y-scroll overflow-x-hidden",
+                "lg:pt-docs_0.5 lg:mr-docs_0.5 relative",
+                "h-full flex-1",
+                "flex flex-col gap-docs_0.5",
                 mainWrapperClasses
               )}
-              id="main"
             >
-              {children}
+              {showBanner && <Bannerv2 />}
+              <div
+                className={clsx(
+                  "bg-medusa-bg-base rounded",
+                  "shadow-elevation-card-rest",
+                  "pt-docs_4 lg:pt-docs_6 pb-docs_4",
+                  "flex justify-center",
+                  "h-full w-full",
+                  "overflow-y-scroll overflow-x-hidden",
+                  mainWrapperClasses
+                )}
+                id="main"
+              >
+                {children}
+              </div>
             </div>
+            {showToc && <Toc />}
           </div>
         </ProvidersComponent>
       </body>
