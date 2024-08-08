@@ -120,7 +120,7 @@ export const SidebarItemSubCategory = ({
             "ease-ease overflow-hidden",
             "flex flex-col gap-docs_0.125",
             !item.childrenSameLevel && "pl-docs_1.5",
-            "mb-docs_0.5 pt-docs_0.125"
+            "pb-docs_0.5 pt-docs_0.125"
           )}
         >
           {item.children!.map((childItem, index) => (
