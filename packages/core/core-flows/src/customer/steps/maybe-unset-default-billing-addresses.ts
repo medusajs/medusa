@@ -8,7 +8,7 @@ import { ModuleRegistrationName, isDefined } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 import { unsetForCreate, unsetForUpdate } from "./utils"
 
-type StepInput = {
+export type MaybeUnsetDefaultBillingAddressStepInput = {
   create?: CreateCustomerAddressDTO[]
   update?: {
     selector: FilterableCustomerAddressProps
@@ -18,9 +18,12 @@ type StepInput = {
 
 export const maybeUnsetDefaultBillingAddressesStepId =
   "maybe-unset-default-billing-customer-addresses"
+/**
+ * This step unsets the `is_default_billing` property of one or more addresses.
+ */
 export const maybeUnsetDefaultBillingAddressesStep = createStep(
   maybeUnsetDefaultBillingAddressesStepId,
-  async (data: StepInput, { container }) => {
+  async (data: MaybeUnsetDefaultBillingAddressStepInput, { container }) => {
     const customerModuleService = container.resolve<ICustomerModuleService>(
       ModuleRegistrationName.CUSTOMER
     )

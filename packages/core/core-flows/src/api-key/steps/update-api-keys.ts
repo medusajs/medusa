@@ -9,12 +9,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateApiKeysStepInput = {
+export type UpdateApiKeysStepInput = {
   selector: FilterableApiKeyProps
   update: UpdateApiKeyDTO
 }
 
 export const updateApiKeysStepId = "update-api-keys"
+/**
+ * This step updates one or more API keys.
+ */
 export const updateApiKeysStep = createStep(
   updateApiKeysStepId,
   async (data: UpdateApiKeysStepInput, { container }) => {

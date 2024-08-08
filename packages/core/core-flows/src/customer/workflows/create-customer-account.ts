@@ -8,15 +8,18 @@ import { createCustomersStep } from "../steps"
 import { transform } from "@medusajs/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 
-type WorkflowInput = {
+export type CreateCustomerAccountWorkflowInput = {
   authIdentityId: string
   customersData: CreateCustomerDTO
 }
 
 export const createCustomerAccountWorkflowId = "create-customer-account"
+/**
+ * This workflow creates an authentication account for a customer.
+ */
 export const createCustomerAccountWorkflow = createWorkflow(
   createCustomerAccountWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<CustomerDTO> => {
+  (input: WorkflowData<CreateCustomerAccountWorkflowInput>): WorkflowResponse<CustomerDTO> => {
     const customers = createCustomersStep([input.customersData])
 
     const customer = transform(

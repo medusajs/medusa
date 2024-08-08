@@ -2,11 +2,14 @@ import { CreateApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateApiKeysStepInput = {
+export type CreateApiKeysStepInput = {
   api_keys: CreateApiKeyDTO[]
 }
 
 export const createApiKeysStepId = "create-api-keys"
+/**
+ * This step creates one or more API keys.
+ */
 export const createApiKeysStep = createStep(
   createApiKeysStepId,
   async (data: CreateApiKeysStepInput, { container }) => {
