@@ -56,8 +56,8 @@ export interface AdminAddReturnItems {
 
 export interface AdminUpdateReturnItems {
   quantity?: number
-  internal_note?: string
-  reason_id?: string
+  internal_note?: string | null
+  reason_id?: string | null
 }
 
 export interface AdminAddReturnShipping {
