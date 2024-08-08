@@ -2,7 +2,7 @@ import { INotificationModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type SendNotificationsStepInput = {
+export type SendNotificationsStepInput = {
   to: string
   channel: string
   template: string
@@ -16,6 +16,9 @@ type SendNotificationsStepInput = {
 }[]
 
 export const sendNotificationsStepId = "send-notifications"
+/**
+ * This step sends one or more notifications.
+ */
 export const sendNotificationsStep = createStep(
   sendNotificationsStepId,
   async (data: SendNotificationsStepInput, { container }) => {

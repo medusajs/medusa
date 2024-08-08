@@ -11,6 +11,9 @@ import { validateTokenStep } from "../steps/validate-token"
 import { setAuthAppMetadataStep } from "../../auth"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
+/**
+ * This workflow accepts an invite and creates a user.
+ */
 export const acceptInviteWorkflow = createWorkflow(
   acceptInviteWorkflowId,
   (

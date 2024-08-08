@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const validateTokenStepId = "validate-invite-token-step"
+/**
+ * This step validates a specified token and returns its associated invite.
+ */
 export const validateTokenStep = createStep(
   validateTokenStepId,
   async (input: string, { container }) => {
