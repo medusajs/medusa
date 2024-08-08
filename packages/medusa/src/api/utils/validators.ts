@@ -1,19 +1,27 @@
-import { z, ZodObject } from "zod"
+import { z, ZodEffects, ZodObject } from "zod"
 
 /**
  * Wraps the original schema to a function to accept and merge
  * additional_data schema
  */
-export const WithAdditionalData = (originalSchema: ZodObject<any, any>) => {
+export const WithAdditionalData = <T extends ZodObject<any, any>>(
+  originalSchema: T,
+  modifyCallback?: (schema: T) => ZodObject<any, any> | ZodEffects<any, any>
+) => {
   return (additionalDataValidator?: ZodObject<any, any>) => {
+    let schema: ZodObject<any, any>
+
     if (!additionalDataValidator) {
-      return originalSchema.extend({
+      schema = originalSchema.extend({
         additional_data: z.record(z.unknown()).nullish(),
       })
+    } else {
+      schema = originalSchema.extend({
+        additional_data: additionalDataValidator,
+      })
     }
-    return originalSchema.extend({
-      additional_data: additionalDataValidator,
-    })
+
+    return modifyCallback ? modifyCallback(schema as T) : schema
   }
 }
 

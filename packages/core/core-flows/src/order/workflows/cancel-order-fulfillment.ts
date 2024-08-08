@@ -1,4 +1,5 @@
 import {
+  AdditionalData,
   BigNumberInput,
   FulfillmentDTO,
   OrderDTO,
@@ -7,6 +8,8 @@ import {
 import { MedusaError, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -109,8 +112,10 @@ export const cancelOrderFulfillmentWorkflowId = "cancel-order-fulfillment"
 export const cancelOrderFulfillmentWorkflow = createWorkflow(
   cancelOrderFulfillmentWorkflowId,
   (
-    input: WorkflowData<OrderWorkflow.CancelOrderFulfillmentWorkflowInput>
-  ): WorkflowData<void> => {
+    input: WorkflowData<
+      OrderWorkflow.CancelOrderFulfillmentWorkflowInput & AdditionalData
+    >
+  ) => {
     const order: OrderDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "orders",
@@ -152,6 +157,15 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       input: {
         id: input.fulfillment_id,
       },
+    })
+
+    const orderFulfillmentCanceled = createHook("orderFulfillmentCanceled", {
+      fulfillment,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [orderFulfillmentCanceled],
     })
   }
 )
