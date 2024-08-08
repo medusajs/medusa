@@ -15,7 +15,7 @@ export type SidebarTopProps = {
 export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
   function SidebarTop({ parentItem }, ref) {
     return (
-      <div className="p-docs_0.75 pb-0">
+      <div className="py-docs_0.75 pb-0">
         <SidebarTopMobileClose />
         <div ref={ref} className="hidden lg:block">
           <SidebarTopNavigationDropdown />

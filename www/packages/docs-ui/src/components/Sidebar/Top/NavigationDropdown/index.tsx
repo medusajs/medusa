@@ -30,23 +30,22 @@ export const SidebarTopNavigationDropdown = () => {
   }, [items])
   return (
     <div
-      className={clsx(
-        "py-docs_0.125 pl-docs_0.125 pr-docs_0.5",
-        "relative z-50 lg:mb-docs_0.75"
-      )}
+      className={clsx("px-docs_0.75", "relative z-50 lg:mb-docs_0.75")}
       ref={navigationRef}
     >
-      {selectedItem && (
-        <SidebarTopNavigationDropdownSelected
-          item={selectedItem}
-          onClick={() => setMenuOpen((prev) => !prev)}
+      <div className="py-docs_0.125 pl-docs_0.125 pr-docs_0.5">
+        {selectedItem && (
+          <SidebarTopNavigationDropdownSelected
+            item={selectedItem}
+            onClick={() => setMenuOpen((prev) => !prev)}
+          />
+        )}
+        <SidebarTopNavigationDropdownMenu
+          items={items}
+          open={menuOpen}
+          onSelect={() => setMenuOpen(false)}
         />
-      )}
-      <SidebarTopNavigationDropdownMenu
-        items={items}
-        open={menuOpen}
-        onSelect={() => setMenuOpen(false)}
-      />
+      </div>
     </div>
   )
 }

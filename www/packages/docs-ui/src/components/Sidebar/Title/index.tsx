@@ -14,17 +14,19 @@ export const SidebarTitle = ({ item }: SidebarTitleProps) => {
   const { goBack } = useSidebar()
 
   return (
-    <div
-      onClick={goBack}
-      className={clsx(
-        "flex items-center justify-start my-docs_0.75 gap-[10px]",
-        "border border-transparent cursor-pointer",
-        "!text-medusa-fg-base !text-compact-small-plus"
-      )}
-      tabIndex={-1}
-    >
-      <ArrowUturnLeft className="mr-[10px]" />
-      <span>{item.childSidebarTitle || item.title}</span>
+    <div className="px-docs_0.75">
+      <div
+        onClick={goBack}
+        className={clsx(
+          "flex items-center justify-start my-docs_0.75 gap-[10px]",
+          "border border-transparent cursor-pointer",
+          "!text-medusa-fg-base !text-compact-small-plus"
+        )}
+        tabIndex={-1}
+      >
+        <ArrowUturnLeft className="mr-[10px]" />
+        <span>{item.childSidebarTitle || item.title}</span>
+      </div>
     </div>
   )
 }
