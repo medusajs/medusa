@@ -12,6 +12,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updatePriceListsStepId = "update-price-lists"
+/**
+ * This step updates one or more price lists.
+ */
 export const updatePriceListsStep = createStep(
   updatePriceListsStepId,
   async (data: UpdatePriceListDTO[], { container }) => {

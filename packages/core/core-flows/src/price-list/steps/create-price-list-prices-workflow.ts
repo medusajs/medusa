@@ -4,6 +4,9 @@ import { createPriceListPricesWorkflow } from "../workflows/create-price-list-pr
 
 export const createPriceListPricesWorkflowStepId =
   "create-price-list-prices-workflow-step"
+/**
+ * This step creates prices for price lists.
+ */
 export const createPriceListPricesWorkflowStep = createStep(
   createPriceListPricesWorkflowStepId,
   async (data: CreatePriceListPricesWorkflowDTO[], { container }) => {

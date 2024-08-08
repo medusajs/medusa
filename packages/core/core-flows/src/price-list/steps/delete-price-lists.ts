@@ -2,7 +2,10 @@ import { IPricingModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-export const deletePriceListsStepId = "delete-campaigns"
+export const deletePriceListsStepId = "delete-price-lists"
+/**
+ * This step deletes one or more price lists.
+ */
 export const deletePriceListsStep = createStep(
   deletePriceListsStepId,
   async (ids: string[], { container }) => {
