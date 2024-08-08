@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteProductTypesStepId = "delete-product-types"
+/**
+ * This step deletes one or more product types.
+ */
 export const deleteProductTypesStep = createStep(
   deleteProductTypesStepId,
   async (ids: string[], { container }) => {
