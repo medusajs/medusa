@@ -13,7 +13,7 @@ export const MobileNavigation = () => {
     <div
       className={clsx(
         "lg:hidden bg-medusa-bg-base",
-        "sticky top-0 w-full z-50",
+        "sticky top-0 w-full z-50 h-min",
         "px-docs_0.75 py-docs_0.5",
         "flex justify-between items-center",
         "border-b border-medusa-border-base"

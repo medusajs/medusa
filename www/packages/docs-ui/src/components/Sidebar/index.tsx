@@ -77,7 +77,7 @@ export const Sidebar = ({
           "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
           "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
           mobileSidebarOpen && [
-            "!left-docs_0.5 !top-docs_0.5 z-50 shadow-elevation-modal",
+            "!left-docs_0.5 !top-docs_0.5 z-50 shadow-elevation-modal dark:shadow-elevation-modal-dark",
             "rounded",
             "lg:!left-0 lg:!top-0 lg:shadow-none",
           ],
