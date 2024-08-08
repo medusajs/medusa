@@ -16,6 +16,9 @@ export type UpdateProductsStepInput =
     }
 
 export const updateProductsStepId = "update-products"
+/**
+ * This step updates one or more products.
+ */
 export const updateProductsStep = createStep(
   updateProductsStepId,
   async (data: UpdateProductsStepInput, { container }) => {

@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteCollectionsStepId = "delete-collections"
+/**
+ * This step deletes one or more collections.
+ */
 export const deleteCollectionsStep = createStep(
   deleteCollectionsStepId,
   async (ids: string[], { container }) => {
