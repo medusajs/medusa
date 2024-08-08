@@ -119,7 +119,7 @@ export const cancelOrderWorkflow = createWorkflow(
       cancelOrdersStep({ orderIds: [order.id] })
     )
 
-    const orderCancelled = createHook("orderCancelled", {
+    const orderCanceled = createHook("orderCanceled", {
       order,
     })
 
