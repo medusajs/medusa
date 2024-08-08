@@ -1,6 +1,6 @@
 import {
+  AdditionalData,
   BigNumberInput,
-  FulfillmentDTO,
   FulfillmentWorkflow,
   OrderDTO,
   OrderLineItemDTO,
@@ -11,6 +11,7 @@ import { MathBN, MedusaError, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -204,8 +205,10 @@ export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (
-    input: WorkflowData<OrderWorkflow.CreateOrderFulfillmentWorkflowInput>
-  ): WorkflowResponse<FulfillmentDTO> => {
+    input: WorkflowData<
+      OrderWorkflow.CreateOrderFulfillmentWorkflowInput & AdditionalData
+    >
+  ) => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -323,7 +326,14 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       deleteReservationsStep(toDelete)
     )
 
+    const fulfillmentCreated = createHook("fulfillmentCreated", {
+      fulfillment,
+      additional_data: input.additional_data,
+    })
+
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
-    return new WorkflowResponse(fulfillment)
+    return new WorkflowResponse(fulfillment, {
+      hooks: [fulfillmentCreated],
+    })
   }
 )

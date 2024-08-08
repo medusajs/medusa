@@ -54,16 +54,18 @@ const Item = z.object({
   quantity: z.number(),
 })
 
-export const AdminOrderCreateFulfillment = z.object({
+export type AdminOrderCreateFulfillmentType = z.infer<
+  typeof OrderCreateFulfillment
+>
+export const OrderCreateFulfillment = z.object({
   items: z.array(Item),
   location_id: z.string().nullish(),
   no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-
-export type AdminOrderCreateFulfillmentType = z.infer<
-  typeof AdminOrderCreateFulfillment
->
+export const AdminOrderCreateFulfillment = WithAdditionalData(
+  OrderCreateFulfillment
+)
 
 const Label = z.object({
   tracking_number: z.string(),
