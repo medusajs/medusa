@@ -21,7 +21,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a shipping method can be created for a return.
+ */
+export const createReturnShippingMethodValidationStep = createStep(
   "validate-create-return-shipping-method",
   async function ({
     order,
@@ -40,6 +43,9 @@ const validationStep = createStep(
 
 export const createReturnShippingMethodWorkflowId =
   "create-return-shipping-method"
+/**
+ * This workflow creates a shipping method for a return.
+ */
 export const createReturnShippingMethodWorkflow = createWorkflow(
   createReturnShippingMethodWorkflowId,
   function (input: {
@@ -94,7 +100,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderReturn, orderChange })
+    createReturnShippingMethodValidationStep({ order, orderReturn, orderChange })
 
     const shippingMethodInput = transform(
       {

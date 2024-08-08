@@ -20,7 +20,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return can be updated
+ */
+export const updateReturnValidationStep = createStep(
   "validate-update-return",
   async function ({
     orderChange,
@@ -35,6 +38,9 @@ const validationStep = createStep(
 )
 
 export const updateReturnWorkflowId = "update-return"
+/**
+ * This workflow updates a return.
+ */
 export const updateReturnWorkflow = createWorkflow(
   updateReturnWorkflowId,
   function (
@@ -61,7 +67,7 @@ export const updateReturnWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderReturn, orderChange })
+    updateReturnValidationStep({ orderReturn, orderChange })
 
     const updateData = transform({ input }, ({ input }) => {
       return {

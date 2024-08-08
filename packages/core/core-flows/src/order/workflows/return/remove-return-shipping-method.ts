@@ -23,7 +23,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a shipping method can be removed from a return.
+ */
+export const removeReturnShippingMethodValidationStep = createStep(
   "validate-remove-return-shipping-method",
   async function ({
     orderChange,
@@ -55,6 +58,9 @@ const validationStep = createStep(
 
 export const removeReturnShippingMethodWorkflowId =
   "remove-return-shipping-method"
+/**
+ * This workflow removes a shipping method from a return.
+ */
 export const removeReturnShippingMethodWorkflow = createWorkflow(
   removeReturnShippingMethodWorkflowId,
   function (
@@ -81,7 +87,7 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderReturn, orderChange, input })
+    removeReturnShippingMethodValidationStep({ orderReturn, orderChange, input })
 
     const dataToRemove = transform(
       { orderChange, input },

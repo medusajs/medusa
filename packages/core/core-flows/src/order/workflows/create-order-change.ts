@@ -7,6 +7,9 @@ import {
 import { createOrderChangeStep } from "../steps"
 
 export const createOrderChangeWorkflowId = "create-order-change"
+/**
+ * This workflow creates an order change.
+ */
 export const createOrderChangeWorkflow = createWorkflow(
   createOrderChangeWorkflowId,
   (

@@ -22,7 +22,10 @@ import {
 } from "../../utils/order-validation"
 import { validateReturnReasons } from "../../utils/validate-return-reason"
 
-const validationStep = createStep(
+/**
+ * This step validates that itens can be added to a return.
+ */
+export const requestItemReturnValidationStep = createStep(
   "request-item-return-validation",
   async function (
     {
@@ -51,6 +54,9 @@ const validationStep = createStep(
 )
 
 export const requestItemReturnWorkflowId = "request-item-return"
+/**
+ * This workflow adds items to a return.
+ */
 export const requestItemReturnWorkflow = createWorkflow(
   requestItemReturnWorkflowId,
   function (
@@ -85,7 +91,7 @@ export const requestItemReturnWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, items: input.items, orderReturn, orderChange })
+    requestItemReturnValidationStep({ order, items: input.items, orderReturn, orderChange })
 
     const orderChangeActionInput = transform(
       { order, orderChange, orderReturn, items: input.items },

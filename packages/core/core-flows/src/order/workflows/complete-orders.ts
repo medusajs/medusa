@@ -7,14 +7,17 @@ import {
 import { completeOrdersStep } from "../steps"
 import { AdditionalData } from "@medusajs/types"
 
-type CompleteOrdersStepInput = {
+export type CompleteOrdersWorkflowInput = {
   orderIds: string[]
 } & AdditionalData
 
 export const completeOrderWorkflowId = "complete-order-workflow"
+/**
+ * This workflow completes one or more orders.
+ */
 export const completeOrderWorkflow = createWorkflow(
   completeOrderWorkflowId,
-  (input: WorkflowData<CompleteOrdersStepInput>) => {
+  (input: WorkflowData<CompleteOrdersWorkflowInput>) => {
     const completedOrders = completeOrdersStep(input)
     const ordersCompleted = createHook("ordersCompleted", {
       orders: completedOrders,

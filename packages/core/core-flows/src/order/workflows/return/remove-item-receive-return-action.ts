@@ -22,7 +22,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return receival's item can be removed.
+ */
+export const removeItemReceiveReturnActionValidationStep = createStep(
   "remove-item-receive-return-action-validation",
   async function ({
     order,
@@ -62,6 +65,9 @@ const validationStep = createStep(
 
 export const removeItemReceiveReturnActionWorkflowId =
   "remove-item-receive-return-action"
+/**
+ * This workflow removes an item from a return receival.
+ */
 export const removeItemReceiveReturnActionWorkflow = createWorkflow(
   removeItemReceiveReturnActionWorkflowId,
   function (
@@ -96,7 +102,7 @@ export const removeItemReceiveReturnActionWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderReturn, orderChange })
+    removeItemReceiveReturnActionValidationStep({ order, input, orderReturn, orderChange })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
