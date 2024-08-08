@@ -76,32 +76,27 @@ export function maybeApplyLinkFilter({
   }
 */
 function transformFilterableFields(filterableFields: Record<string, unknown>) {
-  const result = {}
+  const result = {};
+  for (const key of Object.keys(filterableFields)) {
+    const value = filterableFields[key];
+    const keys = key.split(".");
+    let current = result;
 
-  for (const key in filterableFields) {
-    if (filterableFields.hasOwnProperty(key)) {
-      const value = filterableFields[key]
-      const keys = key.split(".")
-      let current = result
+    // Iterate over the keys, creating nested objects as needed
+    for (let i = 0; i < keys.length; i++) {
+      const part = keys[i];
+      current[part] ??= {};
 
-      // Iterate over the keys, creating nested objects as needed
-      for (let i = 0; i < keys.length; i++) {
-        const part = keys[i]
-
-        if (i === keys.length - 1) {
-          // If its the last key, assign the value
-          current[part] = value
-        } else {
-          // Create a nested object if it doesn't exist
-          if (!current[part]) {
-            current[part] = {}
-          }
-
-          current = current[part]
-        }
+      if (i === keys.length - 1) {
+        // If its the last key, assign the value
+        current[part] = value;
+        break;
       }
+
+      current = current[part];
     }
   }
 
-  return result
+  return result;
 }
+
