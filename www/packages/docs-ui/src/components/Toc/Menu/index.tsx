@@ -7,16 +7,18 @@ import { ToCItemUi } from "types"
 export type TocMenuProps = {
   items: ToCItemUi[]
   activeItem: string
+  show: boolean
+  setShow: (value: boolean) => void
 }
 
-export const TocMenu = ({ items, activeItem }: TocMenuProps) => {
+export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
   const getItemElm = (item: ToCItemUi) => {
     const isActive = item.id === activeItem
     const hasChildren = item.children?.length || 0 > 0
     return (
       <li
         className={clsx(
-          "text-medusa-fg-base px-docs_0.5",
+          "text-medusa-fg-base",
           isActive && "text-compact-small-plus",
           !isActive && "text-compact-small"
         )}
@@ -24,8 +26,8 @@ export const TocMenu = ({ items, activeItem }: TocMenuProps) => {
         <Link
           className={clsx(
             "flex justify-start items-center gap-docs_0.5",
-            "cursor-pointer rounded-docs_xs py-docs_0.25",
-            "hover:bg-medusa-bg-component-hover"
+            "cursor-pointer rounded-docs_sm py-docs_0.25",
+            "px-docs_0.5 hover:bg-medusa-bg-component-hover"
           )}
           href={`#${item.id}`}
         >
@@ -46,17 +48,25 @@ export const TocMenu = ({ items, activeItem }: TocMenuProps) => {
   }
 
   return (
-    <ul
+    <div
       className={clsx(
-        "p-docs_0.25 rounded z-50 w-[200px] max-w-[200px] max-h-[400px] overflow-y-scroll",
-        "absolute -right-[100vw] group-hover:-right-docs_0.5",
-        "bg-medusa-bg-component transition-[right]",
-        "shadow-elevation-flyout dark:shadow-elevation-flyout-dark"
+        "hidden lg:flex relative transition-[width] lg:h-full",
+        "w-0 z-20 bg-medusa-bg-subtle overflow-hidden flex flex-col justify-center",
+        show && "lg:w-toc"
       )}
+      onMouseLeave={() => setShow(false)}
     >
-      {items.map((item, index) => (
-        <React.Fragment key={index}>{getItemElm(item)}</React.Fragment>
-      ))}
-    </ul>
+      <ul
+        className={clsx(
+          "p-docs_0.75 lg:w-toc max-h-full overflow-y-scroll",
+          "absolute lg:-right-full transition-[right,opacity] opacity-0",
+          show && "lg:right-0 lg:opacity-100"
+        )}
+      >
+        {items.map((item, index) => (
+          <React.Fragment key={index}>{getItemElm(item)}</React.Fragment>
+        ))}
+      </ul>
+    </div>
   )
 }

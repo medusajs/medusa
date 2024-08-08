@@ -6,13 +6,16 @@ import { ToCItemUi } from "types"
 import { isElmWindow, useIsBrowser, useScrollController } from "../.."
 import { TocList } from "./List"
 import clsx from "clsx"
+import { TocMenu } from "./Menu"
 
 export const Toc = () => {
   const [items, setItems] = useState<ToCItemUi[]>([])
   const [activeItem, setActiveItem] = useState("")
+  const [showMenu, setShowMenu] = useState(false)
+  const [maxHeight, setMaxHeight] = useState(0)
   const isBrowser = useIsBrowser()
   const pathname = usePathname()
-  const { scrollableElement, getScrolledTop } = useScrollController()
+  const { scrollableElement } = useScrollController()
   const getHeadingsInDom = useCallback(() => {
     if (!isBrowser) {
       return []
@@ -120,14 +123,57 @@ export const Toc = () => {
     }
   }, [items, setActiveToClosest])
 
+  const handleResize = () => {
+    if (window.innerHeight < 900) {
+      setMaxHeight(0)
+      return
+    }
+
+    setMaxHeight(
+      isElmWindow(scrollableElement)
+        ? scrollableElement.innerHeight
+        : scrollableElement?.clientHeight || 0
+    )
+  }
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    handleResize()
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [isBrowser])
+
   return (
-    <div
-      className={clsx(
-        "fixed h-[calc(100%-8px)] top-docs_0.5 right-[20px]",
-        "hidden lg:flex justify-center items-center"
-      )}
-    >
-      <TocList items={items} topLevel={true} activeItem={activeItem} />
+    <div className="hidden lg:block" onMouseOver={() => setShowMenu(true)}>
+      <div
+        className={clsx(
+          "fixed top-1/2 right-[20px]",
+          "hidden lg:flex justify-center items-center",
+          "overflow-hidden z-10",
+          showMenu && "lg:hidden",
+          maxHeight < 1000 && "-translate-y-[40%]",
+          maxHeight >= 1000 && "-translate-y-1/2"
+        )}
+        onMouseOver={() => setShowMenu(true)}
+        style={{
+          maxHeight,
+        }}
+      >
+        <TocList items={items} topLevel={true} activeItem={activeItem} />
+      </div>
+      <TocMenu
+        items={items}
+        activeItem={activeItem}
+        show={showMenu}
+        setShow={setShowMenu}
+      />
     </div>
   )
 }

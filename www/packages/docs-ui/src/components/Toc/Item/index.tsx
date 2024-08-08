@@ -19,10 +19,10 @@ export const TocItem = ({ item, activeItem }: TocItemProps) => {
         className={clsx(
           "h-docs_0.125 rounded-full transition-colors",
           isActive && "bg-medusa-fg-subtle",
-          !isActive && "bg-medusa-fg-disabled hover:bg-medusa-fg-subtle",
+          !isActive && "bg-medusa-fg-disabled",
           item.level === 2 && "w-[20px]",
           item.level === 3 && "w-[10px]",
-          "cursor-pointer block"
+          "block"
         )}
       ></span>
       {(item.children?.length || 0) > 0 && (
