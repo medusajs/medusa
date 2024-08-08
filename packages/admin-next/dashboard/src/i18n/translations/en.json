@@ -2110,6 +2110,8 @@
       "successToast": "Return reason {{label}} was successfully created."
     },
     "edit": {
+      "header": "Edit Return Reason",
+      "subtitle": "Edit the value of the return reason.",
       "successToast": "Return reason {{label}} was successfully updated."
     },
     "delete": {
