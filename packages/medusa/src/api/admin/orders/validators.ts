@@ -82,10 +82,12 @@ export const OrderCreateShipment = z.object({
 })
 export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
 
-export const AdminOrderCancelFulfillment = z.object({
+export type AdminOrderCancelFulfillmentType = z.infer<
+  typeof OrderCancelFulfillment
+>
+export const OrderCancelFulfillment = z.object({
   no_notification: z.boolean().optional(),
 })
-
-export type AdminOrderCancelFulfillmentType = z.infer<
-  typeof AdminOrderCancelFulfillment
->
+export const AdminOrderCancelFulfillment = WithAdditionalData(
+  OrderCancelFulfillment
+)
