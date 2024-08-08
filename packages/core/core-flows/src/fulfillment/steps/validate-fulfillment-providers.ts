@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type FulfillmentProviderValidationInput = {
+export type FulfillmentProviderValidationWorkflowInput = {
   id?: string
   service_zone_id?: string
   provider_id?: string
@@ -15,9 +15,13 @@ type FulfillmentProviderValidationInput = {
 
 export const validateFulfillmentProvidersStepId =
   "validate-fulfillment-providers-step"
+/**
+ * This step validates that the specified fulfillment providers are available in the
+ * specified service zones.
+ */
 export const validateFulfillmentProvidersStep = createStep(
   validateFulfillmentProvidersStepId,
-  async (input: FulfillmentProviderValidationInput[], { container }) => {
+  async (input: FulfillmentProviderValidationWorkflowInput[], { container }) => {
     const dataToValidate: {
       service_zone_id: string
       provider_id: string

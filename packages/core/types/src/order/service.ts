@@ -81,7 +81,6 @@ import {
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderLineItemWithSelectorDTO,
   UpdateOrderReturnReasonDTO,
-  UpdateOrderReturnReasonWithSelectorDTO,
   UpdateOrderReturnWithSelectorDTO,
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodDTO,
@@ -3142,7 +3141,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteLineItemAdjustments<
-    TReturnableLinkableKeys extends string = string,
+    TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3191,7 +3190,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteShippingMethodAdjustments<
-    TReturnableLinkableKeys extends string = string,
+    TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3217,7 +3216,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   restoreShippingMethodAdjustments<
-    TReturnableLinkableKeys extends string = string,
+    TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -3289,7 +3288,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteShippingMethodTaxLines<
-    TReturnableLinkableKeys extends string = string,
+    TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3315,7 +3314,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   restoreShippingMethodTaxLines<
-    TReturnableLinkableKeys extends string = string,
+    TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -3600,28 +3599,6 @@ export interface IOrderModuleService extends IModuleService {
    */
   createReturnReasons(
     returnReasonData: CreateOrderReturnReasonDTO[],
-    sharedContext?: Context
-  ): Promise<OrderReturnReasonDTO[]>
-
-  /**
-   * This method updates existing return reasons.
-   *
-   * @param {UpdateOrderReturnReasonWithSelectorDTO[]} data - The filters that specifies which
-   * return reasons to update, and the data to update in them.
-   * @returns {Promise<OrderReturnReasonDTO[]>} The updated return reasons.
-   *
-   * @example
-   * const returnReasons = await orderModuleService.updateReturnReasons([{
-   *   selector: {
-   *     id: "13"
-   *   },
-   *   data: {
-   *     label: "Damaged"
-   *   }
-   * }])
-   */
-  updateReturnReasons(
-    data: UpdateOrderReturnReasonWithSelectorDTO[],
     sharedContext?: Context
   ): Promise<OrderReturnReasonDTO[]>
 

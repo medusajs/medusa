@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createFulfillmentStepId = "create-fulfillment"
+/**
+ * This step creates a fulfillment
+ */
 export const createFulfillmentStep = createStep(
   createFulfillmentStepId,
   async (data: FulfillmentTypes.CreateFulfillmentDTO, { container }) => {

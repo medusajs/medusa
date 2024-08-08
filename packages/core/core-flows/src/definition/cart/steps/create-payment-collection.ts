@@ -2,7 +2,7 @@ import { BigNumberInput, IPaymentModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type CreatePaymentCollectionCartStepInput = {
   region_id: string
   currency_code: string
   amount: BigNumberInput
@@ -10,9 +10,12 @@ type StepInput = {
 }
 
 export const createPaymentCollectionsStepId = "create-payment-collections"
+/**
+ * This step creates payment collections in a cart.
+ */
 export const createPaymentCollectionsStep = createStep(
   createPaymentCollectionsStepId,
-  async (data: StepInput[], { container }) => {
+  async (data: CreatePaymentCollectionCartStepInput[], { container }) => {
     const service = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )

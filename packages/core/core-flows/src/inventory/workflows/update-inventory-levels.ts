@@ -7,15 +7,18 @@ import {
 
 import { updateInventoryLevelsStep } from "../steps/update-inventory-levels"
 
-interface WorkflowInput {
+export interface UpdateInventoryLevelsWorkflowInput {
   updates: InventoryTypes.BulkUpdateInventoryLevelInput[]
 }
 export const updateInventoryLevelsWorkflowId =
   "update-inventory-levels-workflow"
+/**
+ * This workflow updates one or more inventory levels.
+ */
 export const updateInventoryLevelsWorkflow = createWorkflow(
   updateInventoryLevelsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<UpdateInventoryLevelsWorkflowInput>
   ): WorkflowResponse<InventoryLevelDTO[]> => {
     return new WorkflowResponse(updateInventoryLevelsStep(input.updates))
   }

@@ -24,6 +24,9 @@ const validateExistingPaymentCollection = createStep(
 
 export const createPaymentCollectionForCartWorkflowId =
   "create-payment-collection-for-cart"
+/**
+ * This workflow creates a payment collection for a cart.
+ */
 export const createPaymentCollectionForCartWorkflow = createWorkflow(
   createPaymentCollectionForCartWorkflowId,
   (

@@ -24,10 +24,17 @@ import {
   prepareTaxLinesData,
 } from "../utils/prepare-line-item-data"
 
+export type CompleteCartWorkflowInput = {
+  id: string
+}
+
 export const completeCartWorkflowId = "complete-cart"
+/**
+ * This workflow completes a cart.
+ */
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
-  (input: WorkflowData<any>): WorkflowResponse<OrderDTO> => {
+  (input: WorkflowData<CompleteCartWorkflowInput>): WorkflowResponse<OrderDTO> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: completeCartFields,

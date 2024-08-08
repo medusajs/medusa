@@ -10,15 +10,18 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updatePaymentCollectionStep } from "../../../payment-collection"
 import { deletePaymentSessionsWorkflow } from "../../../payment-collection/workflows/delete-payment-sessions"
 
-type WorklowInput = {
+export type RefreshPaymentCollectionForCartWorklowInput = {
   cart_id: string
 }
 
 export const refreshPaymentCollectionForCartWorkflowId =
   "refresh-payment-collection-for-cart"
+/**
+ * This workflow refreshes the payment collections of a cart.
+ */
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
-  (input: WorkflowData<WorklowInput>): WorkflowData<void> => {
+  (input: WorkflowData<RefreshPaymentCollectionForCartWorklowInput>): WorkflowData<void> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: [
