@@ -11,12 +11,15 @@ import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
 import { Modules } from "@medusajs/utils"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteProductsWorkflowInput = { ids: string[] }
 
 export const deleteProductsWorkflowId = "delete-products"
+/**
+ * This workflow deletes one or more products.
+ */
 export const deleteProductsWorkflow = createWorkflow(
   deleteProductsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<DeleteProductsWorkflowInput>) => {
     const productsToDelete = getProductsStep({ ids: input.ids })
     const variantsToBeDeleted = transform({ productsToDelete }, (data) => {
       return data.productsToDelete

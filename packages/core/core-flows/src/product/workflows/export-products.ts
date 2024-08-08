@@ -9,6 +9,9 @@ import { useRemoteQueryStep } from "../../common"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 
 export const exportProductsWorkflowId = "export-products"
+/**
+ * This workflow exports products matching the specified filters.
+ */
 export const exportProductsWorkflow = createWorkflow(
   exportProductsWorkflowId,
   (
