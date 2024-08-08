@@ -121,4 +121,12 @@ export class BigNumber implements IBigNumber {
   valueOf(): number {
     return this.numeric_
   }
+
+  [Symbol.toPrimitive](hint) {
+    if (hint === "string") {
+      return this.raw?.value
+    }
+
+    return this.numeric_
+  }
 }
