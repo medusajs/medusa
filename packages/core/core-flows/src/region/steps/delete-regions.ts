@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteRegionsStepId = "delete-regions"
+/**
+ * This step deletes one or more regions.
+ */
 export const deleteRegionsStep = createStep(
   deleteRegionsStepId,
   async (ids: string[], { container }) => {
