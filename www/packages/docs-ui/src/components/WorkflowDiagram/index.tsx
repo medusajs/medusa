@@ -22,7 +22,7 @@ type ZoomScale = 0.5 | 0.75 | 1
 
 const defaultState = {
   x: -1000,
-  y: -900,
+  y: -1020,
   scale: 1,
 }
 
@@ -100,7 +100,7 @@ export const WorkflowDiagram = ({ workflow }: WorkflowDiagramProps) => {
   const resetCanvas = async () => await controls.start(defaultState)
 
   return (
-    <div className="h-[400px] w-full rounded-docs_DEFAULT">
+    <div className="h-[200px] w-full rounded-docs_DEFAULT">
       <div
         ref={dragConstraints}
         className="relative size-full rounded-docs_DEFAULT"

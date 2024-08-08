@@ -140,7 +140,7 @@ class WorkflowsPlugin {
     let stepDepth = 1
 
     constructorFn.body.statements.forEach((statement) => {
-      const initializer = this.getInitializerOfStatement(statement)
+      const initializer = this.getInitializerOfNode(statement)
 
       if (!initializer) {
         return
@@ -345,7 +345,7 @@ class WorkflowsPlugin {
     )
 
     thenStatements.forEach((statement) => {
-      const initializer = this.getInitializerOfStatement(statement)
+      const initializer = this.getInitializerOfNode(statement)
 
       if (!initializer) {
         return
@@ -364,7 +364,9 @@ class WorkflowsPlugin {
       })
     })
 
-    parentReflection.documents?.push(documentReflection)
+    if (documentReflection.children?.length) {
+      parentReflection.documents?.push(documentReflection)
+    }
   }
 
   /**
@@ -467,40 +469,51 @@ class WorkflowsPlugin {
   }
 
   /**
-   * Gets the initializer in a statement, if available.
+   * Gets the initializer in a node, if available.
    *
-   * @param statement - The statement to search for an initializer in.
+   * @param node - The node to search for an initializer in.
    * @returns The initializer, if found.
    */
-  getInitializerOfStatement(
-    statement: ts.Statement
-  ): ts.CallExpression | undefined {
+  getInitializerOfNode(node: ts.Node): ts.CallExpression | undefined {
     let initializer: ts.CallExpression | undefined
-    switch (statement.kind) {
+    switch (node.kind) {
+      case SyntaxKind.CallExpression:
+        initializer = node as ts.CallExpression
+        break
       case SyntaxKind.VariableStatement:
-        const variableInitializer = (statement as VariableStatement)
-          .declarationList.declarations[0].initializer
+        const variableInitializer = (node as VariableStatement).declarationList
+          .declarations[0].initializer
 
         if (!variableInitializer) {
           return
         }
 
-        initializer = this.getInitializerOfExpression(variableInitializer)
+        initializer = this.findCallExpression(variableInitializer)
         break
       case SyntaxKind.ExpressionStatement:
-        const statementInitializer = (statement as ts.ExpressionStatement)
-          .expression
+        const statementInitializer = (node as ts.ExpressionStatement).expression
 
-        initializer = this.getInitializerOfExpression(statementInitializer)
+        initializer = this.findCallExpression(statementInitializer)
         break
       case SyntaxKind.ReturnStatement:
-        const returnInitializer = (statement as ts.ReturnStatement).expression
+        let returnInitializer = (node as ts.ReturnStatement).expression
+
+        if (
+          returnInitializer &&
+          ts.isNewExpression(returnInitializer) &&
+          returnInitializer.expression.getText().includes("WorkflowResponse") &&
+          returnInitializer.arguments?.length
+        ) {
+          returnInitializer = this.getInitializerOfNode(
+            returnInitializer.arguments[0]
+          )
+        }
 
         if (!returnInitializer) {
           return
         }
 
-        initializer = this.getInitializerOfExpression(returnInitializer)
+        initializer = this.findCallExpression(returnInitializer)
 
         break
     }
@@ -515,7 +528,7 @@ class WorkflowsPlugin {
    * @param skipCallCheck - Whether to skip the `CallExpression` check the first time. Useful for the {@link cleanUpInitializer} method.
    * @returns The `CallExpression` if found.
    */
-  getInitializerOfExpression(
+  findCallExpression(
     expression: ts.Expression,
     skipCallCheck = false
   ): ts.CallExpression | undefined {
@@ -549,7 +562,7 @@ class WorkflowsPlugin {
       .escapedText
 
     if (initializerName === "config") {
-      return this.getInitializerOfExpression(initializer, true) || initializer
+      return this.findCallExpression(initializer, true) || initializer
     }
 
     return initializer
