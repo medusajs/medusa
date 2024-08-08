@@ -31,10 +31,7 @@ export const SidebarItemLink = ({
     sidebarTopHeight,
   } = useSidebar()
   const { isMobile } = useMobile()
-  const active = useMemo(
-    () => !isMobile && isItemActive(item, true),
-    [isItemActive, item, isMobile]
-  )
+  const active = useMemo(() => isItemActive(item, true), [isItemActive, item])
   const ref = useRef<HTMLLIElement>(null)
 
   const newTopCalculator = useCallback(() => {

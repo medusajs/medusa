@@ -12,10 +12,11 @@ export const MobileNavigation = () => {
   return (
     <div
       className={clsx(
-        "lg:hidden",
-        "sticky top-0 w-full",
+        "lg:hidden bg-medusa-bg-base",
+        "sticky top-0 w-full z-50",
         "px-docs_0.75 py-docs_0.5",
-        "flex justify-between items-center"
+        "flex justify-between items-center",
+        "border-b border-medusa-border-base"
       )}
     >
       <Button

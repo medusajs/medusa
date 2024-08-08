@@ -55,7 +55,7 @@ export const RootLayout = ({
                 className={clsx(
                   "bg-medusa-bg-base rounded",
                   "shadow-elevation-card-rest",
-                  "pt-docs_4 lg:pt-docs_6 pb-docs_4",
+                  "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4",
                   "flex justify-center",
                   "h-full w-full",
                   "overflow-y-scroll overflow-x-hidden",
