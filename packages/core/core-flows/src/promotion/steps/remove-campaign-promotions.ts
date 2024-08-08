@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 export const removeCampaignPromotionsStepId = "remove-campaign-promotions"
+/**
+ * This step removes promotions from a campaigns.
+ */
 export const removeCampaignPromotionsStep = createStep(
   removeCampaignPromotionsStepId,
   async (input: WorkflowData<LinkWorkflowInput>, { container }) => {

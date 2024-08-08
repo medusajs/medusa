@@ -4,6 +4,9 @@ import { updatePromotionRulesWorkflow } from "../workflows/update-promotion-rule
 
 export const updatePromotionRulesWorkflowStepId =
   "update-promotion-rules-workflow"
+/**
+ * This step updates promotion rules using the {@link updatePromotionRulesWorkflow}.
+ */
 export const updatePromotionRulesWorkflowStep = createStep(
   updatePromotionRulesWorkflowStepId,
   async (data: UpdatePromotionRulesWorkflowDTO, { container }) => {

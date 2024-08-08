@@ -8,6 +8,9 @@ import { ModuleRegistrationName, RuleType } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const removeRulesFromPromotionsStepId = "remove-rules-from-promotions"
+/**
+ * This step removes rules from a promotion.
+ */
 export const removeRulesFromPromotionsStep = createStep(
   removeRulesFromPromotionsStepId,
   async (input: RemovePromotionRulesWorkflowDTO, { container }) => {

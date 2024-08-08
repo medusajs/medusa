@@ -7,6 +7,9 @@ import {
 import { addRulesToPromotionsStep } from "../steps"
 
 export const createPromotionRulesWorkflowId = "create-promotion-rules-workflow"
+/**
+ * This workflow creates one or more promotion rules.
+ */
 export const createPromotionRulesWorkflow = createWorkflow(
   createPromotionRulesWorkflowId,
   (
