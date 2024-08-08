@@ -4371,7 +4371,7 @@ __metadata:
     "@medusajs/utils": ^1.11.9
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    ioredis: ^5.3.1
+    ioredis: ^5.4.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
@@ -4545,7 +4545,7 @@ __metadata:
     awilix: ^8.0.0
     bullmq: 5.12.0
     cross-env: ^5.2.1
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
@@ -4623,7 +4623,7 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.18.2
     express-session: ^1.17.3
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     ioredis-mock: 8.4.0
     jsonwebtoken: ^9.0.2
     medusa-telemetry: ^0.0.17
@@ -4803,7 +4803,7 @@ __metadata:
     medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
-    pg: ^8.11.0
+    pg: ^8.12.0
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
@@ -4888,7 +4888,7 @@ __metadata:
     express-session: ^1.17.3
     fs-exists-cached: ^1.0.0
     glob: ^7.1.6
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     ioredis-mock: 8.4.0
     jest: ^29.7.0
     lodash: ^4.17.21
@@ -4900,7 +4900,7 @@ __metadata:
     passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
-    pg: ^8.11.2
+    pg: ^8.12.0
     qs: ^6.11.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
@@ -4928,7 +4928,7 @@ __metadata:
     graphql: ^16.6.0
     jest: ^29.7.0
     knex: 2.4.2
-    pg: ^8.11.2
+    pg: ^8.12.0
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
@@ -5287,7 +5287,7 @@ __metadata:
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     rimraf: ^5.0.1
     typescript: ^5.1.6
     vite: ^5.2.11
@@ -5476,7 +5476,7 @@ __metadata:
     bullmq: 5.12.0
     cross-env: ^5.2.1
     dotenv: ^16.4.5
-    ioredis: ^5.3.2
+    ioredis: ^5.4.1
     jest: ^29.7.0
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
@@ -14202,13 +14202,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-writer@npm:2.0.0":
-  version: 2.0.0
-  resolution: "buffer-writer@npm:2.0.0"
-  checksum: c91b2ab09a200cf0862237e5a4dbd5077003b42d26d4f0c596ec7149f82ef83e0751d670bcdf379ed988d1a08c0fac7759a8cb928cf1a4710a1988a7618b1190
-  languageName: node
-  linkType: hard
-
 "buffer@npm:^5.5.0, buffer@npm:^5.6.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
@@ -15497,7 +15490,7 @@ __metadata:
     node-fetch: ^3.3.1
     open: ^9.1.0
     ora: ^6.3.0
-    pg: ^8.10.0
+    pg: ^8.12.0
     prettier: ^2.8.8
     slugify: ^1.6.6
     ts-node: ^10.9.1
@@ -19806,7 +19799,7 @@ __metadata:
     form-data: ^4.0.0
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
-    pg: ^8.11.0
+    pg: ^8.12.0
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -19843,7 +19836,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.11.0
+    pg: ^8.12.0
     typescript: ^5.3.3
   languageName: unknown
   linkType: soft
@@ -19879,7 +19872,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.11.0
+    pg: ^8.12.0
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -19940,7 +19933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.5, ioredis@npm:^5.3.1, ioredis@npm:^5.3.2, ioredis@npm:^5.4.1":
+"ioredis@npm:^5.4.1":
   version: 5.4.1
   resolution: "ioredis@npm:5.4.1"
   dependencies:
@@ -24353,13 +24346,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"packet-reader@npm:1.0.0":
-  version: 1.0.0
-  resolution: "packet-reader@npm:1.0.0"
-  checksum: c86c3321bb07e0f03cc2db59f7701184e0bbfcb914f1fdc963993b03262486deb402292adcef39b64e3530ea66b3b2e2163d6da7b3792a730bdd1c6df3175aaa
-  languageName: node
-  linkType: hard
-
 "pako@npm:~0.2.0":
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
@@ -24647,6 +24633,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-cloudflare@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "pg-cloudflare@npm:1.1.1"
+  checksum: a68b957f755be6af813d68ccaf4c906a000fd2ecb362cd281220052cc9e2f6c26da3b88792742387008c30b3bf0d2fa3a0eff04aeb8af4414023c99ae78e07bd
+  languageName: node
+  linkType: hard
+
 "pg-connection-string@npm:2.5.0":
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
@@ -24661,7 +24654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.5.0":
+"pg-connection-string@npm:^2.6.4":
   version: 2.6.4
   resolution: "pg-connection-string@npm:2.6.4"
   checksum: 0d0b617df0fc6507bf6a94bdcd56c7a305788a1402d69bff9773350947c8f525d6d8136128065370749a3325e99658ae40fbdcce620fb8e60126181f0591a6a6
@@ -24698,7 +24691,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.6.0":
+"pg-pool@npm:^3.6.2":
   version: 3.6.2
   resolution: "pg-pool@npm:3.6.2"
   peerDependencies:
@@ -24707,7 +24700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-protocol@npm:*, pg-protocol@npm:^1.6.0":
+"pg-protocol@npm:*, pg-protocol@npm:^1.6.1":
   version: 1.6.1
   resolution: "pg-protocol@npm:1.6.1"
   checksum: 7eadef4010ac0a3925c460be7332ca4098a5c6d5181725a62193fcfa800000ae6632d98d814f3989b42cf5fdc3b45e34c714a1959d29174e81e30730e140ae5f
@@ -24742,23 +24735,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:8.10.0":
-  version: 8.10.0
-  resolution: "pg@npm:8.10.0"
+"pg@npm:8.12.0":
+  version: 8.12.0
+  resolution: "pg@npm:8.12.0"
   dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
-    pg-connection-string: ^2.5.0
-    pg-pool: ^3.6.0
-    pg-protocol: ^1.6.0
+    pg-cloudflare: ^1.1.1
+    pg-connection-string: ^2.6.4
+    pg-pool: ^3.6.2
+    pg-protocol: ^1.6.1
     pg-types: ^2.1.0
     pgpass: 1.x
   peerDependencies:
     pg-native: ">=3.0.1"
+  dependenciesMeta:
+    pg-cloudflare:
+      optional: true
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 9c8e5b4af598d44b31caa55a2e5f1e841a2018e852d1e237a42c85a17ae6b68b8f3fc2ea270d5e02532be88c550124047ed28da5e0d55701b87dc4383b2dc846
+  checksum: 973e49b5e7327c42fc62806efa8c824159ab7a0b676cefe6eeb51a59b6e226587911ec27697f36c18d69e58a7f4f0b76d0829364087194d13ed431ab7c9c417a
   languageName: node
   linkType: hard
 

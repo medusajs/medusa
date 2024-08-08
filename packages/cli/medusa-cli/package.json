@@ -56,7 +56,7 @@
     "medusa-telemetry": "^0.0.17",
     "open": "^8.0.6",
     "ora": "^5.4.1",
-    "pg": "^8.11.0",
+    "pg": "^8.12.0",
     "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
     "regenerator-runtime": "^0.13.11",
