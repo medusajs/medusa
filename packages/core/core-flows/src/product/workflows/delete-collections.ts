@@ -6,13 +6,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { deleteCollectionsStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteCollectionsWorkflowInput = { ids: string[] }
 
 export const deleteCollectionsWorkflowId = "delete-collections"
-
+/**
+ * This workflow deletes one or more collection.
+ */
 export const deleteCollectionsWorkflow = createWorkflow(
   deleteCollectionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<DeleteCollectionsWorkflowInput>) => {
     const deletedCollections = deleteCollectionsStep(input.ids)
     const collectionsDeleted = createHook("collectionsDeleted", {
       ids: input.ids,
