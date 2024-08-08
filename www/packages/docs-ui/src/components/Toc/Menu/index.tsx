@@ -32,7 +32,7 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
           href={`#${item.id}`}
         >
           <EllipseMiniSolid className={clsx(!isActive && "invisible")} />
-          <span>{item.title}</span>
+          <span className="truncate">{item.title}</span>
         </Link>
         {hasChildren && (
           <ul>
