@@ -5,12 +5,13 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = PricingWorkflow.UpdatePricePreferencesWorkflowInput
-
 export const updatePricePreferencesStepId = "update-price-preferences"
+/**
+ * This step updates price preferences matching the specified filters.
+ */
 export const updatePricePreferencesStep = createStep(
   updatePricePreferencesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: PricingWorkflow.UpdatePricePreferencesWorkflowInput, { container }) => {
     const service = container.resolve<IPricingModuleService>(
       ModuleRegistrationName.PRICING
     )

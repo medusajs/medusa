@@ -10,7 +10,10 @@ import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeStep, createReturnsStep } from "../../steps"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return can be created for an order.
+ */
+export const beginReturnOrderValidationStep = createStep(
   "begin-return-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
@@ -18,6 +21,9 @@ const validationStep = createStep(
 )
 
 export const beginReturnOrderWorkflowId = "begin-return-order"
+/**
+ * This workflow requests a return.
+ */
 export const beginReturnOrderWorkflow = createWorkflow(
   beginReturnOrderWorkflowId,
   function (
@@ -31,7 +37,7 @@ export const beginReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validationStep({ order })
+    beginReturnOrderValidationStep({ order })
 
     const created = createReturnsStep([
       {

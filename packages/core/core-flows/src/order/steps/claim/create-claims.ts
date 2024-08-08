@@ -2,12 +2,13 @@ import { CreateOrderClaimDTO, IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateOrderClaimsStepInput = CreateOrderClaimDTO[]
-
 export const createOrderClaimsStepId = "create-order-claims"
+/**
+ * This step creates one or more order claims.
+ */
 export const createOrderClaimsStep = createStep(
   createOrderClaimsStepId,
-  async (data: CreateOrderClaimsStepInput, { container }) => {
+  async (data: CreateOrderClaimDTO[], { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

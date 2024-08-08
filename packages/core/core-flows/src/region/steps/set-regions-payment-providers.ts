@@ -92,6 +92,9 @@ async function getCurrentRegionPaymentProvidersLinks(
 
 export const setRegionsPaymentProvidersStepId =
   "add-region-payment-providers-step"
+/**
+ * This step sets the payment providers in regions.
+ */
 export const setRegionsPaymentProvidersStep = createStep(
   setRegionsPaymentProvidersStepId,
   async (data: SetRegionsPaymentProvidersStepInput, { container }) => {

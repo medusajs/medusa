@@ -11,15 +11,18 @@ import {
   listTaxRateRuleIdsStep,
 } from "../steps"
 
-type WorkflowInput = {
+export type SetTaxRatesRulesWorkflowInput = {
   tax_rate_ids: string[]
   rules: Omit<CreateTaxRateRuleDTO, "tax_rate_id">[]
 }
 
 export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
+/**
+ * This workflow sets the rules of tax rates.
+ */
 export const setTaxRateRulesWorkflow = createWorkflow(
   setTaxRateRulesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<TaxRateRuleDTO[]> => {
+  (input: WorkflowData<SetTaxRatesRulesWorkflowInput>): WorkflowResponse<TaxRateRuleDTO[]> => {
     const ruleIds = listTaxRateRuleIdsStep({
       selector: { tax_rate_id: input.tax_rate_ids },
     })

@@ -5,12 +5,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateProductTypesStepInput = {
+export type UpdateProductTypesStepInput = {
   selector: ProductTypes.FilterableProductTypeProps
   update: ProductTypes.UpdateProductTypeDTO
 }
 
 export const updateProductTypesStepId = "update-product-types"
+/**
+ * This step updates product types matching the specified filters.
+ */
 export const updateProductTypesStep = createStep(
   updateProductTypesStepId,
   async (data: UpdateProductTypesStepInput, { container }) => {

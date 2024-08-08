@@ -6,7 +6,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdatePriceSetsStepInput =
+export type UpdatePriceSetsStepInput =
   | {
       selector?: PricingTypes.FilterablePriceSetProps
       update?: PricingTypes.UpdatePriceSetDTO
@@ -16,6 +16,9 @@ type UpdatePriceSetsStepInput =
     }
 
 export const updatePriceSetsStepId = "update-price-sets"
+/**
+ * This step updates price sets.
+ */
 export const updatePriceSetsStep = createStep(
   updatePriceSetsStepId,
   async (data: UpdatePriceSetsStepInput, { container }) => {

@@ -198,7 +198,10 @@ function prepareReturnShippingOptionQueryVariables({
   return variables
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a return can be created and completed for an order.
+ */
+export const createCompleteReturnValidationStep = createStep(
   "create-return-order-validation",
   async function (
     {
@@ -229,6 +232,9 @@ const validationStep = createStep(
 
 export const createAndCompleteReturnOrderWorkflowId =
   "create-complete-return-order"
+/**
+ * This workflow creates and completes a return.
+ */
 export const createAndCompleteReturnOrderWorkflow = createWorkflow(
   createAndCompleteReturnOrderWorkflowId,
   function (
@@ -250,7 +256,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validationStep({ order, input })
+    createCompleteReturnValidationStep({ order, input })
 
     const returnShippingOptionsVariables = transform(
       { input, order },

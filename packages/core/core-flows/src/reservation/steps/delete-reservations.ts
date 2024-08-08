@@ -4,6 +4,9 @@ import { IInventoryService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const deleteReservationsStepId = "delete-reservations"
+/**
+ * This step deletes one or more reservations.
+ */
 export const deleteReservationsStep = createStep(
   deleteReservationsStepId,
   async (ids: string[], { container }) => {

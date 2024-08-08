@@ -6,12 +6,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createPriceListsStep, validateVariantPriceLinksStep } from "../steps"
 
-type WorkflowInput = { price_lists_data: CreatePriceListWorkflowInputDTO[] }
+export type CreatePriceListsWorkflowInput = { price_lists_data: CreatePriceListWorkflowInputDTO[] }
 
 export const createPriceListsWorkflowId = "create-price-lists"
+/**
+ * This workflow creates one or more price lists.
+ */
 export const createPriceListsWorkflow = createWorkflow(
   createPriceListsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<PriceListDTO[]> => {
+  (input: WorkflowData<CreatePriceListsWorkflowInput>): WorkflowResponse<PriceListDTO[]> => {
     const variantPriceMap = validateVariantPriceLinksStep(
       input.price_lists_data
     )

@@ -9,6 +9,9 @@ import { emitEventStep } from "../../common"
 import { refundPaymentStep } from "../steps/refund-payment"
 
 export const refundPaymentWorkflowId = "refund-payment-workflow"
+/**
+ * This workflow refunds a payment.
+ */
 export const refundPaymentWorkflow = createWorkflow(
   refundPaymentWorkflowId,
   (

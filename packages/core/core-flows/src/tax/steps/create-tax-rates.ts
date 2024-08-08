@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createTaxRatesStepId = "create-tax-rates"
+/**
+ * This step creates one or more tax rates.
+ */
 export const createTaxRatesStep = createStep(
   createTaxRatesStepId,
   async (data: CreateTaxRateDTO[], { container }) => {

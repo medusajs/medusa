@@ -32,11 +32,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested claim can be confirmed.
+ */
+export const confirmClaimRequestValidationStep = createStep(
   "validate-confirm-claim-request",
   async function ({
     order,
@@ -173,9 +176,12 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 }
 
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
+/**
+ * This workflow confirms a requested claim.
+ */
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmClaimRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -225,7 +231,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    confirmClaimRequestValidationStep({ order, orderClaim, orderChange })
 
     const { claimItems, returnItems } = transform(
       { orderChange },

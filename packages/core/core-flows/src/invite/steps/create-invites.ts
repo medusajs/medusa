@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createInviteStepId = "create-invite-step"
+/**
+ * This step creates one or more invites.
+ */
 export const createInviteStep = createStep(
   createInviteStepId,
   async (input: CreateInviteDTO[], { container }) => {

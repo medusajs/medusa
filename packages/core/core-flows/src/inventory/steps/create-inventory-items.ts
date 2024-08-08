@@ -4,6 +4,9 @@ import { IInventoryService, InventoryTypes } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const createInventoryItemsStepId = "create-inventory-items"
+/**
+ * This step creates one or more inventory items.
+ */
 export const createInventoryItemsStep = createStep(
   createInventoryItemsStepId,
   async (data: InventoryTypes.CreateInventoryItemInput[], { container }) => {

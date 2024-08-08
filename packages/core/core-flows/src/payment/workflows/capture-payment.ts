@@ -9,6 +9,9 @@ import { emitEventStep } from "../../common"
 import { capturePaymentStep } from "../steps/capture-payment"
 
 export const capturePaymentWorkflowId = "capture-payment-workflow"
+/**
+ * This workflow captures a payment.
+ */
 export const capturePaymentWorkflow = createWorkflow(
   capturePaymentWorkflowId,
   (

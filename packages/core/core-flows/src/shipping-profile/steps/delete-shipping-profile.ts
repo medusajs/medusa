@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteShippingProfilesStepId = "delete-shipping-profile"
+/**
+ * This step deletes one or more shipping profiles.
+ */
 export const deleteShippingProfilesStep = createStep(
   deleteShippingProfilesStepId,
   async (ids: string[], { container }) => {

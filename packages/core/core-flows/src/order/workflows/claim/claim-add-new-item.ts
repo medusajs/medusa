@@ -21,7 +21,10 @@ import {
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 
-const validationStep = createStep(
+/**
+ * This step validates that a new item can be added to the claim.
+ */
+export const orderClaimAddNewItemValidationStep = createStep(
   "claim-add-new-item-validation",
   async function ({
     order,
@@ -39,6 +42,9 @@ const validationStep = createStep(
 )
 
 export const orderClaimAddNewItemWorkflowId = "claim-add-new-item"
+/**
+ * This workflow adds a new item to a claim.
+ */
 export const orderClaimAddNewItemWorkflow = createWorkflow(
   orderClaimAddNewItemWorkflowId,
   function (
@@ -73,7 +79,7 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({
+    orderClaimAddNewItemValidationStep({
       order,
       orderClaim,
       orderChange,

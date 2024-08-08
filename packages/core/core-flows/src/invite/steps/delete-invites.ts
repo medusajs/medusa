@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteInvitesStepId = "delete-invites-step"
+/**
+ * This step deletes one or more invites.
+ */
 export const deleteInvitesStep = createStep(
   deleteInvitesStepId,
   async (input: string[], { container }) => {

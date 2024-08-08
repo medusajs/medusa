@@ -5,15 +5,18 @@ import {
 } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type GetAllProductsStepInput = {
   select: string[]
   filter?: FilterableProductProps
 }
 
 export const getAllProductsStepId = "get-all-products"
+/**
+ * This step retrieves all products.
+ */
 export const getAllProductsStep = createStep(
   getAllProductsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetAllProductsStepInput, { container }) => {
     const remoteQuery: RemoteQueryFunction = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )

@@ -12,7 +12,7 @@ import {
   getLastPaymentStatus,
 } from "../utils/aggregate-status"
 
-type OrderOutput =
+export type GetOrdersListWorkflowOutput =
   | OrderDTO[]
   | {
       rows: OrderDTO[]
@@ -20,6 +20,9 @@ type OrderOutput =
     }
 
 export const getOrdersListWorkflowId = "get-orders-list"
+/**
+ * This workflow retrieves a list of orders.
+ */
 export const getOrdersListWorkflow = createWorkflow(
   getOrdersListWorkflowId,
   (
@@ -27,7 +30,7 @@ export const getOrdersListWorkflow = createWorkflow(
       fields: string[]
       variables?: Record<string, any>
     }>
-  ): WorkflowResponse<OrderOutput> => {
+  ): WorkflowResponse<GetOrdersListWorkflowOutput> => {
     const fields = transform(input, ({ fields }) => {
       return deduplicate([
         ...fields,

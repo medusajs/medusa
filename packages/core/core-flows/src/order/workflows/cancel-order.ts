@@ -20,8 +20,11 @@ import { deleteReservationsByLineItemsStep } from "../../reservation/steps"
 import { cancelOrdersStep } from "../steps/cancel-orders"
 import { throwIfOrderIsCancelled } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that an order can be canceled.
+ */
+export const cancelValidateOrder = createStep(
+  "cancel-validate-order",
   ({
     order,
   }: {
@@ -77,6 +80,9 @@ const validateOrder = createStep(
 )
 
 export const cancelOrderWorkflowId = "cancel-order"
+/**
+ * This workflow cancels an order.
+ */
 export const cancelOrderWorkflow = createWorkflow(
   cancelOrderWorkflowId,
   (input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>) => {
@@ -97,7 +103,7 @@ export const cancelOrderWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ order, input })
+    cancelValidateOrder({ order, input })
 
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
