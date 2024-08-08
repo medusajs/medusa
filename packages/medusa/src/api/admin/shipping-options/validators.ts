@@ -27,6 +27,7 @@ export const AdminGetShippingOptionsParams = createFindParams({
     service_zone_id: z.union([z.string(), z.array(z.string())]).optional(),
     shipping_profile_id: z.union([z.string(), z.array(z.string())]).optional(),
     provider_id: z.union([z.string(), z.array(z.string())]).optional(),
+    stock_location_id: z.union([z.string(), z.array(z.string())]).optional(),
     shipping_option_type_id: z
       .union([z.string(), z.array(z.string())])
       .optional(),
