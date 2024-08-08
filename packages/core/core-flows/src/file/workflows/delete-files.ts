@@ -1,12 +1,15 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { deleteFilesStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteFilesWorkflowInput = { ids: string[] }
 
 export const deleteFilesWorkflowId = "delete-files"
+/**
+ * This workflow deletes one or more files.
+ */
 export const deleteFilesWorkflow = createWorkflow(
   deleteFilesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<DeleteFilesWorkflowInput>): WorkflowData<void> => {
     deleteFilesStep(input.ids)
   }
 )

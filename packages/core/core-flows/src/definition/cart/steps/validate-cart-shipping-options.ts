@@ -6,7 +6,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ValidateCartShippingOptionsStepInput {
   cart: CartDTO
   shippingOptionsContext: {
     enabled_in_store?: "true" | "false"
@@ -17,9 +17,12 @@ interface StepInput {
 
 export const validateCartShippingOptionsStepId =
   "validate-cart-shipping-options"
+/**
+ * This step validates shipping options to ensure they can be applied on a cart.
+ */
 export const validateCartShippingOptionsStep = createStep(
   validateCartShippingOptionsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ValidateCartShippingOptionsStepInput, { container }) => {
     const { option_ids: optionIds = [], cart, shippingOptionsContext } = data
 
     if (!optionIds.length) {

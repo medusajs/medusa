@@ -2,7 +2,7 @@ import { PromotionActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { updateCartPromotionsWorkflow } from "../workflows"
 
-interface StepInput {
+export interface RefreshCartPromotionsStepInput {
   id: string
   promo_codes?: string[]
   action?:
@@ -12,9 +12,12 @@ interface StepInput {
 }
 
 export const refreshCartPromotionsStepId = "refresh-cart-promotions"
+/**
+ * This step refreshes the promotions of a cart.
+ */
 export const refreshCartPromotionsStep = createStep(
   refreshCartPromotionsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: RefreshCartPromotionsStepInput, { container }) => {
     const { promo_codes = [], id, action = PromotionActions.ADD } = data
 
     await updateCartPromotionsWorkflow(container).run({

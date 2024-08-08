@@ -12,6 +12,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateLineItemsStepWithSelectorId =
   "update-line-items-with-selector"
+/**
+ * This step updates line items.
+ */
 export const updateLineItemsStepWithSelector = createStep(
   updateLineItemsStepWithSelectorId,
   async (input: UpdateLineItemWithSelectorDTO, { container }) => {

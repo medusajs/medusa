@@ -7,6 +7,9 @@ import {
 import { createServiceZonesStep } from "../steps"
 
 export const createServiceZonesWorkflowId = "create-service-zones-workflow"
+/**
+ * This workflow creates one or more service zones.
+ */
 export const createServiceZonesWorkflow = createWorkflow(
   createServiceZonesWorkflowId,
   (
