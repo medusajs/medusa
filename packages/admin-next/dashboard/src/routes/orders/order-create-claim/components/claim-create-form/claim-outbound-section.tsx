@@ -173,8 +173,6 @@ export const ClaimOutboundSection = ({
       (await addOutboundItem(
         {
           items: itemsToAdd.map((variantId) => ({
-            // TODO: Line item will not be present at this stage. Do we skip this?
-            // id: variantId,
             variant_id: variantId,
             quantity: 1,
           })),
@@ -253,7 +251,7 @@ export const ClaimOutboundSection = ({
   }, [outboundItems, inventoryMap, locationId])
 
   useEffect(() => {
-    // TODO: Implement this correctly
+    // TODO: Ensure inventory validation occurs correctly
     const getInventoryMap = async () => {
       const ret: Record<string, InventoryLevelDTO[]> = {}
 
@@ -261,39 +259,19 @@ export const ClaimOutboundSection = ({
         return ret
       }
 
-      ;(
-        await Promise.all(
-          outboundItems.map(async (_i) => {
-            const item = variantItemMap.get(_i.variant_id)!
-
-            if (!item?.variant_id || !item.variant?.product) {
-              return undefined
-            }
-
-            // TODO: use variant list endpoint instead
-            return await sdk.admin.product.retrieveVariant(
-              item.variant.product.id,
-              item.variant_id,
-              { fields: "*inventory,*inventory.location_levels" }
-            )
-          })
+      const variantIds = outboundItems
+        .map((item) => item?.variant_id)
+        .filter(Boolean)
+      const variants = (
+        await sdk.admin.productVariant.list(
+          { id: variantIds },
+          { fields: "*inventory,*inventory.location_levels" }
         )
-      )
-        .filter((it) => it?.variant)
-        .forEach((item) => {
-          if (!item) {
-            return
-          }
+      ).variants
 
-          const { variant } = item
-          const levels = variant.inventory[0]?.location_levels
-
-          if (!levels) {
-            return
-          }
-
-          ret[variant.id] = levels
-        })
+      variants.forEach((variant) => {
+        ret[variant.id] = variant.inventory[0]?.location_levels || []
+      })
 
       return ret
     }

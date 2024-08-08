@@ -367,34 +367,20 @@ export const ClaimCreateForm = ({
         return ret
       }
 
-      ;(
-        await Promise.all(
-          inboundItems.map(async (_i) => {
-            const item = itemsMap.get(_i.item_id)!
+      const variantIds = inboundItems
+        .map((item) => item?.variant_id)
+        .filter(Boolean)
 
-            if (!item?.variant_id || !item.variant?.product) {
-              return undefined
-            }
-
-            return await sdk.admin.product.retrieveVariant(
-              item.variant.product.id,
-              item.variant_id,
-              { fields: "*inventory,*inventory.location_levels" }
-            )
-          })
+      const variants = (
+        await sdk.admin.productVariant.list(
+          { id: variantIds },
+          { fields: "*inventory,*inventory.location_levels" }
         )
-      )
-        .filter((it) => !!it?.variant)
-        .forEach((item) => {
-          const { variant } = item
-          const levels = variant.inventory[0]?.location_levels
+      ).variants
 
-          if (!levels) {
-            return
-          }
-
-          ret[variant.id] = levels
-        })
+      variants.forEach((variant) => {
+        ret[variant.id] = variant.inventory[0]?.location_levels || []
+      })
 
       return ret
     }
