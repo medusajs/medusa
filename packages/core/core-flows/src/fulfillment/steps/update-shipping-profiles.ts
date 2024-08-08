@@ -9,15 +9,18 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type UpdateShippingProfilesStepInput = {
   update: UpdateShippingProfileDTO
   selector: FilterableShippingProfileProps
 }
 
 export const updateShippingProfilesStepId = "update-shipping-profiles"
+/**
+ * This step updates shipping profiles matching the specified filters.
+ */
 export const updateShippingProfilesStep = createStep(
   updateShippingProfilesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpdateShippingProfilesStepInput, { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
       ModuleRegistrationName.FULFILLMENT
     )

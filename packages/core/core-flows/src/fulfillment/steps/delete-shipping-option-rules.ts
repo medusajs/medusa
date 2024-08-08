@@ -7,6 +7,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteShippingOptionRulesStepId = "delete-shipping-option-rules"
+/**
+ * This step deletes one or more shipping option rules.
+ */
 export const deleteShippingOptionRulesStep = createStep(
   deleteShippingOptionRulesStepId,
   async (

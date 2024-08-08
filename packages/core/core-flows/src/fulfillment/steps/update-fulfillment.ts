@@ -6,6 +6,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateFulfillmentStepId = "update-fulfillment"
+/**
+ * This step updates a fulfillment.
+ */
 export const updateFulfillmentStep = createStep(
   updateFulfillmentStepId,
   async (
