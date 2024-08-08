@@ -28,6 +28,9 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 export const addToCartWorkflowId = "add-to-cart"
+/**
+ * This workflow adds items to a cart.
+ */
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
   (input: WorkflowData<AddToCartWorkflowInputDTO>) => {

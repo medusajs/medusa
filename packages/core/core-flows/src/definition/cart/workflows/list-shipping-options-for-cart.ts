@@ -10,6 +10,9 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
+/**
+ * This workflow lists the shipping options of a cart.
+ */
 export const listShippingOptionsForCartWorkflow = createWorkflow(
   listShippingOptionsForCartWorkflowId,
   (input: WorkflowData<ListShippingOptionsForCartWorkflowInputDTO>) => {

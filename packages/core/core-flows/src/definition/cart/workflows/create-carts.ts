@@ -32,6 +32,9 @@ import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-colle
 // - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
+/**
+ * This workflow creates a cart.
+ */
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
   (input: WorkflowData<CreateCartWorkflowInputDTO & AdditionalData>) => {

@@ -3,6 +3,9 @@ import { createDefaultSalesChannelStep } from "../../sales-channel"
 import { createDefaultStoreStep } from "../steps/create-default-store"
 
 export const createDefaultsWorkflowID = "create-defaults"
+/**
+ * This workflow creates default data for a Medusa application.
+ */
 export const createDefaultsWorkflow = createWorkflow(
   createDefaultsWorkflowID,
   () => {
