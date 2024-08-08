@@ -11,6 +11,7 @@ import { FetchError } from "@medusajs/js-sdk"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { productTagsQueryKeys } from "./tags"
 
 const RETURN_REASONS_QUERY_KEY = "return_reasons" as const
 export const returnReasonsQueryKeys = queryKeysFactory(RETURN_REASONS_QUERY_KEY)
@@ -71,6 +72,30 @@ export const useCreateReturnReason = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: returnReasonsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+export const useUpdateReturnReason = (
+  id: string,
+  query?: HttpTypes.AdminReturnReasonParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnReasonResponse,
+    FetchError,
+    HttpTypes.AdminUpdateReturnReason
+  >
+) => {
+  return useMutation({
+    mutationFn: async (data) => sdk.admin.returnReason.update(id, data, query),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: productTagsQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productTagsQueryKeys.detail(data.return_reason.id, query),
       })
 
       options?.onSuccess?.(data, variables, context)

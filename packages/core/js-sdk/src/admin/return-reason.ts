@@ -52,6 +52,23 @@ export class ReturnReason {
     )
   }
 
+  async update(
+    id: string,
+    body: HttpTypes.AdminUpdateReturnReason,
+    query?: HttpTypes.AdminReturnReasonParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminReturnReasonResponse>(
+      `/admin/return-reasons/${id}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async delete(
     id: string,
     query?: HttpTypes.AdminReturnReasonParams,
