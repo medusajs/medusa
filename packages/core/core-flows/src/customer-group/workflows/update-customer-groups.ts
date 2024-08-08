@@ -10,16 +10,19 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateCustomerGroupsStep } from "../steps"
 
-type WorkflowInput = {
+export type UpdateCustomerGroupsWorkflowInput = {
   selector: FilterableCustomerGroupProps
   update: CustomerGroupUpdatableFields
 }
 
 export const updateCustomerGroupsWorkflowId = "update-customer-groups"
+/**
+ * This workflow updates one or more customer groups.
+ */
 export const updateCustomerGroupsWorkflow = createWorkflow(
   updateCustomerGroupsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<UpdateCustomerGroupsWorkflowInput>
   ): WorkflowResponse<CustomerGroupDTO[]> => {
     return new WorkflowResponse(updateCustomerGroupsStep(input))
   }

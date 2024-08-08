@@ -17,7 +17,7 @@ import {
 import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 
-type WorkflowInput = {
+export type UpdateCartPromotionsWorkflowInput = {
   promoCodes: string[]
   cartId: string
   action?:
@@ -27,9 +27,12 @@ type WorkflowInput = {
 }
 
 export const updateCartPromotionsWorkflowId = "update-cart-promotions"
+/**
+ * This workflow updates a cart's promotions.
+ */
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>): WorkflowData<void> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: cartFieldsForRefreshSteps,

@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ConfirmVariantInventoryStepInput {
   items: {
     inventory_item_id: string
     required_quantity: number
@@ -18,9 +18,12 @@ interface StepInput {
 }
 
 export const confirmInventoryStepId = "confirm-inventory-step"
+/**
+ * This step confirms for one or more variants that their inventory has a required quantity.
+ */
 export const confirmInventoryStep = createStep(
   confirmInventoryStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ConfirmVariantInventoryStepInput, { container }) => {
     const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )

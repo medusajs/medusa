@@ -8,7 +8,7 @@ import {
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 
-interface Output {
+export interface ConfirmVariantInventoryWorkflowOutput {
   items: {
     id?: string
     inventory_item_id: string
@@ -20,11 +20,14 @@ interface Output {
 }
 
 export const confirmVariantInventoryWorkflowId = "confirm-item-inventory"
+/**
+ * This workflow confirms for one or more variants that their inventory has a required quantity.
+ */
 export const confirmVariantInventoryWorkflow = createWorkflow(
   confirmVariantInventoryWorkflowId,
   (
     input: WorkflowData<ConfirmVariantInventoryWorkflowInputDTO>
-  ): WorkflowResponse<Output> => {
+  ): WorkflowResponse<ConfirmVariantInventoryWorkflowOutput> => {
     const confirmInventoryInput = transform(
       { input },
       prepareConfirmInventoryInput

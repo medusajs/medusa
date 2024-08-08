@@ -22,6 +22,9 @@ import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
+/**
+ * This workflow updates a cart.
+ */
 export const updateCartWorkflow = createWorkflow(
   updateCartWorkflowId,
   (input: WorkflowData<UpdateCartWorkflowInputDTO & AdditionalData>) => {

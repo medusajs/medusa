@@ -8,6 +8,9 @@ type CreateDefaultStoreStepInput = {
 }
 
 export const createDefaultStoreStepId = "create-default-store"
+/**
+ * This step creates a default store.
+ */
 export const createDefaultStoreStep = createStep(
   createDefaultStoreStepId,
   async (data: CreateDefaultStoreStepInput, { container }) => {
