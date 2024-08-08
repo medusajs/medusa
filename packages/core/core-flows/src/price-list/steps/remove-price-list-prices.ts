@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const removePriceListPricesStepId = "remove-price-list-prices"
+/**
+ * This step removes prices from a price list.
+ */
 export const removePriceListPricesStep = createStep(
   removePriceListPricesStepId,
   async (ids: string[], { container }) => {

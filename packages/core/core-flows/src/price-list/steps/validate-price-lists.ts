@@ -11,6 +11,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const validatePriceListsStepId = "validate-price-lists"
+/**
+ * This step validates that the specified price lists exist.
+ */
 export const validatePriceListsStep = createStep(
   validatePriceListsStepId,
   async (data: Pick<UpdatePriceListDTO, "id">[], { container }) => {
