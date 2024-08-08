@@ -6,6 +6,9 @@ import { Modules } from "@medusajs/utils"
 
 export const deleteShippingProfileWorkflowId =
   "delete-shipping-profile-workflow"
+/**
+ * This workflow deletes one or more shipping profiles.
+ */
 export const deleteShippingProfileWorkflow = createWorkflow(
   deleteShippingProfileWorkflowId,
   (input: WorkflowData<{ ids: string[] }>) => {

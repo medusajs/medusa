@@ -1,12 +1,15 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { deleteStoresStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteStoresWorkflowInput = { ids: string[] }
 
 export const deleteStoresWorkflowId = "delete-stores"
+/**
+ * This workflow deletes one or more stores.
+ */
 export const deleteStoresWorkflow = createWorkflow(
   deleteStoresWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<DeleteStoresWorkflowInput>): WorkflowData<void> => {
     return deleteStoresStep(input.ids)
   }
 )

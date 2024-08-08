@@ -14,6 +14,9 @@ interface StepInput {
 }
 
 export const updateStockLocationsStepId = "update-stock-locations-step"
+/**
+ * This step updates stock locations matching the specified filters.
+ */
 export const updateStockLocationsStep = createStep(
   updateStockLocationsStepId,
   async (input: StepInput, { container }) => {
