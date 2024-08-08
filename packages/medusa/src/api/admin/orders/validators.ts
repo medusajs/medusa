@@ -3,6 +3,7 @@ import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
@@ -42,10 +43,11 @@ export const AdminArchiveOrder = z.object({
 })
 export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
 
-export const AdminCompleteOrder = z.object({
+export type AdminCompleteOrderType = z.infer<typeof CompleteOrder>
+export const CompleteOrder = z.object({
   order_id: z.string(),
 })
-export type AdminCompleteOrderType = z.infer<typeof AdminArchiveOrder>
+export const AdminCompleteOrder = WithAdditionalData(CompleteOrder)
 
 const Item = z.object({
   id: z.string(),
