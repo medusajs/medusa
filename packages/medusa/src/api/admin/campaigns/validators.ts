@@ -1,6 +1,10 @@
 import { CampaignBudgetType, isPresent } from "@medusajs/utils"
-import { z, ZodObject } from "zod"
-import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
+import {
+  createFindParams,
+  createSelectParams,
+  WithAdditionalData,
+} from "../../utils/validators"
 
 export const AdminGetCampaignParams = createSelectParams()
 
@@ -68,19 +72,7 @@ export const CreateCampaign = z
     promotions: z.array(z.object({ id: z.string() })).optional(),
   })
   .strict()
-export const AdminCreateCampaign = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateCampaign.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return CreateCampaign.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateCampaign = WithAdditionalData(CreateCampaign)
 
 export type AdminUpdateCampaignType = z.infer<typeof UpdateCampaign>
 export const UpdateCampaign = z.object({
@@ -92,16 +84,4 @@ export const UpdateCampaign = z.object({
   ends_at: z.coerce.date().nullish(),
   promotions: z.array(z.object({ id: z.string() })).optional(),
 })
-export const AdminUpdateCampaign = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdateCampaign.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return UpdateCampaign.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminUpdateCampaign = WithAdditionalData(UpdateCampaign)
