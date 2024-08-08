@@ -112,7 +112,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -132,7 +132,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -176,7 +176,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -219,7 +219,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { hi: "1234" },
+            data: { data: { hi: "1234" } },
             opts: {
               attempts: 1,
               removeOnComplete: 5,
@@ -360,7 +360,8 @@ describe("RedisEventBusService", () => {
 
         // TODO: The typing for this is all over the place
         await eventBus.worker_({
-          data: { eventName: "eventName", data: { test: 1 } },
+          name: "eventName",
+          data: { data: { test: 1 } },
           opts: { attempts: 1 },
         } as any)
 
@@ -393,7 +394,8 @@ describe("RedisEventBusService", () => {
         })
 
         result = await eventBus.worker_({
-          data: { eventName: "eventName", data: { test: 1 } },
+          name: "eventName",
+          data: { data: { test: 1 } },
           opts: { attempts: 1 },
           update: (data) => data,
         } as any)
@@ -428,8 +430,8 @@ describe("RedisEventBusService", () => {
 
         result = await eventBus
           .worker_({
+            name: "eventName",
             data: {
-              eventName: "eventName",
               data: {},
               completedSubscriberIds: ["1"],
             },
@@ -463,8 +465,8 @@ describe("RedisEventBusService", () => {
 
         result = await eventBus
           .worker_({
+            name: "eventName",
             data: {
-              eventName: "eventName",
               data: {},
               completedSubscriberIds: ["1"],
             },
