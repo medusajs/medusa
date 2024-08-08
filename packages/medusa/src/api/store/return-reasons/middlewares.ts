@@ -6,7 +6,7 @@ import { StoreReturnReasonParams } from "./validators"
 export const storeReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
-    matcher: "/admin/return-reasons",
+    matcher: "/store/return-reasons",
     middlewares: [
       validateAndTransformQuery(
         StoreReturnReasonParams,
@@ -16,7 +16,7 @@ export const storeReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["GET"],
-    matcher: "/admin/return-reasons/:id",
+    matcher: "/store/return-reasons/:id",
     middlewares: [
       validateAndTransformQuery(
         StoreReturnReasonParams,
