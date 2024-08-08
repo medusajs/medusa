@@ -11,6 +11,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const declineOrderChangeStepId = "decline-order-change"
+/**
+ * This step declines an order change.
+ */
 export const declineOrderChangeStep = createStep(
   declineOrderChangeStepId,
   async (data: DeclineOrderChangeDTO, { container }) => {

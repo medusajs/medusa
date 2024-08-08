@@ -5,13 +5,16 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface CreateOrderShippingMethodsStepInput {
   shipping_methods: CreateOrderShippingMethodDTO[]
 }
 
+/**
+ * This step creates order shipping methods.
+ */
 export const createOrderShippingMethods = createStep(
   "create-order-shipping-methods",
-  async (input: StepInput, { container }) => {
+  async (input: CreateOrderShippingMethodsStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

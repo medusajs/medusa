@@ -12,7 +12,7 @@ import {
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface GetItemTaxLinesStepInput {
   order: OrderWorkflowDTO
   items: OrderLineItemDTO[]
   shipping_methods: OrderShippingMethodDTO[]
@@ -98,9 +98,12 @@ function normalizeLineItemsForShipping(
 }
 
 export const getOrderItemTaxLinesStepId = "get-order-item-tax-lines"
+/**
+ * This step retrieves the tax lines for an order's line items and shipping methods.
+ */
 export const getOrderItemTaxLinesStep = createStep(
   getOrderItemTaxLinesStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetItemTaxLinesStepInput, { container }) => {
     const {
       order,
       items = [],
