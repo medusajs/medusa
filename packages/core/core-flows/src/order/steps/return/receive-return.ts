@@ -2,12 +2,13 @@ import { IOrderModuleService, ReceiveOrderReturnDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type ReceiveReturnStepInput = ReceiveOrderReturnDTO
-
 export const receiveReturnStepId = "receive-return"
+/**
+ * This step marks a return as received.
+ */
 export const receiveReturnStep = createStep(
   receiveReturnStepId,
-  async (data: ReceiveReturnStepInput, { container }) => {
+  async (data: ReceiveOrderReturnDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

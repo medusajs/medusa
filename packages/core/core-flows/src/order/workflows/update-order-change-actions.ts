@@ -10,6 +10,9 @@ import {
 import { updateOrderChangeActionsStep } from "../steps"
 
 export const updateOrderChangeActionsWorkflowId = "update-order-change-actions"
+/**
+ * This workflow updates one or more order change actions.
+ */
 export const updateOrderChangeActionsWorkflow = createWorkflow(
   updateOrderChangeActionsWorkflowId,
   (
