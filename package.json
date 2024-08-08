@@ -82,7 +82,6 @@
   "packageManager": "yarn@3.2.1",
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
-    "@redocly/cli/react-dom": "^17.0.1",
-    "pg": "8.12.0"
+    "@redocly/cli/react-dom": "^17.0.1"
   }
 }

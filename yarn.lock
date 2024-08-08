@@ -4900,7 +4900,6 @@ __metadata:
     passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
-    pg: ^8.12.0
     qs: ^6.11.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
@@ -4928,7 +4927,6 @@ __metadata:
     graphql: ^16.6.0
     jest: ^29.7.0
     knex: 2.4.2
-    pg: ^8.12.0
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
@@ -14199,6 +14197,13 @@ __metadata:
   version: 1.1.2
   resolution: "buffer-from@npm:1.1.2"
   checksum: 124fff9d66d691a86d3b062eff4663fe437a9d9ee4b47b1b9e97f5a5d14f6d5399345db80f796827be7c95e70a8e765dd404b7c3ff3b3324f98e9b0c8826cc34
+  languageName: node
+  linkType: hard
+
+"buffer-writer@npm:2.0.0":
+  version: 2.0.0
+  resolution: "buffer-writer@npm:2.0.0"
+  checksum: c91b2ab09a200cf0862237e5a4dbd5077003b42d26d4f0c596ec7149f82ef83e0751d670bcdf379ed988d1a08c0fac7759a8cb928cf1a4710a1988a7618b1190
   languageName: node
   linkType: hard
 
@@ -24346,6 +24351,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"packet-reader@npm:1.0.0":
+  version: 1.0.0
+  resolution: "packet-reader@npm:1.0.0"
+  checksum: c86c3321bb07e0f03cc2db59f7701184e0bbfcb914f1fdc963993b03262486deb402292adcef39b64e3530ea66b3b2e2163d6da7b3792a730bdd1c6df3175aaa
+  languageName: node
+  linkType: hard
+
 "pako@npm:~0.2.0":
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
@@ -24654,7 +24666,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.6.4":
+"pg-connection-string@npm:^2.6.2, pg-connection-string@npm:^2.6.4":
   version: 2.6.4
   resolution: "pg-connection-string@npm:2.6.4"
   checksum: 0d0b617df0fc6507bf6a94bdcd56c7a305788a1402d69bff9773350947c8f525d6d8136128065370749a3325e99658ae40fbdcce620fb8e60126181f0591a6a6
@@ -24691,7 +24703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.6.2":
+"pg-pool@npm:^3.6.1, pg-pool@npm:^3.6.2":
   version: 3.6.2
   resolution: "pg-pool@npm:3.6.2"
   peerDependencies:
@@ -24700,7 +24712,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-protocol@npm:*, pg-protocol@npm:^1.6.1":
+"pg-protocol@npm:*, pg-protocol@npm:^1.6.0, pg-protocol@npm:^1.6.1":
   version: 1.6.1
   resolution: "pg-protocol@npm:1.6.1"
   checksum: 7eadef4010ac0a3925c460be7332ca4098a5c6d5181725a62193fcfa800000ae6632d98d814f3989b42cf5fdc3b45e34c714a1959d29174e81e30730e140ae5f
@@ -24735,7 +24747,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:8.12.0":
+"pg@npm:8.11.3":
+  version: 8.11.3
+  resolution: "pg@npm:8.11.3"
+  dependencies:
+    buffer-writer: 2.0.0
+    packet-reader: 1.0.0
+    pg-cloudflare: ^1.1.1
+    pg-connection-string: ^2.6.2
+    pg-pool: ^3.6.1
+    pg-protocol: ^1.6.0
+    pg-types: ^2.1.0
+    pgpass: 1.x
+  peerDependencies:
+    pg-native: ">=3.0.1"
+  dependenciesMeta:
+    pg-cloudflare:
+      optional: true
+  peerDependenciesMeta:
+    pg-native:
+      optional: true
+  checksum: 07e6967fc8bd5d72bab9be6620626e8e3ab59128ebf56bf0de83d67f10801a19221d88b3317e90b93339ba48d0498b39967b782ae39686aabda6bc647bceb438
+  languageName: node
+  linkType: hard
+
+"pg@npm:^8.12.0, pg@npm:^8.3.0":
   version: 8.12.0
   resolution: "pg@npm:8.12.0"
   dependencies:
