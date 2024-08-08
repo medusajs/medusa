@@ -7,6 +7,8 @@ import {
 import { MedusaError, deepFlatMap } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -77,9 +79,7 @@ const validateOrder = createStep(
 export const cancelOrderWorkflowId = "cancel-order"
 export const cancelOrderWorkflow = createWorkflow(
   cancelOrderWorkflowId,
-  (
-    input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>
-  ): WorkflowData<void> => {
+  (input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>) => {
     const order: OrderDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "orders",
@@ -118,5 +118,13 @@ export const cancelOrderWorkflow = createWorkflow(
       cancelPaymentStep({ paymentIds }),
       cancelOrdersStep({ orderIds: [order.id] })
     )
+
+    const orderCancelled = createHook("orderCancelled", {
+      order,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [orderCancelled],
+    })
   }
 )
