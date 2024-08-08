@@ -4803,7 +4803,7 @@ __metadata:
     medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
-    pg: ^8.12.0
+    pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
@@ -15495,7 +15495,7 @@ __metadata:
     node-fetch: ^3.3.1
     open: ^9.1.0
     ora: ^6.3.0
-    pg: ^8.12.0
+    pg: ^8.11.3
     prettier: ^2.8.8
     slugify: ^1.6.6
     ts-node: ^10.9.1
@@ -19804,7 +19804,7 @@ __metadata:
     form-data: ^4.0.0
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
-    pg: ^8.12.0
+    pg: ^8.11.3
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -19841,7 +19841,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.12.0
+    pg: ^8.11.3
     typescript: ^5.3.3
   languageName: unknown
   linkType: soft
@@ -19877,7 +19877,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.12.0
+    pg: ^8.11.3
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -24771,7 +24771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.12.0, pg@npm:^8.3.0":
+"pg@npm:^8.11.3, pg@npm:^8.3.0":
   version: 8.12.0
   resolution: "pg@npm:8.12.0"
   dependencies:
