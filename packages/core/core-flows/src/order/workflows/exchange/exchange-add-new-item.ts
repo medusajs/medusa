@@ -21,7 +21,10 @@ import {
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 
-const validationStep = createStep(
+/**
+ * This step validates that new items can be added to an exchange.
+ */
+export const exchangeAddNewItemValidationStep = createStep(
   "exchange-add-new-item-validation",
   async function ({
     order,
@@ -39,6 +42,9 @@ const validationStep = createStep(
 )
 
 export const orderExchangeAddNewItemWorkflowId = "exchange-add-new-item"
+/**
+ * This workflow adds new items to an exchange.
+ */
 export const orderExchangeAddNewItemWorkflow = createWorkflow(
   orderExchangeAddNewItemWorkflowId,
   function (
@@ -73,7 +79,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({
+    exchangeAddNewItemValidationStep({
       order,
       orderExchange,
       orderChange,

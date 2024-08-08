@@ -25,7 +25,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that items can be requested to return as part of a claim.
+ */
+export const orderClaimRequestItemReturnValidationStep = createStep(
   "claim-request-item-return-validation",
   async function ({
     order,
@@ -49,6 +52,9 @@ const validationStep = createStep(
 )
 
 export const orderClaimRequestItemReturnWorkflowId = "claim-request-item-return"
+/**
+ * This workflow requests one or more items to be returned as part of a claim.
+ */
 export const orderClaimRequestItemReturnWorkflow = createWorkflow(
   orderClaimRequestItemReturnWorkflowId,
   function (
@@ -115,7 +121,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
       name: "order-change-query",
     })
 
-    validationStep({
+    orderClaimRequestItemReturnValidationStep({
       order,
       items: input.items,
       orderClaim,

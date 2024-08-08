@@ -25,7 +25,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that an exchange's shipping method can be updated.
+ */
+export const updateExchangeShippingMethodValidationStep = createStep(
   "validate-update-exchange-shipping-method",
   async function ({
     orderChange,
@@ -57,6 +60,9 @@ const validationStep = createStep(
 
 export const updateExchangeShippingMethodWorkflowId =
   "update-exchange-shipping-method"
+/**
+ * This workflow updates an exchange's shipping method.
+ */
 export const updateExchangeShippingMethodWorkflow = createWorkflow(
   updateExchangeShippingMethodWorkflowId,
   function (
@@ -83,7 +89,7 @@ export const updateExchangeShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderExchange, orderChange, input })
+    updateExchangeShippingMethodValidationStep({ orderExchange, orderChange, input })
 
     const updateData = transform(
       { orderChange, input },
