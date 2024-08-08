@@ -1,7 +1,9 @@
-import { UpdateCartWorkflowInputDTO } from "@medusajs/types"
+import { AdditionalData, UpdateCartWorkflowInputDTO } from "@medusajs/types"
 import { MedusaError, PromotionActions, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -17,12 +19,12 @@ import {
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 export const updateCartWorkflowId = "update-cart"
 export const updateCartWorkflow = createWorkflow(
   updateCartWorkflowId,
-  (input: WorkflowData<UpdateCartWorkflowInputDTO>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateCartWorkflowInputDTO & AdditionalData>) => {
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
@@ -82,15 +84,28 @@ export const updateCartWorkflow = createWorkflow(
 
     parallelize(
       refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesStep({ cart_or_cart_id: carts[0].id }),
-      refreshCartPromotionsStep({
-        id: input.id,
-        promo_codes: input.promo_codes,
-        action: PromotionActions.REPLACE,
-      }),
-      refreshPaymentCollectionForCartStep({
-        cart_id: input.id,
-      })
+      updateTaxLinesStep({ cart_or_cart_id: carts[0].id })
     )
+
+    refreshCartPromotionsStep({
+      id: input.id,
+      promo_codes: input.promo_codes,
+      action: PromotionActions.REPLACE,
+    })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: {
+        cart_id: input.id,
+      },
+    })
+
+    const cartUpdated = createHook("cartUpdated", {
+      cart,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [cartUpdated],
+    })
   }
 )

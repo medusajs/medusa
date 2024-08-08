@@ -8,7 +8,7 @@ export const SidebarTopMobileClose = () => {
   const { setMobileSidebarOpen } = useSidebar()
 
   return (
-    <div className="my-docs_0.75 lg:hidden">
+    <div className="m-docs_0.75 lg:hidden">
       <Button
         variant="transparent-clear"
         onClick={() => setMobileSidebarOpen(false)}

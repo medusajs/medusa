@@ -93,9 +93,6 @@ export interface UpdateCartWorkflowInputDTO {
 
 export interface CreatePaymentCollectionForCartWorkflowInputDTO {
   cart_id: string
-  region_id: string
-  currency_code: string
-  amount: BigNumberInput
   metadata?: Record<string, unknown>
 }
 

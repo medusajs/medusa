@@ -2,6 +2,8 @@ import { AdminPaymentCollection } from "../payment/admin"
 import {
   BaseOrder,
   BaseOrderAddress,
+  BaseOrderChange,
+  BaseOrderChangeAction,
   BaseOrderFilters,
   BaseOrderLineItem,
   BaseOrderShippingMethod,
@@ -44,4 +46,20 @@ export interface AdminCreateOrderShipment {
 
 export interface AdminCancelOrderFulfillment {
   no_notification?: boolean
+}
+
+// Order Preview
+
+export interface AdminOrderPreview
+  extends Omit<AdminOrder, "items" | "shipping_methods"> {
+  return_requested_total: number
+  order_change: BaseOrderChange
+  items: (BaseOrderLineItem & { actions?: BaseOrderChangeAction[] })[]
+  shipping_methods: (BaseOrderShippingMethod & {
+    actions?: BaseOrderChangeAction[]
+  })[]
+}
+
+export interface AdminOrderPreviewResponse {
+  order: AdminOrderPreview
 }

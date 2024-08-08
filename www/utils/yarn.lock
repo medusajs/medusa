@@ -615,6 +615,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/core-flows@link:../../../../packages/core/core-flows::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/core-flows@link:../../../../packages/core/core-flows::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references"
+  languageName: node
+  linkType: soft
+
+"@medusajs/core-flows@link:../../../../packages/core/core-flows::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/core-flows@link:../../../../packages/core/core-flows::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows"
+  languageName: node
+  linkType: soft
+
 "@medusajs/modules-sdk@npm:^1.12.4":
   version: 1.12.4
   resolution: "@medusajs/modules-sdk@npm:1.12.4"
@@ -665,6 +677,18 @@ __metadata:
   checksum: 252cb12ce4f43db3dde0d3b98d70d8e7fc22588ecee152fa1193b6ab14669155ca2db420eb624dd4b6772114e0e5b0274ec78ee2a6254301905496dc0f5a5bb7
   languageName: node
   linkType: hard
+
+"@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-generate-references%40workspace%3Apackages%2Ftypedoc-generate-references"
+  languageName: node
+  linkType: soft
+
+"@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/workflows-sdk@link:../../../../packages/core/workflows-sdk::locator=typedoc-plugin-workflows%40workspace%3Apackages%2Ftypedoc-plugin-workflows"
+  languageName: node
+  linkType: soft
 
 "@medusajs/workflows-sdk@npm:latest":
   version: 0.1.0
@@ -5318,6 +5342,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typedoc-generate-references@workspace:packages/typedoc-generate-references"
   dependencies:
+    "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
+    "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
     "@types/node": ^20.9.4
     "@types/pluralize": ^0.0.33
     chalk: ^5.3.0
@@ -5330,6 +5356,7 @@ __metadata:
     typedoc-plugin-custom: "*"
     typedoc-plugin-markdown-medusa: "*"
     typedoc-plugin-rename-defaults: ^0.7.0
+    typedoc-plugin-workflows: "*"
     types: "*"
     typescript: 5.5
     utils: "*"
@@ -5382,6 +5409,25 @@ __metadata:
   checksum: 2ae2065769ad9c7ea0100ebcc878056c29e79df42b3a4993d83b82d670d30e386f10d42320e228033bc351b191a9da950a5d9cba5595c1e2ae136ffce09bfbe8
   languageName: node
   linkType: hard
+
+"typedoc-plugin-workflows@*, typedoc-plugin-workflows@workspace:packages/typedoc-plugin-workflows":
+  version: 0.0.0-use.local
+  resolution: "typedoc-plugin-workflows@workspace:packages/typedoc-plugin-workflows"
+  dependencies:
+    "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
+    "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
+    "@types/eslint": ^8.56.6
+    "@types/node": ^16.11.10
+    eslint: ^8.53.0
+    glob: ^10.3.10
+    types: "*"
+    typescript: 5.5
+    utils: "*"
+    yaml: ^2.3.3
+  peerDependencies:
+    typedoc: 0.26.x
+  languageName: unknown
+  linkType: soft
 
 "typedoc@npm:^0.26.2":
   version: 0.26.2

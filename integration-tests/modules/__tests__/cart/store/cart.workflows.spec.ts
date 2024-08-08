@@ -6,7 +6,6 @@ import {
   deleteLineItemsStepId,
   deleteLineItemsWorkflow,
   findOrCreateCustomerStepId,
-  linkCartAndPaymentCollectionsStepId,
   listShippingOptionsForCartWorkflow,
   refreshPaymentCollectionForCartWorkflow,
   updateLineItemInCartWorkflow,
@@ -1143,9 +1142,6 @@ medusaIntegrationTestRunner({
           await createPaymentCollectionForCartWorkflow(appContainer).run({
             input: {
               cart_id: cart.id,
-              region_id: defaultRegion.id,
-              currency_code: "dkk",
-              amount: 5000,
             },
             throwOnError: false,
           })
@@ -1182,17 +1178,13 @@ medusaIntegrationTestRunner({
             const workflow =
               createPaymentCollectionForCartWorkflow(appContainer)
 
-            workflow.appendAction(
-              "throw",
-              linkCartAndPaymentCollectionsStepId,
-              {
-                invoke: async function failStep() {
-                  throw new Error(
-                    `Failed to do something after linking cart and payment collection`
-                  )
-                },
-              }
-            )
+            workflow.addAction("throw", {
+              invoke: async function failStep() {
+                throw new Error(
+                  `Failed to do something after linking cart and payment collection`
+                )
+              },
+            })
 
             const region = await regionModuleService.createRegions({
               name: "US",
@@ -1214,9 +1206,6 @@ medusaIntegrationTestRunner({
             const { errors } = await workflow.run({
               input: {
                 cart_id: cart.id,
-                region_id: region.id,
-                currency_code: "usd",
-                amount: 5000,
               },
               throwOnError: false,
             })
@@ -1280,7 +1269,7 @@ medusaIntegrationTestRunner({
 
           const paymentCollection =
             await paymentModule.createPaymentCollections({
-              amount: 5000,
+              amount: 5001,
               currency_code: "dkk",
               region_id: defaultRegion.id,
             })
@@ -1288,7 +1277,7 @@ medusaIntegrationTestRunner({
           const paymentSession = await paymentModule.createPaymentSession(
             paymentCollection.id,
             {
-              amount: 5000,
+              amount: 5001,
               currency_code: "dkk",
               data: {},
               provider_id: "pp_system_default",

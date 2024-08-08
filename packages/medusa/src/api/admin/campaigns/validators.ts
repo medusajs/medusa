@@ -1,5 +1,5 @@
 import { CampaignBudgetType, isPresent } from "@medusajs/utils"
-import { z } from "zod"
+import { z, ZodObject } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export const AdminGetCampaignParams = createSelectParams()
@@ -56,8 +56,8 @@ export const UpdateCampaignBudget = z
   })
   .strict()
 
-export type AdminCreateCampaignType = z.infer<typeof AdminCreateCampaign>
-export const AdminCreateCampaign = z
+export type AdminCreateCampaignType = z.infer<typeof CreateCampaign>
+export const CreateCampaign = z
   .object({
     name: z.string(),
     campaign_identifier: z.string(),
@@ -68,9 +68,22 @@ export const AdminCreateCampaign = z
     promotions: z.array(z.object({ id: z.string() })).optional(),
   })
   .strict()
+export const AdminCreateCampaign = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return CreateCampaign.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
 
-export type AdminUpdateCampaignType = z.infer<typeof AdminUpdateCampaign>
-export const AdminUpdateCampaign = z.object({
+  return CreateCampaign.extend({
+    additional_data: additionalDataValidator,
+  })
+}
+
+export type AdminUpdateCampaignType = z.infer<typeof UpdateCampaign>
+export const UpdateCampaign = z.object({
   name: z.string().optional(),
   campaign_identifier: z.string().optional(),
   description: z.string().nullish(),
@@ -79,3 +92,16 @@ export const AdminUpdateCampaign = z.object({
   ends_at: z.coerce.date().nullish(),
   promotions: z.array(z.object({ id: z.string() })).optional(),
 })
+export const AdminUpdateCampaign = (
+  additionalDataValidator?: ZodObject<any, any>
+) => {
+  if (!additionalDataValidator) {
+    return UpdateCampaign.extend({
+      additional_data: z.record(z.unknown()).nullish(),
+    })
+  }
+
+  return UpdateCampaign.extend({
+    additional_data: additionalDataValidator,
+  })
+}

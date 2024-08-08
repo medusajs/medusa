@@ -12,6 +12,7 @@ import {
   AdminCreatePromotionType,
   AdminGetPromotionsParamsType,
 } from "./validators"
+import { AdditionalData } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionsParamsType>,
@@ -39,14 +40,15 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreatePromotionType>,
+  req: AuthenticatedMedusaRequest<AdminCreatePromotionType & AdditionalData>,
   res: MedusaResponse
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
   const createPromotions = createPromotionsWorkflow(req.scope)
-  const promotionsData = [req.validatedBody] as any
+  const promotionsData = [rest] as any
 
   const { result } = await createPromotions.run({
-    input: { promotionsData },
+    input: { promotionsData, additional_data },
   })
 
   const promotion = await refetchPromotion(

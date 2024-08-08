@@ -7,6 +7,8 @@ import { NavigationDropdownDocIcon } from "./components/Icons/NavigationDropdown
 import { NavigationDropdownStoreIcon } from "./components/Icons/NavigationDropdown/Store"
 import { NavigationDropdownAdminIcon } from "./components/Icons/NavigationDropdown/Admin"
 import { NavigationDropdownUiIcon } from "./components/Icons/NavigationDropdown/Ui"
+import { NavigationDropdownDocV1Icon } from "./components/Icons/NavigationDropdown/DocV1"
+import { NavigationDropdownUserIcon } from "./components/Icons/NavigationDropdown/User"
 import { NavigationDropdownResourcesIcon } from "./components/Icons/NavigationDropdown/Resources"
 
 export const GITHUB_ISSUES_PREFIX = `https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml`
@@ -22,7 +24,6 @@ export const navDropdownItemsV2: NavigationDropdownItem[] = [
   {
     type: "link",
     path: `/v2/resources`,
-    // TODO use user guide icon
     icon: NavigationDropdownResourcesIcon,
     title: "Learning Resources",
   },
@@ -45,13 +46,9 @@ export const navDropdownItemsV2: NavigationDropdownItem[] = [
     title: "UI",
   },
   {
-    type: "divider",
-  },
-  {
     type: "link",
     path: `/`,
-    // TODO use docs icon
-    icon: NavigationDropdownDocIcon,
+    icon: NavigationDropdownDocV1Icon,
     title: "Medusa v1",
   },
 ]
@@ -60,14 +57,13 @@ export const navDropdownItemsV1: NavigationDropdownItem[] = [
   {
     type: "link",
     path: `/`,
-    icon: NavigationDropdownDocIcon,
+    icon: NavigationDropdownDocV1Icon,
     title: "Documentation",
   },
   {
     type: "link",
     path: `/user-guide`,
-    // TODO use user guide icon
-    icon: NavigationDropdownDocIcon,
+    icon: NavigationDropdownUserIcon,
     title: "User Guide",
   },
   {
@@ -89,12 +85,8 @@ export const navDropdownItemsV1: NavigationDropdownItem[] = [
     title: "UI",
   },
   {
-    type: "divider",
-  },
-  {
     type: "link",
     path: `/v2`,
-    // TODO use docs icon
     icon: NavigationDropdownDocIcon,
     title: "Medusa v2",
   },

@@ -7,6 +7,7 @@ import { adminCurrencyRoutesMiddlewares } from "./admin/currencies/middlewares"
 import { adminCustomerGroupRoutesMiddlewares } from "./admin/customer-groups/middlewares"
 import { adminCustomerRoutesMiddlewares } from "./admin/customers/middlewares"
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares"
+import { adminExchangeRoutesMiddlewares } from "./admin/exchanges/middlewares"
 import { adminFulfillmentProvidersRoutesMiddlewares } from "./admin/fulfillment-providers/middlewares"
 import { adminFulfillmentSetsRoutesMiddlewares } from "./admin/fulfillment-sets/middlewares"
 import { adminFulfillmentsRoutesMiddlewares } from "./admin/fulfillments/middlewares"
@@ -22,6 +23,7 @@ import { adminProductTagRoutesMiddlewares } from "./admin/product-tags/middlewar
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
+import { adminRefundReasonsRoutesMiddlewares } from "./admin/refund-reasons/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
 import { adminReturnReasonRoutesMiddlewares } from "./admin/return-reasons/middlewares"
@@ -106,4 +108,6 @@ export default defineMiddlewares([
   ...storeReturnReasonRoutesMiddlewares,
   ...adminReturnReasonRoutesMiddlewares,
   ...adminClaimRoutesMiddlewares,
+  ...adminRefundReasonsRoutesMiddlewares,
+  ...adminExchangeRoutesMiddlewares,
 ])

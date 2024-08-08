@@ -53,18 +53,20 @@ export const SearchModalOpener = ({
         </Button>
       )}
       {!isMobile && (
-        <div
-          className={clsx(
-            "relative hover:cursor-pointer group",
-            "flex gap-docs_0.5 py-docs_0.125 pl-docs_0.125 pr-docs_0.5",
-            "justify-between items-center text-medusa-fg-subtle",
-            className
-          )}
-          onClick={handleOpen}
-        >
-          <MagnifyingGlass className="text-medusa-fg-subtle" />
-          <span className="text-compact-small-plus">Ask or search...</span>
-          <Kbd>{isApple ? "⌘" : "Ctrl"}K</Kbd>
+        <div className="px-docs_0.75">
+          <div
+            className={clsx(
+              "relative hover:cursor-pointer group",
+              "flex gap-docs_0.5 py-docs_0.125 pl-docs_0.125 pr-docs_0.5",
+              "justify-between items-center text-medusa-fg-subtle",
+              className
+            )}
+            onClick={handleOpen}
+          >
+            <MagnifyingGlass className="text-medusa-fg-subtle" />
+            <span className="text-compact-small-plus">Ask or search...</span>
+            <Kbd>{isApple ? "⌘" : "Ctrl"}K</Kbd>
+          </div>
         </div>
       )}
     </>

@@ -19,7 +19,7 @@ export const SidebarTopNavigationDropdownMenu = ({
   return (
     <ul
       className={clsx(
-        "absolute top-[calc(100%+4px)] p-docs_0.25 z-50",
+        "absolute top-[calc(100%+4px)] p-docs_0.25 z-50 lg:-left-docs_0.25",
         "bg-medusa-bg-component rounded shadow-elevation-flyout",
         !open && "hidden"
       )}

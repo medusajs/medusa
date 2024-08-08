@@ -17,9 +17,9 @@ interface AdminClaimAddItems {
 
 interface AdminClaimUpdateItem {
   quantity?: number
-  reason_id?: ClaimReason
+  reason_id?: string | null
   description?: string
-  internal_note?: string
+  internal_note?: string | null
 }
 
 interface AdminClaimAddShippingMethod {
@@ -31,7 +31,7 @@ interface AdminClaimAddShippingMethod {
 }
 
 interface AdminClaimUpdateShippingMethod {
-  custom_price?: number
+  custom_price?: number | null
   internal_note?: string
   metadata?: Record<string, unknown> | null
 }

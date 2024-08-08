@@ -1,4 +1,4 @@
-import { ChangeActionType, MedusaError, isDefined } from "@medusajs/utils"
+import { ChangeActionType, MedusaError } from "@medusajs/utils"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
@@ -33,7 +33,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
       )
     }
 
-    if (!isDefined(action.amount)) {
+    if (action.amount == null) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Amount is required."

@@ -1,9 +1,9 @@
 import {
+  DeleteResponse,
   FindParams,
   HttpTypes,
   PaginatedResponse,
   SelectParams,
-  DeleteResponse,
 } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
@@ -289,9 +289,6 @@ export class Store {
       if (!paymentCollectionId) {
         const collectionBody = {
           cart_id: cart.id,
-          region_id: cart.region_id,
-          currency_code: cart.currency_code,
-          amount: cart.total,
         }
         paymentCollectionId = (
           await this.client.fetch<{

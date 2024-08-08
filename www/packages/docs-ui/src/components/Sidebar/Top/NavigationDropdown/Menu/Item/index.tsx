@@ -41,7 +41,10 @@ export const SidebarTopNavigationDropdownMenuItem = ({
             <span className={clsx(!item.isActive && "invisible")}>
               <EllipseMiniSolid />
             </span>
-            <SidebarTopNavigationDropdownIcon icon={item.icon} />
+            <SidebarTopNavigationDropdownIcon
+              icon={item.icon}
+              inDropdown={true}
+            />
             <span className="whitespace-nowrap">{item.title}</span>
           </li>
         </Link>

@@ -1,3 +1,4 @@
+import { RequestQueryFields } from "@medusajs/types"
 import {
   getSetDifference,
   isDefined,
@@ -6,7 +7,6 @@ import {
   stringToSelectRelationObject,
 } from "@medusajs/utils"
 import { pick } from "lodash"
-import { RequestQueryFields } from "@medusajs/types"
 import { FindConfig, QueryConfig } from "../types/common"
 
 export function pickByConfig<TModel>(
@@ -60,15 +60,17 @@ export function prepareListQuery<T extends RequestQueryFields, TEntity>(
         return !(
           field.startsWith("-") ||
           field.startsWith("+") ||
+          field.startsWith(" ") ||
           field.startsWith("*")
         )
       })
+
     if (shouldReplaceDefaultFields) {
-      allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
+      allFields = new Set(customFields.map((f) => f.replace(/^[+ -]/, "")))
     } else {
       customFields.forEach((field) => {
-        if (field.startsWith("+")) {
-          allFields.add(field.replace(/^\+/, ""))
+        if (field.startsWith("+") || field.startsWith(" ")) {
+          allFields.add(field.trim().replace(/^\+/, ""))
         } else if (field.startsWith("-")) {
           allFields.delete(field.replace(/^-/, ""))
         } else {

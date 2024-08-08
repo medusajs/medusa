@@ -21,6 +21,7 @@ export const modules = [
 
 const allReferences = [
   ...modules,
+  "core-flows",
   "auth-provider",
   "dml",
   "file",

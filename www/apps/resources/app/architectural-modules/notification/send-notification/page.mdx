@@ -47,7 +47,7 @@ export default async function productCreateHandler({
   const notificationModuleService: INotificationModuleService =
     container.resolve(ModuleRegistrationName.NOTIFICATION)
 
-  await notificationModuleService.create({
+  await notificationModuleService.createNotifications({
     to: "shahednasser@gmail.com",
     channel: "email",
     template: "product-created",

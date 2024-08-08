@@ -54,8 +54,8 @@ export type SidebarContextType = {
   navigationDropdownItems: NavigationDropdownItem[]
   sidebarTopHeight: number
   setSidebarTopHeight: React.Dispatch<React.SetStateAction<number>>
-  sidebarActionsHeight: number
-  setSidebarActionsHeight: React.Dispatch<React.SetStateAction<number>>
+  sidebarBottomHeight: number
+  setSidebarBottomHeight: React.Dispatch<React.SetStateAction<number>>
   resetItems: () => void
 } & SidebarStyleOptions
 
@@ -218,7 +218,7 @@ export const SidebarProvider = ({
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [sidebarTopHeight, setSidebarTopHeight] = useState(0)
-  const [sidebarActionsHeight, setSidebarActionsHeight] = useState(0)
+  const [sidebarBottomHeight, setSidebarBottomHeight] = useState(0)
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
@@ -466,8 +466,8 @@ export const SidebarProvider = ({
         navigationDropdownItems,
         sidebarTopHeight,
         setSidebarTopHeight,
-        sidebarActionsHeight,
-        setSidebarActionsHeight,
+        sidebarBottomHeight,
+        setSidebarBottomHeight,
         resetItems,
       }}
     >

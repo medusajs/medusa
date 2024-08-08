@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { Sidebar, SidebarProps } from "@/components"
+import { Bannerv2, Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
 import { Toc } from "../components/Toc"
 
@@ -13,6 +13,7 @@ export type RootLayoutProps = {
   bodyClassName?: string
   mainWrapperClasses?: string
   showPagination?: boolean
+  showBanner?: boolean
 }
 
 export const RootLayout = ({
@@ -23,6 +24,7 @@ export const RootLayout = ({
   bodyClassName,
   mainWrapperClasses,
   showToc = true,
+  showBanner = true,
 }: RootLayoutProps) => {
   return (
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
@@ -41,18 +43,27 @@ export const RootLayout = ({
           <Sidebar {...sidebarProps} />
           <div
             className={clsx(
-              "lg:mt-docs_0.5 lg:mr-docs_0.5",
-              "bg-medusa-bg-base rounded",
-              "shadow-elevation-card-rest",
-              "pt-docs_4 lg:pt-docs_6 pb-docs_4",
-              "flex justify-center",
-              "h-screen w-full relative",
-              "overflow-y-scroll overflow-x-hidden",
+              "lg:mt-docs_0.5 lg:mr-docs_0.5 relative",
+              "h-screen",
+              "flex flex-col gap-docs_0.5",
               mainWrapperClasses
             )}
-            id="main"
           >
-            {children}
+            {showBanner && <Bannerv2 />}
+            <div
+              className={clsx(
+                "bg-medusa-bg-base rounded",
+                "shadow-elevation-card-rest",
+                "pt-docs_4 lg:pt-docs_6 pb-docs_4",
+                "flex justify-center",
+                "h-full w-full",
+                "overflow-y-scroll overflow-x-hidden",
+                mainWrapperClasses
+              )}
+              id="main"
+            >
+              {children}
+            </div>
           </div>
           {showToc && <Toc />}
         </ProvidersComponent>

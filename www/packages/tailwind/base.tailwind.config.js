@@ -68,6 +68,9 @@ module.exports = {
             error: "var(--docs-border-error)",
             danger: "var(--docs-border-danger)",
             transparent: "var(--docs-border-transparent)",
+            menu: {
+              top: "var(--docs-border-menu-top)",
+            },
           },
           button: {
             inverted: {
@@ -270,9 +273,7 @@ module.exports = {
         "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
         "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
         "border-dotted":
-          "linear-gradient(to right, #D4D4D8 33%, rgba(255,255,255,0) 0%)",
-        "border-dotted-dark":
-          "linear-gradient(to right, rgba(69, 69, 71) 33%, rgba(255,255,255,0) 0%)",
+          "linear-gradient(90deg,var(--docs-border-strong) 1px,transparent 1px)",
       },
       screens: {
         xs: "568px",

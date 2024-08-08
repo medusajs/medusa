@@ -10,6 +10,13 @@ import { rootPathPrefix } from "./general.js"
 import { modules } from "./references.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
+  "core-flows": getOptions({
+    entryPointPath: "packages/core/core-flows/src/index.ts",
+    tsConfigName: "core-flows.json",
+    name: "core-flows",
+    plugin: ["typedoc-plugin-workflows"],
+    enableWorkflowsPlugins: true,
+  }),
   "auth-provider": getOptions({
     entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
     tsConfigName: "utils.json",

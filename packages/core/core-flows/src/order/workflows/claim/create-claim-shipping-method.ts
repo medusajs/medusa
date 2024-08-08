@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,

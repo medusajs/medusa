@@ -92,25 +92,27 @@ export const SidebarItemSubCategory = ({
 
   return (
     <li ref={ref}>
-      <span
-        className={clsx(
-          "py-docs_0.25 px-docs_0.5",
-          "block w-full",
-          active && [
-            "rounded-docs_sm bg-medusa-bg-base",
-            "shadow-borders-base dark:shadow-borders-base-dark",
-            "text-medusa-fg-base",
-          ],
-          !active && [
-            !nested && "text-medusa-fg-subtle",
-            nested && "text-medusa-fg-muted",
-          ],
-          "text-compact-small-plus",
-          className
-        )}
-      >
-        <span>{item.title}</span>
-        {item.additionalElms}
+      <span className="block px-docs_0.75">
+        <span
+          className={clsx(
+            "py-docs_0.25 px-docs_0.5",
+            "block w-full",
+            active && [
+              "rounded-docs_sm",
+              "shadow-borders-base dark:shadow-borders-base-dark",
+              "text-medusa-fg-base",
+            ],
+            !active && [
+              !nested && "text-medusa-fg-subtle",
+              nested && "text-medusa-fg-muted",
+            ],
+            "text-compact-small-plus",
+            className
+          )}
+        >
+          <span>{item.title}</span>
+          {item.additionalElms}
+        </span>
       </span>
       {hasChildren && (
         <ul
@@ -118,7 +120,7 @@ export const SidebarItemSubCategory = ({
             "ease-ease overflow-hidden",
             "flex flex-col gap-docs_0.125",
             !item.childrenSameLevel && "pl-docs_1.5",
-            "mb-docs_0.5"
+            "mb-docs_0.5 pt-docs_0.125"
           )}
         >
           {item.children!.map((childItem, index) => (
