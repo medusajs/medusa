@@ -105,7 +105,10 @@ export const Sidebar = ({
               timeout={200}
             >
               <div
-                className={clsx("overflow-y-scroll clip", "p-docs_0.75 flex-1")}
+                className={clsx(
+                  "overflow-y-scroll clip",
+                  "py-docs_0.75 flex-1"
+                )}
                 ref={sidebarRef}
                 style={{
                   maxHeight: `calc(100vh - ${

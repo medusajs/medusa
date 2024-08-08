@@ -85,44 +85,47 @@ export const SidebarItemLink = ({
 
   return (
     <li ref={ref}>
-      <Link
-        href={item.isPathHref ? item.path : `#${item.path}`}
-        className={clsx(
-          "py-docs_0.25 px-docs_0.5",
-          "block w-full rounded-docs_sm ",
-          active && [
-            "bg-medusa-bg-base",
-            "border border-medusa-border-base",
-            "text-medusa-fg-base",
-          ],
-          !active && [
-            !nested && "text-medusa-fg-subtle",
-            nested && "text-medusa-fg-muted",
-            "hover:bg-medusa-bg-base-hover lg:hover:bg-medusa-bg-subtle-hover",
-          ],
-          "text-compact-small-plus",
-          "flex justify-between items-center",
-          className
-        )}
-        scroll={true}
-        onClick={() => {
-          if (isMobile) {
-            setSidebarOpen(false)
-          }
-        }}
-        replace={!item.isPathHref}
-        shallow={!item.isPathHref}
-        {...item.linkProps}
-      >
-        <span>{item.title}</span>
-        {item.additionalElms}
-      </Link>
+      <span className="block px-docs_0.75">
+        <Link
+          href={item.isPathHref ? item.path : `#${item.path}`}
+          className={clsx(
+            "py-docs_0.25 px-docs_0.5",
+            "block w-full rounded-docs_sm ",
+            active && [
+              "bg-medusa-bg-base",
+              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
+              "text-medusa-fg-base",
+            ],
+            !active && [
+              !nested && "text-medusa-fg-subtle",
+              nested && "text-medusa-fg-muted",
+              "hover:bg-medusa-bg-base-hover lg:hover:bg-medusa-bg-subtle-hover",
+            ],
+            "text-compact-small-plus",
+            "flex justify-between items-center",
+            className
+          )}
+          scroll={true}
+          onClick={() => {
+            if (isMobile) {
+              setSidebarOpen(false)
+            }
+          }}
+          replace={!item.isPathHref}
+          shallow={!item.isPathHref}
+          {...item.linkProps}
+        >
+          <span>{item.title}</span>
+          {item.additionalElms}
+        </Link>
+      </span>
       {hasChildren && (
         <ul
           className={clsx(
             "ease-ease overflow-hidden",
             "flex flex-col gap-docs_0.125",
-            !item.childrenSameLevel && "pl-docs_1.5"
+            !item.childrenSameLevel && "pl-docs_1.5",
+            "pt-docs_0.125 mb-docs_0.5"
           )}
         >
           {item.children!.map((childItem, index) => (
