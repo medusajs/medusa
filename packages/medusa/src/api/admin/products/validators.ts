@@ -4,7 +4,7 @@ import {
   GetProductsParams,
   transformProductParams,
 } from "../../utils/common-validators"
-import { z, ZodObject } from "zod"
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
