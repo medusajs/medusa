@@ -6,6 +6,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createShippingOptionRulesStepId = "create-shipping-option-rules"
+/**
+ * This step creates one or more shipping option rules.
+ */
 export const createShippingOptionRulesStep = createStep(
   createShippingOptionRulesStepId,
   async (

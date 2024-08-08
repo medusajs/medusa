@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteUsersStepId = "delete-users-step"
+/**
+ * This step deletes one or more stores.
+ */
 export const deleteUsersStep = createStep(
   deleteUsersStepId,
   async (input: string[], { container }) => {

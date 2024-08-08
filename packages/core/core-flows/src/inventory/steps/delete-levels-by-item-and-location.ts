@@ -6,6 +6,9 @@ import { MedusaError } from "@medusajs/utils"
 
 export const deleteInventoryLevelsFromItemAndLocationsStepId =
   "delete-inventory-levels-from-item-and-location-step"
+/**
+ * This step removes one or more inventory levels by their associated inventory item and location.
+ */
 export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
   deleteInventoryLevelsFromItemAndLocationsStepId,
   async (

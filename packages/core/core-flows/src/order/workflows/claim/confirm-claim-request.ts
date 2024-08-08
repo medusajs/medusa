@@ -21,7 +21,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { confirmVariantInventoryWorkflow } from "../../../definition/cart/workflows/confirm-variant-inventory"
+import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
@@ -32,11 +32,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested claim can be confirmed.
+ */
+export const confirmClaimRequestValidationStep = createStep(
   "validate-confirm-claim-request",
   async function ({
     order,
@@ -173,9 +176,12 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 }
 
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
+/**
+ * This workflow confirms a requested claim.
+ */
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmClaimRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -225,7 +231,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    confirmClaimRequestValidationStep({ order, orderClaim, orderChange })
 
     const { claimItems, returnItems } = transform(
       { orderChange },
@@ -310,14 +316,16 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         }
       })
 
-      const formatedInventoryItems = confirmVariantInventoryWorkflow.runAsStep({
-        input: {
-          skipInventoryCheck: true,
-          sales_channel_id: (claim as any).order.sales_channel_id,
-          variants,
-          items,
+      const formatedInventoryItems = transform(
+        {
+          input: {
+            sales_channel_id: (claim as any).order.sales_channel_id,
+            variants,
+            items,
+          },
         },
-      })
+        prepareConfirmInventoryInput
+      )
 
       reserveInventoryStep(formatedInventoryItems)
     })

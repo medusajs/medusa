@@ -11,15 +11,18 @@ import {
 
 import { updateStockLocationsStep } from "../steps"
 
-interface WorkflowInput {
+export interface UpdateStockLocationsWorkflowInput {
   selector: FilterableStockLocationProps
   update: UpdateStockLocationInput
 }
 export const updateStockLocationsWorkflowId = "update-stock-locations-workflow"
+/**
+ * This workflow updates stock locations matching the specified filters.
+ */
 export const updateStockLocationsWorkflow = createWorkflow(
   updateStockLocationsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<UpdateStockLocationsWorkflowInput>
   ): WorkflowResponse<StockLocationDTO[]> => {
     return new WorkflowResponse(updateStockLocationsStep(input))
   }

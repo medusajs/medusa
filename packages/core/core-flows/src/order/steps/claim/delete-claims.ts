@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteClaimsStepId = "delete-claims"
+/**
+ * This step deletes one or more order claims.
+ */
 export const deleteClaimsStep = createStep(
   deleteClaimsStepId,
   async (data: { ids: string[] }, { container }) => {

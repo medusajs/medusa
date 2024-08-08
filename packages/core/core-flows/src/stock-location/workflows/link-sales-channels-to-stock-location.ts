@@ -8,6 +8,9 @@ import {
 
 export const linkSalesChannelsToStockLocationWorkflowId =
   "link-sales-channels-to-stock-location"
+/**
+ * This workflow creates and dismisses links between location and sales channel records.
+ */
 export const linkSalesChannelsToStockLocationWorkflow = createWorkflow(
   linkSalesChannelsToStockLocationWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): void => {

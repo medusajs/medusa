@@ -12,15 +12,19 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface GetLineItemActionsStepInput {
   id: string
   items: CreateLineItemForCartDTO[]
 }
 
 export const getLineItemActionsStepId = "get-line-item-actions-step"
+/**
+ * This step returns lists of cart line items to create or update based on the 
+ * provided input.
+ */
 export const getLineItemActionsStep = createStep(
   getLineItemActionsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetLineItemActionsStepInput, { container }) => {
     const cartModule = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
     )

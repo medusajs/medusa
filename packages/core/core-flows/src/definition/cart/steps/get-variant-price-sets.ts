@@ -2,15 +2,18 @@ import { IPricingModuleService } from "@medusajs/types"
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface GetVariantPriceSetsStepInput {
   variantIds: string[]
   context?: Record<string, unknown>
 }
 
 export const getVariantPriceSetsStepId = "get-variant-price-sets"
+/**
+ * This step retrieves the calculated price sets of the specified variants.
+ */
 export const getVariantPriceSetsStep = createStep(
   getVariantPriceSetsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetVariantPriceSetsStepInput, { container }) => {
     if (!data.variantIds.length) {
       return new StepResponse({})
     }

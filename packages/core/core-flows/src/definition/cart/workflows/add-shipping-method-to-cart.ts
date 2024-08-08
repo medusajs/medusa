@@ -13,7 +13,7 @@ import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 
-interface AddShippingMethodToCartWorkflowInput {
+export interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
   options: {
     id: string
@@ -22,6 +22,9 @@ interface AddShippingMethodToCartWorkflowInput {
 }
 
 export const addShippingMethodToCartWorkflowId = "add-shipping-method-to-cart"
+/**
+ * This workflow adds shipping methods to a cart.
+ */
 export const addShippingMethodToWorkflow = createWorkflow(
   addShippingMethodToCartWorkflowId,
   (

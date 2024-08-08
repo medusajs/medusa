@@ -7,13 +7,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createCustomersStep } from "../steps"
 
-type WorkflowInput = { customersData: CreateCustomerDTO[] } & AdditionalData
+export type CreateCustomersWorkflowInput = { customersData: CreateCustomerDTO[] } & AdditionalData
 
 export const createCustomersWorkflowId = "create-customers"
-
+/**
+ * This workflow creates one or more customers.
+ */
 export const createCustomersWorkflow = createWorkflow(
   createCustomersWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateCustomersWorkflowInput>) => {
     const createdCustomers = createCustomersStep(input.customersData)
     const customersCreated = createHook("customersCreated", {
       customers: createdCustomers,

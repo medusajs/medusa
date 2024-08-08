@@ -6,11 +6,14 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateReturnItemsFromActionsInput = {
+export type CreateReturnItemsFromActionsInput = {
   changes: OrderChangeActionDTO[]
   returnId: string
 }
 
+/**
+ * This step creates return items from change actions.
+ */
 export const createReturnItemsFromActionsStep = createStep(
   "create-return-items-from-change-actions",
   async (input: CreateReturnItemsFromActionsInput, { container }) => {

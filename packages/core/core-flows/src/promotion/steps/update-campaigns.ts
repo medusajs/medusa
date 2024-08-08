@@ -7,6 +7,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateCampaignsStepId = "update-campaigns"
+/**
+ * This step updates one or more campaigns.
+ */
 export const updateCampaignsStep = createStep(
   updateCampaignsStepId,
   async (data: UpdateCampaignDTO[], { container }) => {

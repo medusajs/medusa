@@ -6,13 +6,16 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createCustomerGroupsStep } from "../steps"
 
-type WorkflowInput = { customersData: CreateCustomerGroupDTO[] }
+export type CreateCustomerGroupsWorkflowInput = { customersData: CreateCustomerGroupDTO[] }
 
 export const createCustomerGroupsWorkflowId = "create-customer-groups"
+/**
+ * This workflow creates one or more customer groups.
+ */
 export const createCustomerGroupsWorkflow = createWorkflow(
   createCustomerGroupsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<CreateCustomerGroupsWorkflowInput>
   ): WorkflowResponse<CustomerGroupDTO[]> => {
     return new WorkflowResponse(createCustomerGroupsStep(input.customersData))
   }

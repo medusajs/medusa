@@ -6,14 +6,18 @@ import {
 import { MedusaError, ModuleRegistrationName, isDefined } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface FindSalesChannelStepInput {
   salesChannelId?: string | null
 }
 
 export const findSalesChannelStepId = "find-sales-channel"
+/**
+ * This step either retrieves a sales channel either using the ID provided as an input, or, if no ID
+ * is provided, the default sales channel of the first store.
+ */
 export const findSalesChannelStep = createStep(
   findSalesChannelStepId,
-  async (data: StepInput, { container }) => {
+  async (data: FindSalesChannelStepInput, { container }) => {
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
       ModuleRegistrationName.SALES_CHANNEL
     )

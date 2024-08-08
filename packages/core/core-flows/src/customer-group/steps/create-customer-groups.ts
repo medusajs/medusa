@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCustomerGroupsStepId = "create-customer-groups"
+/**
+ * This step creates one or more customer groups.
+ */
 export const createCustomerGroupsStep = createStep(
   createCustomerGroupsStepId,
   async (data: CreateCustomerGroupDTO[], { container }) => {

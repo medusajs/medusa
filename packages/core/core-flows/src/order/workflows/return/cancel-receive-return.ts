@@ -12,7 +12,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return receival can be canceled.
+ */
+export const cancelReceiveReturnValidationStep = createStep(
   "validate-cancel-return-shipping-method",
   async function ({
     order,
@@ -30,6 +33,9 @@ const validationStep = createStep(
 )
 
 export const cancelReturnReceiveWorkflowId = "cancel-receive-return"
+/**
+ * This workflow cancels a return receival.
+ */
 export const cancelReturnReceiveWorkflow = createWorkflow(
   cancelReturnReceiveWorkflowId,
   function (input: { return_id: string }): WorkflowData<void> {
@@ -62,7 +68,7 @@ export const cancelReturnReceiveWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderReturn, orderChange })
+    cancelReceiveReturnValidationStep({ order, orderReturn, orderChange })
 
     deleteOrderChangesStep({ ids: [orderChange.id] })
   }

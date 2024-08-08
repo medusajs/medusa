@@ -9,6 +9,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createPriceListPricesStepId = "create-price-list-prices"
+/**
+ * This step creates prices for a price list.
+ */
 export const createPriceListPricesStep = createStep(
   createPriceListPricesStepId,
   async (stepInput: CreatePriceListPricesWorkflowStepDTO, { container }) => {

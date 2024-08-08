@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteCampaignsStepId = "delete-campaigns"
+/**
+ * This step deletes one or more campaigns.
+ */
 export const deleteCampaignsStep = createStep(
   deleteCampaignsStepId,
   async (ids: string[], { container }) => {

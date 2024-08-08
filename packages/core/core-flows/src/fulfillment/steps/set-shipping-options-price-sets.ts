@@ -9,7 +9,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-type SetShippingOptionsPriceSetsStepInput = {
+export type SetShippingOptionsPriceSetsStepInput = {
   id: string
   price_sets?: string[]
 }[]
@@ -56,6 +56,9 @@ async function getCurrentShippingOptionPriceSetsLinks(
 
 export const setShippingOptionsPriceSetsStepId =
   "set-shipping-options-price-sets-step"
+/**
+ * This step sets the price sets of one or more shipping options.
+ */
 export const setShippingOptionsPriceSetsStep = createStep(
   setShippingOptionsPriceSetsStepId,
   async (data: SetShippingOptionsPriceSetsStepInput, { container }) => {

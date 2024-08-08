@@ -23,7 +23,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a claim's shipping method can be removed.
+ */
+export const removeClaimShippingMethodValidationStep = createStep(
   "validate-remove-claim-shipping-method",
   async function ({
     orderChange,
@@ -55,6 +58,9 @@ const validationStep = createStep(
 
 export const removeClaimShippingMethodWorkflowId =
   "remove-claim-shipping-method"
+/**
+ * This workflow removes the shipping method of a claim.
+ */
 export const removeClaimShippingMethodWorkflow = createWorkflow(
   removeClaimShippingMethodWorkflowId,
   function (
@@ -81,7 +87,7 @@ export const removeClaimShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderClaim, orderChange, input })
+    removeClaimShippingMethodValidationStep({ orderClaim, orderChange, input })
 
     const dataToRemove = transform(
       { orderChange, input },

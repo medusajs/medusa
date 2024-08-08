@@ -3,6 +3,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const deleteInventoryItemStepId = "delete-inventory-item-step"
+/**
+ * This step deletes one or more inventory items.
+ */
 export const deleteInventoryItemStep = createStep(
   deleteInventoryItemStepId,
   async (ids: string[], { container }) => {

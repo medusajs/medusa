@@ -6,13 +6,13 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createProductCategoriesStep } from "../steps"
 
-type WorkflowInputData =
-  ProductCategoryWorkflow.CreateProductCategoriesWorkflowInput
-
 export const createProductCategoriesWorkflowId = "create-product-categories"
+/**
+ * This workflow creates one or more product categories.
+ */
 export const createProductCategoriesWorkflow = createWorkflow(
   createProductCategoriesWorkflowId,
-  (input: WorkflowData<WorkflowInputData>) => {
+  (input: WorkflowData<ProductCategoryWorkflow.CreateProductCategoriesWorkflowInput>) => {
     return new WorkflowResponse(createProductCategoriesStep(input))
   }
 )

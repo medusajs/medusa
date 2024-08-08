@@ -6,12 +6,15 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type RevokeApiKeysStepInput = {
+export type RevokeApiKeysStepInput = {
   selector: FilterableApiKeyProps
   revoke: RevokeApiKeyDTO
 }
 
 export const revokeApiKeysStepId = "revoke-api-keys"
+/**
+ * This step revokes one or more API keys.
+ */
 export const revokeApiKeysStep = createStep(
   { name: revokeApiKeysStepId, noCompensation: true },
   async (data: RevokeApiKeysStepInput, { container }) => {

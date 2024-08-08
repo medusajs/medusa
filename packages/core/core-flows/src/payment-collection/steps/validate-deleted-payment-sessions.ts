@@ -1,16 +1,19 @@
 import { MedusaError } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ValidateDeletedPaymentSessionsStepInput {
   idsToDelete: string[]
   idsDeleted: string[]
 }
 
 export const validateDeletedPaymentSessionsStepId =
   "validate-deleted-payment-sessions"
+/**
+ * This step validates that the specified payment session IDs were deleted.
+ */
 export const validateDeletedPaymentSessionsStep = createStep(
   validateDeletedPaymentSessionsStepId,
-  async (input: StepInput) => {
+  async (input: ValidateDeletedPaymentSessionsStepInput) => {
     const { idsToDelete = [], idsDeleted = [] } = input
 
     if (idsToDelete.length !== idsDeleted.length) {

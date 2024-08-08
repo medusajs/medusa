@@ -8,9 +8,12 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 import { AdminOrderCancelFulfillmentType } from "../../../../validators"
+import { AdditionalData } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminOrderCancelFulfillmentType>,
+  req: AuthenticatedMedusaRequest<
+    AdminOrderCancelFulfillmentType & AdditionalData
+  >,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

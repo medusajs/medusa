@@ -17,6 +17,7 @@ import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
+import { ProductVariant } from "./product-variant"
 import { RefundReason } from "./refund-reasons"
 import { Region } from "./region"
 import { Return } from "./return"
@@ -62,6 +63,7 @@ export class Admin {
   public user: User
   public currency: Currency
   public payment: Payment
+  public productVariant: ProductVariant
   public refundReason: RefundReason
 
   constructor(client: Client) {
@@ -95,6 +97,7 @@ export class Admin {
     this.user = new User(client)
     this.currency = new Currency(client)
     this.payment = new Payment(client)
+    this.productVariant = new ProductVariant(client)
     this.refundReason = new RefundReason(client)
   }
 }

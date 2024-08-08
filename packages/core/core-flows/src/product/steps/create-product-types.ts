@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createProductTypesStepId = "create-product-types"
+/**
+ * This step creates one or more product types.
+ */
 export const createProductTypesStep = createStep(
   createProductTypesStepId,
   async (data: ProductTypes.CreateProductTypeDTO[], { container }) => {

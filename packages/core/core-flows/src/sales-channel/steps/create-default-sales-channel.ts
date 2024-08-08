@@ -5,14 +5,17 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface CreateDefaultSalesChannelStepInput {
   data: CreateSalesChannelDTO
 }
 
 export const createDefaultSalesChannelStepId = "create-default-sales-channel"
+/**
+ * This step creates a default sales channel.
+ */
 export const createDefaultSalesChannelStep = createStep(
   createDefaultSalesChannelStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CreateDefaultSalesChannelStepInput, { container }) => {
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
       ModuleRegistrationName.SALES_CHANNEL
     )

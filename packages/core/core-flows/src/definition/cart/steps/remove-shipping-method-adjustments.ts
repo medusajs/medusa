@@ -2,15 +2,18 @@ import { ICartModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface RemoveShippingMethodAdjustmentsStepInput {
   shippingMethodAdjustmentIdsToRemove: string[]
 }
 
 export const removeShippingMethodAdjustmentsStepId =
   "remove-shipping-method-adjustments"
+/**
+ * This step removes shipping method adjustments from a cart.
+ */
 export const removeShippingMethodAdjustmentsStep = createStep(
   removeShippingMethodAdjustmentsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: RemoveShippingMethodAdjustmentsStepInput, { container }) => {
     const { shippingMethodAdjustmentIdsToRemove = [] } = data
     const cartModuleService: ICartModuleService = container.resolve(
       ModuleRegistrationName.CART

@@ -7,6 +7,8 @@ import {
 import { MedusaError, deepFlatMap } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -18,8 +20,11 @@ import { deleteReservationsByLineItemsStep } from "../../reservation/steps"
 import { cancelOrdersStep } from "../steps/cancel-orders"
 import { throwIfOrderIsCancelled } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that an order can be canceled.
+ */
+export const cancelValidateOrder = createStep(
+  "cancel-validate-order",
   ({
     order,
   }: {
@@ -75,11 +80,12 @@ const validateOrder = createStep(
 )
 
 export const cancelOrderWorkflowId = "cancel-order"
+/**
+ * This workflow cancels an order.
+ */
 export const cancelOrderWorkflow = createWorkflow(
   cancelOrderWorkflowId,
-  (
-    input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>
-  ): WorkflowData<void> => {
+  (input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>) => {
     const order: OrderDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "orders",
@@ -97,7 +103,7 @@ export const cancelOrderWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ order, input })
+    cancelValidateOrder({ order, input })
 
     const lineItemIds = transform({ order }, ({ order }) => {
       return order.items?.map((i) => i.id)
@@ -118,5 +124,13 @@ export const cancelOrderWorkflow = createWorkflow(
       cancelPaymentStep({ paymentIds }),
       cancelOrdersStep({ orderIds: [order.id] })
     )
+
+    const orderCanceled = createHook("orderCanceled", {
+      order,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [orderCanceled],
+    })
   }
 )

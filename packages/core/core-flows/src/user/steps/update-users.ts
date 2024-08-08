@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateUsersStepId = "update-users-step"
+/**
+ * This step updates one or more stores.
+ */
 export const updateUsersStep = createStep(
   updateUsersStepId,
   async (input: UpdateUserDTO[], { container }) => {

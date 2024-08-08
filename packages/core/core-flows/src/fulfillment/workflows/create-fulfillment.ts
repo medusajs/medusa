@@ -7,6 +7,9 @@ import {
 import { createFulfillmentStep } from "../steps"
 
 export const createFulfillmentWorkflowId = "create-fulfillment-workflow"
+/**
+ * This workflow creates a fulfillment.
+ */
 export const createFulfillmentWorkflow = createWorkflow(
   createFulfillmentWorkflowId,
   (

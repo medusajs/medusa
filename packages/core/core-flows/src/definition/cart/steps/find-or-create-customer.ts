@@ -2,12 +2,12 @@ import { CustomerDTO, ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName, validateEmail } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface FindOrCreateCustomerStepInput {
   customerId?: string | null
   email?: string | null
 }
 
-interface StepOutput {
+export interface FindOrCreateCustomerOutputStepOutput {
   customer?: CustomerDTO | null
   email?: string | null
 }
@@ -18,9 +18,13 @@ interface StepCompensateInput {
 }
 
 export const findOrCreateCustomerStepId = "find-or-create-customer"
+/**
+ * This step either finds a customer matching the specified ID, or finds / create a customer 
+ * matching the specified email. If both ID and email are provided, ID takes precedence.
+ */
 export const findOrCreateCustomerStep = createStep(
   findOrCreateCustomerStepId,
-  async (data: StepInput, { container }) => {
+  async (data: FindOrCreateCustomerStepInput, { container }) => {
     if (
       typeof data.customerId === undefined &&
       typeof data.email === undefined
@@ -38,7 +42,7 @@ export const findOrCreateCustomerStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const customerData: StepOutput = {
+    const customerData: FindOrCreateCustomerOutputStepOutput = {
       customer: null,
       email: null,
     }

@@ -14,7 +14,10 @@ import { cancelOrderClaimStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 import { cancelReturnWorkflow } from "../return/cancel-return"
 
-const validateOrder = createStep(
+/**
+ * This step validates that a confirmed claim can be canceled.
+ */
+export const cancelClaimValidateOrderStep = createStep(
   "validate-claim",
   ({
     orderClaim,
@@ -49,6 +52,9 @@ const validateOrder = createStep(
 )
 
 export const cancelOrderClaimWorkflowId = "cancel-claim"
+/**
+ * This workflow cancels a confirmed order claim.
+ */
 export const cancelOrderClaimWorkflow = createWorkflow(
   cancelOrderClaimWorkflowId,
   (
@@ -70,7 +76,7 @@ export const cancelOrderClaimWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ orderClaim, input })
+    cancelClaimValidateOrderStep({ orderClaim, input })
 
     const lineItemIds = transform({ orderClaim }, ({ orderClaim }) => {
       return orderClaim.additional_items?.map((i) => i.item_id)

@@ -6,14 +6,17 @@ import {
 } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type CancelPaymentStepInput = {
   paymentIds: string | string[]
 }
 
 export const cancelPaymentStepId = "cancel-payment-step"
+/**
+ * This step cancels one or more payments.
+ */
 export const cancelPaymentStep = createStep(
   cancelPaymentStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CancelPaymentStepInput, { container }) => {
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT

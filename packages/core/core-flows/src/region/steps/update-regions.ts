@@ -9,12 +9,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateRegionsStepInput = {
+export type UpdateRegionsStepInput = {
   selector: FilterableRegionProps
   update: UpdateRegionDTO
 }
 
 export const updateRegionsStepId = "update-region"
+/**
+ * This step updates regions matching the specified filters.
+ */
 export const updateRegionsStep = createStep(
   updateRegionsStepId,
   async (data: UpdateRegionsStepInput, { container }) => {

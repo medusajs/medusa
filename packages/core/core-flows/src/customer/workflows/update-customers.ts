@@ -11,17 +11,18 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateCustomersStep } from "../steps"
 
-type UpdateCustomersStepInput = {
+export type UpdateCustomersWorkflowInput = {
   selector: FilterableCustomerProps
   update: CustomerUpdatableFields
 } & AdditionalData
 
-type WorkflowInput = UpdateCustomersStepInput
-
 export const updateCustomersWorkflowId = "update-customers"
+/**
+ * This workflow updates one or more customers.
+ */
 export const updateCustomersWorkflow = createWorkflow(
   updateCustomersWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdateCustomersWorkflowInput>) => {
     const updatedCustomers = updateCustomersStep(input)
     const customersUpdated = createHook("customersUpdated", {
       customers: updatedCustomers,

@@ -34,7 +34,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { AddClaimItemsTable } from "../add-claim-items-table"
 import { ClaimInboundItem } from "./claim-inbound-item.tsx"
-import { ClaimCreateSchema, ReturnCreateSchemaType } from "./schema"
+import { ClaimCreateSchema, CreateClaimSchemaType } from "./schema"
 
 import {
   useAddClaimInboundItems,
@@ -47,6 +47,8 @@ import {
 } from "../../../../../hooks/api/claims"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
+import { ClaimOutboundSection } from "./claim-outbound-section"
+import { ItemPlaceholder } from "./item-placeholder"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -56,7 +58,6 @@ type ReturnCreateFormProps = {
 
 let itemsToAdd: string[] = []
 let itemsToRemove: string[] = []
-
 let IS_CANCELING = false
 
 export const ClaimCreateForm = ({
@@ -92,11 +93,13 @@ export const ClaimCreateForm = ({
   /**
    * MUTATIONS
    */
+  // TODO: implement confirm claim request
   const { mutateAsync: confirmClaimRequest, isPending: isConfirming } = {} // useConfirmClaimRequest(claim.id, order.id)
 
   const { mutateAsync: cancelClaimRequest, isPending: isCanceling } =
     useCancelClaimRequest(claim.id, order.id)
 
+  // TODO: implement update claim request
   const { mutateAsync: updateClaimRequest, isPending: isUpdating } = {} // useUpdateClaim(claim.id, order.id)
 
   const {
@@ -145,40 +148,50 @@ export const ClaimCreateForm = ({
     [preview.items]
   )
 
+  const inboundPreviewItems = previewItems.filter(
+    (item) => !!item.actions?.find((a) => a.action === "RETURN_ITEM")
+  )
+
+  const outboundPreviewItems = previewItems.filter(
+    (item) => !!item.actions?.find((a) => a.action === "ITEM_ADD")
+  )
+
   const itemsMap = useMemo(
     () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
 
-  const previewItemsMap = useMemo(
-    () => new Map(previewItems.map((i) => [i.id, i])),
-    [previewItems]
-  )
-
   /**
    * FORM
    */
-
-  const form = useForm<ReturnCreateSchemaType>({
+  const form = useForm<CreateClaimSchemaType>({
     defaultValues: () => {
       const method = preview.shipping_methods.find(
         (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
       )
 
       return Promise.resolve({
-        inbound_items: previewItems.map((i) => {
-          const returnAction = i.actions?.find(
+        inbound_items: inboundPreviewItems.map((i) => {
+          const inboundAction = i.actions?.find(
             (a) => a.action === "RETURN_ITEM"
           )
 
           return {
             item_id: i.id,
+            variant_id: i.variant_id,
             quantity: i.detail.return_requested_quantity,
-            note: returnAction?.internal_note,
-            reason_id: returnAction?.details?.reason_id as string | undefined,
+            note: inboundAction?.internal_note,
+            reason_id: inboundAction?.details?.reason_id as string | undefined,
           }
         }),
+        outbound_items: outboundPreviewItems.map((i) => ({
+          item_id: i.id,
+          variant_id: i.variant_id,
+          quantity: i.detail.quantity,
+        })),
         inbound_option_id: method ? method.shipping_option_id : "",
+        // TODO: pick up shipping method for outbound when available
+        outbound_option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
       })
@@ -187,7 +200,7 @@ export const ClaimCreateForm = ({
   })
 
   const {
-    fields: items,
+    fields: inboundItems,
     append,
     remove,
     update,
@@ -196,22 +209,27 @@ export const ClaimCreateForm = ({
     control: form.control,
   })
 
+  const previewItemsMap = useMemo(
+    () => new Map(previewItems.map((i) => [i.id, i])),
+    [previewItems, inboundItems]
+  )
+
   useEffect(() => {
     const existingItemsMap: Record<string, boolean> = {}
 
-    previewItems.forEach((i) => {
-      const ind = items.findIndex((field) => field.item_id === i.id)
+    inboundPreviewItems.forEach((i) => {
+      const ind = inboundItems.findIndex((field) => field.item_id === i.id)
 
       existingItemsMap[i.id] = true
 
       if (ind > -1) {
-        if (items[ind].quantity !== i.detail.return_requested_quantity) {
+        if (inboundItems[ind].quantity !== i.detail.return_requested_quantity) {
           const returnItemAction = i.actions?.find(
             (a) => a.action === "RETURN_ITEM"
           )
 
           update(ind, {
-            ...items[ind],
+            ...inboundItems[ind],
             quantity: i.detail.return_requested_quantity,
             note: returnItemAction?.internal_note,
             reason_id: returnItemAction?.details?.reason_id as string,
@@ -222,7 +240,7 @@ export const ClaimCreateForm = ({
       }
     })
 
-    items.forEach((i, ind) => {
+    inboundItems.forEach((i, ind) => {
       if (!(i.item_id in existingItemsMap)) {
         remove(ind)
       }
@@ -239,7 +257,7 @@ export const ClaimCreateForm = ({
     }
   }, [preview.shipping_methods])
 
-  const showPlaceholder = !items.length
+  const showInboundItemsPlaceholder = !inboundItems.length
   const locationId = form.watch("location_id")
   const shippingOptionId = form.watch("inbound_option_id")
 
@@ -285,7 +303,7 @@ export const ClaimCreateForm = ({
       }
     }
 
-    setIsOpen("items", false)
+    setIsOpen("inbound-items", false)
   }
 
   const onLocationChange = async (selectedLocationId?: string | null) => {
@@ -321,7 +339,7 @@ export const ClaimCreateForm = ({
       return false
     }
 
-    const allItemsHaveLocation = items
+    const allItemsHaveLocation = inboundItems
       .map((_i) => {
         const item = itemsMap.get(_i.item_id)
         if (!item?.variant_id || !item?.variant) {
@@ -339,45 +357,30 @@ export const ClaimCreateForm = ({
       .every(Boolean)
 
     return !allItemsHaveLocation
-  }, [items, inventoryMap, locationId])
+  }, [inboundItems, inventoryMap, locationId])
 
   useEffect(() => {
     const getInventoryMap = async () => {
       const ret: Record<string, InventoryLevelDTO[]> = {}
 
-      if (!items.length) {
+      if (!inboundItems.length) {
         return ret
       }
 
-      ;(
-        await Promise.all(
-          items.map(async (_i) => {
-            const item = itemsMap.get(_i.item_id)!
+      const variantIds = inboundItems
+        .map((item) => item?.variant_id)
+        .filter(Boolean)
 
-            if (!item.variant_id || !item.variant?.product) {
-              return undefined
-            }
-
-            return await sdk.admin.product.retrieveVariant(
-              item.variant.product.id,
-              item.variant_id,
-              { fields: "*inventory,*inventory.location_levels" }
-            )
-          })
+      const variants = (
+        await sdk.admin.productVariant.list(
+          { id: variantIds },
+          { fields: "*inventory,*inventory.location_levels" }
         )
-      )
-        .filter((it) => !!it?.variant)
-        .forEach((item) => {
+      ).variants
 
-          const { variant } = item
-          const levels = variant.inventory[0]?.location_levels
-
-          if (!levels) {
-            return
-          }
-
-          ret[variant.id] = levels
-        })
+      variants.forEach((variant) => {
+        ret[variant.id] = variant.inventory[0]?.location_levels || []
+      })
 
       return ret
     }
@@ -385,7 +388,7 @@ export const ClaimCreateForm = ({
     getInventoryMap().then((map) => {
       setInventoryMap(map)
     })
-  }, [items])
+  }, [inboundItems])
 
   useEffect(() => {
     /**
@@ -429,7 +432,8 @@ export const ClaimCreateForm = ({
             <Heading level="h1">{t("orders.claims.create")}</Heading>
             <div className="mt-8 flex items-center justify-between">
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
-              <StackedFocusModal id="items">
+
+              <StackedFocusModal id="inbound-items">
                 <StackedFocusModal.Trigger asChild>
                   <a className="focus-visible:shadow-borders-focus transition-fg txt-compact-small-plus cursor-pointer text-blue-500 outline-none hover:text-blue-400">
                     {t("actions.addItems")}
@@ -440,10 +444,10 @@ export const ClaimCreateForm = ({
 
                   <AddClaimItemsTable
                     items={order.items!}
-                    selectedItems={items.map((i) => i.item_id)}
+                    selectedItems={inboundItems.map((i) => i.item_id)}
                     currencyCode={order.currency_code}
                     onSelectionChange={(finalSelection) => {
-                      const alreadySelected = items.map((i) => i.item_id)
+                      const alreadySelected = inboundItems.map((i) => i.item_id)
 
                       itemsToAdd = finalSelection.filter(
                         (selection) => !alreadySelected.includes(selection)
@@ -482,20 +486,11 @@ export const ClaimCreateForm = ({
                 </StackedFocusModal.Content>
               </StackedFocusModal>
             </div>
-
-            {showPlaceholder && (
-              <div
-                style={{
-                  background:
-                    "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
-                }}
-                className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed"
-              />
-            )}
-
-            {items.map(
+            {showInboundItemsPlaceholder && <ItemPlaceholder />}
+            {inboundItems.map(
               (item, index) =>
-                previewItemsMap.get(item.item_id) && (
+                previewItemsMap.get(item.item_id) &&
+                itemsMap.get(item.item_id)! && (
                   <ClaimInboundItem
                     key={item.id}
                     item={itemsMap.get(item.item_id)!}
@@ -535,8 +530,7 @@ export const ClaimCreateForm = ({
                   />
                 )
             )}
-
-            {!showPlaceholder && (
+            {!showInboundItemsPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/*LOCATION*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -628,7 +622,6 @@ export const ClaimCreateForm = ({
                 </div>
               </div>
             )}
-
             {showLevelsWarning && (
               <Alert variant="warning" dismissible className="mt-4 p-5">
                 <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
@@ -639,6 +632,13 @@ export const ClaimCreateForm = ({
                 </Text>
               </Alert>
             )}
+
+            <ClaimOutboundSection
+              form={form}
+              preview={preview}
+              order={order}
+              claim={claim}
+            />
 
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
@@ -664,7 +664,9 @@ export const ClaimCreateForm = ({
                       onClick={() => setIsShippingPriceEdit(true)}
                       variant="transparent"
                       className="text-ui-fg-muted"
-                      disabled={showPlaceholder || !shippingOptionId}
+                      disabled={
+                        showInboundItemsPlaceholder || !shippingOptionId
+                      }
                     >
                       <PencilSquare />
                     </IconButton>
@@ -712,7 +714,7 @@ export const ClaimCreateForm = ({
                         value && setCustomShippingAmount(parseInt(value))
                       }
                       value={customShippingAmount}
-                      disabled={showPlaceholder}
+                      disabled={showInboundItemsPlaceholder}
                     />
                   ) : (
                     getStylizedAmount(shippingTotal, order.currency_code)
@@ -732,7 +734,6 @@ export const ClaimCreateForm = ({
                 </span>
               </div>
             </div>
-
             {/*SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field

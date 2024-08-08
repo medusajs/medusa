@@ -342,6 +342,165 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         )
       })
 
+      it("should create an order change, add actions to it and confirm the changes.", async function () {
+        const createdOrder = await service.createOrders(input)
+        createdOrder.items = createdOrder.items!.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        )
+
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.FULFILL_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 2,
+              },
+            },
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 1,
+              },
+            },
+          ],
+        })
+
+        await expect(
+          service.confirmOrderChange({
+            id: orderChange.id,
+          })
+        ).rejects.toThrow(
+          `Item ${
+            createdOrder.items![1].id
+          } has already been fulfilled and quantity cannot be lower than 2.`
+        )
+        await service.deleteOrderChanges([orderChange.id])
+
+        // Create Order Change
+        const orderChange2 = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.FULFILL_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 1,
+              },
+            },
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 4,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange2.id,
+        })
+
+        const changedOrder = await service.retrieveOrder(createdOrder.id, {
+          select: ["total", "items.detail", "summary"],
+          relations: ["items"],
+        })
+
+        expect(
+          JSON.parse(
+            JSON.stringify(
+              changedOrder.items?.find(
+                (i) => i.id === createdOrder.items![1].id
+              )?.detail
+            )
+          )
+        ).toEqual(
+          expect.objectContaining({
+            quantity: 4,
+            fulfilled_quantity: 1,
+          })
+        )
+
+        // Create Order Change
+        const orderChange3 = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.FULFILL_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 3,
+              },
+            },
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 3,
+              },
+            },
+          ],
+        })
+
+        await expect(
+          service.confirmOrderChange({
+            id: orderChange3.id,
+          })
+        ).rejects.toThrow(
+          `Item ${
+            createdOrder.items![1].id
+          } has already been fulfilled and quantity cannot be lower than 4.`
+        )
+        await service.deleteOrderChanges([orderChange3.id])
+
+        // Create Order Change
+        const orderChange4 = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.FULFILL_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 1,
+              },
+            },
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 3,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange4.id,
+        })
+
+        const modified = await service.retrieveOrder(createdOrder.id, {
+          select: ["total", "items.detail", "summary"],
+          relations: ["items"],
+        })
+
+        expect(
+          JSON.parse(
+            JSON.stringify(
+              modified.items?.find((i) => i.id === createdOrder.items![1].id)
+                ?.detail
+            )
+          )
+        ).toEqual(
+          expect.objectContaining({
+            quantity: 3,
+            fulfilled_quantity: 2,
+          })
+        )
+      })
+
       it("should create an order change, add actions to it, confirm the changes, revert all the changes and restore the changes again.", async function () {
         const createdOrder = await service.createOrders(input)
         createdOrder.items = createdOrder.items!.sort((a, b) =>

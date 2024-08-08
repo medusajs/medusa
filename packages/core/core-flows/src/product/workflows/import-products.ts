@@ -14,6 +14,9 @@ import {
 import { batchProductsWorkflow } from "./batch-products"
 
 export const importProductsWorkflowId = "import-products"
+/**
+ * This workflow imports products from a CSV file.
+ */
 export const importProductsWorkflow = createWorkflow(
   importProductsWorkflowId,
   (

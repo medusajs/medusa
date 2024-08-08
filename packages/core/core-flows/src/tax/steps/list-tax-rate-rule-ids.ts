@@ -2,14 +2,17 @@ import { FilterableTaxRateRuleProps, ITaxModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type ListTaxRateRuleIdsStepInput = {
   selector: FilterableTaxRateRuleProps
 }
 
 export const listTaxRateRuleIdsStepId = "list-tax-rate-rule-ids"
+/**
+ * This step retrieves the IDs of tax rate rules matching the specified filters.
+ */
 export const listTaxRateRuleIdsStep = createStep(
   listTaxRateRuleIdsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: ListTaxRateRuleIdsStepInput, { container }) => {
     const service = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
