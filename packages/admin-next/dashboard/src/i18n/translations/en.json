@@ -845,6 +845,7 @@
     "returns": {
       "create": "Create Return",
       "inbound": "Inbound",
+      "outbound": "Outbound",
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
@@ -885,6 +886,8 @@
     "claims": {
       "create": "Create Claim",
       "outbound": "Outbound",
+      "outboundShipping": "Outbound shipping",
+      "outboundShippingHint": "Choose which method you want to use.",
       "refundAmount": "Estimated difference",
       "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
       "actions": {
