@@ -10,15 +10,19 @@ import {
 import { ComputedActions, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface PrepareAdjustmentsFromPromotionActionsStepInput {
   actions: ComputeActions[]
 }
 
 export const prepareAdjustmentsFromPromotionActionsStepId =
   "prepare-adjustments-from-promotion-actions"
+/**
+ * This step prepares the line item or shipping method adjustments using
+ * actions computed by the Promotion Module.
+ */
 export const prepareAdjustmentsFromPromotionActionsStep = createStep(
   prepareAdjustmentsFromPromotionActionsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: PrepareAdjustmentsFromPromotionActionsStepInput, { container }) => {
     const promotionModuleService: IPromotionModuleService = container.resolve(
       ModuleRegistrationName.PROMOTION
     )

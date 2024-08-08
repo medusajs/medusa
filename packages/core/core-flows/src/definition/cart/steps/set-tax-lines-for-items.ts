@@ -9,16 +9,19 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface SetTaxLinesForItemsStepInput {
   cart: CartWorkflowDTO
   item_tax_lines: ItemTaxLineDTO[]
   shipping_tax_lines: ShippingTaxLineDTO[]
 }
 
 export const setTaxLinesForItemsStepId = "set-tax-lines-for-items"
+/**
+ * This step sets the tax lines of shipping methods and line items in a cart.
+ */
 export const setTaxLinesForItemsStep = createStep(
   setTaxLinesForItemsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: SetTaxLinesForItemsStepInput, { container }) => {
     const { cart, item_tax_lines, shipping_tax_lines } = data
     const cartService = container.resolve<ICartModuleService>(
       ModuleRegistrationName.CART
