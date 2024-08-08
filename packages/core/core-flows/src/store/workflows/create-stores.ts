@@ -8,12 +8,15 @@ import {
 import { createStoresStep } from "../steps"
 import { updatePricePreferencesAsArrayStep } from "../../pricing"
 
-type WorkflowInputData = { stores: StoreWorkflow.CreateStoreWorkflowInput[] }
+type CreateStoresWorkflowInput = { stores: StoreWorkflow.CreateStoreWorkflowInput[] }
 
 export const createStoresWorkflowId = "create-stores"
+/**
+ * This workflow creates one or more stores.
+ */
 export const createStoresWorkflow = createWorkflow(
   createStoresWorkflowId,
-  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
+  (input: WorkflowData<CreateStoresWorkflowInput>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       return data.input.stores.map((store) => {
         return {
