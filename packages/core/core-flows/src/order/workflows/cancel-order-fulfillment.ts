@@ -159,7 +159,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       },
     })
 
-    const orderFulfillmentCancelled = createHook("orderFulfillmentCancelled", {
+    const orderFulfillmentCanceled = createHook("orderFulfillmentCanceled", {
       fulfillment,
       additional_data: input.additional_data,
     })
