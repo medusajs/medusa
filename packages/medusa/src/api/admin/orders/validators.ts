@@ -73,16 +73,14 @@ const Label = z.object({
   label_url: z.string(),
 })
 
-export const AdminOrderCreateShipment = z.object({
+export type AdminOrderCreateShipmentType = z.infer<typeof OrderCreateShipment>
+export const OrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).optional(),
   no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-
-export type AdminOrderCreateShipmentType = z.infer<
-  typeof AdminOrderCreateShipment
->
+export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
 
 export const AdminOrderCancelFulfillment = z.object({
   no_notification: z.boolean().optional(),
