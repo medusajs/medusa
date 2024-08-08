@@ -9,13 +9,12 @@ export const ClaimCreateSchema = z.object({
       note: z.string().nullish(),
     })
   ),
-  // TODO: Bring back when introducing outbound items
-  // outbound_items: z.array(
-  //   z.object({
-  //     item_id: z.string(), // TODO: variant id?
-  //     quantity: z.number(),
-  //   })
-  // ),
+  outbound_items: z.array(
+    z.object({
+      item_id: z.string(), // TODO: variant id?
+      quantity: z.number(),
+    })
+  ),
   location_id: z.string().optional(),
   inbound_option_id: z.string().nullish(),
   send_notification: z.boolean().optional(),
