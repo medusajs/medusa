@@ -124,7 +124,7 @@ export const cancelOrderWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(void 0, {
-      hooks: [orderCancelled],
+      hooks: [orderCanceled],
     })
   }
 )

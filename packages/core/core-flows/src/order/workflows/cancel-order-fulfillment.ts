@@ -165,7 +165,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(void 0, {
-      hooks: [orderFulfillmentCancelled],
+      hooks: [orderFulfillmentCanceled],
     })
   }
 )
