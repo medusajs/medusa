@@ -13,12 +13,15 @@ import {
   maybeUnsetDefaultShippingAddressesStep,
 } from "../steps"
 
-type WorkflowInput = { addresses: CreateCustomerAddressDTO[] } & AdditionalData
+export type CreateCustomerAddressesWorkflowInput = { addresses: CreateCustomerAddressDTO[] } & AdditionalData
 
 export const createCustomerAddressesWorkflowId = "create-customer-addresses"
+/**
+ * This workflow creates one or more customer address.
+ */
 export const createCustomerAddressesWorkflow = createWorkflow(
   createCustomerAddressesWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateCustomerAddressesWorkflowInput>) => {
     const unsetInput = transform(input, (data) => ({
       create: data.addresses,
     }))

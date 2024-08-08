@@ -3,6 +3,7 @@ import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
@@ -42,26 +43,29 @@ export const AdminArchiveOrder = z.object({
 })
 export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
 
-export const AdminCompleteOrder = z.object({
+export type AdminCompleteOrderType = z.infer<typeof CompleteOrder>
+export const CompleteOrder = z.object({
   order_id: z.string(),
 })
-export type AdminCompleteOrderType = z.infer<typeof AdminArchiveOrder>
+export const AdminCompleteOrder = WithAdditionalData(CompleteOrder)
 
 const Item = z.object({
   id: z.string(),
   quantity: z.number(),
 })
 
-export const AdminOrderCreateFulfillment = z.object({
+export type AdminOrderCreateFulfillmentType = z.infer<
+  typeof OrderCreateFulfillment
+>
+export const OrderCreateFulfillment = z.object({
   items: z.array(Item),
   location_id: z.string().nullish(),
   no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-
-export type AdminOrderCreateFulfillmentType = z.infer<
-  typeof AdminOrderCreateFulfillment
->
+export const AdminOrderCreateFulfillment = WithAdditionalData(
+  OrderCreateFulfillment
+)
 
 const Label = z.object({
   tracking_number: z.string(),
@@ -69,21 +73,21 @@ const Label = z.object({
   label_url: z.string(),
 })
 
-export const AdminOrderCreateShipment = z.object({
+export type AdminOrderCreateShipmentType = z.infer<typeof OrderCreateShipment>
+export const OrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).optional(),
   no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-
-export type AdminOrderCreateShipmentType = z.infer<
-  typeof AdminOrderCreateShipment
->
-
-export const AdminOrderCancelFulfillment = z.object({
-  no_notification: z.boolean().optional(),
-})
+export const AdminOrderCreateShipment = WithAdditionalData(OrderCreateShipment)
 
 export type AdminOrderCancelFulfillmentType = z.infer<
-  typeof AdminOrderCancelFulfillment
+  typeof OrderCancelFulfillment
 >
+export const OrderCancelFulfillment = z.object({
+  no_notification: z.boolean().optional(),
+})
+export const AdminOrderCancelFulfillment = WithAdditionalData(
+  OrderCancelFulfillment
+)

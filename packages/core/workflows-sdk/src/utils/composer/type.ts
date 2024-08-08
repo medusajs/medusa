@@ -32,7 +32,9 @@ export type HookHandler = (...args: any[]) => void | Promise<void>
 type ConvertHooksToFunctions<THooks extends any[]> = {
   [K in keyof THooks]: THooks[K] extends Hook<infer Name, infer Input>
     ? {
-        [Fn in Name]: (callback: (input: Input) => any) => void
+        [Fn in Name]: (
+          callback: (input: Input, context: StepExecutionContext) => any
+        ) => void
       }
     : never
 }[number]
@@ -218,9 +220,9 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
 } & {
   /**
    * This method executes the workflow as a step. Useful when running a workflow within another.
-   * 
+   *
    * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/execute-another-workflow).
-   * 
+   *
    * @param param0 - The options to execute the workflow.
    * @returns The workflow's result
    */
@@ -234,7 +236,7 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   }) => ReturnType<StepFunction<TData, TResult>>
   /**
    * This method executes a workflow.
-   * 
+   *
    * @param args - The options to execute the workflow.
    * @returns Details of the workflow's execution, including its result.
    */
@@ -255,7 +257,7 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
   config: (config: TransactionModelOptions) => void
   /**
    * The workflow's exposed hooks, used to register a handler to consume the hook.
-   * 
+   *
    * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook#how-to-consume-a-hook).
    */
   hooks: ConvertHooksToFunctions<THooks>
