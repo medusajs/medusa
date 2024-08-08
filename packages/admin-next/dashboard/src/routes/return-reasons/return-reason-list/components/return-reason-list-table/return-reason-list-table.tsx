@@ -65,6 +65,7 @@ export const ReturnReasonListTable = () => {
         isLoading={isPending}
         columns={columns}
         pageSize={PAGE_SIZE}
+        noHeader={true}
         pagination
       />
     </Container>
