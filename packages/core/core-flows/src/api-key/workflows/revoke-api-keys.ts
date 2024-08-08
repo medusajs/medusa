@@ -10,17 +10,18 @@ import {
 } from "@medusajs/workflows-sdk"
 import { revokeApiKeysStep } from "../steps"
 
-type RevokeApiKeysStepInput = {
+export type RevokeApiKeysWorkflowInput = {
   selector: FilterableApiKeyProps
   revoke: RevokeApiKeyDTO
 }
 
-type WorkflowInput = RevokeApiKeysStepInput
-
 export const revokeApiKeysWorkflowId = "revoke-api-keys"
+/**
+ * This workflow revokes one or more API keys.
+ */
 export const revokeApiKeysWorkflow = createWorkflow(
   revokeApiKeysWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<ApiKeyDTO[]> => {
+  (input: WorkflowData<RevokeApiKeysWorkflowInput>): WorkflowResponse<ApiKeyDTO[]> => {
     return new WorkflowResponse(revokeApiKeysStep(input))
   }
 )

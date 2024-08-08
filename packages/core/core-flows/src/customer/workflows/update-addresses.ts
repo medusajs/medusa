@@ -17,15 +17,18 @@ import {
   updateCustomerAddressesStep,
 } from "../steps"
 
-type WorkflowInput = {
+export type UpdateCustomerAddressesWorkflowInput = {
   selector: FilterableCustomerAddressProps
   update: UpdateCustomerAddressDTO
 } & AdditionalData
 
 export const updateCustomerAddressesWorkflowId = "update-customer-addresses"
+/**
+ * This workflow updates one or more customer addresses.
+ */
 export const updateCustomerAddressesWorkflow = createWorkflow(
   updateCustomerAddressesWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdateCustomerAddressesWorkflowInput>) => {
     const unsetInput = transform(input, (data) => ({
       update: data,
     }))
