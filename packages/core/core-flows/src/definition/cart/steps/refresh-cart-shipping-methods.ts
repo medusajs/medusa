@@ -6,14 +6,17 @@ import {
 import { ModuleRegistrationName, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface RefreshCartShippingMethodsStepInput {
   cart: CartDTO
 }
 
 export const refreshCartShippingMethodsStepId = "refresh-cart-shipping-methods"
+/**
+ * This step refreshes the shipping methods of a cart.
+ */
 export const refreshCartShippingMethodsStep = createStep(
   refreshCartShippingMethodsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: RefreshCartShippingMethodsStepInput, { container }) => {
     const { cart } = data
     const { shipping_methods: shippingMethods = [] } = cart
 

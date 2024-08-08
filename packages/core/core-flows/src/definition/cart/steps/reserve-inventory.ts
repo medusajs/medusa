@@ -2,7 +2,7 @@ import { IInventoryService } from "@medusajs/types"
 import { MathBN, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ReserveVariantInventoryStepInput {
   items: {
     id?: string
     inventory_item_id: string
@@ -14,9 +14,13 @@ interface StepInput {
 }
 
 export const reserveInventoryStepId = "reserve-inventory-step"
+/**
+ * This step reserves the quantity of line items from the associated
+ * variant's inventory.
+ */
 export const reserveInventoryStep = createStep(
   reserveInventoryStepId,
-  async (data: StepInput, { container }) => {
+  async (data: ReserveVariantInventoryStepInput, { container }) => {
     const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )

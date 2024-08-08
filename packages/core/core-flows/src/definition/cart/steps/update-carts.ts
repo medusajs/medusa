@@ -10,6 +10,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateCartsStepId = "update-carts"
+/**
+ * This step updates a cart.
+ */
 export const updateCartsStep = createStep(
   updateCartsStepId,
   async (data: UpdateCartWorkflowInputDTO[], { container }) => {
