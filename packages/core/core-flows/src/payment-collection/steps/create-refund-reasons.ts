@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createRefundReasonStepId = "create-refund-reason"
+/**
+ * This step creates one or more refund reasons.
+ */
 export const createRefundReasonStep = createStep(
   createRefundReasonStepId,
   async (data: CreateRefundReasonDTO[], { container }) => {

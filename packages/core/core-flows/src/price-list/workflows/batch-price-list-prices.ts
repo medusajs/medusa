@@ -14,6 +14,9 @@ import { removePriceListPricesWorkflowStep } from "../steps/remove-price-list-pr
 import { updatePriceListPricesWorkflowStep } from "../steps/update-price-list-prices-workflow"
 
 export const batchPriceListPricesWorkflowId = "batch-price-list-prices"
+/**
+ * This workflow manages price lists' prices by creating, updating, or removing them.
+ */
 export const batchPriceListPricesWorkflow = createWorkflow(
   batchPriceListPricesWorkflowId,
   (
