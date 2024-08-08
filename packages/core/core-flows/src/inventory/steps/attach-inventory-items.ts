@@ -5,6 +5,9 @@ import { InventoryItemDTO } from "@medusajs/types"
 
 export const attachInventoryItemToVariantsStepId =
   "attach-inventory-items-to-variants-step"
+/**
+ * This step creates one or more links between variant and inventory item records.
+ */
 export const attachInventoryItemToVariants = createStep(
   attachInventoryItemToVariantsStepId,
   async (

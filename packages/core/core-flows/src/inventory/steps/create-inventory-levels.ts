@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const createInventoryLevelsStepId = "create-inventory-levels"
+/**
+ * This step creates one or more inventory levels.
+ */
 export const createInventoryLevelsStep = createStep(
   createInventoryLevelsStepId,
   async (data: InventoryTypes.CreateInventoryLevelInput[], { container }) => {
