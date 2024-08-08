@@ -8,6 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
+import { CreateClaimSchemaType } from "./schema"
 
 type ClaimOutboundItemProps = {
   previewItem: AdminOrderLineItem
@@ -15,9 +16,10 @@ type ClaimOutboundItemProps = {
   index: number
 
   onRemove: () => void
+  // TODO: create a payload type for outbound updates
   onUpdate: (payload: HttpTypes.AdminUpdateReturnItems) => void
 
-  form: UseFormReturn<any>
+  form: UseFormReturn<CreateClaimSchemaType>
 }
 
 function ClaimOutboundItem({

@@ -20,4 +20,4 @@ export const ClaimCreateSchema = z.object({
   send_notification: z.boolean().optional(),
 })
 
-export type ReturnCreateSchemaType = z.infer<typeof ClaimCreateSchema>
+export type CreateClaimSchemaType = z.infer<typeof ClaimCreateSchema>

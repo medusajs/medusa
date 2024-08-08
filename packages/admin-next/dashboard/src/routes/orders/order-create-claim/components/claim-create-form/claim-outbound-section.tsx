@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types"
 import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
-import { useFieldArray } from "react-hook-form"
+import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../components/common/form"
@@ -17,9 +17,9 @@ import {
   useStackedModal,
 } from "../../../../../components/modals"
 import {
-  useAddClaimInboundShipping,
   useAddClaimOutboundItems,
-  useDeleteClaimInboundShipping,
+  useAddClaimOutboundShipping,
+  useDeleteClaimOutboundShipping,
   useRemoveClaimOutboundItem,
   useUpdateClaimOutboundItems,
 } from "../../../../../hooks/api/claims"
@@ -29,12 +29,13 @@ import { sdk } from "../../../../../lib/client"
 import { AddClaimOutboundItemsTable } from "../add-claim-outbound-items-table"
 import { ClaimOutboundItem } from "./claim-outbound-item"
 import { ItemPlaceholder } from "./item-placeholder"
+import { CreateClaimSchemaType } from "./schema"
 
 type ClaimOutboundSectionProps = {
   order: AdminOrder
   claim: AdminClaim
   preview: AdminOrderPreview
-  form: any
+  form: UseFormReturn<CreateClaimSchemaType>
 }
 
 let itemsToAdd: string[] = []
@@ -65,15 +66,13 @@ export const ClaimOutboundSection = ({
      */
   })
 
-  const { mutateAsync: addInboundShipping } = useAddClaimInboundShipping(
+  const { mutateAsync: addOutboundShipping } = useAddClaimOutboundShipping(
     claim.id,
     order.id
   )
 
-  const { mutateAsync: deleteInboundShipping } = useDeleteClaimInboundShipping(
-    claim.id,
-    order.id
-  )
+  const { mutateAsync: deleteOutboundShipping } =
+    useDeleteClaimOutboundShipping(claim.id, order.id)
 
   const { mutateAsync: addOutboundItem } = useAddClaimOutboundItems(
     claim.id,
@@ -91,7 +90,7 @@ export const ClaimOutboundSection = ({
   )
 
   /**
-   * Only consider items that belong to this claim.
+   * Only consider items that belong to this claim and is an outbound item
    */
   const previewOutboundItems = useMemo(
     () =>
@@ -214,11 +213,11 @@ export const ClaimOutboundSection = ({
     const promises = preview.shipping_methods
       .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
       .filter(Boolean)
-      .map(deleteInboundShipping)
+      .map(deleteOutboundShipping)
 
     await Promise.all(promises)
 
-    await addInboundShipping(
+    await addOutboundShipping(
       { shipping_option_id: selectedOptionId },
       {
         onError: (error) => {

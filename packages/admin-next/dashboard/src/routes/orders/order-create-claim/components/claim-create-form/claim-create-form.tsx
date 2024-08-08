@@ -34,7 +34,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { AddClaimItemsTable } from "../add-claim-items-table"
 import { ClaimInboundItem } from "./claim-inbound-item.tsx"
-import { ClaimCreateSchema, ReturnCreateSchemaType } from "./schema"
+import { ClaimCreateSchema, CreateClaimSchemaType } from "./schema"
 
 import {
   useAddClaimInboundItems,
@@ -164,7 +164,7 @@ export const ClaimCreateForm = ({
   /**
    * FORM
    */
-  const form = useForm<ReturnCreateSchemaType>({
+  const form = useForm<CreateClaimSchemaType>({
     defaultValues: () => {
       const method = preview.shipping_methods.find(
         (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
@@ -190,6 +190,7 @@ export const ClaimCreateForm = ({
           quantity: i.detail.quantity,
         })),
         inbound_option_id: method ? method.shipping_option_id : "",
+        // TODO: pick up shipping method for outbound when available
         outbound_option_id: method ? method.shipping_option_id : "",
         location_id: "",
         send_notification: false,
