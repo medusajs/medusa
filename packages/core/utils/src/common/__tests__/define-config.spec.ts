@@ -45,6 +45,12 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
+                  "options": {
+                    "channels": [
+                      "feed",
+                    ],
+                    "name": "Local Notification Provider",
+                  },
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -138,6 +144,12 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
+                  "options": {
+                    "channels": [
+                      "feed",
+                    ],
+                    "name": "Local Notification Provider",
+                  },
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -228,6 +240,12 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
+                  "options": {
+                    "channels": [
+                      "feed",
+                    ],
+                    "name": "Local Notification Provider",
+                  },
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -320,6 +338,12 @@ describe("defineConfig", function () {
               "providers": [
                 {
                   "id": "local",
+                  "options": {
+                    "channels": [
+                      "feed",
+                    ],
+                    "name": "Local Notification Provider",
+                  },
                   "resolve": "@medusajs/notification-local",
                 },
               ],
