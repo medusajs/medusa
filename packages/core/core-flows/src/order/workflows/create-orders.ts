@@ -84,6 +84,9 @@ function getOrderInput(data) {
 }
 
 export const createOrdersWorkflowId = "create-orders"
+/**
+ * This workflow creates an order.
+ */
 export const createOrdersWorkflow = createWorkflow(
   createOrdersWorkflowId,
   (input: WorkflowData<CreateOrderDTO & AdditionalData>) => {

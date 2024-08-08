@@ -21,7 +21,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return request can have its items dismissed.
+ */
+export const dismissItemReturnRequestValidationStep = createStep(
   "dismiss-item-return-request-validation",
   async function (
     {
@@ -45,6 +48,9 @@ const validationStep = createStep(
 )
 
 export const dismissItemReturnRequestWorkflowId = "dismiss-item-return-request"
+/**
+ * This workflow dismisses items from a return request.
+ */
 export const dismissItemReturnRequestWorkflow = createWorkflow(
   dismissItemReturnRequestWorkflowId,
   function (
@@ -79,7 +85,7 @@ export const dismissItemReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, items: input.items, orderReturn, orderChange })
+    dismissItemReturnRequestValidationStep({ order, items: input.items, orderReturn, orderChange })
 
     const orderChangeActionInput = transform(
       { order, orderChange, orderReturn, items: input.items },

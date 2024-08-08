@@ -18,11 +18,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type CancelRequestReturnWorkflowInput = {
   return_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested return can be canceled.
+ */
+export const cancelRequestReturnValidationStep = createStep(
   "validate-cancel-return-shipping-method",
   async function ({
     order,
@@ -40,9 +43,12 @@ const validationStep = createStep(
 )
 
 export const cancelReturnRequestWorkflowId = "cancel-return-request"
+/**
+ * This workflow cancels a requested return.
+ */
 export const cancelReturnRequestWorkflow = createWorkflow(
   cancelReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowData<void> {
+  function (input: CancelRequestReturnWorkflowInput): WorkflowData<void> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -72,7 +78,7 @@ export const cancelReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderReturn, orderChange })
+    cancelRequestReturnValidationStep({ order, orderReturn, orderChange })
 
     const shippingToRemove = transform(
       { orderChange, input },

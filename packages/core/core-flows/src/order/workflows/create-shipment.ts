@@ -22,8 +22,11 @@ import {
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that a shipment can be created for an order.
+ */
+export const createShipmentValidateOrder = createStep(
+  "create-shipment-validate-order",
   ({
     order,
     input,
@@ -74,6 +77,9 @@ function prepareRegisterShipmentData({
 }
 
 export const createOrderShipmentWorkflowId = "create-order-shipment"
+/**
+ * This workflow creates a shipment for an order.
+ */
 export const createOrderShipmentWorkflow = createWorkflow(
   createOrderShipmentWorkflowId,
   (
@@ -96,7 +102,7 @@ export const createOrderShipmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validateOrder({ order, input })
+    createShipmentValidateOrder({ order, input })
 
     const fulfillmentData = transform({ input }, ({ input }) => {
       return {
