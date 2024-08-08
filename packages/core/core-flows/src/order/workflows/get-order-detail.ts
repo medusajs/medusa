@@ -13,6 +13,9 @@ import {
 } from "../utils/aggregate-status"
 
 export const getOrderDetailWorkflowId = "get-order-detail"
+/**
+ * This workflow retrieves an order's details.
+ */
 export const getOrderDetailWorkflow = createWorkflow(
   getOrderDetailWorkflowId,
   (

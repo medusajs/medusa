@@ -6,6 +6,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateOrderExchangesStepId = "update-order-exchange"
+/**
+ * This step updates one or more exchanges.
+ */
 export const updateOrderExchangesStep = createStep(
   updateOrderExchangesStepId,
   async (data: UpdateOrderExchangeDTO[], { container }) => {
