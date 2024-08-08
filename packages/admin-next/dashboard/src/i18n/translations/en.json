@@ -2336,6 +2336,7 @@
     "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
+    "refundReason": "Refund Reason",
     "fulfillmentProviders": "Fulfillment Providers",
     "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",
