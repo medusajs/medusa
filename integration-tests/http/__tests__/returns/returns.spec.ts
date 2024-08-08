@@ -1215,6 +1215,69 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("/admin/return-reasons/:id", () => {
+        it("gets a return reason", async () => {
+          let response = await api.get(
+            `/admin/return-reasons/${returnReason.id}`,
+            adminHeaders
+          )
+          const result = response.data.return_reason
+          const keysInResponse = Object.keys(result)
+
+          expect(response.status).toEqual(200)
+          expect(keysInResponse).toEqual(
+            expect.arrayContaining([
+              "id",
+              "created_at",
+              "updated_at",
+              "value",
+              "description",
+              "label",
+            ])
+          )
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: returnReason.id,
+              value: "return-reason-test",
+              label: "Test return reason",
+              description: "This is the reason description!!!",
+            })
+          )
+        })
+        it("updates a return reason", async () => {
+          let response = await api.post(
+            `/admin/return-reasons/${returnReason.id}`,
+            {
+              value: "new-return-reason",
+              label: "New return reason",
+            },
+            adminHeaders
+          )
+          expect(response.status).toEqual(200)
+          expect(response.data.return_reason).toEqual(
+            expect.objectContaining({
+              id: returnReason.id,
+              value: "new-return-reason",
+              label: "New return reason",
+              description: "This is the reason description!!!",
+            })
+          )
+        })
+        it("deletes a return reason", async () => {
+          let response = await api.delete(
+            `/admin/return-reasons/${returnReason.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual({
+            id: returnReason.id,
+            object: "return_reason",
+            deleted: true,
+          })
+        })
+      })
     })
   },
 })

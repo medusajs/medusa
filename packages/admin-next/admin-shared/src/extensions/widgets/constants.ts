@@ -184,6 +184,11 @@ const TAX_INJECTION_ZONES = [
   "tax.list.after",
 ] as const
 
+const RETURN_REASON_INJECTION_ZONES = [
+  "return_reason.list.before",
+  "return_reason.list.after",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
@@ -214,4 +219,5 @@ export const INJECTION_ZONES = [
   ...TAX_INJECTION_ZONES,
   ...PRODUCT_TYPE_INJECTION_ZONES,
   ...PRODUCT_TAG_INJECTION_ZONES,
+  ...RETURN_REASON_INJECTION_ZONES,
 ] as const

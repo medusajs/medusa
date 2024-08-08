@@ -1293,6 +1293,20 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "return-reasons",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Return Reasons",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/return-reasons/return-reason-list"),
+              },
+            ],
+          },
           ...SettingsExtensions,
         ],
       },
