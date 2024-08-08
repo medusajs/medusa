@@ -11,7 +11,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateCustomersStep } from "../steps"
 
-type UpdateCustomersWorkflowInput = {
+export type UpdateCustomersWorkflowInput = {
   selector: FilterableCustomerProps
   update: CustomerUpdatableFields
 } & AdditionalData
