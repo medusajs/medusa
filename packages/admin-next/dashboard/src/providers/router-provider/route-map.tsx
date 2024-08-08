@@ -1299,6 +1299,28 @@ export const RouteMap: RouteObject[] = [
                 path: "",
                 lazy: () =>
                   import("../../routes/return-reasons/return-reason-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/return-reasons/return-reason-create"
+                      ),
+                  },
+
+                  {
+                    path: ":id",
+                    children: [
+                      {
+                        path: "edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/return-reasons/return-reason-edit"
+                          ),
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

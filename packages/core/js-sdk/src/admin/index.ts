@@ -1,4 +1,5 @@
 import { Client } from "../client"
+import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
 import { Fulfillment } from "./fulfillment"
@@ -28,7 +29,6 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
-import { Claim } from "./claim"
 
 export class Admin {
   public invite: Invite

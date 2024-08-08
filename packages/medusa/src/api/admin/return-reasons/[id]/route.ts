@@ -45,13 +45,16 @@ export const POST = async (
   const workflow = updateReturnReasonsWorkflow(req.scope)
 
   const { id } = req.params
+
   const input = {
     selector: { id },
     update: req.validatedBody,
   }
 
   const { result } = await workflow.run({ input })
+  console.log("UPDATE Return reason result ", result)
 
+  // WARNING: result should be an array, bu it's not so it breaks
   const variables = { id: result[0].id }
 
   const queryObject = remoteQueryObjectFromString({

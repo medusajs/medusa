@@ -2089,10 +2089,32 @@
     "domain": "Return Reasons",
     "calloutHint": "Manage the reasons to categorize returns.",
     "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
-    "createReason": "Create Return Reason",
-    "createReasonHint": "Create a new return reason to categorize returns.",
     "editReason": "Edit Return Reason",
-    "valueTooltip": "The value should be a unique identifier for the return reason."
+    "create": {
+      "header": "Add Return Reason",
+      "subtitle": "Specify the most common reasons for returns.",
+      "hint": "Create a new return reason to categorize returns.",
+      "successToast": "Return reason {{value}} was successfully created."
+    },
+    "edit": {
+      "successToast": "Return reason {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the return reason {{value}}. This action cannot be undone.",
+      "successToast": "Product type {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": {
+        "label": "Value",
+        "placeholder": "wrong_size",
+        "tooltip": "The value should be a unique identifier for the return reason."
+      },
+      "label": { "label": "Label", "placeholder": "Wrong size" },
+      "description": {
+        "label": "Descriptions",
+        "placeholder": "Customer received the wrong size"
+      }
+    }
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",

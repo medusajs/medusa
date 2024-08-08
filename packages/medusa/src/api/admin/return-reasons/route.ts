@@ -27,7 +27,7 @@ export const GET = async (
   })
 
   const { rows: return_reasons, metadata } = await remoteQuery(queryObject)
-
+  console.log("GET RETURN REASONS")
   res.json({
     return_reasons,
     count: metadata.count,

@@ -31,10 +31,13 @@ export const updateReturnReasonsStep = createStep(
       relations,
     })
 
+    console.log("Return reasons selector ", data.selector)
     const reasons = await service.updateReturnReasons(
       data.selector,
       data.update
     )
+
+    console.log("RETURNS REASONS resonse", reasons)
 
     return new StepResponse(reasons, prevReturnReasons)
   },

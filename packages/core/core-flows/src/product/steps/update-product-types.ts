@@ -27,10 +27,13 @@ export const updateProductTypesStep = createStep(
       relations,
     })
 
+    console.log("Product types selector", data.selector)
+
     const productTypes = await service.updateProductTypes(
       data.selector,
       data.update
     )
+    console.log("PRODUCT TYPES result", productTypes)
     return new StepResponse(productTypes, prevData)
   },
   async (prevData, { container }) => {
