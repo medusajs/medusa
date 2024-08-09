@@ -6,7 +6,6 @@ import {
   IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
-  IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase } from "../common"
@@ -59,7 +58,7 @@ export class DmlEntity<
   const TConfig extends IDmlEntityConfig
 > implements IDmlEntity<Schema, TConfig>
 {
-  [IsDmlEntity]: true = true
+  __isDmlEntity = true
 
   name: InferDmlEntityNameFromConfig<TConfig>
   schema: Schema
@@ -83,7 +82,7 @@ export class DmlEntity<
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any, any> {
-    return !!entity?.[IsDmlEntity]
+    return !!entity?.["__isDmlEntity"]
   }
 
   /**

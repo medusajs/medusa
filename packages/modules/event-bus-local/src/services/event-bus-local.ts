@@ -1,9 +1,9 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
+  Event,
   EventBusTypes,
   Logger,
+  MedusaContainer,
   Message,
-  Event,
   Subscriber,
 } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"

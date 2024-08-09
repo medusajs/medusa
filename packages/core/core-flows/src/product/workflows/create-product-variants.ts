@@ -1,10 +1,11 @@
-import { LinkDefinition } from "@medusajs/modules-sdk"
 import {
   AdditionalData,
   InventoryTypes,
+  LinkDefinition,
   PricingTypes,
   ProductTypes,
 } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -18,7 +19,6 @@ import { createInventoryItemsWorkflow } from "../../inventory/workflows/create-i
 import { createPriceSetsStep } from "../../pricing"
 import { createProductVariantsStep } from "../steps/create-product-variants"
 import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
-import { Modules } from "@medusajs/utils"
 
 /**
  * @privateRemarks
