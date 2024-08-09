@@ -17,6 +17,7 @@ export interface AdminReturn {
   order_id: string
   status?: string
   exchange_id?: string
+  location_id?: string
   claim_id?: string
   order_version: number
   display_id: number
@@ -79,7 +80,7 @@ export interface AdminConfirmReturnRequest {
 }
 
 export interface AdminUpdateReturnRequest {
-  location_id?: string
+  location_id?: string | null
   no_notification?: boolean
   metadata?: Record<string, unknown> | null
 }
