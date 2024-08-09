@@ -30,8 +30,11 @@ import {
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that a fulfillment can be created for an order.
+ */
+export const createFulfillmentValidateOrder = createStep(
+  "create-fulfillment-validate-order",
   (
     {
       order,
@@ -202,6 +205,9 @@ function prepareInventoryUpdate({
 }
 
 export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
+/**
+ * This creates a fulfillment for an order.
+ */
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (
@@ -227,7 +233,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validateOrder({ order, inputItems: input.items })
+    createFulfillmentValidateOrder({ order, inputItems: input.items })
 
     const inputItemsMap = transform(input, ({ items }) => {
       return items.reduce((acc, item) => {

@@ -56,6 +56,9 @@ function prepareLineItems(data) {
 }
 
 export const addOrderLineItemsWorkflowId = "order-add-line-items"
+/**
+ * This workflow adds line items to an order.
+ */
 export const addOrderLineItemsWorkflow = createWorkflow(
   addOrderLineItemsWorkflowId,
   (

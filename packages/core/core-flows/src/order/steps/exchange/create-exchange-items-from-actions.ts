@@ -6,11 +6,14 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateOrderExchangeItemsFromActionsInput = {
+export type CreateOrderExchangeItemsFromActionsInput = {
   changes: OrderChangeActionDTO[]
   exchangeId: string
 }
 
+/**
+ * This step creates exchange items from change actions.
+ */
 export const createOrderExchangeItemsFromActionsStep = createStep(
   "create-exchange-items-from-change-actions",
   async (input: CreateOrderExchangeItemsFromActionsInput, { container }) => {

@@ -10,12 +10,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updatePromotionsStep } from "../steps"
 
-type WorkflowInput = { promotionsData: UpdatePromotionDTO[] } & AdditionalData
+export type UpdatePromotionsWorkflowInput = { promotionsData: UpdatePromotionDTO[] } & AdditionalData
 
 export const updatePromotionsWorkflowId = "update-promotions"
+/**
+ * This workflow updates one or more promotions.
+ */
 export const updatePromotionsWorkflow = createWorkflow(
   updatePromotionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdatePromotionsWorkflowInput>) => {
     const updatedPromotions = updatePromotionsStep(input.promotionsData)
     const promotionsUpdated = createHook("promotionsUpdated", {
       promotions: updatedPromotions,

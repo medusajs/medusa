@@ -6,6 +6,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const validateVariantPriceLinksStepId = "validate-variant-price-links"
+/**
+ * This step validates that the specified variants have prices.
+ */
 export const validateVariantPriceLinksStep = createStep(
   validateVariantPriceLinksStepId,
   async (

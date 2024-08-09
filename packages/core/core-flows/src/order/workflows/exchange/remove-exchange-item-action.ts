@@ -22,7 +22,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a new item can be removed from an exchange.
+ */
+export const removeExchangeItemActionValidationStep = createStep(
   "remove-item-exchange-action-validation",
   async function ({
     order,
@@ -54,6 +57,9 @@ const validationStep = createStep(
 )
 
 export const removeItemExchangeActionWorkflowId = "remove-item-exchange-action"
+/**
+ * This workflow removes a new item in an exchange.
+ */
 export const removeItemExchangeActionWorkflow = createWorkflow(
   removeItemExchangeActionWorkflowId,
   function (
@@ -88,7 +94,7 @@ export const removeItemExchangeActionWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderExchange, orderChange })
+    removeExchangeItemActionValidationStep({ order, input, orderExchange, orderChange })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 

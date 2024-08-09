@@ -11,6 +11,9 @@ import {
 
 export const addOrRemoveCampaignPromotionsWorkflowId =
   "add-or-remove-campaign-promotions"
+/**
+ * This workflow adds or removes promotions from campaigns.
+ */
 export const addOrRemoveCampaignPromotionsWorkflow = createWorkflow(
   addOrRemoveCampaignPromotionsWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {

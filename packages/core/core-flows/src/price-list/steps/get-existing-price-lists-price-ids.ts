@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const getExistingPriceListsPriceIdsStepId =
   "get-existing-price-lists-prices"
+/**
+ * This step retrieves prices of price lists.
+ */
 export const getExistingPriceListsPriceIdsStep = createStep(
   getExistingPriceListsPriceIdsStepId,
   async (data: { price_list_ids: string[] }, { container }) => {

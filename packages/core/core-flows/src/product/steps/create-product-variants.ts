@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createProductVariantsStepId = "create-product-variants"
+/**
+ * This step creates one or more product variants.
+ */
 export const createProductVariantsStep = createStep(
   createProductVariantsStepId,
   async (data: ProductTypes.CreateProductVariantDTO[], { container }) => {

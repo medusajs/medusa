@@ -56,7 +56,7 @@ const orderFields = [
   "shipping_address.province",
 ]
 
-type WorkflowInput = {
+export type UpdateOrderTaxLinesWorkflowInput = {
   order_id: string
   items?: OrderLineItemDTO[]
   shipping_methods?: OrderShippingMethodDTO[]
@@ -64,9 +64,12 @@ type WorkflowInput = {
 }
 
 export const updateOrderTaxLinesWorkflowId = "update-order-tax-lines"
+/**
+ * This workflow updates the tax lines of items and shipping methods in an order.
+ */
 export const updateOrderTaxLinesWorkflow = createWorkflow(
   updateOrderTaxLinesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateOrderTaxLinesWorkflowInput>): WorkflowData<void> => {
     const order = useRemoteQueryStep({
       entry_point: "order",
       fields: orderFields,

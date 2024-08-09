@@ -2,7 +2,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 
-interface StepInput {
+export interface AssociateLocationsWithSalesChannelsStepInput {
   links: {
     sales_channel_id: string
     location_id: string
@@ -11,9 +11,12 @@ interface StepInput {
 
 export const associateLocationsWithSalesChannelsStepId =
   "associate-locations-with-sales-channels-step"
+/**
+ * This step creates links between locations and sales channel records.
+ */
 export const associateLocationsWithSalesChannelsStep = createStep(
   associateLocationsWithSalesChannelsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: AssociateLocationsWithSalesChannelsStepInput, { container }) => {
     if (!data.links?.length) {
       return new StepResponse([], [])
     }

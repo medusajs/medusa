@@ -2,12 +2,13 @@ import { CreateOrderReturnDTO, IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateCompleteReturnStepInput = CreateOrderReturnDTO
-
 export const createCompleteReturnStepId = "create-complete-return"
+/**
+ * This step creates a return.
+ */
 export const createCompleteReturnStep = createStep(
   createCompleteReturnStepId,
-  async (data: CreateCompleteReturnStepInput, { container }) => {
+  async (data: CreateOrderReturnDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

@@ -7,6 +7,9 @@ import {
 import { updateRefundReasonsStep } from "../steps"
 
 export const updateRefundReasonsWorkflowId = "update-refund-reasons"
+/**
+ * This workflow updates one or more refund reasons.
+ */
 export const updateRefundReasonsWorkflow = createWorkflow(
   updateRefundReasonsWorkflowId,
   (

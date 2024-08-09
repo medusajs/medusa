@@ -24,8 +24,11 @@ import {
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that an order fulfillment can be canceled.
+ */
+export const cancelOrderFulfillmentValidateOrder = createStep(
+  "cancel-fulfillment-validate-order",
   ({
     order,
     input,
@@ -109,6 +112,9 @@ function prepareInventoryUpdate({
 }
 
 export const cancelOrderFulfillmentWorkflowId = "cancel-order-fulfillment"
+/**
+ * This workflow cancels an order's fulfillment.
+ */
 export const cancelOrderFulfillmentWorkflow = createWorkflow(
   cancelOrderFulfillmentWorkflowId,
   (
@@ -131,7 +137,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ order, input })
+    cancelOrderFulfillmentValidateOrder({ order, input })
 
     const fulfillment = transform({ input, order }, ({ input, order }) => {
       return order.fulfillments.find((f) => f.id === input.fulfillment_id)!

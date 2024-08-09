@@ -10,7 +10,7 @@ import { updateProductVariantsStep } from "../steps"
 import { updatePriceSetsStep } from "../../pricing"
 import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 
-type UpdateProductVariantsStepInput =
+export type UpdateProductVariantsWorkflowInput =
   | {
       selector: ProductTypes.FilterableProductVariantProps
       update: ProductTypes.UpdateProductVariantDTO & {
@@ -23,12 +23,13 @@ type UpdateProductVariantsStepInput =
       })[]
     }
 
-type WorkflowInput = UpdateProductVariantsStepInput & AdditionalData
-
 export const updateProductVariantsWorkflowId = "update-product-variants"
+/**
+ * This workflow updates one or more product variants.
+ */
 export const updateProductVariantsWorkflow = createWorkflow(
   updateProductVariantsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdateProductVariantsWorkflowInput & AdditionalData>) => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is updated.
     const updateWithoutPrices = transform({ input }, (data) => {
       if ("product_variants" in data.input) {

@@ -2,16 +2,19 @@ import { BigNumberInput, IPaymentModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type CapturePaymentStepInput = {
   payment_id: string
   captured_by?: string
   amount?: BigNumberInput
 }
 
 export const capturePaymentStepId = "capture-payment-step"
+/**
+ * This step captures a payment.
+ */
 export const capturePaymentStep = createStep(
   capturePaymentStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CapturePaymentStepInput, { container }) => {
     const paymentModule = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )

@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const createReservationsStepId = "create-reservations-step"
+/**
+ * This step creates one or more reservations.
+ */
 export const createReservationsStep = createStep(
   createReservationsStepId,
   async (data: InventoryTypes.CreateReservationItemInput[], { container }) => {

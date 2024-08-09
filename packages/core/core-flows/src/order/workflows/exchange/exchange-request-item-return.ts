@@ -25,7 +25,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that items can be returned as part of an exchange.
+ */
+export const exchangeRequestItemReturnValidationStep = createStep(
   "exchange-request-item-return-validation",
   async function ({
     order,
@@ -50,6 +53,9 @@ const validationStep = createStep(
 
 export const orderExchangeRequestItemReturnWorkflowId =
   "exchange-request-item-return"
+/**
+ * This workflow adds items to be retuned as part of the exchange.
+ */
 export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
   orderExchangeRequestItemReturnWorkflowId,
   function (
@@ -117,7 +123,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
       status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
     })
 
-    validationStep({
+    exchangeRequestItemReturnValidationStep({
       order,
       items: input.items,
       orderExchange,

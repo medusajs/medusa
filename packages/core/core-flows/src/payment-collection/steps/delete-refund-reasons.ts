@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteRefundReasonsStepId = "delete-refund-reasons"
+/**
+ * This step deletes one or more refund reasons.
+ */
 export const deleteRefundReasonsStep = createStep(
   deleteRefundReasonsStepId,
   async (ids: string[], { container }) => {

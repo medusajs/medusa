@@ -9,12 +9,13 @@ import {
 import { updateStoresStep } from "../steps"
 import { updatePricePreferencesAsArrayStep } from "../../pricing"
 
-type WorkflowInputData = StoreWorkflow.UpdateStoreWorkflowInput
-
 export const updateStoresWorkflowId = "update-stores"
+/**
+ * This workflow updates stores matching the specified filters.
+ */
 export const updateStoresWorkflow = createWorkflow(
   updateStoresWorkflowId,
-  (input: WorkflowData<WorkflowInputData>): WorkflowResponse<StoreDTO[]> => {
+  (input: WorkflowData<StoreWorkflow.UpdateStoreWorkflowInput>): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       if (!data.input.update.supported_currencies?.length) {
         return data.input

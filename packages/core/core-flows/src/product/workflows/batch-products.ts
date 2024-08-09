@@ -17,6 +17,9 @@ import { deleteProductsWorkflow } from "./delete-products"
 import { updateProductsWorkflow } from "./update-products"
 
 export const batchProductsWorkflowId = "batch-products"
+/**
+ * This workflow creates, updates, or deletes products.
+ */
 export const batchProductsWorkflow = createWorkflow(
   batchProductsWorkflowId,
   (

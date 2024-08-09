@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 export const addCampaignPromotionsStepId = "add-campaign-promotions"
+/**
+ * This step adds promotions to a campaign.
+ */
 export const addCampaignPromotionsStep = createStep(
   addCampaignPromotionsStepId,
   async (input: WorkflowData<LinkWorkflowInput>, { container }) => {

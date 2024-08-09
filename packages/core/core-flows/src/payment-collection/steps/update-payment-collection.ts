@@ -10,15 +10,18 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface UpdatePaymentCollectionStepInput {
   selector: FilterablePaymentCollectionProps
   update: PaymentCollectionUpdatableFields
 }
 
 export const updatePaymentCollectionStepId = "update-payment-collection"
+/**
+ * This step updates payment collections matching the specified filters.
+ */
 export const updatePaymentCollectionStep = createStep(
   updatePaymentCollectionStepId,
-  async (data: StepInput, { container }) => {
+  async (data: UpdatePaymentCollectionStepInput, { container }) => {
     if (!isPresent(data) || !isPresent(data.selector)) {
       return new StepResponse([], [])
     }

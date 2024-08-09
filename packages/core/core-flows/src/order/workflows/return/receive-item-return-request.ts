@@ -21,7 +21,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return's items can be marked as received.
+ */
+export const receiveItemReturnRequestValidationStep = createStep(
   "receive-item-return-request-validation",
   async function (
     {
@@ -45,6 +48,9 @@ const validationStep = createStep(
 )
 
 export const receiveItemReturnRequestWorkflowId = "receive-item-return-request"
+/**
+ * This workflow marks return items as received.
+ */
 export const receiveItemReturnRequestWorkflow = createWorkflow(
   receiveItemReturnRequestWorkflowId,
   function (
@@ -79,7 +85,7 @@ export const receiveItemReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, items: input.items, orderReturn, orderChange })
+    receiveItemReturnRequestValidationStep({ order, items: input.items, orderReturn, orderChange })
 
     const orderChangeActionInput = transform(
       { order, orderChange, orderReturn, items: input.items },

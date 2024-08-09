@@ -11,7 +11,10 @@ import { createOrderClaimsStep } from "../../steps/claim/create-claims"
 import { createOrderChangeStep } from "../../steps/create-order-change"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that the order associated with the claim isn't canceled.
+ */
+export const beginClaimOrderValidationStep = createStep(
   "begin-claim-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfIsCancelled(order, "Order")
@@ -19,6 +22,9 @@ const validationStep = createStep(
 )
 
 export const beginClaimOrderWorkflowId = "begin-claim-order"
+/**
+ * This workflow creates an order claim in requested state.
+ */
 export const beginClaimOrderWorkflow = createWorkflow(
   beginClaimOrderWorkflowId,
   function (
@@ -32,7 +38,7 @@ export const beginClaimOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validationStep({ order })
+    beginClaimOrderValidationStep({ order })
 
     const created = createOrderClaimsStep([
       {

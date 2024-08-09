@@ -18,6 +18,9 @@ import { updatePromotionRulesWorkflowStep } from "../steps/update-promotion-rule
 import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules-workflow"
 
 export const batchPromotionRulesWorkflowId = "batch-promotion-rules"
+/**
+ * This workflow creates, updates, or deletes promotion rules.
+ */
 export const batchPromotionRulesWorkflow = createWorkflow(
   batchPromotionRulesWorkflowId,
   (
