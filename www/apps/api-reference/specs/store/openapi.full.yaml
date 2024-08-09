@@ -4,10 +4,10 @@ info:
   title: Medusa Storefront API
   license:
     name: MIT
-    url: https://github.com/medusajs/medusa/blob/master/LICENSE
+    url: 'https://github.com/medusajs/medusa/blob/master/LICENSE'
 servers:
-  - url: http://localhost:9000
-  - url: https://api.medusa-commerce.com
+  - url: 'http://localhost:9000'
+  - url: 'https://api.medusa-commerce.com'
 tags:
   - name: Carts
     description: |
@@ -15,7 +15,7 @@ tags:
       A cart is then used to checkout and place an order.
     externalDocs:
       description: How to implement cart functionality in your storefront
-      url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+      url: 'https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart'
   - name: Collections
   - name: Currencies
   - name: Customers
@@ -36,7 +36,7 @@ tags:
       Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
     externalDocs:
       description: How to use regions in a storefront
-      url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
+      url: 'https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions'
   - name: Return
   - name: Return Reasons
   - name: Shipping Options
@@ -58,12 +58,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -82,12 +82,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -96,7 +96,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X POST '{backend_url}/store/carts'
+          source: 'curl -X POST ''{backend_url}/store/carts'''
       tags:
         - Carts
       responses:
@@ -112,7 +112,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}:
+  '/store/carts/{id}':
     get:
       operationId: GetCartsId
       summary: Get a Cart
@@ -135,12 +135,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -159,16 +159,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/carts/{id}'
+          source: 'curl ''{backend_url}/store/carts/{id}'''
       tags:
         - Carts
       responses:
@@ -206,12 +206,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -230,12 +230,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -244,7 +244,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X POST '{backend_url}/store/carts/{id}'
+          source: 'curl -X POST ''{backend_url}/store/carts/{id}'''
       tags:
         - Carts
       responses:
@@ -260,7 +260,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/complete:
+  '/store/carts/{id}/complete':
     post:
       operationId: PostCartsIdComplete
       summary: Add Completes to Cart
@@ -283,12 +283,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -307,12 +307,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -327,7 +327,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X POST '{backend_url}/store/carts/{id}/complete'
+          source: 'curl -X POST ''{backend_url}/store/carts/{id}/complete'''
       tags:
         - Carts
       responses:
@@ -343,7 +343,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/line-items:
+  '/store/carts/{id}/line-items':
     post:
       operationId: PostCartsIdLineItems
       summary: Add Line Items to Cart
@@ -366,12 +366,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -390,12 +390,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -427,7 +427,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/line-items/{line_id}:
+  '/store/carts/{id}/line-items/{line_id}':
     post:
       operationId: PostCartsIdLineItemsLine_id
       summary: Add Line Items to Cart
@@ -456,12 +456,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -480,12 +480,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -519,7 +519,7 @@ paths:
     delete:
       operationId: DeleteCartsIdLineItemsLine_id
       summary: Remove Line Items from Cart
-      description: Remove a list of line items from a cart. This doesn't delete the Line Item, only the association between the Line Item and the cart.
+      description: 'Remove a list of line items from a cart. This doesn''t delete the Line Item, only the association between the Line Item and the cart.'
       x-authenticated: false
       parameters:
         - name: id
@@ -544,12 +544,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -568,16 +568,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X DELETE '{backend_url}/store/carts/{id}/line-items/{line_id}'
+          source: 'curl -X DELETE ''{backend_url}/store/carts/{id}/line-items/{line_id}'''
       tags:
         - Carts
       responses:
@@ -620,7 +620,13 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/promotions:
+    parameters:
+      - schema:
+          type: string
+        in: query
+        name: dd
+        description: dd
+  '/store/carts/{id}/promotions':
     post:
       operationId: PostCartsIdPromotions
       summary: Add Promotions to Cart
@@ -643,12 +649,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -667,12 +673,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -718,7 +724,7 @@ paths:
     delete:
       operationId: DeleteCartsIdPromotions
       summary: Remove Promotions from Cart
-      description: Remove a list of promotions from a cart. This doesn't delete the Promotion, only the association between the Promotion and the cart.
+      description: 'Remove a list of promotions from a cart. This doesn''t delete the Promotion, only the association between the Promotion and the cart.'
       x-authenticated: false
       parameters:
         - name: id
@@ -737,12 +743,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -761,16 +767,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X DELETE '{backend_url}/store/carts/{id}/promotions'
+          source: 'curl -X DELETE ''{backend_url}/store/carts/{id}/promotions'''
       tags:
         - Carts
       responses:
@@ -786,7 +792,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/shipping-methods:
+  '/store/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsIdShippingMethods
       summary: Add Shipping Methods to Cart
@@ -809,12 +815,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -833,12 +839,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -879,7 +885,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/carts/{id}/taxes:
+  '/store/carts/{id}/taxes':
     post:
       operationId: PostCartsIdTaxes
       summary: Add Taxes to Cart
@@ -902,12 +908,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -926,12 +932,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -940,7 +946,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl -X POST '{backend_url}/store/carts/{id}/taxes'
+          source: 'curl -X POST ''{backend_url}/store/carts/{id}/taxes'''
       tags:
         - Carts
       responses:
@@ -973,12 +979,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -997,16 +1003,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/collections'
+          source: 'curl ''{backend_url}/store/collections'''
       tags:
         - Collections
       responses:
@@ -1022,7 +1028,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/collections/{id}:
+  '/store/collections/{id}':
     get:
       operationId: GetCollectionsId
       summary: Get a Collection
@@ -1045,12 +1051,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1069,16 +1075,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/collections/{id}'
+          source: 'curl ''{backend_url}/store/collections/{id}'''
       tags:
         - Collections
       responses:
@@ -1111,12 +1117,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1135,16 +1141,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/currencies'
+          source: 'curl ''{backend_url}/store/currencies'''
       tags:
         - Currencies
       responses:
@@ -1160,7 +1166,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/currencies/{code}:
+  '/store/currencies/{code}':
     get:
       operationId: GetCurrenciesCode
       summary: Get a Currency
@@ -1183,12 +1189,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1207,16 +1213,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/currencies/{code}'
+          source: 'curl ''{backend_url}/store/currencies/{code}'''
       tags:
         - Currencies
       responses:
@@ -1249,12 +1255,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1273,12 +1279,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -1329,12 +1335,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1353,12 +1359,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1399,12 +1405,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1423,12 +1429,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1482,12 +1488,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1506,12 +1512,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: metadata
           in: query
           description: The customer's metadata.
@@ -1663,12 +1669,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1687,12 +1693,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1807,7 +1813,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/customers/me/addresses/{address_id}:
+  '/store/customers/me/addresses/{address_id}':
     get:
       operationId: GetCustomersMeAddressesAddress_id
       summary: List Addresses
@@ -1830,12 +1836,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1854,12 +1860,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -1906,12 +1912,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -1930,12 +1936,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2053,7 +2059,7 @@ paths:
     delete:
       operationId: DeleteCustomersMeAddressesAddress_id
       summary: Remove Addresses from Customer
-      description: Remove a list of addresses from a customer. This doesn't delete the Address, only the association between the Address and the customer.
+      description: 'Remove a list of addresses from a customer. This doesn''t delete the Address, only the association between the Address and the customer.'
       x-authenticated: true
       parameters:
         - name: address_id
@@ -2072,12 +2078,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2096,12 +2102,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2143,12 +2149,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2167,12 +2173,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: id
           in: query
           required: false
@@ -2212,7 +2218,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/orders'
+          source: 'curl ''{backend_url}/store/orders'''
       tags:
         - Orders
       responses:
@@ -2228,7 +2234,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/orders/{id}:
+  '/store/orders/{id}':
     get:
       operationId: GetOrdersId
       summary: Get a Order
@@ -2251,12 +2257,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2275,12 +2281,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: id
           in: query
           required: false
@@ -2320,7 +2326,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/orders/{id}'
+          source: 'curl ''{backend_url}/store/orders/{id}'''
       tags:
         - Orders
       responses:
@@ -2353,12 +2359,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2377,12 +2383,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -2438,7 +2444,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/payment-collections/{id}/payment-sessions:
+  '/store/payment-collections/{id}/payment-sessions':
     post:
       operationId: PostPaymentCollectionsIdPaymentSessions
       summary: Add Payment Sessions to Payment Collection
@@ -2461,12 +2467,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2485,12 +2491,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -2551,12 +2557,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2575,12 +2581,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: region_id
           in: query
           description: The payment provider's region id.
@@ -2622,7 +2628,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/payment-providers'
+          source: 'curl ''{backend_url}/store/payment-providers'''
       tags:
         - Payment Providers
       responses:
@@ -2655,12 +2661,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2679,12 +2685,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: q
           in: query
           description: The product category's q.
@@ -2878,7 +2884,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/product-categories'
+          source: 'curl ''{backend_url}/store/product-categories'''
       tags:
         - Product Categories
       responses:
@@ -2900,7 +2906,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/product-categories/{id}:
+  '/store/product-categories/{id}':
     get:
       operationId: GetProductCategoriesId
       summary: Get a Product Category
@@ -2923,12 +2929,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -2947,12 +2953,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: include_ancestors_tree
           in: query
           description: The product category's include ancestors tree.
@@ -2972,7 +2978,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/product-categories/{id}'
+          source: 'curl ''{backend_url}/store/product-categories/{id}'''
       tags:
         - Product Categories
       responses:
@@ -3011,12 +3017,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3035,12 +3041,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: region_id
           in: query
           description: The product's region id.
@@ -3317,7 +3323,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/products'
+          source: 'curl ''{backend_url}/store/products'''
       tags:
         - Products
       responses:
@@ -3333,7 +3339,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/products/{id}:
+  '/store/products/{id}':
     get:
       operationId: GetProductsId
       summary: Get a Product
@@ -3356,12 +3362,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3380,12 +3386,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
         - name: region_id
           in: query
           description: The product's region id.
@@ -3421,7 +3427,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/products/{id}'
+          source: 'curl ''{backend_url}/store/products/{id}'''
       tags:
         - Products
       responses:
@@ -3454,12 +3460,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3478,16 +3484,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/regions'
+          source: 'curl ''{backend_url}/store/regions'''
       tags:
         - Regions
       responses:
@@ -3503,7 +3509,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/regions/{id}:
+  '/store/regions/{id}':
     get:
       operationId: GetRegionsId
       summary: Get a Region
@@ -3526,12 +3532,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3550,16 +3556,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/regions/{id}'
+          source: 'curl ''{backend_url}/store/regions/{id}'''
       tags:
         - Regions
       responses:
@@ -3592,12 +3598,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3616,12 +3622,12 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       requestBody:
         content:
           application/json:
@@ -3682,12 +3688,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3706,16 +3712,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/return-reasons'
+          source: 'curl ''{backend_url}/store/return-reasons'''
       tags:
         - Return Reasons
       responses:
@@ -3731,7 +3737,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /store/return-reasons/{id}:
+  '/store/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsId
       summary: Get a Return Reason
@@ -3754,12 +3760,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3778,16 +3784,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/return-reasons/{id}'
+          source: 'curl ''{backend_url}/store/return-reasons/{id}'''
       tags:
         - Return Reasons
       responses:
@@ -3820,12 +3826,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: 'Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.'
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -3844,16 +3850,16 @@ paths:
             description: Limit the number of items returned in the list.
         - name: order
           in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
           required: false
           schema:
             type: string
             title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            description: 'The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.'
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: curl '{backend_url}/store/shipping-options'
+          source: 'curl ''{backend_url}/store/shipping-options'''
       tags:
         - Shipping Options
       responses:
