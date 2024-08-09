@@ -95,8 +95,12 @@ export const useDataGridCell = <TData, TValue>({
       }
 
       if (e.shiftKey) {
-        setRangeEnd(coords)
-        return
+        // Only allow setting the rangeEnd if the column matches the anchor column.
+        // If not we let the function continue and treat the click as if the shift key was not pressed.
+        if (coords.col === anchor?.col) {
+          setRangeEnd(coords)
+          return
+        }
       }
 
       if (containerRef.current) {
@@ -105,7 +109,7 @@ export const useDataGridCell = <TData, TValue>({
         containerRef.current.focus()
       }
     },
-    [setIsSelecting, setRangeEnd, setSingleRange, coords]
+    [coords, anchor, setRangeEnd, setSingleRange, setIsSelecting]
   )
 
   const handleBooleanInnerMouseDown = useCallback(
