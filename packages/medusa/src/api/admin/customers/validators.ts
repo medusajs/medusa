@@ -3,6 +3,7 @@ import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 
 export const AdminCustomerParams = createSelectParams()
@@ -42,7 +43,7 @@ export const AdminCustomersParams = createFindParams({
   })
 )
 
-export const AdminCreateCustomer = z.object({
+export const CreateCustomer = z.object({
   email: z.string().email().nullish(),
   company_name: z.string().nullish(),
   first_name: z.string().nullish(),
@@ -50,8 +51,9 @@ export const AdminCreateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminCreateCustomer = WithAdditionalData(CreateCustomer)
 
-export const AdminUpdateCustomer = z.object({
+export const UpdateCustomer = z.object({
   email: z.string().email().nullish(),
   company_name: z.string().nullish(),
   first_name: z.string().nullish(),
@@ -59,8 +61,9 @@ export const AdminUpdateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminUpdateCustomer = WithAdditionalData(UpdateCustomer)
 
-export const AdminCreateCustomerAddress = z.object({
+export const CreateCustomerAddress = z.object({
   address_name: z.string().nullish(),
   is_default_shipping: z.boolean().optional(),
   is_default_billing: z.boolean().optional(),
@@ -76,6 +79,9 @@ export const AdminCreateCustomerAddress = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
+export const AdminCreateCustomerAddress = WithAdditionalData(
+  CreateCustomerAddress
+)
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
 
@@ -95,8 +101,8 @@ export const AdminCustomerAddressesParams = createFindParams({
 
 export type AdminCustomerParamsType = z.infer<typeof AdminCustomerParams>
 export type AdminCustomersParamsType = z.infer<typeof AdminCustomersParams>
-export type AdminCreateCustomerType = z.infer<typeof AdminCreateCustomer>
-export type AdminUpdateCustomerType = z.infer<typeof AdminUpdateCustomer>
+export type AdminCreateCustomerType = z.infer<typeof CreateCustomer>
+export type AdminUpdateCustomerType = z.infer<typeof UpdateCustomer>
 export type AdminCreateCustomerAddressType = z.infer<
-  typeof AdminCreateCustomerAddress
+  typeof CreateCustomerAddress
 >

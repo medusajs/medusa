@@ -19,12 +19,12 @@ export type Hook<Name extends string, Input> = {
 }
 
 /**
- * Expose a hook in your workflow where you can inject custom functionality as a step function. 
- * 
+ * Expose a hook in your workflow where you can inject custom functionality as a step function.
+ *
  * A handler hook can later be registered to consume the hook and perform custom functionality.
- * 
+ *
  * Learn more in [this documentation](https://docs.medusajs.com/v2/advanced-development/workflows/add-workflow-hook).
- * 
+ *
  * @param name - The hook's name. This is used when the hook handler is registered to consume the workflow.
  * @param input - The input to pass to the hook handler.
  * @returns A workflow hook.
@@ -37,16 +37,16 @@ export type Hook<Name extends string, Input> = {
  *   WorkflowResponse,
  * } from "@medusajs/workflows-sdk"
  * import { createProductStep } from "./steps/create-product"
- * 
+ *
  * export const myWorkflow = createWorkflow(
- *   "my-workflow", 
+ *   "my-workflow",
  *   function (input) {
  *     const product = createProductStep(input)
  *     const productCreatedHook = createHook(
- *       "productCreated", 
+ *       "productCreated",
  *       { productId: product.id }
  *     )
- * 
+ *
  *     return new WorkflowResponse(product, {
  *       hooks: [productCreatedHook],
  *     })

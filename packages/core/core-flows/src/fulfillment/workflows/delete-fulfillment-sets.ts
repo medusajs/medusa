@@ -5,6 +5,9 @@ import { Modules } from "@medusajs/utils"
 
 export const deleteFulfillmentSetsWorkflowId =
   "delete-fulfillment-sets-workflow"
+/**
+ * This workflow deletes one or more fulfillment sets.
+ */
 export const deleteFulfillmentSetsWorkflow = createWorkflow(
   deleteFulfillmentSetsWorkflowId,
   (input: WorkflowData<{ ids: string[] }>) => {

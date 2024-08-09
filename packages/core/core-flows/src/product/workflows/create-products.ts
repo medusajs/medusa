@@ -1,4 +1,5 @@
 import {
+  AdditionalData,
   CreateProductWorkflowInputDTO,
   PricingTypes,
   ProductTypes,
@@ -15,16 +16,17 @@ import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 import { createProductsStep } from "../steps/create-products"
 import { createProductVariantsWorkflow } from "./create-product-variants"
 
-type WorkflowInput = {
+export type CreateProductsWorkflowInput = {
   products: CreateProductWorkflowInputDTO[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 export const createProductsWorkflowId = "create-products"
-
+/**
+ * This workflow creates one or more products.
+ */
 export const createProductsWorkflow = createWorkflow(
   createProductsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateProductsWorkflowInput>) => {
     // Passing prices to the product module will fail, we want to keep them for after the product is created.
     const productWithoutExternalRelations = transform({ input }, (data) =>
       data.input.products.map((p) => ({

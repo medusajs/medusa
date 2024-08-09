@@ -181,6 +181,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               path: "/advanced-development/events-and-subscribers/data-payload",
               title: "Events Data Payload",
             },
+            {
+              path: "/advanced-development/events-and-subscribers/emit-event",
+              title: "Emit an Event",
+            },
           ],
         },
         {

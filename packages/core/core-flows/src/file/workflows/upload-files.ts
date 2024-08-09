@@ -6,7 +6,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { uploadFilesStep } from "../steps"
 
-type WorkflowInput = {
+export type UploadFilesWorkflowInput = {
   files: {
     filename: string
     mimeType: string
@@ -16,9 +16,12 @@ type WorkflowInput = {
 }
 
 export const uploadFilesWorkflowId = "upload-files"
+/**
+ * This workflow uploads one or more files.
+ */
 export const uploadFilesWorkflow = createWorkflow(
   uploadFilesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<FileDTO[]> => {
+  (input: WorkflowData<UploadFilesWorkflowInput>): WorkflowResponse<FileDTO[]> => {
     return new WorkflowResponse(uploadFilesStep(input))
   }
 )

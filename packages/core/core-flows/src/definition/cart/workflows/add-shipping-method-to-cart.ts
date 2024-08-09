@@ -1,7 +1,6 @@
 import {
   WorkflowData,
   createWorkflow,
-  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
@@ -14,7 +13,7 @@ import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 
-interface AddShippingMethodToCartWorkflowInput {
+export interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
   options: {
     id: string
@@ -23,6 +22,9 @@ interface AddShippingMethodToCartWorkflowInput {
 }
 
 export const addShippingMethodToCartWorkflowId = "add-shipping-method-to-cart"
+/**
+ * This workflow adds shipping methods to a cart.
+ */
 export const addShippingMethodToWorkflow = createWorkflow(
   addShippingMethodToCartWorkflowId,
   (
@@ -97,12 +99,11 @@ export const addShippingMethodToWorkflow = createWorkflow(
       shipping_methods: shippingMethodInput,
     })
 
-    parallelize(
-      refreshCartPromotionsStep({ id: input.cart_id }),
-      updateTaxLinesStep({
-        cart_or_cart_id: input.cart_id,
-        shipping_methods: shippingMethodsToAdd,
-      })
-    )
+    updateTaxLinesStep({
+      cart_or_cart_id: input.cart_id,
+      shipping_methods: shippingMethodsToAdd,
+    })
+
+    refreshCartPromotionsStep({ id: input.cart_id })
   }
 )

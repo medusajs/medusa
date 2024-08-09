@@ -58,6 +58,9 @@ const csvSortFunction = (a: string, b: string) => {
 }
 
 export const generateProductCsvStepId = "generate-product-csv"
+/**
+ * This step generates a CSV file to be exported.
+ */
 export const generateProductCsvStep = createStep(
   generateProductCsvStepId,
   async (products: HttpTypes.AdminProduct[], { container }) => {

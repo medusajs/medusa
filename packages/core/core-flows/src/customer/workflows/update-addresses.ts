@@ -1,11 +1,12 @@
 import {
   FilterableCustomerAddressProps,
-  CustomerAddressDTO,
   UpdateCustomerAddressDTO,
+  AdditionalData,
 } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -16,17 +17,18 @@ import {
   updateCustomerAddressesStep,
 } from "../steps"
 
-type WorkflowInput = {
+export type UpdateCustomerAddressesWorkflowInput = {
   selector: FilterableCustomerAddressProps
   update: UpdateCustomerAddressDTO
-}
+} & AdditionalData
 
 export const updateCustomerAddressesWorkflowId = "update-customer-addresses"
+/**
+ * This workflow updates one or more customer addresses.
+ */
 export const updateCustomerAddressesWorkflow = createWorkflow(
   updateCustomerAddressesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<CustomerAddressDTO[]> => {
+  (input: WorkflowData<UpdateCustomerAddressesWorkflowInput>) => {
     const unsetInput = transform(input, (data) => ({
       update: data,
     }))
@@ -36,6 +38,14 @@ export const updateCustomerAddressesWorkflow = createWorkflow(
       maybeUnsetDefaultBillingAddressesStep(unsetInput)
     )
 
-    return new WorkflowResponse(updateCustomerAddressesStep(input))
+    const updatedAddresses = updateCustomerAddressesStep(input)
+    const addressesUpdated = createHook("addressesUpdated", {
+      addresses: updatedAddresses,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(updatedAddresses, {
+      hooks: [addressesUpdated],
+    })
   }
 )

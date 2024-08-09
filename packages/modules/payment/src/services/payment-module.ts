@@ -22,6 +22,7 @@ import {
   PaymentSessionDTO,
   ProviderWebhookPayload,
   RefundDTO,
+  RefundReasonDTO,
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
@@ -47,6 +48,7 @@ import {
   PaymentCollection,
   PaymentSession,
   Refund,
+  RefundReason,
 } from "@models"
 import { joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
@@ -67,6 +69,7 @@ const generateMethodForModels = {
   Payment,
   Capture,
   Refund,
+  RefundReason,
 }
 
 export default class PaymentModuleService
@@ -76,6 +79,7 @@ export default class PaymentModuleService
     Payment: { dto: PaymentDTO }
     Capture: { dto: CaptureDTO }
     Refund: { dto: RefundDTO }
+    RefundReason: { dto: RefundReasonDTO }
   }>(generateMethodForModels)
   implements IPaymentModuleService
 {
@@ -750,7 +754,7 @@ export default class PaymentModuleService
           "amount",
           "raw_amount",
         ],
-        relations: ["captures.raw_amount"],
+        relations: ["captures.raw_amount", "refunds.raw_amount"],
       },
       sharedContext
     )
@@ -763,9 +767,16 @@ export default class PaymentModuleService
       const amountAsBigNumber = new BigNumber(next.raw_amount)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundAmount = new BigNumber(data.amount)
+    const refundedAmount = payment.refunds.reduce((refundedAmount, next) => {
+      return MathBN.add(refundedAmount, next.raw_amount)
+    }, MathBN.convert(0))
 
-    if (MathBN.lt(capturedAmount, refundAmount)) {
+    const totalRefundedAmount = MathBN.add(
+      refundedAmount,
+      data.amount
+    )
+
+    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You cannot refund more than what is captured on the payment.`
@@ -777,6 +788,8 @@ export default class PaymentModuleService
         payment: data.payment_id,
         amount: data.amount,
         created_by: data.created_by,
+        note: data.note,
+        refund_reason_id: data.refund_reason_id,
       },
       sharedContext
     )

@@ -12,7 +12,7 @@ import {
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface GetItemTaxLinesStepInput {
   cart: CartWorkflowDTO
   items: CartLineItemDTO[]
   shipping_methods: CartShippingMethodDTO[]
@@ -94,9 +94,12 @@ function normalizeLineItemsForShipping(
 }
 
 export const getItemTaxLinesStepId = "get-item-tax-lines"
+/**
+ * This step retrieves the tax lines of the specified line items in a cart.
+ */
 export const getItemTaxLinesStep = createStep(
   getItemTaxLinesStepId,
-  async (data: StepInput, { container }) => {
+  async (data: GetItemTaxLinesStepInput, { container }) => {
     const {
       cart,
       items,

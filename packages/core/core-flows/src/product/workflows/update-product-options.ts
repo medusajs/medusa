@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { AdditionalData, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,18 +7,18 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateProductOptionsStep } from "../steps"
 
-type UpdateProductOptionsStepInput = {
+export type UpdateProductOptionsWorkflowInput = {
   selector: ProductTypes.FilterableProductOptionProps
   update: ProductTypes.UpdateProductOptionDTO
-  additional_data?: Record<string, unknown>
-}
-
-type WorkflowInput = UpdateProductOptionsStepInput
+} & AdditionalData
 
 export const updateProductOptionsWorkflowId = "update-product-options"
+/**
+ * This workflow updates product options matching the specified filters.
+ */
 export const updateProductOptionsWorkflow = createWorkflow(
   updateProductOptionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdateProductOptionsWorkflowInput>) => {
     const updatedProductOptions = updateProductOptionsStep(input)
     const productOptionsUpdated = createHook("productOptionsUpdated", {
       product_options: updatedProductOptions,

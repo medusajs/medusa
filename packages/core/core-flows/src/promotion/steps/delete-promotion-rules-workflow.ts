@@ -4,6 +4,9 @@ import { deletePromotionRulesWorkflow } from "../workflows/delete-promotion-rule
 
 export const deletePromotionRulesWorkflowStepId =
   "delete-promotion-rules-workflow"
+/**
+ * This step deletes promotion rules using the {@link deletePromotionRulesWorkflow}.
+ */
 export const deletePromotionRulesWorkflowStep = createStep(
   deletePromotionRulesWorkflowStepId,
   async (data: RemovePromotionRulesWorkflowDTO, { container }) => {

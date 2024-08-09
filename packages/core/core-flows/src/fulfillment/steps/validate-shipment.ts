@@ -3,6 +3,9 @@ import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const validateShipmentStepId = "validate-shipment"
+/**
+ * This step validates that a shipment can be created for a fulfillment.
+ */
 export const validateShipmentStep = createStep(
   validateShipmentStepId,
   async (id: string, { container }) => {

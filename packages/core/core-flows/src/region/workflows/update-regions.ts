@@ -12,6 +12,9 @@ import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-pro
 import { updatePricePreferencesWorkflow } from "../../pricing"
 
 export const updateRegionsWorkflowId = "update-regions"
+/**
+ * This workflow updates regions matching the specified filters.
+ */
 export const updateRegionsWorkflow = createWorkflow(
   updateRegionsWorkflowId,
   (

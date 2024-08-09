@@ -4,6 +4,9 @@ import { batchLinkProductsToCategoryStep } from "../steps/batch-link-products-in
 
 export const batchLinkProductsToCategoryWorkflowId =
   "batch-link-products-to-category"
+/**
+ * This workflow creates links between product and category records.
+ */
 export const batchLinkProductsToCategoryWorkflow = createWorkflow(
   batchLinkProductsToCategoryWorkflowId,
   (

@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createUsersStepId = "create-users-step"
+/**
+ * This step creates one or more users.
+ */
 export const createUsersStep = createStep(
   createUsersStepId,
   async (input: CreateUserDTO[], { container }) => {

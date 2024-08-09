@@ -8,6 +8,9 @@ import {
 import { refreshInviteTokensStep } from "../steps/refresh-invite-tokens"
 
 export const refreshInviteTokensWorkflowId = "refresh-invite-tokens-workflow"
+/**
+ * This workflow refreshes the token of one or more invites.
+ */
 export const refreshInviteTokensWorkflow = createWorkflow(
   refreshInviteTokensWorkflowId,
   (

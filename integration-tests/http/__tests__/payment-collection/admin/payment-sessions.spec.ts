@@ -3,6 +3,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(30000)
 
@@ -17,6 +18,8 @@ medusaIntegrationTestRunner({
 
     describe("POST /admin/payment-collections/:id/payment-sessions", () => {
       let region
+      let product
+      let cart
 
       beforeEach(async () => {
         region = (
@@ -26,15 +29,43 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.region
+
+        product = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "test",
+              status: "published",
+              variants: [
+                {
+                  title: "Test variant",
+                  manage_inventory: false,
+                  prices: [
+                    {
+                      amount: 150,
+                      currency_code: "usd",
+                      rules: { region_id: region.id },
+                    },
+                  ],
+                },
+              ],
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        cart = (
+          await api.post("/store/carts", {
+            region_id: region.id,
+            items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+          })
+        ).data.cart
       })
 
       it("should create a payment session", async () => {
         const paymentCollection = (
           await api.post(`/store/payment-collections`, {
-            region_id: region.id,
-            cart_id: "cart.id",
-            amount: 150,
-            currency_code: "usd",
+            cart_id: cart.id,
           })
         ).data.payment_collection
 

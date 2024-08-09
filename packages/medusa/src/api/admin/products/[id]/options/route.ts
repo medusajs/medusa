@@ -5,7 +5,7 @@ import {
 
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
 import { remapKeysForProduct, remapProductResponse } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import {
   refetchEntities,
   refetchEntity,
@@ -33,18 +33,23 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateProductOption>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminCreateProductOption & AdditionalData
+  >,
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const productId = req.params.id
+  const { additional_data, ...rest } = req.validatedBody
+
   await createProductOptionsWorkflow(req.scope).run({
     input: {
       product_options: [
         {
-          ...req.validatedBody,
+          ...rest,
           product_id: productId,
         },
       ],
+      additional_data,
     },
   })
 

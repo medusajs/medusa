@@ -7,15 +7,18 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = {
+export type AuthorizePaymentSessionStepInput = {
   id: string
   context: Record<string, unknown>
 }
 
 export const authorizePaymentSessionStepId = "authorize-payment-session-step"
+/**
+ * This step authorizes a payment session.
+ */
 export const authorizePaymentSessionStep = createStep(
   authorizePaymentSessionStepId,
-  async (input: StepInput, { container }) => {
+  async (input: AuthorizePaymentSessionStepInput, { container }) => {
     let payment: PaymentDTO | undefined
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(

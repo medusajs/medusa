@@ -689,7 +689,21 @@ medusaIntegrationTestRunner({
                   barcode: "test-barcode-4",
                   allow_backorder: false,
                   manage_inventory: true,
-                  prices: [],
+                  prices: [
+                    expect.objectContaining({
+                      currency_code: "usd",
+                      amount: 100,
+                    }),
+
+                    expect.objectContaining({
+                      currency_code: "eur",
+                      amount: 45,
+                    }),
+                    expect.objectContaining({
+                      currency_code: "dkk",
+                      amount: 30,
+                    }),
+                  ],
                   options: [
                     expect.objectContaining({
                       value: "Large",

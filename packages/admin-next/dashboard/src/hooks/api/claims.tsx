@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -5,21 +6,25 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import { ordersQueryKeys } from "./orders"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { ordersQueryKeys } from "./orders"
 
 const CLAIMS_QUERY_KEY = "claims" as const
 export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
 
 export const useClaim = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminClaimListParams,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminClaimResponse,
+      Error,
+      HttpTypes.AdminClaimResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -75,6 +80,11 @@ export const useCreateClaim = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: claimsQueryKeys.lists(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -103,6 +113,7 @@ export const useCancelClaim = (
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
         queryKey: claimsQueryKeys.lists(),
       })
@@ -231,7 +242,7 @@ export const useAddClaimInboundItems = (
   })
 }
 
-export const useUpdateClaimInboundItems = (
+export const useUpdateClaimInboundItem = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
@@ -269,6 +280,10 @@ export const useRemoveClaimInboundItem = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.all,
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

@@ -1,4 +1,29 @@
-import { z } from "zod"
+import { z, ZodEffects, ZodObject } from "zod"
+
+/**
+ * Wraps the original schema to a function to accept and merge
+ * additional_data schema
+ */
+export const WithAdditionalData = <T extends ZodObject<any, any>>(
+  originalSchema: T,
+  modifyCallback?: (schema: T) => ZodObject<any, any> | ZodEffects<any, any>
+) => {
+  return (additionalDataValidator?: ZodObject<any, any>) => {
+    let schema: ZodObject<any, any>
+
+    if (!additionalDataValidator) {
+      schema = originalSchema.extend({
+        additional_data: z.record(z.unknown()).nullish(),
+      })
+    } else {
+      schema = originalSchema.extend({
+        additional_data: additionalDataValidator,
+      })
+    }
+
+    return modifyCallback ? modifyCallback(schema as T) : schema
+  }
+}
 
 export const createBatchBody = (
   createValidator: z.ZodType,

@@ -13,6 +13,7 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCustomerAddressType } from "../../../validators"
 import { refetchCustomer } from "../../../helpers"
+import { AdditionalData } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -33,14 +34,19 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateCustomerAddressType>,
+  req: AuthenticatedMedusaRequest<
+    AdminCreateCustomerAddressType & AdditionalData
+  >,
   res: MedusaResponse
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
+
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
   await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
-      update: req.validatedBody,
+      update: rest,
+      additional_data,
     },
   })
 

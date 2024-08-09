@@ -15,7 +15,7 @@ export const POST = async (
     input: {
       payment_id: id,
       created_by: req.auth_context.actor_id,
-      amount: req.validatedBody.amount,
+      ...req.validatedBody,
     },
   })
 

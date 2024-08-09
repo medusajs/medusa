@@ -198,19 +198,6 @@ export declare module "typedoc" {
      */
     outputModules: boolean
     /**
-     * Whether to enable category to namespace conversion.
-     * @defaultValue false
-     */
-    generateNamespaces: boolean
-    /**
-     * Optionally specify a parent namespace to place all generated namespaces in.
-     */
-    parentNamespace: string
-    /**
-     * Optionally specify a name prefix for all generated namespaces.
-     */
-    namePrefix: string
-    /**
      * Whether to enable the React Query manipulator.
      * @defaultValue false
      */
@@ -257,6 +244,20 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     normalizeDmlTypes: boolean
+    /**
+     * Whether to enable the workflows plugin.
+     * @defaultValue false
+     */
+    enableWorkflowsPlugins: boolean
+    /**
+     * Whether to enable the namespace generator plugin.
+     * @defaultValue false
+     */
+    enableNamespaceGenerator: boolean
+    /**
+     * The namespaces to generate.
+     */
+    generateNamespaces: NamespaceGenerateDetails[]
   }
 }
 
@@ -267,4 +268,22 @@ export declare type DmlFile = {
     filePath: string
     properties: DmlObject
   }
+}
+
+export declare type NamespaceGenerateDetails = {
+  /**
+   * The namespace's names.
+   */
+  name: string
+  /**
+   * The namespace's description. Will be attached
+   * as a summary comment.
+   */
+  description?: string
+  /**
+   * A path pattern to pass to minimatch that
+   * checks if a file / its reflections belong to the
+   * namespace
+   */
+  pathPattern: string
 }

@@ -475,7 +475,7 @@ export const syncProductsWorkflowHighlight = [
   ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight} collapsibleLines="1-16" expandButtonLabel="Show Imports"
   import { 
     ModuleRegistrationName
-  } from "@medusajs/modules-sdk"
+  } from "@medusajs/utils"
   import { 
     IProductModuleService, 
     IStoreModuleService, 
@@ -786,7 +786,7 @@ The `order.placed` event is currently not emitted.
   } from "@medusajs/medusa"
   import { 
     ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+  } from "@medusajs/utils"
   import { 
     ICustomerModuleService, 
     IOrderModuleService,
@@ -902,7 +902,7 @@ export const newsletterHighlights = [
   } from "@medusajs/medusa"
   import { 
     ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+  } from "@medusajs/utils"
   import { 
     ICustomerModuleService, 
     IProductModuleService, 

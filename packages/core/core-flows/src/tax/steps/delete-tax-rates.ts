@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteTaxRatesStepId = "delete-tax-rates"
+/**
+ * This step deletes one or more tax rates.
+ */
 export const deleteTaxRatesStep = createStep(
   deleteTaxRatesStepId,
   async (ids: string[], { container }) => {

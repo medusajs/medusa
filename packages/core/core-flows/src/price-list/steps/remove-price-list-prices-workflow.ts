@@ -3,6 +3,9 @@ import { removePriceListPricesWorkflow } from "../workflows/remove-price-list-pr
 
 export const removePriceListPricesWorkflowStepId =
   "remove-price-list-prices-workflow"
+/**
+ * This step removes prices from price lists.
+ */
 export const removePriceListPricesWorkflowStep = createStep(
   removePriceListPricesWorkflowStepId,
   async (ids: string[], { container }) => {

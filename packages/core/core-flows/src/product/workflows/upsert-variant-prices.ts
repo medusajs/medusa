@@ -13,7 +13,7 @@ import { removeRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createPriceSetsStep, updatePriceSetsStep } from "../../pricing"
 import { createVariantPricingLinkStep } from "../steps"
 
-type WorkflowInput = {
+export type UpsertVariantPricesWorkflowInput = {
   variantPrices: {
     variant_id: string
     product_id: string
@@ -23,9 +23,12 @@ type WorkflowInput = {
 }
 
 export const upsertVariantPricesWorkflowId = "upsert-variant-prices"
+/**
+ * This workflow creates or updates variants' prices.
+ */
 export const upsertVariantPricesWorkflow = createWorkflow(
   upsertVariantPricesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpsertVariantPricesWorkflowInput>): WorkflowData<void> => {
     const removedVariantIds = transform({ input }, (data) => {
       return arrayDifference(
         data.input.previousVariantIds,
@@ -72,7 +75,7 @@ export const upsertVariantPricesWorkflow = createWorkflow(
             .map((v) => {
               const priceSetId = linksMap.get(v.variant_id)
 
-              if (!priceSetId) {
+              if (!priceSetId || !v.prices) {
                 return
               }
 

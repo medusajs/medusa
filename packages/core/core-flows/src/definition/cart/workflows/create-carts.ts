@@ -1,8 +1,13 @@
-import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
+import {
+  AdditionalData,
+  CartDTO,
+  CreateCartWorkflowInputDTO,
+} from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -21,17 +26,18 @@ import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
-import { refreshPaymentCollectionForCartStep } from "./refresh-payment-collection"
+import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 
 // TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
+/**
+ * This workflow creates a cart.
+ */
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
-  (
-    input: WorkflowData<CreateCartWorkflowInputDTO>
-  ): WorkflowResponse<CartDTO> => {
+  (input: WorkflowData<CreateCartWorkflowInputDTO & AdditionalData>) => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
@@ -145,17 +151,26 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    parallelize(
-      refreshCartPromotionsStep({
-        id: cart.id,
-        promo_codes: input.promo_codes,
-      }),
-      updateTaxLinesStep({ cart_or_cart_id: cart.id }),
-      refreshPaymentCollectionForCartStep({
-        cart_id: cart.id,
-      })
-    )
+    updateTaxLinesStep({ cart_or_cart_id: cart.id })
 
-    return new WorkflowResponse(cart)
+    refreshCartPromotionsStep({
+      id: cart.id,
+      promo_codes: input.promo_codes,
+    })
+
+    refreshPaymentCollectionForCartWorkflow.runAsStep({
+      input: {
+        cart_id: cart.id,
+      },
+    })
+
+    const cartCreated = createHook("cartCreated", {
+      cart,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(cart, {
+      hooks: [cartCreated],
+    })
   }
 )

@@ -1,7 +1,14 @@
-import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import {
+  AdditionalData,
+  FulfillmentDTO,
+  OrderDTO,
+  OrderWorkflow,
+} from "@medusajs/types"
 import { FulfillmentEvents, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
+  WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -15,8 +22,11 @@ import {
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that a shipment can be created for an order.
+ */
+export const createShipmentValidateOrder = createStep(
+  "create-shipment-validate-order",
   ({
     order,
     input,
@@ -67,11 +77,16 @@ function prepareRegisterShipmentData({
 }
 
 export const createOrderShipmentWorkflowId = "create-order-shipment"
+/**
+ * This workflow creates a shipment for an order.
+ */
 export const createOrderShipmentWorkflow = createWorkflow(
   createOrderShipmentWorkflowId,
   (
-    input: WorkflowData<OrderWorkflow.CreateOrderShipmentWorkflowInput>
-  ): WorkflowData<void> => {
+    input: WorkflowData<
+      OrderWorkflow.CreateOrderShipmentWorkflowInput & AdditionalData
+    >
+  ) => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -87,7 +102,7 @@ export const createOrderShipmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validateOrder({ order, input })
+    createShipmentValidateOrder({ order, input })
 
     const fulfillmentData = transform({ input }, ({ input }) => {
       return {
@@ -111,6 +126,15 @@ export const createOrderShipmentWorkflow = createWorkflow(
     emitEventStep({
       eventName: FulfillmentEvents.SHIPMENT_CREATED,
       data: { id: shipment.id },
+    })
+
+    const shipmentCreated = createHook("shipmentCreated", {
+      shipment,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(void 0, {
+      hooks: [shipmentCreated],
     })
   }
 )

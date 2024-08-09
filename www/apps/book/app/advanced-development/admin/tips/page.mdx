@@ -6,6 +6,59 @@ export const metadata = {
 
 In this chapter, you'll find some tips for your admin development.
 
+## Send Requests to API Routes
+
+To send a request to an API route in the Medusa Application, use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+
+For example:
+
+export const fetchHighlights = [
+  ["14", "fetch", "Send a request to the `/admin/products` API route."]
+]
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={fetchHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { Container } from "@medusajs/ui"
+import { useEffect, useState } from "react"
+
+const ProductWidget = () => {
+  const [productsCount, setProductsCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!loading) {
+      return
+    }
+
+    fetch(`/admin/products`, {
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then(({ count }) => {
+      setProductsCount(count)
+      setLoading(false)
+    })
+  }, [loading])
+
+  return (
+    <Container>
+      {loading && <span>Loading...</span>}
+      {!loading && <span>You have {productsCount} Product(s).</span>}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.list.before",
+})
+
+export default ProductWidget
+```
+
+In this example, you send a request to the [List Products API route](!api!/admin#products_getproducts) and show the count of products in a widget.
+
+---
+
 ## Routing Functionalities
 
 To navigate or link to other pages, or perform other routing functionalities, use the [react-router-dom](https://reactrouter.com/en/main) package. It's installed in your project through the Medusa Admin.

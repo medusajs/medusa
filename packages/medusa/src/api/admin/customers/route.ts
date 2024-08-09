@@ -1,6 +1,10 @@
 import { createCustomersWorkflow } from "@medusajs/core-flows"
 
-import { AdminCustomer, PaginatedResponse } from "@medusajs/types"
+import {
+  AdditionalData,
+  AdminCustomer,
+  PaginatedResponse,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -38,20 +42,21 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateCustomerType>,
+  req: AuthenticatedMedusaRequest<AdminCreateCustomerType & AdditionalData>,
   res: MedusaResponse<{ customer: AdminCustomer }>
 ) => {
+  const { additional_data, ...rest } = req.validatedBody
   const createCustomers = createCustomersWorkflow(req.scope)
 
   const customersData = [
     {
-      ...req.validatedBody,
+      ...rest,
       created_by: req.auth_context.actor_id,
     },
   ]
 
   const { result } = await createCustomers.run({
-    input: { customersData },
+    input: { customersData, additional_data },
   })
 
   const customer = await refetchCustomer(

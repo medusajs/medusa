@@ -10,7 +10,7 @@ import {
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
-  DistributedTransaction,
+  DistributedTransactionType,
   DistributedTransactionEvent,
   DistributedTransactionEvents,
   TransactionFlow,
@@ -167,7 +167,7 @@ export class LocalWorkflow {
     idempotencyKey,
   }: {
     orchestrator: TransactionOrchestrator
-    transaction?: DistributedTransaction
+    transaction?: DistributedTransactionType
     subscribe?: DistributedTransactionEvents
     idempotencyKey?: string
   }) {
@@ -382,7 +382,7 @@ export class LocalWorkflow {
   }
 
   async cancel(
-    transactionOrTransactionId: string | DistributedTransaction,
+    transactionOrTransactionId: string | DistributedTransactionType,
     context?: Context,
     subscribe?: DistributedTransactionEvents
   ) {
@@ -411,7 +411,7 @@ export class LocalWorkflow {
     response?: unknown,
     context?: Context,
     subscribe?: DistributedTransactionEvents
-  ): Promise<DistributedTransaction> {
+  ): Promise<DistributedTransactionType> {
     this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 
@@ -438,7 +438,7 @@ export class LocalWorkflow {
     error?: Error | any,
     context?: Context,
     subscribe?: DistributedTransactionEvents
-  ): Promise<DistributedTransaction> {
+  ): Promise<DistributedTransactionType> {
     this.medusaContext = context
     const { handler, orchestrator } = this.workflow
 

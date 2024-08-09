@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const batchLinkProductsToCollectionStepId =
   "batch-link-products-to-collection"
+/**
+ * This step creates links between product and collection records.
+ */
 export const batchLinkProductsToCollectionStep = createStep(
   batchLinkProductsToCollectionStepId,
   async (data: LinkWorkflowInput, { container }) => {

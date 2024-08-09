@@ -1,7 +1,8 @@
-import { CreateCustomerAddressDTO, CustomerAddressDTO } from "@medusajs/types"
+import { AdditionalData, CreateCustomerAddressDTO } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -12,14 +13,15 @@ import {
   maybeUnsetDefaultShippingAddressesStep,
 } from "../steps"
 
-type WorkflowInput = { addresses: CreateCustomerAddressDTO[] }
+export type CreateCustomerAddressesWorkflowInput = { addresses: CreateCustomerAddressDTO[] } & AdditionalData
 
 export const createCustomerAddressesWorkflowId = "create-customer-addresses"
+/**
+ * This workflow creates one or more customer address.
+ */
 export const createCustomerAddressesWorkflow = createWorkflow(
   createCustomerAddressesWorkflowId,
-  (
-    input: WorkflowData<WorkflowInput>
-  ): WorkflowResponse<CustomerAddressDTO[]> => {
+  (input: WorkflowData<CreateCustomerAddressesWorkflowInput>) => {
     const unsetInput = transform(input, (data) => ({
       create: data.addresses,
     }))
@@ -29,6 +31,14 @@ export const createCustomerAddressesWorkflow = createWorkflow(
       maybeUnsetDefaultBillingAddressesStep(unsetInput)
     )
 
-    return new WorkflowResponse(createCustomerAddressesStep(input.addresses))
+    const createdAddresses = createCustomerAddressesStep(input.addresses)
+    const addressesCreated = createHook("addressesCreated", {
+      addresses: createdAddresses,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(createdAddresses, {
+      hooks: [addressesCreated],
+    })
   }
 )

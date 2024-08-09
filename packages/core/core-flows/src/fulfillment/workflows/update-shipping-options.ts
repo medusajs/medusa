@@ -13,6 +13,9 @@ import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
+/**
+ * This workflow updates one or more shipping options.
+ */
 export const updateShippingOptionsWorkflow = createWorkflow(
   updateShippingOptionsWorkflowId,
   (

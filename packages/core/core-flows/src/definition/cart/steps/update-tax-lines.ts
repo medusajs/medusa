@@ -6,7 +6,7 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { updateTaxLinesWorkflow } from "../workflows"
 
-interface StepInput {
+export interface UpdateTaxLinesStepInput {
   cart_or_cart_id: CartWorkflowDTO | string
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
@@ -14,9 +14,12 @@ interface StepInput {
 }
 
 export const updateTaxLinesStepId = "update-tax-lines-step"
+/**
+ * This step updates tax lines of line items and shipping methods.
+ */
 export const updateTaxLinesStep = createStep(
   updateTaxLinesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpdateTaxLinesStepInput, { container }) => {
     const { transaction } = await updateTaxLinesWorkflow(container).run({
       input,
     })

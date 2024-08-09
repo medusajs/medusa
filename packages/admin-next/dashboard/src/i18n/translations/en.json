@@ -845,6 +845,7 @@
     "returns": {
       "create": "Create Return",
       "inbound": "Inbound",
+      "outbound": "Outbound",
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
@@ -880,6 +881,22 @@
           "errorNegativeValue": "Quantity cannot be a negative value.",
           "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
         }
+      }
+    },
+    "claims": {
+      "create": "Create Claim",
+      "outbound": "Outbound",
+      "outboundShipping": "Outbound shipping",
+      "outboundShippingHint": "Choose which method you want to use.",
+      "refundAmount": "Estimated difference",
+      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "actions": {
+        "cancelClaim": {
+          "successToast": "Claim was successfully canceled."
+        }
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       }
     },
     "reservations": {
@@ -2088,11 +2105,32 @@
   "returnReasons": {
     "domain": "Return Reasons",
     "calloutHint": "Manage the reasons to categorize returns.",
-    "deleteReasonWarning": "You are about to delete the return reason {{label}}. This action cannot be undone.",
-    "createReason": "Create Return Reason",
-    "createReasonHint": "Create a new return reason to categorize returns.",
     "editReason": "Edit Return Reason",
-    "valueTooltip": "The value should be a unique identifier for the return reason."
+    "create": {
+      "header": "Add Return Reason",
+      "subtitle": "Specify the most common reasons for returns.",
+      "hint": "Create a new return reason to categorize returns.",
+      "successToast": "Return reason {{label}} was successfully created."
+    },
+    "edit": {
+      "successToast": "Return reason {{label}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the return reason {{label}}. This action cannot be undone.",
+      "successToast": "Return reason {{label}} was successfully deleted."
+    },
+    "fields": {
+      "value": {
+        "label": "Value",
+        "placeholder": "wrong_size",
+        "tooltip": "The value should be a unique identifier for the return reason."
+      },
+      "label": { "label": "Label", "placeholder": "Wrong size" },
+      "description": {
+        "label": "Descriptions",
+        "placeholder": "Customer received the wrong size"
+      }
+    }
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
@@ -2301,6 +2339,7 @@
     "totalRedemptions": "Total Redemptions",
     "countries": "Countries",
     "paymentProviders": "Payment Providers",
+    "refundReason": "Refund Reason",
     "fulfillmentProviders": "Fulfillment Providers",
     "fulfillmentProvider": "Fulfillment Provider",
     "providers": "Providers",

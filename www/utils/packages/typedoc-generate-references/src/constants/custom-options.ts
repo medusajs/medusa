@@ -10,6 +10,29 @@ import { rootPathPrefix } from "./general.js"
 import { modules } from "./references.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
+  "core-flows": getOptions({
+    entryPointPath: "packages/core/core-flows/src/index.ts",
+    tsConfigName: "core-flows.json",
+    name: "core-flows",
+    plugin: ["typedoc-plugin-workflows"],
+    enableWorkflowsPlugins: true,
+    enableNamespaceGenerator: true,
+    // @ts-expect-error there's a typing issue in typedoc
+    generateNamespaces: [
+      {
+        name: "Workflows",
+        description:
+          "Workflows listed here are created by Medusa and can be imported from `@medusajs/core-flows`.",
+        pathPattern: "**/packages/core/core-flows/**/workflows/**",
+      },
+      {
+        name: "Steps",
+        description:
+          "Steps listed here are created by Medusa and can be imported from `@medusajs/core-flows`.",
+        pathPattern: "**/packages/core/core-flows/**/steps/**",
+      },
+    ],
+  }),
   "auth-provider": getOptions({
     entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
     tsConfigName: "utils.json",
@@ -24,7 +47,6 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
     tsConfigName: "utils.json",
     name: "dml",
-    generateNamespaces: true,
   }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",

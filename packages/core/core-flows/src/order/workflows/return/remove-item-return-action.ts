@@ -22,7 +22,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return item can be removed.
+ */
+export const removeReturnItemActionValidationStep = createStep(
   "remove-item-return-action-validation",
   async function ({
     order,
@@ -56,6 +59,9 @@ const validationStep = createStep(
 )
 
 export const removeItemReturnActionWorkflowId = "remove-item-return-action"
+/**
+ * This workflow removes a return item.
+ */
 export const removeItemReturnActionWorkflow = createWorkflow(
   removeItemReturnActionWorkflowId,
   function (
@@ -79,7 +85,17 @@ export const removeItemReturnActionWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
+      fields: [
+        "id",
+        "status",
+        "version",
+        "return_id",
+        "order_id",
+        "actions.*",
+        "canceled_at",
+        "confirmed_at",
+        "declined_at",
+      ],
       variables: {
         filters: {
           order_id: orderReturn.order_id,
@@ -90,7 +106,7 @@ export const removeItemReturnActionWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderReturn, orderChange })
+    removeReturnItemActionValidationStep({ order, input, orderReturn, orderChange })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 

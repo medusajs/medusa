@@ -2,15 +2,18 @@ import {
   BigNumberInput,
   Context,
   DAL,
+  FilterableOrderReturnReasonProps,
   FindConfig,
   InternalModuleDeclaration,
   IOrderModuleService,
   ModulesSdkTypes,
   OrderDTO,
+  OrderReturnReasonDTO,
   OrderTypes,
   RestoreReturn,
   SoftDeleteReturn,
   UpdateOrderItemWithSelectorDTO,
+  UpdateOrderReturnReasonDTO,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -68,6 +71,7 @@ import {
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
+import { UpdateReturnReasonDTO } from "src/types/return-reason"
 import {
   applyChangesToOrder,
   ApplyOrderChangeDTO,
@@ -3206,7 +3210,7 @@ export default class OrderModuleService<
     const ret = await this.cancelClaim_(data, sharedContext)
 
     return await this.retrieveOrderClaim(ret.id, {
-      relations: ["additional_items", "claim_items"],
+      relations: ["additional_items", "claim_items", "return", "return.items"],
     })
   }
 
@@ -3250,6 +3254,56 @@ export default class OrderModuleService<
     )
   }
 
+  // @ts-ignore
+  updateReturnReasons(
+    id: string,
+    data: UpdateOrderReturnReasonDTO,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO>
+  updateReturnReasons(
+    selector: FilterableOrderReturnReasonProps,
+    data: Partial<UpdateOrderReturnReasonDTO>,
+    sharedContext?: Context
+  ): Promise<OrderReturnReasonDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updateReturnReasons(
+    idOrSelector: string | FilterableOrderReturnReasonProps,
+    data: UpdateOrderReturnReasonDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<OrderReturnReasonDTO[] | OrderReturnReasonDTO> {
+    let normalizedInput: UpdateReturnReasonDTO[] = []
+    if (isString(idOrSelector)) {
+      // Check if the return reason exists in the first place
+      await this.returnReasonService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const reasons = await this.returnReasonService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = reasons.map((reason) => ({
+        id: reason.id,
+        ...data,
+      }))
+    }
+
+    const reasons = await this.returnReasonService_.update(
+      normalizedInput,
+      sharedContext
+    )
+
+    const updatedReturnReasons = await this.baseRepository_.serialize<
+      OrderReturnReasonDTO[]
+    >(reasons)
+
+    return isString(idOrSelector)
+      ? updatedReturnReasons[0]
+      : updatedReturnReasons
+  }
+
   @InjectTransactionManager("baseRepository_")
   async createExchange_(
     data: OrderTypes.CreateOrderExchangeDTO,
@@ -3266,7 +3320,7 @@ export default class OrderModuleService<
     const ret = await this.cancelExchange_(data, sharedContext)
 
     return await this.retrieveOrderExchange(ret.id, {
-      relations: ["items"],
+      relations: ["additional_items", "return", "return.items"],
     })
   }
 

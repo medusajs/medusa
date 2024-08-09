@@ -25,7 +25,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a claim's shipping method can be updated.
+ */
+export const updateClaimShippingMethodValidationStep = createStep(
   "validate-update-claim-shipping-method",
   async function ({
     orderChange,
@@ -57,6 +60,9 @@ const validationStep = createStep(
 
 export const updateClaimShippingMethodWorkflowId =
   "update-claim-shipping-method"
+/**
+ * This workflow updates a claim's shipping method.
+ */
 export const updateClaimShippingMethodWorkflow = createWorkflow(
   updateClaimShippingMethodWorkflowId,
   function (
@@ -83,7 +89,7 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ orderClaim, orderChange, input })
+    updateClaimShippingMethodValidationStep({ orderClaim, orderChange, input })
 
     const updateData = transform(
       { orderChange, input },

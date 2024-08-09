@@ -4,6 +4,9 @@ import { updatePriceListPricesWorkflow } from "../workflows/update-price-list-pr
 
 export const updatePriceListPricesWorkflowStepId =
   "update-price-list-prices-workflow"
+/**
+ * This step updates price lists' prices.
+ */
 export const updatePriceListPricesWorkflowStep = createStep(
   updatePriceListPricesWorkflowStepId,
   async (data: UpdatePriceListPricesWorkflowDTO[], { container }) => {

@@ -1779,6 +1779,16 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
             ],
           },
+          {
+            title: "Integrations",
+            hasTitleStyling: true,
+            children: [
+              {
+                path: "/troubleshooting/s3",
+                title: "S3 Module Provider Errors",
+              },
+            ],
+          },
         ],
       },
     ],

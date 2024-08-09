@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { AddressPayload } from "../../utils/common-validators"
-import { createSelectParams } from "../../utils/validators"
+import { createSelectParams, WithAdditionalData } from "../../utils/validators"
 
 export type StoreGetPromotionType = z.infer<typeof StoreGetCartsCart>
 export const StoreGetCartsCart = createSelectParams()
@@ -11,8 +11,8 @@ const ItemSchema = z.object({
   metadata: z.record(z.unknown()).nullish(),
 })
 
-export type StoreCreateCartType = z.infer<typeof StoreCreateCart>
-export const StoreCreateCart = z
+export type StoreCreateCartType = z.infer<typeof CreateCart>
+export const CreateCart = z
   .object({
     region_id: z.string().nullish(),
     shipping_address: z.union([AddressPayload, z.string()]).optional(),
@@ -24,6 +24,7 @@ export const StoreCreateCart = z
     metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
+export const StoreCreateCart = WithAdditionalData(CreateCart)
 
 export type StoreAddCartPromotionsType = z.infer<typeof StoreAddCartPromotions>
 export const StoreAddCartPromotions = z
@@ -41,8 +42,8 @@ export const StoreRemoveCartPromotions = z
   })
   .strict()
 
-export type StoreUpdateCartType = z.infer<typeof StoreUpdateCart>
-export const StoreUpdateCart = z
+export type StoreUpdateCartType = z.infer<typeof UpdateCart>
+export const UpdateCart = z
   .object({
     region_id: z.string().nullish(),
     email: z.string().email().nullish(),
@@ -53,6 +54,7 @@ export const StoreUpdateCart = z
     promo_codes: z.array(z.string()).optional(),
   })
   .strict()
+export const StoreUpdateCart = WithAdditionalData(UpdateCart)
 
 export type StoreCalculateCartTaxesType = z.infer<
   typeof StoreCalculateCartTaxes

@@ -44,6 +44,7 @@ export const AdminPostOrderClaimsReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
+  reason_id: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminPostOrderClaimsReqSchemaType = z.infer<
@@ -143,6 +144,17 @@ export type AdminPostClaimsRequestReturnItemsReqSchemaType = z.infer<
   typeof AdminPostClaimsRequestReturnItemsReqSchema
 >
 
+export const AdminPostClaimsRequestItemsReturnActionReqSchema = z.object({
+  quantity: z.number().optional(),
+  internal_note: z.string().nullish().optional(),
+  reason_id: z.string().nullish().optional(),
+  metadata: z.record(z.unknown()).nullish().optional(),
+})
+
+export type AdminPostClaimsRequestItemsReturnActionReqSchemaType = z.infer<
+  typeof AdminPostClaimsRequestItemsReturnActionReqSchema
+>
+
 export const AdminPostClaimItemsReqSchema = z.object({
   items: z.array(
     z.object({
@@ -162,7 +174,7 @@ export type AdminPostClaimItemsReqSchemaType = z.infer<
 export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
-  reason: z.nativeEnum(ClaimReason).nullish().optional(),
+  reason_id: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
 
@@ -172,7 +184,7 @@ export type AdminPostClaimsRequestItemsActionReqSchemaType = z.infer<
 
 export const AdminPostClaimsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
-  reason: z.nativeEnum(ClaimReason).nullish().optional(),
+  reason_id: z.string().nullish(),
   internal_note: z.string().nullish().optional(),
 })
 

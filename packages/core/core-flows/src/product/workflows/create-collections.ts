@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { AdditionalData, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,15 +7,17 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createCollectionsStep } from "../steps"
 
-type WorkflowInput = {
+export type CreateCollectionsWorkflowInput = {
   collections: ProductTypes.CreateProductCollectionDTO[]
-  additional_data?: Record<string, unknown>
-}
+} & AdditionalData
 
 export const createCollectionsWorkflowId = "create-collections"
+/**
+ * This workflow creates one or more collections.
+ */
 export const createCollectionsWorkflow = createWorkflow(
   createCollectionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateCollectionsWorkflowInput>) => {
     const collections = createCollectionsStep(input.collections)
     const collectionsCreated = createHook("collectionsCreated", {
       collections,

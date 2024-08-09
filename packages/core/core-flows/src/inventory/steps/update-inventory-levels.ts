@@ -8,6 +8,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const updateInventoryLevelsStepId = "update-inventory-levels-step"
+/**
+ * This step updates one or more inventory levels.
+ */
 export const updateInventoryLevelsStep = createStep(
   updateInventoryLevelsStepId,
   async (

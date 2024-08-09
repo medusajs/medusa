@@ -7,7 +7,7 @@ import {
   MiddlewareVerb,
   ParserConfig,
 } from "../types"
-import { ZodObject } from "zod"
+import zod, { ZodRawShape } from "zod"
 
 /**
  * A helper function to configure the routes by defining custom middleware,
@@ -19,10 +19,7 @@ export function defineMiddlewares<
     method?: MiddlewareVerb | MiddlewareVerb[]
     matcher: string | RegExp
     bodyParser?: ParserConfig
-    extendedValidators?: {
-      body?: ZodObject<any, any>
-      queryParams?: ZodObject<any, any>
-    }
+    additionalDataValidator?: ZodRawShape
     // eslint-disable-next-line space-before-function-paren
     middlewares?: (<Req extends MedusaRequest>(
       req: Req,
@@ -41,17 +38,16 @@ export function defineMiddlewares<
   return {
     errorHandler,
     routes: routes.map((route) => {
-      const { middlewares, extendedValidators, ...rest } = route
+      const { middlewares, additionalDataValidator, ...rest } = route
       const customMiddleware: MedusaRequestHandler[] = []
 
       /**
-       * Define a custom validator when "extendedValidators.body" or
-       * "extendedValidators.queryParams" validation schema is
-       * provided.
+       * Define a custom validator when a zod schema is provided via
+       * "additionalDataValidator" property
        */
-      if (extendedValidators?.body || extendedValidators?.queryParams) {
+      if (additionalDataValidator) {
         customMiddleware.push((req, _, next) => {
-          req.extendedValidators = extendedValidators
+          req.additionalDataValidator = zod.object(additionalDataValidator)
           next()
         })
       }

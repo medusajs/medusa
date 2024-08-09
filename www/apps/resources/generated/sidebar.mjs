@@ -3587,6 +3587,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/payment/createRefundReasons",
+                        "title": "createRefundReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/payment/deletePaymentCollections",
                         "title": "deletePaymentCollections",
                         "children": []
@@ -3596,6 +3603,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/payment/deletePaymentSession",
                         "title": "deletePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/payment/deleteRefundReasons",
+                        "title": "deleteRefundReasons",
                         "children": []
                       },
                       {
@@ -3650,6 +3664,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/payment/listRefundReasons",
+                        "title": "listRefundReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/payment/listRefunds",
                         "title": "listRefunds",
                         "children": []
@@ -3671,6 +3692,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/payment/restoreRefundReasons",
+                        "title": "restoreRefundReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/payment/retrievePaymentCollection",
                         "title": "retrievePaymentCollection",
                         "children": []
@@ -3680,6 +3708,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/payment/retrievePaymentSession",
                         "title": "retrievePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/payment/softDeleteRefundReasons",
+                        "title": "softDeleteRefundReasons",
                         "children": []
                       },
                       {
@@ -3701,6 +3736,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/payment/updatePaymentSession",
                         "title": "updatePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/payment/updateRefundReasons",
+                        "title": "updateRefundReasons",
                         "children": []
                       },
                       {
@@ -3776,6 +3818,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/payment/models/Refund",
                         "title": "Refund",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/payment/models/RefundReason",
+                        "title": "RefundReason",
                         "children": []
                       }
                     ]
@@ -6408,13 +6457,13 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/recipes/subscriptions",
-        "title": "Subscriptions",
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/recipes/subscriptions/examples/standard",
+            "path": "/recipes/digital-products/examples/standard",
             "title": "Example",
             "children": []
           }
@@ -7188,6 +7237,21 @@ export const generatedSidebar = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Integrations",
+            "hasTitleStyling": true,
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/troubleshooting/s3",
+                "title": "S3 Module Provider Errors",
+                "children": []
+              }
+            ]
           }
         ]
       }
@@ -7582,6 +7646,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/references/helper-steps/dismissRemoteLinkStep",
             "title": "dismissRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/emitEventStep",
+            "title": "emitEventStep",
             "children": []
           },
           {
