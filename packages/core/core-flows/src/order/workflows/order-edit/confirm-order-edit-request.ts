@@ -1,11 +1,10 @@
 import { FulfillmentWorkflow, OrderChangeDTO, OrderDTO } from "@medusajs/types"
-import { OrderChangeStatus } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
-  when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
@@ -157,70 +156,71 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
 
     confirmOrderChanges({ changes: [orderChange], orderId: order.id })
 
-    const { orderEditShippingMethod } = transform(
-      { orderPreview },
-      extractShippingOption
-    )
+    const orderItems = useRemoteQueryStep({
+      entry_point: "order",
+      fields: [
+        "id",
+        "version",
+        "canceled_at",
+        "sales_channel_id",
+        "items.quantity",
+        "items.raw_quantity",
+        "items.item.id",
+        "items.item.variant.manage_inventory",
+        "items.item.variant.allow_backorder",
+        "items.item.variant.inventory_items.inventory_item_id",
+        "items.item.variant.inventory_items.required_quantity",
+        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
+        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
+        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
+      ],
+      variables: { id: input.order_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "order-query" })
 
-    when({ orderEditShippingMethod }, ({ orderEditShippingMethod }) => {
-      return !!orderEditShippingMethod
-    }).then(() => {
-      const orderEdit = useRemoteQueryStep({
-        entry_point: "order",
-        fields: [
-          "id",
-          "version",
-          "canceled_at",
-          "order.sales_channel_id",
-          "additional_items.quantity",
-          "additional_items.raw_quantity",
-          "additional_items.item.id",
-          "additional_items.item.variant.manage_inventory",
-          "additional_items.item.variant.allow_backorder",
-          "additional_items.item.variant.inventory_items.inventory_item_id",
-          "additional_items.item.variant.inventory_items.required_quantity",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
-        ],
-        variables: { id: orderEditShippingMethod },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "order-query" })
+    const { variants, items } = transform({ orderItems }, ({ orderItems }) => {
+      const allItems: any[] = []
+      const allVariants: any[] = []
+      orderItems.items.forEach((ordItem) => {
+        const itemAction = orderPreview.items?.find(
+          (item) =>
+            item.id === ordItem.id &&
+            item.actions?.find((a) => a.action === ChangeActionType.ITEM_ADD)
+        )
 
-      const { variants, items } = transform({ orderEdit }, ({ orderEdit }) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
-        orderEdit.additional_items.forEach((orderEditItem) => {
-          const item = orderEditItem.item
-          allItems.push({
-            id: item.id,
-            variant_id: item.variant_id,
-            quantity: orderEditItem.raw_quantity ?? orderEditItem.quantity,
-          })
-          allVariants.push(item.variant)
-        })
-
-        return {
-          variants: allVariants,
-          items: allItems,
+        if (!itemAction) {
+          return
         }
+
+        const item = ordItem.item
+        allItems.push({
+          id: item.id,
+          variant_id: item.variant_id,
+          quantity: itemAction.raw_quantity ?? itemAction.quantity,
+        })
+        allVariants.push(item.variant)
       })
 
-      const formatedInventoryItems = transform(
-        {
-          input: {
-            sales_channel_id: (orderEdit as any).order.sales_channel_id,
-            variants,
-            items,
-          },
-        },
-        prepareConfirmInventoryInput
-      )
-
-      reserveInventoryStep(formatedInventoryItems)
+      return {
+        variants: allVariants,
+        items: allItems,
+      }
     })
+
+    const formatedInventoryItems = transform(
+      {
+        input: {
+          sales_channel_id: (orderItems as any).order.sales_channel_id,
+          variants,
+          items,
+        },
+      },
+      prepareConfirmInventoryInput
+    )
+
+    reserveInventoryStep(formatedInventoryItems)
 
     return new WorkflowResponse(orderPreview)
   }
