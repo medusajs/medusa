@@ -15,7 +15,7 @@ import {
 import ts, { SyntaxKind, VariableStatement } from "typescript"
 import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
 import Helper from "./utils/helper"
-import { isWorkflow } from "utils"
+import { isWorkflow, isWorkflowStep } from "utils"
 import { StepType } from "./types"
 
 type ParsedStep = {
@@ -105,6 +105,14 @@ class WorkflowsPlugin {
           context,
           parentReflection: reflection.parent,
         })
+
+        if (!reflection.comment && reflection.parent.comment) {
+          reflection.comment = reflection.parent.comment
+        }
+      } else if (isWorkflowStep(reflection)) {
+        if (!reflection.comment && reflection.parent.comment) {
+          reflection.comment = reflection.parent.comment
+        }
       }
     }
   }

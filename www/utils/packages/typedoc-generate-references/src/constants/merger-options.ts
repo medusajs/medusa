@@ -32,12 +32,11 @@ const mergerOptions: Partial<TypeDocOptions> = {
   allReflectionsHaveOwnDocument: [
     ...modules,
     ...dmlModules.map((module) => `${module}-models`),
-    "core-flows",
     "dml",
     "helper-steps",
     "workflows",
   ],
-  allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
+  allReflectionsHaveOwnDocumentInNamespace: ["Workflows", "Steps"],
   formatting: {
     "*": {
       showCommentsAsHeader: true,
