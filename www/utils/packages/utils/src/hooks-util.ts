@@ -47,7 +47,7 @@ function cleanUpReflectionType(reflection: Reflection): Reflection {
   }
 
   if (reflection.name === "additional_data") {
-    reflection.type = new IntrinsicType("Record<string, unknown>")
+    reflection.type = new IntrinsicType("Record<string, unknown> | undefined")
   } else if (
     reflection.type?.type === "intersection" &&
     reflection.type.types.length >= 2
