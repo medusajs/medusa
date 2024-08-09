@@ -5207,6 +5207,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^29.7.0
+    medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
