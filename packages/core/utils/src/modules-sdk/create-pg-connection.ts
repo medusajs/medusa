@@ -1,6 +1,5 @@
-import { knex } from "@mikro-orm/knex"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { isDefined } from "../common"
+import { knex } from "@mikro-orm/knex"
 
 type Options = ModuleServiceInitializeOptions["database"]
 

@@ -11,7 +11,10 @@ import { createOrderChangeStep } from "../../steps/create-order-change"
 import { createOrderExchangesStep } from "../../steps/exchange/create-exchange"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that an exchange can be requested for an order.
+ */
+export const beginOrderExchangeValidationStep = createStep(
   "begin-exchange-order-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
@@ -19,6 +22,9 @@ const validationStep = createStep(
 )
 
 export const beginExchangeOrderWorkflowId = "begin-exchange-order"
+/**
+ * This workflow requests an order exchange.
+ */
 export const beginExchangeOrderWorkflow = createWorkflow(
   beginExchangeOrderWorkflowId,
   function (
@@ -32,7 +38,7 @@ export const beginExchangeOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validationStep({ order })
+    beginOrderExchangeValidationStep({ order })
 
     const created = createOrderExchangesStep([
       {

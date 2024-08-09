@@ -2,6 +2,9 @@ import { createStep } from "@medusajs/workflows-sdk"
 
 export const waitConfirmationProductImportStepId =
   "wait-confirmation-product-import"
+/**
+ * This step waits until a product import is confirmed.
+ */
 export const waitConfirmationProductImportStep = createStep(
   {
     name: waitConfirmationProductImportStepId,

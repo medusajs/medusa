@@ -1,8 +1,13 @@
-import { CartDTO, CreateCartWorkflowInputDTO } from "@medusajs/types"
+import {
+  AdditionalData,
+  CartDTO,
+  CreateCartWorkflowInputDTO,
+} from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -27,11 +32,12 @@ import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-colle
 // - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
+/**
+ * This workflow creates a cart.
+ */
 export const createCartWorkflow = createWorkflow(
   createCartWorkflowId,
-  (
-    input: WorkflowData<CreateCartWorkflowInputDTO>
-  ): WorkflowResponse<CartDTO> => {
+  (input: WorkflowData<CreateCartWorkflowInputDTO & AdditionalData>) => {
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
@@ -158,6 +164,13 @@ export const createCartWorkflow = createWorkflow(
       },
     })
 
-    return new WorkflowResponse(cart)
+    const cartCreated = createHook("cartCreated", {
+      cart,
+      additional_data: input.additional_data,
+    })
+
+    return new WorkflowResponse(cart, {
+      hooks: [cartCreated],
+    })
   }
 )

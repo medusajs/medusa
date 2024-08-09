@@ -4,6 +4,9 @@ import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 export const addOrRemoveCampaignPromotionsStepId =
   "add-or-remove-campaign-promotions"
+/**
+ * This step adds or removes promotions from a campaign.
+ */
 export const addOrRemoveCampaignPromotionsStep = createStep(
   addOrRemoveCampaignPromotionsStepId,
   async (input: WorkflowData<LinkWorkflowInput>, { container }) => {

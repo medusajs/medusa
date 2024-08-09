@@ -23,7 +23,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a claim's new item can be updated.
+ */
+export const updateClaimAddItemValidationStep = createStep(
   "update-claim-add-item-validation",
   async function (
     {
@@ -58,6 +61,9 @@ const validationStep = createStep(
 )
 
 export const updateClaimAddItemWorkflowId = "update-claim-add-item"
+/**
+ * This workflow updates a claim's new item.
+ */
 export const updateClaimAddItemWorkflow = createWorkflow(
   updateClaimAddItemWorkflowId,
   function (
@@ -92,7 +98,7 @@ export const updateClaimAddItemWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderClaim, orderChange })
+    updateClaimAddItemValidationStep({ order, input, orderClaim, orderChange })
 
     const updateData = transform(
       { orderChange, input },

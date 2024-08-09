@@ -6,6 +6,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateReturnsStepId = "update-returns"
+/**
+ * This step updates one or more returns.
+ */
 export const updateReturnsStep = createStep(
   updateReturnsStepId,
   async (data: UpdateReturnDTO[], { container }) => {

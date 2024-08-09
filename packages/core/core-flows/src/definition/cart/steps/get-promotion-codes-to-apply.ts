@@ -2,7 +2,7 @@ import { IPromotionModuleService } from "@medusajs/types"
 import { ModuleRegistrationName, PromotionActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface GetPromotionCodesToApplyStepInput {
   cart: {
     items?: { adjustments?: { code?: string }[] }[]
     shipping_methods?: { adjustments?: { code?: string }[] }[]
@@ -15,9 +15,12 @@ interface StepInput {
 }
 
 export const getPromotionCodesToApplyId = "get-promotion-codes-to-apply"
+/**
+ * This step retrieves the promotion codes to apply on a cart.
+ */
 export const getPromotionCodesToApply = createStep(
   getPromotionCodesToApplyId,
-  async (data: StepInput, { container }) => {
+  async (data: GetPromotionCodesToApplyStepInput, { container }) => {
     const { promo_codes = [], cart, action = PromotionActions.ADD } = data
     const { items = [], shipping_methods = [] } = cart
     const adjustmentCodes: string[] = []

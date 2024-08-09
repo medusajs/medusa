@@ -8,15 +8,18 @@ import {
 import { createUsersStep } from "../steps"
 import { setAuthAppMetadataStep } from "../../auth"
 
-type WorkflowInput = {
+export type CreateUserAccountWorkflowInput = {
   authIdentityId: string
   userData: CreateUserDTO
 }
 
 export const createUserAccountWorkflowId = "create-user-account"
+/**
+ * This workflow creates an authentication identity for a user.
+ */
 export const createUserAccountWorkflow = createWorkflow(
   createUserAccountWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<UserDTO> => {
+  (input: WorkflowData<CreateUserAccountWorkflowInput>): WorkflowResponse<UserDTO> => {
     const users = createUsersStep([input.userData])
     const user = transform(users, (users: UserDTO[]) => users[0])
 

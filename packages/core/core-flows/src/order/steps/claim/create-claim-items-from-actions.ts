@@ -2,11 +2,14 @@ import { IOrderModuleService, OrderChangeActionDTO } from "@medusajs/types"
 import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateOrderClaimItemsFromActionsInput = {
+export type CreateOrderClaimItemsFromActionsInput = {
   changes: OrderChangeActionDTO[]
   claimId: string
 }
 
+/**
+ * This step creates claim items from a change action.
+ */
 export const createOrderClaimItemsFromActionsStep = createStep(
   "create-claim-items-from-change-actions",
   async (input: CreateOrderClaimItemsFromActionsInput, { container }) => {

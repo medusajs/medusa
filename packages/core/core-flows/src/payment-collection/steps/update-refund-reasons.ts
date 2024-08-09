@@ -7,6 +7,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateRefundReasonStepId = "update-refund-reasons"
+/**
+ * This step updates one or more refund reasons.
+ */
 export const updateRefundReasonsStep = createStep(
   updateRefundReasonStepId,
   async (data: UpdateRefundReasonDTO[], { container }) => {

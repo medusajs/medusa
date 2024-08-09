@@ -9,6 +9,9 @@ import { InventoryTypes } from "@medusajs/types"
 import { createStep } from "@medusajs/workflows-sdk"
 
 export const validateInventoryLocationsStepId = "validate-inventory-levels-step"
+/**
+ * This step ensures that the inventory levels exist for each specified pair of inventory item and location.
+ */
 export const validateInventoryLocationsStep = createStep(
   validateInventoryLocationsStepId,
   async (data: InventoryTypes.CreateInventoryLevelInput[], { container }) => {

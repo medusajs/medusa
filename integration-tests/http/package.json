@@ -32,7 +32,7 @@
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
     "medusa-test-utils": "workspace:*",
-    "pg": "^8.11.0"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@medusajs/types": "workspace:^",

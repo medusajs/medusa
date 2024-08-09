@@ -244,6 +244,11 @@ export const RouteMap: RouteObject[] = [
                       import("../../routes/orders/order-create-return"),
                   },
                   {
+                    path: "claims",
+                    lazy: () =>
+                      import("../../routes/orders/order-create-claim"),
+                  },
+                  {
                     path: "payments/:paymentId/refund",
                     lazy: () =>
                       import("../../routes/orders/order-create-refund"),
@@ -1285,6 +1290,20 @@ export const RouteMap: RouteObject[] = [
                     ],
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "return-reasons",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Return Reasons",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/return-reasons/return-reason-list"),
               },
             ],
           },

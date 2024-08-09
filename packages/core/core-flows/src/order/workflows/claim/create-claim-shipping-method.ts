@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,
@@ -21,7 +20,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step confirms that a shipping method can be created for a claim.
+ */
+export const createClaimShippingMethodValidationStep = createStep(
   "validate-create-claim-shipping-method",
   async function ({
     order,
@@ -40,6 +42,9 @@ const validationStep = createStep(
 
 export const createClaimShippingMethodWorkflowId =
   "create-claim-shipping-method"
+/**
+ * This workflow creates a shipping method for a claim.
+ */
 export const createClaimShippingMethodWorkflow = createWorkflow(
   createClaimShippingMethodWorkflowId,
   function (input: {
@@ -93,7 +98,7 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    createClaimShippingMethodValidationStep({ order, orderClaim, orderChange })
 
     const shippingMethodInput = transform(
       {

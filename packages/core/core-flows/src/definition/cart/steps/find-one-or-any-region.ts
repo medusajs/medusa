@@ -3,6 +3,9 @@ import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const findOneOrAnyRegionStepId = "find-one-or-any-region"
+/**
+ * This step retrieves a region either by the provided ID or the first region in the first store.
+ */
 export const findOneOrAnyRegionStep = createStep(
   findOneOrAnyRegionStepId,
   async (data: { regionId?: string }, { container }) => {

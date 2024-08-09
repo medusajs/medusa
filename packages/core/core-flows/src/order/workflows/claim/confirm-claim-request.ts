@@ -20,7 +20,8 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create-fulfillment"
+import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
@@ -31,11 +32,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested claim can be confirmed.
+ */
+export const confirmClaimRequestValidationStep = createStep(
   "validate-confirm-claim-request",
   async function ({
     order,
@@ -172,9 +176,12 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 }
 
 export const confirmClaimRequestWorkflowId = "confirm-claim-request"
+/**
+ * This workflow confirms a requested claim.
+ */
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmClaimRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -224,7 +231,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderClaim, orderChange })
+    confirmClaimRequestValidationStep({ order, orderClaim, orderChange })
 
     const { claimItems, returnItems } = transform(
       { orderChange },
@@ -272,57 +279,55 @@ export const confirmClaimRequestWorkflow = createWorkflow(
           "id",
           "version",
           "canceled_at",
-          "additional_items.item_id",
+          "order.sales_channel_id",
           "additional_items.quantity",
-          "additional_items.item.title",
-          "additional_items.item.variant_title",
-          "additional_items.item.variant_sku",
-          "additional_items.item.variant_barcode",
+          "additional_items.raw_quantity",
+          "additional_items.item.id",
+          "additional_items.item.variant.manage_inventory",
+          "additional_items.item.variant.allow_backorder",
+          "additional_items.item.variant.inventory_items.inventory_item_id",
+          "additional_items.item.variant.inventory_items.required_quantity",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
         ],
         variables: { id: claimId },
         list: false,
         throw_if_key_not_found: true,
       }).config({ name: "claim-query" })
 
-      const claimShippingOption = useRemoteQueryStep({
-        entry_point: "shipping_options",
-        fields: [
-          "id",
-          "provider_id",
-          "service_zone.fulfillment_set.location.id",
-          "service_zone.fulfillment_set.location.address.*",
-        ],
-        variables: {
-          id: claimShippingMethod.shipping_option_id,
-        },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "claim-shipping-option" })
+      const { variants, items } = transform({ claim }, ({ claim }) => {
+        const allItems: any[] = []
+        const allVariants: any[] = []
+        claim.additional_items.forEach((claimItem) => {
+          const item = claimItem.item
+          allItems.push({
+            id: item.id,
+            variant_id: item.variant_id,
+            quantity: claimItem.raw_quantity ?? claimItem.quantity,
+          })
+          allVariants.push(item.variant)
+        })
 
-      const fulfillmentData = transform(
+        return {
+          variants: allVariants,
+          items: allItems,
+        }
+      })
+
+      const formatedInventoryItems = transform(
         {
-          order,
-          items: claim.additional_items! ?? [],
-          shippingOption: claimShippingOption,
-          deliveryAddress: order.shipping_address,
+          input: {
+            sales_channel_id: (claim as any).order.sales_channel_id,
+            variants,
+            items,
+          },
         },
-        prepareFulfillmentData
+        prepareConfirmInventoryInput
       )
 
-      const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
-
-      const link = transform({ fulfillment, order }, (data) => {
-        return [
-          {
-            [Modules.ORDER]: { order_id: data.order.id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      })
-
-      createRemoteLinkStep(link).config({
-        name: "claim-shipping-fulfillment-link",
-      })
+      reserveInventoryStep(formatedInventoryItems)
     })
 
     when({ returnShippingMethod }, ({ returnShippingMethod }) => {

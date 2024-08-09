@@ -11,6 +11,9 @@ import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-pro
 import { createPricePreferencesWorkflow } from "../../pricing"
 
 export const createRegionsWorkflowId = "create-regions"
+/**
+ * This workflow creates one or more regions.
+ */
 export const createRegionsWorkflow = createWorkflow(
   createRegionsWorkflowId,
   (

@@ -1,8 +1,8 @@
 import { OperatorMap } from "../../dal"
-import { FindParams } from "../common"
 import { ClaimReason, ReturnDTO } from "../../order"
-import { BaseOrder } from "../order/common"
 import { BigNumberRawValue } from "../../totals"
+import { FindParams } from "../common"
+import { BaseOrder } from "../order/common"
 
 export interface BaseClaimItem {
   id: string
@@ -20,7 +20,7 @@ export interface BaseClaimItem {
 export interface BaseClaim
   extends Omit<BaseOrder, "status" | "version" | "items"> {
   order_id: string
-  claim_items: BaseClaimItem
+  claim_items: BaseClaimItem[]
   additional_items: any[]
   return?: ReturnDTO
   return_id?: string

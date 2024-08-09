@@ -19,6 +19,7 @@ erDiagram
 	Payment ||--|| PaymentSession : payment_session
 	PaymentCollection }|--|{ PaymentProvider : payment_providers
 	PaymentCollection ||--|| PaymentSession : payment_sessions
+	Refund }|--|{ RefundReason : refund_reason
 
 ```
 
@@ -30,4 +31,5 @@ erDiagram
 - [PaymentProvider](../../payment_models/classes/payment_models.PaymentProvider/page.mdx)
 - [PaymentSession](../../payment_models/classes/payment_models.PaymentSession/page.mdx)
 - [Payment](../../payment_models/classes/payment_models.Payment/page.mdx)
+- [RefundReason](../../payment_models/classes/payment_models.RefundReason/page.mdx)
 - [Refund](../../payment_models/classes/payment_models.Refund/page.mdx)

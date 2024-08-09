@@ -867,7 +867,7 @@ export interface CreateOrderChangeDTO {
     | "claim"
     | "edit"
 
-  /** 
+  /**
    * The description of the order change.
    */
   description?: string
@@ -1888,15 +1888,7 @@ export interface UpdateOrderExchangeWithSelectorDTO {
    */
   data: Partial<UpdateOrderExchangeDTO>
 }
-
-/**
- * The details of canceling a return.
- */
-export interface CancelOrderReturnDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
-  /**
-   * The return's ID.
-   */
+export interface CancelOrderReturnDTO extends BaseOrderBundledActionsDTO {
   return_id: string
 }
 
@@ -1978,14 +1970,7 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-/**
- * The details of canceling a claim.
- */
-export interface CancelOrderClaimDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
-  /**
-   * The claim's ID.
-   */
+export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
   claim_id: string
 }
 
@@ -2030,14 +2015,7 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-/**
- * The details of the exchange cancelation.
- */
-export interface CancelOrderExchangeDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
-  /**
-   * The exchange's ID.
-   */
+export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   exchange_id: string
 }
 

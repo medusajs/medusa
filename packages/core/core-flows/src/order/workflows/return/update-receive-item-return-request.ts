@@ -23,7 +23,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that an item can be updated in a return receival request.
+ */
+export const updateReceiveItemReturnRequestValidationStep = createStep(
   "update-receive-item-return-request-validation",
   async function (
     {
@@ -66,6 +69,9 @@ const validationStep = createStep(
 
 export const updateReceiveItemReturnRequestWorkflowId =
   "update-receive-item-return-request"
+/**
+ * This workflow updates an item in a return receival request.
+ */
 export const updateReceiveItemReturnRequestWorkflow = createWorkflow(
   updateReceiveItemReturnRequestWorkflowId,
   function (
@@ -100,7 +106,7 @@ export const updateReceiveItemReturnRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, input, orderReturn, orderChange })
+    updateReceiveItemReturnRequestValidationStep({ order, input, orderReturn, orderChange })
 
     const updateData = transform(
       { orderChange, input },

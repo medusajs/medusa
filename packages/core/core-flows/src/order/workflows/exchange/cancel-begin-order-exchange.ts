@@ -19,11 +19,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type CancelBeginOrderExchangeWorkflowInput = {
   exchange_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested exchange can be canceled.
+ */
+export const cancelBeginOrderExchangeValidationStep = createStep(
   "validate-cancel-begin-order-exchange",
   async function ({
     order,
@@ -41,9 +44,12 @@ const validationStep = createStep(
 )
 
 export const cancelBeginOrderExchangeWorkflowId = "cancel-begin-order-exchange"
+/**
+ * This workflow cancels a requested order exchange.
+ */
 export const cancelBeginOrderExchangeWorkflow = createWorkflow(
   cancelBeginOrderExchangeWorkflowId,
-  function (input: WorkflowInput): WorkflowData<void> {
+  function (input: CancelBeginOrderExchangeWorkflowInput): WorkflowData<void> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "return_id", "canceled_at"],
@@ -73,7 +79,7 @@ export const cancelBeginOrderExchangeWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderExchange, orderChange })
+    cancelBeginOrderExchangeValidationStep({ order, orderExchange, orderChange })
 
     const shippingToRemove = transform(
       { orderChange, input },

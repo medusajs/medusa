@@ -6,6 +6,7 @@ import {
   AdminCreateReturnReason,
   AdminGetReturnReasonsParams,
   AdminGetReturnReasonsReturnReasonParams,
+  AdminUpdateReturnReason,
 } from "./validators"
 
 export const adminReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
@@ -34,6 +35,17 @@ export const adminReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/return-reasons",
     middlewares: [
       validateAndTransformBody(AdminCreateReturnReason),
+      validateAndTransformQuery(
+        AdminGetReturnReasonsReturnReasonParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/return-reasons/:id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateReturnReason),
       validateAndTransformQuery(
         AdminGetReturnReasonsReturnReasonParams,
         QueryConfig.retrieveTransformQueryConfig

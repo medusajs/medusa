@@ -15,7 +15,8 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { createFulfillmentWorkflow } from "../../../fulfillment/workflows/create-fulfillment"
+import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -26,11 +27,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a requested exchange can be confirmed.
+ */
+export const confirmExchangeRequestValidationStep = createStep(
   "validate-confirm-exchange-request",
   async function ({
     order,
@@ -164,9 +168,12 @@ function extractShippingOption({ orderPreview, orderExchange, returnId }) {
 }
 
 export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
+/**
+ * This workflow confirms an exchange request.
+ */
 export const confirmExchangeRequestWorkflow = createWorkflow(
   confirmExchangeRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmExchangeRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -216,7 +223,7 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    validationStep({ order, orderExchange, orderChange })
+    confirmExchangeRequestValidationStep({ order, orderExchange, orderChange })
 
     const { exchangeItems, returnItems } = transform(
       { orderChange },
@@ -259,57 +266,55 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
           "id",
           "version",
           "canceled_at",
-          "additional_items.item_id",
+          "order.sales_channel_id",
           "additional_items.quantity",
-          "additional_items.item.title",
-          "additional_items.item.variant_title",
-          "additional_items.item.variant_sku",
-          "additional_items.item.variant_barcode",
+          "additional_items.raw_quantity",
+          "additional_items.item.id",
+          "additional_items.item.variant.manage_inventory",
+          "additional_items.item.variant.allow_backorder",
+          "additional_items.item.variant.inventory_items.inventory_item_id",
+          "additional_items.item.variant.inventory_items.required_quantity",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
         ],
         variables: { id: exchangeId },
         list: false,
         throw_if_key_not_found: true,
       }).config({ name: "exchange-query" })
 
-      const exchangeShippingOption = useRemoteQueryStep({
-        entry_point: "shipping_options",
-        fields: [
-          "id",
-          "provider_id",
-          "service_zone.fulfillment_set.location.id",
-          "service_zone.fulfillment_set.location.address.*",
-        ],
-        variables: {
-          id: exchangeShippingMethod.shipping_option_id,
-        },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "exchange-shipping-option" })
+      const { variants, items } = transform({ exchange }, ({ exchange }) => {
+        const allItems: any[] = []
+        const allVariants: any[] = []
+        exchange.additional_items.forEach((exchangeItem) => {
+          const item = exchangeItem.item
+          allItems.push({
+            id: item.id,
+            variant_id: item.variant_id,
+            quantity: exchangeItem.raw_quantity ?? exchangeItem.quantity,
+          })
+          allVariants.push(item.variant)
+        })
 
-      const fulfillmentData = transform(
+        return {
+          variants: allVariants,
+          items: allItems,
+        }
+      })
+
+      const formatedInventoryItems = transform(
         {
-          order,
-          items: exchange.additional_items! ?? [],
-          shippingOption: exchangeShippingOption,
-          deliveryAddress: order.shipping_address,
+          input: {
+            sales_channel_id: (exchange as any).order.sales_channel_id,
+            variants,
+            items,
+          },
         },
-        prepareFulfillmentData
+        prepareConfirmInventoryInput
       )
 
-      const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
-
-      const link = transform({ fulfillment, order }, (data) => {
-        return [
-          {
-            [Modules.ORDER]: { order_id: data.order.id },
-            [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-          },
-        ]
-      })
-
-      createRemoteLinkStep(link).config({
-        name: "exchange-shipping-fulfillment-link",
-      })
+      reserveInventoryStep(formatedInventoryItems)
     })
 
     when({ returnShippingMethod }, ({ returnShippingMethod }) => {

@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCollectionsStepId = "create-collections"
+/**
+ * This step creates one or more collection.
+ */
 export const createCollectionsStep = createStep(
   createCollectionsStepId,
   async (data: ProductTypes.CreateProductCollectionDTO[], { container }) => {

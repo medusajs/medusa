@@ -17,6 +17,9 @@ import { updateProductVariantsWorkflow } from "./update-product-variants"
 import { deleteProductVariantsWorkflow } from "./delete-product-variants"
 
 export const batchProductVariantsWorkflowId = "batch-product-variants"
+/**
+ * This workflow creates, updates, and deletes product variants.
+ */
 export const batchProductVariantsWorkflow = createWorkflow(
   batchProductVariantsWorkflowId,
   (

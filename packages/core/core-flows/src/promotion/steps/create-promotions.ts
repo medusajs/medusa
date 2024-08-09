@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createPromotionsStepId = "create-promotions"
+/**
+ * This step creates one or more promotions.
+ */
 export const createPromotionsStep = createStep(
   createPromotionsStepId,
   async (data: CreatePromotionDTO[], { container }) => {

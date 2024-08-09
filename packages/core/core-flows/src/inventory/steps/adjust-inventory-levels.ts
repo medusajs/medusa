@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { MathBN, ModuleRegistrationName } from "@medusajs/utils"
 
 export const adjustInventoryLevelsStepId = "adjust-inventory-levels-step"
+/**
+ * This step adjusts one or more inventory levels.
+ */
 export const adjustInventoryLevelsStep = createStep(
   adjustInventoryLevelsStepId,
   async (

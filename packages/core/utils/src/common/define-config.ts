@@ -113,6 +113,10 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
           {
             resolve: "@medusajs/notification-local",
             id: "local",
+            options: {
+              name: "Local Notification Provider",
+              channels: ["feed"],
+            },
           },
         ],
       },

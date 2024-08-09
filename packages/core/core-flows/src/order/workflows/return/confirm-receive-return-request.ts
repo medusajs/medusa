@@ -14,7 +14,6 @@ import {
   deepFlatMap,
 } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,
@@ -34,11 +33,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmReceiveReturnRequestWorkflowInput = {
   return_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a return receival can be confirmed.
+ */
+export const confirmReceiveReturnValidationStep = createStep(
   "validate-confirm-return-receive",
   async function ({
     order,
@@ -127,9 +129,12 @@ function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
 }
 
 export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
+/**
+ * This workflow confirms a return receival request.
+ */
 export const confirmReturnReceiveWorkflow = createWorkflow(
   confirmReturnReceiveWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmReceiveReturnRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: [
@@ -268,7 +273,7 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
-    validationStep({ order, orderReturn, orderChange })
+    confirmReceiveReturnValidationStep({ order, orderReturn, orderChange })
 
     parallelize(
       updateReturnsStep([updateReturn]),

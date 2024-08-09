@@ -11,16 +11,19 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = Omit<
+export type UpsertShippingOptionsStepInput = Omit<
   | FulfillmentWorkflow.CreateShippingOptionsWorkflowInput
   | FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput,
   "prices"
 >[]
 
 export const upsertShippingOptionsStepId = "create-shipping-options-step"
+/**
+ * This step creates or updates shipping options.
+ */
 export const upsertShippingOptionsStep = createStep(
   upsertShippingOptionsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpsertShippingOptionsStepInput, { container }) => {
     if (!input?.length) {
       return new StepResponse([], {})
     }

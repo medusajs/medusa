@@ -7,6 +7,9 @@ import {
 import { createStep } from "@medusajs/workflows-sdk"
 
 export const validateInventoryItemsId = "validate-inventory-items-step"
+/**
+ * This step ensures that the inventory items with the specified IDs exist.
+ */
 export const validateInventoryItems = createStep(
   validateInventoryItemsId,
   async (id: string[], { container }) => {

@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createTaxRegionsStepId = "create-tax-regions"
+/**
+ * This step creates one or more tax regions.
+ */
 export const createTaxRegionsStep = createStep(
   createTaxRegionsStepId,
   async (data: CreateTaxRegionDTO[], { container }) => {

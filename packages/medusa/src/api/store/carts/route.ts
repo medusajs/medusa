@@ -1,5 +1,5 @@
 import { createCartWorkflow } from "@medusajs/core-flows"
-import { CreateCartWorkflowInputDTO } from "@medusajs/types"
+import { AdditionalData, CreateCartWorkflowInputDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -7,7 +7,7 @@ import {
 import { refetchCart } from "./helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO>,
+  req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO & AdditionalData>,
   res: MedusaResponse
 ) => {
   const workflowInput = {

@@ -5,6 +5,9 @@ import { batchLinkProductsToCollectionStep } from "../steps/batch-link-products-
 export const batchLinkProductsToCollectionWorkflowId =
   "batch-link-products-to-collection"
 
+/**
+ * This workflow creates links between product and collection records.
+ */
 export const batchLinkProductsToCollectionWorkflow = createWorkflow(
   batchLinkProductsToCollectionWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {

@@ -10,12 +10,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateCustomerGroupStepInput = {
+export type UpdateCustomerGroupStepInput = {
   selector: FilterableCustomerGroupProps
   update: CustomerGroupUpdatableFields
 }
 
 export const updateCustomerGroupStepId = "update-customer-groups"
+/**
+ * This step updates one or more customer groups.
+ */
 export const updateCustomerGroupsStep = createStep(
   updateCustomerGroupStepId,
   async (data: UpdateCustomerGroupStepInput, { container }) => {

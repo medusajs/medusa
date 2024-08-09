@@ -1,12 +1,15 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { deleteReturnReasonStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteReturnReasonsWorkflowInput = { ids: string[] }
 
 export const deleteReturnReasonsWorkflowId = "delete-return-reasons"
+/**
+ * This workflow deletes one or more return reasons.
+ */
 export const deleteReturnReasonsWorkflow = createWorkflow(
   deleteReturnReasonsWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<DeleteReturnReasonsWorkflowInput>): WorkflowData<void> => {
     return deleteReturnReasonStep(input.ids)
   }
 )

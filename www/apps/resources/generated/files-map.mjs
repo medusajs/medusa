@@ -1888,6 +1888,26 @@ export const filesMap = [
     "pathname": "/references/cart_models/classes/cart_models.ShippingMethodTaxLine"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.EntryStepInput/page.mdx",
+    "pathname": "/references/core_flows/interfaces/core_flows.EntryStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.RemoteStepInput/page.mdx",
+    "pathname": "/references/core_flows/interfaces/core_flows.RemoteStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/interfaces/core_flows.ServiceStepInput/page.mdx",
+    "pathname": "/references/core_flows/interfaces/core_flows.ServiceStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/types/core_flows.DismissRemoteLinksStepInput/page.mdx",
+    "pathname": "/references/core_flows/types/core_flows.DismissRemoteLinksStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/types/core_flows.UpdateProductsStepInput/page.mdx",
+    "pathname": "/references/core_flows/types/core_flows.UpdateProductsStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies/page.mdx",
     "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies"
   },
@@ -2968,6 +2988,10 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderShippingMethodTaxLineDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderSummaryDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderSummaryDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderTaxLineDTO/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.OrderTaxLineDTO"
   },
@@ -3134,10 +3158,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.OrderStatus/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.OrderStatus"
-  },
-  {
-    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.OrderSummaryDTO/page.mdx",
-    "pathname": "/references/fulfillment/types/fulfillment.OrderSummaryDTO"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.PrevLimit/page.mdx",
@@ -3834,6 +3854,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/cart_models/page.mdx",
     "pathname": "/references/modules/cart_models"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/core_flows/page.mdx",
+    "pathname": "/references/modules/core_flows"
   },
   {
     "filePath": "/www/apps/resources/references/modules/currency/page.mdx",
@@ -5028,6 +5052,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.OrderShippingMethodTaxLineDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderSummaryDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderSummaryDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderTaxLineDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderTaxLineDTO"
   },
@@ -5232,10 +5260,6 @@ export const filesMap = [
     "pathname": "/references/order/types/order.OrderStatus"
   },
   {
-    "filePath": "/www/apps/resources/references/order/types/order.OrderSummaryDTO/page.mdx",
-    "pathname": "/references/order/types/order.OrderSummaryDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/order/types/order.PrevLimit/page.mdx",
     "pathname": "/references/order/types/order.PrevLimit"
   },
@@ -5404,12 +5428,20 @@ export const filesMap = [
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.createPaymentSession"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.createRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.createRefundReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentCollections/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentCollections"
   },
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentSession/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentSession"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deleteRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deleteRefundReasons"
   },
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listAndCountPaymentCollections/page.mdx",
@@ -5440,6 +5472,10 @@ export const filesMap = [
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listPayments"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefundReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefunds/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.listRefunds"
   },
@@ -5452,12 +5488,20 @@ export const filesMap = [
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.refundPayment"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.restoreRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.restoreRefundReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentCollection/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentCollection"
   },
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.softDeleteRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.softDeleteRefundReasons"
   },
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePayment/page.mdx",
@@ -5470,6 +5514,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePaymentSession/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePaymentSession"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updateRefundReasons/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updateRefundReasons"
   },
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.upsertPaymentCollections/page.mdx",
@@ -5504,6 +5552,10 @@ export const filesMap = [
     "pathname": "/references/payment/interfaces/payment.CreateRefundDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.CreateRefundReasonDTO/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.CreateRefundReasonDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.CustomerAddressDTO/page.mdx",
     "pathname": "/references/payment/interfaces/payment.CustomerAddressDTO"
   },
@@ -5534,6 +5586,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.FilterableRefundProps/page.mdx",
     "pathname": "/references/payment/interfaces/payment.FilterableRefundProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.FilterableRefundReasonProps/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.FilterableRefundReasonProps"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.FindConfig/page.mdx",
@@ -5604,12 +5660,28 @@ export const filesMap = [
     "pathname": "/references/payment/interfaces/payment.RefundDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.RefundReasonDTO/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.RefundReasonDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.RestoreReturn/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.SoftDeleteReturn/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.SoftDeleteReturn"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.UpdatePaymentDTO/page.mdx",
     "pathname": "/references/payment/interfaces/payment.UpdatePaymentDTO"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.UpdatePaymentSessionDTO/page.mdx",
     "pathname": "/references/payment/interfaces/payment.UpdatePaymentSessionDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.UpdateRefundReasonDTO/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.UpdateRefundReasonDTO"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.UpsertPaymentCollectionDTO/page.mdx",
@@ -5738,6 +5810,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment_models/classes/payment_models.Refund/page.mdx",
     "pathname": "/references/payment_models/classes/payment_models.Refund"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment_models/classes/payment_models.RefundReason/page.mdx",
+    "pathname": "/references/payment_models/classes/payment_models.RefundReason"
   },
   {
     "filePath": "/www/apps/resources/references/payment_provider/classes/payment_provider.AbstractPaymentProvider/page.mdx",

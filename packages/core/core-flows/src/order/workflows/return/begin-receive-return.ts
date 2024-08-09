@@ -15,7 +15,10 @@ import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return can be received.
+ */
+export const beginReceiveReturnValidationStep = createStep(
   "begin-receive-return-validation",
   async function (
     {
@@ -33,6 +36,9 @@ const validationStep = createStep(
 )
 
 export const beginReceiveReturnWorkflowId = "begin-receive-return"
+/**
+ * This workflow requests return receival.
+ */
 export const beginReceiveReturnWorkflow = createWorkflow(
   beginReceiveReturnWorkflowId,
   function (
@@ -54,7 +60,7 @@ export const beginReceiveReturnWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
 
-    validationStep({ order, orderReturn })
+    beginReceiveReturnValidationStep({ order, orderReturn })
 
     const orderChangeInput = transform(
       { orderReturn, order, input },

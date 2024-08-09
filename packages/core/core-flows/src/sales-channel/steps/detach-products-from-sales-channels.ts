@@ -1,7 +1,7 @@
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface DetachProductsFromSalesChannelsStepInput {
   links: {
     sales_channel_id: string
     product_id: string
@@ -10,9 +10,12 @@ interface StepInput {
 
 export const detachProductsFromSalesChannelsStepId =
   "detach-products-from-sales-channels-step"
+/**
+ * This step dismisses links between product and sales channel records.
+ */
 export const detachProductsFromSalesChannelsStep = createStep(
   detachProductsFromSalesChannelsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: DetachProductsFromSalesChannelsStepInput, { container }) => {
     if (!input.links?.length) {
       return new StepResponse(void 0, [])
     }

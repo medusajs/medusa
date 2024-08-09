@@ -6,23 +6,23 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-interface PriceCurrencyCode {
+export interface ShippingOptionsPriceCurrencyCode {
   currency_code: string
   amount: number
 }
 
-interface PriceRegionId {
+interface ShippingOptionsPriceRegionId {
   region_id: string
   amount: number
 }
 
-type StepInput = {
+export type CreateShippingOptionsPriceSetsStepInput = {
   id: string
-  prices: (PriceCurrencyCode | PriceRegionId)[]
+  prices: (ShippingOptionsPriceCurrencyCode | ShippingOptionsPriceRegionId)[]
 }[]
 
 function buildPriceSet(
-  prices: StepInput[0]["prices"],
+  prices: CreateShippingOptionsPriceSetsStepInput[0]["prices"],
   regionToCurrencyMap: Map<string, string>
 ): CreatePriceSetDTO {
   const shippingOptionPrices = prices.map((price) => {
@@ -47,9 +47,12 @@ function buildPriceSet(
 
 export const createShippingOptionsPriceSetsStepId =
   "add-shipping-options-prices-step"
+/**
+ * This step creates price sets for one or more shipping options.
+ */
 export const createShippingOptionsPriceSetsStep = createStep(
   createShippingOptionsPriceSetsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: CreateShippingOptionsPriceSetsStepInput, { container }) => {
     if (!data?.length) {
       return new StepResponse([], [])
     }
@@ -57,7 +60,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
     const regionIds = data
       .map((input) => input.prices)
       .flat()
-      .filter((price): price is PriceRegionId => {
+      .filter((price): price is ShippingOptionsPriceRegionId => {
         return "region_id" in price
       })
       .map((price) => price.region_id)

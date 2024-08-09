@@ -9,6 +9,9 @@ import { associateFulfillmentSetsWithLocationStep } from "../steps/associate-loc
 
 export const createLocationFulfillmentSetWorkflowId =
   "create-location-fulfillment-set"
+/**
+ * This workflow creates links between location and fulfillment set records.
+ */
 export const createLocationFulfillmentSetWorkflow = createWorkflow(
   createLocationFulfillmentSetWorkflowId,
   (input: WorkflowData<CreateLocationFulfillmentSetWorkflowInputDTO>) => {

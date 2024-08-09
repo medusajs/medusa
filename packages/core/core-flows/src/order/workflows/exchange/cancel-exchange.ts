@@ -8,14 +8,20 @@ import {
   WorkflowData,
   createStep,
   createWorkflow,
+  parallelize,
+  transform,
   when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
+import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderExchangeStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 import { cancelReturnWorkflow } from "../return/cancel-return"
 
-const validateOrder = createStep(
+/**
+ * This step validates that an exchange can be canceled.
+ */
+export const cancelExchangeValidateOrder = createStep(
   "validate-exchange",
   ({
     orderExchange,
@@ -50,6 +56,9 @@ const validateOrder = createStep(
 )
 
 export const cancelOrderExchangeWorkflowId = "cancel-exchange"
+/**
+ * This workflow cancels a confirmed exchange.
+ */
 export const cancelOrderExchangeWorkflow = createWorkflow(
   cancelOrderExchangeWorkflowId,
   (
@@ -58,15 +67,32 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
     const orderExchange: OrderExchangeDTO & { fulfillments: FulfillmentDTO[] } =
       useRemoteQueryStep({
         entry_point: "order_exchange",
-        fields: ["id", "return_id", "canceled_at", "fulfillments.canceled_at"],
+        fields: [
+          "id",
+          "order_id",
+          "return_id",
+          "canceled_at",
+          "fulfillments.canceled_at",
+          "additional_items.item_id",
+        ],
         variables: { id: input.exchange_id },
         list: false,
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ orderExchange, input })
+    cancelExchangeValidateOrder({ orderExchange, input })
 
-    cancelOrderExchangeStep({ exchange_id: orderExchange.id })
+    const lineItemIds = transform({ orderExchange }, ({ orderExchange }) => {
+      return orderExchange.additional_items?.map((i) => i.item_id)
+    })
+
+    parallelize(
+      cancelOrderExchangeStep({
+        exchange_id: orderExchange.id,
+        order_id: orderExchange.order_id,
+      }),
+      deleteReservationsByLineItemsStep(lineItemIds)
+    )
 
     when({ orderExchange }, ({ orderExchange }) => {
       return !!orderExchange.return_id

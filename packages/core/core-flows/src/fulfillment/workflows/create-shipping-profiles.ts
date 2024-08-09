@@ -8,6 +8,9 @@ import { createShippingProfilesStep } from "../steps"
 
 export const createShippingProfilesWorkflowId =
   "create-shipping-profiles-workflow"
+/**
+ * This workflow creates one or more shipping profiles.
+ */
 export const createShippingProfilesWorkflow = createWorkflow(
   createShippingProfilesWorkflowId,
   (

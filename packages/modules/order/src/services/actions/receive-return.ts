@@ -50,6 +50,9 @@ function updateReturnItems(returnEntry, items) {
       const data = items.find((i) => i.details.reference_id === item.item_id)
       if (!data) return
 
+      console.log("ITEM: ", item)
+      console.log("DATA: ", data)
+
       const receivedQuantity = MathBN.add(
         item.received_quantity || 0,
         data.details.quantity

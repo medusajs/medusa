@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deletePromotionsStepId = "delete-promotions"
+/**
+ * This step deletes one or more promotions.
+ */
 export const deletePromotionsStep = createStep(
   deletePromotionsStepId,
   async (ids: string[], { container }) => {

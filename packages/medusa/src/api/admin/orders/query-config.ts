@@ -18,6 +18,7 @@ export const defaultAdminRetrieveOrderFields = [
   "total",
   "subtotal",
   "tax_total",
+  "order_change",
   "discount_total",
   "discount_tax_total",
   "original_total",

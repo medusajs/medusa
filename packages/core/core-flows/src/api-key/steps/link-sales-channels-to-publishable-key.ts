@@ -3,6 +3,9 @@ import { ContainerRegistrationKeys, Modules, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const linkSalesChannelsToApiKeyStepId = "link-sales-channels-to-api-key"
+/**
+ * This step links sales channels to API keys.
+ */
 export const linkSalesChannelsToApiKeyStep = createStep(
   linkSalesChannelsToApiKeyStepId,
   async (input: LinkWorkflowInput, { container }) => {

@@ -5,12 +5,13 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type StepInput = CreateShippingProfileDTO[]
-
 export const createShippingProfilesStepId = "create-shipping-profiles"
+/**
+ * This step creates one or more shipping profiles.
+ */
 export const createShippingProfilesStep = createStep(
   createShippingProfilesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CreateShippingProfileDTO[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
       ModuleRegistrationName.FULFILLMENT
     )

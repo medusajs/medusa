@@ -6,6 +6,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateOrderClaimsStepId = "update-order-claim"
+/**
+ * This step updates one or more claims.
+ */
 export const updateOrderClaimsStep = createStep(
   updateOrderClaimsStepId,
   async (data: UpdateOrderClaimDTO[], { container }) => {

@@ -13,6 +13,9 @@ import {
 import { normalizeV1Products } from "../helpers/normalize-v1-import"
 
 export const parseProductCsvStepId = "parse-product-csv"
+/**
+ * This step parses a CSV file holding products to import.
+ */
 export const parseProductCsvStep = createStep(
   parseProductCsvStepId,
   async (fileContent: string, { container }) => {

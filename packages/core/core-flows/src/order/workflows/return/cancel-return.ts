@@ -14,7 +14,10 @@ import { useRemoteQueryStep } from "../../../common"
 import { cancelOrderReturnStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
 
-const validateOrder = createStep(
+/**
+ * This step validates that a return can be canceled.
+ */
+export const cancelReturnValidateOrder = createStep(
   "validate-return",
   ({
     orderReturn,
@@ -57,6 +60,9 @@ const validateOrder = createStep(
 )
 
 export const cancelReturnWorkflowId = "cancel-return"
+/**
+ * This workflow cancels a return.
+ */
 export const cancelReturnWorkflow = createWorkflow(
   cancelReturnWorkflowId,
   (
@@ -67,6 +73,7 @@ export const cancelReturnWorkflow = createWorkflow(
         entry_point: "return",
         fields: [
           "id",
+          "order_id",
           "canceled_at",
           "items.id",
           "items.received_quantity",
@@ -77,8 +84,11 @@ export const cancelReturnWorkflow = createWorkflow(
         throw_if_key_not_found: true,
       })
 
-    validateOrder({ orderReturn, input })
+    cancelReturnValidateOrder({ orderReturn, input })
 
-    cancelOrderReturnStep({ return_id: orderReturn.id })
+    cancelOrderReturnStep({
+      return_id: orderReturn.id,
+      order_id: orderReturn.order_id,
+    })
   }
 )

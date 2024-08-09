@@ -21,6 +21,9 @@ import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-colle
 // - Validate shipping methods for new items (fulfillment module)
 
 export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
+/**
+ * This workflow updates a cart's line item.
+ */
 export const updateLineItemInCartWorkflow = createWorkflow(
   updateLineItemInCartWorkflowId,
   (input: WorkflowData<UpdateLineItemInCartWorkflowInputDTO>) => {

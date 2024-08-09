@@ -7,15 +7,17 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createProductOptionsStep } from "../steps"
 
-type WorkflowInput = {
+export type CreateProductOptionsWorkflowInput = {
   product_options: ProductTypes.CreateProductOptionDTO[]
 } & AdditionalData
 
 export const createProductOptionsWorkflowId = "create-product-options"
-
+/**
+ * This workflow creates one or more product options.
+ */
 export const createProductOptionsWorkflow = createWorkflow(
   createProductOptionsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateProductOptionsWorkflowInput>) => {
     const productOptions = createProductOptionsStep(input.product_options)
     const productOptionsCreated = createHook("productOptionsCreated", {
       product_options: productOptions,

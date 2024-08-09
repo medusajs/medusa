@@ -43,9 +43,7 @@ medusaIntegrationTestRunner({
         location = (
           await api.post(
             `/admin/stock-locations`,
-            {
-              name: "Test location",
-            },
+            { name: "Test location" },
             adminHeaders
           )
         ).data.stock_location
@@ -53,10 +51,15 @@ medusaIntegrationTestRunner({
         location = (
           await api.post(
             `/admin/stock-locations/${location.id}/fulfillment-sets?fields=*fulfillment_sets`,
-            {
-              name: "Test",
-              type: "test-type",
-            },
+            { name: "Test", type: "test-type" },
+            adminHeaders
+          )
+        ).data.stock_location
+
+        location2 = (
+          await api.post(
+            `/admin/stock-locations`,
+            { name: "Test location 2" },
             adminHeaders
           )
         ).data.stock_location
@@ -89,6 +92,46 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.region
+      })
+
+      describe("GET /admin/shipping-options", () => {
+        it("should filters options by stock_location_id", async () => {
+          const shippingOptionPayload = {
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+            prices: [{ currency_code: "usd", amount: 1000 }],
+          }
+
+          const {
+            data: { shipping_option: shippingOption },
+          } = await api.post(
+            `/admin/shipping-options`,
+            shippingOptionPayload,
+            adminHeaders
+          )
+
+          const shippingOptions = await api.get(
+            `/admin/shipping-options?stock_location_id=${location.id}`,
+            adminHeaders
+          )
+
+          expect(shippingOptions.data.shipping_options).toHaveLength(1)
+
+          const shippingOptions2 = await api.get(
+            `/admin/shipping-options?stock_location_id=${location2.id}`,
+            adminHeaders
+          )
+
+          expect(shippingOptions2.data.shipping_options).toHaveLength(0)
+        })
       })
 
       describe("POST /admin/shipping-options", () => {
