@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteOrderChangeActionsStepId = "delete-order-change-actions"
+/**
+ * This step deletes order change actions.
+ */
 export const deleteOrderChangeActionsStep = createStep(
   deleteOrderChangeActionsStepId,
   async (data: { ids: string[] }, { container }) => {

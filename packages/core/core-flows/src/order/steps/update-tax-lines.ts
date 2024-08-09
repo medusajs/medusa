@@ -2,7 +2,7 @@ import { OrderLineItemDTO, OrderShippingMethodDTO } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { updateOrderTaxLinesWorkflow } from "../workflows/update-tax-lines"
 
-interface StepInput {
+export interface UpdateOrderTaxLinesStepInput {
   order_id: string
   items?: OrderLineItemDTO[]
   shipping_methods?: OrderShippingMethodDTO[]
@@ -10,9 +10,12 @@ interface StepInput {
 }
 
 export const updateOrderTaxLinesStepId = "update-order-tax-lines-step"
+/**
+ * This step updates tax lines for an order's line items and shipping methods.
+ */
 export const updateOrderTaxLinesStep = createStep(
   updateOrderTaxLinesStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpdateOrderTaxLinesStepInput, { container }) => {
     const { transaction } = await updateOrderTaxLinesWorkflow(container).run({
       input,
     })

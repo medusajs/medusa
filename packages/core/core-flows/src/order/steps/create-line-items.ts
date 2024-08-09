@@ -2,14 +2,17 @@ import { CreateOrderLineItemDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface CreateOrderLineItemsStepInput {
   items: CreateOrderLineItemDTO[]
 }
 
 export const createOrderLineItemsStepId = "create-order-line-items-step"
+/**
+ * This step creates order line items.
+ */
 export const createOrderLineItemsStep = createStep(
   createOrderLineItemsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CreateOrderLineItemsStepInput, { container }) => {
     const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
     const createdItems = input.items.length
