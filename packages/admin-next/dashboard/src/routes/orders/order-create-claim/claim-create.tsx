@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { RouteFocusModal } from "../../../components/modals"
 import { useClaim, useCreateClaim } from "../../../hooks/api/claims"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
+import { useReturn } from "../../../hooks/api/returns"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 import { ClaimCreateForm } from "./components/claim-create-form"
 
@@ -26,6 +27,9 @@ export const ClaimCreate = () => {
 
   const { claim } = useClaim(activeClaimId!, undefined, {
     enabled: !!activeClaimId,
+  })
+  const { return: orderReturn } = useReturn(claim?.return_id!, undefined, {
+    enabled: !!claim?.return_id,
   })
 
   useEffect(() => {
@@ -68,7 +72,12 @@ export const ClaimCreate = () => {
   return (
     <RouteFocusModal>
       {claim && preview && order && (
-        <ClaimCreateForm order={order} claim={claim} preview={preview} />
+        <ClaimCreateForm
+          order={order}
+          claim={claim}
+          preview={preview}
+          orderReturn={orderReturn}
+        />
       )}
     </RouteFocusModal>
   )

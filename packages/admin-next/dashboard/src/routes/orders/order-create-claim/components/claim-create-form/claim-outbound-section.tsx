@@ -24,7 +24,6 @@ import {
   useUpdateClaimOutboundItems,
 } from "../../../../../hooks/api/claims"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { sdk } from "../../../../../lib/client"
 import { AddClaimOutboundItemsTable } from "../add-claim-outbound-items-table"
 import { ClaimOutboundItem } from "./claim-outbound-item"
@@ -57,13 +56,9 @@ export const ClaimOutboundSection = ({
   /**
    * HOOKS
    */
-  const { stock_locations = [] } = useStockLocations({ limit: 999 })
   const { shipping_options = [] } = useShippingOptions({
     limit: 999,
     fields: "*prices,+service_zone.fulfillment_set.location.id",
-    /**
-     * TODO: this should accept filter for location_id
-     */
   })
 
   const { mutateAsync: addOutboundShipping } = useAddClaimOutboundShipping(
@@ -154,17 +149,6 @@ export const ClaimOutboundSection = ({
     })
   }, [previewOutboundItems])
 
-  useEffect(() => {
-    // TODO: Pick the shipping methods from actions where return_id is null for outbound
-    const method = preview.shipping_methods.find(
-      (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
-    )
-
-    if (method) {
-      form.setValue("outbound_option_id", method.shipping_option_id)
-    }
-  }, [preview.shipping_methods])
-
   const locationId = form.watch("location_id")
   const showOutboundItemsPlaceholder = !outboundItems.length
 
@@ -201,17 +185,16 @@ export const ClaimOutboundSection = ({
     setIsOpen("outbound-items", false)
   }
 
-  // TODO: implement outbound shipping
-  const { mutateAsync: updateClaimRequest, isPending: isUpdating } = {} // useUpdateClaim(claim.id, order.id)
-  const onLocationChange = async (selectedLocationId?: string | null) => {
-    await updateClaimRequest({ location_id: selectedLocationId })
-  }
-
   const onShippingOptionChange = async (selectedOptionId: string) => {
-    const promises = preview.shipping_methods
-      .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
+    const outboundShippingMethods = preview.shipping_methods.filter((s) => {
+      const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+
+      return action && !!!action?.return?.id
+    })
+
+    const promises = outboundShippingMethods
       .filter(Boolean)
-      .map(deleteOutboundShipping)
+      .map((action) => deleteOutboundShipping(action.id))
 
     await Promise.all(promises)
 
@@ -270,7 +253,7 @@ export const ClaimOutboundSection = ({
       ).variants
 
       variants.forEach((variant) => {
-        ret[variant.id] = variant.inventory[0]?.location_levels || []
+        ret[variant.id] = variant.inventory?.[0]?.location_levels || []
       })
 
       return ret
@@ -403,24 +386,11 @@ export const ClaimOutboundSection = ({
                           val && onShippingOptionChange(val)
                         }}
                         {...field}
-                        options={(shipping_options ?? [])
-                          .filter(
-                            (so) =>
-                              (locationId
-                                ? so.service_zone.fulfillment_set!.location
-                                    .id === locationId
-                                : true) &&
-                              !!so.rules.find(
-                                (r) =>
-                                  r.attribute === "is_return" &&
-                                  r.value === "true"
-                              )
-                          )
-                          .map((so) => ({
-                            label: so.name,
-                            value: so.id,
-                          }))}
-                        disabled={!locationId}
+                        options={shipping_options.map((so) => ({
+                          label: so.name,
+                          value: so.id,
+                        }))}
+                        disabled={!shipping_options.length}
                       />
                     </Form.Control>
                   </Form.Item>
