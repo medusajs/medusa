@@ -1740,6 +1740,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Errors Installing CLI",
               },
               {
+                path: "/troubleshooting/pnpm-errors",
+                title: "pnpm Errors",
+              },
+              {
                 path: "/troubleshooting/general-errors",
                 title: "General Errors",
               },
