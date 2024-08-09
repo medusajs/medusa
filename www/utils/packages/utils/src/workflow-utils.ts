@@ -12,7 +12,9 @@ export function getWorkflowInputType(
 ): SomeType | undefined {
   const exportedWorkflowType = getExportedWorkflowType(reflection)
 
-  return exportedWorkflowType?.typeArguments![0]
+  const inputType = exportedWorkflowType?.typeArguments![0]
+
+  return isAllowedType(inputType) ? inputType : undefined
 }
 
 export function getWorkflowOutputType(
@@ -20,7 +22,9 @@ export function getWorkflowOutputType(
 ): SomeType | undefined {
   const exportedWorkflowType = getExportedWorkflowType(reflection)
 
-  return exportedWorkflowType?.typeArguments![1]
+  const outputType = exportedWorkflowType?.typeArguments![1]
+
+  return isAllowedType(outputType) ? outputType : undefined
 }
 
 function getExportedWorkflowType(
@@ -45,4 +49,14 @@ function getExportedWorkflowType(
   }
 
   return exportedWorkflowType
+}
+
+const disallowedIntrinsicTypeNames = ["unknown", "void", "any", "never"]
+
+function isAllowedType(type: SomeType | undefined): boolean {
+  return (
+    type !== undefined &&
+    (type.type !== "intrinsic" ||
+      !disallowedIntrinsicTypeNames.includes(type.name))
+  )
 }

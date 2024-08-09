@@ -13,7 +13,7 @@ export function cleanUpHookInput(
       return parameter
     }
 
-    cleanUpReflectionType(parameter)
+    cleanUpReflectionType(parameter.type.reflection)
 
     if (
       parameter.type.reflection &&
@@ -47,7 +47,12 @@ function cleanUpReflectionType(reflection: Reflection): Reflection {
   }
 
   if (reflection.name === "additional_data") {
-    reflection.type = new IntrinsicType("object | undefined")
+    reflection.type = new IntrinsicType("Record<string, unknown>")
+  } else if (
+    reflection.type?.type === "intersection" &&
+    reflection.type.types.length >= 2
+  ) {
+    reflection.type = reflection.type.types[1]
   }
 
   if (reflection instanceof DeclarationReflection && reflection.children) {

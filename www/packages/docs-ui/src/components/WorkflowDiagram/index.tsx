@@ -7,12 +7,13 @@ import {
   useMotionValue,
   motion,
 } from "framer-motion"
-import React, { useEffect, useRef, useState } from "react"
+import React, { Suspense, useEffect, useRef, useState } from "react"
 import { ArrowPathMini, MinusMini, PlusMini } from "@medusajs/icons"
 import { DropdownMenu, Text } from "@medusajs/ui"
 import { createNodeClusters, getNextCluster } from "../../utils"
 import { Workflow } from "types"
 import { WorkflowDiagramDepth } from "./Depth"
+import { Loading } from "../.."
 
 export type WorkflowDiagramProps = {
   workflow: Workflow
@@ -30,7 +31,7 @@ const MAX_ZOOM = 1.5
 const MIN_ZOOM = 0.5
 const ZOOM_STEP = 0.25
 
-export const WorkflowDiagram = ({ workflow }: WorkflowDiagramProps) => {
+const WorkflowDiagramContent = ({ workflow }: WorkflowDiagramProps) => {
   const [zoom, setZoom] = useState<number>(1)
   const [isDragging, setIsDragging] = useState(false)
 
@@ -205,5 +206,13 @@ export const WorkflowDiagram = ({ workflow }: WorkflowDiagramProps) => {
         </div>
       </div>
     </div>
+  )
+}
+
+export const WorkflowDiagram = (props: WorkflowDiagramProps) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <WorkflowDiagramContent {...props} />
+    </Suspense>
   )
 }

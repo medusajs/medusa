@@ -1,5 +1,9 @@
-import { DeclarationReflection, ProjectReflection } from "typedoc"
-import ts from "typescript"
+import {
+  DeclarationReflection,
+  ParameterReflection,
+  ProjectReflection,
+} from "typedoc"
+import ts, { isStringLiteral } from "typescript"
 import { StepModifier, StepType } from "../types"
 
 /**
@@ -84,31 +88,49 @@ export default class Helper {
     project: ProjectReflection,
     checkWorkflowStep = false
   ): string | undefined {
-    const idVar = initializer.arguments[0]
+    const idArg = initializer.arguments[0]
     const isWorkflowStep =
       checkWorkflowStep && this.getStepType(initializer) === "workflowStep"
-    const idVarName = this.normalizeName(idVar.getText())
+    const idArgValue = this.normalizeName(idArg.getText())
 
     let stepId: string | undefined
 
-    if (!ts.isStringLiteral(initializer.arguments[0])) {
-      // load it from the project
-      const idVarReflection = project.getChildByName(idVarName)
+    if (ts.isObjectLiteralExpression(idArg)) {
+      const nameProperty = idArg.properties.find(
+        (property) => property.name?.getText() === "name"
+      )
 
-      if (
-        !idVarReflection ||
-        !(idVarReflection instanceof DeclarationReflection) ||
-        idVarReflection.type?.type !== "literal"
-      ) {
-        return
+      if (nameProperty && ts.isPropertyAssignment(nameProperty)) {
+        const nameValue = this.normalizeName(nameProperty.initializer.getText())
+        stepId = ts.isStringLiteral(nameProperty.initializer)
+          ? nameValue
+          : this.getValueFromReflection(nameValue, project)
       }
-
-      stepId = idVarReflection.type.value as string
+    } else if (!isStringLiteral(idArg)) {
+      stepId = this.getValueFromReflection(idArgValue, project)
     } else {
-      stepId = idVarName
+      stepId = idArgValue
     }
 
     return isWorkflowStep ? `${stepId}-as-step` : stepId
+  }
+
+  private getValueFromReflection(
+    refName: string,
+    project: ProjectReflection
+  ): string | undefined {
+    // load it from the project
+    const idVarReflection = project.getChildByName(refName)
+
+    if (
+      !idVarReflection ||
+      !(idVarReflection instanceof DeclarationReflection) ||
+      idVarReflection.type?.type !== "literal"
+    ) {
+      return
+    }
+
+    return idVarReflection.type.value as string
   }
 
   /**
@@ -138,5 +160,37 @@ export default class Helper {
    */
   getModifier(stepType: StepType): StepModifier {
     return `@${stepType}`
+  }
+
+  generateHookExample({
+    hookName,
+    workflowName,
+    parameter,
+  }: {
+    hookName: string
+    workflowName: string
+    parameter: ParameterReflection
+  }): string {
+    let str = `import { ${workflowName} } from "@medusajs/core-flows"\n\n`
+
+    str += `${workflowName}.hooks.${hookName}(\n\tasync (({`
+
+    if (
+      parameter.type?.type === "reference" &&
+      parameter.type.reflection instanceof DeclarationReflection &&
+      parameter.type.reflection.children
+    ) {
+      parameter.type.reflection.children.forEach((childParam, index) => {
+        if (index > 0) {
+          str += `,`
+        }
+
+        str += ` ${childParam.name}`
+      })
+    }
+
+    str += ` }, { container }) => {\n\t\t//TODO\n\t})\n)`
+
+    return str
   }
 }

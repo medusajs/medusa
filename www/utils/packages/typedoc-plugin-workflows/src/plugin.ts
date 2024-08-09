@@ -171,6 +171,7 @@ class WorkflowsPlugin {
           initializer,
           context,
           workflow,
+          workflowVarName: parentReflection.name,
         })
 
         if (!steps.length) {
@@ -200,10 +201,12 @@ class WorkflowsPlugin {
     initializer,
     context,
     workflow,
+    workflowVarName,
   }: {
     initializer: ts.CallExpression
     context: Context
     workflow?: WorkflowDefinition
+    workflowVarName: string
   }): ParsedStep[] {
     const steps: ParsedStep[] = []
     const initializerName = this.helper.normalizeName(
@@ -225,6 +228,7 @@ class WorkflowsPlugin {
             initializer: argument,
             context,
             workflow,
+            workflowVarName,
           })
         )
       })
@@ -240,6 +244,7 @@ class WorkflowsPlugin {
           stepId,
           context,
           inputSymbol: initializer.arguments[1].symbol as ts.Symbol,
+          workflowName: workflowVarName,
         })
       } else {
         const initializerReflection =
@@ -363,6 +368,7 @@ class WorkflowsPlugin {
         initializer,
         context,
         workflow,
+        workflowVarName: parentReflection.name,
       }).forEach((step) => {
         this.createStepDocumentReflection({
           ...step,
@@ -387,10 +393,12 @@ class WorkflowsPlugin {
     stepId,
     context,
     inputSymbol,
+    workflowName,
   }: {
     stepId: string
     context: Context
     inputSymbol: ts.Symbol
+    workflowName: string
   }): DeclarationReflection {
     const declarationReflection = context.createDeclarationReflection(
       ReflectionKind.Function,
@@ -431,6 +439,19 @@ class WorkflowsPlugin {
     declarationReflection.signatures = []
 
     declarationReflection.signatures.push(signatureReflection)
+
+    declarationReflection.comment.blockTags.push(
+      new CommentTag(`@example`, [
+        {
+          kind: "code",
+          text: this.helper.generateHookExample({
+            hookName: stepId,
+            workflowName,
+            parameter,
+          }),
+        },
+      ])
+    )
 
     return declarationReflection
   }

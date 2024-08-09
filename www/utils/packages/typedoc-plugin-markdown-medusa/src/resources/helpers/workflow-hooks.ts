@@ -37,7 +37,22 @@ export default function (theme: MarkdownTheme) {
           return
         }
 
-        str += `\n\n${hooksTitleLevel} ${hook.name}\n\nHandlers consuming this hook accept the following input.\n\n`
+        str += `\n\n${hooksTitleLevel} ${hook.name}\n\n`
+
+        const hookExample = hookReflection.comment?.getTag(`@example`)
+
+        if (hookExample) {
+          Handlebars.helpers.incrementCurrentTitleLevel()
+          const innerTitleLevel = Handlebars.helpers.titleLevel()
+
+          str += `${innerTitleLevel} Example\n\n\`\`\`ts\n${Handlebars.helpers.comment(
+            hookExample.content
+          )}\n\`\`\`\n\n${innerTitleLevel} Input\n\n`
+
+          Handlebars.helpers.decrementCurrentTitleLevel()
+        }
+
+        str += `Handlers consuming this hook accept the following input.\n\n`
 
         str += Handlebars.helpers.parameterComponent.call(
           cleanUpHookInput(hookReflection.signatures[0].parameters),
