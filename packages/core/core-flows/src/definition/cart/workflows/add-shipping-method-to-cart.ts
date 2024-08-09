@@ -8,9 +8,9 @@ import {
   addShippingMethodToCartStep,
   removeShippingMethodFromCartStep,
   validateCartShippingOptionsStep,
-  updateTaxLinesStep,
-  refreshCartPromotionsStep
 } from "../steps"
+import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
+import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 
 export interface AddShippingMethodToCartWorkflowInput {
