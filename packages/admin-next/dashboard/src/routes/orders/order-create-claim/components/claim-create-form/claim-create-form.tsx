@@ -36,6 +36,7 @@ import { AddClaimItemsTable } from "../add-claim-items-table"
 import { ClaimInboundItem } from "./claim-inbound-item.tsx"
 import { ClaimCreateSchema, CreateClaimSchemaType } from "./schema"
 
+import { AdminReturn } from "@medusajs/types"
 import {
   useAddClaimInboundItems,
   useAddClaimInboundShipping,
@@ -45,6 +46,7 @@ import {
   useUpdateClaimInboundItem,
   useUpdateClaimInboundShipping,
 } from "../../../../../hooks/api/claims"
+import { useUpdateReturn } from "../../../../../hooks/api/returns.tsx"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { ClaimOutboundSection } from "./claim-outbound-section"
@@ -54,6 +56,7 @@ type ReturnCreateFormProps = {
   order: AdminOrder
   claim: AdminClaim
   preview: AdminOrderPreview
+  orderReturn?: AdminReturn
 }
 
 let itemsToAdd: string[] = []
@@ -64,6 +67,7 @@ export const ClaimCreateForm = ({
   order,
   preview,
   claim,
+  orderReturn,
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -79,18 +83,6 @@ export const ClaimCreateForm = ({
   >({})
 
   /**
-   * HOOKS
-   */
-  const { stock_locations = [] } = useStockLocations({ limit: 999 })
-  const { shipping_options = [] } = useShippingOptions({
-    limit: 999,
-    fields: "*prices,+service_zone.fulfillment_set.location.id",
-    /**
-     * TODO: this should accept filter for location_id
-     */
-  })
-
-  /**
    * MUTATIONS
    */
   // TODO: implement confirm claim request
@@ -100,7 +92,11 @@ export const ClaimCreateForm = ({
     useCancelClaimRequest(claim.id, order.id)
 
   // TODO: implement update claim request
-  const { mutateAsync: updateClaimRequest, isPending: isUpdating } = {} // useUpdateClaim(claim.id, order.id)
+
+  const { mutateAsync: updateReturn, isPending: isUpdating } = useUpdateReturn(
+    claim.return_id!,
+    order.id
+  )
 
   const {
     mutateAsync: addInboundShipping,
@@ -166,9 +162,17 @@ export const ClaimCreateForm = ({
    */
   const form = useForm<CreateClaimSchemaType>({
     defaultValues: () => {
-      const method = preview.shipping_methods.find(
-        (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
-      )
+      const inboundShippingMethod = preview.shipping_methods.find((s) => {
+        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+
+        return !!action?.return?.id
+      })
+
+      const outboundShippingMethod = preview.shipping_methods.find((s) => {
+        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+
+        return action && !!!action?.return?.id
+      })
 
       return Promise.resolve({
         inbound_items: inboundPreviewItems.map((i) => {
@@ -189,15 +193,42 @@ export const ClaimCreateForm = ({
           variant_id: i.variant_id,
           quantity: i.detail.quantity,
         })),
-        inbound_option_id: method ? method.shipping_option_id : "",
-        // TODO: pick up shipping method for outbound when available
-        outbound_option_id: method ? method.shipping_option_id : "",
-        location_id: "",
+        inbound_option_id: inboundShippingMethod
+          ? inboundShippingMethod.shipping_option_id
+          : "",
+        outbound_option_id: outboundShippingMethod
+          ? outboundShippingMethod.shipping_option_id
+          : "",
+        location_id: orderReturn?.location_id,
         send_notification: false,
       })
     },
     resolver: zodResolver(ClaimCreateSchema),
   })
+
+  const locationId = form.watch("location_id")
+
+  /**
+   * HOOKS
+   */
+  const { stock_locations = [] } = useStockLocations({ limit: 999 })
+  const { shipping_options = [] } = useShippingOptions(
+    {
+      limit: 999,
+      fields: "*prices,+service_zone.fulfillment_set.location.id",
+      stock_location_id: locationId,
+    },
+    {
+      enabled: !!locationId,
+    }
+  )
+
+  const inboundShippingOptions = shipping_options.filter(
+    (shippingOption) =>
+      !!shippingOption.rules.find(
+        (r) => r.attribute === "is_return" && r.value === "true"
+      )
+  )
 
   const {
     fields: inboundItems,
@@ -257,8 +288,11 @@ export const ClaimCreateForm = ({
     }
   }, [preview.shipping_methods])
 
+  useEffect(() => {
+    form.setValue("location_id", orderReturn?.location_id)
+  }, [orderReturn])
+
   const showInboundItemsPlaceholder = !inboundItems.length
-  const locationId = form.watch("location_id")
   const shippingOptionId = form.watch("inbound_option_id")
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -307,7 +341,7 @@ export const ClaimCreateForm = ({
   }
 
   const onLocationChange = async (selectedLocationId?: string | null) => {
-    await updateClaimRequest({ location_id: selectedLocationId })
+    await updateReturn({ location_id: selectedLocationId })
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
@@ -379,7 +413,7 @@ export const ClaimCreateForm = ({
       ).variants
 
       variants.forEach((variant) => {
-        ret[variant.id] = variant.inventory[0]?.location_levels || []
+        ret[variant.id] = variant.inventory?.[0]?.location_levels || []
       })
 
       return ret
@@ -549,12 +583,12 @@ export const ClaimCreateForm = ({
                         <Form.Item>
                           <Form.Control>
                             <Combobox
-                              value={value}
+                              {...field}
+                              value={value ?? undefined}
                               onChange={(v) => {
                                 onChange(v)
                                 onLocationChange(v)
                               }}
-                              {...field}
                               options={(stock_locations ?? []).map(
                                 (stockLocation) => ({
                                   label: stockLocation.name,
@@ -572,9 +606,14 @@ export const ClaimCreateForm = ({
                 {/*INBOUND SHIPPING*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
-                    <Form.Label>
+                    <Form.Label
+                      tooltip={t(
+                        "orders.claims.tooltips.onlyReturnShippingOptions"
+                      )}
+                    >
                       {t("orders.returns.inboundShipping")}
                     </Form.Label>
+
                     <Form.Hint className="!mt-1">
                       {t("orders.returns.inboundShippingHint")}
                     </Form.Hint>
@@ -595,23 +634,10 @@ export const ClaimCreateForm = ({
                                 val && onShippingOptionChange(val)
                               }}
                               {...field}
-                              options={(shipping_options ?? [])
-                                .filter(
-                                  (so) =>
-                                    (locationId
-                                      ? so.service_zone.fulfillment_set!
-                                          .location.id === locationId
-                                      : true) &&
-                                    !!so.rules.find(
-                                      (r) =>
-                                        r.attribute === "is_return" &&
-                                        r.value === "true"
-                                    )
-                                )
-                                .map((so) => ({
-                                  label: so.name,
-                                  value: so.id,
-                                }))}
+                              options={inboundShippingOptions.map((so) => ({
+                                label: so.name,
+                                value: so.id,
+                              }))}
                               disabled={!locationId}
                             />
                           </Form.Control>

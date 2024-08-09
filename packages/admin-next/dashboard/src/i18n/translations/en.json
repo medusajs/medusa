@@ -894,6 +894,9 @@
         "cancelClaim": {
           "successToast": "Claim was successfully canceled."
         }
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       }
     },
     "reservations": {
