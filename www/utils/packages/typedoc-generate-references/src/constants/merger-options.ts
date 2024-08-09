@@ -12,6 +12,10 @@ import { FormattingOptionType } from "types"
 import { kebabToCamel, kebabToPascal, kebabToSnake, kebabToTitle } from "utils"
 import baseSectionsOptions from "./base-section-options.js"
 import mergerCustomOptions from "./merger-custom-options/index.js"
+import {
+  getCoreFlowNamespaces,
+  getNamespaceNames,
+} from "../utils/get-namespaces.js"
 
 const mergerOptions: Partial<TypeDocOptions> = {
   ...baseOptions,
@@ -36,7 +40,9 @@ const mergerOptions: Partial<TypeDocOptions> = {
     "helper-steps",
     "workflows",
   ],
-  allReflectionsHaveOwnDocumentInNamespace: ["Workflows", "Steps"],
+  allReflectionsHaveOwnDocumentInNamespace: [
+    ...getNamespaceNames(getCoreFlowNamespaces()),
+  ],
   formatting: {
     "*": {
       showCommentsAsHeader: true,

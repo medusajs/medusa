@@ -1,13 +1,9 @@
 import { MarkdownTheme } from "../../theme"
 import * as Handlebars from "handlebars"
-import {
-  DeclarationReflection,
-  DocumentReflection,
-  SignatureReflection,
-} from "typedoc"
+import { DocumentReflection, SignatureReflection } from "typedoc"
 import { formatWorkflowDiagramComponent } from "../../utils/format-workflow-diagram-component"
-import { tryToGetNamespace } from "../../utils/workflow-utils"
 import { getProjectChild } from "utils"
+import { getWorkflowReflectionFromNamespace } from "../../utils/workflow-utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -20,14 +16,6 @@ export default function (theme: MarkdownTheme) {
       }
 
       const steps: Record<string, unknown>[] = []
-
-      const stepsNamespace = theme.project
-        ? tryToGetNamespace(theme.project, "step")
-        : undefined
-
-      const workflowsNamespace = theme.project
-        ? tryToGetNamespace(theme.project, "workflow")
-        : undefined
 
       this.parent.documents.forEach((document, index) => {
         if (document.name === "when") {
@@ -47,10 +35,6 @@ export default function (theme: MarkdownTheme) {
                 document: childDocument,
                 theme,
                 index,
-                namespaces: {
-                  step: stepsNamespace,
-                  workflow: workflowsNamespace,
-                },
               })
             )
           })
@@ -62,10 +46,6 @@ export default function (theme: MarkdownTheme) {
               document,
               theme,
               index,
-              namespaces: {
-                step: stepsNamespace,
-                workflow: workflowsNamespace,
-              },
             })
           )
         }
@@ -89,15 +69,10 @@ function getStep({
   document,
   theme,
   index,
-  namespaces,
 }: {
   document: DocumentReflection
   theme: MarkdownTheme
   index: number
-  namespaces: {
-    step?: DeclarationReflection
-    workflow?: DeclarationReflection
-  }
 }) {
   const type = document.comment?.modifierTags.has("@workflowStep")
     ? "workflow"
@@ -105,15 +80,12 @@ function getStep({
       ? "hook"
       : "step"
 
-  const stepNamespace =
-    type === "step"
-      ? namespaces.step
-      : type === "workflow"
-        ? namespaces.workflow
-        : undefined
+  const namespaceRefl = theme.project
+    ? getWorkflowReflectionFromNamespace(theme.project, document.name)
+    : undefined
 
   const associatedReflection =
-    stepNamespace?.getChildByName(document.name) ||
+    namespaceRefl ||
     (theme.project ? getProjectChild(theme.project, document.name) : undefined)
   const depth = getDocumentTagValue(document, `@workflowDepth`) || `${index}`
 

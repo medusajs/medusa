@@ -32,21 +32,7 @@ const coreFlowsOptions: FormattingOptionsType = {
       fullReplacement: "Medusa Workflows API Reference",
     },
   },
-  "^core_flows/core_flows\\.Workflows/page\\.mdx": {
-    expandMembers: false,
-    reflectionGroups: {
-      Variables: false,
-      Properties: false,
-      "Type Literals": false,
-    },
-    sections: {
-      ...baseSectionsOptions,
-      member_getterSetter: false,
-      members_categories: false,
-    },
-    hideTocHeaders: true,
-  },
-  "^core_flows/core_flows\\.Steps/page\\.mdx": {
+  "^core_flows/.*/.*(Workflows|Steps)/page\\.mdx": {
     expandMembers: false,
     reflectionGroups: {
       Variables: false,

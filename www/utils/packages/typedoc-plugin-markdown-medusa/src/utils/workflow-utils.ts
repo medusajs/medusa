@@ -4,14 +4,20 @@ import {
   ReflectionKind,
 } from "typedoc"
 
-export function tryToGetNamespace(
+export function getWorkflowReflectionFromNamespace(
   project: ProjectReflection,
-  type: "step" | "workflow"
+  reflName: string
 ): DeclarationReflection | undefined {
-  const namespaceName = type === "step" ? "Steps" : "Workflows"
-
-  return project
+  let found: DeclarationReflection | undefined
+  project
     .getChildrenByKind(ReflectionKind.Module)
     .find((moduleRef) => moduleRef.name === "core-flows")
-    ?.getChildByName(namespaceName) as DeclarationReflection
+    ?.getChildrenByKind(ReflectionKind.Namespace)
+    .some((namespace) => {
+      found = namespace.getChildByName(reflName) as DeclarationReflection
+
+      return found !== undefined
+    })
+
+  return found
 }

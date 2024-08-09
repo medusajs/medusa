@@ -287,4 +287,8 @@ export declare type NamespaceGenerateDetails = {
    * namespace
    */
   pathPattern: string
+  /**
+   * The namespace's children
+   */
+  children?: NamespaceGenerateDetails[]
 }
