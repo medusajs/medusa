@@ -1,12 +1,12 @@
 {
-	"id": 29958,
+	"id": 31732,
 	"name": "tax-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 29959,
+			"id": 31733,
 			"name": "ShippingTaxCalculationLine",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -22,14 +22,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 29960,
+					"id": 31734,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 29961,
+							"id": 31735,
 							"name": "shipping_line",
 							"variant": "declaration",
 							"kind": 1024,
@@ -53,7 +53,7 @@
 							}
 						},
 						{
-							"id": 29962,
+							"id": 31736,
 							"name": "rates",
 							"variant": "declaration",
 							"kind": 1024,
@@ -84,8 +84,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								29961,
-								29962
+								31735,
+								31736
 							]
 						}
 					]
@@ -93,7 +93,7 @@
 			}
 		},
 		{
-			"id": 29963,
+			"id": 31737,
 			"name": "ItemTaxCalculationLine",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -109,14 +109,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 29964,
+					"id": 31738,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 29965,
+							"id": 31739,
 							"name": "line_item",
 							"variant": "declaration",
 							"kind": 1024,
@@ -140,7 +140,7 @@
 							}
 						},
 						{
-							"id": 29966,
+							"id": 31740,
 							"name": "rates",
 							"variant": "declaration",
 							"kind": 1024,
@@ -171,8 +171,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								29965,
-								29966
+								31739,
+								31740
 							]
 						}
 					]
@@ -180,7 +180,7 @@
 			}
 		},
 		{
-			"id": 29967,
+			"id": 31741,
 			"name": "ITaxProvider",
 			"variant": "declaration",
 			"kind": 256,
@@ -283,14 +283,14 @@
 			},
 			"children": [
 				{
-					"id": 29970,
+					"id": 31744,
 					"name": "getTaxLines",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 29971,
+							"id": 31745,
 							"name": "getTaxLines",
 							"variant": "signature",
 							"kind": 4096,
@@ -361,7 +361,7 @@
 							},
 							"parameters": [
 								{
-									"id": 29972,
+									"id": 31746,
 									"name": "itemLines",
 									"variant": "param",
 									"kind": 32768,
@@ -378,14 +378,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 29963,
+											"target": 31737,
 											"name": "ItemTaxCalculationLine",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 29973,
+									"id": 31747,
 									"name": "shippingLines",
 									"variant": "param",
 									"kind": 32768,
@@ -402,14 +402,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 29959,
+											"target": 31733,
 											"name": "ShippingTaxCalculationLine",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 29974,
+									"id": 31748,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -478,7 +478,7 @@
 				{
 					"title": "Methods",
 					"children": [
-						29970
+						31744
 					]
 				}
 			]
@@ -488,76 +488,76 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				29967
+				31741
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				29959,
-				29963
+				31733,
+				31737
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"29958": {
+		"31732": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": ""
 		},
-		"29959": {
+		"31733": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "ShippingTaxCalculationLine"
 		},
-		"29960": {
+		"31734": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type"
 		},
-		"29961": {
+		"31735": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type.shipping_line"
 		},
-		"29962": {
+		"31736": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type.rates"
 		},
-		"29963": {
+		"31737": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "ItemTaxCalculationLine"
 		},
-		"29964": {
+		"31738": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type"
 		},
-		"29965": {
+		"31739": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type.line_item"
 		},
-		"29966": {
+		"31740": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "__type.rates"
 		},
-		"29967": {
+		"31741": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider"
 		},
-		"29970": {
+		"31744": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider.getTaxLines"
 		},
-		"29971": {
+		"31745": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "ITaxProvider.getTaxLines"
 		},
-		"29972": {
+		"31746": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "itemLines"
 		},
-		"29973": {
+		"31747": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "shippingLines"
 		},
-		"29974": {
+		"31748": {
 			"sourceFileName": "../../../../packages/core/types/src/tax/provider.ts",
 			"qualifiedName": "context"
 		}
@@ -567,7 +567,7 @@
 			"1": "../../../../packages/core/types/src/tax/provider.ts"
 		},
 		"reflections": {
-			"1": 29958
+			"1": 31732
 		}
 	}
 }

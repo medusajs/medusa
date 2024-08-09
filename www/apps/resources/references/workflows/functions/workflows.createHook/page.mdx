@@ -9,7 +9,7 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the `createHook` . It belongs to the `@medusajs/workflows-sdk` package.
 
-Expose a hook in your workflow where you can inject custom functionality as a step function. 
+Expose a hook in your workflow where you can inject custom functionality as a step function.
 
 A handler hook can later be registered to consume the hook and perform custom functionality.
 
@@ -27,11 +27,11 @@ import {
 import { createProductStep } from "./steps/create-product"
 
 export const myWorkflow = createWorkflow(
-  "my-workflow", 
+  "my-workflow",
   function (input) {
     const product = createProductStep(input)
     const productCreatedHook = createHook(
-      "productCreated", 
+      "productCreated",
       { productId: product.id }
     )
 
