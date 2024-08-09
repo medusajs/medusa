@@ -44,3 +44,8 @@ export interface DeleteExchangeShippingMethodWorkflowInput {
   exchange_id: string
   action_id: string
 }
+
+export interface DeleteOrderEditShippingMethodWorkflowInput {
+  order_id: string
+  action_id: string
+}

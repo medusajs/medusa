@@ -1,10 +1,5 @@
-import {
-  FulfillmentWorkflow,
-  OrderChangeDTO,
-  OrderDTO,
-  OrderOrderEditDTO,
-} from "@medusajs/types"
-import { Modules, OrderChangeStatus } from "@medusajs/utils"
+import { FulfillmentWorkflow, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import { OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -12,10 +7,9 @@ import {
   transform,
   when,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import { useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
-import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -35,7 +29,6 @@ export const confirmOrderEditRequestValidationStep = createStep(
   async function ({
     order,
     orderChange,
-    orderOrderEdit,
   }: {
     order: OrderDTO
     orderChange: OrderChangeDTO
@@ -172,7 +165,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
     when({ orderEditShippingMethod }, ({ orderEditShippingMethod }) => {
       return !!orderEditShippingMethod
     }).then(() => {
-      const orderEdit: OrderOrderEditDTO = useRemoteQueryStep({
+      const orderEdit = useRemoteQueryStep({
         entry_point: "order",
         fields: [
           "id",
@@ -227,54 +220,6 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       )
 
       reserveInventoryStep(formatedInventoryItems)
-    })
-
-    when({ returnShippingMethod }, ({ returnShippingMethod }) => {
-      return !!returnShippingMethod
-    }).then(() => {
-      const returnShippingOption = useRemoteQueryStep({
-        entry_point: "shipping_options",
-        fields: [
-          "id",
-          "provider_id",
-          "service_zone.fulfillment_set.location.id",
-          "service_zone.fulfillment_set.location.address.*",
-        ],
-        variables: {
-          id: returnShippingMethod.shipping_option_id,
-        },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "orderEdit-return-shipping-option" })
-
-      const fulfillmentData = transform(
-        {
-          order,
-          items: order.items!,
-          shippingOption: returnShippingOption,
-          isReturn: true,
-        },
-        prepareFulfillmentData
-      )
-
-      const returnFulfillment =
-        createReturnFulfillmentWorkflow.runAsStep(fulfillmentData)
-
-      const returnLink = transform(
-        { returnId, fulfillment: returnFulfillment },
-        (data) => {
-          return [
-            {
-              [Modules.ORDER]: { return_id: data.returnId },
-              [Modules.FULFILLMENT]: { fulfillment_id: data.fulfillment.id },
-            },
-          ]
-        }
-      )
-
-      createRemoteLinkStep(returnLink).config({
-        name: "orderEdit-return-shipping-fulfillment-link",
-      })
     })
 
     return new WorkflowResponse(orderPreview)

@@ -2,7 +2,6 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
-  OrderExchangeDTO,
   OrderWorkflow,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -23,23 +22,20 @@ import {
 } from "../../utils/order-validation"
 
 /**
- * This step validates that a new item can be removed from an exchange.
+ * This step validates that a new item can be removed from an order edit.
  */
-export const removeExchangeItemActionValidationStep = createStep(
-  "remove-item-exchange-action-validation",
+export const removeOrderEditItemActionValidationStep = createStep(
+  "remove-item-order-edit-action-validation",
   async function ({
     order,
     orderChange,
-    orderExchange,
     input,
   }: {
     order: OrderDTO
-    orderExchange: OrderExchangeDTO
     orderChange: OrderChangeDTO
-    input: OrderWorkflow.DeleteOrderExchangeItemActionWorkflowInput
+    input: OrderWorkflow.DeleteOrderEditItemActionWorkflowInput
   }) {
     throwIfIsCancelled(order, "Order")
-    throwIfIsCancelled(orderExchange, "Exchange")
     throwIfOrderChangeIsNotActive({ orderChange })
 
     const associatedAction = (orderChange.actions ?? []).find(
@@ -48,7 +44,7 @@ export const removeExchangeItemActionValidationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No item exchange found for exchange ${input.exchange_id} in order change ${orderChange.id}`
+        `No item found for order ${input.order_id} in order change ${orderChange.id}`
       )
     } else if (associatedAction.action !== ChangeActionType.ITEM_ADD) {
       throw new Error(`Action ${associatedAction.id} is not adding an item`)
@@ -56,27 +52,20 @@ export const removeExchangeItemActionValidationStep = createStep(
   }
 )
 
-export const removeItemExchangeActionWorkflowId = "remove-item-exchange-action"
+export const removeItemOrderEditActionWorkflowId =
+  "remove-item-order edit-action"
 /**
- * This workflow removes a new item in an exchange.
+ * This workflow removes a new item in an order edit.
  */
-export const removeItemExchangeActionWorkflow = createWorkflow(
-  removeItemExchangeActionWorkflowId,
+export const removeItemOrderEditActionWorkflow = createWorkflow(
+  removeItemOrderEditActionWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.DeleteOrderExchangeItemActionWorkflowInput>
+    input: WorkflowData<OrderWorkflow.DeleteOrderEditItemActionWorkflowInput>
   ): WorkflowResponse<OrderDTO> {
-    const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
-      entry_point: "order_exchange",
-      fields: ["id", "status", "order_id", "canceled_at"],
-      variables: { id: input.exchange_id },
-      list: false,
-      throw_if_key_not_found: true,
-    })
-
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "canceled_at", "items.*"],
-      variables: { id: orderExchange.order_id },
+      variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
@@ -86,15 +75,18 @@ export const removeItemExchangeActionWorkflow = createWorkflow(
       fields: ["id", "status", "version", "actions.*"],
       variables: {
         filters: {
-          order_id: orderExchange.order_id,
-          exchange_id: orderExchange.id,
+          order_id: input.order_id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
       list: false,
     }).config({ name: "order-change-query" })
 
-    removeExchangeItemActionValidationStep({ order, input, orderExchange, orderChange })
+    removeOrderEditItemActionValidationStep({
+      order,
+      input,
+      orderChange,
+    })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 

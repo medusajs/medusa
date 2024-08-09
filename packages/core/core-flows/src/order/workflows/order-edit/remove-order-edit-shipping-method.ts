@@ -2,7 +2,6 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
-  OrderExchangeDTO,
   OrderWorkflow,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -18,26 +17,20 @@ import { useRemoteQueryStep } from "../../../common"
 import { deleteOrderShippingMethods } from "../../steps"
 import { deleteOrderChangeActionsStep } from "../../steps/delete-order-change-actions"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
-import {
-  throwIfIsCancelled,
-  throwIfOrderChangeIsNotActive,
-} from "../../utils/order-validation"
+import { throwIfOrderChangeIsNotActive } from "../../utils/order-validation"
 
 /**
- * This step validates that a shipping method can be removed from an exchange.
+ * This step validates that a shipping method can be removed from an order edit.
  */
-export const removeExchangeShippingMethodValidationStep = createStep(
-  "validate-remove-exchange-shipping-method",
+export const removeOrderEditShippingMethodValidationStep = createStep(
+  "validate-remove-order-edit-shipping-method",
   async function ({
     orderChange,
-    orderExchange,
     input,
   }: {
-    input: { exchange_id: string; action_id: string }
-    orderExchange: OrderExchangeDTO
+    input: { order_id: string; action_id: string }
     orderChange: OrderChangeDTO
   }) {
-    throwIfIsCancelled(orderExchange, "Exchange")
     throwIfOrderChangeIsNotActive({ orderChange })
 
     const associatedAction = (orderChange.actions ?? []).find(
@@ -46,7 +39,7 @@ export const removeExchangeShippingMethodValidationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No shipping method found for exchange ${input.exchange_id} in order change ${orderChange.id}`
+        `No shipping method found for order ${input.order_id} in order change ${orderChange.id}`
       )
     } else if (associatedAction.action !== ChangeActionType.SHIPPING_ADD) {
       throw new Error(
@@ -56,38 +49,32 @@ export const removeExchangeShippingMethodValidationStep = createStep(
   }
 )
 
-export const removeExchangeShippingMethodWorkflowId =
-  "remove-exchange-shipping-method"
+export const removeOrderEditShippingMethodWorkflowId =
+  "remove-order-edit-shipping-method"
 /**
- * This workflow removes a shipping method of an exchange.
+ * This workflow removes a shipping method of an order edit.
  */
-export const removeExchangeShippingMethodWorkflow = createWorkflow(
-  removeExchangeShippingMethodWorkflowId,
+export const removeOrderEditShippingMethodWorkflow = createWorkflow(
+  removeOrderEditShippingMethodWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.DeleteExchangeShippingMethodWorkflowInput>
+    input: WorkflowData<OrderWorkflow.DeleteOrderEditShippingMethodWorkflowInput>
   ): WorkflowResponse<OrderDTO> {
-    const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
-      entry_point: "order_exchange",
-      fields: ["id", "status", "order_id", "canceled_at"],
-      variables: { id: input.exchange_id },
-      list: false,
-      throw_if_key_not_found: true,
-    })
-
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
       fields: ["id", "status", "version", "actions.*"],
       variables: {
         filters: {
-          order_id: orderExchange.order_id,
-          exchange_id: orderExchange.id,
+          order_id: input.order_id,
           status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
         },
       },
       list: false,
     }).config({ name: "order-change-query" })
 
-    removeExchangeShippingMethodValidationStep({ orderExchange, orderChange, input })
+    removeOrderEditShippingMethodValidationStep({
+      orderChange,
+      input,
+    })
 
     const dataToRemove = transform(
       { orderChange, input },
@@ -108,6 +95,6 @@ export const removeExchangeShippingMethodWorkflow = createWorkflow(
       deleteOrderShippingMethods({ ids: [dataToRemove.shippingMethodId] })
     )
 
-    return new WorkflowResponse(previewOrderChangeStep(orderExchange.order_id))
+    return new WorkflowResponse(previewOrderChangeStep(input.order_id))
   }
 )

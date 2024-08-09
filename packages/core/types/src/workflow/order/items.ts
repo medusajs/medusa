@@ -49,6 +49,15 @@ export interface UpdateExchangeAddNewItemWorkflowInput {
   }
 }
 
+export interface UpdateOrderEditAddNewItemWorkflowInput {
+  order_id: string
+  action_id: string
+  data: {
+    quantity?: BigNumberInput
+    internal_note?: string | null
+  }
+}
+
 export interface UpdateClaimAddNewItemWorkflowInput {
   claim_id: string
   action_id: string
@@ -106,7 +115,7 @@ export interface DeleteOrderClaimItemActionWorkflowInput {
   action_id: string
 }
 
-export interface DeleteOrderExchangeItemActionWorkflowInput {
-  exchange_id: string
+export interface DeleteOrderEditItemActionWorkflowInput {
+  order_id: string
   action_id: string
 }
