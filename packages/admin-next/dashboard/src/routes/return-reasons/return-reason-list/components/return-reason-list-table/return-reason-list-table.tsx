@@ -1,11 +1,11 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, useLoaderData } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -14,7 +14,6 @@ import { useReturnReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useReturnReasonTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteReturnReasonAction } from "../../../common/hooks/use-delete-return-reason-action"
-import { returnReasonListLoader } from "../../loader"
 
 const PAGE_SIZE = 20
 
@@ -24,14 +23,9 @@ export const ReturnReasonListTable = () => {
     pageSize: PAGE_SIZE,
   })
 
-  const initialData = useLoaderData() as Awaited<
-    ReturnType<typeof returnReasonListLoader>
-  >
-
   const { return_reasons, count, isPending, isError, error } = useReturnReasons(
     searchParams,
     {
-      initialData,
       placeholderData: keepPreviousData,
     }
   )
@@ -53,7 +47,12 @@ export const ReturnReasonListTable = () => {
   return (
     <Container className="divide-y px-0 py-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("returnReasons.domain")}</Heading>
+        <div>
+          <Heading>{t("returnReasons.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("returnReasons.subtitle")}
+          </Text>
+        </div>
         <Button variant="secondary" size="small" asChild>
           <Link to="create">{t("actions.create")}</Link>
         </Button>
@@ -65,8 +64,8 @@ export const ReturnReasonListTable = () => {
         isLoading={isPending}
         columns={columns}
         pageSize={PAGE_SIZE}
-        noHeader={true}
         pagination
+        search
       />
     </Container>
   )

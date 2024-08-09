@@ -1,6 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -46,10 +47,12 @@ export default class ReturnReason {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   @ValueIndex.MikroORMIndex()
   value: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   label: string
 
@@ -67,7 +70,7 @@ export default class ReturnReason {
     cascade: [Cascade.PERSIST],
   })
   parent_return_reason?: Rel<ReturnReason> | null
-
+  Searchable
   @OneToMany(
     () => ReturnReason,
     (return_reason) => return_reason.parent_return_reason,
