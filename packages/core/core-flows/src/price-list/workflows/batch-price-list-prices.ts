@@ -9,9 +9,9 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createPriceListPricesWorkflowStep } from "../steps/create-price-list-prices-workflow"
-import { removePriceListPricesWorkflowStep } from "../steps/remove-price-list-prices-workflow"
-import { updatePriceListPricesWorkflowStep } from "../steps/update-price-list-prices-workflow"
+import { createPriceListPricesWorkflow } from "./create-price-list-prices"
+import { removePriceListPricesWorkflow } from "./remove-price-list-prices"
+import { updatePriceListPricesWorkflow } from "./update-price-list-prices"
 
 export const batchPriceListPricesWorkflowId = "batch-price-list-prices"
 /**
@@ -33,9 +33,21 @@ export const batchPriceListPricesWorkflow = createWorkflow(
     ])
 
     const [created, updated, deleted] = parallelize(
-      createPriceListPricesWorkflowStep(createInput),
-      updatePriceListPricesWorkflowStep(updateInput),
-      removePriceListPricesWorkflowStep(input.data.delete)
+      createPriceListPricesWorkflow.runAsStep({
+        input: {
+          data: createInput,
+        },
+      }),
+      updatePriceListPricesWorkflow.runAsStep({
+        input: {
+          data: updateInput,
+        },
+      }),
+      removePriceListPricesWorkflow.runAsStep({
+        input: {
+          ids: input.data.delete,
+        },
+      })
     )
 
     return new WorkflowResponse(

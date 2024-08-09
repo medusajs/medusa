@@ -30,6 +30,11 @@ export interface OrderExchangeAddNewItemWorkflowInput {
   items: NewItem[]
 }
 
+export interface OrderEditAddNewItemWorkflowInput {
+  order_id: string
+  items: NewItem[]
+}
+
 export interface OrderAddLineItemWorkflowInput {
   order_id: string
   items: NewItem[]
