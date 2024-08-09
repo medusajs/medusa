@@ -12,7 +12,7 @@ import {
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-export interface GetItemTaxLinesStepInput {
+export interface GetOrderItemTaxLinesStepInput {
   order: OrderWorkflowDTO
   items: OrderLineItemDTO[]
   shipping_methods: OrderShippingMethodDTO[]
@@ -103,7 +103,7 @@ export const getOrderItemTaxLinesStepId = "get-order-item-tax-lines"
  */
 export const getOrderItemTaxLinesStep = createStep(
   getOrderItemTaxLinesStepId,
-  async (data: GetItemTaxLinesStepInput, { container }) => {
+  async (data: GetOrderItemTaxLinesStepInput, { container }) => {
     const {
       order,
       items = [],
