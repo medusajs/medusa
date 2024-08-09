@@ -1,23 +1,23 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../../types/routing"
-import {
   deleteCustomerAddressesWorkflow,
   updateCustomerAddressesWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 
+import { MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaContainer } from "@medusajs/modules-sdk"
+import { refetchCustomer } from "../../../helpers"
 import {
   StoreGetCustomerAddressParamsType,
   StoreUpdateCustomerAddressType,
 } from "../../../validators"
-import { refetchCustomer } from "../../../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,

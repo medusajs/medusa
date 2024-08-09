@@ -45,7 +45,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
     "@mikro-orm/core": "5.9.7",

@@ -1,8 +1,8 @@
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   BigNumberInput,
   Context,
   DAL,
+  InternalModuleDeclaration,
   InventoryTypes,
   ModuleJoinerConfig,
   ModulesSdkTypes,
