@@ -2,6 +2,7 @@ import { minimatch } from "minimatch"
 import {
   Application,
   Comment,
+  Context,
   Converter,
   DeclarationReflection,
   ParameterType,
@@ -34,25 +35,26 @@ export function load(app: Application) {
       "generateNamespaces"
     ) as unknown as NamespaceGenerateDetails[]
 
-    namespaces.forEach((namespace) => {
-      const genNamespace = context.createDeclarationReflection(
-        ReflectionKind.Namespace,
-        void 0,
-        void 0,
-        namespace.name
-      )
+    const generateNamespaces = (ns: NamespaceGenerateDetails[]) => {
+      const createdNamespaces: DeclarationReflection[] = []
+      ns.forEach((namespace) => {
+        const genNamespace = createNamespace(context, namespace)
 
-      if (namespace.description) {
-        genNamespace.comment = new Comment([
-          {
-            kind: "text",
-            text: namespace.description,
-          },
-        ])
-      }
+        generatedNamespaces.set(namespace.pathPattern, genNamespace)
 
-      generatedNamespaces.set(namespace.pathPattern, genNamespace)
-    })
+        if (namespace.children) {
+          generateNamespaces(namespace.children).forEach((child) =>
+            genNamespace.addChild(child)
+          )
+        }
+
+        createdNamespaces.push(genNamespace)
+      })
+
+      return createdNamespaces
+    }
+
+    generateNamespaces(namespaces)
   })
 
   app.converter.on(
@@ -69,13 +71,61 @@ export function load(app: Application) {
         return
       }
 
-      generatedNamespaces.forEach((namespace, pathPattern) => {
-        if (!minimatch(filePath, pathPattern)) {
-          return
-        }
+      const namespaces = app.options.getValue(
+        "generateNamespaces"
+      ) as unknown as NamespaceGenerateDetails[]
 
-        namespace.addChild(reflection)
-      })
+      const findNamespace = (
+        ns: NamespaceGenerateDetails[]
+      ): DeclarationReflection | undefined => {
+        let found: DeclarationReflection | undefined
+        ns.some((namespace) => {
+          if (namespace.children) {
+            // give priorities to children
+            found = findNamespace(namespace.children)
+            if (found) {
+              return true
+            }
+          }
+
+          if (!minimatch(filePath, namespace.pathPattern)) {
+            return false
+          }
+
+          found = generatedNamespaces.get(namespace.pathPattern)
+
+          return found !== undefined
+        })
+
+        return found
+      }
+
+      const namespace = findNamespace(namespaces)
+
+      namespace?.addChild(reflection)
     }
   )
+}
+
+function createNamespace(
+  context: Context,
+  namespace: NamespaceGenerateDetails
+): DeclarationReflection {
+  const genNamespace = context.createDeclarationReflection(
+    ReflectionKind.Namespace,
+    void 0,
+    void 0,
+    namespace.name
+  )
+
+  if (namespace.description) {
+    genNamespace.comment = new Comment([
+      {
+        kind: "text",
+        text: namespace.description,
+      },
+    ])
+  }
+
+  return genNamespace
 }

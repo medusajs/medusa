@@ -83,6 +83,7 @@ export type FormattingOptionType = {
   endSections?: string[]
   shouldIncrementAfterStartSections?: boolean
   hideTocHeaders?: boolean
+  workflowDiagramComponent?: string
 }
 
 export declare module "typedoc" {
@@ -286,4 +287,8 @@ export declare type NamespaceGenerateDetails = {
    * namespace
    */
   pathPattern: string
+  /**
+   * The namespace's children
+   */
+  children?: NamespaceGenerateDetails[]
 }

@@ -1,5 +1,7 @@
 import { ArrayType, SignatureReflection, SomeType, UnionType } from "typedoc"
 
+const disallowedIntrinsicTypeNames = ["unknown", "void", "any", "never"]
+
 export function isWorkflowStep(reflection: SignatureReflection): boolean {
   return (
     reflection.parent?.children?.some((child) => child.name === "__step__") ||
@@ -10,11 +12,7 @@ export function isWorkflowStep(reflection: SignatureReflection): boolean {
 export function getStepInputType(
   reflection: SignatureReflection
 ): SomeType | undefined {
-  if (!isWorkflowStep(reflection)) {
-    return
-  }
-
-  if (!reflection.parameters?.length) {
+  if (!isWorkflowStep(reflection) || !reflection.parameters?.length) {
     return
   }
 
@@ -25,6 +23,13 @@ export function getStepOutputType(
   reflection: SignatureReflection
 ): SomeType | undefined {
   if (!isWorkflowStep(reflection)) {
+    return
+  }
+
+  if (
+    reflection.type?.type === "intrinsic" &&
+    disallowedIntrinsicTypeNames.includes(reflection.type.name)
+  ) {
     return
   }
 
@@ -52,6 +57,12 @@ function cleanUpType(itemType: SomeType | undefined): SomeType | undefined {
       return cleanUpUnionType(itemType)
     case "array":
       return cleanUpArrayType(itemType)
+    case "intrinsic":
+      if (disallowedIntrinsicTypeNames.includes(itemType.name)) {
+        return undefined
+      }
+
+      return itemType
     default:
       return itemType
   }
