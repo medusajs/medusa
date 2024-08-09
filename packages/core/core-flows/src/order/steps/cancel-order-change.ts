@@ -11,6 +11,9 @@ import {
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const cancelOrderChangeStepId = "cancel-order-change"
+/**
+ * This step cancels an order change.
+ */
 export const cancelOrderChangeStep = createStep(
   cancelOrderChangeStepId,
   async (data: CancelOrderChangeDTO, { container }) => {

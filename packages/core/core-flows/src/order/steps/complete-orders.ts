@@ -2,11 +2,14 @@ import { IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type CompleteOrdersStepInput = {
+export type CompleteOrdersStepInput = {
   orderIds: string[]
 }
 
 export const completeOrdersStepId = "complete-orders"
+/**
+ * This step completes one or more orders.
+ */
 export const completeOrdersStep = createStep(
   completeOrdersStepId,
   async (data: CompleteOrdersStepInput, { container }) => {

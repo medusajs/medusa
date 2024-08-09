@@ -5,12 +5,13 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type RegisterOrderFulfillmentStepInput = RegisterOrderFulfillmentDTO
-
 export const registerOrderFulfillmentStepId = "register-order-fullfillment"
+/**
+ * This step registers a fulfillment for an order.
+ */
 export const registerOrderFulfillmentStep = createStep(
   registerOrderFulfillmentStepId,
-  async (data: RegisterOrderFulfillmentStepInput, { container }) => {
+  async (data: RegisterOrderFulfillmentDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

@@ -9,16 +9,19 @@ import {
 import { ModuleRegistrationName, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface SetOrderTaxLinesForItemsStepInput {
   order: OrderDTO
   item_tax_lines: ItemTaxLineDTO[]
   shipping_tax_lines: ShippingTaxLineDTO[]
 }
 
 export const setOrderTaxLinesForItemsStepId = "set-order-tax-lines-for-items"
+/**
+ * This step sets the tax lines of an order's items and shipping methods.
+ */
 export const setOrderTaxLinesForItemsStep = createStep(
   setOrderTaxLinesForItemsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: SetOrderTaxLinesForItemsStepInput, { container }) => {
     const { order, item_tax_lines, shipping_tax_lines } = data
     const orderService = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
