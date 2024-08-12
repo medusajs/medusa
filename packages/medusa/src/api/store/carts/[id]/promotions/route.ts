@@ -16,8 +16,8 @@ export const POST = async (
 
   await workflow.run({
     input: {
-      promoCodes: payload.promo_codes,
-      cartId: req.params.id,
+      promo_codes: payload.promo_codes,
+      cart_id: req.params.id,
       action: PromotionActions.ADD,
     },
   })
@@ -40,8 +40,8 @@ export const DELETE = async (
 
   await workflow.run({
     input: {
-      promoCodes: payload.promo_codes,
-      cartId: req.params.id,
+      promo_codes: payload.promo_codes,
+      cart_id: req.params.id,
       action: PromotionActions.REMOVE,
     },
   })

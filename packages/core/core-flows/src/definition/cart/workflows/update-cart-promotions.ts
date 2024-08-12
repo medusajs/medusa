@@ -18,8 +18,8 @@ import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 
 export type UpdateCartPromotionsWorkflowInput = {
-  promoCodes: string[]
-  cartId: string
+  cart_id: string
+  promo_codes?: string[]
   action?:
     | PromotionActions.ADD
     | PromotionActions.REMOVE
@@ -32,17 +32,19 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  */
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
-  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>): WorkflowData<void> => {
+  (
+    input: WorkflowData<UpdateCartPromotionsWorkflowInput>
+  ): WorkflowData<void> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: cartFieldsForRefreshSteps,
-      variables: { id: input.cartId },
+      variables: { id: input.cart_id },
       list: false,
     })
 
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
-      promo_codes: input.promoCodes,
+      promo_codes: input.promo_codes ?? [],
       action: input.action || PromotionActions.ADD,
     })
 
@@ -69,7 +71,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
         shippingMethodAdjustmentsToCreate,
       }),
       updateCartPromotionsStep({
-        id: input.cartId,
+        id: input.cart_id,
         promo_codes: computedPromotionCodes,
         action: PromotionActions.REPLACE,
       })

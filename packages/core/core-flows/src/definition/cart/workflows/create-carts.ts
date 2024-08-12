@@ -1,8 +1,4 @@
-import {
-  AdditionalData,
-  CartDTO,
-  CreateCartWorkflowInputDTO,
-} from "@medusajs/types"
+import { AdditionalData, CreateCartWorkflowInputDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
@@ -20,13 +16,13 @@ import {
   findSalesChannelStep,
   getVariantPriceSetsStep,
 } from "../steps"
-import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
-import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
+import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
+import { updateTaxLinesWorkflow } from "./update-tax-lines"
 
 // TODO: The createCartWorkflow are missing the following steps:
 // - Refresh/delete shipping methods (fulfillment module)
@@ -151,11 +147,17 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    updateTaxLinesStep({ cart_or_cart_id: cart.id })
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_or_cart_id: cart.id,
+      },
+    })
 
-    refreshCartPromotionsStep({
-      id: cart.id,
-      promo_codes: input.promo_codes,
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: cart.id,
+        promo_codes: input.promo_codes,
+      },
     })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
