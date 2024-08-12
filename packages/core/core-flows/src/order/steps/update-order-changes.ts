@@ -7,7 +7,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateOrderChangesStepId = "update-order-shopping-methods"
 /**
- * This step updats order shipping methods.
+ * This step updates order change.
  */
 export const updateOrderChangesStep = createStep(
   updateOrderChangesStepId,
