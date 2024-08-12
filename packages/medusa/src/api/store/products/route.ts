@@ -7,10 +7,11 @@ import { MedusaResponse } from "../../../types/routing"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { StoreGetProductsParamsType } from "./validators"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: RequestWithContext<StoreGetProductsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const context: object = {}

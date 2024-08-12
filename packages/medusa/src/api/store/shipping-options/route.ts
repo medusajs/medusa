@@ -1,9 +1,12 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
-import { ICartModuleService } from "@medusajs/types"
+import { HttpTypes, ICartModuleService } from "@medusajs/types"
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse<HttpTypes.StoreShippingOptionListResponse>
+) => {
   const { cart_id } = req.filterableFields as { cart_id: string }
   if (!cart_id) {
     throw new MedusaError(
