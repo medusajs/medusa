@@ -8,10 +8,11 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminPostClaimsShippingReqSchemaType } from "../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostClaimsShippingReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminClaimPreviewResponse>
 ) => {
   const { id } = req.params
 
