@@ -173,9 +173,7 @@ export default async ({
       ...factBoxOptions,
       message: "Ran Migrations",
     })
-  }
 
-  if (!skipDb && migrations) {
     // create admin user
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -204,9 +202,7 @@ export default async ({
       ...factBoxOptions,
       message: "Created admin user",
     })
-  }
 
-  if (!skipDb && migrations) {
     // TODO for now we just seed the default data
     // we should add onboarding seeding again if it makes
     // since once we re-introduce the onboarding flow.

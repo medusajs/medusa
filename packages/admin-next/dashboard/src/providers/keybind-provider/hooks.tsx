@@ -266,6 +266,14 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
+        Mac: ["G", ",", "M"],
+      },
+      label: t("app.keyboardShortcuts.settings.goToReturnReasons"),
+      type: "settingShortcut",
+      to: "/settings/return-reasons",
+    },
+    {
+      keys: {
         Mac: ["G", ",", "J"],
       },
       label: t("app.keyboardShortcuts.settings.goToPublishableApiKeys"),
