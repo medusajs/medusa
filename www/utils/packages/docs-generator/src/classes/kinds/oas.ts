@@ -1738,12 +1738,33 @@ class OasKindGenerator extends FunctionKindGenerator {
       return undefined
     }
 
-    if (oldSchemaObj!.type !== newSchemaObj?.type) {
+    const oldSchemaType = this.inferOasSchemaType(oldSchemaObj)
+    const newSchemaType = this.inferOasSchemaType(newSchemaObj)
+
+    if (oldSchemaType !== newSchemaType && newSchemaType) {
       oldSchemaObj = {
         ...newSchemaObj,
         description: oldSchemaObj?.description,
       }
-    } else if (oldSchemaObj!.type === "object") {
+    } else if (
+      oldSchemaObj?.allOf &&
+      newSchemaObj.allOf &&
+      oldSchemaObj.allOf.length !== newSchemaObj.allOf.length
+    ) {
+      oldSchemaObj.allOf = newSchemaObj.allOf
+    } else if (
+      oldSchemaObj?.oneOf &&
+      newSchemaObj.oneOf &&
+      oldSchemaObj.oneOf.length !== newSchemaObj.oneOf.length
+    ) {
+      oldSchemaObj.oneOf = newSchemaObj.oneOf
+    } else if (
+      oldSchemaObj?.anyOf &&
+      newSchemaObj.anyOf &&
+      oldSchemaObj.anyOf.length !== newSchemaObj.anyOf.length
+    ) {
+      oldSchemaObj.anyOf = newSchemaObj.anyOf
+    } else if (oldSchemaType === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
       } else if (!newSchemaObj?.properties) {
@@ -1808,6 +1829,30 @@ class OasKindGenerator extends FunctionKindGenerator {
     oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
 
     return oldSchemaObj
+  }
+
+  /**
+   * This method infers a schema's type.
+   *
+   * @param schema - The schema to infer its type
+   * @returns The type, if available.
+   */
+  inferOasSchemaType(schema?: OpenApiSchema): string | undefined {
+    switch (true) {
+      case schema === undefined:
+        return undefined
+      case schema?.allOf !== undefined:
+        return "allOf"
+      case schema?.anyOf !== undefined:
+        return "anyOf"
+      case schema?.oneOf !== undefined:
+        return "oneOf"
+      case schema?.type !== undefined:
+        return schema.type
+      case schema !== undefined:
+      default:
+        return "object"
+    }
   }
 
   /**
