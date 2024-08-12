@@ -4,6 +4,7 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
@@ -24,16 +25,23 @@ export const refundPaymentWorkflow = createWorkflow(
   ) => {
     const payment = refundPaymentStep(input)
 
-    addOrderTransactionStep({
-      order_id: payment.order_id!,
-      amount: MathBN.mult(
-        input.amount ?? payment.raw_amount ?? payment.amount,
-        -1
-      ),
-      currency_code: payment.currency_code,
-      reference_id: payment.id,
-      reference: "refund",
-    })
+    const orderTransactionData = transform(
+      { input, payment },
+      ({ input, payment }) => {
+        return {
+          order_id: payment.order_id!,
+          amount: MathBN.mult(
+            input.amount ?? payment.raw_amount ?? payment.amount,
+            -1
+          ),
+          currency_code: payment.currency_code,
+          reference_id: payment.id,
+          reference: "refund",
+        }
+      }
+    )
+
+    addOrderTransactionStep(orderTransactionData)
 
     emitEventStep({
       eventName: PaymentEvents.REFUNDED,
