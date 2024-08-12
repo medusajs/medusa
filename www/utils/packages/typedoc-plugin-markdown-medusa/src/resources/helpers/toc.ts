@@ -3,6 +3,7 @@ import {
   DeclarationReflection,
   ProjectReflection,
   ReflectionGroup,
+  ReflectionKind,
 } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import { escapeChars } from "utils"
@@ -13,13 +14,18 @@ export default function (theme: MarkdownTheme) {
     function (this: ProjectReflection | DeclarationReflection) {
       const md: string[] = []
 
-      const { hideInPageTOC } = theme
+      const { hideInPageTOC, allReflectionsHaveOwnDocumentInNamespace } = theme
       const { hideTocHeaders, reflectionGroupRename = {} } =
         theme.getFormattingOptionsForLocation()
 
-      const isVisible = this.groups?.some((group) =>
-        group.allChildrenHaveOwnDocument()
-      )
+      const isNamespaceVisible =
+        this.kind === ReflectionKind.Namespace &&
+        allReflectionsHaveOwnDocumentInNamespace.includes(this.name)
+      const isVisible =
+        isNamespaceVisible ||
+        this.groups?.some((group) => {
+          return group.allChildrenHaveOwnDocument()
+        })
 
       function pushGroup(group: ReflectionGroup, md: string[]) {
         const children = group.children.map(
@@ -47,7 +53,7 @@ export default function (theme: MarkdownTheme) {
               md.push("\n")
             })
           } else {
-            if (!hideInPageTOC || group.allChildrenHaveOwnDocument()) {
+            if (!hideInPageTOC || isVisible) {
               if (!hideTocHeaders) {
                 md.push(`${headingLevel} ${groupTitle}\n\n`)
               }

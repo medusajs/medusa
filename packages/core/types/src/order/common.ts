@@ -2490,24 +2490,28 @@ export interface FilterableOrderItemProps
 export interface FilterableOrderReturnReasonProps
   extends BaseFilterable<FilterableOrderReturnReasonProps> {
   /**
+   * Find return reasons  through this search term
+   */
+  q?: string
+  /**
    * The IDs to filter the return reasons by.
    */
-  id?: string | string[]
+  id?: string | string[] | OperatorMap<string | string[]>
 
   /**
    * Filter the return reason by their value.
    */
-  value?: string | string[]
+  value?: string | string[] | OperatorMap<string | string[]>
 
   /**
    * Filter the return reason by their label.
    */
-  label?: string
+  label?: string | OperatorMap<string>
 
   /**
    * Filter the return reason by their description.
    */
-  description?: string
+  description?: string | OperatorMap<string>
 }
 
 /**

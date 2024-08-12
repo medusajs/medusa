@@ -53,6 +53,10 @@ export interface DataTableRootProps<TData> {
    */
   noResults?: boolean
   /**
+   * Whether to display the tables header
+   */
+  noHeader?: boolean
+  /**
    * The layout of the table
    */
   layout?: "fill" | "fit"
@@ -80,6 +84,7 @@ export const DataTableRoot = <TData,>({
   commands,
   count = 0,
   noResults = false,
+  noHeader = false,
   layout = "fit",
 }: DataTableRootProps<TData>) => {
   const { t } = useTranslation()
@@ -133,64 +138,66 @@ export const DataTableRoot = <TData,>({
       >
         {!noResults ? (
           <Table className="relative w-full">
-            <Table.Header className="border-t-0">
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
-                  <Table.Row
-                    key={headerGroup.id}
-                    className={clx({
-                      "relative border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
-                        hasActions,
-                      "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
-                        hasSelect,
-                    })}
-                  >
-                    {headerGroup.headers.map((header, index) => {
-                      const isActionHeader = header.id === "actions"
-                      const isSelectHeader = header.id === "select"
-                      const isSpecialHeader = isActionHeader || isSelectHeader
+            {!noHeader && (
+              <Table.Header className="border-t-0">
+                {table.getHeaderGroups().map((headerGroup) => {
+                  return (
+                    <Table.Row
+                      key={headerGroup.id}
+                      className={clx({
+                        "relative border-b-0 [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
+                          hasActions,
+                        "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
+                          hasSelect,
+                      })}
+                    >
+                      {headerGroup.headers.map((header, index) => {
+                        const isActionHeader = header.id === "actions"
+                        const isSelectHeader = header.id === "select"
+                        const isSpecialHeader = isActionHeader || isSelectHeader
 
-                      const firstHeader = headerGroup.headers.findIndex(
-                        (h) => h.id !== "select"
-                      )
-                      const isFirstHeader =
-                        firstHeader !== -1
-                          ? header.id === headerGroup.headers[firstHeader].id
-                          : index === 0
+                        const firstHeader = headerGroup.headers.findIndex(
+                          (h) => h.id !== "select"
+                        )
+                        const isFirstHeader =
+                          firstHeader !== -1
+                            ? header.id === headerGroup.headers[firstHeader].id
+                            : index === 0
 
-                      const isStickyHeader = isSelectHeader || isFirstHeader
+                        const isStickyHeader = isSelectHeader || isFirstHeader
 
-                      return (
-                        <Table.HeaderCell
-                          data-table-header-id={header.id}
-                          key={header.id}
-                          style={{
-                            width: !isSpecialHeader
-                              ? `${colWidth}%`
-                              : undefined,
-                          }}
-                          className={clx({
-                            "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
-                              isStickyHeader,
-                            "left-[68px]":
-                              isStickyHeader && hasSelect && !isSelectHeader,
-                            "after:bg-ui-border-base":
-                              showStickyBorder &&
-                              isStickyHeader &&
-                              !isSpecialHeader,
-                          })}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Table.HeaderCell>
-                      )
-                    })}
-                  </Table.Row>
-                )
-              })}
-            </Table.Header>
+                        return (
+                          <Table.HeaderCell
+                            data-table-header-id={header.id}
+                            key={header.id}
+                            style={{
+                              width: !isSpecialHeader
+                                ? `${colWidth}%`
+                                : undefined,
+                            }}
+                            className={clx({
+                              "bg-ui-bg-base sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                                isStickyHeader,
+                              "left-[68px]":
+                                isStickyHeader && hasSelect && !isSelectHeader,
+                              "after:bg-ui-border-base":
+                                showStickyBorder &&
+                                isStickyHeader &&
+                                !isSpecialHeader,
+                            })}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </Table.HeaderCell>
+                        )
+                      })}
+                    </Table.Row>
+                  )
+                })}
+              </Table.Header>
+            )}
             <Table.Body className="border-b-0">
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined

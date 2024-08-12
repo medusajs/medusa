@@ -1,6 +1,6 @@
 import { PromotionActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { updateCartPromotionsWorkflow } from "../workflows"
+import { updateCartPromotionsWorkflow } from "../workflows/update-cart-promotions"
 
 export interface RefreshCartPromotionsStepInput {
   id: string

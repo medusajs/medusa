@@ -31385,6 +31385,10 @@
 					},
 					{
 						"type": "literal",
+						"value": "ITEM_UPDATE"
+					},
+					{
+						"type": "literal",
 						"value": "RECEIVE_DAMAGED_RETURN_ITEM"
 					},
 					{

@@ -4,7 +4,7 @@ import {
   CartWorkflowDTO,
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { updateTaxLinesWorkflow } from "../workflows"
+import { updateTaxLinesWorkflow } from "../workflows/update-tax-lines"
 
 export interface UpdateTaxLinesStepInput {
   cart_or_cart_id: CartWorkflowDTO | string

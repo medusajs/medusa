@@ -24,6 +24,7 @@ export default function (theme: MarkdownTheme) {
         reflectionType: outputType,
         project: this.project || options.data.theme.project,
         maxLevel,
+        wrapObject: true,
       })
 
       if (!output.length) {
