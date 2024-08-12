@@ -2,10 +2,11 @@ import { addToCartWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { refetchCart } from "../../helpers"
 import { StoreAddCartLineItemType } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartLineItemType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const cart = await refetchCart(
     req.params.id,
