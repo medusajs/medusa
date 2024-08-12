@@ -4783,7 +4783,6 @@ __metadata:
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
-    core-js: ^3.6.5
     cross-env: ^5.2.1
     dotenv: ^16.4.5
     execa: ^5.1.1
@@ -4801,7 +4800,6 @@ __metadata:
     pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
-    regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     semver: ^7.3.8
@@ -4871,7 +4869,6 @@ __metadata:
     compression: ^1.7.4
     connect-redis: ^5.0.0
     cookie-parser: ^1.4.6
-    core-js: ^3.6.5
     cors: ^2.8.5
     cross-env: ^5.2.1
     dotenv: ^16.4.5
@@ -4887,13 +4884,7 @@ __metadata:
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
-    passport: ^0.6.0
-    passport-custom: ^1.1.1
-    passport-jwt: ^4.0.1
-    passport-local: ^1.0.0
     qs: ^6.11.2
-    reflect-metadata: ^0.1.13
-    regenerator-runtime: ^0.13.11
     request-ip: ^3.3.0
     rimraf: ^5.0.1
     supertest: ^4.0.2
@@ -15372,7 +15363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.32.1, core-js@npm:^3.6.5":
+"core-js@npm:^3.32.1":
   version: 3.37.0
   resolution: "core-js@npm:3.37.0"
   checksum: 7e00331f346318ca3f595c08ce9e74ddae744715aef137486c1399163afd79792fb94c3161280863adfdc3e30f8026912d56bd3036f93cacfc689d33e185f2ee
@@ -21626,7 +21617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.2":
+"jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:
@@ -24435,52 +24426,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-custom@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "passport-custom@npm:1.1.1"
-  dependencies:
-    passport-strategy: 1.x.x
-  checksum: 49b6fcd125dcd60272d4f02c27acb3b61b2659f3148bc10b31b7c439314054ce32c83a12f422215bdfa83d0463668a1f38ca6e8d68ccd32c922f73ccaa5ac9b3
-  languageName: node
-  linkType: hard
-
-"passport-jwt@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "passport-jwt@npm:4.0.1"
-  dependencies:
-    jsonwebtoken: ^9.0.0
-    passport-strategy: ^1.0.0
-  checksum: d7e2b472d399f596a1db31310f8e63d10777ab7468b9a378c964156e5f0a772598b007417356ead578cfdaf60dc2bba39a55f0033ca865186fdb2a2b198e2e7e
-  languageName: node
-  linkType: hard
-
-"passport-local@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-local@npm:1.0.0"
-  dependencies:
-    passport-strategy: 1.x.x
-  checksum: 59becb988014921a5d6056470d9373c41db452fcf113323064f39d53baa6f184e72151bf269ca6770511f7f0260e13632dacc7b6afdbf60ebf63e90327e186d4
-  languageName: node
-  linkType: hard
-
-"passport-strategy@npm:1.x.x, passport-strategy@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-strategy@npm:1.0.0"
-  checksum: cf4cd32e1bf2538a239651581292fbb91ccc83973cde47089f00d2014c24bed63d3e65af21da8ddef649a8896e089eb9c3ac9ca639f36c797654ae9ee4ed65e1
-  languageName: node
-  linkType: hard
-
-"passport@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "passport@npm:0.6.0"
-  dependencies:
-    passport-strategy: 1.x.x
-    pause: 0.0.1
-    utils-merge: ^1.0.1
-  checksum: 1d8651a4a1a72b84ea08c498cff9cfc209aebfe18baed4cf93292ded3f8e30a04e30b404fdfce39dfb6aa7247e205f1df43fbfd7bc7c1a67a600884359d46ee6
-  languageName: node
-  linkType: hard
-
 "password-prompt@npm:^1.1.2":
   version: 1.1.3
   resolution: "password-prompt@npm:1.1.3"
@@ -24589,13 +24534,6 @@ __metadata:
   version: 1.1.1
   resolution: "pathval@npm:1.1.1"
   checksum: f63e1bc1b33593cdf094ed6ff5c49c1c0dc5dc20a646ca9725cc7fe7cd9995002d51d5685b9b2ec6814342935748b711bafa840f84c0bb04e38ff40a335c94dc
-  languageName: node
-  linkType: hard
-
-"pause@npm:0.0.1":
-  version: 0.0.1
-  resolution: "pause@npm:0.0.1"
-  checksum: f362655dfa7f44b946302c5a033148852ed5d05f744bd848b1c7eae6a543f743e79c7751ee896ba519fd802affdf239a358bb2ea5ca1b1c1e4e916279f83ab75
   languageName: node
   linkType: hard
 
@@ -26612,13 +26550,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:^0.1.13":
-  version: 0.1.14
-  resolution: "reflect-metadata@npm:0.1.14"
-  checksum: 3a6190c7f6cb224f26a012d11f9e329360c01c1945e2cbefea23976a8bacf9db6b794aeb5bf18adcb673c448a234fbc06fc41853c00a6c206b30f0777ecf019e
-  languageName: node
-  linkType: hard
-
 "reflect-metadata@npm:^0.2.1":
   version: 0.2.2
   resolution: "reflect-metadata@npm:0.2.2"
@@ -26661,13 +26592,6 @@ __metadata:
   version: 1.4.2
   resolution: "regenerate@npm:1.4.2"
   checksum: f73c9eba5d398c818edc71d1c6979eaa05af7a808682749dd079f8df2a6d91a9b913db216c2c9b03e0a8ba2bba8701244a93f45211afbff691c32c7b275db1b8
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.11":
-  version: 0.13.11
-  resolution: "regenerator-runtime@npm:0.13.11"
-  checksum: 12b069dc774001fbb0014f6a28f11c09ebfe3c0d984d88c9bced77fdb6fedbacbca434d24da9ae9371bfbf23f754869307fb51a4c98a8b8b18e5ef748677ca24
   languageName: node
   linkType: hard
 
@@ -30606,7 +30530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utils-merge@npm:1.0.1, utils-merge@npm:^1.0.1":
+"utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
