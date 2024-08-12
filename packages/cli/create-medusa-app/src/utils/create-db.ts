@@ -105,10 +105,23 @@ async function getForDbName({
     postgresUsername = answers.postgresUsername
     postgresPassword = answers.postgresPassword
 
+    const { userDbName } = await inquirer.prompt([
+      {
+        type: "database",
+        name: "userDbName",
+        message: "Enter your Postgres user's database name",
+        default: answers.postgresUsername,
+        validate: (input) => {
+          return typeof input === "string" && input.length > 0
+        },
+      },
+    ])
+
     try {
       client = await postgresClient({
         user: postgresUsername,
         password: postgresPassword,
+        database: userDbName,
         ...defaultConnectionOptions
       })
     } catch (e) {
