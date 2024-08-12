@@ -4853,10 +4853,8 @@ __metadata:
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/framework": ^0.0.1
     "@medusajs/link-modules": ^0.2.11
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@medusajs/workflows-sdk": ^0.1.6
     "@swc/core": 1.5.7
     "@swc/helpers": ^0.5.11
     "@swc/jest": ^0.2.36
@@ -4902,6 +4900,10 @@ __metadata:
     typescript: ^5.3.3
     uuid: ^9.0.0
     zod: 3.22.4
+  peerDependencies:
+    "@medusajs/medusa-cli": "*"
+    "@medusajs/modules-sdk": "*"
+    "@medusajs/workflows-sdk": "*"
   languageName: unknown
   linkType: soft
 
