@@ -486,8 +486,9 @@ export const useDeleteClaimOutboundShipping = (
   })
 }
 
-export const useRequestClaim = (
+export const useClaimConfirmRequest = (
   id: string,
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminClaimResponse,
     Error,

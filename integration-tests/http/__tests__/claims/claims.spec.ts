@@ -19,6 +19,7 @@ medusaIntegrationTestRunner({
     let baseClaim
     let order, order2
     let returnShippingOption
+    let outboundShippingOption
     let shippingProfile
     let fulfillmentSet
     let returnReason
@@ -348,10 +349,49 @@ medusaIntegrationTestRunner({
         ],
       }
 
+      const outboundShippingOptionPayload = {
+        name: "Oubound shipping",
+        service_zone_id: fulfillmentSet.service_zones[0].id,
+        shipping_profile_id: shippingProfile.id,
+        provider_id: shippingProviderId,
+        price_type: "flat",
+        type: {
+          label: "Test type",
+          description: "Test description",
+          code: "test-code",
+        },
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1000,
+          },
+        ],
+        rules: [
+          {
+            operator: RuleOperator.EQ,
+            attribute: "is_return",
+            value: "false",
+          },
+          {
+            operator: RuleOperator.EQ,
+            attribute: "enabled_in_store",
+            value: "true",
+          },
+        ],
+      }
+
       returnShippingOption = (
         await api.post(
           "/admin/shipping-options",
           shippingOptionPayload,
+          adminHeaders
+        )
+      ).data.shipping_option
+
+      outboundShippingOption = (
+        await api.post(
+          "/admin/shipping-options",
+          outboundShippingOptionPayload,
           adminHeaders
         )
       ).data.shipping_option
@@ -411,30 +451,69 @@ medusaIntegrationTestRunner({
         const claimId2 = r2.data.claim.id
         const item2 = order2.items[0]
 
-        await api.post(
-          `/admin/claims/${claimId2}/inbound/items`,
-          {
-            items: [
-              {
-                id: item2.id,
-                quantity: 1,
-              },
-            ],
+        const {
+          data: {
+            order_preview: {
+              items: [previewItem],
+            },
           },
+        } = await api.post(
+          `/admin/claims/${claimId2}/inbound/items`,
+          { items: [{ id: item2.id, quantity: 1 }] },
+          adminHeaders
+        )
+
+        // Delete & recreate again to ensure it works for both delete and create
+        await api.delete(
+          `/admin/claims/${claimId2}/inbound/items/${previewItem.actions[0].id}`,
+          adminHeaders
+        )
+
+        const {
+          data: { return: returnData },
+        } = await api.post(
+          `/admin/claims/${claimId2}/inbound/items`,
+          { items: [{ id: item2.id, quantity: 1 }] },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/returns/${returnData.id}`,
+          {
+            location_id: location.id,
+            no_notification: true,
+          },
+          adminHeaders
+        )
+
+        const {
+          data: {
+            order_preview: { shipping_methods: inboundShippingMethods },
+          },
+        } = await api.post(
+          `/admin/claims/${claimId2}/inbound/shipping-method`,
+          { shipping_option_id: returnShippingOption.id },
+          adminHeaders
+        )
+        const inboundShippingMethod = inboundShippingMethods.find(
+          (m) => m.shipping_option_id == returnShippingOption.id
+        )
+
+        // Delete & recreate again to ensure it works for both delete and create
+        await api.delete(
+          `/admin/claims/${claimId2}/inbound/shipping-method/${inboundShippingMethod.actions[0].id}`,
           adminHeaders
         )
 
         await api.post(
           `/admin/claims/${claimId2}/inbound/shipping-method`,
-          {
-            shipping_option_id: returnShippingOption.id,
-          },
+          { shipping_option_id: returnShippingOption.id },
           adminHeaders
         )
+
         await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
 
         const claimId = baseClaim.id
-
         const item = order.items[0]
 
         let result = await api.post(
@@ -453,9 +532,33 @@ medusaIntegrationTestRunner({
 
         await api.post(
           `/admin/claims/${claimId}/inbound/shipping-method`,
-          {
-            shipping_option_id: returnShippingOption.id,
+          { shipping_option_id: returnShippingOption.id },
+          adminHeaders
+        )
+
+        const {
+          data: {
+            order_preview: { shipping_methods: outboundShippingMethods },
           },
+        } = await api.post(
+          `/admin/claims/${claimId}/outbound/shipping-method`,
+          { shipping_option_id: outboundShippingOption.id },
+          adminHeaders
+        )
+
+        const outboundShippingMethod = outboundShippingMethods.find(
+          (m) => m.shipping_option_id == outboundShippingOption.id
+        )
+
+        // Delete & recreate again to ensure it works for both delete and create
+        await api.delete(
+          `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/claims/${claimId}/outbound/shipping-method`,
+          { shipping_option_id: outboundShippingOption.id },
           adminHeaders
         )
 

@@ -1,14 +1,4 @@
-import {
-  BaseCart,
-  BaseCartAddress,
-  BaseCartLineItem,
-  BaseCartShippingMethod,
-} from "./common"
-
-export interface StoreCart extends BaseCart {}
-export interface StoreCartLineItem extends BaseCartLineItem {}
-export interface StoreCartAddress extends BaseCartAddress {}
-export interface StoreCartShippingMethod extends BaseCartShippingMethod {}
+import { StoreCartAddress, StoreCartLineItem } from "./entities"
 
 export interface StoreCreateCart {
   region_id?: string
