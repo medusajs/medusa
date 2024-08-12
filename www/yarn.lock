@@ -7250,6 +7250,7 @@ __metadata:
     cpy-cli: ^5.0.0
     eslint: ^8
     eslint-config-docs: "*"
+    framer-motion: ^11.3.21
     mermaid: ^10.9.0
     next: 14.1.0
     npm-to-yarn: ^2.1.0
@@ -8603,6 +8604,26 @@ eslint-config-next@latest:
   version: 4.3.7
   resolution: "fraction.js@npm:4.3.7"
   checksum: df291391beea9ab4c263487ffd9d17fed162dbb736982dee1379b2a8cc94e4e24e46ed508c6d278aded9080ba51872f1bc5f3a5fd8d7c74e5f105b508ac28711
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^11.3.21":
+  version: 11.3.21
+  resolution: "framer-motion@npm:11.3.21"
+  dependencies:
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 47ea88207920800294159f20d89d217c0118cbe2f5b7c4f1204490a04ac379a60e4ba323bfb101f334155014ebf07b51ad70a4d67b0363043f9d1d00347b1b3b
   languageName: node
   linkType: hard
 
