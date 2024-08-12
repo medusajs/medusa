@@ -3,8 +3,12 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { HttpTypes } from "@medusajs/types"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse<HttpTypes.AdminCurrencyListResponse>
+) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
