@@ -923,6 +923,11 @@ export interface UpdateOrderChangeDTO {
   description?: string
 
   /**
+   * The associated return's ID.
+   */
+  return_id?: string | null
+
+  /**
    * The internal note of the order change.
    */
   internal_note?: string | null

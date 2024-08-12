@@ -6,10 +6,11 @@ import {
   StoreAddCartPromotionsType,
   StoreRemoveCartPromotionsType,
 } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartPromotionsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const workflow = updateCartPromotionsWorkflow(req.scope)
   const payload = req.validatedBody
@@ -33,7 +34,9 @@ export const POST = async (
 
 export const DELETE = async (
   req: MedusaRequest<StoreRemoveCartPromotionsType>,
-  res: MedusaResponse
+  res: MedusaResponse<{
+    cart: HttpTypes.StoreCart
+  }>
 ) => {
   const workflow = updateCartPromotionsWorkflow(req.scope)
   const payload = req.validatedBody

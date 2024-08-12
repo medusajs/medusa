@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -6,7 +7,7 @@ import { refetchCollection } from "../helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCollectionResponse>
 ) => {
   const collection = await refetchCollection(
     req.params.id,

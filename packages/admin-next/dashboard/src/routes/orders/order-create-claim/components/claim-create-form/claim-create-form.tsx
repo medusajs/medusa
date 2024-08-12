@@ -41,6 +41,7 @@ import {
   useAddClaimInboundItems,
   useAddClaimInboundShipping,
   useCancelClaimRequest,
+  useClaimConfirmRequest,
   useDeleteClaimInboundShipping,
   useRemoveClaimInboundItem,
   useUpdateClaimInboundItem,
@@ -86,7 +87,8 @@ export const ClaimCreateForm = ({
    * MUTATIONS
    */
   // TODO: implement confirm claim request
-  const { mutateAsync: confirmClaimRequest, isPending: isConfirming } = {} // useConfirmClaimRequest(claim.id, order.id)
+  const { mutateAsync: confirmClaimRequest, isPending: isConfirming } =
+    useClaimConfirmRequest(claim.id, order.id)
 
   const { mutateAsync: cancelClaimRequest, isPending: isCanceling } =
     useCancelClaimRequest(claim.id, order.id)
@@ -94,7 +96,7 @@ export const ClaimCreateForm = ({
   // TODO: implement update claim request
 
   const { mutateAsync: updateReturn, isPending: isUpdating } = useUpdateReturn(
-    claim.return_id!,
+    preview?.order_change?.return_id!,
     order.id
   )
 
