@@ -2,10 +2,11 @@ import { updateTaxLinesWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { refetchCart } from "../../helpers"
 import { StoreCalculateCartTaxesType } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreCalculateCartTaxesType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const workflow = updateTaxLinesWorkflow(req.scope)
 
