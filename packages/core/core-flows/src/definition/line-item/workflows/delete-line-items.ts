@@ -1,5 +1,5 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { refreshCartPromotionsStep } from "../../cart/steps/refresh-cart-promotions"
+import { updateCartPromotionsWorkflow } from "../../cart/workflows/update-cart-promotions"
 import { deleteLineItemsStep } from "../steps/delete-line-items"
 
 export type DeleteLineItemsWorkflowInput = { cart_id: string; ids: string[] }
@@ -18,6 +18,10 @@ export const deleteLineItemsWorkflow = createWorkflow(
   (input: WorkflowData<DeleteLineItemsWorkflowInput>) => {
     deleteLineItemsStep(input.ids)
 
-    refreshCartPromotionsStep({ id: input.cart_id })
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart_id,
+      },
+    })
   }
 )

@@ -9,9 +9,9 @@ import {
   removeShippingMethodFromCartStep,
   validateCartShippingOptionsStep,
 } from "../steps"
-import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
-import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
+import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
+import { updateTaxLinesWorkflow } from "./update-tax-lines"
 
 export interface AddShippingMethodToCartWorkflowInput {
   cart_id: string
@@ -99,11 +99,17 @@ export const addShippingMethodToWorkflow = createWorkflow(
       shipping_methods: shippingMethodInput,
     })
 
-    updateTaxLinesStep({
-      cart_or_cart_id: input.cart_id,
-      shipping_methods: shippingMethodsToAdd,
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_or_cart_id: input.cart_id,
+        shipping_methods: shippingMethodsToAdd,
+      },
     })
 
-    refreshCartPromotionsStep({ id: input.cart_id })
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart_id,
+      },
+    })
   }
 )
