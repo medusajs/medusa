@@ -166,7 +166,8 @@
         "goToPublishableApiKeys": "Publishable API Keys",
         "goToSecretApiKeys": "Secret API Keys",
         "goToWorkflows": "Workflows",
-        "goToProfile": "Profile"
+        "goToProfile": "Profile",
+        "goToReturnReasons": "Return reasons"
       }
     },
     "menus": {
@@ -2104,6 +2105,7 @@
   },
   "returnReasons": {
     "domain": "Return Reasons",
+    "subtitle": "Manage reasons for returned items.",
     "calloutHint": "Manage the reasons to categorize returns.",
     "editReason": "Edit Return Reason",
     "create": {
@@ -2113,6 +2115,8 @@
       "successToast": "Return reason {{label}} was successfully created."
     },
     "edit": {
+      "header": "Edit Return Reason",
+      "subtitle": "Edit the value of the return reason.",
       "successToast": "Return reason {{label}} was successfully updated."
     },
     "delete": {
