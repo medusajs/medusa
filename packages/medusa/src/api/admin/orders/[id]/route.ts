@@ -7,10 +7,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const workflow = getOrderDetailWorkflow(req.scope)
   const { result } = await workflow.run({
@@ -20,12 +21,12 @@ export const GET = async (
     },
   })
 
-  res.status(200).json({ order: result })
+  res.status(200).json({ order: result as HttpTypes.AdminOrder })
 }
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

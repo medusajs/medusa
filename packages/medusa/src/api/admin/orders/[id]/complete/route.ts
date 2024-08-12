@@ -1,4 +1,4 @@
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import { completeOrderWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
@@ -12,7 +12,7 @@ import { AdminCompleteOrderType } from "../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCompleteOrderType & AdditionalData>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const { id } = req.params
