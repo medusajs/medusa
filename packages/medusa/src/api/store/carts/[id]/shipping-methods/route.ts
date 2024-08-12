@@ -2,10 +2,11 @@ import { addShippingMethodToWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { refetchCart } from "../../helpers"
 import { StoreAddCartShippingMethodsType } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartShippingMethodsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const workflow = addShippingMethodToWorkflow(req.scope)
   const payload = req.validatedBody

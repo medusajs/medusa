@@ -84,11 +84,11 @@ function prepareFulfillmentData({
     order.items!.map((i) => [i.id, i])
   )
   const fulfillmentItems = items.map((i) => {
-    const orderItem = orderItemsMap.get(i.item_id) ?? i.item
+    const orderItem = orderItemsMap.get(i.id) ?? i.item
+
     return {
       line_item_id: i.item_id,
-      quantity: !isReturn ? i.quantity : undefined,
-      return_quantity: isReturn ? i.quantity : undefined,
+      quantity: i.quantity,
       title: orderItem.variant_title ?? orderItem.title,
       sku: orderItem.variant_sku || "",
       barcode: orderItem.variant_barcode || "",
@@ -160,7 +160,7 @@ function extractShippingOption({ orderPreview, orderClaim, returnId }) {
 
     for (const action of modifiedShippingMethod_.actions) {
       if (action.action === ChangeActionType.SHIPPING_ADD) {
-        if (action.return_id === returnId) {
+        if (action.return?.id === returnId) {
           returnShippingMethod = shippingMethod
         } else if (action.claim_id === orderClaim.id) {
           claimShippingMethod = shippingMethod
@@ -181,7 +181,9 @@ export const confirmClaimRequestWorkflowId = "confirm-claim-request"
  */
 export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
-  function (input: ConfirmClaimRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmClaimRequestWorkflowInput
+  ): WorkflowResponse<OrderDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -196,11 +198,8 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         "id",
         "version",
         "canceled_at",
-        "items.id",
-        "items.title",
-        "items.variant_title",
-        "items.variant_sku",
-        "items.variant_barcode",
+        "items.*",
+        "items.item.id",
         "shipping_address.*",
       ],
       variables: { id: orderClaim.order_id },
