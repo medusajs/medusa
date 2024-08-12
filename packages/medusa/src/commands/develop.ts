@@ -27,7 +27,6 @@ export default async function ({ port, directory }) {
    * Re-constructing the path to Medusa CLI to execute the
    * start command.
    */
-  console.log("MEDUSA_CLI_PATH ---------------------", MEDUSA_CLI_PATH)
   const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
 
   const devServer = {
