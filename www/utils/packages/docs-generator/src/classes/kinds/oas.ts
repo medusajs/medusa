@@ -1721,7 +1721,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       return
     }
 
-    const oldSchemaObj = (
+    let oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
         ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
         : oldSchema
@@ -1738,23 +1738,12 @@ class OasKindGenerator extends FunctionKindGenerator {
       return undefined
     }
 
-    // update schema
     if (oldSchemaObj!.type !== newSchemaObj?.type) {
-      oldSchemaObj!.type = newSchemaObj?.type
-    }
-
-    if (
-      oldSchemaObj!.description !== newSchemaObj?.description &&
-      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
-    ) {
-      oldSchemaObj!.description =
-        newSchemaObj?.description || SUMMARY_PLACEHOLDER
-    }
-
-    oldSchemaObj!.required = newSchemaObj?.required
-    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
-
-    if (oldSchemaObj!.type === "object") {
+      oldSchemaObj = {
+        ...newSchemaObj,
+        description: oldSchemaObj?.description,
+      }
+    } else if (oldSchemaObj!.type === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
       } else if (!newSchemaObj?.properties) {
@@ -1804,6 +1793,19 @@ class OasKindGenerator extends FunctionKindGenerator {
           level: level + 1,
         }) || oldSchemaObj.items
     }
+
+    // update schema
+
+    if (
+      oldSchemaObj!.description !== newSchemaObj?.description &&
+      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
+    ) {
+      oldSchemaObj!.description =
+        newSchemaObj?.description || SUMMARY_PLACEHOLDER
+    }
+
+    oldSchemaObj!.required = newSchemaObj?.required
+    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
 
     return oldSchemaObj
   }

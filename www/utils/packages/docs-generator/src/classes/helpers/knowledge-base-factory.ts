@@ -537,6 +537,11 @@ class KnowledgeBaseFactory {
         return `The ${formattedParentName}'s ${formattedName}.`
       },
     },
+    {
+      exact: "additional_data",
+      template:
+        "Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.",
+    },
   ]
 
   /**
