@@ -8,7 +8,7 @@ import { createPricePreferencesWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPricePreferenceListResponse>
 ) => {
   const { rows: price_preferences, metadata } = await refetchEntities(
     "price_preference",
@@ -27,7 +27,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminCreatePricePreference>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPricePreferenceResponse>
 ) => {
   const workflow = createPricePreferencesWorkflow(req.scope)
   const { result } = await workflow.run({

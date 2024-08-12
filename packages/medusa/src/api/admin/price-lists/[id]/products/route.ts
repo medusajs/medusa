@@ -1,5 +1,5 @@
 import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
-import { LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -9,7 +9,7 @@ import { fetchPriceList, fetchPriceListPriceIdsForProduct } from "../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListResponse>
 ) => {
   const id = req.params.id
   const { add, remove = [] } = req.validatedBody

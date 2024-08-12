@@ -8,10 +8,11 @@ import {
 } from "../../../../types/routing"
 import { fetchPriceList } from "../helpers"
 import { AdminUpdatePriceListType } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListResponse>
 ) => {
   const price_list = await fetchPriceList(
     req.params.id,
@@ -24,7 +25,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdatePriceListType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListResponse>
 ) => {
   const id = req.params.id
   const workflow = updatePriceListsWorkflow(req.scope)
@@ -44,7 +45,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListDeleteResponse>
 ) => {
   const id = req.params.id
   const workflow = deletePriceListsWorkflow(req.scope)

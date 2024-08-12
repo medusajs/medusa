@@ -9,10 +9,11 @@ import {
 } from "../../../types/routing"
 import { fetchPriceList, transformPriceList } from "./helpers"
 import { AdminCreatePriceListType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -37,7 +38,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreatePriceListType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListResponse>
 ) => {
   const workflow = createPriceListsWorkflow(req.scope)
   const { result } = await workflow.run({

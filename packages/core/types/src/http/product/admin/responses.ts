@@ -4,6 +4,7 @@ import {
   AdminProduct,
   AdminProductOption,
   AdminProductVariant,
+  AdminProductVariantInventoryLink,
 } from "./entitites"
 import { AdminInventoryItem } from "../../inventory"
 
@@ -59,3 +60,18 @@ export type AdminProductOptionListResponse = PaginatedResponse<{
 
 export interface AdminProductOptionDeleteResponse
   extends DeleteResponse<"product_option", AdminProduct> {}
+
+export type AdminProductVariantInventoryResponse = AdminProductVariantInventoryLink | AdminProductVariantInventoryLink[]
+
+export interface AdminProductVariantInventoryBatchResponse {
+  created: AdminProductVariantInventoryResponse
+  updated: AdminProductVariantInventoryResponse
+  deleted: AdminProductVariantInventoryResponse
+}
+
+export interface AdminProductVariantInventoryLinkDeleteResponse {
+  id: AdminProductVariantInventoryLink
+  object: "variant-inventory-item-link"
+  deleted: boolean
+  parent: AdminProductVariant
+}
