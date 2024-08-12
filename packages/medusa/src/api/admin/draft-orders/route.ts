@@ -11,9 +11,12 @@ import {
 } from "../../../types/routing"
 import { AdminCreateDraftOrderType } from "./validators"
 import { refetchOrder } from "./helpers"
-import { AdditionalData, CreateOrderDTO } from "@medusajs/types"
+import { AdditionalData, CreateOrderDTO, HttpTypes } from "@medusajs/types"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse<HttpTypes.AdminDraftOrderListResponse>
+) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
@@ -40,7 +43,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateDraftOrderType & AdditionalData>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminDraftOrderResponse>
 ) => {
   const input = req.validatedBody
   const workflowInput = {
