@@ -28,11 +28,3 @@ runs:
       uses: ./.github/actions/cache-deps
       with:
         extension: ${{ inputs.cache-extension }}
-
-    - name: Install dev cli
-      shell: "bash"
-      run: sudo npm i -g medusa-dev-cli
-
-    - name: Set path to medusa repo
-      shell: "bash"
-      run: medusa-dev --set-path-to-repo $(pwd)
