@@ -5,8 +5,9 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
-import { emitEventStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { refundPaymentStep } from "../steps/refund-payment"
 
@@ -25,23 +26,34 @@ export const refundPaymentWorkflow = createWorkflow(
   ) => {
     const payment = refundPaymentStep(input)
 
-    const orderTransactionData = transform(
-      { input, payment },
-      ({ input, payment }) => {
-        return {
-          order_id: payment.order_id!,
-          amount: MathBN.mult(
-            input.amount ?? payment.raw_amount ?? payment.amount,
-            -1
-          ),
-          currency_code: payment.currency_code,
-          reference_id: payment.id,
-          reference: "refund",
-        }
-      }
-    )
+    const orderPayment = useRemoteQueryStep({
+      entry_point: "order_payment_collection",
+      fields: ["order.id"],
+      variables: { payment_collection_id: payment.payment_collection_id },
+      list: false,
+    })
 
-    addOrderTransactionStep(orderTransactionData)
+    when({ orderPayment }, ({ orderPayment }) => {
+      return !!orderPayment?.order?.id
+    }).then(() => {
+      const orderTransactionData = transform(
+        { input, payment, orderPayment },
+        ({ input, payment }) => {
+          return {
+            order_id: orderPayment.id,
+            amount: MathBN.mult(
+              input.amount ?? payment.raw_amount ?? payment.amount,
+              -1
+            ),
+            currency_code: payment.currency_code,
+            reference_id: payment.id,
+            reference: "refund",
+          }
+        }
+      )
+
+      addOrderTransactionStep(orderTransactionData)
+    })
 
     emitEventStep({
       eventName: PaymentEvents.REFUNDED,

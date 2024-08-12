@@ -377,6 +377,11 @@ export interface PaymentDTO {
   refunds?: RefundDTO[]
 
   /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
+
+  /**
    * The associated payment collection.
    *
    * @expandable
@@ -572,6 +577,11 @@ export interface PaymentSessionDTO {
    * When the payment session was authorized.
    */
   authorized_at?: Date
+
+  /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
 
   /**
    * The payment collection the session is associated with.
