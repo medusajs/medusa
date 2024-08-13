@@ -1,0 +1,40 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# removeRemoteLinkStep
+
+This step deletes linked records of a record.
+
+Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)
+
+## Example
+
+```ts
+import { 
+  createWorkflow
+} from "@medusajs/workflows-sdk"
+import {
+  removeRemoteLinkStep
+} from "@medusajs/core-flows"
+import {
+  Modules
+} from "@medusajs/utils"
+
+const helloWorldWorkflow = createWorkflow(
+  "hello-world",
+  () => {
+    removeRemoteLinkStep([{
+      [Modules.PRODUCT]: {
+        product_id: "prod_123",
+      },
+    }])
+  }
+)
+```
+
+## Input
+
+<TypeList types={[{"name":"RemoveRemoteLinksStepInput","type":"`RemoveRemoteLinksStepInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="removeRemoteLinkStep"/>
+
+## Output
+
+<TypeList types={[{"name":"DeleteEntityInput","type":"[DeleteEntityInput](../../../../modules_sdk/types/modules_sdk.DeleteEntityInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteEntityInput","type":"`object`","description":"The details of a data model's record whose linked records should be deleted. Usually used after the\ndata model's record is deleted.\n\nThe key is the data model's name. Its value is an object that has the ID of the data model's record.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="removeRemoteLinkStep"/>

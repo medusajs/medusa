@@ -1,0 +1,35 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteCustomerAddressesWorkflow
+
+This workflow deletes one or more customer addresses.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"deleteCustomerAddressesWorkflow","steps":[{"type":"step","name":"deleteCustomerAddressesStep","description":"This step deletes one or more customer addresses.","link":"../core_flows.Customer.deleteCustomerAddressesStep/page.mdx","depth":1},{"type":"hook","name":"addressesDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#addressesDeleted","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteCustomerAddressesWorkflowInput","type":"[DeleteCustomerAddressesWorkflowInput](../../../types/core_flows.DeleteCustomerAddressesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteCustomerAddressesWorkflow"/>
+
+## Hooks
+
+### addressesDeleted
+
+#### Example
+
+```ts
+import { deleteCustomerAddressesWorkflow } from "@medusajs/core-flows"
+
+deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
+	async (({ ids }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addressesDeleted"/>

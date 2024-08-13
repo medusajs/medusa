@@ -2776,6 +2776,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/listOrderChanges",
+                        "title": "listOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/listOrderClaims",
                         "title": "listOrderClaims",
                         "children": []
@@ -7180,6 +7187,13 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/troubleshooting/pnpm-errors",
+                "title": "pnpm Errors",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/troubleshooting/general-errors",
                 "title": "General Errors",
                 "children": []
@@ -7660,6 +7674,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/references/helper-steps/removeRemoteLinkStep",
             "title": "removeRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/helper-steps/updateRemoteLinksStep",
+            "title": "updateRemoteLinksStep",
             "children": []
           },
           {

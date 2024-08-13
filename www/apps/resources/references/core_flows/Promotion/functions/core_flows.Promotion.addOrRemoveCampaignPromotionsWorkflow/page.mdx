@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# addOrRemoveCampaignPromotionsWorkflow
+
+This workflow adds or removes promotions from campaigns.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"addOrRemoveCampaignPromotionsWorkflow","steps":[{"type":"step","name":"addCampaignPromotionsStep","description":"This step adds promotions to a campaign.","link":"../core_flows.Promotion.addCampaignPromotionsStep/page.mdx","depth":1},{"type":"step","name":"removeCampaignPromotionsStep","description":"This step removes promotions from a campaigns.","link":"../core_flows.Promotion.removeCampaignPromotionsStep/page.mdx","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkWorkflowInput","type":"[LinkWorkflowInput](../../../../types/CommonTypes/types/types.CommonTypes.LinkWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"add","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"remove","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addOrRemoveCampaignPromotionsWorkflow"/>

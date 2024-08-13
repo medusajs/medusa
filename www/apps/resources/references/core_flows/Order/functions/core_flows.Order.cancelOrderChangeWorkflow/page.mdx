@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelOrderChangeWorkflow
+
+This workflow cancels an order change.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"cancelOrderChangeWorkflow","steps":[{"type":"step","name":"cancelOrderChangeStep","description":"This step cancels an order change.","link":"../core_flows.Order.cancelOrderChangeStep/page.mdx","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelOrderChangeDTO","type":"[CancelOrderChangeDTO](../../../../order/interfaces/order.CancelOrderChangeDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the order change.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_by","type":"`string`","description":"The user or customer that canceled the order change.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelOrderChangeWorkflow"/>

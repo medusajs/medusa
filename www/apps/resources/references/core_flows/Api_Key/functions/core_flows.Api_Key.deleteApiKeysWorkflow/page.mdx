@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteApiKeysWorkflow
+
+This workflow deletes one or more API keys.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"deleteApiKeysWorkflow","steps":[{"type":"step","name":"deleteApiKeysStep","description":"This step deletes one or more API keys.","link":"../core_flows.Api_Key.deleteApiKeysStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)\n\n","link":"../../../Common/functions/core_flows.Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteApiKeysWorkflowInput","type":"[DeleteApiKeysWorkflowInput](../../../types/core_flows.DeleteApiKeysWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteApiKeysWorkflow"/>
