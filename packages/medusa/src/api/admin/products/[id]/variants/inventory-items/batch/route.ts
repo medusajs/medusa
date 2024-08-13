@@ -5,10 +5,11 @@ import {
 } from "../../../../../../../types/routing"
 import { buildBatchVariantInventoryData } from "../../../../helpers"
 import { AdminBatchVariantInventoryItemsType } from "../../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminBatchVariantInventoryItemsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantInventoryBatchResponse>
 ) => {
   const { create = [], update = [], delete: toDelete = [] } = req.validatedBody
 
@@ -24,5 +25,5 @@ export const POST = async (
     created: result.created,
     updated: result.updated,
     deleted: result.deleted,
-  })
+  } as unknown as HttpTypes.AdminProductVariantInventoryBatchResponse)
 }

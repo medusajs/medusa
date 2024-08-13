@@ -6,10 +6,11 @@ import {
 } from "../../../../../../../types/routing"
 import { refetchVariant } from "../../../../helpers"
 import { AdminCreateVariantInventoryItemType } from "../../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateVariantInventoryItemType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantResponse>
 ) => {
   const variantId = req.params.variant_id
 

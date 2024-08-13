@@ -12,10 +12,11 @@ import {
   AdminGetProductTypeParamsType,
   AdminUpdateProductTypeType,
 } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTypeParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTypeResponse>
 ) => {
   const productType = await refetchProductType(
     req.params.id,
@@ -28,7 +29,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateProductTypeType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTypeResponse>
 ) => {
   const { result } = await updateProductTypesWorkflow(req.scope).run({
     input: {
@@ -48,7 +49,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTypeDeleteResponse>
 ) => {
   const id = req.params.id
 

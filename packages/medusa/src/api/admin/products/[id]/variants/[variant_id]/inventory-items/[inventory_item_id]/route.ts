@@ -6,10 +6,11 @@ import {
 } from "../../../../../../../../types/routing"
 import { refetchVariant } from "../../../../../helpers"
 import { AdminUpdateVariantInventoryItemType } from "../../../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateVariantInventoryItemType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantResponse>
 ) => {
   const variantId = req.params.variant_id
   const inventoryItemId = req.params.inventory_item_id
@@ -35,7 +36,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantInventoryLinkDeleteResponse>
 ) => {
   const variantId = req.params.variant_id
   const inventoryItemId = req.params.inventory_item_id
@@ -58,7 +59,7 @@ export const DELETE = async (
   )
 
   res.status(200).json({
-    id: deleted,
+    id: deleted as unknown as HttpTypes.AdminProductVariantInventoryLink,
     object: "variant-inventory-item-link",
     deleted: true,
     parent,
