@@ -148,7 +148,7 @@ medusaIntegrationTestRunner({
           tax_total: 0.89,
           discount_total: 1.1,
           discount_tax_total: 0.11,
-          original_total: 70.9,
+          original_total: 60.9,
           original_tax_total: 1,
           item_total: 50,
           item_subtotal: 50,

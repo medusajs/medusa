@@ -10,10 +10,11 @@ import {
 import { refetchCustomer } from "../helpers"
 import { MedusaError } from "@medusajs/utils"
 import { updateCustomersWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerResponse>
 ) => {
   const id = req.auth_context.actor_id
   const customer = await refetchCustomer(
@@ -34,7 +35,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreUpdateCustomerType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerResponse>
 ) => {
   const customerId = req.auth_context.actor_id
   await updateCustomersWorkflow(req.scope).run({
