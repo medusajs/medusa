@@ -33,7 +33,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       initialItems={config.sidebar}
       staticSidebarItems={true}
       disableActiveTransition={true}
-      navigationDropdownItems={navigationDropdownItems}
     >
       {children}
     </UiSidebarProvider>

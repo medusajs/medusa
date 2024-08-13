@@ -8304,6 +8304,14 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/troubleshooting/pnpm-errors",
+                "title": "pnpm Errors",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/general-errors",
                 "title": "General Errors",
                 "children": []
