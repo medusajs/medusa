@@ -7,10 +7,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRegionResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -28,7 +29,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRegionDeleteResponse>
 ) => {
   const id = req.params.id
 

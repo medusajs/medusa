@@ -45,6 +45,10 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
       const childDirPath = path.join(namespaceBasePath, childDir.name)
       const childFile = readdirSync(childDirPath)
 
+      if (!childFile.length) {
+        continue
+      }
+
       const sidebarItem = await getSidebarItemLink({
         filePath: path.join(childDirPath, childFile[0]),
         basePath: projPath,

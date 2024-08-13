@@ -9,10 +9,11 @@ import {
 } from "../../../../types/routing"
 import { AdminGetStoreParamsType, AdminUpdateStoreType } from "../validators"
 import { refetchStore } from "../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetStoreParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStoreResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const variables = { id: req.params.id }
@@ -29,7 +30,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateStoreType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStoreResponse>
 ) => {
   const { result } = await updateStoresWorkflow(req.scope).run({
     input: {

@@ -42,11 +42,11 @@ export const Card = ({
       )}
     >
       {startIcon}
-      <div className="flex items-start gap-docs_1 justify-between flex-1">
-        <div className={clsx("flex flex-col", contentClassName)}>
+      <div className="flex items-start gap-docs_1 justify-between flex-1 max-w-full">
+        <div className={clsx("flex flex-col max-w-full", contentClassName)}>
           {title && (
             <span className={clsx(badge && "flex gap-docs_0.5")}>
-              <span className="text-compact-medium-plus text-medusa-fg-base">
+              <span className="text-compact-medium-plus text-medusa-fg-base block truncate">
                 {title}
               </span>
               {badge && <Badge {...badge} />}

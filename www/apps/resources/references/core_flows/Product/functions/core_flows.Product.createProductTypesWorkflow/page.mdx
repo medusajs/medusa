@@ -1,0 +1,46 @@
+---
+slug: /references/medusa-workflows/createProductTypesWorkflow
+sidebar_label: createProductTypesWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createProductTypesWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createProductTypesWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow creates one or more product types.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"createProductTypesWorkflow","steps":[{"type":"step","name":"createProductTypesStep","description":"This step creates one or more product types.","link":"../core_flows.Product.createProductTypesStep/page.mdx","depth":1},{"type":"hook","name":"productTypesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesCreated","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CreateProductTypesWorkflowInput","type":"[CreateProductTypesWorkflowInput](../../../types/core_flows.CreateProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"product_types","type":"[CreateProductTypeDTO](../../../../product/interfaces/product.CreateProductTypeDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string`","description":"The product type's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createProductTypesWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"ProductTypeDTO[]","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductTypeDTO","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)","optional":false,"defaultValue":"","description":"A product type's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createProductTypesWorkflow"/>
+
+## Hooks
+
+### productTypesCreated
+
+#### Example
+
+```ts
+import { createProductTypesWorkflow } from "@medusajs/core-flows"
+
+createProductTypesWorkflow.hooks.productTypesCreated(
+	async (({ product_types, additional_data }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"product_types","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="productTypesCreated"/>

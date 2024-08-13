@@ -1,5 +1,5 @@
 import { BaseOrder } from "../order/common";
-import { AdminBaseReturnItem, AdminReturn } from "../return";
+import { AdminReturnItem, AdminReturn } from "../return";
 
 export interface BaseExchangeItem {
   id: string
@@ -14,7 +14,7 @@ export interface BaseExchangeItem {
 
 export interface BaseExchange extends Omit<BaseOrder, "status" | "version" | "items"> {
   order_id: string
-  return_items: AdminBaseReturnItem[]
+  return_items: AdminReturnItem[]
   additional_items: BaseExchangeItem[]
   no_notification?: boolean
   difference_due?: number

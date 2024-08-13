@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/createShippingOptionsWorkflow
+sidebar_label: createShippingOptionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createShippingOptionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `createShippingOptionsWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow creates one or more shipping options.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"createShippingOptionsWorkflow","steps":[{"type":"step","name":"upsertShippingOptionsStep","description":"This step creates or updates shipping options.","link":"../core_flows.Fulfillment.upsertShippingOptionsStep/page.mdx","depth":1},{"type":"step","name":"createShippingOptionsPriceSetsStep","description":"This step creates price sets for one or more shipping options.","link":"../core_flows.Fulfillment.createShippingOptionsPriceSetsStep/page.mdx","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CreateShippingOptionsWorkflowInput[]","type":"`CreateShippingOptionsWorkflowInput`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateShippingOptionsWorkflowInput","type":"`CreateShippingOptionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="createShippingOptionsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"CreateShippingOptionsWorkflowOutput","type":"`CreateShippingOptionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="createShippingOptionsWorkflow"/>

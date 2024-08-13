@@ -15,10 +15,11 @@ import {
   AdminGetTaxRateParamsType,
   AdminUpdateTaxRateType,
 } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateTaxRateType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
   await updateTaxRatesWorkflow(req.scope).run({
     input: {
@@ -37,7 +38,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetTaxRateParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const variables = { id: req.params.id }
@@ -54,7 +55,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRateDeleteResponse>
 ) => {
   const id = req.params.id
   await deleteTaxRatesWorkflow(req.scope).run({

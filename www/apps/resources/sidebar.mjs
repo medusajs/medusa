@@ -2274,13 +2274,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         isChildSidebar: true,
         autogenerate_path: "/references/helper_steps/functions",
       },
-      // TODO uncomment once available.
-      // {
-      //   title: "Medusa Workflows Reference",
-      //   path: "/medusa-workflows-reference",
-      //   isChildSidebar: true,
-      //   custom_autogenerate: "core-flows",
-      // },
+      {
+        title: "Medusa Workflows Reference",
+        path: "/medusa-workflows-reference",
+        isChildSidebar: true,
+        custom_autogenerate: "core-flows",
+      },
     ],
   },
   {

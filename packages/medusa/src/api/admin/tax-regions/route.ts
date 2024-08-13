@@ -12,10 +12,11 @@ import {
   AdminGetTaxRegionsParamsType,
 } from "./validators"
 import { refetchTaxRegion } from "./helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateTaxRegionType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRegionResponse>
 ) => {
   const { result } = await createTaxRegionsWorkflow(req.scope).run({
     input: [
@@ -36,7 +37,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetTaxRegionsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminTaxRegionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

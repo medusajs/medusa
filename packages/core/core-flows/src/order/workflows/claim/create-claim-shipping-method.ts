@@ -13,12 +13,12 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step confirms that a shipping method can be created for a claim.
@@ -168,7 +168,9 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep([orderChangeActionInput])
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: [orderChangeActionInput],
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }

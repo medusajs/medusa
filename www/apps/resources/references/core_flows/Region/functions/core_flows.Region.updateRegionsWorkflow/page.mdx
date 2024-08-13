@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/updateRegionsWorkflow
+sidebar_label: updateRegionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateRegionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updateRegionsWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow updates regions matching the specified filters.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"updateRegionsWorkflow","steps":[{"type":"step","name":"updateRegionsStep","description":"This step updates regions matching the specified filters.","link":"../core_flows.Region.updateRegionsStep/page.mdx","depth":1},{"type":"when","condition":"{\n      return data.normalizedInput.is_tax_inclusive !== undefined\n    }","depth":"2","steps":[{"type":"workflow","name":"updatePricePreferencesWorkflow","description":"This workflow updates one or more price preferences.","link":"../../../Pricing/functions/core_flows.Pricing.updatePricePreferencesWorkflow/page.mdx","depth":2}]}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdateRegionsWorkflowInput","type":"`UpdateRegionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateRegionsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"UpdateRegionsWorkflowOutput","type":"`UpdateRegionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateRegionsWorkflow"/>
