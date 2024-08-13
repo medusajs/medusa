@@ -14,13 +14,13 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { validateReturnReasons } from "../../utils/validate-return-reason"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step validates that itens can be added to a return.
@@ -91,7 +91,12 @@ export const requestItemReturnWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    requestItemReturnValidationStep({ order, items: input.items, orderReturn, orderChange })
+    requestItemReturnValidationStep({
+      order,
+      items: input.items,
+      orderReturn,
+      orderChange,
+    })
 
     const orderChangeActionInput = transform(
       { order, orderChange, orderReturn, items: input.items },
@@ -115,7 +120,9 @@ export const requestItemReturnWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep(orderChangeActionInput)
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: orderChangeActionInput,
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }

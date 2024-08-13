@@ -297,7 +297,13 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
     const fulfillment = createFulfillmentWorkflow.runAsStep(fulfillmentData)
 
     const registerOrderFulfillmentData = transform(
-      { order, fulfillment, input, inputItemsMap, itemsList: input.items_list },
+      {
+        order,
+        fulfillment,
+        input,
+        inputItemsMap,
+        itemsList: input.items ?? input.items_list,
+      },
       prepareRegisterOrderFulfillmentData
     )
 

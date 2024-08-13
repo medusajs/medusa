@@ -67,7 +67,7 @@ function prepareRegisterShipmentData({
     reference: Modules.FULFILLMENT,
     reference_id: fulfillment.id,
     created_by: input.created_by,
-    items: order.items!.map((i) => {
+    items: (input.items ?? order.items)!.map((i) => {
       return {
         id: i.id,
         quantity: i.quantity,

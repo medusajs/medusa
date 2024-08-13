@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
-  WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,
@@ -14,12 +13,12 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step validates that a shipping method can be created for a return.
@@ -100,7 +99,11 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    createReturnShippingMethodValidationStep({ order, orderReturn, orderChange })
+    createReturnShippingMethodValidationStep({
+      order,
+      orderReturn,
+      orderChange,
+    })
 
     const shippingMethodInput = transform(
       {
@@ -172,7 +175,9 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep([orderChangeActionInput])
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: [orderChangeActionInput],
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
