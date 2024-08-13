@@ -1747,7 +1747,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     const oldSchemaType = this.inferOasSchemaType(oldSchemaObj)
     const newSchemaType = this.inferOasSchemaType(newSchemaObj)
 
-    if (oldSchemaType !== newSchemaType && newSchemaType) {
+    if (oldSchemaType !== newSchemaType && newSchemaType && newSchemaObj) {
       oldSchemaObj = {
         ...newSchemaObj,
         description: oldSchemaObj?.description,
