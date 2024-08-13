@@ -13,7 +13,7 @@ export const DataGridBooleanCell = <TData, TValue = any>({
   const { control, renderProps } = useDataGridCell({
     field,
     context,
-    type: "select",
+    type: "boolean",
   })
 
   const { container, input } = renderProps

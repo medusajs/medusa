@@ -5,6 +5,7 @@ import {
 import {
   AdminFulfillmentSetResponse,
   AdminServiceZoneResponse,
+  DeleteResponse,
   IFulfillmentModuleService,
 } from "@medusajs/types"
 import {
@@ -93,7 +94,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"service_zone">>
 ) => {
   const { id, zone_id } = req.params
 

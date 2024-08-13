@@ -1,4 +1,4 @@
-import {createApiKeysWorkflow} from "@medusajs/core-flows"
+import { createApiKeysWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,11 +7,12 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {AdminCreateApiKeyType} from "./validators"
+import { AdminCreateApiKeyType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminApiKeyListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -36,7 +37,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateApiKeyType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminApiKeyResponse>
 ) => {
   const input = [
     {

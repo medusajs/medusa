@@ -346,6 +346,9 @@ class OasKindGenerator extends FunctionKindGenerator {
       areaTags?.add(tagName)
     }
 
+    // get associated workflow
+    oas["x-workflow"] = this.getAssociatedWorkflow(node)
+
     return formatOas(oas, oasPrefix)
   }
 
@@ -609,6 +612,9 @@ class OasKindGenerator extends FunctionKindGenerator {
       const areaTags = this.tags.get(splitOasPath[0] as OasArea)
       areaTags?.add(tagName)
     }
+
+    // get associated workflow
+    oas["x-workflow"] = this.getAssociatedWorkflow(node)
 
     return formatOas(oas, oasPrefix)
   }
@@ -1853,6 +1859,80 @@ class OasKindGenerator extends FunctionKindGenerator {
       default:
         return "object"
     }
+  }
+
+  /**
+   * This method retrieves the workflow used in an API route.
+   *
+   * @param node - The node to search through
+   * @returns The workflow's name.
+   */
+  getAssociatedWorkflow(node: FunctionNode): string | undefined {
+    let workflow: string | undefined
+
+    if (
+      (!ts.isFunctionDeclaration(node) && !ts.isArrowFunction(node)) ||
+      !node.body ||
+      !ts.isBlock(node.body)
+    ) {
+      return
+    }
+
+    const sourceFile = node.getSourceFile()
+    const fileLocalSymbols: Map<string, ts.Symbol> =
+      "locals" in sourceFile
+        ? (sourceFile.locals as Map<string, ts.Symbol>)
+        : new Map()
+
+    if (!fileLocalSymbols.size) {
+      return
+    }
+
+    node.body.statements.some((statement) => {
+      let awaitExpression: ts.AwaitExpression | undefined
+      if (
+        ts.isVariableStatement(statement) &&
+        statement.declarationList.declarations[0].initializer &&
+        ts.isAwaitExpression(
+          statement.declarationList.declarations[0].initializer
+        )
+      ) {
+        awaitExpression = statement.declarationList.declarations[0].initializer
+      } else if (ts.isAwaitExpression(statement)) {
+        awaitExpression = statement
+      }
+
+      if (
+        !awaitExpression ||
+        !ts.isCallExpression(awaitExpression.expression) ||
+        !ts.isPropertyAccessExpression(awaitExpression.expression.expression) ||
+        !awaitExpression.expression.expression.name.getText().startsWith("run")
+      ) {
+        return false
+      }
+
+      const fullExpressionText = awaitExpression.expression.getText()
+      const parenIndex = fullExpressionText.indexOf("(")
+      const dotIndex = fullExpressionText.indexOf(".")
+      const cutOffIndex =
+        parenIndex !== -1 && dotIndex === -1
+          ? parenIndex
+          : parenIndex === -1 && dotIndex !== -1
+            ? dotIndex
+            : parenIndex === -1 && dotIndex === -1
+              ? fullExpressionText.length
+              : Math.min(parenIndex, dotIndex)
+      const expressionName = fullExpressionText.substring(0, cutOffIndex)
+
+      if (!fileLocalSymbols.has(expressionName)) {
+        return false
+      }
+
+      workflow = expressionName
+      return true
+    })
+
+    return workflow
   }
 
   /**

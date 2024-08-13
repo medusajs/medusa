@@ -33,10 +33,12 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
+    "@medusajs/types": "^1.11.16",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
     "@types/configstore": "^6.0.0",
     "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.12.11",
     "@types/node-emoji": "^1.8.2",
     "@types/pg": "^8.6.6",
     "@types/uuid": "^9.0.1",

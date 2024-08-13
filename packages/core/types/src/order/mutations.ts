@@ -923,6 +923,11 @@ export interface UpdateOrderChangeDTO {
   description?: string
 
   /**
+   * The associated return's ID.
+   */
+  return_id?: string | null
+
+  /**
    * The internal note of the order change.
    */
   internal_note?: string | null
@@ -1146,9 +1151,19 @@ export interface CreateOrderTransactionDTO {
   order_id: string
 
   /**
-   * The description of the transaction.
+   * The associated return's ID.
    */
-  description?: string
+  return_id?: string
+
+  /**
+   * The associated claim's ID.
+   */
+  claim_id?: string
+
+  /**
+   * The associated exchange's ID.
+   */
+  exchange_id?: string
 
   /**
    * The data model this transaction references.
@@ -1163,17 +1178,6 @@ export interface CreateOrderTransactionDTO {
   reference_id?: string
 
   /**
-   * The internal note of the transaction.
-   */
-  internal_note?: string | null
-
-  /**
-   * The user or customer that created this
-   * transaction.
-   */
-  created_by?: string
-
-  /**
    * The amount of the transaction.
    */
   amount: BigNumberInput
@@ -1182,11 +1186,6 @@ export interface CreateOrderTransactionDTO {
    * The currency code of the transaction.
    */
   currency_code: string
-
-  /**
-   * Holds custom data in key-value pairs.
-   */
-  metadata?: Record<string, unknown> | null
 }
 
 /**

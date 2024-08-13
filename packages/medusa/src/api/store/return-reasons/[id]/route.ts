@@ -4,10 +4,11 @@ import {
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { StoreReturnReasonParamsType } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: MedusaRequest<StoreReturnReasonParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreReturnReasonResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
