@@ -4,10 +4,11 @@ import {
 } from "../../../types/routing"
 import { AdminGetNotificationsParamsType } from "./validators"
 import { refetchEntities } from "../../utils/refetch-entity"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetNotificationsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminNotificationListResponse>
 ) => {
   const { rows: notifications, metadata } = await refetchEntities(
     "notification",

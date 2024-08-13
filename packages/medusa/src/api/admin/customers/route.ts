@@ -1,10 +1,6 @@
 import { createCustomersWorkflow } from "@medusajs/core-flows"
 
-import {
-  AdditionalData,
-  AdminCustomer,
-  PaginatedResponse,
-} from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -18,7 +14,7 @@ import { AdminCreateCustomerType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<PaginatedResponse<{ customers: AdminCustomer }>>
+  res: MedusaResponse<HttpTypes.AdminCustomerListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -43,7 +39,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateCustomerType & AdditionalData>,
-  res: MedusaResponse<{ customer: AdminCustomer }>
+  res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
   const createCustomers = createCustomersWorkflow(req.scope)

@@ -5,7 +5,7 @@ import {
   HeaderContext,
   createColumnHelper,
 } from "@tanstack/react-table"
-import { CellCoords, DataGridColumnType } from "./types"
+import { CellCoords, CellType, DataGridColumnType } from "./types"
 
 export function generateCellId(coords: CellCoords) {
   return `${coords.row}:${coords.col}`
@@ -96,33 +96,54 @@ export function getFieldsInRange(
   return fields
 }
 
-export function convertArrayToPrimitive<
-  T extends "boolean" | "number" | "string",
->(values: string[], type: T) {
-  const convertedValues: any[] = []
-
-  for (const value of values) {
-    if (type === "number") {
-      const converted = Number(value)
-      if (isNaN(converted)) {
-        throw new Error(`String "${value}" cannot be converted to number.`)
-      }
-      convertedValues.push(converted)
-    } else if (type === "boolean") {
-      const lowerValue = value.toLowerCase()
-      if (lowerValue === "true" || lowerValue === "false") {
-        convertedValues.push(lowerValue === "true")
-      } else {
-        throw new Error(`String "${value}" cannot be converted to boolean.`)
-      }
-    } else if (type === "string") {
-      convertedValues.push(String(value))
-    } else {
-      throw new Error(`Unsupported target type "${type}".`)
-    }
+function convertToNumber(value: string | number): number {
+  if (typeof value === "number") {
+    return value
   }
 
-  return convertedValues
+  const converted = Number(value)
+
+  if (isNaN(converted)) {
+    throw new Error(`String "${value}" cannot be converted to number.`)
+  }
+
+  return converted
+}
+
+function convertToBoolean(value: string | boolean): boolean {
+  if (typeof value === "boolean") {
+    return value
+  }
+
+  if (typeof value === "undefined" || value === null) {
+    return false
+  }
+
+  const lowerValue = value.toLowerCase()
+
+  if (lowerValue === "true" || lowerValue === "false") {
+    return lowerValue === "true"
+  }
+
+  throw new Error(`String "${value}" cannot be converted to boolean.`)
+}
+
+function convertToString(value: string): string {
+  return String(value)
+}
+
+export function convertArrayToPrimitive(values: any[], type: CellType): any[] {
+  switch (type) {
+    case "number":
+      return values.map(convertToNumber)
+    case "boolean":
+      return values.map(convertToBoolean)
+    case "text":
+    case "select":
+      return values.map(convertToString)
+    default:
+      throw new Error(`Unsupported target type "${type}".`)
+  }
 }
 
 type DataGridHelperColumnsProps<TData> = {
@@ -143,31 +164,6 @@ type DataGridHelperColumnsProps<TData> = {
    */
   cell: ColumnDefTemplate<CellContext<TData, unknown>> | undefined
   /**
-   * The type of the column. This is used to for parsing the value of cells
-   * in the column in commands like copy and paste.
-   */
-  type?: DataGridColumnType
-  /**
-   * Whether to only validate that the value can be converted to the desired
-   * type, but pass through the raw value to the form.
-   *
-   * An example of this might be a column with a type of "number" but the
-   * field is a string. This allows the commands to validate that the value
-   * can be converted to the desired type, but still pass through the raw
-   * value to the form.
-   *
-   * @example
-   * ```tsx
-   * columnHelper.column({
-   *  id: "price",
-   *  // ...
-   *  type: "number",
-   *  asString: true,
-   * })
-   * ```
-   */
-  asString?: boolean
-  /**
    * Whether the column cannot be hidden by the user.
    *
    * @default false
@@ -184,8 +180,6 @@ export function createDataGridHelper<TData>() {
       name,
       header,
       cell,
-      type = "string",
-      asString,
       disableHiding = false,
     }: DataGridHelperColumnsProps<TData>) =>
       columnHelper.display({
@@ -194,8 +188,6 @@ export function createDataGridHelper<TData>() {
         cell,
         enableHiding: !disableHiding,
         meta: {
-          type,
-          asString,
           name,
         },
       }),

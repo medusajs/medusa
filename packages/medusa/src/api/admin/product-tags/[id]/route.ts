@@ -12,10 +12,11 @@ import {
   AdminUpdateProductTagType,
 } from "../validators"
 import { refetchEntity } from "../../../utils/refetch-entity"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTagParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTagResponse>
 ) => {
   const productTag = await refetchEntity(
     "product_tag",
@@ -29,7 +30,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateProductTagType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTagResponse>
 ) => {
   const { result } = await updateProductTagsWorkflow(req.scope).run({
     input: {
@@ -50,7 +51,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTagDeleteResponse>
 ) => {
   const id = req.params.id
 

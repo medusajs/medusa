@@ -7,7 +7,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 
-import { MedusaContainer } from "@medusajs/types"
+import { DeleteResponse, HttpTypes, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -21,7 +21,7 @@ import {
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerAddressResponse>
 ) => {
   const customerId = req.auth_context.actor_id
 
@@ -47,7 +47,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreUpdateCustomerAddressType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerResponse>
 ) => {
   const id = req.auth_context.actor_id!
   await validateCustomerAddress(req.scope, id, req.params.address_id)
@@ -71,7 +71,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"address">>
 ) => {
   const id = req.auth_context.actor_id
   await validateCustomerAddress(req.scope, id, req.params.address_id)

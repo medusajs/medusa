@@ -1,4 +1,3 @@
-export interface AdminFulfillmentProvider {
-  id: string
-  is_enabled: boolean
-}
+import { BaseFulfillmentProvider } from "../common";
+
+export interface AdminFulfillmentProvider extends BaseFulfillmentProvider {}

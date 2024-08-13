@@ -1120,6 +1120,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.removeRemoteLinkStep/page.mdx"
   },
   {
+    "origSlug": "/references/helper_steps/functions/helper_steps.updateRemoteLinksStep",
+    "newSlug": "/references/helper-steps/updateRemoteLinksStep",
+    "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.updateRemoteLinksStep/page.mdx"
+  },
+  {
     "origSlug": "/references/helper_steps/functions/helper_steps.useRemoteQueryStep",
     "newSlug": "/references/helper-steps/useRemoteQueryStep",
     "filePath": "/www/apps/resources/references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx"
@@ -1338,6 +1343,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/cart_models",
     "newSlug": "/references/cart/models",
     "filePath": "/www/apps/resources/references/modules/cart_models/page.mdx"
+  },
+  {
+    "origSlug": "/references/modules/core_flows",
+    "newSlug": "/references/medusa-workflows",
+    "filePath": "/www/apps/resources/references/modules/core_flows/page.mdx"
   },
   {
     "origSlug": "/references/modules/currency_models",
@@ -1733,6 +1743,11 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderChangeActions",
     "newSlug": "/references/order/listOrderChangeActions",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderChangeActions/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderChanges",
+    "newSlug": "/references/order/listOrderChanges",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderChanges/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderClaims",

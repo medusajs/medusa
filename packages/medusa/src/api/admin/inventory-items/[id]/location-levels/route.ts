@@ -10,10 +10,11 @@ import {
   AdminGetInventoryLocationLevelsParamsType,
 } from "../../validators"
 import { refetchInventoryItem } from "../../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest<AdminCreateInventoryLocationLevelType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminInventoryItemResponse>
 ) => {
   const { id } = req.params
 
@@ -39,7 +40,7 @@ export const POST = async (
 
 export const GET = async (
   req: MedusaRequest<AdminGetInventoryLocationLevelsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminInventoryLevelListResponse>
 ) => {
   const { id } = req.params
 

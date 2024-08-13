@@ -13,10 +13,11 @@ import {
 import { refetchEntity } from "../../../../../../utils/refetch-entity"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../../../returns/validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsRequestItemsActionReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminClaimReturnPreviewResponse>
 ) => {
   const { id, action_id } = req.params
 
@@ -63,7 +64,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminClaimReturnPreviewResponse>
 ) => {
   const { id, action_id } = req.params
 

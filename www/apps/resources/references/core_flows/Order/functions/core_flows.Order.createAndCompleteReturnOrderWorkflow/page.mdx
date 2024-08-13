@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createAndCompleteReturnOrderWorkflow
+
+This workflow creates and completes a return.
+
+## Diagram
+
+<WorkflowDiagram workflow={{"name":"createAndCompleteReturnOrderWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"createCompleteReturnValidationStep","description":"This step validates that a return can be created and completed for an order.","link":"../core_flows.Order.createCompleteReturnValidationStep/page.mdx","depth":2},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":3},{"type":"workflow","name":"createReturnFulfillmentWorkflow","description":"This workflow creates a fulfillment for a return.","link":"../../../Fulfillment/functions/core_flows.Fulfillment.createReturnFulfillmentWorkflow/page.mdx","depth":4},{"type":"step","name":"createCompleteReturnStep","description":"This step creates a return.","link":"../core_flows.Order.createCompleteReturnStep/page.mdx","depth":5},{"type":"step","name":"createRemoteLinkStep","description":"This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).\n\n","link":"../../../Common/functions/core_flows.Common.createRemoteLinkStep/page.mdx","depth":6}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CreateOrderReturnWorkflowInput","type":"`CreateOrderReturnWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="createAndCompleteReturnOrderWorkflow"/>

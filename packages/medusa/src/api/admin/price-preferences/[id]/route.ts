@@ -12,7 +12,7 @@ import { refetchEntity } from "../../../utils/refetch-entity"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPricePreferenceResponse>
 ) => {
   const price_preference = await refetchEntity(
     "price_preference",
@@ -26,7 +26,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdatePricePreference>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPricePreferenceResponse>
 ) => {
   const id = req.params.id
   const workflow = updatePricePreferencesWorkflow(req.scope)
@@ -47,7 +47,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPricePreferenceDeleteResponse>
 ) => {
   const id = req.params.id
   const workflow = deletePricePreferencesWorkflow(req.scope)

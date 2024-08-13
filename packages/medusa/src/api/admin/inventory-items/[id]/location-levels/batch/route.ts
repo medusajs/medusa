@@ -14,7 +14,7 @@ export const POST = async (
       AdminUpdateInventoryLocationLevelType
     >
   >,
-  res: MedusaResponse
+  res: MedusaResponse<{ inventory_item: {} }>
 ) => {
   const { id } = req.params
 
