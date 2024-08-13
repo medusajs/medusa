@@ -3,7 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { BatchMethodRequest } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
 import {
   AdminCreatePromotionRuleType,
   AdminUpdatePromotionRuleType,
@@ -18,7 +18,7 @@ export const POST = async (
       AdminUpdatePromotionRuleType
     >
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPromotionRuleBatchResponse>
 ) => {
   const id = req.params.id
   const { result } = await batchPromotionRulesWorkflow(req.scope).run({
