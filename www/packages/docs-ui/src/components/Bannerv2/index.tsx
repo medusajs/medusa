@@ -7,7 +7,11 @@ import clsx from "clsx"
 
 const LOCAL_STORAGE_KEY = "banner-v2"
 
-export const Bannerv2 = () => {
+export type Bannerv2Props = {
+  className?: string
+}
+
+export const Bannerv2 = ({ className }: Bannerv2Props) => {
   const [show, setShow] = useState(false)
   const isBrowser = useIsBrowser()
 
@@ -30,13 +34,16 @@ export const Bannerv2 = () => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-base mb-docs_0.5 hidden gap-docs_0.5",
+        "bg-medusa-bg-base hidden gap-docs_0.5",
         "justify-between items-start rounded-docs_DEFAULT",
         "p-docs_0.75 shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
-        show && "lg:flex"
+        show && "lg:flex",
+        className
       )}
     >
-      <ExclamationCircleSolid className="text-medusa-tag-orange-icon" />
+      <span className="p-[2.5px]">
+        <ExclamationCircleSolid className="text-medusa-tag-orange-icon" />
+      </span>
       <div className="flex flex-col gap-docs_0.125 flex-1">
         <span className="text-compact-small-plus text-medusa-fg-base">
           Medusa v2 and Docs under development

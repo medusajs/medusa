@@ -14,6 +14,7 @@ export type MenuItemAction = {
   icon: React.ReactNode
   title: string
   shortcut?: string
+  action: () => void
 }
 
 export type MenuItem = MenuItemLink | MenuItemDivider | MenuItemAction

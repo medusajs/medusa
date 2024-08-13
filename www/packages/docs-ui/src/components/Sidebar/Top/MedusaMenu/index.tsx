@@ -2,13 +2,24 @@
 
 import clsx from "clsx"
 import React, { useRef, useState } from "react"
-import { BorderedIcon, getOsShortcut, Menu, useClickOutside } from "../../../.."
-import { EllipsisHorizontal, SidebarLeft, TimelineVertical } from "@medusajs/icons"
+import {
+  BorderedIcon,
+  getOsShortcut,
+  useClickOutside,
+  useSidebar,
+} from "../../../.."
+import {
+  EllipsisHorizontal,
+  SidebarLeft,
+  TimelineVertical,
+} from "@medusajs/icons"
 import { MedusaIcon } from "../../../Icons/MedusaLogo"
 import { HouseIcon } from "../../../Icons/House"
+import { Menu } from "../../../Menu"
 
 export const SidebarTopMedusaMenu = () => {
   const [openMenu, setOpenMenu] = useState(false)
+  const { setDesktopSidebarOpen } = useSidebar()
   const ref = useRef<HTMLDivElement>(null)
 
   const toggleOpen = () => setOpenMenu((prev) => !prev)
@@ -39,8 +50,8 @@ export const SidebarTopMedusaMenu = () => {
       </div>
       <div
         className={clsx(
-          "absolute w-[calc(100%-16px)] bottom-[calc(-100%-4px)]",
-          "left-docs_0.5",
+          "absolute w-[calc(100%-16px)] bottom-[calc(-100%-40px)]",
+          "left-docs_0.5 z-40",
           !openMenu && "hidden"
         )}
       >
@@ -65,8 +76,12 @@ export const SidebarTopMedusaMenu = () => {
               type: "action",
               title: "Hide Sidebar",
               icon: <SidebarLeft />,
-              shortcut: `${getOsShortcut()}.`
-            }
+              shortcut: `${getOsShortcut()}.`,
+              action: () => {
+                setDesktopSidebarOpen(false)
+                setOpenMenu(false)
+              },
+            },
           ]}
         />
       </div>

@@ -34,7 +34,7 @@ export const Sidebar = ({
     sidebarTopHeight,
     setSidebarTopHeight,
     desktopSidebarOpen,
-    setDesktopSidebarOpen
+    setDesktopSidebarOpen,
   } = useSidebar()
   useClickOutside({
     elmRef: sidebarWrapperRef,
@@ -47,7 +47,9 @@ export const Sidebar = ({
   useKeyboardShortcut({
     metakey: true,
     shortcutKeys: ["."],
-    action: () => setDesktopSidebarOpen((prev) => !prev)
+    action: () => {
+      setDesktopSidebarOpen((prev) => !prev)
+    },
   })
 
   const sidebarItems = useMemo(
@@ -72,7 +74,7 @@ export const Sidebar = ({
       <aside
         className={clsx(
           "bg-medusa-bg-base lg:bg-transparent block",
-          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:left-0 lg:h-auto",
+          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:h-auto",
           "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
           "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
           mobileSidebarOpen && [
@@ -80,7 +82,8 @@ export const Sidebar = ({
             "rounded",
             "lg:!left-0 lg:!top-0 lg:shadow-none",
           ],
-          !desktopSidebarOpen && "!absolute !-left-full",
+          desktopSidebarOpen && "lg:left-0",
+          !desktopSidebarOpen && "lg:!absolute lg:!-left-full",
           className
         )}
         style={{
@@ -111,7 +114,7 @@ export const Sidebar = ({
                 )}
                 ref={sidebarRef}
                 style={{
-                  maxHeight: `calc(100vh - ${sidebarTopHeight + 12}px)`,
+                  maxHeight: `calc(100vh - ${sidebarTopHeight}px)`,
                 }}
                 id="sidebar"
               >

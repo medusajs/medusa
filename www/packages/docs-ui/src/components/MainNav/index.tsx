@@ -8,6 +8,7 @@ import { SearchModalOpener, useMainNav } from "../.."
 import { MainNavColorMode } from "./ColorMode"
 import Link from "next/link"
 import { MainNavDivider } from "./Divider"
+import { MainNavSidebarOpener } from "./SidebarOpener"
 
 export const MainNav = () => {
   const { reportIssueLink } = useMainNav()
@@ -20,6 +21,7 @@ export const MainNav = () => {
       )}
     >
       <div className="flex items-center gap-docs_0.25">
+        <MainNavSidebarOpener />
         <MainNavigationDropdown />
         <MainNavBreadcrumbs />
       </div>

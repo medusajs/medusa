@@ -15,8 +15,10 @@ export const MenuAction = ({ item }: MenuActionProps) => {
         "flex py-docs_0.25 px-docs_0.5",
         "gap-docs_0.5 rounded-docs_xs",
         "hover:bg-medusa-bg-component-hover",
-        "text-medusa-fg-base"
+        "text-medusa-fg-base cursor-pointer"
       )}
+      tabIndex={-1}
+      onClick={item.action}
     >
       <span className="text-medusa-fg-subtle">{item.icon}</span>
       <span className="text-compact-small flex-1">{item.title}</span>
