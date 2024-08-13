@@ -3,7 +3,7 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { initDb } from "./medusa-test-runner-utils/use-db"
+import { initDb, migrateDatabase } from "./medusa-test-runner-utils/use-db"
 import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 
 const axios = require("axios").default
@@ -138,8 +138,16 @@ export function medusaIntegrationTestRunner({
   const beforeAll_ = async () => {
     await configLoaderOverride(cwd, dbConfig)
 
-    console.log(`Creating database ${dbName}`)
-    await dbUtils.create(dbName)
+    try {
+      console.log(`Creating database ${dbName}`)
+      await dbUtils.create(dbName)
+      dbUtils.pgConnection_ = await initDb({
+        env,
+      })
+    } catch (error) {
+      console.error("Error initializing database", error?.message)
+      throw error
+    }
 
     let containerRes
     let serverShutdownRes
@@ -164,10 +172,8 @@ export function medusaIntegrationTestRunner({
     }
 
     try {
-      console.log(`Running migrations and syncing links ${dbName}`)
-      dbUtils.pgConnection_ = await initDb({
-        env,
-      })
+      console.log(`Migrating database ${dbName}`)
+      await migrateDatabase()
     } catch (error) {
       console.error("Error initializing database", error?.message)
       throw error

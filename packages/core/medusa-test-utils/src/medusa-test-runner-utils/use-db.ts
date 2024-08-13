@@ -6,13 +6,8 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
   }
 
-  const {
-    pgConnectionLoader,
-    logger,
-    container,
-    featureFlagsLoader,
-    MedusaAppLoader,
-  } = await import("@medusajs/framework")
+  const { pgConnectionLoader, logger, container, featureFlagsLoader } =
+    await import("@medusajs/framework")
 
   const pgConnection = pgConnectionLoader()
   await featureFlagsLoader()
@@ -20,6 +15,15 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
   container.register({
     [ContainerRegistrationKeys.LOGGER]: asValue(logger),
   })
+
+  return pgConnection
+}
+
+/**
+ * Migrates the database and also sync links
+ */
+export async function migrateDatabase() {
+  const { MedusaAppLoader } = await import("@medusajs/framework")
 
   try {
     const medusaAppLoader = new MedusaAppLoader()
@@ -44,6 +48,4 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     console.error("Something went wrong while running the migrations")
     throw err
   }
-
-  return pgConnection
 }
