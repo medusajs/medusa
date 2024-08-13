@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createPricePreferencesStep
+
+This step creates one or more price preferences.
+
+## Input
+
+<TypeList types={[{"name":"CreatePricePreferencesWorkflowInput[]","type":"`CreatePricePreferencesWorkflowInput`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreatePricePreferencesWorkflowInput","type":"`CreatePricePreferencesWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="createPricePreferencesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"PricePreferenceDTO[]","type":"[PricePreferenceDTO](../../../../pricing/interfaces/pricing.PricePreferenceDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PricePreferenceDTO","type":"[PricePreferenceDTO](../../../../pricing/interfaces/pricing.PricePreferenceDTO/page.mdx)","optional":false,"defaultValue":"","description":"A price preference's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a price preference.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`null` \\| `string`","description":"The rule attribute for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`null` \\| `string`","description":"The rule value for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Flag specifying whether prices for the specified rule are tax inclusive.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"When the price preference was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"When the price preference was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"When the price preference was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createPricePreferencesStep"/>
