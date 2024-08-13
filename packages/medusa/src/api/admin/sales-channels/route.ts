@@ -12,10 +12,11 @@ import {
   AdminCreateSalesChannelType,
   AdminGetSalesChannelsParamsType,
 } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetSalesChannelsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -40,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateSalesChannelType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
   const salesChannelsData = [req.validatedBody]
 

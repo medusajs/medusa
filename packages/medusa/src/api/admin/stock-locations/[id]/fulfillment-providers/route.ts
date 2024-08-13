@@ -1,5 +1,5 @@
 import { batchLinksWorkflow } from "@medusajs/core-flows"
-import { LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
 
 import {
@@ -19,7 +19,7 @@ const buildLinks = (id, fulfillmentProviderIds: string[]) => {
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStockLocationResponse>
 ) => {
   const { id } = req.params
   const { add = [], remove = [] } = req.validatedBody

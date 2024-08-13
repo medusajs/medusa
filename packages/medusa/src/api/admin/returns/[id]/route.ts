@@ -8,10 +8,11 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { AdminPostReturnsReturnReqSchemaType } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnResponse>
 ) => {
   const { id } = req.params
 
@@ -39,7 +40,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsReturnReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnPreviewResponse>
 ) => {
   const { id } = req.params
 
@@ -63,7 +64,7 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     return: orderReturn,
   })
 }

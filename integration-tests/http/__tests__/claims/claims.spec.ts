@@ -247,18 +247,14 @@ medusaIntegrationTestRunner({
       ).data.fulfillment_set
 
       inventoryItem = (
-        await api.post(
-          `/admin/inventory-items`,
-          { sku: "inv-1234" },
-          adminHeaders
-        )
-      ).data.inventory_item
+        await api.get(`/admin/inventory-items?sku=test-variant`, adminHeaders)
+      ).data.inventory_items[0]
 
       await api.post(
         `/admin/inventory-items/${inventoryItem.id}/location-levels`,
         {
           location_id: location.id,
-          stocked_quantity: 2,
+          stocked_quantity: 10,
         },
         adminHeaders
       )
@@ -271,7 +267,7 @@ medusaIntegrationTestRunner({
         `/admin/inventory-items/${inventoryItemExtra.id}/location-levels`,
         {
           location_id: location.id,
-          stocked_quantity: 4,
+          stocked_quantity: 10,
         },
         adminHeaders
       )
@@ -438,7 +434,9 @@ medusaIntegrationTestRunner({
     })
 
     describe("Claims lifecycle", () => {
-      it("Full flow with 2 orders", async () => {
+      let claimId
+
+      beforeEach(async () => {
         let r2 = await api.post(
           "/admin/claims",
           {
@@ -513,7 +511,7 @@ medusaIntegrationTestRunner({
 
         await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
 
-        const claimId = baseClaim.id
+        claimId = baseClaim.id
         const item = order.items[0]
 
         let result = await api.post(
@@ -629,16 +627,38 @@ medusaIntegrationTestRunner({
         ).data
 
         expect(reservationsResponse.reservations).toHaveLength(1)
+      })
 
+      it("should complete flow with fulfilled items successfully", async () => {
+        const fulfillOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+
+        const fulfillableItem = fulfillOrder.items.find(
+          (item) => item.detail.fulfilled_quantity === 0
+        )
+
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            location_id: location.id,
+            items: [{ id: fulfillableItem.id, quantity: 1 }],
+          },
+          adminHeaders
+        )
+      })
+
+      it("should go through cancel flow successfully", async () => {
         await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
 
-        result = (
+        const [claim] = (
           await api.get(
             `/admin/claims?fields=*claim_items,*additional_items`,
             adminHeaders
           )
         ).data.claims
-        expect(result[0].canceled_at).toBeDefined()
+
+        expect(claim.canceled_at).toBeDefined()
 
         const reservationsResponseAfterCanceling = (
           await api.get(

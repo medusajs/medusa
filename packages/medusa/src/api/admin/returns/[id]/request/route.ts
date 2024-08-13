@@ -11,10 +11,11 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostReturnsConfirmRequestReqSchemaType } from "../../validators"
+import { DeleteResponse, HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsConfirmRequestReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnPreviewResponse>
 ) => {
   const { id } = req.params
 
@@ -38,14 +39,14 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     return: orderReturn,
   })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"return">>
 ) => {
   const { id } = req.params
 

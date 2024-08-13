@@ -13,10 +13,11 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostReceiveReturnsReqSchemaType } from "../../validators"
+import { DeleteResponse, HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReceiveReturnsReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderReturnResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
@@ -55,7 +56,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"return">>
 ) => {
   const { id } = req.params
 

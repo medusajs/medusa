@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -11,7 +12,7 @@ import {
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetWorkflowExecutionsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminWorkflowExecutionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

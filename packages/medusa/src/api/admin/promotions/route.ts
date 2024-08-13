@@ -12,11 +12,11 @@ import {
   AdminCreatePromotionType,
   AdminGetPromotionsParamsType,
 } from "./validators"
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPromotionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -41,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreatePromotionType & AdditionalData>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPromotionResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
   const createPromotions = createPromotionsWorkflow(req.scope)

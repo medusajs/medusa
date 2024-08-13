@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -7,7 +8,7 @@ import { AdminGetPromotionRuleParamsType } from "../../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionRuleParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRuleAttributeOptionsListResponse>
 ) => {
   const { rule_type: ruleType } = req.params
 

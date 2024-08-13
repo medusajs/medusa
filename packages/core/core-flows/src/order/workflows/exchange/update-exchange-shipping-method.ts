@@ -89,7 +89,11 @@ export const updateExchangeShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    updateExchangeShippingMethodValidationStep({ orderExchange, orderChange, input })
+    updateExchangeShippingMethodValidationStep({
+      orderExchange,
+      orderChange,
+      input,
+    })
 
     const updateData = transform(
       { orderChange, input },

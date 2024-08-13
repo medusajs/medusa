@@ -1,5 +1,5 @@
 import { createUserAccountWorkflow } from "@medusajs/core-flows"
-import { CreateUserDTO } from "@medusajs/types"
+import { CreateUserDTO, HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -13,7 +13,7 @@ import { refetchUser } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminUserListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -37,7 +37,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<CreateUserDTO>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminUserResponse>
 ) => {
   // If `actor_id` is present, the request carries authentication for an existing user
   if (req.auth_context.actor_id) {

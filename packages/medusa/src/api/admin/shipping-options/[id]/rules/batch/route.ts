@@ -2,7 +2,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { BatchMethodRequest } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
 import {
   AdminCreateShippingOptionRuleType,
   AdminUpdateShippingOptionRuleType,
@@ -17,7 +17,7 @@ export const POST = async (
       AdminUpdateShippingOptionRuleType
     >
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminUpdateShippingOptionRulesResponse>
 ) => {
   const id = req.params.id
   const { result } = await batchShippingOptionRulesWorkflow(req.scope).run({
@@ -37,5 +37,9 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json(batchResults)
+  res
+    .status(200)
+    .json(
+      batchResults as unknown as HttpTypes.AdminUpdateShippingOptionRulesResponse
+    )
 }
