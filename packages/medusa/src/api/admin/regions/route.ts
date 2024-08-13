@@ -9,10 +9,11 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateRegionType, AdminGetRegionsParamsType } from "./validators"
 import { refetchRegion } from "./helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetRegionsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRegionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -37,7 +38,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateRegionType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRegionResponse>
 ) => {
   const input = [req.validatedBody]
 
