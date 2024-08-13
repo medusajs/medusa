@@ -10,10 +10,11 @@ import {
 import { MedusaError } from "@medusajs/utils"
 import { refetchCustomerGroup } from "../helpers"
 import { AdminUpdateCustomerGroupType } from "../validators"
+import { DeleteResponse, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerGroupResponse>
 ) => {
   const customerGroup = await refetchCustomerGroup(
     req.params.id,
@@ -33,7 +34,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerGroupType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerGroupResponse>
 ) => {
   await updateCustomerGroupsWorkflow(req.scope).run({
     input: {
@@ -52,7 +53,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"customer_group">>
 ) => {
   const id = req.params.id
   const deleteCustomerGroups = deleteCustomerGroupsWorkflow(req.scope)

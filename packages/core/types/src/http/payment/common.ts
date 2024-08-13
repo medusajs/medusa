@@ -17,6 +17,7 @@ export type BasePaymentCollectionStatus =
  */
 export type BasePaymentSessionStatus =
   | "authorized"
+  | "captured"
   | "pending"
   | "requires_more"
   | "error"

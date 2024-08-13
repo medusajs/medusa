@@ -5,10 +5,11 @@ import {
 } from "../../../../../types/routing"
 import { StoreCreatePaymentSessionType } from "../../validators"
 import { refetchPaymentCollection } from "../../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreatePaymentSessionType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StorePaymentCollectionResponse>
 ) => {
   const collectionId = req.params.id
   const { context = {}, data, provider_id } = req.body

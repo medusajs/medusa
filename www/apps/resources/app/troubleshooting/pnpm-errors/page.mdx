@@ -1,0 +1,11 @@
+export const metadata = {
+  title: `pnpm Errors`,
+}
+
+# {metadata.title}
+
+If you're using `pnpm` and you face errors in your Medusa application, such as `Failed with error The "path" argument must be of type string. Received undefined`, add the file `.npmrc` in the root of your Medusa project directory with the following content:
+
+```bash
+node-linker=hoisted
+```

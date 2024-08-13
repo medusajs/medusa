@@ -5,10 +5,11 @@ import {
 } from "../../../types/routing"
 import { refetchFulfillment } from "./helpers"
 import { AdminCreateFulfillmentType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateFulfillmentType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminFulfillmentResponse>
 ) => {
   const { result: fullfillment } = await createFulfillmentWorkflow(
     req.scope

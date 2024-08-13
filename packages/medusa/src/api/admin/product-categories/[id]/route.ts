@@ -2,7 +2,7 @@ import {
   deleteProductCategoriesWorkflow,
   updateProductCategoriesWorkflow,
 } from "@medusajs/core-flows"
-import { AdminProductCategoryResponse } from "@medusajs/types"
+import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -57,7 +57,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductCategoryDeleteResponse>
 ) => {
   const id = req.params.id
 

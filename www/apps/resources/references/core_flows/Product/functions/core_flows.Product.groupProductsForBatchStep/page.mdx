@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# groupProductsForBatchStep
+
+This step groups products to be created and updated.
+
+## Input
+
+<TypeList types={[{"name":"AdminCreateProduct & object[]","type":"`AdminCreateProduct` & `object`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminCreateProduct","type":"`AdminCreateProduct`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="groupProductsForBatchStep"/>
+
+## Output
+
+<TypeList types={[{"name":"WorkflowDataProperties","type":"[WorkflowDataProperties](../../../../workflows/types/workflows.WorkflowDataProperties/page.mdx)&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"create","type":"`AdminCreateProduct`[]","description":"","optional":false,"defaultValue":"toCreate","expandable":false,"children":[]},{"name":"update","type":"`AdminUpdateProduct` & `object`[]","description":"","optional":false,"defaultValue":"toUpdate","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="groupProductsForBatchStep"/>

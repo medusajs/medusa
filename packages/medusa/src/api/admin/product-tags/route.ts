@@ -9,10 +9,11 @@ import {
   AdminGetProductTagsParamsType,
 } from "./validators"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTagsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTagListResponse>
 ) => {
   const { rows: product_tags, metadata } = await refetchEntities(
     "product_tag",
@@ -32,7 +33,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateProductTagType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTagResponse>
 ) => {
   const input = [req.validatedBody]
 
