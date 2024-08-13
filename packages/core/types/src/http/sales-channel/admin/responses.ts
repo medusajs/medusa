@@ -10,4 +10,4 @@ export type AdminSalesChannelListResponse = PaginatedResponse<{
 }>
 
 export interface AdminSalesChannelDeleteResponse
-  extends DeleteResponse<"sales_channel"> {}
+  extends DeleteResponse<"sales-channel"> {}

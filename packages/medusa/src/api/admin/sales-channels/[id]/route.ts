@@ -12,10 +12,11 @@ import {
   AdminGetSalesChannelParamsType,
   AdminUpdateSalesChannelType,
 } from "../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetSalesChannelParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
   const salesChannel = await refetchSalesChannel(
     req.params.id,
@@ -35,7 +36,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateSalesChannelType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
   await updateSalesChannelsWorkflow(req.scope).run({
     input: {
@@ -54,7 +55,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelDeleteResponse>
 ) => {
   const id = req.params.id
 

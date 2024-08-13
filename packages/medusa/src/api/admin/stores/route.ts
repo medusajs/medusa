@@ -7,10 +7,11 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { AdminGetStoresParamsType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetStoresParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminStoreListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
