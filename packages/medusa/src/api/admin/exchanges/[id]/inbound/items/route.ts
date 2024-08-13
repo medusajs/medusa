@@ -10,10 +10,11 @@ import {
 } from "../../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../../returns/query-config"
 import { AdminPostExchangesReturnRequestItemsReqSchemaType } from "../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostExchangesReturnRequestItemsReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminExchangeReturnResponse>
 ) => {
   const { id } = req.params
 
