@@ -11,10 +11,11 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 import { AdminPostExhangesItemsActionReqSchemaType } from "../../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostExhangesItemsActionReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminExchangePreviewResponse>
 ) => {
   const { id, action_id } = req.params
 
@@ -49,7 +50,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminExchangePreviewResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

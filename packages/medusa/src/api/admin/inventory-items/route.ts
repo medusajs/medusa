@@ -13,10 +13,11 @@ import {
   AdminGetInventoryItemsParamsType,
 } from "./validators"
 import { refetchInventoryItem } from "./helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateInventoryItemType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminInventoryItemResponse>
 ) => {
   const { result } = await createInventoryItemsWorkflow(req.scope).run({
     input: { items: [req.validatedBody] },
@@ -33,7 +34,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetInventoryItemsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminInventoryItemListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 

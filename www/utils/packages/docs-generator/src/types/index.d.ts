@@ -9,6 +9,7 @@ declare type CodeSample = {
 export declare type OpenApiOperation = Partial<OpenAPIV3.OperationObject> & {
   "x-authenticated"?: boolean
   "x-codeSamples"?: CodeSample[]
+  "x-workflow"?: string
 }
 
 export declare type CommonCliOptions = {

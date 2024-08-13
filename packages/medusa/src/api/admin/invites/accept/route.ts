@@ -1,5 +1,5 @@
 import { acceptInviteWorkflow } from "@medusajs/core-flows"
-import { InviteWorkflow } from "@medusajs/types"
+import { HttpTypes, InviteWorkflow } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -9,7 +9,7 @@ import { AdminInviteAcceptType } from "../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminInviteAcceptType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminAcceptInviteResponse>
 ) => {
   if (req.auth_context.actor_id) {
     throw new MedusaError(

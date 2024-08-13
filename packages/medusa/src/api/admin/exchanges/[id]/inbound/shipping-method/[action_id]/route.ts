@@ -12,10 +12,11 @@ import {
 } from "../../../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostExchangesShippingActionReqSchemaType } from "../../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostExchangesShippingActionReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminExchangePreviewResponse>
 ) => {
   const { id, action_id } = req.params
 
@@ -64,7 +65,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminExchangeReturnResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
