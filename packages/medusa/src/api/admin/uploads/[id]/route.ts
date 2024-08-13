@@ -3,12 +3,13 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { deleteFilesWorkflow } from "@medusajs/core-flows"
+import { DeleteResponse, HttpTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminFileResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const variables = { id: req.params.id }
@@ -32,7 +33,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"file">>
 ) => {
   const id = req.params.id
 

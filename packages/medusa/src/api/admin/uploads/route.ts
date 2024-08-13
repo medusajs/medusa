@@ -5,10 +5,11 @@ import {
 } from "../../../types/routing"
 import { MedusaError } from "@medusajs/utils"
 import { AdminGetUploadParamsType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminGetUploadParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminFileListResponse>
 ) => {
   const input = req.files as Express.Multer.File[]
 

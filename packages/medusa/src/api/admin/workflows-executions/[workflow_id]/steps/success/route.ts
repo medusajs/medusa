@@ -11,7 +11,7 @@ import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateWorkflowsAsyncResponseType>,
-  res: MedusaResponse
+  res: MedusaResponse<{ success: boolean }>
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
