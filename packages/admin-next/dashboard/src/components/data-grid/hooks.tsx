@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react"
 import { DataGridContext } from "./context"
+import { GridQueryTool } from "./models"
 import {
   CellCoords,
   DataGridCellContext,
@@ -31,7 +32,7 @@ const useDataGridContext = () => {
 type UseDataGridCellProps<TData, TValue> = {
   field: string
   context: CellContext<TData, TValue>
-  type: "text" | "number" | "select"
+  type: "text" | "number" | "select" | "boolean"
 }
 
 const textCharacterRegex = /^.$/u
@@ -57,20 +58,21 @@ export const useDataGridCell = <TData, TValue>({
     register,
     control,
     anchor,
-    selection,
-    dragSelection,
     setIsEditing,
+    setSingleRange,
     setIsSelecting,
     setRangeEnd,
     getWrapperFocusHandler,
     getWrapperMouseOverHandler,
     getInputChangeHandler,
+    getIsCellSelected,
+    getIsCellDragSelected,
     registerCell,
   } = useDataGridContext()
 
   useEffect(() => {
-    registerCell(coords, field)
-  }, [coords, field, registerCell])
+    registerCell(coords, field, type)
+  }, [coords, field, type, registerCell])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -93,16 +95,45 @@ export const useDataGridCell = <TData, TValue>({
       }
 
       if (e.shiftKey) {
+        // Only allow setting the rangeEnd if the column matches the anchor column.
+        // If not we let the function continue and treat the click as if the shift key was not pressed.
+        if (coords.col === anchor?.col) {
+          setRangeEnd(coords)
+          return
+        }
+      }
+
+      if (containerRef.current) {
+        setSingleRange(coords)
+        setIsSelecting(true)
+        containerRef.current.focus()
+      }
+    },
+    [coords, anchor, setRangeEnd, setSingleRange, setIsSelecting]
+  )
+
+  const handleBooleanInnerMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      if (e.detail === 2) {
+        inputRef.current?.focus()
+        return
+      }
+
+      if (e.shiftKey) {
         setRangeEnd(coords)
         return
       }
 
       if (containerRef.current) {
+        setSingleRange(coords)
         setIsSelecting(true)
         containerRef.current.focus()
       }
     },
-    [setIsSelecting, setRangeEnd, coords]
+    [setIsSelecting, setSingleRange, setRangeEnd, coords]
   )
 
   const handleInputBlur = useCallback(() => {
@@ -171,13 +202,9 @@ export const useDataGridCell = <TData, TValue>({
     return anchor ? isCellMatch(coords, anchor) : false
   }, [anchor, coords])
 
-  const isSelected = useMemo(() => {
-    return selection[id] || false
-  }, [selection, id])
-
-  const isDragSelected = useMemo(() => {
-    return dragSelection[id] || false
-  }, [dragSelection, id])
+  const fieldWithoutOverlay = useMemo(() => {
+    return type === "boolean" || type === "select"
+  }, [type])
 
   useEffect(() => {
     if (isAnchor && !containerRef.current?.contains(document.activeElement)) {
@@ -188,12 +215,14 @@ export const useDataGridCell = <TData, TValue>({
   const renderProps: DataGridCellRenderProps = {
     container: {
       isAnchor,
-      isSelected,
-      isDragSelected,
-      showOverlay,
+      isSelected: getIsCellSelected(coords),
+      isDragSelected: getIsCellDragSelected(coords),
+      showOverlay: fieldWithoutOverlay ? false : showOverlay,
       innerProps: {
         ref: containerRef,
         onMouseOver: getWrapperMouseOverHandler(coords),
+        onMouseDown:
+          type === "boolean" ? handleBooleanInnerMouseDown : undefined,
         onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
         "data-container-id": id,
@@ -220,4 +249,18 @@ export const useDataGridCell = <TData, TValue>({
     control,
     renderProps,
   }
+}
+
+export const useGridQueryTool = (
+  containerRef: React.RefObject<HTMLElement>
+) => {
+  const queryToolRef = useRef<GridQueryTool | null>(null)
+
+  useEffect(() => {
+    if (containerRef.current) {
+      queryToolRef.current = new GridQueryTool(containerRef.current)
+    }
+  }, [containerRef])
+
+  return queryToolRef.current
 }

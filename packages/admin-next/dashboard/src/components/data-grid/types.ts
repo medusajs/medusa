@@ -1,6 +1,8 @@
 import { CellContext } from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 
+export type CellType = "text" | "number" | "select" | "boolean"
+
 export type CellCoords = {
   row: number
   col: number
@@ -47,6 +49,7 @@ export interface InputProps {
 interface InnerProps {
   ref: RefObject<HTMLDivElement>
   onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
+  onMouseDown: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void
   onFocus: (e: React.FocusEvent<HTMLElement>) => void
   "data-container-id": string
