@@ -1,4 +1,4 @@
-import { FulfillmentWorkflow, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
@@ -36,67 +36,6 @@ export const confirmOrderEditRequestValidationStep = createStep(
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
-
-function prepareFulfillmentData({
-  order,
-  items,
-  shippingOption,
-  deliveryAddress,
-  isReturn,
-}: {
-  order: OrderDTO
-  items: any[]
-  shippingOption: {
-    id: string
-    provider_id: string
-    service_zone: {
-      fulfillment_set: {
-        location?: {
-          id: string
-          address: Record<string, any>
-        }
-      }
-    }
-  }
-  deliveryAddress?: Record<string, any>
-  isReturn?: boolean
-}) {
-  const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
-    order.items!.map((i) => [i.id, i])
-  )
-  const fulfillmentItems = items.map((i) => {
-    const orderItem = orderItemsMap.get(i.item_id) ?? i.item
-    return {
-      line_item_id: i.item_id,
-      quantity: !isReturn ? i.quantity : undefined,
-      return_quantity: isReturn ? i.quantity : undefined,
-      title: orderItem.variant_title ?? orderItem.title,
-      sku: orderItem.variant_sku || "",
-      barcode: orderItem.variant_barcode || "",
-    } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
-  })
-
-  const locationId = shippingOption.service_zone.fulfillment_set.location?.id!
-
-  // delivery address is the stock location address
-  const address =
-    deliveryAddress ??
-    shippingOption.service_zone.fulfillment_set.location?.address ??
-    {}
-
-  delete address.id
-
-  return {
-    input: {
-      location_id: locationId,
-      provider_id: shippingOption.provider_id,
-      shipping_option_id: shippingOption.id,
-      items: fulfillmentItems,
-      delivery_address: address,
-      order: order,
-    },
-  }
-}
 
 export const confirmOrderEditRequestWorkflowId = "confirm-order-edit-request"
 /**
