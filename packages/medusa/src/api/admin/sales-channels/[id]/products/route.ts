@@ -4,12 +4,12 @@ import {
 } from "../../../../../types/routing"
 
 import { linkProductsToSalesChannelWorkflow } from "@medusajs/core-flows"
-import { LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
 import { refetchSalesChannel } from "../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
   const { id } = req.params
   const { add, remove } = req.validatedBody
