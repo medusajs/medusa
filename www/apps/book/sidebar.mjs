@@ -212,8 +212,12 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Compensation Function",
             },
             {
-              path: "/advanced-development/workflows/add-workflow-hook",
+              path: "/advanced-development/workflows/workflow-hooks",
               title: "Workflow Hooks",
+            },
+            {
+              path: "/advanced-development/workflows/add-workflow-hook",
+              title: "Expose a Hook",
             },
             {
               path: "/advanced-development/workflows/access-workflow-errors",
