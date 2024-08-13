@@ -13,10 +13,11 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { refetchCustomer } from "../../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerAddressesParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerAddressListResponse>
 ) => {
   const customerId = req.auth_context.actor_id
 
@@ -42,7 +43,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreateCustomerAddressType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerResponse>
 ) => {
   const customerId = req.auth_context.actor_id
 
