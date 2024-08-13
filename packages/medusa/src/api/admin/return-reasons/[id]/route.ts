@@ -4,6 +4,7 @@ import {
 } from "@medusajs/core-flows"
 import {
   AdminReturnReasonResponse,
+  DeleteResponse,
   UpdateOrderReturnReasonDTO,
 } from "@medusajs/types"
 import {
@@ -40,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<UpdateOrderReturnReasonDTO>,
-  res: MedusaResponse
+  res: MedusaResponse<AdminReturnReasonResponse>
 ) => {
   const workflow = updateReturnReasonsWorkflow(req.scope)
 
@@ -68,7 +69,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"return_reason">>
 ) => {
   const { id } = req.params
 

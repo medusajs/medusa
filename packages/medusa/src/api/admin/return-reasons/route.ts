@@ -1,5 +1,5 @@
 import { createReturnReasonsWorkflow } from "@medusajs/core-flows"
-import { CreateOrderReturnReasonDTO } from "@medusajs/types"
+import { CreateOrderReturnReasonDTO, HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -12,7 +12,7 @@ import { AdminGetReturnReasonsParamsType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetReturnReasonsParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnReasonListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
@@ -38,7 +38,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<CreateOrderReturnReasonDTO>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnReasonResponse>
 ) => {
   const workflow = createReturnReasonsWorkflow(req.scope)
 

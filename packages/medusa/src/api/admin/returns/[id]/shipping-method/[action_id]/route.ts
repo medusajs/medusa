@@ -11,10 +11,11 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminPostReturnsShippingActionReqSchemaType } from "../../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsShippingActionReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnPreviewResponse>
 ) => {
   const { id, action_id } = req.params
 
@@ -42,14 +43,14 @@ export const POST = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     return: orderReturn,
   })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnPreviewResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -77,7 +78,7 @@ export const DELETE = async (
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: orderPreview,
+    order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,
     return: orderReturn,
   })
 }

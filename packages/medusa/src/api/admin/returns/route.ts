@@ -10,10 +10,11 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { AdminPostReturnsReqSchemaType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminReturnsResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -40,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderReturnResponse>
 ) => {
   const input = req.validatedBody as AdminPostReturnsReqSchemaType
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
