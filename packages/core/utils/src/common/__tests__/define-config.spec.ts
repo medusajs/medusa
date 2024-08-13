@@ -11,7 +11,17 @@ describe("defineConfig", function () {
         "featureFlags": {},
         "modules": {
           "apiKey": true,
-          "auth": true,
+          "auth": {
+            "options": {
+              "providers": [
+                {
+                  "id": "emailpass",
+                  "resolve": "@medusajs/auth-emailpass",
+                },
+              ],
+            },
+            "resolve": "@medusajs/auth",
+          },
           "cacheService": true,
           "cart": true,
           "currency": true,
@@ -107,7 +117,17 @@ describe("defineConfig", function () {
         "featureFlags": {},
         "modules": {
           "apiKey": true,
-          "auth": true,
+          "auth": {
+            "options": {
+              "providers": [
+                {
+                  "id": "emailpass",
+                  "resolve": "@medusajs/auth-emailpass",
+                },
+              ],
+            },
+            "resolve": "@medusajs/auth",
+          },
           "cacheService": true,
           "cart": true,
           "currency": true,
@@ -206,7 +226,17 @@ describe("defineConfig", function () {
         "featureFlags": {},
         "modules": {
           "apiKey": true,
-          "auth": true,
+          "auth": {
+            "options": {
+              "providers": [
+                {
+                  "id": "emailpass",
+                  "resolve": "@medusajs/auth-emailpass",
+                },
+              ],
+            },
+            "resolve": "@medusajs/auth",
+          },
           "cacheService": true,
           "cart": true,
           "currency": true,
@@ -305,7 +335,17 @@ describe("defineConfig", function () {
         "featureFlags": {},
         "modules": {
           "apiKey": true,
-          "auth": true,
+          "auth": {
+            "options": {
+              "providers": [
+                {
+                  "id": "emailpass",
+                  "resolve": "@medusajs/auth-emailpass",
+                },
+              ],
+            },
+            "resolve": "@medusajs/auth",
+          },
           "cacheService": true,
           "currency": true,
           "customer": true,

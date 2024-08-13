@@ -61,7 +61,6 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
   const modules: ConfigModule["modules"] = {
     [Modules.CACHE]: true,
     [Modules.EVENT_BUS]: true,
-    [Modules.AUTH]: true,
     [Modules.WORKFLOW_ENGINE]: true,
     [Modules.STOCK_LOCATION]: true,
     [Modules.INVENTORY]: true,
@@ -78,6 +77,18 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
     [Modules.CURRENCY]: true,
     [Modules.PAYMENT]: true,
     [Modules.ORDER]: true,
+    [Modules.AUTH]: {
+      resolve: "@medusajs/auth",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/auth-emailpass",
+            id: "emailpass",
+          },
+        ],
+      },
+    },
+
     [Modules.USER]: {
       resolve: "@medusajs/user",
       options: {
