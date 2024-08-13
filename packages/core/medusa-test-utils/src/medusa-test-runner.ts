@@ -179,13 +179,13 @@ export function medusaIntegrationTestRunner({
       throw error
     }
 
-    try {
-      console.log(`Migrating database ${dbName}`)
-      await migrateDatabase()
-    } catch (error) {
-      console.error("Error initializing database", error?.message)
-      throw error
-    }
+    // try {
+    //   console.log(`Migrating database ${dbName}`)
+    //   await migrateDatabase()
+    // } catch (error) {
+    //   console.error("Error initializing database", error?.message)
+    //   throw error
+    // }
 
     const cancelTokenSource = axios.CancelToken.source()
 
