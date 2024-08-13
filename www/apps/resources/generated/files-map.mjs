@@ -684,6 +684,10 @@ export const filesMap = [
     "pathname": "/medusa-container-resources"
   },
   {
+    "filePath": "/www/apps/resources/app/medusa-workflows-reference/page.mdx",
+    "pathname": "/medusa-workflows-reference"
+  },
+  {
     "filePath": "/www/apps/resources/app/nextjs-starter/page.mdx",
     "pathname": "/nextjs-starter"
   },
