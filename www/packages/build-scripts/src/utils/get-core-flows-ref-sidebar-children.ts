@@ -62,12 +62,14 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
 
     if (workflowItems.length || stepItems.length) {
       const item: ItemsToAdd = {
+        type: "category",
         title: directory.name.replaceAll("_", " "),
         children: [],
       }
 
       if (workflowItems.length) {
         item.children!.push({
+          type: "sub-category",
           title: "Workflows",
           children: workflowItems,
         })
@@ -75,6 +77,7 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
 
       if (stepItems.length) {
         item.children!.push({
+          type: "sub-category",
           title: "Steps",
           children: stepItems,
         })

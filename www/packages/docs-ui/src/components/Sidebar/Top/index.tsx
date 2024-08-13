@@ -1,12 +1,11 @@
 "use client"
 
 import React from "react"
-import { SidebarTitle } from "../Title"
+import { SidebarChild } from "../Title"
 import { InteractiveSidebarItem } from "types"
 import { SidebarSeparator } from "../Separator"
-import { SidebarTopNavigationDropdown } from "./NavigationDropdown"
-import { SearchModalOpener } from "../../.."
 import { SidebarTopMobileClose } from "./MobileClose"
+import { SidebarTopMedusaMenu } from "./MedusaMenu"
 
 export type SidebarTopProps = {
   parentItem?: InteractiveSidebarItem
@@ -15,19 +14,17 @@ export type SidebarTopProps = {
 export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
   function SidebarTop({ parentItem }, ref) {
     return (
-      <div className="py-docs_0.75 pb-0">
+      <div className="pt-docs_0.25">
         <SidebarTopMobileClose />
-        <div ref={ref} className="hidden lg:block">
-          <SidebarTopNavigationDropdown />
-          <SidebarSeparator />
-          <SearchModalOpener />
+        <div ref={ref}>
+          <SidebarTopMedusaMenu />
           {parentItem && (
             <>
               <SidebarSeparator />
-              <SidebarTitle item={parentItem} />
+              <SidebarChild item={parentItem} />
             </>
           )}
-          <SidebarSeparator className="!mb-0" />
+          <SidebarSeparator className="!my-0" />
         </div>
       </div>
     )

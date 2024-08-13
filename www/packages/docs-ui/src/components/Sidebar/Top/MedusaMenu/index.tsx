@@ -7,7 +7,7 @@ import { EllipsisHorizontal, TimelineVertical } from "@medusajs/icons"
 import { MedusaIcon } from "../../../Icons/MedusaLogo"
 import { HouseIcon } from "../../../Icons/House"
 
-export const MedusaMenu = () => {
+export const SidebarTopMedusaMenu = () => {
   const [openMenu, setOpenMenu] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -21,13 +21,7 @@ export const MedusaMenu = () => {
   })
 
   return (
-    <div
-      className={clsx(
-        "p-docs_0.75 border-t border-medusa-border-base",
-        "relative"
-      )}
-      ref={ref}
-    >
+    <div className={clsx("p-docs_0.75", "relative")} ref={ref}>
       <div
         className={clsx(
           "flex justify-between items-center gap-docs_0.5",
@@ -45,7 +39,7 @@ export const MedusaMenu = () => {
       </div>
       <div
         className={clsx(
-          "absolute w-[calc(100%-16px)] top-[calc(-100%-4px)]",
+          "absolute w-[calc(100%-16px)] bottom-[calc(-100%-4px)]",
           "left-docs_0.5",
           !openMenu && "hidden"
         )}

@@ -2,15 +2,15 @@ import React from "react"
 import { BorderedIcon } from "@/components"
 import { IconProps } from "@medusajs/icons/dist/types"
 
-export type SidebarTopNavigationDropdownIconProps = {
+export type MainNavigationDropdownIconProps = {
   icon: React.FC<IconProps>
   inDropdown?: boolean
 }
 
-export const SidebarTopNavigationDropdownIcon = ({
+export const MainNavigationDropdownIcon = ({
   icon,
   inDropdown = false,
-}: SidebarTopNavigationDropdownIconProps) => {
+}: MainNavigationDropdownIconProps) => {
   return (
     <BorderedIcon
       IconComponent={icon}

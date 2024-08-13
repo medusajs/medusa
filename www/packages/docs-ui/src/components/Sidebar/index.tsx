@@ -10,7 +10,6 @@ import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
 import { useClickOutside } from "../.."
 import { SidebarSeparator } from "./Separator"
-import { SidebarBottom } from "./Bottom"
 
 export type SidebarProps = {
   className?: string
@@ -25,7 +24,6 @@ export const Sidebar = ({
 }: SidebarProps) => {
   const sidebarWrapperRef = useRef(null)
   const sidebarTopRef = useRef<HTMLDivElement>(null)
-  const sidebarBottomRef = useRef<HTMLDivElement>(null)
   const {
     items,
     currentItems,
@@ -35,8 +33,6 @@ export const Sidebar = ({
     sidebarRef,
     sidebarTopHeight,
     setSidebarTopHeight,
-    sidebarBottomHeight: sidebarActionsHeight,
-    setSidebarBottomHeight: setSidebarActionsHeight,
   } = useSidebar()
   useClickOutside({
     elmRef: sidebarWrapperRef,
@@ -54,10 +50,6 @@ export const Sidebar = ({
 
   useResizeObserver(sidebarTopRef, () => {
     setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
-  })
-
-  useResizeObserver(sidebarBottomRef, () => {
-    setSidebarActionsHeight(sidebarBottomRef.current?.clientHeight || 0)
   })
 
   return (
@@ -111,9 +103,7 @@ export const Sidebar = ({
                 )}
                 ref={sidebarRef}
                 style={{
-                  maxHeight: `calc(100vh - ${
-                    sidebarTopHeight + sidebarActionsHeight + 12
-                  }px)`,
+                  maxHeight: `calc(100vh - ${sidebarTopHeight + 12}px)`,
                 }}
                 id="sidebar"
               >
@@ -149,7 +139,6 @@ export const Sidebar = ({
               </div>
             </CSSTransition>
           </SwitchTransition>
-          <SidebarBottom ref={sidebarBottomRef} />
         </ul>
       </aside>
     </>

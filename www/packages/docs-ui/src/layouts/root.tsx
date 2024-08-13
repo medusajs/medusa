@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { Bannerv2, Sidebar, SidebarProps } from "@/components"
+import { Bannerv2, MainNav, Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
 import { Toc } from "../components/Toc"
 
@@ -53,17 +53,24 @@ export const RootLayout = ({
               {showBanner && <Bannerv2 />}
               <div
                 className={clsx(
-                  "bg-medusa-bg-base rounded",
+                  "bg-medusa-bg-base md:rounded",
                   "shadow-elevation-card-rest",
-                  "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4",
-                  "flex justify-center",
+                  "flex-col items-start",
                   "h-full w-full",
                   "overflow-y-scroll overflow-x-hidden",
                   mainWrapperClasses
                 )}
                 id="main"
               >
-                {children}
+                <MainNav />
+                <div
+                  className={clsx(
+                    "flex justify-center",
+                    "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4"
+                  )}
+                >
+                  {children}
+                </div>
               </div>
             </div>
             {showToc && <Toc />}

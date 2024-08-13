@@ -14,7 +14,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { getScrolledTop } from "@/utils"
 import { useIsBrowser } from "@/hooks"
 import {
-  NavigationDropdownItem,
   SidebarItemSections,
   SidebarItem,
   SidebarSectionItems,
@@ -51,11 +50,8 @@ export type SidebarContextType = {
   shouldHandleHashChange: boolean
   sidebarRef: React.RefObject<HTMLDivElement>
   goBack: () => void
-  navigationDropdownItems: NavigationDropdownItem[]
   sidebarTopHeight: number
   setSidebarTopHeight: React.Dispatch<React.SetStateAction<number>>
-  sidebarBottomHeight: number
-  setSidebarBottomHeight: React.Dispatch<React.SetStateAction<number>>
   resetItems: () => void
 } & SidebarStyleOptions
 
@@ -191,7 +187,6 @@ export type SidebarProviderProps = {
   shouldHandlePathChange?: boolean
   scrollableElement?: Element | Window
   staticSidebarItems?: boolean
-  navigationDropdownItems: NavigationDropdownItem[]
   resetOnCondition?: () => boolean
 } & SidebarStyleOptions
 
@@ -205,7 +200,6 @@ export const SidebarProvider = ({
   scrollableElement,
   staticSidebarItems = false,
   disableActiveTransition = false,
-  navigationDropdownItems,
   resetOnCondition,
 }: SidebarProviderProps) => {
   const [items, dispatch] = useReducer(reducer, {
@@ -218,7 +212,6 @@ export const SidebarProvider = ({
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [sidebarTopHeight, setSidebarTopHeight] = useState(0)
-  const [sidebarBottomHeight, setSidebarBottomHeight] = useState(0)
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   const pathname = usePathname()
@@ -463,11 +456,8 @@ export const SidebarProvider = ({
         shouldHandleHashChange,
         sidebarRef,
         goBack,
-        navigationDropdownItems,
         sidebarTopHeight,
         setSidebarTopHeight,
-        sidebarBottomHeight,
-        setSidebarBottomHeight,
         resetItems,
       }}
     >

@@ -2,21 +2,21 @@
 
 import React from "react"
 import { NavigationDropdownItem } from "types"
-import { SidebarSeparator } from "../../../../Separator"
 import Link from "next/link"
 import clsx from "clsx"
 import { EllipseMiniSolid } from "@medusajs/icons"
-import { SidebarTopNavigationDropdownIcon } from "../../Icon"
+import { MainNavigationDropdownIcon } from "../../Icon"
+import { SidebarSeparator } from "../../../../Sidebar/Separator"
 
-export type SidebarTopNavigationDropdownMenuItemProps = {
+export type MainNavigationDropdownMenuItemProps = {
   item: NavigationDropdownItem
   onSelect: () => void
 }
 
-export const SidebarTopNavigationDropdownMenuItem = ({
+export const MainNavigationDropdownMenuItem = ({
   item,
   onSelect,
-}: SidebarTopNavigationDropdownMenuItemProps) => {
+}: MainNavigationDropdownMenuItemProps) => {
   switch (item.type) {
     case "divider":
       return <SidebarSeparator className="my-docs_0.25" />
@@ -41,10 +41,7 @@ export const SidebarTopNavigationDropdownMenuItem = ({
             <span className={clsx(!item.isActive && "invisible")}>
               <EllipseMiniSolid />
             </span>
-            <SidebarTopNavigationDropdownIcon
-              icon={item.icon}
-              inDropdown={true}
-            />
+            <MainNavigationDropdownIcon icon={item.icon} inDropdown={true} />
             <span className="whitespace-nowrap">{item.title}</span>
           </li>
         </Link>

@@ -10,7 +10,7 @@ type SidebarTitleProps = {
   item: InteractiveSidebarItem
 }
 
-export const SidebarTitle = ({ item }: SidebarTitleProps) => {
+export const SidebarChild = ({ item }: SidebarTitleProps) => {
   const { goBack } = useSidebar()
 
   return (

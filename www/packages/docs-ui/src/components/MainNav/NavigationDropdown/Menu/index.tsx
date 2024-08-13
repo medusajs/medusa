@@ -3,19 +3,19 @@
 import clsx from "clsx"
 import React from "react"
 import { NavigationDropdownItem } from "types"
-import { SidebarTopNavigationDropdownMenuItem } from "./Item"
+import { MainNavigationDropdownMenuItem } from "./Item"
 
-export type SidebarTopNavigationDropdownMenuProps = {
+export type MainNavigationDropdownMenuProps = {
   items: NavigationDropdownItem[]
   open: boolean
   onSelect: () => void
 }
 
-export const SidebarTopNavigationDropdownMenu = ({
+export const MainNavigationDropdownMenu = ({
   items,
   open,
   onSelect,
-}: SidebarTopNavigationDropdownMenuProps) => {
+}: MainNavigationDropdownMenuProps) => {
   return (
     <ul
       className={clsx(
@@ -25,7 +25,7 @@ export const SidebarTopNavigationDropdownMenu = ({
       )}
     >
       {items.map((item, index) => (
-        <SidebarTopNavigationDropdownMenuItem
+        <MainNavigationDropdownMenuItem
           item={item}
           key={index}
           onSelect={onSelect}

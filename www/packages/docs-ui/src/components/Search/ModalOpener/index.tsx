@@ -3,7 +3,7 @@
 import React, { MouseEvent, useMemo } from "react"
 import clsx from "clsx"
 import { useMobile, useSearch } from "@/providers"
-import { Button, Kbd } from "@/components"
+import { Button } from "@/components"
 import { MagnifyingGlass } from "@medusajs/icons"
 import { useKeyboardShortcut } from "@/hooks"
 
@@ -49,25 +49,23 @@ export const SearchModalOpener = ({
     <>
       {isMobile && (
         <Button variant="transparent" onClick={handleOpen}>
-          <MagnifyingGlass className="text-medusa-fg-subtle" />
+          <MagnifyingGlass className="text-medusa-fg-muted" />
         </Button>
       )}
       {!isMobile && (
-        <div className="px-docs_0.75">
-          <div
-            className={clsx(
-              "relative hover:cursor-pointer group",
-              "flex gap-docs_0.5 py-docs_0.125 pl-docs_0.125 pr-docs_0.5",
-              "justify-between items-center text-medusa-fg-subtle",
-              className
-            )}
-            onClick={handleOpen}
-          >
-            <MagnifyingGlass className="text-medusa-fg-subtle" />
-            <span className="text-compact-small-plus">Ask or search...</span>
-            <Kbd>{isApple ? "⌘" : "Ctrl"}K</Kbd>
-          </div>
-        </div>
+        <Button
+          className={clsx(
+            "relative hover:cursor-pointer group",
+            "flex gap-[6px] !py-docs_0.25 !px-docs_0.5",
+            "justify-between items-center text-medusa-fg-muted",
+            className
+          )}
+          variant="transparent-clear"
+          onClick={handleOpen}
+        >
+          <MagnifyingGlass />
+          <span>{isApple ? "⌘" : "Ctrl"}K</span>
+        </Button>
       )}
     </>
   )
