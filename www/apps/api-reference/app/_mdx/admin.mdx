@@ -331,7 +331,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
+curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17" \
 -H 'Authorization: Bearer {jwt_token}'
 ```
 
@@ -344,7 +344,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
+curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17T07:22:30Z" \
 -H 'Authorization: Bearer {jwt_token}'
 ```
 
@@ -382,7 +382,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
+curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17&created_at[$gt]=2022-09-17" \
 -H 'Authorization: Bearer {jwt_token}'
 ```
 
