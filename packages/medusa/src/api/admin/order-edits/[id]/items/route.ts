@@ -34,10 +34,10 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderEdit] = await remoteQuery(queryObject)
+  const [order] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    exchange: orderEdit,
+    order,
   })
 }

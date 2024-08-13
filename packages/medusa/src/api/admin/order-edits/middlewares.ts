@@ -4,28 +4,14 @@ import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetOrdersOrderParams,
-  AdminGetOrdersParams,
-  AdminPostCancelOrderEditReqSchema,
-  AdminPostExhangesItemsActionReqSchema,
   AdminPostOrderEditsAddItemsReqSchema,
+  AdminPostOrderEditsItemsActionReqSchema,
   AdminPostOrderEditsReqSchema,
-  AdminPostOrderEditsRequestItemsReturnActionReqSchema,
-  AdminPostOrderEditsReturnRequestItemsReqSchema,
   AdminPostOrderEditsShippingActionReqSchema,
   AdminPostOrderEditsShippingReqSchema,
 } from "./validators"
 
 export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
-  {
-    method: ["GET"],
-    matcher: "/admin/order-edits",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetOrdersParams,
-        QueryConfig.listTransformQueryConfig
-      ),
-    ],
-  },
   {
     method: ["GET"],
     matcher: "/admin/order-edits/:id",
@@ -47,76 +33,10 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-  {
-    method: ["POST"],
-    matcher: "/admin/order-edits/:id/inbound/items",
-    middlewares: [
-      validateAndTransformBody(AdminPostOrderEditsReturnRequestItemsReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/order-edits/:id/inbound/items/:action_id",
-    middlewares: [
-      validateAndTransformBody(
-        AdminPostOrderEditsRequestItemsReturnActionReqSchema
-      ),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/order-edits/:id/inbound/items/:action_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/order-edits/:id/inbound/shipping-method",
-    middlewares: [
-      validateAndTransformBody(AdminPostOrderEditsShippingReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/order-edits/:id/inbound/shipping-method/:action_id",
-    middlewares: [
-      validateAndTransformBody(AdminPostOrderEditsShippingActionReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/order-edits/:id/inbound/shipping-method/:action_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
 
   {
     method: ["POST"],
-    matcher: "/admin/order-edits/:id/outbound/items",
+    matcher: "/admin/order-edits/:id/items",
     middlewares: [
       validateAndTransformBody(AdminPostOrderEditsAddItemsReqSchema),
       validateAndTransformQuery(
@@ -127,9 +47,9 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/order-edits/:id/outbound/items/:action_id",
+    matcher: "/admin/order-edits/:id/items/:action_id",
     middlewares: [
-      validateAndTransformBody(AdminPostExhangesItemsActionReqSchema),
+      validateAndTransformBody(AdminPostOrderEditsItemsActionReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -138,7 +58,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["DELETE"],
-    matcher: "/admin/order-edits/:id/outbound/items/:action_id",
+    matcher: "/admin/order-edits/:id/items/:action_id",
     middlewares: [
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
@@ -148,7 +68,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/order-edits/:id/outbound/shipping-method",
+    matcher: "/admin/order-edits/:id/shipping-method",
     middlewares: [
       validateAndTransformBody(AdminPostOrderEditsShippingReqSchema),
       validateAndTransformQuery(
@@ -159,7 +79,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/order-edits/:id/outbound/shipping-method/:action_id",
+    matcher: "/admin/order-edits/:id/shipping-method/:action_id",
     middlewares: [
       validateAndTransformBody(AdminPostOrderEditsShippingActionReqSchema),
       validateAndTransformQuery(
@@ -170,7 +90,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["DELETE"],
-    matcher: "/admin/order-edits/:id/outbound/shipping-method/:action_id",
+    matcher: "/admin/order-edits/:id/shipping-method/:action_id",
     middlewares: [
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
@@ -197,16 +117,5 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/order-edits/:id",
     middlewares: [],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/order-edits/:id/cancel",
-    middlewares: [
-      validateAndTransformBody(AdminPostCancelOrderEditReqSchema),
-      validateAndTransformQuery(
-        AdminGetOrdersOrderParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
   },
 ]

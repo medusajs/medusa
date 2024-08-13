@@ -38,12 +38,12 @@ export const orderEditAddNewItemValidationStep = createStep(
   }
 )
 
-export const orderOrderEditAddNewItemWorkflowId = "order-edit-add-new-item"
+export const orderEditAddNewItemWorkflowId = "order-edit-add-new-item"
 /**
  * This workflow adds new items to an order edit.
  */
-export const orderOrderEditAddNewItemWorkflow = createWorkflow(
-  orderOrderEditAddNewItemWorkflowId,
+export const orderEditAddNewItemWorkflow = createWorkflow(
+  orderEditAddNewItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderEditAddNewItemWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {

@@ -2,7 +2,6 @@ import { beginOrderEditOrderWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -13,11 +12,10 @@ import { AdminPostOrderEditsReqSchemaType } from "./validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostOrderEditsReqSchemaType>,
-  res: MedusaResponse<HttpTypes.AdminOrderEditOrderResponse>
+  res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const input = req.validatedBody as AdminPostOrderEditsReqSchemaType
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const workflow = beginOrderEditOrderWorkflow(req.scope)
   const { result } = await workflow.run({
