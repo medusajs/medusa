@@ -20,5 +20,5 @@ export const POST = async (
     },
   })
 
-  res.status(200).json({ exchange: result })
+  res.status(200).json({ exchange: result as HttpTypes.AdminExchange })
 }
