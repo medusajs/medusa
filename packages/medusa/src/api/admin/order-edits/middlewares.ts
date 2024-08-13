@@ -8,11 +8,11 @@ import {
   AdminPostCancelOrderEditReqSchema,
   AdminPostExhangesItemsActionReqSchema,
   AdminPostOrderEditsAddItemsReqSchema,
+  AdminPostOrderEditsReqSchema,
   AdminPostOrderEditsRequestItemsReturnActionReqSchema,
   AdminPostOrderEditsReturnRequestItemsReqSchema,
   AdminPostOrderEditsShippingActionReqSchema,
   AdminPostOrderEditsShippingReqSchema,
-  AdminPostOrderOrderEditsReqSchema,
 } from "./validators"
 
 export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
@@ -40,7 +40,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/order-edits",
     middlewares: [
-      validateAndTransformBody(AdminPostOrderOrderEditsReqSchema),
+      validateAndTransformBody(AdminPostOrderEditsReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

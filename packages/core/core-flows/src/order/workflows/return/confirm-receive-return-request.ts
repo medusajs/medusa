@@ -3,6 +3,7 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
+  OrderPreviewDTO,
   OrderReturnItemDTO,
   ReturnDTO,
 } from "@medusajs/types"
@@ -134,7 +135,9 @@ export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
  */
 export const confirmReturnReceiveWorkflow = createWorkflow(
   confirmReturnReceiveWorkflowId,
-  function (input: ConfirmReceiveReturnRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmReceiveReturnRequestWorkflowInput
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: [

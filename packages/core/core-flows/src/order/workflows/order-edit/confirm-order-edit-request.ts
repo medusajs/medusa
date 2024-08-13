@@ -1,4 +1,4 @@
-import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import { OrderChangeDTO, OrderDTO, OrderPreviewDTO } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
@@ -45,7 +45,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
   confirmOrderEditRequestWorkflowId,
   function (
     input: ConfirmOrderEditRequestWorkflowInput
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [

@@ -3,47 +3,19 @@ import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
-  promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminPostOrderOrderEditsReqSchemaType } from "./validators"
-
-export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<HttpTypes.AdminOrderEditListResponse>
-) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_exchanges",
-    variables: {
-      filters: {
-        ...req.filterableFields,
-      },
-      ...req.remoteQueryConfig.pagination,
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const { rows: exchanges, metadata } = await remoteQuery(queryObject)
-
-  res.json({
-    exchanges,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
-  })
-}
+import { AdminPostOrderEditsReqSchemaType } from "./validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostOrderOrderEditsReqSchemaType>,
+  req: AuthenticatedMedusaRequest<AdminPostOrderEditsReqSchemaType>,
   res: MedusaResponse<HttpTypes.AdminOrderEditOrderResponse>
 ) => {
-  const input = req.validatedBody as AdminPostOrderOrderEditsReqSchemaType
+  const input = req.validatedBody as AdminPostOrderEditsReqSchemaType
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
@@ -53,9 +25,9 @@ export const POST = async (
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_exchange",
+    entryPoint: "order",
     variables: {
-      id: result.exchange_id,
+      id: result.order_id,
       filters: {
         ...req.filterableFields,
       },
@@ -63,13 +35,9 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [order, orderOrderEdit] = await promiseAll([
-    orderModuleService.retrieveOrder(result.order_id),
-    remoteQuery(queryObject),
-  ])
+  const [order] = await remoteQuery(queryObject)
 
   res.json({
     order,
-    exchange: orderOrderEdit[0],
   })
 }

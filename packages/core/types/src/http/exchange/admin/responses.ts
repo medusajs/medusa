@@ -1,14 +1,14 @@
-import { OrderDTO } from "../../../order";
-import { PaginatedResponse } from "../../common";
-import { AdminReturn } from "../../return";
-import { AdminExchange } from "./entities";
+import { OrderDTO, OrderPreviewDTO } from "../../../order"
+import { PaginatedResponse } from "../../common"
+import { AdminReturn } from "../../return"
+import { AdminExchange } from "./entities"
 
 export interface AdminExchangeResponse {
   exchange: AdminExchange
 }
 
 export type AdminExchangeListResponse = PaginatedResponse<{
-  exchanges: AdminExchange 
+  exchanges: AdminExchange
 }>
 
 export interface AdminExchangeOrderResponse {
@@ -17,15 +17,16 @@ export interface AdminExchangeOrderResponse {
 }
 
 export interface AdminExchangePreviewResponse {
-  order_preview: OrderDTO
+  order_preview: OrderPreviewDTO
   exchange: AdminExchange
 }
 
-export interface AdminExchangeRequestResponse extends AdminExchangePreviewResponse {
+export interface AdminExchangeRequestResponse
+  extends AdminExchangePreviewResponse {
   return: AdminReturn
 }
 
 export interface AdminExchangeReturnResponse {
-  order_preview: OrderDTO
+  order_preview: OrderPreviewDTO
   return: AdminReturn
 }

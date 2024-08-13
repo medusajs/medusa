@@ -1,5 +1,5 @@
 import {
-  cancelBeginOrderOrderEditWorkflow,
+  cancelBeginOrderEditWorkflow,
   confirmOrderEditRequestWorkflow,
 } from "@medusajs/core-flows"
 import { DeleteResponse, HttpTypes } from "@medusajs/types"
@@ -11,7 +11,6 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { defaultAdminDetailsReturnFields } from "../../../returns/query-config"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -22,11 +21,11 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { result } = await confirmOrderEditRequestWorkflow(req.scope).run({
-    input: { exchange_id: id },
+    input: { order_id: id },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_exchange",
+    entryPoint: "order",
     variables: {
       id,
       filters: {
@@ -36,46 +35,31 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderOrderEdit] = await remoteQuery(queryObject, undefined, {
+  const [order] = await remoteQuery(queryObject, undefined, {
     throwIfKeyNotFound: true,
   })
 
-  let orderReturn
-  if (orderOrderEdit.return_id) {
-    const [orderReturnData] = await remoteQuery(
-      remoteQueryObjectFromString({
-        entryPoint: "return",
-        variables: {
-          id: orderOrderEdit.return_id,
-        },
-        fields: defaultAdminDetailsReturnFields,
-      })
-    )
-    orderReturn = orderReturnData
-  }
-
   res.json({
     order_preview: result,
-    exchange: orderOrderEdit,
-    return: orderReturn,
+    order,
   })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"exchange">>
+  res: MedusaResponse<DeleteResponse<"order-edit">>
 ) => {
   const { id } = req.params
 
-  await cancelBeginOrderOrderEditWorkflow(req.scope).run({
+  await cancelBeginOrderEditWorkflow(req.scope).run({
     input: {
-      exchange_id: id,
+      order_id: id,
     },
   })
 
   res.status(200).json({
     id,
-    object: "exchange",
+    object: "order-edit",
     deleted: true,
   })
 }

@@ -20,7 +20,7 @@ export const POST = async (
 
   const { result } = await createOrderEditShippingMethodWorkflow(req.scope).run(
     {
-      input: { ...req.validatedBody, exchange_id: id },
+      input: { ...req.validatedBody, order_id: id },
     }
   )
 
@@ -35,10 +35,10 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderOrderEdit] = await remoteQuery(queryObject)
+  const [orderEdit] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    exchange: orderOrderEdit,
+    exchange: orderEdit,
   })
 }

@@ -25,7 +25,7 @@ export const POST = async (
     {
       input: {
         data: { ...req.validatedBody },
-        exchange_id: id,
+        order_id: id,
         action_id,
       },
     }
@@ -42,11 +42,11 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderOrderEdit] = await remoteQuery(queryObject)
+  const [orderEdit] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    exchange: orderOrderEdit,
+    exchange: orderEdit,
   })
 }
 
@@ -62,7 +62,7 @@ export const DELETE = async (
     req.scope
   ).run({
     input: {
-      exchange_id: id,
+      order_id: id,
       action_id,
     },
   })
@@ -77,10 +77,10 @@ export const DELETE = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-  const [orderOrderEdit] = await remoteQuery(queryObject)
+  const [orderEdit] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: orderPreview,
-    exchange: orderOrderEdit,
+    exchange: orderEdit,
   })
 }

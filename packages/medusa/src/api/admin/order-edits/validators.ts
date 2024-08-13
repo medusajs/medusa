@@ -38,14 +38,14 @@ export const AdminGetOrdersParams = createFindParams({
 
 export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
-export const AdminPostOrderOrderEditsReqSchema = z.object({
+export const AdminPostOrderEditsReqSchema = z.object({
   order_id: z.string(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export type AdminPostOrderOrderEditsReqSchemaType = z.infer<
-  typeof AdminPostOrderOrderEditsReqSchema
+export type AdminPostOrderEditsReqSchemaType = z.infer<
+  typeof AdminPostOrderEditsReqSchema
 >
 
 export const AdminPostReceiveOrderEditsReqSchema = z.object({
@@ -160,11 +160,11 @@ export type AdminPostOrderEditsConfirmRequestReqSchemaType = z.infer<
   typeof AdminPostOrderEditsConfirmRequestReqSchema
 >
 
-export const AdminPostExhangesItemsActionReqSchema = z.object({
+export const AdminPostOrderEditsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 
-export type AdminPostExhangesItemsActionReqSchemaType = z.infer<
-  typeof AdminPostExhangesItemsActionReqSchema
+export type AdminPostOrderEditsItemsActionReqSchemaType = z.infer<
+  typeof AdminPostOrderEditsItemsActionReqSchema
 >

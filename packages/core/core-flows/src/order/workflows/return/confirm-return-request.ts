@@ -2,6 +2,7 @@ import {
   FulfillmentWorkflow,
   OrderChangeDTO,
   OrderDTO,
+  OrderPreviewDTO,
   ReturnDTO,
 } from "@medusajs/types"
 import {
@@ -137,7 +138,9 @@ export const confirmReturnRequestWorkflowId = "confirm-return-request"
  */
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: ConfirmReturnRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmReturnRequestWorkflowInput
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "location_id", "canceled_at"],

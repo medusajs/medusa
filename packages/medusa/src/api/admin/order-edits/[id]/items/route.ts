@@ -1,4 +1,4 @@
-import { orderOrderEditAddNewItemWorkflow } from "@medusajs/core-flows"
+import { orderEditAddNewItemWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -19,12 +19,12 @@ export const POST = async (
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const { result } = await orderOrderEditAddNewItemWorkflow(req.scope).run({
-    input: { ...req.validatedBody, exchange_id: id },
+  const { result } = await orderEditAddNewItemWorkflow(req.scope).run({
+    input: { ...req.validatedBody, order_id: id },
   })
 
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order_exchange",
+    entryPoint: "order",
     variables: {
       id,
       filters: {
@@ -34,10 +34,10 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderOrderEdit] = await remoteQuery(queryObject)
+  const [orderEdit] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result,
-    exchange: orderOrderEdit,
+    exchange: orderEdit,
   })
 }
