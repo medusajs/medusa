@@ -1,5 +1,5 @@
 import { getOrdersListWorkflow } from "@medusajs/core-flows"
-import { OrderDTO } from "@medusajs/types"
+import { HttpTypes, OrderDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -7,7 +7,7 @@ import {
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminOrderListResponse>
 ) => {
   const variables = {
     filters: {
@@ -30,7 +30,7 @@ export const GET = async (
     metadata: any
   }
   res.json({
-    orders: rows,
+    orders: rows as unknown as HttpTypes.AdminOrder[],
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
