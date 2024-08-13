@@ -10,10 +10,11 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCollectionType } from "./validators"
 import { refetchCollection } from "./helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCollectionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -38,7 +39,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateCollectionType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCollectionResponse>
 ) => {
   const input = [
     {

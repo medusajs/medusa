@@ -5,10 +5,11 @@ import {
 } from "../../../../../types/routing"
 import { AdminRevokeApiKeyType } from "../../validators"
 import { refetchApiKey } from "../../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminRevokeApiKeyType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminApiKeyResponse>
 ) => {
   await revokeApiKeysWorkflow(req.scope).run({
     input: {

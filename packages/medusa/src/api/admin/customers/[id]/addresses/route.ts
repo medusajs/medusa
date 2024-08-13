@@ -9,11 +9,11 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCustomerAddressType } from "../../validators"
 import { refetchCustomer } from "../../helpers"
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerAddressListResponse>
 ) => {
   const customerId = req.params.id
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -41,7 +41,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<
     AdminCreateCustomerAddressType & AdditionalData
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
   const customerId = req.params.id

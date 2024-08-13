@@ -5,10 +5,11 @@ import {
 } from "../../../../../types/routing"
 import { refetchPayment } from "../../helpers"
 import { AdminCreatePaymentRefundType } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreatePaymentRefundType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPaymentResponse>
 ) => {
   const { id } = req.params
   await refundPaymentWorkflow(req.scope).run({

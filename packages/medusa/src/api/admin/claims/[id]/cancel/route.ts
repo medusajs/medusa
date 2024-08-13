@@ -4,10 +4,11 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostCancelClaimReqSchemaType } from "../../validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostCancelClaimReqSchemaType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminClaimResponse>
 ) => {
   const { id } = req.params
 
@@ -19,5 +20,5 @@ export const POST = async (
     },
   })
 
-  res.status(200).json({ claim: result })
+  res.status(200).json({ claim: result as HttpTypes.AdminClaim })
 }

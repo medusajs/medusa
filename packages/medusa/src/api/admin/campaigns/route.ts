@@ -9,11 +9,11 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCampaignType } from "./validators"
 import { refetchCampaign } from "./helpers"
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCampaignListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
@@ -38,7 +38,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateCampaignType & AdditionalData>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCampaignResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
   const createCampaigns = createCampaignsWorkflow(req.scope)

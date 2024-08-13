@@ -273,9 +273,19 @@ export interface PaymentDTO {
   amount: BigNumberValue
 
   /**
+   * The raw amount of the payment.
+   */
+  raw_amount?: BigNumberValue
+
+  /**
    * The authorized amount of the payment.
    */
   authorized_amount?: BigNumberValue
+
+  /**
+   * The raw authorized amount of the payment.
+   */
+  raw_authorized_amount?: BigNumberValue
 
   /**
    * The ISO 3 character currency code of the payment.
@@ -338,9 +348,19 @@ export interface PaymentDTO {
   captured_amount?: BigNumberValue
 
   /**
+   * The sum of the associated captures' raw amounts.
+   */
+  raw_captured_amount?: BigNumberValue
+
+  /**
    * The sum of the associated refunds' amounts.
    */
   refunded_amount?: BigNumberValue
+
+  /**
+   * The sum of the associated refunds' raw amounts.
+   */
+  raw_refunded_amount?: BigNumberValue
 
   /**
    * The associated captures.
@@ -355,6 +375,11 @@ export interface PaymentDTO {
    * @expandable
    */
   refunds?: RefundDTO[]
+
+  /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
 
   /**
    * The associated payment collection.
@@ -552,6 +577,11 @@ export interface PaymentSessionDTO {
    * When the payment session was authorized.
    */
   authorized_at?: Date
+
+  /**
+   * The ID of the associated payment collection.
+   */
+  payment_collection_id: string
 
   /**
    * The payment collection the session is associated with.
