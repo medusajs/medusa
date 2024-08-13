@@ -1302,6 +1302,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/icons@npm:preview":
+  version: 1.2.2-preview-20240812060602
+  resolution: "@medusajs/icons@npm:1.2.2-preview-20240812060602"
+  peerDependencies:
+    react: ^16.x || ^17.x || ^18.x
+  checksum: c5bfbe0b536fa8b6cffd63aa95c3a8fa4ed8eaf9bf3295a1b2b77a38605f5ac12743baa64fc74feffeebd2333d77d9e28bfb8545dcd2d2c6990cd06dd0dd14d3
+  languageName: node
+  linkType: hard
+
 "@medusajs/ui-preset@npm:^1.1.2":
   version: 1.1.2
   resolution: "@medusajs/ui-preset@npm:1.1.2"
@@ -5655,7 +5664,7 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@medusajs/ui": ^3.0.0
     "@next/bundle-analyzer": ^14.2.3
     "@next/mdx": 14.2.3
@@ -7235,7 +7244,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs-ui@workspace:packages/docs-ui"
   dependencies:
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@medusajs/ui": ^3.0.0
     "@octokit/request": ^8.1.1
     "@react-hook/resize-observer": ^1.2.6
@@ -13440,7 +13449,7 @@ eslint-config-next@latest:
   dependencies:
     "@mdx-js/loader": ^3.0.1
     "@mdx-js/react": ^3.0.1
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@next/mdx": ^14.2.3
     "@types/mdx": ^2.0.11
     "@types/node": ^20
@@ -15125,7 +15134,7 @@ turbo@latest:
   dependencies:
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@next/mdx": ^14.2.3
     "@types/mdx": ^2.0.10
     "@types/node": ^20
