@@ -9,10 +9,11 @@ import {
 
 import { AdminUpdateCollectionType } from "../validators"
 import { refetchCollection } from "../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCollectionResponse>
 ) => {
   const collection = await refetchCollection(
     req.params.id,
@@ -25,7 +26,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCollectionType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCollectionResponse>
 ) => {
   await updateCollectionsWorkflow(req.scope).run({
     input: {
@@ -45,7 +46,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCollectionDeleteResponse>
 ) => {
   const id = req.params.id
 
