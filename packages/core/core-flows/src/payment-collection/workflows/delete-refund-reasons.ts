@@ -6,6 +6,9 @@ import {
 import { deleteRefundReasonsStep } from "../steps"
 
 export const deleteRefundReasonsWorkflowId = "delete-refund-reasons-workflow"
+/**
+ * This workflow deletes one or more refund reasons.
+ */
 export const deleteRefundReasonsWorkflow = createWorkflow(
   deleteRefundReasonsWorkflowId,
   (input: WorkflowData<{ ids: string[] }>): WorkflowResponse<void> => {

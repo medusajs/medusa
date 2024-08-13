@@ -9,15 +9,18 @@ import {
   validateInventoryLocationsStep,
 } from "../steps"
 
-interface WorkflowInput {
+export interface CreateInventoryLevelsWorkflowInput {
   inventory_levels: InventoryTypes.CreateInventoryLevelInput[]
 }
 export const createInventoryLevelsWorkflowId =
   "create-inventory-levels-workflow"
+/**
+ * This workflow creates one or more inventory levels.
+ */
 export const createInventoryLevelsWorkflow = createWorkflow(
   createInventoryLevelsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<CreateInventoryLevelsWorkflowInput>
   ): WorkflowResponse<InventoryLevelDTO[]> => {
     validateInventoryLocationsStep(input.inventory_levels)
 

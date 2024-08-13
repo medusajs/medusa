@@ -2,13 +2,16 @@ import { IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface DeleteOrderLineItemsStepInput {
   ids: string[]
 }
 
+/**
+ * This step deletes order line items.
+ */
 export const deleteOrderLineItems = createStep(
   "delete-order-line-items",
-  async (input: StepInput, { container }) => {
+  async (input: DeleteOrderLineItemsStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

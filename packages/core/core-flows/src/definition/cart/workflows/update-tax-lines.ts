@@ -60,7 +60,7 @@ const cartFields = [
   "shipping_address.province",
 ]
 
-type WorkflowInput = {
+export type UpdateTaxLinesWorkflowInput = {
   cart_or_cart_id: string | CartWorkflowDTO
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
@@ -68,9 +68,12 @@ type WorkflowInput = {
 }
 
 export const updateTaxLinesWorkflowId = "update-tax-lines"
+/**
+ * This workflow updates a cart's tax lines.
+ */
 export const updateTaxLinesWorkflow = createWorkflow(
   updateTaxLinesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
+  (input: WorkflowData<UpdateTaxLinesWorkflowInput>): WorkflowData<void> => {
     const cart = retrieveCartWithLinksStep({
       cart_or_cart_id: input.cart_or_cart_id,
       fields: cartFields,

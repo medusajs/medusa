@@ -2,14 +2,18 @@ import { CartWorkflowDTO } from "@medusajs/types"
 import { isPresent, MedusaError, PaymentSessionStatus } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface ValidateCartPaymentsStepInput {
   cart: CartWorkflowDTO
 }
 
 export const validateCartPaymentsStepId = "validate-cart-payments"
+/**
+ * This step validates a cart's payment sessions. Their status must
+ * be `pending` or `requires_more`.
+ */
 export const validateCartPaymentsStep = createStep(
   validateCartPaymentsStepId,
-  async (data: StepInput) => {
+  async (data: ValidateCartPaymentsStepInput) => {
     const {
       cart: { payment_collection: paymentCollection },
     } = data

@@ -30,8 +30,9 @@ const workflow = createWorkflow(
   }
 )
 
-workflow.hooks.something((input) => {
+workflow.hooks.something((input, context) => {
   console.log("input>", input)
+  console.log("context>", context)
 })
 
 workflow.run().then((res) => {

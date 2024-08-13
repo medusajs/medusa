@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const groupProductsForBatchStepId = "group-products-for-batch"
+/**
+ * This step groups products to be created and updated.
+ */
 export const groupProductsForBatchStep = createStep(
   groupProductsForBatchStepId,
   async (

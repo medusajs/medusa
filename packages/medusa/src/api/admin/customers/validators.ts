@@ -1,8 +1,9 @@
-import { z, ZodObject } from "zod"
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
+  WithAdditionalData,
 } from "../../utils/validators"
 
 export const AdminCustomerParams = createSelectParams()
@@ -50,19 +51,7 @@ export const CreateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export const AdminCreateCustomer = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateCustomer.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return CreateCustomer.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateCustomer = WithAdditionalData(CreateCustomer)
 
 export const UpdateCustomer = z.object({
   email: z.string().email().nullish(),
@@ -72,19 +61,7 @@ export const UpdateCustomer = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export const AdminUpdateCustomer = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return UpdateCustomer.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return UpdateCustomer.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminUpdateCustomer = WithAdditionalData(UpdateCustomer)
 
 export const CreateCustomerAddress = z.object({
   address_name: z.string().nullish(),
@@ -102,19 +79,9 @@ export const CreateCustomerAddress = z.object({
   phone: z.string().nullish(),
   metadata: z.record(z.unknown()).nullish(),
 })
-export const AdminCreateCustomerAddress = (
-  additionalDataValidator?: ZodObject<any, any>
-) => {
-  if (!additionalDataValidator) {
-    return CreateCustomerAddress.extend({
-      additional_data: z.record(z.unknown()).nullish(),
-    })
-  }
-
-  return CreateCustomerAddress.extend({
-    additional_data: additionalDataValidator,
-  })
-}
+export const AdminCreateCustomerAddress = WithAdditionalData(
+  CreateCustomerAddress
+)
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress
 

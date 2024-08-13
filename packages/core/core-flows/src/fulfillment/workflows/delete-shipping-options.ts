@@ -5,6 +5,9 @@ import { removeRemoteLinkStep } from "../../common"
 
 export const deleteShippingOptionsWorkflowId =
   "delete-shipping-options-workflow"
+/**
+ * This workflow deletes one or more shipping options.
+ */
 export const deleteShippingOptionsWorkflow = createWorkflow(
   deleteShippingOptionsWorkflowId,
   (

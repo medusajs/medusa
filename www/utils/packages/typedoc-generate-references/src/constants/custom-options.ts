@@ -8,6 +8,7 @@ import { baseOptions } from "./base-options.js"
 import path from "path"
 import { rootPathPrefix } from "./general.js"
 import { modules } from "./references.js"
+import { getCoreFlowNamespaces } from "../utils/get-namespaces.js"
 
 const customOptions: Record<string, Partial<TypeDocOptions>> = {
   "core-flows": getOptions({
@@ -16,6 +17,9 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "core-flows",
     plugin: ["typedoc-plugin-workflows"],
     enableWorkflowsPlugins: true,
+    enableNamespaceGenerator: true,
+    // @ts-expect-error there's a typing issue in typedoc
+    generateNamespaces: getCoreFlowNamespaces(),
   }),
   "auth-provider": getOptions({
     entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
@@ -31,7 +35,6 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
     tsConfigName: "utils.json",
     name: "dml",
-    generateNamespaces: true,
   }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",

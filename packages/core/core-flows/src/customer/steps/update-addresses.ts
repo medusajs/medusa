@@ -10,12 +10,15 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateCustomerAddresseStepInput = {
+export type UpdateCustomerAddresseStepInput = {
   selector: FilterableCustomerAddressProps
   update: UpdateCustomerAddressDTO
 }
 
 export const updateCustomerAddresseStepId = "update-customer-addresses"
+/**
+ * This step updates one or more customer addresses.
+ */
 export const updateCustomerAddressesStep = createStep(
   updateCustomerAddresseStepId,
   async (data: UpdateCustomerAddresseStepInput, { container }) => {

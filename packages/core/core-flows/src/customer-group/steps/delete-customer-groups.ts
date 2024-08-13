@@ -2,12 +2,13 @@ import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type DeleteCustomerGroupStepInput = string[]
-
 export const deleteCustomerGroupStepId = "delete-customer-groups"
+/**
+ * This step deletes one or more customer groups.
+ */
 export const deleteCustomerGroupStep = createStep(
   deleteCustomerGroupStepId,
-  async (ids: DeleteCustomerGroupStepInput, { container }) => {
+  async (ids: string[], { container }) => {
     const service = container.resolve<ICustomerModuleService>(
       ModuleRegistrationName.CUSTOMER
     )

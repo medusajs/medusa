@@ -7,6 +7,9 @@ import {
 
 export const linkSalesChannelsToApiKeyWorkflowId =
   "link-sales-channels-to-api-key"
+/**
+ * This workflow links sales channels to API keys.
+ */
 export const linkSalesChannelsToApiKeyWorkflow = createWorkflow(
   linkSalesChannelsToApiKeyWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>) => {

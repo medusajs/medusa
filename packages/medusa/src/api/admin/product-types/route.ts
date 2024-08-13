@@ -13,10 +13,11 @@ import {
   AdminCreateProductTypeType,
   AdminGetProductTypesParamsType,
 } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTypesParamsType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTypeListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
@@ -40,7 +41,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateProductTypeType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductTypeResponse>
 ) => {
   const input = [req.validatedBody]
 

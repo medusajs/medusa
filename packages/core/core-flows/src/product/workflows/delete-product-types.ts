@@ -6,12 +6,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { deleteProductTypesStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteProductTypesWorkflowInput = { ids: string[] }
 
 export const deleteProductTypesWorkflowId = "delete-product-types"
+/**
+ * This workflow deletes one or more product types.
+ */
 export const deleteProductTypesWorkflow = createWorkflow(
   deleteProductTypesWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<DeleteProductTypesWorkflowInput>) => {
     const deletedProductTypes = deleteProductTypesStep(input.ids)
     const productTypesDeleted = createHook("productTypesDeleted", {
       ids: input.ids,

@@ -8,6 +8,9 @@ import { createReturnFulfillmentStep } from "../steps"
 
 export const createReturnFulfillmentWorkflowId =
   "create-return-fulfillment-workflow"
+/**
+ * This workflow creates a fulfillment for a return.
+ */
 export const createReturnFulfillmentWorkflow = createWorkflow(
   createReturnFulfillmentWorkflowId,
   (

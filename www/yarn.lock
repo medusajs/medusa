@@ -1302,21 +1302,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@medusajs/icons@npm:1.2.2"
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-  checksum: 610117b959ddbd68f927caa12e70fb5fc849e8c68a25ca38f4d137aca1363f36552455aa83669847bd42753cccf36ad57b82f9bd5be7794e5b23af1046f78967
-  languageName: node
-  linkType: hard
-
 "@medusajs/icons@npm:preview":
-  version: 1.2.2-preview-20240807120732
-  resolution: "@medusajs/icons@npm:1.2.2-preview-20240807120732"
+  version: 1.2.2-preview-20240812060602
+  resolution: "@medusajs/icons@npm:1.2.2-preview-20240812060602"
   peerDependencies:
     react: ^16.x || ^17.x || ^18.x
-  checksum: 33e5858a100f027774da09b96809f2260ddbb1f5bffbfb7ae7f37d22dbd02e24ac313d9410b65009b2d79ea40447e2e3954494fa66518d545e231b80773354a2
+  checksum: c5bfbe0b536fa8b6cffd63aa95c3a8fa4ed8eaf9bf3295a1b2b77a38605f5ac12743baa64fc74feffeebd2333d77d9e28bfb8545dcd2d2c6990cd06dd0dd14d3
   languageName: node
   linkType: hard
 
@@ -5673,7 +5664,7 @@ __metadata:
   dependencies:
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@medusajs/ui": ^3.0.0
     "@next/bundle-analyzer": ^14.2.3
     "@next/mdx": 14.2.3
@@ -7268,6 +7259,7 @@ __metadata:
     cpy-cli: ^5.0.0
     eslint: ^8
     eslint-config-docs: "*"
+    framer-motion: ^11.3.21
     mermaid: ^10.9.0
     next: 14.1.0
     npm-to-yarn: ^2.1.0
@@ -8621,6 +8613,26 @@ eslint-config-next@latest:
   version: 4.3.7
   resolution: "fraction.js@npm:4.3.7"
   checksum: df291391beea9ab4c263487ffd9d17fed162dbb736982dee1379b2a8cc94e4e24e46ed508c6d278aded9080ba51872f1bc5f3a5fd8d7c74e5f105b508ac28711
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^11.3.21":
+  version: 11.3.21
+  resolution: "framer-motion@npm:11.3.21"
+  dependencies:
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 47ea88207920800294159f20d89d217c0118cbe2f5b7c4f1204490a04ac379a60e4ba323bfb101f334155014ebf07b51ad70a4d67b0363043f9d1d00347b1b3b
   languageName: node
   linkType: hard
 
@@ -13437,7 +13449,7 @@ eslint-config-next@latest:
   dependencies:
     "@mdx-js/loader": ^3.0.1
     "@mdx-js/react": ^3.0.1
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@next/mdx": ^14.2.3
     "@types/mdx": ^2.0.11
     "@types/node": ^20
@@ -15123,7 +15135,7 @@ turbo@latest:
   dependencies:
     "@mdx-js/loader": ^3.0.0
     "@mdx-js/react": ^3.0.0
-    "@medusajs/icons": ^1.2.0
+    "@medusajs/icons": preview
     "@next/mdx": ^14.2.3
     "@types/mdx": ^2.0.10
     "@types/node": ^20

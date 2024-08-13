@@ -1,277 +1,131 @@
+import { minimatch } from "minimatch"
 import {
   Application,
   Comment,
-  CommentDisplayPart,
-  CommentTag,
   Context,
   Converter,
   DeclarationReflection,
   ParameterType,
-  Reflection,
-  ReflectionCategory,
   ReflectionKind,
 } from "typedoc"
+import { NamespaceGenerateDetails } from "types"
 
-type PluginOptions = {
-  generateNamespaces: boolean
-  parentNamespace: string
-  namePrefix: string
-}
+export function load(app: Application) {
+  app.options.addDeclaration({
+    name: "enableNamespaceGenerator",
+    type: ParameterType.Boolean,
+    defaultValue: false,
+    help: "Whether to enable the namespace generator plugin.",
+  })
+  app.options.addDeclaration({
+    name: "generateNamespaces",
+    type: ParameterType.Mixed,
+    defaultValue: [],
+    help: "The namespaces to generate.",
+  })
 
-export class GenerateNamespacePlugin {
-  private options?: PluginOptions
-  private app: Application
-  private parentNamespace?: DeclarationReflection
-  private currentNamespaceHeirarchy: DeclarationReflection[]
-  private currentContext?: Context
-  private scannedComments = false
+  const generatedNamespaces: Map<string, DeclarationReflection> = new Map()
 
-  constructor(app: Application) {
-    this.app = app
-    this.currentNamespaceHeirarchy = []
-    this.declareOptions()
-
-    this.app.converter.on(
-      Converter.EVENT_RESOLVE,
-      this.handleCreateDeclarationEvent.bind(this)
-    )
-    this.app.converter.on(
-      Converter.EVENT_CREATE_DECLARATION,
-      this.scanComments.bind(this)
-    )
-  }
-
-  declareOptions() {
-    this.app.options.addDeclaration({
-      name: "generateNamespaces",
-      type: ParameterType.Boolean,
-      defaultValue: false,
-      help: "Whether to enable conversion of categories to namespaces.",
-    })
-    this.app.options.addDeclaration({
-      name: "parentNamespace",
-      type: ParameterType.String,
-      defaultValue: "",
-      help: "Optionally specify a parent namespace to place all generated namespaces in.",
-    })
-    this.app.options.addDeclaration({
-      name: "namePrefix",
-      type: ParameterType.String,
-      defaultValue: "",
-      help: "Optionally specify a name prefix for all namespaces.",
-    })
-  }
-
-  readOptions() {
-    if (this.options) {
+  app.converter.on(Converter.EVENT_BEGIN, (context) => {
+    if (!app.options.getValue("enableNamespaceGenerator")) {
       return
     }
 
-    this.options = {
-      generateNamespaces: this.app.options.getValue("generateNamespaces"),
-      parentNamespace: this.app.options.getValue("parentNamespace"),
-      namePrefix: this.app.options.getValue("namePrefix"),
-    }
-  }
+    const namespaces = app.options.getValue(
+      "generateNamespaces"
+    ) as unknown as NamespaceGenerateDetails[]
 
-  loadNamespace(namespaceName: string): DeclarationReflection {
-    const formattedName = this.formatName(namespaceName)
-    return this.currentContext?.project
-      .getReflectionsByKind(ReflectionKind.Namespace)
-      .find(
-        (m) =>
-          m.name === formattedName &&
-          (!this.currentNamespaceHeirarchy.length ||
-            m.parent?.id ===
-              this.currentNamespaceHeirarchy[
-                this.currentNamespaceHeirarchy.length - 1
-              ].id)
-      ) as DeclarationReflection
-  }
+    const generateNamespaces = (ns: NamespaceGenerateDetails[]) => {
+      const createdNamespaces: DeclarationReflection[] = []
+      ns.forEach((namespace) => {
+        const genNamespace = createNamespace(context, namespace)
 
-  createNamespace(namespaceName: string): DeclarationReflection | undefined {
-    if (!this.currentContext) {
-      return
-    }
-    const formattedName = this.formatName(namespaceName)
-    const namespace = this.currentContext?.createDeclarationReflection(
-      ReflectionKind.Namespace,
-      void 0,
-      void 0,
-      formattedName
-    )
+        generatedNamespaces.set(namespace.pathPattern, genNamespace)
 
-    namespace.children = []
-
-    return namespace
-  }
-
-  formatName(namespaceName: string): string {
-    return `${this.options?.namePrefix}${namespaceName}`
-  }
-
-  generateNamespaceFromTag({
-    tag,
-    summary,
-  }: {
-    tag: CommentTag
-    reflection?: DeclarationReflection
-    summary?: CommentDisplayPart[]
-  }) {
-    const categoryHeirarchy = tag.content[0].text.split(".")
-    categoryHeirarchy.forEach((cat, index) => {
-      // check whether a namespace exists with the category name.
-      let namespace = this.loadNamespace(cat)
-
-      if (!namespace) {
-        // add a namespace for this category
-        namespace = this.createNamespace(cat) || namespace
-
-        namespace.comment = new Comment()
-        if (this.currentNamespaceHeirarchy.length) {
-          namespace.comment.modifierTags.add("@namespaceMember")
-        }
-        if (summary && index === categoryHeirarchy.length - 1) {
-          namespace.comment.summary = summary
-        }
-      }
-      this.currentContext =
-        this.currentContext?.withScope(namespace) || this.currentContext
-
-      this.currentNamespaceHeirarchy.push(namespace)
-    })
-  }
-
-  /**
-   * create categories in the last namespace if the
-   * reflection has a category
-   */
-  attachCategories(
-    reflection: DeclarationReflection,
-    comments: Comment | undefined
-  ) {
-    if (!this.currentNamespaceHeirarchy.length) {
-      return
-    }
-
-    const parentNamespace =
-      this.currentNamespaceHeirarchy[this.currentNamespaceHeirarchy.length - 1]
-    comments?.blockTags
-      .filter((tag) => tag.tag === "@category")
-      .forEach((tag) => {
-        const categoryName = tag.content[0].text
-        if (!parentNamespace.categories) {
-          parentNamespace.categories = []
-        }
-        let category = parentNamespace.categories.find(
-          (category) => category.title === categoryName
-        )
-        if (!category) {
-          category = new ReflectionCategory(categoryName)
-          parentNamespace.categories.push(category)
-        }
-        category.children.push(reflection)
-      })
-  }
-
-  handleCreateDeclarationEvent(context: Context, reflection: Reflection) {
-    if (!(reflection instanceof DeclarationReflection)) {
-      return
-    }
-    this.readOptions()
-    if (this.options?.parentNamespace && !this.parentNamespace) {
-      this.parentNamespace =
-        this.loadNamespace(this.options.parentNamespace) ||
-        this.createNamespace(this.options.parentNamespace)
-    }
-    this.currentNamespaceHeirarchy = []
-    if (this.parentNamespace) {
-      this.currentNamespaceHeirarchy.push(this.parentNamespace)
-    }
-    this.currentContext = context
-    const comments = this.getReflectionComments(reflection)
-    comments?.blockTags
-      .filter((tag) => tag.tag === "@customNamespace")
-      .forEach((tag) => {
-        this.generateNamespaceFromTag({
-          tag,
-        })
-        if (
-          reflection.parent instanceof DeclarationReflection ||
-          reflection.parent?.isProject()
-        ) {
-          reflection.parent.children = reflection.parent.children?.filter(
-            (child) => child.id !== reflection.id
+        if (namespace.children) {
+          generateNamespaces(namespace.children).forEach((child) =>
+            genNamespace.addChild(child)
           )
         }
-        this.currentContext?.addChild(reflection)
+
+        createdNamespaces.push(genNamespace)
       })
 
-    comments?.removeTags("@customNamespace")
-    this.attachCategories(reflection, comments)
-    this.currentContext = undefined
-    this.currentNamespaceHeirarchy = []
-  }
-
-  /**
-   * Scan all source files for `@customNamespace` tag to generate namespaces
-   * This is mainly helpful to pull summaries of the namespaces.
-   */
-  scanComments(context: Context) {
-    if (this.scannedComments) {
-      return
+      return createdNamespaces
     }
-    this.currentContext = context
-    const fileNames = context.program.getRootFileNames()
 
-    fileNames.forEach((fileName) => {
-      const sourceFile = context.program.getSourceFile(fileName)
-      if (!sourceFile) {
+    generateNamespaces(namespaces)
+  })
+
+  app.converter.on(
+    Converter.EVENT_CREATE_DECLARATION,
+    (context, reflection) => {
+      if (!app.options.getValue("enableNamespaceGenerator")) {
         return
       }
 
-      const comments = context.getFileComment(sourceFile)
-      comments?.blockTags
-        .filter((tag) => tag.tag === "@customNamespace")
-        .forEach((tag) => {
-          this.generateNamespaceFromTag({ tag, summary: comments.summary })
-          if (this.currentNamespaceHeirarchy.length) {
-            // add comments of the file to the last created namespace
-            this.currentNamespaceHeirarchy[
-              this.currentNamespaceHeirarchy.length - 1
-            ].comment = comments
+      const symbol = context.project.getSymbolFromReflection(reflection)
+      const filePath = symbol?.valueDeclaration?.getSourceFile().fileName
 
-            this.currentNamespaceHeirarchy[
-              this.currentNamespaceHeirarchy.length - 1
-            ].comment!.blockTags = this.currentNamespaceHeirarchy[
-              this.currentNamespaceHeirarchy.length - 1
-            ].comment!.blockTags.filter((tag) => tag.tag !== "@customNamespace")
+      if (!filePath) {
+        return
+      }
+
+      const namespaces = app.options.getValue(
+        "generateNamespaces"
+      ) as unknown as NamespaceGenerateDetails[]
+
+      const findNamespace = (
+        ns: NamespaceGenerateDetails[]
+      ): DeclarationReflection | undefined => {
+        let found: DeclarationReflection | undefined
+        ns.some((namespace) => {
+          if (namespace.children) {
+            // give priorities to children
+            found = findNamespace(namespace.children)
+            if (found) {
+              return true
+            }
           }
-          // reset values
-          this.currentNamespaceHeirarchy = []
-          this.currentContext = context
+
+          if (!minimatch(filePath, namespace.pathPattern)) {
+            return false
+          }
+
+          found = generatedNamespaces.get(namespace.pathPattern)
+
+          return found !== undefined
         })
-    })
 
-    this.scannedComments = true
-  }
+        return found
+      }
 
-  getReflectionComments(
-    reflection: DeclarationReflection
-  ): Comment | undefined {
-    if (reflection.comment) {
-      return reflection.comment
+      const namespace = findNamespace(namespaces)
+
+      namespace?.addChild(reflection)
     }
+  )
+}
 
-    // try to retrieve comment from signature
-    if (!reflection.signatures?.length) {
-      return
-    }
-    return reflection.signatures.find((signature) => signature.comment)?.comment
+function createNamespace(
+  context: Context,
+  namespace: NamespaceGenerateDetails
+): DeclarationReflection {
+  const genNamespace = context.createDeclarationReflection(
+    ReflectionKind.Namespace,
+    void 0,
+    void 0,
+    namespace.name
+  )
+
+  if (namespace.description) {
+    genNamespace.comment = new Comment([
+      {
+        kind: "text",
+        text: namespace.description,
+      },
+    ])
   }
 
-  // for debugging
-  printCurrentHeirarchy() {
-    return this.currentNamespaceHeirarchy.map((heirarchy) => heirarchy.name)
-  }
+  return genNamespace
 }

@@ -2,7 +2,7 @@ import { IFileModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UploadFilesStepInput = {
+export type UploadFilesStepInput = {
   files: {
     filename: string
     mimeType: string
@@ -12,6 +12,9 @@ type UploadFilesStepInput = {
 }
 
 export const uploadFilesStepId = "upload-files"
+/**
+ * This step uploads one or more files.
+ */
 export const uploadFilesStep = createStep(
   uploadFilesStepId,
   async (data: UploadFilesStepInput, { container }) => {

@@ -3,6 +3,9 @@ import { deleteInvitesStep } from "../steps"
 import { InviteWorkflow, UserWorkflow } from "@medusajs/types"
 
 export const deleteInvitesWorkflowId = "delete-invites-workflow"
+/**
+ * This workflow deletes one or more invites.
+ */
 export const deleteInvitesWorkflow = createWorkflow(
   deleteInvitesWorkflowId,
   (

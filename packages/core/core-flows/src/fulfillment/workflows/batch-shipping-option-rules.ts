@@ -19,6 +19,9 @@ import {
 import { updateShippingOptionRulesStep } from "../steps/update-shipping-option-rules"
 
 export const batchShippingOptionRulesWorkflowId = "batch-shipping-option-rules"
+/**
+ * This workflow manages shipping option rules by creating, updating, or deleting them.
+ */
 export const batchShippingOptionRulesWorkflow = createWorkflow(
   batchShippingOptionRulesWorkflowId,
   (

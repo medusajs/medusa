@@ -3,6 +3,9 @@ import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { updatePriceListsStep, validatePriceListsStep } from "../steps"
 
 export const updatePriceListsWorkflowId = "update-price-lists"
+/**
+ * This workflow updates one or more price lists.
+ */
 export const updatePriceListsWorkflow = createWorkflow(
   updatePriceListsWorkflowId,
   (

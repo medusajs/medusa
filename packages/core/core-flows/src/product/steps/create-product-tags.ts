@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createProductTagsStepId = "create-product-tags"
+/**
+ * This step creates one or more product tags.
+ */
 export const createProductTagsStep = createStep(
   createProductTagsStepId,
   async (data: ProductTypes.CreateProductTagDTO[], { container }) => {

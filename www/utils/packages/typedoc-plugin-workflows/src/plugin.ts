@@ -1,6 +1,7 @@
 import {
   Application,
   Comment,
+  CommentTag,
   Context,
   Converter,
   DeclarationReflection,
@@ -14,7 +15,13 @@ import {
 import ts, { SyntaxKind, VariableStatement } from "typescript"
 import { WorkflowManager, WorkflowDefinition } from "@medusajs/orchestration"
 import Helper from "./utils/helper"
-import { isWorkflow } from "utils"
+import { isWorkflow, isWorkflowStep } from "utils"
+import { StepType } from "./types"
+
+type ParsedStep = {
+  stepReflection: DeclarationReflection
+  stepType: StepType
+}
 
 /**
  * A plugin that extracts a workflow's steps, hooks, their types, and attaches them as
@@ -92,12 +99,20 @@ class WorkflowsPlugin {
           continue
         }
 
-        this.parseSteps({
+        this.parseWorkflow({
           workflowId,
           constructorFn: initializer.arguments[1],
           context,
           parentReflection: reflection.parent,
         })
+
+        if (!reflection.comment && reflection.parent.comment) {
+          reflection.comment = reflection.parent.comment
+        }
+      } else if (isWorkflowStep(reflection)) {
+        if (!reflection.comment && reflection.parent.comment) {
+          reflection.comment = reflection.parent.comment
+        }
       }
     }
   }
@@ -107,7 +122,7 @@ class WorkflowsPlugin {
    *
    * @param param0 - The workflow's details.
    */
-  parseSteps({
+  parseWorkflow({
     workflowId,
     constructorFn,
     context,
@@ -130,138 +145,241 @@ class WorkflowsPlugin {
       parentReflection.documents = []
     }
 
+    let stepDepth = 1
+
     constructorFn.body.statements.forEach((statement) => {
-      let initializer: ts.CallExpression | undefined
-      switch (statement.kind) {
-        case SyntaxKind.VariableStatement:
-          const variableInitializer = (statement as VariableStatement)
-            .declarationList.declarations[0].initializer
-
-          if (
-            !variableInitializer ||
-            !ts.isCallExpression(variableInitializer)
-          ) {
-            return
-          }
-
-          initializer = variableInitializer
-          break
-        case SyntaxKind.ExpressionStatement:
-          const statementInitializer = (statement as ts.ExpressionStatement)
-            .expression
-          if (!ts.isCallExpression(statementInitializer)) {
-            return
-          }
-
-          initializer = statementInitializer
-      }
+      const initializer = this.getInitializerOfNode(statement)
 
       if (!initializer) {
         return
       }
 
-      const { stepId, stepReflection } =
-        this.parseStep({
+      const initializerName = this.helper.normalizeName(
+        initializer.expression.getText()
+      )
+
+      if (initializerName === "when") {
+        this.parseWhenStep({
+          initializer,
+          parentReflection,
+          context,
+          workflow,
+          stepDepth,
+        })
+      } else {
+        const steps = this.parseSteps({
           initializer,
           context,
           workflow,
-        }) || {}
+          workflowVarName: parentReflection.name,
+        })
 
-      if (!stepId || !stepReflection) {
-        return
+        if (!steps.length) {
+          return
+        }
+
+        steps.forEach((step) => {
+          this.createStepDocumentReflection({
+            ...step,
+            depth: stepDepth,
+            parentReflection,
+          })
+        })
       }
 
-      const stepModifier = this.helper.getModifier(initializer)
-
-      const documentReflection = new DocumentReflection(
-        stepReflection.name,
-        stepReflection,
-        [],
-        {}
-      )
-
-      documentReflection.comment = new Comment()
-      documentReflection.comment.modifierTags.add(stepModifier)
-
-      parentReflection.documents?.push(documentReflection)
+      stepDepth++
     })
   }
 
   /**
-   * Parse a step to retrieve its ID and reflection.
+   * Parses steps in an initializer, retrieving each of their ID and reflection.
    *
    * @param param0 - The step's details.
    * @returns The step's ID and reflection, if found.
    */
-  parseStep({
+  parseSteps({
     initializer,
     context,
     workflow,
+    workflowVarName,
   }: {
     initializer: ts.CallExpression
     context: Context
     workflow?: WorkflowDefinition
-  }):
-    | {
-        stepId: string
-        stepReflection: DeclarationReflection
-      }
-    | undefined {
+    workflowVarName: string
+  }): ParsedStep[] {
+    const steps: ParsedStep[] = []
     const initializerName = this.helper.normalizeName(
       initializer.expression.getText()
     )
 
-    let stepId: string | undefined
-    let stepReflection: DeclarationReflection | undefined
-
-    if (
-      this.helper.getStepType(initializer) === "hook" &&
-      "symbol" in initializer.arguments[1]
-    ) {
-      // get the hook's name from the first argument
-      stepId = this.helper.normalizeName(initializer.arguments[0].getText())
-      stepReflection = this.assembleHookReflection({
-        stepId,
-        context,
-        inputSymbol: initializer.arguments[1].symbol as ts.Symbol,
-      })
-    } else {
-      const initializerReflection =
-        context.project.getChildByName(initializerName)
-
-      if (
-        !initializerReflection ||
-        !(initializerReflection instanceof DeclarationReflection)
-      ) {
-        return
+    if (initializerName === "parallelize") {
+      if (!initializer.arguments.length) {
+        return steps
       }
 
-      const { initializer } =
-        this.helper.getReflectionSymbolAndInitializer({
-          project: context.project,
-          reflection: initializerReflection,
-        }) || {}
+      initializer.arguments.forEach((argument) => {
+        if (!ts.isCallExpression(argument)) {
+          return
+        }
+
+        steps.push(
+          ...this.parseSteps({
+            initializer: argument,
+            context,
+            workflow,
+            workflowVarName,
+          })
+        )
+      })
+    } else {
+      let stepId: string | undefined
+      let stepReflection: DeclarationReflection | undefined
+      let stepType = this.helper.getStepType(initializer)
+
+      if (stepType === "hook" && "symbol" in initializer.arguments[1]) {
+        // get the hook's name from the first argument
+        stepId = this.helper.normalizeName(initializer.arguments[0].getText())
+        stepReflection = this.assembleHookReflection({
+          stepId,
+          context,
+          inputSymbol: initializer.arguments[1].symbol as ts.Symbol,
+          workflowName: workflowVarName,
+        })
+      } else {
+        const initializerReflection =
+          context.project.getChildByName(initializerName)
+
+        if (
+          !initializerReflection ||
+          !(initializerReflection instanceof DeclarationReflection)
+        ) {
+          return steps
+        }
+
+        const { initializer: originalInitializer } =
+          this.helper.getReflectionSymbolAndInitializer({
+            project: context.project,
+            reflection: initializerReflection,
+          }) || {}
+
+        if (!originalInitializer) {
+          return steps
+        }
+
+        stepId = this.helper.getStepOrWorkflowId(
+          originalInitializer,
+          context.project,
+          true
+        )
+        stepType = this.helper.getStepType(originalInitializer)
+        stepReflection = initializerReflection
+      }
+
+      // check if is a step in the workflow
+      if (
+        stepId &&
+        stepType &&
+        stepReflection &&
+        workflow?.handlers_.get(stepId)
+      ) {
+        steps.push({
+          stepReflection,
+          stepType,
+        })
+      }
+    }
+
+    return steps
+  }
+
+  /**
+   * Parses the step in a `when` condition, and creates a `when` document with the steps as child documents.
+   *
+   * @param param0 - The when stp's details.
+   */
+  parseWhenStep({
+    initializer,
+    parentReflection,
+    context,
+    workflow,
+    stepDepth,
+  }: {
+    initializer: ts.CallExpression
+    parentReflection: DeclarationReflection
+    context: Context
+    workflow?: WorkflowDefinition
+    stepDepth: number
+  }) {
+    const whenInitializer = (initializer.expression as ts.CallExpression)
+      .expression as ts.CallExpression
+    const thenInitializer = initializer
+
+    if (
+      whenInitializer.arguments.length < 2 ||
+      (!ts.isFunctionExpression(whenInitializer.arguments[1]) &&
+        !ts.isArrowFunction(whenInitializer.arguments[1])) ||
+      thenInitializer.arguments.length < 1 ||
+      (!ts.isFunctionExpression(thenInitializer.arguments[0]) &&
+        !ts.isArrowFunction(thenInitializer.arguments[0]))
+    ) {
+      return
+    }
+
+    const whenCondition = whenInitializer.arguments[1].body.getText()
+
+    const thenStatements = (thenInitializer.arguments[0].body as ts.Block)
+      .statements
+
+    const documentReflection = new DocumentReflection(
+      "when",
+      parentReflection,
+      [],
+      {}
+    )
+
+    documentReflection.comment = new Comment()
+    documentReflection.comment.modifierTags.add(this.helper.getModifier(`when`))
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@workflowDepth`, [
+        {
+          kind: "text",
+          text: `${stepDepth}`,
+        },
+      ])
+    )
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@whenCondition`, [
+        {
+          kind: "text",
+          text: whenCondition,
+        },
+      ])
+    )
+
+    thenStatements.forEach((statement) => {
+      const initializer = this.getInitializerOfNode(statement)
 
       if (!initializer) {
         return
       }
 
-      stepId = this.helper.getStepOrWorkflowId(
+      this.parseSteps({
         initializer,
-        context.project,
-        true
-      )
-      stepReflection = initializerReflection
-    }
+        context,
+        workflow,
+        workflowVarName: parentReflection.name,
+      }).forEach((step) => {
+        this.createStepDocumentReflection({
+          ...step,
+          depth: stepDepth,
+          parentReflection: documentReflection,
+        })
+      })
+    })
 
-    // check if is a step in the workflow
-    if (!stepId || !stepReflection || !workflow?.handlers_.get(stepId)) {
-      return
-    }
-
-    return {
-      stepId,
-      stepReflection,
+    if (documentReflection.children?.length) {
+      parentReflection.documents?.push(documentReflection)
     }
   }
 
@@ -275,10 +393,12 @@ class WorkflowsPlugin {
     stepId,
     context,
     inputSymbol,
+    workflowName,
   }: {
     stepId: string
     context: Context
     inputSymbol: ts.Symbol
+    workflowName: string
   }): DeclarationReflection {
     const declarationReflection = context.createDeclarationReflection(
       ReflectionKind.Function,
@@ -286,6 +406,14 @@ class WorkflowsPlugin {
       undefined,
       stepId
     )
+
+    declarationReflection.comment = new Comment()
+    declarationReflection.comment.summary = [
+      {
+        kind: "text",
+        text: "This step is a hook that you can inject custom functionality into.",
+      },
+    ]
     const signatureReflection = new SignatureReflection(
       stepId,
       ReflectionKind.SomeSignature,
@@ -300,6 +428,10 @@ class WorkflowsPlugin {
 
     parameter.type = ReferenceType.createSymbolReference(inputSymbol, context)
 
+    if (parameter.type.name === "__object") {
+      parameter.type.name = "object"
+    }
+
     signatureReflection.parameters = []
 
     signatureReflection.parameters.push(parameter)
@@ -308,7 +440,161 @@ class WorkflowsPlugin {
 
     declarationReflection.signatures.push(signatureReflection)
 
+    declarationReflection.comment.blockTags.push(
+      new CommentTag(`@example`, [
+        {
+          kind: "code",
+          text: this.helper.generateHookExample({
+            hookName: stepId,
+            workflowName,
+            parameter,
+          }),
+        },
+      ])
+    )
+
     return declarationReflection
+  }
+
+  /**
+   * Creates a document reflection for a step.
+   *
+   * @param param0 - The step's details.
+   */
+  createStepDocumentReflection({
+    stepType,
+    stepReflection,
+    depth,
+    parentReflection,
+  }: ParsedStep & {
+    depth: number
+    parentReflection: DeclarationReflection | DocumentReflection
+  }) {
+    const stepModifier = this.helper.getModifier(stepType)
+
+    const documentReflection = new DocumentReflection(
+      stepReflection.name,
+      stepReflection,
+      [],
+      {}
+    )
+
+    documentReflection.comment = new Comment()
+    documentReflection.comment.modifierTags.add(stepModifier)
+    documentReflection.comment.blockTags.push(
+      new CommentTag(`@workflowDepth`, [
+        {
+          kind: "text",
+          text: `${depth}`,
+        },
+      ])
+    )
+
+    if (parentReflection.isDocument()) {
+      parentReflection.addChild(documentReflection)
+    } else {
+      parentReflection.documents?.push(documentReflection)
+    }
+  }
+
+  /**
+   * Gets the initializer in a node, if available.
+   *
+   * @param node - The node to search for an initializer in.
+   * @returns The initializer, if found.
+   */
+  getInitializerOfNode(node: ts.Node): ts.CallExpression | undefined {
+    let initializer: ts.CallExpression | undefined
+    switch (node.kind) {
+      case SyntaxKind.CallExpression:
+        initializer = node as ts.CallExpression
+        break
+      case SyntaxKind.VariableStatement:
+        const variableInitializer = (node as VariableStatement).declarationList
+          .declarations[0].initializer
+
+        if (!variableInitializer) {
+          return
+        }
+
+        initializer = this.findCallExpression(variableInitializer)
+        break
+      case SyntaxKind.ExpressionStatement:
+        const statementInitializer = (node as ts.ExpressionStatement).expression
+
+        initializer = this.findCallExpression(statementInitializer)
+        break
+      case SyntaxKind.ReturnStatement:
+        let returnInitializer = (node as ts.ReturnStatement).expression
+
+        if (
+          returnInitializer &&
+          ts.isNewExpression(returnInitializer) &&
+          returnInitializer.expression.getText().includes("WorkflowResponse") &&
+          returnInitializer.arguments?.length
+        ) {
+          returnInitializer = this.getInitializerOfNode(
+            returnInitializer.arguments[0]
+          )
+        }
+
+        if (!returnInitializer) {
+          return
+        }
+
+        initializer = this.findCallExpression(returnInitializer)
+
+        break
+    }
+
+    return initializer ? this.cleanUpInitializer(initializer) : undefined
+  }
+
+  /**
+   * Finds a `CallExpression` in an expression and returns it, if available.
+   *
+   * @param expression - The expression to search in.
+   * @param skipCallCheck - Whether to skip the `CallExpression` check the first time. Useful for the {@link cleanUpInitializer} method.
+   * @returns The `CallExpression` if found.
+   */
+  findCallExpression(
+    expression: ts.Expression,
+    skipCallCheck = false
+  ): ts.CallExpression | undefined {
+    let initializer = expression
+    while (
+      (skipCallCheck || !ts.isCallExpression(initializer)) &&
+      "expression" in initializer
+    ) {
+      initializer = initializer.expression as ts.Expression
+      skipCallCheck = false
+    }
+
+    return initializer && ts.isCallExpression(initializer)
+      ? initializer
+      : undefined
+  }
+
+  /**
+   * Finds an inner call expression of a call expression, if the provided one is not allowed.
+   * This is useful for steps that chain a `.config` method, for example.
+   *
+   * @param initializer - The call expression to search in.
+   * @returns The call expression to be used.
+   */
+  cleanUpInitializer(initializer: ts.CallExpression): ts.CallExpression {
+    if (!("name" in initializer.expression)) {
+      return initializer
+    }
+
+    const initializerName = (initializer.expression.name as ts.Identifier)
+      .escapedText
+
+    if (initializerName === "config") {
+      return this.findCallExpression(initializer, true) || initializer
+    }
+
+    return initializer
   }
 }
 

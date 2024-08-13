@@ -14,7 +14,10 @@ import {
   throwIfItemsDoesNotExistsInReturn,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that a return can be received and completed.
+ */
+export const receiveCompleteReturnValidationStep = createStep(
   "receive-return-order-validation",
   async function (
     {
@@ -32,6 +35,9 @@ const validationStep = createStep(
 )
 
 export const receiveAndCompleteReturnOrderWorkflowId = "receive-return-order"
+/**
+ * This workflow marks a return as received and completes it.
+ */
 export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(
   receiveAndCompleteReturnOrderWorkflowId,
   function (
@@ -45,7 +51,7 @@ export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validationStep({ orderReturn, input })
+    receiveCompleteReturnValidationStep({ orderReturn, input })
 
     return new WorkflowResponse(receiveReturnStep(input))
   }

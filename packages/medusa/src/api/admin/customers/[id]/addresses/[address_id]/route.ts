@@ -13,11 +13,11 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCustomerAddressType } from "../../../validators"
 import { refetchCustomer } from "../../../helpers"
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerAddressResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
@@ -37,7 +37,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<
     AdminCreateCustomerAddressType & AdditionalData
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
 
@@ -61,7 +61,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"customer_address">>
 ) => {
   const id = req.params.address_id
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)

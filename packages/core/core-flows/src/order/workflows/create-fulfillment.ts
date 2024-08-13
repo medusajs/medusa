@@ -1,6 +1,6 @@
 import {
+  AdditionalData,
   BigNumberInput,
-  FulfillmentDTO,
   FulfillmentWorkflow,
   OrderDTO,
   OrderLineItemDTO,
@@ -11,6 +11,7 @@ import { MathBN, MedusaError, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createStep,
   createWorkflow,
   parallelize,
@@ -29,8 +30,11 @@ import {
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
 
-const validateOrder = createStep(
-  "validate-order",
+/**
+ * This step validates that a fulfillment can be created for an order.
+ */
+export const createFulfillmentValidateOrder = createStep(
+  "create-fulfillment-validate-order",
   (
     {
       order,
@@ -201,11 +205,16 @@ function prepareInventoryUpdate({
 }
 
 export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
+/**
+ * This creates a fulfillment for an order.
+ */
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (
-    input: WorkflowData<OrderWorkflow.CreateOrderFulfillmentWorkflowInput>
-  ): WorkflowResponse<FulfillmentDTO> => {
+    input: WorkflowData<
+      OrderWorkflow.CreateOrderFulfillmentWorkflowInput & AdditionalData
+    >
+  ) => {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -224,7 +233,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    validateOrder({ order, inputItems: input.items })
+    createFulfillmentValidateOrder({ order, inputItems: input.items })
 
     const inputItemsMap = transform(input, ({ items }) => {
       return items.reduce((acc, item) => {
@@ -323,7 +332,14 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       deleteReservationsStep(toDelete)
     )
 
+    const fulfillmentCreated = createHook("fulfillmentCreated", {
+      fulfillment,
+      additional_data: input.additional_data,
+    })
+
     // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
-    return new WorkflowResponse(fulfillment)
+    return new WorkflowResponse(fulfillment, {
+      hooks: [fulfillmentCreated],
+    })
   }
 )

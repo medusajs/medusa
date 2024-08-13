@@ -10,16 +10,19 @@ import {
 } from "@medusajs/workflows-sdk"
 import { updateReturnReasonsStep } from "../steps"
 
-type WorkflowInput = {
+export type UpdateReturnReasonsWorkflowInput = {
   selector: FilterableOrderReturnReasonProps
   update: ReturnReasonUpdatableFields
 }
 
 export const updateReturnReasonsWorkflowId = "update-return-reasons"
+/**
+ * This workflow updates return reasons matching the specified filters.
+ */
 export const updateReturnReasonsWorkflow = createWorkflow(
   updateReturnReasonsWorkflowId,
   (
-    input: WorkflowData<WorkflowInput>
+    input: WorkflowData<UpdateReturnReasonsWorkflowInput>
   ): WorkflowResponse<OrderReturnReasonDTO[]> => {
     return new WorkflowResponse(updateReturnReasonsStep(input))
   }

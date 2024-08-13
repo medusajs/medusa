@@ -6,6 +6,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createOrderChangeActionsStepId = "create-order-change-actions"
+/**
+ * This step creates order change actions.
+ */
 export const createOrderChangeActionsStep = createStep(
   createOrderChangeActionsStepId,
   async (data: CreateOrderChangeActionDTO[], { container }) => {

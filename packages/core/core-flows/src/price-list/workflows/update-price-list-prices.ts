@@ -10,6 +10,9 @@ import { validatePriceListsStep } from "../steps/validate-price-lists"
 import { validateVariantPriceLinksStep } from "../steps/validate-variant-price-links"
 
 export const updatePriceListPricesWorkflowId = "update-price-list-prices"
+/**
+ * This workflow update price lists' prices.
+ */
 export const updatePriceListPricesWorkflow = createWorkflow(
   updatePriceListPricesWorkflowId,
   (

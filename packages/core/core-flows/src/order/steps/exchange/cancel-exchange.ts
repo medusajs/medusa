@@ -2,12 +2,13 @@ import { CancelOrderExchangeDTO, IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CancelOrderExchangeStepInput = CancelOrderExchangeDTO
-
 export const cancelOrderExchangeStepId = "cancel-order-swap"
+/**
+ * This step cancels an exchange.
+ */
 export const cancelOrderExchangeStep = createStep(
   cancelOrderExchangeStepId,
-  async (data: CancelOrderExchangeStepInput, { container }) => {
+  async (data: CancelOrderExchangeDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

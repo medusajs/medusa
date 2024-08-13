@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCartsStepId = "create-carts"
+/**
+ * This step creates a cart.
+ */
 export const createCartsStep = createStep(
   createCartsStepId,
   async (data: CreateCartDTO[], { container }) => {

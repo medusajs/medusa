@@ -24,10 +24,19 @@ import {
   prepareTaxLinesData,
 } from "../utils/prepare-line-item-data"
 
+export type CompleteCartWorkflowInput = {
+  id: string
+}
+
 export const completeCartWorkflowId = "complete-cart"
+/**
+ * This workflow completes a cart.
+ */
 export const completeCartWorkflow = createWorkflow(
   completeCartWorkflowId,
-  (input: WorkflowData<any>): WorkflowResponse<OrderDTO> => {
+  (
+    input: WorkflowData<CompleteCartWorkflowInput>
+  ): WorkflowResponse<OrderDTO> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: completeCartFields,
@@ -37,7 +46,7 @@ export const completeCartWorkflow = createWorkflow(
 
     const paymentSessions = validateCartPaymentsStep({ cart })
 
-    authorizePaymentSessionStep({
+    const payment = authorizePaymentSessionStep({
       // We choose the first payment session, as there will only be one active payment session
       // This might change in the future.
       id: paymentSessions[0].id,
@@ -87,7 +96,7 @@ export const completeCartWorkflow = createWorkflow(
       }).config({ name: "final-cart" })
     )
 
-    const cartToOrder = transform({ input, cart }, ({ cart }) => {
+    const cartToOrder = transform({ cart, payment }, ({ cart, payment }) => {
       const allItems = (cart.items ?? []).map((item) => {
         return prepareLineItemData({
           item,
@@ -126,6 +135,15 @@ export const completeCartWorkflow = createWorkflow(
         .map((adjustment) => adjustment.code)
         .filter((code) => Boolean) as string[]
 
+      const transactions = [
+        {
+          amount: payment.raw_amount ?? payment.amount,
+          currency_code: payment.currency_code,
+          reference: "payment",
+          reference_id: payment.id,
+        },
+      ]
+
       return {
         region_id: cart.region?.id,
         customer_id: cart.customer?.id,
@@ -140,6 +158,7 @@ export const completeCartWorkflow = createWorkflow(
         shipping_methods: shippingMethods,
         metadata: cart.metadata,
         promo_codes: promoCodes,
+        transactions,
       }
     })
 

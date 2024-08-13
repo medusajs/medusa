@@ -8,7 +8,6 @@ import {
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
-import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
@@ -16,11 +15,15 @@ import {
 } from "../utils/fields"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
+import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 
 // TODO: The UpdateLineItemsWorkflow are missing the following steps:
 // - Validate shipping methods for new items (fulfillment module)
 
 export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
+/**
+ * This workflow updates a cart's line item.
+ */
 export const updateLineItemInCartWorkflow = createWorkflow(
   updateLineItemInCartWorkflowId,
   (input: WorkflowData<UpdateLineItemInCartWorkflowInputDTO>) => {
@@ -91,7 +94,11 @@ export const updateLineItemInCartWorkflow = createWorkflow(
 
     refreshCartShippingMethodsStep({ cart })
 
-    refreshCartPromotionsStep({ id: input.cart.id })
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart.id,
+      },
+    })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: { cart_id: input.cart.id },

@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface UpdateCartPromotionStepInput {
   id: string
   promo_codes?: string[]
   action?:
@@ -17,9 +17,12 @@ interface StepInput {
 }
 
 export const updateCartPromotionsStepId = "update-cart-promotions"
+/**
+ * This step updates the promotions applied on a cart.
+ */
 export const updateCartPromotionsStep = createStep(
   updateCartPromotionsStepId,
-  async (data: StepInput, { container }) => {
+  async (data: UpdateCartPromotionStepInput, { container }) => {
     const { promo_codes = [], id, action = PromotionActions.ADD } = data
     const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     const remoteQuery = container.resolve(

@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
 import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
@@ -12,6 +13,10 @@ import { useRouteModal } from "../../../../../components/modals"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
+import {
+  ProductCreateOptionSchema,
+  ProductCreateVariantSchema,
+} from "../../constants"
 import { ProductCreateSchemaType } from "../../types"
 
 type ProductCreateVariantsFormProps = {
@@ -21,11 +26,26 @@ type ProductCreateVariantsFormProps = {
 export const ProductCreateVariantsForm = ({
   form,
 }: ProductCreateVariantsFormProps) => {
-  const { regions } = useRegions({ limit: 9999 })
+  const {
+    regions,
+    isPending: isRegionsPending,
+    isError: isRegionError,
+    error: regionError,
+  } = useRegions({ limit: 9999 })
 
-  const { store, isPending, isError, error } = useStore()
+  const {
+    store,
+    isPending: isStorePending,
+    isError: isStoreError,
+    error: storeError,
+  } = useStore()
 
-  const { price_preferences: pricePreferences } = usePricePreferences({})
+  const {
+    price_preferences,
+    isPending: isPricePreferencesPending,
+    isError: isPricePreferencesError,
+    error: pricePreferencesError,
+  } = usePricePreferences({})
 
   const { setCloseOnEscape } = useRouteModal()
 
@@ -53,7 +73,7 @@ export const ProductCreateVariantsForm = ({
     options,
     currencies: currencyCodes,
     regions,
-    pricePreferences,
+    pricePreferences: price_preferences,
   })
 
   const variantData = useMemo(
@@ -61,13 +81,29 @@ export const ProductCreateVariantsForm = ({
     [variants]
   )
 
-  if (isError) {
-    throw error
+  const isPending =
+    isRegionsPending ||
+    isStorePending ||
+    isPricePreferencesPending ||
+    !store ||
+    !regions ||
+    !price_preferences
+
+  if (isRegionError) {
+    throw regionError
+  }
+
+  if (isStoreError) {
+    throw storeError
+  }
+
+  if (isPricePreferencesError) {
+    throw pricePreferencesError
   }
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      {isPending && !store ? (
+      {isPending ? (
         <div>Loading...</div>
       ) : (
         <DataGridRoot
@@ -81,7 +117,7 @@ export const ProductCreateVariantsForm = ({
   )
 }
 
-const columnHelper = createDataGridHelper<HttpTypes.AdminProductVariant>()
+const columnHelper = createDataGridHelper<ProductCreateVariantSchema>()
 
 const useColumns = ({
   options,
@@ -89,7 +125,7 @@ const useColumns = ({
   regions = [],
   pricePreferences = [],
 }: {
-  options: any // CreateProductOptionSchemaType[]
+  options: ProductCreateOptionSchema[]
   currencies?: string[]
   regions?: HttpTypes.AdminRegion[]
   pricePreferences?: HttpTypes.AdminPricePreference[]
@@ -142,7 +178,6 @@ const useColumns = ({
           )
         },
       }),
-
       columnHelper.column({
         id: "manage_inventory",
         name: t("fields.managedInventory"),
@@ -188,7 +223,7 @@ const useColumns = ({
         type: "boolean",
       }),
 
-      ...getPriceColumns<HttpTypes.AdminProductVariant>({
+      ...getPriceColumns<ProductCreateVariantSchema>({
         currencies,
         regions,
         pricePreferences,

@@ -32,6 +32,7 @@ export const DataTable = <TData,>({
   queryObject = {},
   pageSize,
   isLoading = false,
+  noHeader = false,
   layout = "fit",
   noRecords: noRecordsProps = {},
 }: DataTableProps<TData>) => {
@@ -84,6 +85,7 @@ export const DataTable = <TData,>({
         navigateTo={navigateTo}
         commands={commands}
         noResults={noResults}
+        noHeader={noHeader}
         layout={layout}
       />
     </div>

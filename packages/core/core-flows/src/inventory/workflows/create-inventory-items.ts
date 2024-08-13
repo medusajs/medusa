@@ -13,13 +13,13 @@ type LocationLevelWithoutInventory = Omit<
   InventoryTypes.CreateInventoryLevelInput,
   "inventory_item_id"
 >
-interface WorkflowInput {
+export interface CreateInventoryItemsWorkflowInput {
   items: (InventoryTypes.CreateInventoryItemInput & {
     location_levels?: LocationLevelWithoutInventory[]
   })[]
 }
 
-const buildLocationLevelMapAndItemData = (data: WorkflowInput) => {
+const buildLocationLevelMapAndItemData = (data: CreateInventoryItemsWorkflowInput) => {
   data.items = data.items ?? []
   const inventoryItems: InventoryTypes.CreateInventoryItemInput[] = []
   // Keep an index to location levels mapping to inject the created inventory item
@@ -66,9 +66,12 @@ const buildInventoryLevelsInput = (data: {
 }
 
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
+/**
+ * This workflow creates one or more inventory items.
+ */
 export const createInventoryItemsWorkflow = createWorkflow(
   createInventoryItemsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateInventoryItemsWorkflowInput>) => {
     const { locationLevelMap, inventoryItems } = transform(
       input,
       buildLocationLevelMapAndItemData

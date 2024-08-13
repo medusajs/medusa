@@ -28,11 +28,14 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-type WorkflowInput = {
+export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
 }
 
-const validationStep = createStep(
+/**
+ * This step validates that a return request can be confirmed.
+ */
+export const confirmReturnRequestValidationStep = createStep(
   "validate-confirm-return-request",
   async function ({
     order,
@@ -129,9 +132,12 @@ function extractReturnShippingOptionId({ orderPreview, orderReturn }) {
 }
 
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
+/**
+ * This workflow confirms a return request.
+ */
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: WorkflowInput): WorkflowResponse<OrderDTO> {
+  function (input: ConfirmReturnRequestWorkflowInput): WorkflowResponse<OrderDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "location_id", "canceled_at"],
@@ -184,7 +190,7 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       )
     })
 
-    validationStep({ order, orderReturn, orderChange })
+    confirmReturnRequestValidationStep({ order, orderReturn, orderChange })
 
     const orderPreview = previewOrderChangeStep(order.id)
 

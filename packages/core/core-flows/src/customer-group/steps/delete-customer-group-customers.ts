@@ -4,6 +4,9 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteCustomerGroupCustomersStepId =
   "delete-customer-group-customers"
+/**
+ * This step removes customers from groups.
+ */
 export const deleteCustomerGroupCustomersStep = createStep(
   deleteCustomerGroupCustomersStepId,
   async (data: GroupCustomerPair[], { container }) => {

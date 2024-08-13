@@ -6,7 +6,7 @@ import {
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface CreatePaymentSessionStepInput {
   payment_collection_id: string
   provider_id: string
   amount: BigNumberInput
@@ -16,9 +16,12 @@ interface StepInput {
 }
 
 export const createPaymentSessionStepId = "create-payment-session"
+/**
+ * This step creates a payment session.
+ */
 export const createPaymentSessionStep = createStep(
   createPaymentSessionStepId,
-  async (input: StepInput, { container }) => {
+  async (input: CreatePaymentSessionStepInput, { container }) => {
     const service = container.resolve<IPaymentModuleService>(
       ModuleRegistrationName.PAYMENT
     )

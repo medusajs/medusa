@@ -262,8 +262,13 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              path: "/advanced-development/workflows/add-workflow-hook",
+              path: "/advanced-development/workflows/workflow-hooks",
               title: "Workflow Hooks",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/workflows/add-workflow-hook",
+              title: "Expose a Hook",
             },
             {
               type: "link",

@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteFulfillmentSetsStepId = "delete-fulfillment-sets"
+/**
+ * This step deletes one or more fulfillment sets.
+ */
 export const deleteFulfillmentSetsStep = createStep(
   deleteFulfillmentSetsStepId,
   async (ids: string[], { container }) => {

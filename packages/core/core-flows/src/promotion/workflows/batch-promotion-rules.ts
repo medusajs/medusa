@@ -5,6 +5,7 @@ import {
   PromotionRuleDTO,
   UpdatePromotionRuleDTO,
 } from "@medusajs/types"
+import { RuleType } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -12,12 +13,14 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { RuleType } from "@medusajs/utils"
-import { createPromotionRulesWorkflowStep } from "../steps/create-promotion-rules-workflow"
-import { updatePromotionRulesWorkflowStep } from "../steps/update-promotion-rules-workflow"
 import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules-workflow"
+import { createPromotionRulesWorkflow } from "./create-promotion-rules"
+import { updatePromotionRulesWorkflow } from "./update-promotion-rules"
 
 export const batchPromotionRulesWorkflowId = "batch-promotion-rules"
+/**
+ * This workflow creates, updates, or deletes promotion rules.
+ */
 export const batchPromotionRulesWorkflow = createWorkflow(
   batchPromotionRulesWorkflowId,
   (
@@ -43,8 +46,12 @@ export const batchPromotionRulesWorkflow = createWorkflow(
     }))
 
     const [created, updated, deleted] = parallelize(
-      createPromotionRulesWorkflowStep(createInput),
-      updatePromotionRulesWorkflowStep(updateInput),
+      createPromotionRulesWorkflow.runAsStep({
+        input: createInput,
+      }),
+      updatePromotionRulesWorkflow.runAsStep({
+        input: updateInput,
+      }),
       deletePromotionRulesWorkflowStep(deleteInput)
     )
 

@@ -19,13 +19,17 @@ import { updateOrderClaimsStep } from "../../steps/claim/update-order-claims"
 import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import { createReturnsStep } from "../../steps/return/create-returns"
+import { updateOrderChangesStep } from "../../steps/update-order-changes"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 
-const validationStep = createStep(
+/**
+ * This step validates that items can be requested to return as part of a claim.
+ */
+export const orderClaimRequestItemReturnValidationStep = createStep(
   "claim-request-item-return-validation",
   async function ({
     order,
@@ -49,6 +53,9 @@ const validationStep = createStep(
 )
 
 export const orderClaimRequestItemReturnWorkflowId = "claim-request-item-return"
+/**
+ * This workflow requests one or more items to be returned as part of a claim.
+ */
 export const orderClaimRequestItemReturnWorkflow = createWorkflow(
   orderClaimRequestItemReturnWorkflowId,
   function (
@@ -115,7 +122,18 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
       name: "order-change-query",
     })
 
-    validationStep({
+    when({ createdReturn }, ({ createdReturn }) => {
+      return !!createdReturn?.length
+    }).then(() => {
+      updateOrderChangesStep([
+        {
+          id: orderChange.id,
+          return_id: createdReturn?.[0]?.id,
+        },
+      ])
+    })
+
+    orderClaimRequestItemReturnValidationStep({
       order,
       items: input.items,
       orderClaim,

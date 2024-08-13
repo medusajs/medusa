@@ -16,8 +16,6 @@ import {
   refreshCartShippingMethodsStep,
   updateLineItemsStep,
 } from "../steps"
-import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
-import { updateTaxLinesStep } from "../steps/update-tax-lines"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
@@ -26,8 +24,13 @@ import {
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
+import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
+import { updateTaxLinesWorkflow } from "./update-tax-lines"
 
 export const addToCartWorkflowId = "add-to-cart"
+/**
+ * This workflow adds items to a cart.
+ */
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
   (input: WorkflowData<AddToCartWorkflowInputDTO>) => {
@@ -114,10 +117,19 @@ export const addToCartWorkflow = createWorkflow(
 
     parallelize(
       refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesStep({ cart_or_cart_id: input.cart.id, items })
+      updateTaxLinesWorkflow.runAsStep({
+        input: {
+          cart_or_cart_id: input.cart.id,
+          items,
+        },
+      })
     )
 
-    refreshCartPromotionsStep({ id: input.cart.id })
+    updateCartPromotionsWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart.id,
+      },
+    })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: {

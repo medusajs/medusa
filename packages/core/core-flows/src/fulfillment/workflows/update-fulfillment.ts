@@ -7,6 +7,9 @@ import {
 import { updateFulfillmentStep } from "../steps"
 
 export const updateFulfillmentWorkflowId = "update-fulfillment-workflow"
+/**
+ * This workflow updates a fulfillment.
+ */
 export const updateFulfillmentWorkflow = createWorkflow(
   updateFulfillmentWorkflowId,
   (input: WorkflowData<FulfillmentWorkflow.UpdateFulfillmentWorkflowInput>) => {

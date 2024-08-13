@@ -4294,7 +4294,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@0.0.1, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
@@ -4327,7 +4327,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/auth-emailpass": 0.0.1
     "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
@@ -4371,7 +4370,7 @@ __metadata:
     "@medusajs/utils": ^1.11.9
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    ioredis: ^5.3.1
+    ioredis: ^5.4.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
@@ -4480,7 +4479,6 @@ __metadata:
     "@medusajs/ui": 3.0.0
     "@medusajs/ui-preset": 1.1.3
     "@radix-ui/react-collapsible": 1.1.0
-    "@radix-ui/react-hover-card": 1.1.1
     "@tanstack/react-query": ^5.28.14
     "@tanstack/react-table": 8.10.7
     "@tanstack/react-virtual": ^3.8.3
@@ -4501,6 +4499,7 @@ __metadata:
     match-sorter: ^6.3.4
     postcss: ^8.4.33
     prettier: ^3.1.1
+    prop-types: ^15.8.1
     qs: ^6.12.0
     react: ^18.2.0
     react-country-flag: ^3.1.0
@@ -4510,7 +4509,6 @@ __metadata:
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-nestable: ^3.0.2
-    react-resizable-panels: ^2.0.16
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
     tsup: ^8.0.2
@@ -4545,7 +4543,7 @@ __metadata:
     awilix: ^8.0.0
     bullmq: 5.12.0
     cross-env: ^5.2.1
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
@@ -4623,7 +4621,7 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.18.2
     express-session: ^1.17.3
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     ioredis-mock: 8.4.0
     jsonwebtoken: ^9.0.2
     medusa-telemetry: ^0.0.17
@@ -4803,7 +4801,7 @@ __metadata:
     medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
-    pg: ^8.11.0
+    pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
@@ -4888,7 +4886,7 @@ __metadata:
     express-session: ^1.17.3
     fs-exists-cached: ^1.0.0
     glob: ^7.1.6
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     ioredis-mock: 8.4.0
     jest: ^29.7.0
     lodash: ^4.17.21
@@ -4900,7 +4898,6 @@ __metadata:
     passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
-    pg: ^8.11.2
     qs: ^6.11.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
@@ -4928,7 +4925,6 @@ __metadata:
     graphql: ^16.6.0
     jest: ^29.7.0
     knex: 2.4.2
-    pg: ^8.11.2
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
@@ -5287,7 +5283,7 @@ __metadata:
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
-    ioredis: ^5.2.5
+    ioredis: ^5.4.1
     rimraf: ^5.0.1
     typescript: ^5.1.6
     vite: ^5.2.11
@@ -5476,7 +5472,7 @@ __metadata:
     bullmq: 5.12.0
     cross-env: ^5.2.1
     dotenv: ^16.4.5
-    ioredis: ^5.3.2
+    ioredis: ^5.4.1
     jest: ^29.7.0
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
@@ -6571,33 +6567,6 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 2593d4bbd4a3525624675ec1d5a591a44f015f43f449b99a5a33228159b83f445e8f1c6bc6f9f2011387abaeadd3df406623c08d4e795b7ae509795652a1d069
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-hover-card@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@radix-ui/react-hover-card@npm:1.1.1"
-  dependencies:
-    "@radix-ui/primitive": 1.1.0
-    "@radix-ui/react-compose-refs": 1.1.0
-    "@radix-ui/react-context": 1.1.0
-    "@radix-ui/react-dismissable-layer": 1.1.0
-    "@radix-ui/react-popper": 1.2.0
-    "@radix-ui/react-portal": 1.1.1
-    "@radix-ui/react-presence": 1.1.0
-    "@radix-ui/react-primitive": 2.0.0
-    "@radix-ui/react-use-controllable-state": 1.1.0
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: d27f89258caec7660113f6bdfcffdd8999c8ac25761eb099b467cdb6c2cdea14c2953a100130e212cfb2621f9718b6291e292be915280698e0cfd4c1b3ed29af
   languageName: node
   linkType: hard
 
@@ -15470,11 +15439,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
+    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@types/chalk": ^2.2.0
     "@types/commander": ^2.12.2
     "@types/configstore": ^6.0.0
     "@types/inquirer": ^9.0.3
+    "@types/node": ^20.12.11
     "@types/node-emoji": ^1.8.2
     "@types/pg": ^8.6.6
     "@types/uuid": ^9.0.1
@@ -15497,7 +15468,7 @@ __metadata:
     node-fetch: ^3.3.1
     open: ^9.1.0
     ora: ^6.3.0
-    pg: ^8.10.0
+    pg: ^8.11.3
     prettier: ^2.8.8
     slugify: ^1.6.6
     ts-node: ^10.9.1
@@ -19806,7 +19777,7 @@ __metadata:
     form-data: ^4.0.0
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
-    pg: ^8.11.0
+    pg: ^8.11.3
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -19843,7 +19814,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.11.0
+    pg: ^8.11.3
     typescript: ^5.3.3
   languageName: unknown
   linkType: soft
@@ -19879,7 +19850,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
-    pg: ^8.11.0
+    pg: ^8.11.3
     typeorm: ^0.3.16
     typescript: ^5.3.3
   languageName: unknown
@@ -19940,7 +19911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.5, ioredis@npm:^5.3.1, ioredis@npm:^5.3.2, ioredis@npm:^5.4.1":
+"ioredis@npm:^5.4.1":
   version: 5.4.1
   resolution: "ioredis@npm:5.4.1"
   dependencies:
@@ -22756,6 +22727,7 @@ __metadata:
   peerDependencies:
     "@medusajs/medusa": ">1.19"
     "@medusajs/modules-sdk": ^1.12.10
+    "@mikro-orm/core": 5.9.7
     axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0
@@ -24647,6 +24619,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-cloudflare@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "pg-cloudflare@npm:1.1.1"
+  checksum: a68b957f755be6af813d68ccaf4c906a000fd2ecb362cd281220052cc9e2f6c26da3b88792742387008c30b3bf0d2fa3a0eff04aeb8af4414023c99ae78e07bd
+  languageName: node
+  linkType: hard
+
 "pg-connection-string@npm:2.5.0":
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
@@ -24661,7 +24640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.5.0":
+"pg-connection-string@npm:^2.6.2":
   version: 2.6.4
   resolution: "pg-connection-string@npm:2.6.4"
   checksum: 0d0b617df0fc6507bf6a94bdcd56c7a305788a1402d69bff9773350947c8f525d6d8136128065370749a3325e99658ae40fbdcce620fb8e60126181f0591a6a6
@@ -24698,7 +24677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.6.0":
+"pg-pool@npm:^3.6.1":
   version: 3.6.2
   resolution: "pg-pool@npm:3.6.2"
   peerDependencies:
@@ -24742,23 +24721,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:8.10.0":
-  version: 8.10.0
-  resolution: "pg@npm:8.10.0"
+"pg@npm:8.11.3":
+  version: 8.11.3
+  resolution: "pg@npm:8.11.3"
   dependencies:
     buffer-writer: 2.0.0
     packet-reader: 1.0.0
-    pg-connection-string: ^2.5.0
-    pg-pool: ^3.6.0
+    pg-cloudflare: ^1.1.1
+    pg-connection-string: ^2.6.2
+    pg-pool: ^3.6.1
     pg-protocol: ^1.6.0
     pg-types: ^2.1.0
     pgpass: 1.x
   peerDependencies:
     pg-native: ">=3.0.1"
+  dependenciesMeta:
+    pg-cloudflare:
+      optional: true
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 9c8e5b4af598d44b31caa55a2e5f1e841a2018e852d1e237a42c85a17ae6b68b8f3fc2ea270d5e02532be88c550124047ed28da5e0d55701b87dc4383b2dc846
+  checksum: 07e6967fc8bd5d72bab9be6620626e8e3ab59128ebf56bf0de83d67f10801a19221d88b3317e90b93339ba48d0498b39967b782ae39686aabda6bc647bceb438
   languageName: node
   linkType: hard
 
@@ -26301,16 +26284,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: dcd523ada602bd0a839c2032cadf0b3e4af55ee85acefee3760976a9cceaa4606927801b093bbb8bf3c2989c71e048f5428c2c6eb9e6681762e86356833d039b
-  languageName: node
-  linkType: hard
-
-"react-resizable-panels@npm:^2.0.16":
-  version: 2.0.19
-  resolution: "react-resizable-panels@npm:2.0.19"
-  peerDependencies:
-    react: ^16.14.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
-  checksum: eb9cb511aec917895dba842cb933c9885ea510f752b4f3b8c358bf33be8b7b6bf2fc4a81db7a16977e6b09f614a14c6652f15232ff03bce68a8845dcf179abf7
   languageName: node
   linkType: hard
 

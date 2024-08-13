@@ -5,7 +5,7 @@ import {
 } from "../../../../../../types/routing"
 import { listPrices } from "../../../queries"
 import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
-import { BatchMethodRequest } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
 import {
   AdminCreatePriceListPriceType,
   AdminUpdatePriceListPriceType,
@@ -19,7 +19,7 @@ export const POST = async (
       AdminUpdatePriceListPriceType
     >
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminPriceListBatchResponse>
 ) => {
   const id = req.params.id
   const {

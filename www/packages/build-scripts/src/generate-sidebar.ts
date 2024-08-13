@@ -1,17 +1,15 @@
-import type {
-  InteractiveSidebarItem,
-  RawSidebarItem,
-  SidebarItemLink,
-} from "types"
-import findPageHeading from "./utils/find-page-heading.js"
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "fs"
+import type { InteractiveSidebarItem, RawSidebarItem } from "types"
+import { existsSync, mkdirSync, readdirSync, statSync } from "fs"
 import path from "path"
-import { sidebarAttachHrefCommonOptions } from "./index.js"
-import { getFrontMatterUtil } from "remark-rehype-plugins"
-import findMetadataTitle from "./utils/find-metadata-title.js"
+import { getSidebarItemLink, sidebarAttachHrefCommonOptions } from "./index.js"
+import getCoreFlowsRefSidebarChildren from "./utils/get-core-flows-ref-sidebar-children.js"
 
-type ItemsToAdd = InteractiveSidebarItem & {
+export type ItemsToAdd = InteractiveSidebarItem & {
   sidebar_position?: number
+}
+
+const customGenerators: Record<string, () => Promise<ItemsToAdd[]>> = {
+  "core-flows": getCoreFlowsRefSidebarChildren,
 }
 
 async function getSidebarItems(
@@ -54,33 +52,17 @@ async function getSidebarItems(
       continue
     }
 
-    const frontmatter = await getFrontMatterUtil(filePath)
-    if (frontmatter.sidebar_autogenerate_exclude) {
+    const newItem = await getSidebarItemLink({
+      filePath,
+      basePath,
+      fileBasename,
+    })
+
+    if (!newItem) {
       continue
     }
 
-    const fileContent = frontmatter.sidebar_label
-      ? ""
-      : readFileSync(filePath, "utf-8")
-
-    const newItem = sidebarAttachHrefCommonOptions([
-      {
-        type: "link",
-        path:
-          frontmatter.slug ||
-          filePath.replace(basePath, "").replace(`/${fileBasename}`, ""),
-        title:
-          frontmatter.sidebar_label ||
-          findMetadataTitle(fileContent) ||
-          findPageHeading(fileContent) ||
-          "",
-      },
-    ])[0] as SidebarItemLink
-
-    items.push({
-      ...newItem,
-      sidebar_position: frontmatter.sidebar_position,
-    })
+    items.push(newItem)
 
     mainPageIndex = items.length - 1
   }
@@ -112,9 +94,12 @@ async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
         return child
       }
     )
-  }
-
-  if (item.children) {
+  } else if (
+    item.custom_autogenerate &&
+    Object.hasOwn(customGenerators, item.custom_autogenerate)
+  ) {
+    item.children = await customGenerators[item.custom_autogenerate]()
+  } else if (item.children) {
     item.children = await Promise.all(
       item.children.map(async (childItem) => await checkItem(childItem))
     )

@@ -8,6 +8,9 @@ import { createUsersStep } from "../steps"
 import { UserWorkflow } from "@medusajs/types"
 
 export const createUsersWorkflowId = "create-users-workflow"
+/**
+ * This workflow creates one or more users.
+ */
 export const createUsersWorkflow = createWorkflow(
   createUsersWorkflowId,
   (

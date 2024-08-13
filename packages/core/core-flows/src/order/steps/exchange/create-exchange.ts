@@ -2,12 +2,13 @@ import { CreateOrderExchangeDTO, IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CreateOrderExchangesStepInput = CreateOrderExchangeDTO[]
-
 export const createOrderExchangesStepId = "create-order-exchanges"
+/**
+ * This step creates one or more order exchanges.
+ */
 export const createOrderExchangesStep = createStep(
   createOrderExchangesStepId,
-  async (data: CreateOrderExchangesStepInput, { container }) => {
+  async (data: CreateOrderExchangeDTO[], { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

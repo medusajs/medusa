@@ -29,3 +29,11 @@ export interface AdminProduct
   tags?: AdminProductTag[] | null
 }
 export type AdminProductStatus = ProductStatus
+export interface AdminProductVariantInventoryLink {
+  productService: {
+    variant_id: string
+  }
+  inventoryService: {
+    inventory_item_id: string
+  }
+}

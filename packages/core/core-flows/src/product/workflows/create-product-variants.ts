@@ -20,8 +20,11 @@ import { createProductVariantsStep } from "../steps/create-product-variants"
 import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
 import { Modules } from "@medusajs/utils"
 
-// TODO: Create separate typings for the workflow input
-type WorkflowInput = {
+/**
+ * @privateRemarks
+ * TODO: Create separate typings for the workflow input
+ */
+export type CreateProductVariantsWorkflowInput = {
   product_variants: (ProductTypes.CreateProductVariantDTO & {
     prices?: PricingTypes.CreateMoneyAmountDTO[]
   } & {
@@ -49,7 +52,7 @@ const buildLink = (
 const buildLinksToCreate = (data: {
   createdVariants: ProductTypes.ProductVariantDTO[]
   inventoryIndexMap: Record<number, InventoryTypes.InventoryItemDTO>
-  input: WorkflowInput
+  input: CreateProductVariantsWorkflowInput
 }) => {
   let index = 0
   const linksToCreate: LinkDefinition[] = []
@@ -88,7 +91,7 @@ const buildLinksToCreate = (data: {
 
 const buildVariantItemCreateMap = (data: {
   createdVariants: ProductTypes.ProductVariantDTO[]
-  input: WorkflowInput
+  input: CreateProductVariantsWorkflowInput
 }) => {
   let index = 0
   const map: Record<number, InventoryTypes.CreateInventoryItemInput> = {}
@@ -124,10 +127,12 @@ const buildVariantItemCreateMap = (data: {
 }
 
 export const createProductVariantsWorkflowId = "create-product-variants"
-
+/**
+ * This workflow creates one or more product variants.
+ */
 export const createProductVariantsWorkflow = createWorkflow(
   createProductVariantsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<CreateProductVariantsWorkflowInput>) => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is created.
     const variantsWithoutPrices = transform({ input }, (data) =>
       data.input.product_variants.map((v) => ({

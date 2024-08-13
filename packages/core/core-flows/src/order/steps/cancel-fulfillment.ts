@@ -2,12 +2,13 @@ import { CancelOrderFulfillmentDTO, IOrderModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type CancelOrderFulfillmentStepInput = CancelOrderFulfillmentDTO
-
 export const cancelOrderFulfillmentStepId = "cancel-order-fulfillment"
+/**
+ * This step cancels an order's fulfillment.
+ */
 export const cancelOrderFulfillmentStep = createStep(
   cancelOrderFulfillmentStepId,
-  async (data: CancelOrderFulfillmentStepInput, { container }) => {
+  async (data: CancelOrderFulfillmentDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )

@@ -2,7 +2,7 @@ import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-import { AdditionalData, AdminCustomer } from "@medusajs/types"
+import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -13,7 +13,7 @@ import { AdminUpdateCustomerType } from "../validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<{ customer: AdminCustomer }>
+  res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
   const customer = await refetchCustomer(
     req.params.id,
@@ -33,7 +33,7 @@ export const GET = async (
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerType & AdditionalData>,
-  res: MedusaResponse<{ customer: AdminCustomer }>
+  res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
   const { additional_data, ...rest } = req.validatedBody
 
@@ -55,7 +55,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<DeleteResponse<"customer">>
 ) => {
   const id = req.params.id
   const deleteCustomers = deleteCustomersWorkflow(req.scope)

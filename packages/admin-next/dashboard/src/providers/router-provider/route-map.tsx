@@ -1293,6 +1293,42 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+          {
+            path: "return-reasons",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Return Reasons",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/return-reasons/return-reason-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/return-reasons/return-reason-create"
+                      ),
+                  },
+
+                  {
+                    path: ":id",
+                    children: [
+                      {
+                        path: "edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/return-reasons/return-reason-edit"
+                          ),
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
           ...SettingsExtensions,
         ],
       },

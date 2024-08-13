@@ -8,15 +8,18 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-interface StepInput {
+export interface UpdateLineItemsStepInput {
   id: string
   items: UpdateLineItemWithSelectorDTO[]
 }
 
 export const updateLineItemsStepId = "update-line-items-step"
+/**
+ * This step updates a cart's line items.
+ */
 export const updateLineItemsStep = createStep(
   updateLineItemsStepId,
-  async (input: StepInput, { container }) => {
+  async (input: UpdateLineItemsStepInput, { container }) => {
     const { id, items = [] } = input
 
     if (!items?.length) {

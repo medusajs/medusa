@@ -13,7 +13,10 @@ import { createRemoteLinkStep } from "../../../common/steps/create-remote-links"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import { createPaymentCollectionsStep } from "../steps/create-payment-collection"
 
-const validateExistingPaymentCollection = createStep(
+/**
+ * This step validates that a cart doesn't have a payment collection.
+ */
+export const validateExistingPaymentCollectionStep = createStep(
   "validate-existing-payment-collection",
   ({ cart }: { cart: CartDTO & { payment_collection?: any } }) => {
     if (cart.payment_collection) {
@@ -24,6 +27,9 @@ const validateExistingPaymentCollection = createStep(
 
 export const createPaymentCollectionForCartWorkflowId =
   "create-payment-collection-for-cart"
+/**
+ * This workflow creates a payment collection for a cart.
+ */
 export const createPaymentCollectionForCartWorkflow = createWorkflow(
   createPaymentCollectionForCartWorkflowId,
   (
@@ -44,7 +50,7 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
       list: false,
     })
 
-    validateExistingPaymentCollection({ cart })
+    validateExistingPaymentCollectionStep({ cart })
 
     const paymentData = transform({ cart }, ({ cart }) => {
       return {

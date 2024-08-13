@@ -2742,7 +2742,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
         tax_total: 0,
         discount_total: 300,
         discount_tax_total: 0,
-        original_total: 220,
+        original_total: 210,
         original_tax_total: 0,
         item_total: 200,
         item_subtotal: 500,
@@ -2777,7 +2777,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           precision: 20,
         },
         raw_original_total: {
-          value: "220",
+          value: "210",
           precision: 20,
         },
         raw_original_tax_total: {

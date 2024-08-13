@@ -21,7 +21,7 @@ import {
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
 
-type UpdateProductsStepInputSelector = {
+export type UpdateProductsWorkflowInputSelector = {
   selector: ProductTypes.FilterableProductProps
   update: Omit<ProductTypes.UpdateProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
@@ -29,24 +29,22 @@ type UpdateProductsStepInputSelector = {
   }
 } & AdditionalData
 
-type UpdateProductsStepInputProducts = {
+export type UpdateProductsWorkflowInputProducts = {
   products: (Omit<ProductTypes.UpsertProductDTO, "variants"> & {
     sales_channels?: { id: string }[]
     variants?: UpdateProductVariantWorkflowInputDTO[]
   })[]
 } & AdditionalData
 
-type UpdateProductsStepInput =
-  | UpdateProductsStepInputSelector
-  | UpdateProductsStepInputProducts
-
-type WorkflowInput = UpdateProductsStepInput
+export type UpdateProductWorkflowInput = 
+  | UpdateProductsWorkflowInputSelector
+  | UpdateProductsWorkflowInputProducts
 
 function prepareUpdateProductInput({
   input,
 }: {
-  input: WorkflowInput
-}): UpdateProductsStepInput {
+  input: UpdateProductWorkflowInput
+}): UpdateProductWorkflowInput {
   if ("products" in input) {
     if (!input.products.length) {
       return { products: [] }
@@ -82,7 +80,7 @@ function updateProductIds({
   input,
 }: {
   updatedProducts: ProductTypes.ProductDTO[]
-  input: WorkflowInput
+  input: UpdateProductWorkflowInput
 }) {
   let productIds = updatedProducts.map((p) => p.id)
 
@@ -101,7 +99,7 @@ function prepareSalesChannelLinks({
   updatedProducts,
 }: {
   updatedProducts: ProductTypes.ProductDTO[]
-  input: WorkflowInput
+  input: UpdateProductWorkflowInput
 }): Record<string, Record<string, any>>[] {
   if ("products" in input) {
     if (!input.products.length) {
@@ -143,7 +141,7 @@ function prepareVariantPrices({
   updatedProducts,
 }: {
   updatedProducts: ProductTypes.ProductDTO[]
-  input: WorkflowInput
+  input: UpdateProductWorkflowInput
 }): {
   variant_id: string
   product_id: string
@@ -209,9 +207,12 @@ function prepareToDeleteSalesChannelLinks({
 }
 
 export const updateProductsWorkflowId = "update-products"
+/**
+ * This workflow updates one or more products.
+ */
 export const updateProductsWorkflow = createWorkflow(
   updateProductsWorkflowId,
-  (input: WorkflowData<WorkflowInput>) => {
+  (input: WorkflowData<UpdateProductWorkflowInput>) => {
     // We only get the variant ids of products that are updating the variants and prices.
     const variantIdsSelector = transform({ input }, (data) => {
       if ("products" in data.input) {

@@ -2113,6 +2113,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
+                path: "/troubleshooting/pnpm-errors",
+                title: "pnpm Errors",
+              },
+              {
+                type: "link",
                 path: "/troubleshooting/general-errors",
                 title: "General Errors",
               },
@@ -2269,6 +2274,13 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         isChildSidebar: true,
         autogenerate_path: "/references/helper_steps/functions",
       },
+      // TODO uncomment once available.
+      // {
+      //   title: "Medusa Workflows Reference",
+      //   path: "/medusa-workflows-reference",
+      //   isChildSidebar: true,
+      //   custom_autogenerate: "core-flows",
+      // },
     ],
   },
   {

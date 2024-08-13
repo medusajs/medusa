@@ -191,7 +191,7 @@ export function decorateCartTotals(
   // TODO: Gift Card calculations
 
   const originalTempTotal = MathBN.add(
-    subtotal,
+    itemsOriginalSubtotal,
     shippingOriginalTotal,
     originalTaxTotal
   )

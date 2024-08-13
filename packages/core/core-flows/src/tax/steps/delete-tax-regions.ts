@@ -3,6 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteTaxRegionsStepId = "delete-tax-regions"
+/**
+ * This step deletes one or more tax regions.
+ */
 export const deleteTaxRegionsStep = createStep(
   deleteTaxRegionsStepId,
   async (ids: string[], { container }) => {

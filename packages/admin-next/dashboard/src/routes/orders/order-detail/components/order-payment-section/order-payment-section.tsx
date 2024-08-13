@@ -1,4 +1,4 @@
-import { ArrowDownRightMini, XCircle } from "@medusajs/icons"
+import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
 import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
@@ -80,40 +80,42 @@ const Refund = ({
   refund,
   currencyCode,
 }: {
-  refund: MedusaRefund
+  refund: HttpTypes.AdminRefund
   currencyCode: string
 }) => {
   const { t } = useTranslation()
-
-  const BadgeComponent = (
-    <Badge size="2xsmall" className="cursor-default select-none capitalize">
-      {refund.reason}
+  const RefundReasonBadge = refund?.refund_reason && (
+    <Badge
+      size="2xsmall"
+      className="cursor-default select-none capitalize"
+      rounded="full"
+    >
+      {refund.refund_reason.label}
     </Badge>
   )
 
-  const Render = refund.note ? (
-    <Tooltip content={refund.note}>{BadgeComponent}</Tooltip>
-  ) : (
-    BadgeComponent
+  const RefundNoteIndicator = refund.note && (
+    <Tooltip content={refund.note}>
+      <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+    </Tooltip>
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
+    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
       <div className="flex flex-row">
         <div className="self-center pr-3">
           <ArrowDownRightMini className="text-ui-fg-muted" />
         </div>
         <div>
           <Text size="small" leading="compact" weight="plus">
-            {t("orders.payment.refund")}
+            {t("orders.payment.refund")} {RefundNoteIndicator}
           </Text>
           <Text size="small" leading="compact">
             {format(new Date(refund.created_at), "dd MMM, yyyy, HH:mm:ss")}
           </Text>
         </div>
       </div>
-      <div className="flex items-center justify-end"></div>
-      <div className="flex items-center justify-end">{Render}</div>
+      <div className="flex items-center justify-end">{RefundReasonBadge}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
           - {getLocaleAmount(refund.amount, currencyCode)}
@@ -316,9 +318,10 @@ const Total = ({
 }) => {
   const { t } = useTranslation()
 
+  const refunds = payments.map((payment) => payment.refunds).flat(1)
   const paid = payments.reduce((acc, payment) => acc + payment.amount, 0)
-  const refunded = payments.reduce(
-    (acc, payment) => acc + (payment.amount_refunded || 0),
+  const refunded = refunds.reduce(
+    (acc, refund) => acc + (refund.amount || 0),
     0
   )
 

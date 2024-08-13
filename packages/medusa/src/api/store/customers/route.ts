@@ -7,10 +7,11 @@ import { MedusaError } from "@medusajs/utils"
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
 import { refetchCustomer } from "./helpers"
 import { StoreCreateCustomerType } from "./validators"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreateCustomerType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.StoreCustomerResponse>
 ) => {
   // If `actor_id` is present, the request carries authentication for an existing customer
   if (req.auth_context.actor_id) {

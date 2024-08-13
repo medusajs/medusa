@@ -2,11 +2,14 @@ import { OrderChangeDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-type ConfirmOrderChangesInput = {
+export type ConfirmOrderChangesInput = {
   orderId: string
   changes: OrderChangeDTO[]
 }
 
+/**
+ * This step confirms changes of an order.
+ */
 export const confirmOrderChanges = createStep(
   "confirm-order-changes",
   async (input: ConfirmOrderChangesInput, { container }) => {

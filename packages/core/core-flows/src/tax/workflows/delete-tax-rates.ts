@@ -5,12 +5,15 @@ import {
 } from "@medusajs/workflows-sdk"
 import { deleteTaxRatesStep } from "../steps"
 
-type WorkflowInput = { ids: string[] }
+export type DeleteTaxRatesWorkflowInput = { ids: string[] }
 
 export const deleteTaxRatesWorkflowId = "delete-tax-rates"
+/**
+ * This workflow deletes one or more tax rates.
+ */
 export const deleteTaxRatesWorkflow = createWorkflow(
   deleteTaxRatesWorkflowId,
-  (input: WorkflowData<WorkflowInput>): WorkflowResponse<void> => {
+  (input: WorkflowData<DeleteTaxRatesWorkflowInput>): WorkflowResponse<void> => {
     return new WorkflowResponse(deleteTaxRatesStep(input.ids))
   }
 )

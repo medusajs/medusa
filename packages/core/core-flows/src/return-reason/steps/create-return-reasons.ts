@@ -6,6 +6,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createReturnReasonsStepId = "create-return-reasons"
+/**
+ * This step creates one or more return reasons.
+ */
 export const createReturnReasonsStep = createStep(
   createReturnReasonsStepId,
   async (data: CreateOrderReturnReasonDTO[], { container }) => {

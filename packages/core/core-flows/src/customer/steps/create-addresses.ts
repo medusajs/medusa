@@ -6,6 +6,9 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCustomerAddressesStepId = "create-customer-addresses"
+/**
+ * This step creates one or more customer addresses.
+ */
 export const createCustomerAddressesStep = createStep(
   createCustomerAddressesStepId,
   async (data: CreateCustomerAddressDTO[], { container }) => {
