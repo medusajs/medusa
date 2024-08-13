@@ -2656,3 +2656,12 @@ export interface OrderChangeReturn {
    */
   shippingMethods: any[]
 }
+
+export interface OrderPreviewDTO
+  extends Omit<OrderDTO, "items" | "shipping_methods"> {
+  order_change: OrderChangeDTO
+  items: (OrderLineItemDTO & { actions?: OrderChangeActionDTO[] })[]
+  shipping_methods: (OrderShippingMethodDTO & {
+    actions?: OrderChangeActionDTO[]
+  })[]
+}

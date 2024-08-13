@@ -31,6 +31,7 @@ import {
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
   OrderLineItemTaxLineDTO,
+  OrderPreviewDTO,
   OrderReturnItemDTO,
   OrderReturnReasonDTO,
   OrderShippingMethodAdjustmentDTO,
@@ -2520,7 +2521,7 @@ export interface IOrderModuleService extends IModuleService {
   previewOrderChange(
     orderId: string,
     sharedContext?: Context
-  ): Promise<OrderDTO>
+  ): Promise<OrderPreviewDTO>
 
   /**
    * This method cancels an order's change, providing cancelation details.
