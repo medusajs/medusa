@@ -141,15 +141,6 @@ export function medusaIntegrationTestRunner({
     console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)
 
-    try {
-      dbUtils.pgConnection_ = await initDb({
-        env,
-      })
-    } catch (error) {
-      console.error("Error initializing database", error?.message)
-      throw error
-    }
-
     let containerRes
     let serverShutdownRes
     let portRes
@@ -169,6 +160,16 @@ export function medusaIntegrationTestRunner({
       portRes = port
     } catch (error) {
       console.error("Error starting the app", error?.message)
+      throw error
+    }
+
+    try {
+      console.log(`Running migrations and syncing links ${dbName}`)
+      dbUtils.pgConnection_ = await initDb({
+        env,
+      })
+    } catch (error) {
+      console.error("Error initializing database", error?.message)
       throw error
     }
 

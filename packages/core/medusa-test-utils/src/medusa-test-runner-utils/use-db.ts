@@ -27,6 +27,9 @@ export async function initDb({ env = {} }: { env?: Record<any, any> }) {
     const planner = await medusaAppLoader.getLinksExecutionPlanner()
 
     const actionPlan = await planner.createPlan()
+    actionPlan.forEach((action) => {
+      console.log(`Sync links: "${action.action}" ${action.tableName}`)
+    })
     await planner.executePlan(actionPlan)
 
     /**
