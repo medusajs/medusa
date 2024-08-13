@@ -8,8 +8,8 @@ import { SidebarItem } from "./Item"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
-import { useClickOutside } from "../.."
 import { SidebarSeparator } from "./Separator"
+import { useClickOutside, useKeyboardShortcut } from "@/hooks"
 
 export type SidebarProps = {
   className?: string
@@ -33,6 +33,8 @@ export const Sidebar = ({
     sidebarRef,
     sidebarTopHeight,
     setSidebarTopHeight,
+    desktopSidebarOpen,
+    setDesktopSidebarOpen
   } = useSidebar()
   useClickOutside({
     elmRef: sidebarWrapperRef,
@@ -41,6 +43,11 @@ export const Sidebar = ({
         setMobileSidebarOpen(false)
       }
     },
+  })
+  useKeyboardShortcut({
+    metakey: true,
+    shortcutKeys: ["."],
+    action: () => setDesktopSidebarOpen((prev) => !prev)
   })
 
   const sidebarItems = useMemo(
@@ -73,6 +80,7 @@ export const Sidebar = ({
             "rounded",
             "lg:!left-0 lg:!top-0 lg:shadow-none",
           ],
+          !desktopSidebarOpen && "!absolute !-left-full",
           className
         )}
         style={{

@@ -2,8 +2,8 @@
 
 import clsx from "clsx"
 import React, { useRef, useState } from "react"
-import { BorderedIcon, Menu, useClickOutside } from "../../../.."
-import { EllipsisHorizontal, TimelineVertical } from "@medusajs/icons"
+import { BorderedIcon, getOsShortcut, Menu, useClickOutside } from "../../../.."
+import { EllipsisHorizontal, SidebarLeft, TimelineVertical } from "@medusajs/icons"
 import { MedusaIcon } from "../../../Icons/MedusaLogo"
 import { HouseIcon } from "../../../Icons/House"
 
@@ -58,6 +58,15 @@ export const SidebarTopMedusaMenu = () => {
               title: "Changelog",
               link: "https://medusajs.com/changelog",
             },
+            {
+              type: "divider",
+            },
+            {
+              type: "action",
+              title: "Hide Sidebar",
+              icon: <SidebarLeft />,
+              shortcut: `${getOsShortcut()}.`
+            }
           ]}
         />
       </div>

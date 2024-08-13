@@ -9,4 +9,11 @@ export type MenuItemDivider = {
   type: "divider"
 }
 
-export type MenuItem = MenuItemLink | MenuItemDivider
+export type MenuItemAction = {
+  type: "action"
+  icon: React.ReactNode
+  title: string
+  shortcut?: string
+}
+
+export type MenuItem = MenuItemLink | MenuItemDivider | MenuItemAction
