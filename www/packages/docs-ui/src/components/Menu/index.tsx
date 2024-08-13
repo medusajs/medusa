@@ -3,6 +3,7 @@ import React from "react"
 import { MenuItem as MenuItemType } from "types"
 import { MenuItem } from "./Item"
 import { MenuDivider } from "./Divider"
+import { MenuAction } from "./Action"
 
 export type MenuProps = {
   items: MenuItemType[]
@@ -21,6 +22,7 @@ export const Menu = ({ items, className }: MenuProps) => {
       {items.map((item, index) => (
         <React.Fragment key={index}>
           {item.type === "link" && <MenuItem item={item} />}
+          {item.type === "action" && <MenuAction item={item} />}
           {item.type === "divider" && <MenuDivider />}
         </React.Fragment>
       ))}
