@@ -28,7 +28,6 @@ export interface IDmlEntity<
   Schema extends DMLSchema,
   Config extends IDmlEntityConfig
 > {
-  __isDmlEntity: boolean
   name: InferDmlEntityNameFromConfig<Config>
   schema: Schema
 }

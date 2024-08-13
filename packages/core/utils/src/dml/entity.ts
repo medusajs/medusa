@@ -12,6 +12,8 @@ import { isObject, isString, toCamelCase } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
+const IsDmlEntity = Symbol.for("isDmlEntity")
+
 function extractNameAndTableName<const Config extends IDmlEntityConfig>(
   nameOrConfig: Config
 ) {
@@ -58,7 +60,7 @@ export class DmlEntity<
   const TConfig extends IDmlEntityConfig
 > implements IDmlEntity<Schema, TConfig>
 {
-  __isDmlEntity = true
+  [IsDmlEntity] = true
 
   name: InferDmlEntityNameFromConfig<TConfig>
   schema: Schema
@@ -82,7 +84,7 @@ export class DmlEntity<
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any, any> {
-    return !!entity?.["__isDmlEntity"]
+    return !!entity?.[IsDmlEntity]
   }
 
   /**
