@@ -1,15 +1,8 @@
 import {
-  BasePaymentCollection,
   BasePaymentCollectionFilters,
-  BasePaymentProvider,
   BasePaymentProviderFilters,
-  BasePaymentSession,
   BasePaymentSessionFilters,
-} from "./common"
-
-export interface StorePaymentProvider extends BasePaymentProvider {}
-export interface StorePaymentCollection extends BasePaymentCollection {}
-export interface StorePaymentSession extends BasePaymentSession {}
+} from "../common"
 
 export interface StorePaymentProviderFilters
   extends BasePaymentProviderFilters {}
