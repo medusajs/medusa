@@ -42,7 +42,7 @@ export const SidebarItemCategory = ({
     if (isActive && !open) {
       setOpen(true)
     }
-  }, [isChildrenActive, open])
+  }, [isChildrenActive])
 
   const handleOpen = () => {
     item.onOpen?.()
