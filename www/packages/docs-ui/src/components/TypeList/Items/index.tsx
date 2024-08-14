@@ -198,7 +198,7 @@ const TypeListItem = ({
               />
             </CopyButton>
           )}
-          <div className="flex gap-0.75 flex-wrap">
+          <div className="flex gap-0.75 flex-wrap flex-1">
             <InlineCode>{decodeStr(item.name)}</InlineCode>
             <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
               <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
