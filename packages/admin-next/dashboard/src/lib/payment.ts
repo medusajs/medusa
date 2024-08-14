@@ -6,7 +6,7 @@ export const getTotalCaptured = (
   paymentCollections.reduce((acc, paymentCollection) => {
     acc =
       acc +
-      ((paymentCollection.amount as number) -
+      ((paymentCollection.captured_amount as number) -
         (paymentCollection.refunded_amount as number))
     return acc
   }, 0)
