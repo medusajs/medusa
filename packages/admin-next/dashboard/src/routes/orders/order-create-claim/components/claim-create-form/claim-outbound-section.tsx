@@ -169,12 +169,12 @@ export const ClaimOutboundSection = ({
       ))
 
     for (const itemToRemove of itemsToRemove) {
-      const actionId = previewOutboundItems
+      const action = previewOutboundItems
         .find((i) => i.variant_id === itemToRemove)
-        ?.actions?.find((a) => a.action === "ITEM_ADD")?.id
+        ?.actions?.find((a) => a.action === "ITEM_ADD")
 
-      if (actionId) {
-        await removeOutboundItem(actionId, {
+      if (action?.id) {
+        await removeOutboundItem(action?.id, {
           onError: (error) => {
             toast.error(error.message)
           },
@@ -191,10 +191,18 @@ export const ClaimOutboundSection = ({
 
       return action && !!!action?.return?.id
     })
-
+    console.log("outboundShippingMethods -- ", outboundShippingMethods)
     const promises = outboundShippingMethods
       .filter(Boolean)
-      .map((action) => deleteOutboundShipping(action.id))
+      .map((outboundShippingMethod) => {
+        const action = outboundShippingMethod.actions?.find(
+          (a) => a.action === "SHIPPING_ADD"
+        )
+
+        if (action) {
+          deleteOutboundShipping(action.id)
+        }
+      })
 
     await Promise.all(promises)
 
