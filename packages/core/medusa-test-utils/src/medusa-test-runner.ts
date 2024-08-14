@@ -5,6 +5,8 @@ import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { initDb, migrateDatabase } from "./medusa-test-runner-utils/use-db"
 import { configLoaderOverride } from "./medusa-test-runner-utils/config"
+import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/apply-env-vars"
+import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 
 const axios = require("axios").default
 
@@ -137,29 +139,24 @@ export function medusaIntegrationTestRunner({
 
   const beforeAll_ = async () => {
     await configLoaderOverride(cwd, dbConfig)
+    applyEnvVarsToProcess(env)
 
     try {
       console.log(`Creating database ${dbName}`)
       await dbUtils.create(dbName)
-      dbUtils.pgConnection_ = await initDb({
-        env,
-      })
+      dbUtils.pgConnection_ = await initDb()
     } catch (error) {
       console.error("Error initializing database", error?.message)
       throw error
     }
 
-    try {
-      console.log(`Migrating database ${dbName}`)
-      await migrateDatabase()
-    } catch (error) {
-      console.error("Error initializing database", error?.message)
-      throw error
-    }
+    console.log(`Migrating database with core migrations and links ${dbName}`)
+    await migrateDatabase()
+    await clearInstances()
 
-    let containerRes
-    let serverShutdownRes
-    let portRes
+    let containerRes: MedusaContainer
+    let serverShutdownRes: () => any
+    let portRes: number
 
     try {
       const {
@@ -179,13 +176,8 @@ export function medusaIntegrationTestRunner({
       throw error
     }
 
-    try {
-      console.log(`Migrating database ${dbName}`)
-      await migrateDatabase()
-    } catch (error) {
-      console.error("Error initializing database", error?.message)
-      throw error
-    }
+    console.log(`Migrating database with app migrations and links ${dbName}`)
+    await migrateDatabase()
 
     const cancelTokenSource = axios.CancelToken.source()
 

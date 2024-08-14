@@ -3,16 +3,14 @@ import getPort from "get-port"
 import { resolve } from "path"
 import { isObject, promiseAll, GracefulShutdownServer } from "@medusajs/utils"
 import { MedusaContainer } from "@medusajs/types"
+import { applyEnvVarsToProcess } from "./apply-env-vars"
 
 async function bootstrapApp({
   cwd,
   env = {},
 }: { cwd?: string; env?: Record<any, any> } = {}) {
   const app = express()
-
-  if (isObject(env)) {
-    Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
-  }
+  applyEnvVarsToProcess(env)
 
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
