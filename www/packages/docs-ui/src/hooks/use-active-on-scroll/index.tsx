@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { isElmWindow, useIsBrowser, useScrollController } from "../.."
 import { usePathname } from "next/navigation"
+import { useMutationObserver } from "../use-mutation-observer"
 
 export type ActiveOnScrollItem = {
   heading: HTMLHeadingElement
@@ -46,8 +47,7 @@ export const useActiveOnScroll = ({
 
     return root?.querySelectorAll("h2,h3")
   }, [isBrowser, pathname, root, enable])
-
-  useEffect(() => {
+  const setHeadingItems = useCallback(() => {
     if (!enable) {
       return
     }
@@ -74,7 +74,12 @@ export const useActiveOnScroll = ({
     })
 
     setItems(itemsToSet)
-  }, [isBrowser, getHeadingsInElm, enable])
+  }, [getHeadingsInElm, enable])
+
+  useMutationObserver({
+    elm: root,
+    callback: setHeadingItems,
+  })
 
   const setActiveToClosest = useCallback(() => {
     if (!enable) {

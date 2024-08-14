@@ -3,6 +3,7 @@
 import React, { useMemo } from "react"
 import { Card, CardList, MDXComponents, useSidebar } from "../.."
 import { InteractiveSidebarItem, SidebarItem, SidebarItemLink } from "types"
+import slugify from "slugify"
 
 type ChildDocsProps = {
   onlyTopLevel?: boolean
@@ -159,7 +160,11 @@ export const ChildDocs = ({
         <React.Fragment key={key}>
           {HeadingComponent && (
             <>
-              {!hideTitle && <HeadingComponent>{item.title}</HeadingComponent>}
+              {!hideTitle && (
+                <HeadingComponent id={slugify(item.title)}>
+                  {item.title}
+                </HeadingComponent>
+              )}
               <CardList
                 items={
                   itemChildren?.map((childItem) => ({

@@ -22,11 +22,11 @@ export const SidebarItemSubCategory = ({
   className,
   nested = false,
 }: SidebarItemLinkProps) => {
-  const { isItemActive, disableActiveTransition, sidebarRef } = useSidebar()
+  const { isLinkActive, disableActiveTransition, sidebarRef } = useSidebar()
   const { isMobile } = useMobile()
   const active = useMemo(
-    () => !isMobile && isItemActive(item, true),
-    [isItemActive, item, isMobile]
+    () => !isMobile && isLinkActive(item, true),
+    [isLinkActive, item, isMobile]
   )
   const ref = useRef<HTMLLIElement>(null)
 
@@ -96,7 +96,7 @@ export const SidebarItemSubCategory = ({
         <span
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
-            "block w-full",
+            "block w-full break-words",
             active && [
               "rounded-docs_sm",
               "shadow-borders-base dark:shadow-borders-base-dark",

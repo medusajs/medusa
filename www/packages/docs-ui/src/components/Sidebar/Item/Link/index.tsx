@@ -24,14 +24,14 @@ export const SidebarItemLink = ({
   nested = false,
 }: SidebarItemLinkProps) => {
   const {
-    isItemActive,
+    isLinkActive,
     setMobileSidebarOpen: setSidebarOpen,
     disableActiveTransition,
     sidebarRef,
     sidebarTopHeight,
   } = useSidebar()
   const { isMobile } = useMobile()
-  const active = useMemo(() => isItemActive(item, true), [isItemActive, item])
+  const active = useMemo(() => isLinkActive(item, true), [isLinkActive, item])
   const ref = useRef<HTMLLIElement>(null)
 
   const newTopCalculator = useCallback(() => {
@@ -87,7 +87,7 @@ export const SidebarItemLink = ({
           href={item.isPathHref ? item.path : `#${item.path}`}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
-            "block w-full rounded-docs_sm ",
+            "block w-full rounded-docs_sm break-words",
             active && [
               "bg-medusa-bg-base",
               "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",

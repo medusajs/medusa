@@ -36,8 +36,8 @@ export type SidebarContextType = {
   activePath: string | null
   getActiveItem: () => SidebarItemLink | undefined
   setActivePath: (path: string | null) => void
-  isItemActive: (item: SidebarItem, checkChildren?: boolean) => boolean
-  isCategoryChildrenActive: (item: SidebarItemCategory) => boolean
+  isLinkActive: (item: SidebarItem, checkChildren?: boolean) => boolean
+  isChildrenActive: (item: SidebarItemCategory) => boolean
   addItems: (item: SidebarItem[], options?: ActionOptionsType) => void
   findItemInSection: (
     section: SidebarItem[],
@@ -257,7 +257,7 @@ export const SidebarProvider = ({
     })
   }
 
-  const isItemActive = useCallback(
+  const isLinkActive = useCallback(
     (item: SidebarItem, checkChildren = false): boolean => {
       if (item.type !== "link") {
         return false
@@ -271,11 +271,21 @@ export const SidebarProvider = ({
     [activePath]
   )
 
-  const isCategoryChildrenActive = useCallback(
-    (item: SidebarItemCategory) => {
-      return item.children?.some((child) => isItemActive(child, true)) || false
+  const isChildrenActive = useCallback(
+    (item: InteractiveSidebarItem): boolean => {
+      return (
+        item.children?.some((child) => {
+          if (isLinkActive(child, true)) {
+            return true
+          }
+
+          return child.type !== "separator" && child.children
+            ? isChildrenActive(child)
+            : false
+        }) || false
+      )
     },
-    [isItemActive]
+    [isLinkActive]
   )
 
   const init = () => {
@@ -292,7 +302,7 @@ export const SidebarProvider = ({
         if (item.type === "separator") {
           return false
         }
-        if (item.isChildSidebar && isItemActive(item)) {
+        if (item.isChildSidebar && isLinkActive(item)) {
           currentSidebar = item
         }
 
@@ -314,7 +324,7 @@ export const SidebarProvider = ({
 
       return currentSidebar
     },
-    [isItemActive, activePath]
+    [isLinkActive, activePath]
   )
 
   const goBack = () => {
@@ -460,8 +470,8 @@ export const SidebarProvider = ({
         addItems,
         activePath,
         setActivePath,
-        isItemActive,
-        isCategoryChildrenActive,
+        isLinkActive: isLinkActive,
+        isChildrenActive: isChildrenActive,
         findItemInSection,
         mobileSidebarOpen,
         setMobileSidebarOpen,

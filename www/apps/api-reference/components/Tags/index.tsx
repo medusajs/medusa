@@ -85,7 +85,6 @@ const Tags = () => {
               : []
           itemsToAdd.push({
             type: "category",
-            autoExpandOnActive: true,
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,

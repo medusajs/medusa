@@ -1,10 +1,10 @@
-import type { InteractiveSidebarItem, RawSidebarItem } from "types"
+import type { RawSidebarItem, SidebarItem } from "types"
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs"
 import path from "path"
 import { getSidebarItemLink, sidebarAttachHrefCommonOptions } from "./index.js"
 import getCoreFlowsRefSidebarChildren from "./utils/get-core-flows-ref-sidebar-children.js"
 
-export type ItemsToAdd = InteractiveSidebarItem & {
+export type ItemsToAdd = SidebarItem & {
   sidebar_position?: number
 }
 
@@ -67,7 +67,11 @@ async function getSidebarItems(
     mainPageIndex = items.length - 1
   }
 
-  if (mainPageIndex !== -1 && items.length > 1) {
+  if (
+    mainPageIndex !== -1 &&
+    items.length > 1 &&
+    items[0].type !== "separator"
+  ) {
     // push all other items to be children of that page.
     const mainPageChildren = [
       ...items.splice(0, mainPageIndex),

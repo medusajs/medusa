@@ -8882,6 +8882,16 @@ export const generatedSidebar = [
         "custom_autogenerate": "core-flows",
         "children": [
           {
+            "type": "link",
+            "title": "Overview",
+            "path": "/medusa-workflows-reference",
+            "loaded": true,
+            "isPathHref": true
+          },
+          {
+            "type": "separator"
+          },
+          {
             "type": "category",
             "title": "Api Key",
             "children": [
@@ -8929,7 +8939,8 @@ export const generatedSidebar = [
                     "title": "updateApiKeysWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8983,9 +8994,12 @@ export const generatedSidebar = [
                     "title": "validateSalesChannelsExistStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9003,9 +9017,12 @@ export const generatedSidebar = [
                     "title": "setAuthAppMetadataStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9047,7 +9064,8 @@ export const generatedSidebar = [
                     "title": "updateLinksWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9101,9 +9119,12 @@ export const generatedSidebar = [
                     "title": "useRemoteQueryStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9169,7 +9190,8 @@ export const generatedSidebar = [
                     "title": "updateCustomersWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9239,9 +9261,12 @@ export const generatedSidebar = [
                     "title": "updateCustomersStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9283,7 +9308,8 @@ export const generatedSidebar = [
                     "title": "updateCustomerGroupsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9321,9 +9347,12 @@ export const generatedSidebar = [
                     "title": "updateCustomerGroupsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9341,7 +9370,8 @@ export const generatedSidebar = [
                     "title": "createDefaultsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9355,9 +9385,12 @@ export const generatedSidebar = [
                     "title": "createDefaultStoreStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9471,7 +9504,8 @@ export const generatedSidebar = [
                     "title": "updateTaxLinesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9757,9 +9791,12 @@ export const generatedSidebar = [
                     "title": "validateVariantPricesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9785,7 +9822,8 @@ export const generatedSidebar = [
                     "title": "uploadFilesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9807,9 +9845,12 @@ export const generatedSidebar = [
                     "title": "uploadFilesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9939,7 +9980,8 @@ export const generatedSidebar = [
                     "title": "updateShippingProfilesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -10081,9 +10123,12 @@ export const generatedSidebar = [
                     "title": "validateShipmentStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -10149,7 +10194,8 @@ export const generatedSidebar = [
                     "title": "updateInventoryLevelsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -10243,9 +10289,12 @@ export const generatedSidebar = [
                     "title": "validateInventoryLocationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -10287,7 +10336,8 @@ export const generatedSidebar = [
                     "title": "refreshInviteTokensWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -10325,9 +10375,12 @@ export const generatedSidebar = [
                     "title": "validateTokenStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -10841,7 +10894,8 @@ export const generatedSidebar = [
                     "title": "updateReturnWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11535,9 +11589,12 @@ export const generatedSidebar = [
                     "title": "updateReturnsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11563,7 +11620,8 @@ export const generatedSidebar = [
                     "title": "refundPaymentWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11601,9 +11659,12 @@ export const generatedSidebar = [
                     "title": "refundPaymentStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11645,7 +11706,8 @@ export const generatedSidebar = [
                     "title": "updateRefundReasonsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11707,9 +11769,12 @@ export const generatedSidebar = [
                     "title": "validateDeletedPaymentSessionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11775,7 +11840,8 @@ export const generatedSidebar = [
                     "title": "updatePriceListsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11853,9 +11919,12 @@ export const generatedSidebar = [
                     "title": "validateVariantPriceLinksStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11889,7 +11958,8 @@ export const generatedSidebar = [
                     "title": "updatePricePreferencesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11943,9 +12013,12 @@ export const generatedSidebar = [
                     "title": "updatePriceSetsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12155,7 +12228,8 @@ export const generatedSidebar = [
                     "title": "upsertVariantPricesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12369,9 +12443,12 @@ export const generatedSidebar = [
                     "title": "waitConfirmationProductImportStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12405,7 +12482,8 @@ export const generatedSidebar = [
                     "title": "updateProductCategoriesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12435,9 +12513,12 @@ export const generatedSidebar = [
                     "title": "updateProductCategoriesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12535,7 +12616,8 @@ export const generatedSidebar = [
                     "title": "updatePromotionsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12629,9 +12711,12 @@ export const generatedSidebar = [
                     "title": "updatePromotionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12665,7 +12750,8 @@ export const generatedSidebar = [
                     "title": "updateRegionsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12695,9 +12781,12 @@ export const generatedSidebar = [
                     "title": "updateRegionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12739,7 +12828,8 @@ export const generatedSidebar = [
                     "title": "updateReservationsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12777,9 +12867,12 @@ export const generatedSidebar = [
                     "title": "updateReservationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12813,7 +12906,8 @@ export const generatedSidebar = [
                     "title": "updateReturnReasonsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12843,9 +12937,12 @@ export const generatedSidebar = [
                     "title": "updateReturnReasonsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12887,7 +12984,8 @@ export const generatedSidebar = [
                     "title": "updateSalesChannelsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12957,9 +13055,12 @@ export const generatedSidebar = [
                     "title": "updateSalesChannelsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12977,9 +13078,12 @@ export const generatedSidebar = [
                     "title": "listShippingOptionsForContextStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12997,7 +13101,8 @@ export const generatedSidebar = [
                     "title": "deleteShippingProfileWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -13011,9 +13116,12 @@ export const generatedSidebar = [
                     "title": "deleteShippingProfilesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -13063,7 +13171,8 @@ export const generatedSidebar = [
                     "title": "updateStockLocationsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -13093,9 +13202,12 @@ export const generatedSidebar = [
                     "title": "updateStockLocationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -13129,7 +13241,8 @@ export const generatedSidebar = [
                     "title": "updateStoresWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -13159,9 +13272,12 @@ export const generatedSidebar = [
                     "title": "updateStoresStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -13235,7 +13351,8 @@ export const generatedSidebar = [
                     "title": "updateTaxRatesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -13321,9 +13438,12 @@ export const generatedSidebar = [
                     "title": "updateTaxRatesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -13365,7 +13485,8 @@ export const generatedSidebar = [
                     "title": "updateUsersWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -13395,9 +13516,12 @@ export const generatedSidebar = [
                     "title": "updateUsersStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           }
         ]
       }

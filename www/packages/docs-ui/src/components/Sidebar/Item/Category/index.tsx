@@ -19,9 +19,11 @@ export const SidebarItemCategory = ({
   className,
 }: SidebarItemCategory) => {
   const [showLoading, setShowLoading] = useState(false)
-  const [open, setOpen] = useState(expandItems)
+  const [open, setOpen] = useState(
+    item.initialOpen !== undefined ? item.initialOpen : expandItems
+  )
   const childrenRef = useRef<HTMLUListElement>(null)
-  const { isCategoryChildrenActive } = useSidebar()
+  const { isChildrenActive } = useSidebar()
 
   useEffect(() => {
     if (open && !item.loaded) {
@@ -36,15 +38,11 @@ export const SidebarItemCategory = ({
   }, [item])
 
   useEffect(() => {
-    if (!item.autoExpandOnActive) {
-      return
-    }
-
-    const isActive = isCategoryChildrenActive(item)
+    const isActive = isChildrenActive(item)
     if (isActive && !open) {
       setOpen(true)
     }
-  }, [item.autoExpandOnActive, isCategoryChildrenActive, open])
+  }, [isChildrenActive, open])
 
   const handleOpen = () => {
     item.onOpen?.()
@@ -59,7 +57,7 @@ export const SidebarItemCategory = ({
             "flex justify-between items-center gap-docs_0.5",
             "text-medusa-fg-muted",
             "cursor-pointer relative",
-            "z-[2]"
+            "z-[2] break-words"
           )}
           tabIndex={-1}
           onClick={() => {
