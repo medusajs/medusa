@@ -57,8 +57,6 @@ export const Sidebar = ({
     [items, currentItems]
   )
 
-  console.log(currentItems, sidebarItems)
-
   useResizeObserver(sidebarTopRef, () => {
     setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
   })

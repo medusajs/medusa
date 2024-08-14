@@ -44,7 +44,6 @@ export default function RootLayout({
       }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
     >
-      <Breadcrumbs />
       {children}
       <Feedback className="my-2" />
       <EditButton />

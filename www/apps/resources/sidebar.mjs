@@ -55,6 +55,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 childSidebarTitle: "API Key Module's Main Service Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Methods",
                     hasTitleStyling: true,
                     autogenerate_path:
@@ -70,6 +71,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 childSidebarTitle: "API Key Module Data Models Reference",
                 children: [
                   {
+                    type: "category",
                     title: "Data Models",
                     hasTitleStyling: true,
                     autogenerate_path: "/references/api_key_models/classes",
@@ -1572,6 +1574,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        type: "link",
         path: "/recipes/b2b",
         title: "B2B",
       },
@@ -2162,10 +2165,12 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
+            type: "category",
             title: "Integrations",
             hasTitleStyling: true,
             children: [
               {
+                type: "link",
                 path: "/troubleshooting/s3",
                 title: "S3 Module Provider Errors",
               },
@@ -2269,12 +2274,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        type: "link",
         path: "/references/helper-steps",
         title: "Helper Steps Reference",
         isChildSidebar: true,
         autogenerate_path: "/references/helper_steps/functions",
       },
       {
+        type: "link",
         title: "Medusa Workflows Reference",
         path: "/medusa-workflows-reference",
         isChildSidebar: true,

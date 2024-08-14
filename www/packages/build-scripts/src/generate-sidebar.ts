@@ -83,6 +83,15 @@ async function getSidebarItems(
 }
 
 async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
+  if (!item.type) {
+    throw new Error(
+      `ERROR: The following item doesn't have a type: ${JSON.stringify(
+        item,
+        undefined,
+        2
+      )}`
+    )
+  }
   if (item.type === "separator") {
     return item
   }

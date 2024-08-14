@@ -79,6 +79,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/api_key/IApiKeyModuleService/methods",
@@ -171,6 +172,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/api_key_models/classes",
@@ -7443,6 +7445,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/b2b",
         "title": "B2B",
         "children": []
@@ -8385,12 +8388,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Integrations",
             "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/s3",
                 "title": "S3 Module Provider Errors",
                 "children": []
@@ -8811,6 +8816,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/references/helper-steps",
         "title": "Helper Steps Reference",
         "isChildSidebar": true,
@@ -8869,6 +8875,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "title": "Medusa Workflows Reference",
         "path": "/medusa-workflows-reference",
         "isChildSidebar": true,
