@@ -9,6 +9,7 @@ import {
   ExclamationCircle,
 } from "@medusajs/icons"
 import {
+  AdminClaim,
   AdminOrder,
   AdminReturn,
   OrderLineItemDTO,
@@ -26,6 +27,7 @@ import {
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useClaims } from "../../../../../hooks/api/claims.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
@@ -33,6 +35,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { getTotalCaptured } from "../../../../../lib/payment.ts"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -168,11 +171,13 @@ const Item = ({
   currencyCode,
   reservation,
   returns,
+  claims,
 }: {
   item: OrderLineItemDTO
   currencyCode: string
   reservation?: ReservationItemDTO | null
   returns: AdminReturn[]
+  claims: AdminClaim[]
 }) => {
   const { t } = useTranslation()
   const isInventoryManaged = item.variant.manage_inventory
@@ -240,6 +245,10 @@ const Item = ({
       {returns.map((r) => (
         <ReturnBreakdown key={r.id} orderReturn={r} itemId={item.id} />
       ))}
+
+      {claims.map((claim) => (
+        <ClaimBreakdown key={claim.id} claim={claim} itemId={item.id} />
+      ))}
     </>
   )
 }
@@ -247,6 +256,11 @@ const Item = ({
 const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
   const { reservations } = useReservationItems({
     line_item_id: order.items.map((i) => i.id),
+  })
+
+  const { claims } = useClaims({
+    order_id: order.id,
+    fields: "*additional_items",
   })
 
   const { returns } = useReturns({
@@ -290,6 +304,7 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
             currencyCode={order.currency_code}
             reservation={reservation}
             returns={itemsReturnsMap[item.id] || []}
+            claims={claims || []}
           />
         )
       })}
@@ -374,25 +389,25 @@ const ReturnBreakdown = ({
   return (
     <div
       key={orderReturn.id}
-      className="text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 px-6 py-4"
+      className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
     >
       <div className="flex items-center gap-2">
         <ArrowDownRightMini className="text-ui-fg-muted" />
-        <Text size="small" className="text-ui-fg-subtle">
+        <Text>
           {t(
             `orders.returns.${
               isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
             }`,
             {
-              requestedItemsCount: orderReturn.items.find(
+              requestedItemsCount: orderReturn?.items?.find(
                 (ri) => ri.item_id === itemId
-              )[isRequested ? "quantity" : "received_quantity"],
+              )?.[isRequested ? "quantity" : "received_quantity"],
             }
           )}
         </Text>
       </div>
 
-      {isRequested && (
+      {orderReturn && (
         <Text size="small" leading="compact" className="text-ui-fg-muted">
           {getRelativeDate(
             isRequested ? orderReturn.created_at : orderReturn.received_at
@@ -403,19 +418,47 @@ const ReturnBreakdown = ({
   )
 }
 
+const ClaimBreakdown = ({
+  claim,
+  itemId,
+}: {
+  claim: AdminClaim
+  itemId: string
+}) => {
+  const { t } = useTranslation()
+  const { getRelativeDate } = useDate()
+  const items = claim.additional_items.filter(
+    (item) => item.item?.id === itemId
+  )
+
+  return (
+    !!items.length && (
+      <div
+        key={claim.id}
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+      >
+        <div className="flex items-center gap-2">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+          <Text>
+            {t(`orders.claims.outboundItemAdded`, {
+              itemsCount: items.reduce(
+                (acc, item) => (acc = acc + item.quantity),
+                0
+              ),
+            })}
+          </Text>
+        </div>
+
+        <Text size="small" leading="compact" className="text-ui-fg-muted">
+          {getRelativeDate(claim.created_at)}
+        </Text>
+      </div>
+    )
+  )
+}
+
 const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
-
-  const totalPaid = order.payment_collections.reduce(
-    (acc, paymentCollection) => {
-      acc =
-        acc +
-        ((paymentCollection.amount as number) -
-          (paymentCollection.refunded_amount as number))
-      return acc
-    },
-    0
-  )
 
   return (
     <div className=" flex flex-col gap-y-2 px-6 py-4">
@@ -432,7 +475,10 @@ const Total = ({ order }: { order: AdminOrder }) => {
           {t("fields.paidTotal")}
         </Text>
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
-          {getStylizedAmount(totalPaid, order.currency_code)}
+          {getStylizedAmount(
+            getTotalCaptured(order.payment_collections || []),
+            order.currency_code
+          )}
         </Text>
       </div>
     </div>

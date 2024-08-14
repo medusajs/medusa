@@ -3,7 +3,7 @@ import {
   Payment as MedusaPayment,
   Refund as MedusaRefund,
 } from "@medusajs/medusa"
-import { HttpTypes } from "@medusajs/types"
+import { AdminPaymentCollection, HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Button,
@@ -25,6 +25,7 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
+import { getTotalCaptured } from "../../../../../lib/payment"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
@@ -56,7 +57,10 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
         currencyCode={order.currency_code}
       />
 
-      <Total payments={payments} currencyCode={order.currency_code} />
+      <Total
+        paymentCollections={order.payment_collections}
+        currencyCode={order.currency_code}
+      />
     </Container>
   )
 }
@@ -310,22 +314,13 @@ const PaymentBreakdown = ({
 }
 
 const Total = ({
-  payments,
+  paymentCollections,
   currencyCode,
 }: {
-  payments: MedusaPayment[]
+  paymentCollections: AdminPaymentCollection[]
   currencyCode: string
 }) => {
   const { t } = useTranslation()
-
-  const refunds = payments.map((payment) => payment.refunds).flat(1)
-  const paid = payments.reduce((acc, payment) => acc + payment.amount, 0)
-  const refunded = refunds.reduce(
-    (acc, refund) => acc + (refund.amount || 0),
-    0
-  )
-
-  const total = paid - refunded
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
@@ -333,7 +328,7 @@ const Total = ({
         {t("orders.payment.totalPaidByCustomer")}
       </Text>
       <Text size="small" weight="plus" leading="compact">
-        {getStylizedAmount(total, currencyCode)}
+        {getStylizedAmount(getTotalCaptured(paymentCollections), currencyCode)}
       </Text>
     </div>
   )

@@ -14,6 +14,7 @@ export const defaultAdminReturnFields = [
   "updated_at",
   "canceled_at",
   "requested_at",
+  "received_at",
 ]
 
 export const defaultAdminDetailsReturnFields = [

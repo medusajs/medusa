@@ -887,6 +887,7 @@
     "claims": {
       "create": "Create Claim",
       "outbound": "Outbound",
+      "outboundItemAdded": "{{itemsCount}}x added through claim",
       "outboundShipping": "Outbound shipping",
       "outboundShippingHint": "Choose which method you want to use.",
       "refundAmount": "Estimated difference",

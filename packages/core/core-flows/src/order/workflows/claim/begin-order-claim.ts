@@ -1,5 +1,4 @@
 import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
-import { OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -10,25 +9,15 @@ import {
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderClaimsStep } from "../../steps/claim/create-claims"
 import { createOrderChangeStep } from "../../steps/create-order-change"
-import {
-  throwIfIsCancelled,
-  throwIfPresent,
-} from "../../utils/order-validation"
+import { throwIfIsCancelled } from "../../utils/order-validation"
 
 /**
  * This step validates that the order associated with the claim isn't canceled.
  */
 export const beginClaimOrderValidationStep = createStep(
   "begin-claim-order-validation",
-  async function ({
-    order,
-    orderChange,
-  }: {
-    order: OrderDTO
-    orderChange: OrderChangeDTO
-  }) {
+  async function ({ order }: { order: OrderDTO }) {
     throwIfIsCancelled(order, "Order")
-    throwIfPresent(orderChange, "OrderChange")
   }
 )
 
@@ -49,19 +38,7 @@ export const beginClaimOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    const orderChange: OrderChangeDTO = useRemoteQueryStep({
-      entry_point: "order_change",
-      fields: ["id", "status", "version", "actions.*"],
-      variables: {
-        filters: {
-          order_id: order.id,
-          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
-        },
-      },
-      list: false,
-    }).config({ name: "order-change-query" })
-
-    beginClaimOrderValidationStep({ order, orderChange })
+    beginClaimOrderValidationStep({ order })
 
     const created = createOrderClaimsStep([
       {

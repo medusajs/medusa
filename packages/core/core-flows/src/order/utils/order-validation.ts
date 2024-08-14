@@ -53,15 +53,6 @@ export function throwIfIsCancelled(
   }
 }
 
-export function throwIfPresent(obj: unknown, type: string) {
-  if (isPresent(obj)) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `A ${type} already exists for the order`
-    )
-  }
-}
-
 export function throwIfOrderChangeIsNotActive({
   orderChange,
 }: {
