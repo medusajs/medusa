@@ -16,7 +16,6 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import { updateOrderExchangesStep } from "../../steps/exchange/update-order-exchanges"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import { createReturnsStep } from "../../steps/return/create-returns"
@@ -25,6 +24,7 @@ import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step validates that items can be returned as part of an exchange.
@@ -172,7 +172,9 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep(orderChangeActionInput)
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: orderChangeActionInput,
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(orderExchange.order_id))
   }

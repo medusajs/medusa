@@ -15,12 +15,12 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInReturn,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step validates that a return request can have its items dismissed.
@@ -113,7 +113,9 @@ export const dismissItemReturnRequestWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep(orderChangeActionInput)
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: orderChangeActionInput,
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }

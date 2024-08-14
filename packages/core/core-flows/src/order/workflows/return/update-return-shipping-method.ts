@@ -106,6 +106,7 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
 
         const action = {
           id: originalAction.id,
+          amount: data.custom_price,
           internal_note: data.internal_note,
         }
 

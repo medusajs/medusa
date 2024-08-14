@@ -10,6 +10,7 @@ type ChildDocsProps = {
   hideItems?: string[]
   showItems?: string[]
   hideTitle?: boolean
+  childLevel?: number
 }
 
 export const ChildDocs = ({
@@ -18,6 +19,7 @@ export const ChildDocs = ({
   showItems,
   type = "sidebar",
   hideTitle = false,
+  childLevel = 1,
 }: ChildDocsProps) => {
   const { currentItems, getActiveItem } = useSidebar()
   const filterType = useMemo(() => {
@@ -79,6 +81,32 @@ export const ChildDocs = ({
     }
   }, [currentItems, type, getActiveItem, filterItems])
 
+  const getChildrenForLevel = (
+    item: SidebarItemType,
+    currentLevel = 1
+  ): SidebarItemType[] | undefined => {
+    if (currentLevel === childLevel) {
+      return item.children
+    }
+    if (!item.children) {
+      return
+    }
+
+    const childrenResult: SidebarItemType[] = []
+
+    item.children.forEach((child) => {
+      const childChildren = getChildrenForLevel(child, currentLevel + 1)
+
+      if (!childChildren) {
+        return
+      }
+
+      childrenResult.push(...childChildren)
+    })
+
+    return childrenResult
+  }
+
   const getTopLevelElms = (items?: SidebarItemType[]) => (
     <CardList
       items={
@@ -93,7 +121,8 @@ export const ChildDocs = ({
 
   const getAllLevelsElms = (items?: SidebarItemType[]) =>
     items?.map((item, key) => {
-      const HeadingComponent = item.children?.length
+      const itemChildren = getChildrenForLevel(item)
+      const HeadingComponent = itemChildren?.length
         ? MDXComponents["h2"]
         : undefined
 
@@ -104,7 +133,7 @@ export const ChildDocs = ({
               {!hideTitle && <HeadingComponent>{item.title}</HeadingComponent>}
               <CardList
                 items={
-                  item.children?.map((childItem) => ({
+                  itemChildren?.map((childItem) => ({
                     title: childItem.title,
                     href: childItem.path,
                     showLinkIcon: false,

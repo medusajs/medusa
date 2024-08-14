@@ -14,12 +14,12 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { createOrderChangeActionsStep } from "../../steps/create-order-change-actions"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 
 /**
  * This step validates that claim items can be added to a claim.
@@ -106,7 +106,9 @@ export const orderClaimItemWorkflow = createWorkflow(
       }
     )
 
-    createOrderChangeActionsStep(orderChangeActionInput)
+    createOrderChangeActionsWorkflow.runAsStep({
+      input: orderChangeActionInput,
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(orderClaim.order_id))
   }
