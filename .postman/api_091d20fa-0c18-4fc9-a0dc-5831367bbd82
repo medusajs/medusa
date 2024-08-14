@@ -23,6 +23,7 @@ files[] = {"path":"www/apps/api-reference/specs/store/components/responses/400_e
 files[] = {"path":"www/apps/api-reference/specs/store/components/responses/500_error.yaml","metaData":{}}
 files[] = {"path":"www/apps/api-reference/specs/store/components/responses/invalid_request_error.yaml","metaData":{}}
 files[] = {"path":"www/apps/api-reference/specs/store/components/responses/invalid_state_error.yaml","metaData":{}}
+files[] = {"path":"www/apps/api-reference/specs/store/components/responses/New.yaml","metaData":{}}
 files[] = {"path":"www/apps/api-reference/specs/store/components/responses/not_found_error.yaml","metaData":{}}
 files[] = {"path":"www/apps/api-reference/specs/store/components/responses/unauthorized.yaml","metaData":{}}
 files[] = {"path":"www/apps/api-reference/specs/store/components/schemas/BaseCollection.yaml","metaData":{}}
