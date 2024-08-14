@@ -436,238 +436,334 @@ medusaIntegrationTestRunner({
     describe("Claims lifecycle", () => {
       let claimId
 
-      beforeEach(async () => {
-        let r2 = await api.post(
-          "/admin/claims",
-          {
-            order_id: order2.id,
-            type: ClaimType.REFUND,
-          },
-          adminHeaders
-        )
-
-        const claimId2 = r2.data.claim.id
-        const item2 = order2.items[0]
-
-        const {
-          data: {
-            order_preview: {
-              items: [previewItem],
+      describe("with inbound and outbound items", () => {
+        beforeEach(async () => {
+          let r2 = await api.post(
+            "/admin/claims",
+            {
+              order_id: order2.id,
+              type: ClaimType.REFUND,
             },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/items`,
-          { items: [{ id: item2.id, quantity: 1 }] },
-          adminHeaders
-        )
-
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId2}/inbound/items/${previewItem.actions[0].id}`,
-          adminHeaders
-        )
-
-        const {
-          data: { return: returnData },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/items`,
-          { items: [{ id: item2.id, quantity: 1 }] },
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/returns/${returnData.id}`,
-          {
-            location_id: location.id,
-            no_notification: true,
-          },
-          adminHeaders
-        )
-
-        const {
-          data: {
-            order_preview: { shipping_methods: inboundShippingMethods },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-        const inboundShippingMethod = inboundShippingMethods.find(
-          (m) => m.shipping_option_id == returnShippingOption.id
-        )
-
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId2}/inbound/shipping-method/${inboundShippingMethod.actions[0].id}`,
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/claims/${claimId2}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-
-        await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
-
-        claimId = baseClaim.id
-        const item = order.items[0]
-
-        let result = await api.post(
-          `/admin/claims/${claimId}/inbound/items`,
-          {
-            items: [
-              {
-                id: item.id,
-                reason_id: returnReason.id,
-                quantity: 2,
-              },
-            ],
-          },
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/claims/${claimId}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-
-        const {
-          data: {
-            order_preview: { shipping_methods: outboundShippingMethods },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId}/outbound/shipping-method`,
-          { shipping_option_id: outboundShippingOption.id },
-          adminHeaders
-        )
-
-        const outboundShippingMethod = outboundShippingMethods.find(
-          (m) => m.shipping_option_id == outboundShippingOption.id
-        )
-
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/claims/${claimId}/outbound/shipping-method`,
-          { shipping_option_id: outboundShippingOption.id },
-          adminHeaders
-        )
-
-        // updated the requested quantity
-        const updateReturnItemActionId =
-          result.data.order_preview.items[0].actions[0].id
-
-        result = await api.post(
-          `/admin/claims/${claimId}/inbound/items/${updateReturnItemActionId}`,
-          {
-            quantity: 1,
-          },
-          adminHeaders
-        )
-
-        // New Items
-        await api.post(
-          `/admin/claims/${claimId}/outbound/items`,
-          {
-            items: [
-              {
-                variant_id: productExtra.variants[0].id,
-                quantity: 2,
-              },
-            ],
-          },
-          adminHeaders
-        )
-
-        // Claim Items
-        await api.post(
-          `/admin/claims/${claimId}/claim-items`,
-          {
-            items: [
-              {
-                id: item.id,
-                reason: ClaimReason.PRODUCTION_FAILURE,
-                quantity: 1,
-              },
-            ],
-          },
-          adminHeaders
-        )
-
-        result = await api.post(
-          `/admin/claims/${claimId}/request`,
-          {},
-          adminHeaders
-        )
-
-        result = (
-          await api.get(
-            `/admin/claims?fields=*claim_items,*additional_items`,
             adminHeaders
           )
-        ).data.claims
 
-        expect(result).toHaveLength(2)
-        expect(result[0].additional_items).toHaveLength(1)
-        expect(result[0].claim_items).toHaveLength(1)
-        expect(result[0].canceled_at).toBeNull()
+          const claimId2 = r2.data.claim.id
+          const item2 = order2.items[0]
 
-        const reservationsResponse = (
-          await api.get(
-            `/admin/reservations?location_id[]=${location.id}`,
+          const {
+            data: {
+              order_preview: {
+                items: [previewItem],
+              },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/items`,
+            { items: [{ id: item2.id, quantity: 1 }] },
             adminHeaders
           )
-        ).data
 
-        expect(reservationsResponse.reservations).toHaveLength(1)
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId2}/inbound/items/${previewItem.actions[0].id}`,
+            adminHeaders
+          )
+
+          const {
+            data: { return: returnData },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/items`,
+            { items: [{ id: item2.id, quantity: 1 }] },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/returns/${returnData.id}`,
+            {
+              location_id: location.id,
+              no_notification: true,
+            },
+            adminHeaders
+          )
+
+          const {
+            data: {
+              order_preview: { shipping_methods: inboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+          const inboundShippingMethod = inboundShippingMethods.find(
+            (m) => m.shipping_option_id == returnShippingOption.id
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId2}/inbound/shipping-method/${inboundShippingMethod.actions[0].id}`,
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId2}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
+
+          claimId = baseClaim.id
+          const item = order.items[0]
+
+          let result = await api.post(
+            `/admin/claims/${claimId}/inbound/items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason_id: returnReason.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          const {
+            data: {
+              order_preview: { shipping_methods: outboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const outboundShippingMethod = outboundShippingMethods.find(
+            (m) => m.shipping_option_id == outboundShippingOption.id
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          // updated the requested quantity
+          const updateReturnItemActionId =
+            result.data.order_preview.items[0].actions[0].id
+
+          result = await api.post(
+            `/admin/claims/${claimId}/inbound/items/${updateReturnItemActionId}`,
+            {
+              quantity: 1,
+            },
+            adminHeaders
+          )
+
+          // New Items
+          await api.post(
+            `/admin/claims/${claimId}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          // Claim Items
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          result = await api.post(
+            `/admin/claims/${claimId}/request`,
+            {},
+            adminHeaders
+          )
+
+          result = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(result).toHaveLength(2)
+          expect(result[0].additional_items).toHaveLength(1)
+          expect(result[0].claim_items).toHaveLength(1)
+          expect(result[0].canceled_at).toBeNull()
+
+          const reservationsResponse = (
+            await api.get(
+              `/admin/reservations?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(reservationsResponse.reservations).toHaveLength(1)
+        })
+
+        it("should complete flow with fulfilled items successfully", async () => {
+          const fulfillOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const fulfillableItem = fulfillOrder.items.find(
+            (item) => item.detail.fulfilled_quantity === 0
+          )
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem.id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+        })
+
+        it("should go through cancel flow successfully", async () => {
+          await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
+
+          const [claim] = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(claim.canceled_at).toBeDefined()
+
+          const reservationsResponseAfterCanceling = (
+            await api.get(
+              `/admin/reservations?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(reservationsResponseAfterCanceling.reservations).toHaveLength(
+            0
+          )
+        })
       })
 
-      it("should complete flow with fulfilled items successfully", async () => {
-        const fulfillOrder = (
-          await api.get(`/admin/orders/${order.id}`, adminHeaders)
-        ).data.order
+      describe("with only outbound items", () => {
+        beforeEach(async () => {
+          claimId = baseClaim.id
+          const item = order.items[0]
 
-        const fulfillableItem = fulfillOrder.items.find(
-          (item) => item.detail.fulfilled_quantity === 0
-        )
-
-        await api.post(
-          `/admin/orders/${order.id}/fulfillments`,
-          {
-            location_id: location.id,
-            items: [{ id: fulfillableItem.id, quantity: 1 }],
-          },
-          adminHeaders
-        )
-      })
-
-      it("should go through cancel flow successfully", async () => {
-        await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
-
-        const [claim] = (
-          await api.get(
-            `/admin/claims?fields=*claim_items,*additional_items`,
+          const {
+            data: {
+              order_preview: { shipping_methods: outboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
             adminHeaders
           )
-        ).data.claims
 
-        expect(claim.canceled_at).toBeDefined()
+          const outboundShippingMethod = outboundShippingMethods.find(
+            (m) => m.shipping_option_id == outboundShippingOption.id
+          )
 
-        const reservationsResponseAfterCanceling = (
-          await api.get(
-            `/admin/reservations?location_id[]=${location.id}`,
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
             adminHeaders
           )
-        ).data
 
-        expect(reservationsResponseAfterCanceling.reservations).toHaveLength(0)
+          await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        })
+
+        it("should complete flow with fulfilled items successfully", async () => {
+          await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+          const claim = (
+            await api.get(
+              `/admin/claims/${claimId}?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claim
+
+          expect(claim.additional_items).toHaveLength(1)
+          expect(claim.claim_items).toHaveLength(1)
+          expect(claim.canceled_at).toBeNull()
+
+          const fulfillOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const fulfillableItem = fulfillOrder.items.find(
+            (item) => item.detail.fulfilled_quantity === 0
+          )
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem.id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+        })
       })
     })
 

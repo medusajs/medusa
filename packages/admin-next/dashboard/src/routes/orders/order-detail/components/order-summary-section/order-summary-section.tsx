@@ -1,19 +1,19 @@
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { useMemo } from "react"
 
+import {
+  ArrowDownRightMini,
+  ArrowLongRight,
+  ArrowUturnLeft,
+  ExclamationCircle,
+} from "@medusajs/icons"
 import {
   AdminOrder,
   AdminReturn,
   OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
-import {
-  ArrowDownRightMini,
-  ArrowUturnLeft,
-  ExclamationCircle,
-  ArrowLongRight,
-} from "@medusajs/icons"
 import {
   Button,
   Container,
@@ -24,15 +24,15 @@ import {
 } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useReservationItems } from "../../../../../hooks/api/reservations"
+import { useReturns } from "../../../../../hooks/api/returns"
+import { useDate } from "../../../../../hooks/use-date"
 import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { useReservationItems } from "../../../../../hooks/api/reservations"
-import { useReturns } from "../../../../../hooks/api/returns"
-import { useDate } from "../../../../../hooks/use-date"
-import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -406,6 +406,17 @@ const ReturnBreakdown = ({
 const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
+  const totalPaid = order.payment_collections.reduce(
+    (acc, paymentCollection) => {
+      acc =
+        acc +
+        ((paymentCollection.amount as number) -
+          (paymentCollection.refunded_amount as number))
+      return acc
+    },
+    0
+  )
+
   return (
     <div className=" flex flex-col gap-y-2 px-6 py-4">
       <div className="text-ui-fg-base flex items-center justify-between">
@@ -421,7 +432,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           {t("fields.paidTotal")}
         </Text>
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
-          {/*TODO*/}-
+          {getStylizedAmount(totalPaid, order.currency_code)}
         </Text>
       </div>
     </div>
