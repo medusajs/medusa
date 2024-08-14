@@ -142,7 +142,7 @@ export const ChildDocs = ({
               />
             </>
           )}
-          {!HeadingComponent && (
+          {!HeadingComponent && item.path && (
             <Card title={item.title} href={item.path} showLinkIcon={false} />
           )}
         </React.Fragment>
