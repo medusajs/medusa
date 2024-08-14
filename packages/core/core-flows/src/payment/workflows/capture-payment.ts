@@ -38,9 +38,9 @@ export const capturePaymentWorkflow = createWorkflow(
     }).then(() => {
       const orderTransactionData = transform(
         { input, payment, orderPayment },
-        ({ input, payment }) => {
+        ({ input, payment, orderPayment }) => {
           return {
-            order_id: orderPayment.id,
+            order_id: orderPayment.order.id,
             amount: input.amount ?? payment.raw_amount ?? payment.amount,
             currency_code: payment.currency_code,
             reference_id: payment.id,
