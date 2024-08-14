@@ -1,8 +1,10 @@
+"use client"
+
 import { EllipseMiniSolid } from "@medusajs/icons"
 import clsx from "clsx"
-import Link from "next/link"
 import React from "react"
 import { ToCItemUi } from "types"
+import { Button, useScrollController } from "../../.."
 
 export type TocMenuProps = {
   items: ToCItemUi[]
@@ -12,6 +14,8 @@ export type TocMenuProps = {
 }
 
 export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
+  const { scrollToElement } = useScrollController()
+
   const getItemElm = (item: ToCItemUi) => {
     const isActive = item.id === activeItem
     const hasChildren = item.children?.length || 0 > 0
@@ -23,17 +27,23 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
           !isActive && "text-compact-small"
         )}
       >
-        <Link
+        <Button
+          variant="transparent-clear"
           className={clsx(
             "flex justify-start items-center gap-docs_0.5",
             "cursor-pointer rounded-docs_sm py-docs_0.25",
-            "px-docs_0.5 hover:bg-medusa-bg-component-hover"
+            "px-docs_0.5 hover:bg-medusa-bg-component-hover",
+            "text-inherit max-w-full"
           )}
-          href={`#${item.id}`}
+          onClick={() => {
+            history.pushState({}, "", `#${item.id}`)
+            const elm = document.getElementById(item.id) as HTMLElement
+            scrollToElement(elm)
+          }}
         >
           <EllipseMiniSolid className={clsx(!isActive && "invisible")} />
           <span className="truncate">{item.title}</span>
-        </Link>
+        </Button>
         {hasChildren && (
           <ul>
             {item.children!.map((childItem, index) => (

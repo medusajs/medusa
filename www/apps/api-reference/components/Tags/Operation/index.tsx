@@ -41,7 +41,7 @@ const TagOperation = ({
   )
   const nodeRef = useRef<Element | null>(null)
   const { loading, removeLoading } = useLoading()
-  const { scrollableElement } = useScrollController()
+  const { scrollableElement, scrollToTop } = useScrollController()
   const root = useMemo(() => {
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement])
@@ -76,26 +76,28 @@ const TagOperation = ({
     [ref]
   )
 
+  const scrollIntoView = useCallback(() => {
+    if (nodeRef.current && !checkElementInViewport(nodeRef.current, 10)) {
+      const elm = nodeRef.current as HTMLElement
+      scrollToTop(
+        elm.offsetTop + (elm.offsetParent as HTMLElement)?.offsetTop,
+        0
+      )
+    }
+    setShow(true)
+  }, [scrollToTop, nodeRef])
+
   useEffect(() => {
     if (nodeRef && nodeRef.current) {
       removeLoading()
       const currentHash = location.hash.replace("#", "")
       if (currentHash === path) {
-        setTimeout(() => {
-          if (nodeRef.current && !checkElementInViewport(nodeRef.current, 10)) {
-            root?.scrollTo({
-              top: (
-                (nodeRef.current as HTMLElement).offsetParent as HTMLElement
-              )?.offsetTop,
-            })
-          }
-          setShow(true)
-        }, 100)
+        setTimeout(scrollIntoView, 100)
       } else if (currentHash.split("_")[0] === path.split("_")[0]) {
         setShow(true)
       }
     }
-  }, [nodeRef, path])
+  }, [nodeRef, path, scrollIntoView])
 
   return (
     <div

@@ -4,9 +4,17 @@ import React, { useMemo } from "react"
 import { CurrentItemsState, useSidebar } from "../../.."
 import clsx from "clsx"
 import Link from "next/link"
+import { SidebarItemLink } from "types"
 
 export const MainNavBreadcrumbs = () => {
   const { currentItems, getActiveItem } = useSidebar()
+
+  const getLinkPath = (item?: SidebarItemLink): string | undefined => {
+    if (!item) {
+      return
+    }
+    return item.isPathHref ? item.path : `#${item.path}`
+  }
 
   const getBreadcrumbsOfItem = (
     item: CurrentItemsState
@@ -17,9 +25,11 @@ export const MainNavBreadcrumbs = () => {
     }
 
     const parentPath =
-      item.parentItem?.type === "link" ? item.parentItem.path : undefined
+      item.parentItem?.type === "link"
+        ? getLinkPath(item.parentItem)
+        : undefined
     const firstItemPath =
-      item.default[0].type === "link" ? item.default[0].path : undefined
+      item.default[0].type === "link" ? getLinkPath(item.default[0]) : undefined
 
     tempBreadcrumbItems.set(
       parentPath || firstItemPath || "/",
@@ -39,7 +49,10 @@ export const MainNavBreadcrumbs = () => {
 
     const activeItem = getActiveItem()
     if (activeItem) {
-      tempBreadcrumbItems.set(activeItem?.path || "/", activeItem?.title || "")
+      tempBreadcrumbItems.set(
+        getLinkPath(activeItem) || "/",
+        activeItem?.title || ""
+      )
     }
 
     return tempBreadcrumbItems

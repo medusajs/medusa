@@ -40,7 +40,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     },
   })
 
-  const { scrollableElement } = useScrollController()
+  const { scrollableElement, scrollToElement } = useScrollController()
   const root = useMemo(() => {
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement])
@@ -73,9 +73,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
       if (!checkElementInViewport(elm, 40)) {
-        root?.scrollTo({
-          top: elm.offsetTop,
-        })
+        scrollToElement(elm)
       }
     }
   }, [activePath, schemaSlug])

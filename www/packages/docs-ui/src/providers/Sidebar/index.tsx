@@ -55,6 +55,7 @@ export type SidebarContextType = {
   sidebarTopHeight: number
   setSidebarTopHeight: React.Dispatch<React.SetStateAction<number>>
   resetItems: () => void
+  isItemLoaded: (path: string) => boolean
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -225,6 +226,17 @@ export const SidebarProvider = ({
   }, [scrollableElement])
 
   const findItemInSection = useCallback(findItem, [])
+
+  const isItemLoaded = useCallback(
+    (path: string) => {
+      const item =
+        findItemInSection(items.mobile, { path, type: "link" }) ||
+        findItemInSection(items.default, { path, type: "link" })
+
+      return item?.loaded || false
+    },
+    [items]
+  )
 
   const getActiveItem = useCallback(() => {
     if (activePath === null) {
@@ -464,6 +476,7 @@ export const SidebarProvider = ({
         sidebarTopHeight,
         setSidebarTopHeight,
         resetItems,
+        isItemLoaded,
       }}
     >
       {children}

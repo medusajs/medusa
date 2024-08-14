@@ -53,7 +53,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const pathname = usePathname()
-  const { scrollableElement } = useScrollController()
+  const { scrollableElement, scrollToElement } = useScrollController()
   const { data } = useSWR<{
     schema: SchemaObject
   }>(
@@ -99,9 +99,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
       if (tagName.length === 1 && tagName[0] === slugTagName) {
         const elm = document.getElementById(tagName[0])
         if (elm && !checkElementInViewport(elm, 10)) {
-          root?.scrollTo({
-            top: elm.offsetTop,
-          })
+          scrollToElement(elm)
         }
       } else if (tagName.length > 1 && tagName[0] === slugTagName) {
         setLoadPaths(true)
