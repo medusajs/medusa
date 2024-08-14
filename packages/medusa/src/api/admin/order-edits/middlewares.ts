@@ -100,18 +100,13 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/order-edits/:id/request",
+    matcher: "/admin/order-edits/:id/confirm",
     middlewares: [
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/order-edits/:id/request",
-    middlewares: [],
   },
   {
     method: ["DELETE"],

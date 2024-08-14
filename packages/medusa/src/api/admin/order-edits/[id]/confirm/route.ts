@@ -1,8 +1,5 @@
-import {
-  cancelBeginOrderEditWorkflow,
-  confirmOrderEditRequestWorkflow,
-} from "@medusajs/core-flows"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { confirmOrderEditRequestWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -42,24 +39,5 @@ export const POST = async (
   res.json({
     order_preview: result,
     order,
-  })
-}
-
-export const DELETE = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"order-edit">>
-) => {
-  const { id } = req.params
-
-  await cancelBeginOrderEditWorkflow(req.scope).run({
-    input: {
-      order_id: id,
-    },
-  })
-
-  res.status(200).json({
-    id,
-    object: "order-edit",
-    deleted: true,
   })
 }
