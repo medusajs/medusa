@@ -193,8 +193,8 @@ export function medusaIntegrationTestRunner({
       throw error
     }
 
-    console.log(`Syncing app links ${dbName}`)
-    await syncLinks(appLoader)
+    // console.log(`Syncing app links ${dbName}`)
+    // await syncLinks(appLoader)
 
     const cancelTokenSource = axios.CancelToken.source()
 
