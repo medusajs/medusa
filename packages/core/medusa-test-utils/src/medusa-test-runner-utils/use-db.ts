@@ -1,46 +1,46 @@
-import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
+import type { MedusaAppLoader } from "@medusajs/framework"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 
-export async function initDb({ env = {} }: { env?: Record<any, any> }) {
-  if (isObject(env)) {
-    Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
-  }
-
-  const {
-    pgConnectionLoader,
-    logger,
-    container,
-    featureFlagsLoader,
-    MedusaAppLoader,
-  } = await import("@medusajs/framework")
+/**
+ * Initiates the database connection
+ */
+export async function initDb() {
+  const { pgConnectionLoader, featureFlagsLoader } = await import(
+    "@medusajs/framework"
+  )
 
   const pgConnection = pgConnectionLoader()
   await featureFlagsLoader()
 
-  container.register({
-    [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-  })
+  return pgConnection
+}
 
+/**
+ * Migrates the database
+ */
+export async function migrateDatabase(appLoader: MedusaAppLoader) {
   try {
-    const medusaAppLoader = new MedusaAppLoader()
-    await medusaAppLoader.runModulesMigrations()
-    const planner = await medusaAppLoader.getLinksExecutionPlanner()
-
-    const actionPlan = await planner.createPlan()
-    await planner.executePlan(actionPlan)
-
-    /**
-     * cleanup temporary created resources for the migrations
-     * @internal I didnt find a god place to put that, should we eventually add a close function
-     * to the planner to handle that part? so that you would do planner.close() and it will handle the cleanup
-     * automatically just like we usually do for the classic migrations actions
-     */
-    const { MedusaModule } = require("@medusajs/modules-sdk")
-    MedusaModule.clearInstances()
+    await appLoader.runModulesMigrations()
   } catch (err) {
     console.error("Something went wrong while running the migrations")
     throw err
   }
+}
 
-  return pgConnection
+/**
+ * Syncs links with the databse
+ */
+export async function syncLinks(appLoader: MedusaAppLoader) {
+  try {
+    const planner = await appLoader.getLinksExecutionPlanner()
+    const actionPlan = await planner.createPlan()
+    actionPlan.forEach((action) => {
+      console.log(`Sync links: "${action.action}" ${action.tableName}`)
+    })
+    await planner.executePlan(actionPlan)
+  } catch (err) {
+    console.error("Something went wrong while syncing links")
+    throw err
+  }
 }
