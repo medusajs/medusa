@@ -90,6 +90,7 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   debug = false,
+  inApp = false,
   testSuite,
 }: {
   moduleName?: string
@@ -97,6 +98,7 @@ export function medusaIntegrationTestRunner({
   dbName?: string
   schema?: string
   debug?: boolean
+  inApp?: boolean
   testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -193,8 +195,15 @@ export function medusaIntegrationTestRunner({
       throw error
     }
 
-    // console.log(`Syncing app links ${dbName}`)
-    // await syncLinks(appLoader)
+    /**
+     * Run application migrations and sync links when inside
+     * an application
+     */
+    if (inApp) {
+      console.log(`Migrating database with core migrations and links ${dbName}`)
+      await migrateDatabase(appLoader)
+      await syncLinks(appLoader)
+    }
 
     const cancelTokenSource = axios.CancelToken.source()
 
