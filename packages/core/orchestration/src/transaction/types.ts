@@ -1,3 +1,4 @@
+import { TransactionState } from "@medusajs/utils"
 import { DistributedTransactionType } from "./distributed-transaction"
 import { TransactionStep } from "./transaction-step"
 export {
@@ -228,3 +229,26 @@ export type StepFeatures = {
 }
 
 export type TransactionOptions = TransactionModelOptions & StepFeatures
+
+export type TransactionFlow = {
+  modelId: string
+  options?: TransactionModelOptions
+  definition: TransactionStepsDefinition
+  transactionId: string
+  metadata?: {
+    eventGroupId?: string
+    [key: string]: unknown
+  }
+  hasAsyncSteps: boolean
+  hasFailedSteps: boolean
+  hasSkippedOnFailureSteps: boolean
+  hasWaitingSteps: boolean
+  hasSkippedSteps: boolean
+  hasRevertedSteps: boolean
+  timedOutAt: number | null
+  startedAt?: number
+  state: TransactionState
+  steps: {
+    [key: string]: TransactionStep
+  }
+}
