@@ -25,6 +25,7 @@ import { useIsBrowser, useSiteConfig } from "../../.."
 
 type CommonProps = ParentCommonProps & {
   level?: number
+  referenceType?: "method" | "workflow"
 }
 
 type TypeListItemProps = {
@@ -39,6 +40,7 @@ const TypeListItem = ({
   expandUrl,
   elementKey,
   sectionTitle,
+  referenceType = "method",
 }: TypeListItemProps) => {
   const isBrowser = useIsBrowser()
   const pathname = usePathname()
@@ -227,9 +229,9 @@ const TypeListItem = ({
             )}
             {item.expandable && (
               <ExpandableNotice
-                type="method"
+                type={referenceType}
                 link={expandUrl || "#"}
-                badgeClassName="!p-0 leading-none"
+                badgeClassName="!p-docs_0.25 block leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
             )}

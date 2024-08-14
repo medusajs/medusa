@@ -2,7 +2,7 @@ import React from "react"
 import { Badge, Link, Tooltip } from "@/components"
 
 export type ExpandableNoticeProps = {
-  type: "request" | "method"
+  type: "request" | "method" | "workflow"
   link: string
   badgeContent?: React.ReactNode
   badgeClassName?: string
@@ -19,8 +19,8 @@ export const ExpandableNotice = ({
       tooltipChildren={
         <>
           If this {type} accepts an <code>expand</code>{" "}
-          {type === "request" ? "parameter" : "property or option"},
-          <br /> this field can be <Link href={link}>expanded</Link> into an
+          {type === "request" ? "parameter" : "parameter or property"},
+          <br /> this relation can be <Link href={link}>expanded</Link> into an
           object.
         </>
       }
