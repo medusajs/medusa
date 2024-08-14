@@ -12,6 +12,7 @@ import {
 import {
   AdminClaim,
   AdminOrder,
+  AdminOrderPreview,
   AdminReturn,
   OrderLineItemDTO,
   ReservationItemDTO,
@@ -31,6 +32,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims.tsx"
+import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
@@ -51,6 +53,8 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { reservations } = useReservationItems({
     line_item_id: order.items.map((i) => i.id),
   })
+
+  const { order: orderPreview } = useOrderPreview(order.id!)
 
   const { returns = [] } = useReturns({
     status: "requested",
@@ -90,7 +94,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
 
   return (
     <Container className="divide-y divide-dashed p-0">
-      <Header order={order} />
+      <Header order={order} orderPreview={orderPreview} />
       <ItemBreakdown order={order} />
       <CostBreakdown order={order} />
       <Total order={order} />
@@ -131,7 +135,13 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   )
 }
 
-const Header = ({ order }: { order: AdminOrder }) => {
+const Header = ({
+  order,
+  orderPreview,
+}: {
+  order: AdminOrder
+  orderPreview?: AdminOrderPreview
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -157,7 +167,9 @@ const Header = ({ order }: { order: AdminOrder }) => {
                 icon: <ArrowUturnLeft />,
               },
               {
-                label: t("orders.claims.create"),
+                label: orderPreview?.order_change?.id
+                  ? t("orders.claims.manage")
+                  : t("orders.claims.create"),
                 to: `/orders/${order.id}/claims`,
                 icon: <ExclamationCircle />,
               },
@@ -491,6 +503,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           {getStylizedAmount(order.total, order.currency_code)}
         </Text>
       </div>
+
       <div className="text-ui-fg-base flex items-center justify-between">
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           {t("fields.paidTotal")}
@@ -498,6 +511,22 @@ const Total = ({ order }: { order: AdminOrder }) => {
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           {getStylizedAmount(
             getTotalCaptured(order.payment_collections || []),
+            order.currency_code
+          )}
+        </Text>
+      </div>
+
+      <div className="text-ui-fg-base flex items-center justify-between">
+        <Text
+          className="text-ui-fg-subtle text-semibold"
+          size="small"
+          leading="compact"
+        >
+          {t("orders.returns.outstandingAmount")}
+        </Text>
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {getStylizedAmount(
+            order.summary.difference_sum || 0,
             order.currency_code
           )}
         </Text>

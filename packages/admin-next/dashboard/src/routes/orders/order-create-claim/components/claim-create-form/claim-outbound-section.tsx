@@ -191,7 +191,7 @@ export const ClaimOutboundSection = ({
 
       return action && !!!action?.return?.id
     })
-    console.log("outboundShippingMethods -- ", outboundShippingMethods)
+
     const promises = outboundShippingMethods
       .filter(Boolean)
       .map((outboundShippingMethod) => {
