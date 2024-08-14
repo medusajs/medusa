@@ -1,11 +1,19 @@
+import { asValue } from "awilix"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { initDb, migrateDatabase } from "./medusa-test-runner-utils/use-db"
+import {
+  initDb,
+  migrateDatabase,
+  syncLinks,
+} from "./medusa-test-runner-utils/use-db"
 import { configLoaderOverride } from "./medusa-test-runner-utils/config"
-import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/apply-env-vars"
+import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 
 const axios = require("axios").default
@@ -106,7 +114,7 @@ export function medusaIntegrationTestRunner({
 
   let shutdown = async () => void 0
   const dbUtils = dbTestUtilFactory()
-  let container: ContainerLike
+  let globalContainer: ContainerLike
   let apiUtils: any
 
   let options = {
@@ -126,7 +134,7 @@ export function medusaIntegrationTestRunner({
         },
       }
     ),
-    getContainer: () => container,
+    getContainer: () => globalContainer,
     dbConfig: {
       dbName,
       schema,
@@ -141,6 +149,14 @@ export function medusaIntegrationTestRunner({
     await configLoaderOverride(cwd, dbConfig)
     applyEnvVarsToProcess(env)
 
+    const { logger, container, MedusaAppLoader } = await import(
+      "@medusajs/framework"
+    )
+    const appLoader = new MedusaAppLoader()
+    container.register({
+      [ContainerRegistrationKeys.LOGGER]: asValue(logger),
+    })
+
     try {
       console.log(`Creating database ${dbName}`)
       await dbUtils.create(dbName)
@@ -151,24 +167,25 @@ export function medusaIntegrationTestRunner({
     }
 
     console.log(`Migrating database with core migrations and links ${dbName}`)
-    await migrateDatabase()
+    await migrateDatabase(appLoader)
+    await syncLinks(appLoader)
     await clearInstances()
 
-    let containerRes: MedusaContainer
+    let containerRes: MedusaContainer = container
     let serverShutdownRes: () => any
     let portRes: number
 
     try {
       const {
         shutdown = () => void 0,
-        container,
+        container: appContainer,
         port,
       } = await startApp({
         cwd,
         env,
       })
 
-      containerRes = container
+      containerRes = appContainer
       serverShutdownRes = shutdown
       portRes = port
     } catch (error) {
@@ -176,12 +193,12 @@ export function medusaIntegrationTestRunner({
       throw error
     }
 
-    console.log(`Migrating database with app migrations and links ${dbName}`)
-    await migrateDatabase()
+    console.log(`Syncing app links ${dbName}`)
+    await syncLinks(appLoader)
 
     const cancelTokenSource = axios.CancelToken.source()
 
-    container = containerRes
+    globalContainer = containerRes
     shutdown = async () => {
       await serverShutdownRes()
       cancelTokenSource.cancel("Request canceled by shutdown")

@@ -1,3 +1,4 @@
+import type { MedusaAppLoader } from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 
@@ -5,37 +6,41 @@ import { asValue } from "awilix"
  * Initiates the database connection
  */
 export async function initDb() {
-  const { pgConnectionLoader, logger, container, featureFlagsLoader } =
-    await import("@medusajs/framework")
+  const { pgConnectionLoader, featureFlagsLoader } = await import(
+    "@medusajs/framework"
+  )
 
   const pgConnection = pgConnectionLoader()
   await featureFlagsLoader()
-
-  container.register({
-    [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-  })
 
   return pgConnection
 }
 
 /**
- * Migrates the database and also sync links
+ * Migrates the database
  */
-export async function migrateDatabase() {
-  const { MedusaAppLoader } = await import("@medusajs/framework")
-
+export async function migrateDatabase(appLoader: MedusaAppLoader) {
   try {
-    const medusaAppLoader = new MedusaAppLoader()
-    await medusaAppLoader.runModulesMigrations()
-    const planner = await medusaAppLoader.getLinksExecutionPlanner()
+    await appLoader.runModulesMigrations()
+  } catch (err) {
+    console.error("Something went wrong while running the migrations")
+    throw err
+  }
+}
 
+/**
+ * Syncs links with the databse
+ */
+export async function syncLinks(appLoader: MedusaAppLoader) {
+  try {
+    const planner = await appLoader.getLinksExecutionPlanner()
     const actionPlan = await planner.createPlan()
     actionPlan.forEach((action) => {
       console.log(`Sync links: "${action.action}" ${action.tableName}`)
     })
     await planner.executePlan(actionPlan)
   } catch (err) {
-    console.error("Something went wrong while running the migrations")
+    console.error("Something went wrong while syncing links")
     throw err
   }
 }

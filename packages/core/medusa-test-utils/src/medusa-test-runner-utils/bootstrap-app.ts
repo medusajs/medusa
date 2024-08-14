@@ -1,9 +1,9 @@
 import express from "express"
 import getPort from "get-port"
 import { resolve } from "path"
-import { isObject, promiseAll, GracefulShutdownServer } from "@medusajs/utils"
 import { MedusaContainer } from "@medusajs/types"
-import { applyEnvVarsToProcess } from "./apply-env-vars"
+import { applyEnvVarsToProcess } from "./utils"
+import { promiseAll, GracefulShutdownServer } from "@medusajs/utils"
 
 async function bootstrapApp({
   cwd,
