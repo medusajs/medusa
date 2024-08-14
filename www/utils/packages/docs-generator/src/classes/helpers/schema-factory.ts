@@ -27,6 +27,22 @@ class SchemaFactory {
       type: "string",
       format: "date-time",
     },
+    $and: {
+      type: "array",
+      description:
+        "Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.",
+      items: {
+        type: "object",
+      },
+    },
+    $or: {
+      type: "array",
+      description:
+        "Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.",
+      items: {
+        type: "object",
+      },
+    },
   }
 
   /**

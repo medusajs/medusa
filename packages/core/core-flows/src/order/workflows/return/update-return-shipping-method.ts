@@ -89,7 +89,11 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    updateReturnShippingMethodValidationStep({ orderReturn, orderChange, input })
+    updateReturnShippingMethodValidationStep({
+      orderReturn,
+      orderChange,
+      input,
+    })
 
     const updateData = transform(
       { orderChange, input },
@@ -102,6 +106,7 @@ export const updateReturnShippingMethodWorkflow = createWorkflow(
 
         const action = {
           id: originalAction.id,
+          amount: data.custom_price,
           internal_note: data.internal_note,
         }
 

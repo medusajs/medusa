@@ -1653,9 +1653,21 @@ class OasKindGenerator extends FunctionKindGenerator {
         (updatedParameter.schema as OpenApiSchema).type !==
         (parameter.schema as OpenApiSchema).type
       ) {
-        ;(parameter.schema as OpenApiSchema).type = (
-          updatedParameter.schema as OpenApiSchema
-        ).type
+        // the entire schema should be updated if the type changes.
+        parameter.schema = updatedParameter.schema
+      } else if ((updatedParameter.schema as OpenApiSchema).type === "array") {
+        ;(parameter.schema as OpenAPIV3.ArraySchemaObject).items =
+          this.updateSchema({
+            oldSchema: (parameter.schema as OpenAPIV3.ArraySchemaObject).items,
+            newSchema: (updatedParameter.schema as OpenAPIV3.ArraySchemaObject)
+              .items,
+          }) || (updatedParameter.schema as OpenAPIV3.ArraySchemaObject).items
+      } else if ((updatedParameter.schema as OpenApiSchema).type === "object") {
+        parameter.schema =
+          this.updateSchema({
+            oldSchema: parameter.schema,
+            newSchema: updatedParameter.schema,
+          }) || updatedParameter.schema
       }
 
       if (
