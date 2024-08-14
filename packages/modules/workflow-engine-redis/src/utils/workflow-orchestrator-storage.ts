@@ -58,11 +58,11 @@ export class RedisDistributedTransactionStorage
 
   async onApplicationPrepareShutdown() {
     // Close worker gracefully, i.e. wait for the current jobs to finish
-    await this.worker.close()
+    await this.worker?.close()
   }
 
   async onApplicationShutdown() {
-    await this.queue.close()
+    await this.queue?.close()
   }
 
   async onApplicationStart() {
