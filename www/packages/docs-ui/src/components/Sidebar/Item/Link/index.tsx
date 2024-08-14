@@ -80,6 +80,11 @@ export const SidebarItemLink = ({
     return !item.isChildSidebar && (item.children?.length || 0) > 0
   }, [item.children])
 
+  const isTitleOneWord = useMemo(
+    () => item.title.split(" ").length === 1,
+    [item.title]
+  )
+
   return (
     <li ref={ref}>
       <span className="block px-docs_0.75">
@@ -87,7 +92,8 @@ export const SidebarItemLink = ({
           href={item.isPathHref ? item.path : `#${item.path}`}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
-            "block w-full rounded-docs_sm break-words",
+            "block w-full rounded-docs_sm",
+            !isTitleOneWord && "break-words",
             active && [
               "bg-medusa-bg-base",
               "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
@@ -112,7 +118,9 @@ export const SidebarItemLink = ({
           shallow={!item.isPathHref}
           {...item.linkProps}
         >
-          <span>{item.title}</span>
+          <span className={clsx(isTitleOneWord && "truncate")}>
+            {item.title}
+          </span>
           {item.additionalElms}
         </Link>
       </span>

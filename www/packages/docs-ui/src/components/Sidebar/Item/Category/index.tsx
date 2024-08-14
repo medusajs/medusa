@@ -2,7 +2,7 @@
 
 // @refresh reset
 
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { SidebarItemCategory as SidebarItemCategoryType } from "types"
 import { Loading, SidebarItem, useSidebar } from "../../../.."
 import clsx from "clsx"
@@ -48,6 +48,11 @@ export const SidebarItemCategory = ({
     item.onOpen?.()
   }
 
+  const isTitleOneWord = useMemo(
+    () => item.title.split(" ").length === 1,
+    [item.title]
+  )
+
   return (
     <div className={clsx("my-docs_0.75 w-full relative", className)}>
       <div className="px-docs_0.75">
@@ -57,7 +62,8 @@ export const SidebarItemCategory = ({
             "flex justify-between items-center gap-docs_0.5",
             "text-medusa-fg-muted",
             "cursor-pointer relative",
-            "z-[2] break-words"
+            "z-[2]",
+            !isTitleOneWord && "break-words"
           )}
           tabIndex={-1}
           onClick={() => {
@@ -67,7 +73,14 @@ export const SidebarItemCategory = ({
             setOpen((prev) => !prev)
           }}
         >
-          <span className="text-compact-x-small-plus">{item.title}</span>
+          <span
+            className={clsx(
+              "text-compact-x-small-plus",
+              isTitleOneWord && "truncate"
+            )}
+          >
+            {item.title}
+          </span>
           {item.additionalElms}
           {!item.additionalElms && (
             <>

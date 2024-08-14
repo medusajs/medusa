@@ -90,13 +90,19 @@ export const SidebarItemSubCategory = ({
     return item.children?.length || 0 > 0
   }, [item.children])
 
+  const isTitleOneWord = useMemo(
+    () => item.title.split(" ").length === 1,
+    [item.title]
+  )
+
   return (
     <li ref={ref}>
       <span className="block px-docs_0.75">
         <span
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
-            "block w-full break-words",
+            "block w-full",
+            !isTitleOneWord && "break-words",
             active && [
               "rounded-docs_sm",
               "shadow-borders-base dark:shadow-borders-base-dark",
@@ -110,7 +116,9 @@ export const SidebarItemSubCategory = ({
             className
           )}
         >
-          <span>{item.title}</span>
+          <span className={clsx(isTitleOneWord && "truncate")}>
+            {item.title}
+          </span>
           {item.additionalElms}
         </span>
       </span>
