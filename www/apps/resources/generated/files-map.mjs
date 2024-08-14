@@ -3456,10 +3456,6 @@ export const filesMap = [
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.createFulfillmentValidateOrder"
   },
   {
-    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep/page.mdx",
-    "pathname": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep"
-  },
-  {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow/page.mdx",
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow"
   },
@@ -3966,10 +3962,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createExchangeShippingMethodWorkflowId/page.mdx",
     "pathname": "/references/core_flows/Order/variables/core_flows.Order.createExchangeShippingMethodWorkflowId"
-  },
-  {
-    "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createOrderChangeActionsStepId/page.mdx",
-    "pathname": "/references/core_flows/Order/variables/core_flows.Order.createOrderChangeActionsStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createOrderChangeActionsWorkflowId/page.mdx",
