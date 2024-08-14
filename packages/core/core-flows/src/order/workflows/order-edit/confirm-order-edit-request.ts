@@ -117,7 +117,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
-    }).config({ name: "order-query" })
+    }).config({ name: "order-items-query" })
 
     const { variants, items } = transform({ orderItems }, ({ orderItems }) => {
       const allItems: any[] = []
