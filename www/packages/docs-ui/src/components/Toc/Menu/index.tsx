@@ -20,20 +20,18 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
     const isActive = item.id === activeItem
     const hasChildren = item.children?.length || 0 > 0
     return (
-      <li
-        className={clsx(
-          "text-medusa-fg-base",
-          isActive && "text-compact-small-plus",
-          !isActive && "text-compact-small"
-        )}
-      >
+      <li className={clsx("text-medusa-fg-base w-full")}>
         <Button
           variant="transparent-clear"
           className={clsx(
-            "flex justify-start items-center gap-docs_0.5",
+            "gap-docs_0.5 flex-1",
             "cursor-pointer rounded-docs_sm py-docs_0.25",
             "px-docs_0.5 hover:bg-medusa-bg-component-hover",
-            "!text-inherit max-w-full"
+            "!text-inherit max-w-full w-full",
+            "focus:!outline-none focus:!shadow-none focus:dark:!shadow-none",
+            "!flex !justify-start !items-center",
+            isActive && "!text-compact-small-plus",
+            !isActive && "!text-compact-small"
           )}
           onClick={() => {
             history.pushState({}, "", `#${item.id}`)
@@ -42,10 +40,10 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
           }}
         >
           <EllipseMiniSolid className={clsx(!isActive && "invisible")} />
-          <span className="truncate">{item.title}</span>
+          <span className="truncate flex-1 text-left">{item.title}</span>
         </Button>
         {hasChildren && (
-          <ul>
+          <ul className="pl-docs_0.5">
             {item.children!.map((childItem, index) => (
               <React.Fragment key={index}>
                 {getItemElm(childItem)}

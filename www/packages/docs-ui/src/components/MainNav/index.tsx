@@ -26,10 +26,7 @@ export const MainNav = () => {
         <MainNavBreadcrumbs />
       </div>
       <div className="flex items-center gap-docs_0.25">
-        <Link
-          href={reportIssueLink}
-          className="text-medusa-fg-muted hover:text-medusa-fg-subtle"
-        >
+        <Link href={reportIssueLink} className="text-medusa-fg-muted">
           Report Issue
         </Link>
         <MainNavDivider />

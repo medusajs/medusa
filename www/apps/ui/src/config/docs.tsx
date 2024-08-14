@@ -1,4 +1,3 @@
-import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { getMobileSidebarItems } from "docs-ui"
 import { SidebarSectionItems } from "types"
 import { siteConfig } from "./site"

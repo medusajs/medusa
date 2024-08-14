@@ -126,7 +126,7 @@ const dark = {
 
   "--docs-fg-base": "rgba(244, 244, 245, 1)",
   "--docs-fg-subtle": "rgba(161, 161, 170, 1)",
-  "--docs-fg-muted": "rgba(161, 161, 170, 1)",
+  "--docs-fg-muted": "rgba(113, 113, 122, 1)",
   "--docs-fg-disabled": "rgba(82, 82, 91, 1)",
   "--docs-fg-on-color": "rgba(255, 255, 255, 1)",
   "--docs-fg-on-inverted": "rgba(9, 9, 11, 1)",
