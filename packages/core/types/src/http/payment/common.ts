@@ -57,6 +57,11 @@ export interface BasePaymentCollection {
   authorized_amount?: BigNumberValue
 
   /**
+   * The amount captured within the associated payment sessions.
+   */
+  captured_amount?: BigNumberValue
+
+  /**
    * The amount refunded within the associated payments.
    */
   refunded_amount?: BigNumberValue
