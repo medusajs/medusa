@@ -25,12 +25,12 @@ import {
 } from "@mikro-orm/core/typings"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  MedusaError,
   arrayDifference,
   isString,
-  MedusaError,
   promiseAll,
 } from "../../common"
-import { buildQuery } from "../../modules-sdk"
+import { buildQuery } from "../../modules-sdk/build-query"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
