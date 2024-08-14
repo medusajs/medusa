@@ -46,7 +46,7 @@ export const completeCartWorkflow = createWorkflow(
 
     const paymentSessions = validateCartPaymentsStep({ cart })
 
-    const payment = authorizePaymentSessionStep({
+    authorizePaymentSessionStep({
       // We choose the first payment session, as there will only be one active payment session
       // This might change in the future.
       id: paymentSessions[0].id,
@@ -96,7 +96,7 @@ export const completeCartWorkflow = createWorkflow(
       }).config({ name: "final-cart" })
     )
 
-    const cartToOrder = transform({ cart, payment }, ({ cart, payment }) => {
+    const cartToOrder = transform({ cart }, ({ cart }) => {
       const allItems = (cart.items ?? []).map((item) => {
         return prepareLineItemData({
           item,
@@ -135,15 +135,6 @@ export const completeCartWorkflow = createWorkflow(
         .map((adjustment) => adjustment.code)
         .filter((code) => Boolean) as string[]
 
-      const transactions = [
-        {
-          amount: payment.raw_amount ?? payment.amount,
-          currency_code: payment.currency_code,
-          reference: "payment",
-          reference_id: payment.id,
-        },
-      ]
-
       return {
         region_id: cart.region?.id,
         customer_id: cart.customer?.id,
@@ -158,7 +149,6 @@ export const completeCartWorkflow = createWorkflow(
         shipping_methods: shippingMethods,
         metadata: cart.metadata,
         promo_codes: promoCodes,
-        transactions,
       }
     })
 

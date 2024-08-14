@@ -4,8 +4,11 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
+  when,
 } from "@medusajs/workflows-sdk"
-import { emitEventStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
+import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { capturePaymentStep } from "../steps/capture-payment"
 
 export const capturePaymentWorkflowId = "capture-payment-workflow"
@@ -22,6 +25,32 @@ export const capturePaymentWorkflow = createWorkflow(
     }>
   ): WorkflowResponse<PaymentDTO> => {
     const payment = capturePaymentStep(input)
+
+    const orderPayment = useRemoteQueryStep({
+      entry_point: "order_payment_collection",
+      fields: ["order.id"],
+      variables: { payment_collection_id: payment.payment_collection_id },
+      list: false,
+    })
+
+    when({ orderPayment }, ({ orderPayment }) => {
+      return !!orderPayment?.order?.id
+    }).then(() => {
+      const orderTransactionData = transform(
+        { input, payment, orderPayment },
+        ({ input, payment }) => {
+          return {
+            order_id: orderPayment.id,
+            amount: input.amount ?? payment.raw_amount ?? payment.amount,
+            currency_code: payment.currency_code,
+            reference_id: payment.id,
+            reference: "capture",
+          }
+        }
+      )
+
+      addOrderTransactionStep(orderTransactionData)
+    })
 
     emitEventStep({
       eventName: PaymentEvents.CAPTURED,
