@@ -40,9 +40,6 @@ export default function RootLayout({
       ProvidersComponent={Providers}
       sidebarProps={{
         expandItems: true,
-        sidebarTopProps: {
-          banner: <Bannerv2 />,
-        },
       }}
       showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
