@@ -44,15 +44,15 @@ export const Toc = () => {
   }, [headingItems])
 
   const handleResize = () => {
-    if (window.innerHeight < 900) {
-      setMaxHeight(0)
-      return
-    }
+    const offset =
+      (scrollableElement instanceof HTMLElement
+        ? scrollableElement.offsetTop
+        : 0) + 56
 
     setMaxHeight(
-      isElmWindow(scrollableElement)
+      (isElmWindow(scrollableElement)
         ? scrollableElement.innerHeight
-        : scrollableElement?.clientHeight || 0
+        : scrollableElement?.clientHeight || 0) - offset
     )
   }
 

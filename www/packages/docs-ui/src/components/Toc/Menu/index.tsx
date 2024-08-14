@@ -33,7 +33,7 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
             "flex justify-start items-center gap-docs_0.5",
             "cursor-pointer rounded-docs_sm py-docs_0.25",
             "px-docs_0.5 hover:bg-medusa-bg-component-hover",
-            "text-inherit max-w-full"
+            "!text-inherit max-w-full"
           )}
           onClick={() => {
             history.pushState({}, "", `#${item.id}`)
@@ -61,7 +61,7 @@ export const TocMenu = ({ items, activeItem, show, setShow }: TocMenuProps) => {
     <div
       className={clsx(
         "hidden lg:flex relative transition-[width] lg:h-full",
-        "w-0 z-20 bg-medusa-bg-subtle overflow-hidden flex flex-col justify-center",
+        "w-0 z-50 bg-medusa-bg-subtle overflow-hidden flex flex-col justify-center",
         show && "lg:w-toc"
       )}
       onMouseLeave={() => setShow(false)}

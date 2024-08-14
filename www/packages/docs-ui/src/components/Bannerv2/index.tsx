@@ -34,7 +34,7 @@ export const Bannerv2 = ({ className }: Bannerv2Props) => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-base hidden gap-docs_0.5",
+        "bg-medusa-bg-base hidden gap-docs_0.5 z-20",
         "justify-between items-start rounded-docs_DEFAULT",
         "p-docs_0.75 shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
         show && "lg:flex",

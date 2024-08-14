@@ -11,7 +11,7 @@ export const WideLayout = ({
   return (
     <RootLayout
       {...props}
-      mainWrapperClasses={clsx(props.mainWrapperClasses, "mx-auto flex px-1.5")}
+      mainWrapperClasses={clsx(props.mainWrapperClasses, "mx-auto flex")}
     >
       <main className="lg:max-w-wide-content relative mt-4 w-full flex-1 lg:mt-7">
         {children}
