@@ -38,9 +38,9 @@ export const refundPaymentWorkflow = createWorkflow(
     }).then(() => {
       const orderTransactionData = transform(
         { input, payment, orderPayment },
-        ({ input, payment }) => {
+        ({ input, payment, orderPayment }) => {
           return {
-            order_id: orderPayment.id,
+            order_id: orderPayment.order.id,
             amount: MathBN.mult(
               input.amount ?? payment.raw_amount ?? payment.amount,
               -1
