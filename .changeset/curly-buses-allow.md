@@ -43,6 +43,7 @@
 "@medusajs/types": patch
 "@medusajs/utils": patch
 "@medusajs/medusa": patch
+"medusa-test-utils": patch
 ---
 
 Bump dependencies
