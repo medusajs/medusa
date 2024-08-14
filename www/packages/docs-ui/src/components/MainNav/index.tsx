@@ -16,7 +16,7 @@ export const MainNav = () => {
     <div
       className={clsx(
         "hidden sm:flex justify-between items-center",
-        "px-docs_1 py-docs_0.75",
+        "px-docs_1 py-docs_0.75 w-full z-10",
         "sticky top-0 bg-medusa-bg-base"
       )}
     >

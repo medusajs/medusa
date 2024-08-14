@@ -18,11 +18,10 @@ export type MainNavProviderProps = {
 }
 
 export const MainNavProvider = ({
-  navItems: initialItems,
+  navItems,
   reportIssueLink,
   children,
 }: MainNavProviderProps) => {
-  const [navItems, setNavItems] = useState(initialItems)
   const activeItem = useMemo(
     () => navItems.find((item) => item.type === "link" && item.isActive),
     [navItems]

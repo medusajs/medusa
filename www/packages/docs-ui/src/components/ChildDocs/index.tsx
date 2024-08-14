@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react"
 import { Card, CardList, MDXComponents, useSidebar } from "../.."
-import { InteractiveSidebarItem, SidebarItem } from "types"
+import { InteractiveSidebarItem, SidebarItem, SidebarItemLink } from "types"
 
 type ChildDocsProps = {
   onlyTopLevel?: boolean
@@ -89,7 +89,11 @@ export const ChildDocs = ({
   const filterNonInteractiveItems = (
     items: SidebarItem[] | undefined
   ): InteractiveSidebarItem[] => {
-    return items?.filter((item) => item.type !== "separator") || []
+    return (
+      (items?.filter(
+        (item) => item.type !== "separator"
+      ) as InteractiveSidebarItem[]) || []
+    )
   }
 
   const getChildrenForLevel = (
@@ -122,11 +126,23 @@ export const ChildDocs = ({
     return (
       <CardList
         items={
-          filterNonInteractiveItems(items).map((childItem) => ({
-            title: childItem.title,
-            href: childItem.type === "link" ? childItem.path : "",
-            showLinkIcon: false,
-          })) || []
+          filterNonInteractiveItems(items).map((childItem) => {
+            const href =
+              childItem.type === "link"
+                ? childItem.path
+                : childItem.children?.length
+                ? (
+                    childItem.children.find(
+                      (item) => item.type === "link"
+                    ) as SidebarItemLink
+                  )?.path
+                : "#"
+            return {
+              title: childItem.title,
+              href,
+              showLinkIcon: false,
+            }
+          }) || []
         }
       />
     )

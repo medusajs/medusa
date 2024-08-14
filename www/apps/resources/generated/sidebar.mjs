@@ -3193,6 +3193,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/listOrderChanges",
+                        "title": "listOrderChanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/listOrderClaims",
                         "title": "listOrderClaims",
                         "children": []
@@ -8838,6 +8846,14 @@ export const generatedSidebar = [
             "type": "link",
             "path": "/references/helper-steps/removeRemoteLinkStep",
             "title": "removeRemoteLinkStep",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/references/helper-steps/updateRemoteLinksStep",
+            "title": "updateRemoteLinksStep",
             "children": []
           },
           {

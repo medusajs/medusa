@@ -1,45 +1,23 @@
 "use client"
 
-import { InView } from "react-intersection-observer"
-import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
-import checkElementInViewport from "../../../utils/check-element-in-viewport"
+import { useScrollController, useSidebar } from "docs-ui"
 import { useEffect, useMemo } from "react"
 import getSectionId from "../../../utils/get-section-id"
 
-type H2Props = {
-  addToSidebar?: boolean
-} & React.HTMLAttributes<HTMLHeadingElement>
+type H2Props = React.HTMLAttributes<HTMLHeadingElement>
 
-const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
-  const { activePath, setActivePath, addItems } = useSidebar()
-  const { getScrolledTop, scrollableElement } = useScrollController()
+const H2 = ({ children, ...props }: H2Props) => {
+  const { activePath, addItems } = useSidebar()
+  const { scrollableElement } = useScrollController()
 
-  const handleViewChange = (
-    inView: boolean,
-    entry: IntersectionObserverEntry
-  ) => {
-    if (!addToSidebar) {
-      return
-    }
-    const heading = entry.target
-    if (
-      (inView ||
-        checkElementInViewport(heading.parentElement || heading, 40)) &&
-      getScrolledTop() !== 0 &&
-      activePath !== heading.id
-    ) {
-      // can't use next router as it doesn't support
-      // changing url without scrolling
-      history.pushState({}, "", `#${heading.id}`)
-      setActivePath(heading.id)
-    }
-  }
-  const id = getSectionId([children as string])
+  const id = useMemo(() => getSectionId([children as string]), [children])
 
   useEffect(() => {
     if (id === (activePath || location.hash.replace("#", ""))) {
-      const elm = document.getElementById(id)
-      elm?.scrollIntoView()
+      const elm = document.getElementById(id) as HTMLElement
+      scrollableElement?.scrollTo({
+        top: elm.offsetTop,
+      })
     }
 
     addItems([
@@ -50,25 +28,12 @@ const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
         loaded: true,
       },
     ])
-  }, [])
-
-  const root = useMemo(() => {
-    return isElmWindow(scrollableElement) ? document.body : scrollableElement
-  }, [scrollableElement])
+  }, [id])
 
   return (
-    <InView
-      as="h2"
-      threshold={0.4}
-      skip={!addToSidebar}
-      initialInView={false}
-      {...props}
-      onChange={handleViewChange}
-      id={id}
-      root={root}
-    >
+    <h2 {...props} id={id}>
       {children}
-    </InView>
+    </h2>
   )
 }
 

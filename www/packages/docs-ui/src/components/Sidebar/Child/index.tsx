@@ -19,13 +19,15 @@ export const SidebarChild = ({ item }: SidebarTitleProps) => {
         onClick={goBack}
         className={clsx(
           "flex items-center justify-start my-docs_0.75 gap-[10px]",
-          "border border-transparent cursor-pointer",
+          "border border-transparent cursor-pointer mx-docs_0.5",
           "!text-medusa-fg-base !text-compact-small-plus"
         )}
         tabIndex={-1}
       >
-        <ArrowUturnLeft className="mr-[10px]" />
-        <span>{item.childSidebarTitle || item.title}</span>
+        <ArrowUturnLeft />
+        <span className="truncate flex-1">
+          {item.childSidebarTitle || item.title}
+        </span>
       </div>
     </div>
   )

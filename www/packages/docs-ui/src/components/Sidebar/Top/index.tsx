@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { SidebarChild } from "../Title"
+import { SidebarChild } from "../Child"
 import { InteractiveSidebarItem } from "types"
 import { SidebarSeparator } from "../Separator"
 import { SidebarTopMobileClose } from "./MobileClose"

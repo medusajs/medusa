@@ -71,12 +71,14 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
 
   useEffect(() => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
-      const elm = document.getElementById(schemaSlug)
-      elm?.scrollIntoView({
-        block: "center",
-      })
+      const elm = document.getElementById(schemaSlug) as HTMLElement
+      if (!checkElementInViewport(elm, 40)) {
+        root?.scrollTo({
+          top: elm.offsetTop,
+        })
+      }
     }
-  }, [])
+  }, [activePath, schemaSlug])
 
   const handleViewChange = (
     inView: boolean,

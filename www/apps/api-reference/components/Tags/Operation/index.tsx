@@ -13,6 +13,7 @@ import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
 import { useLoading } from "@/providers/loading"
 import SectionDivider from "../../Section/Divider"
+import checkElementInViewport from "../../../utils/check-element-in-viewport"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
   async () => import("./CodeSection")
@@ -76,20 +77,22 @@ const TagOperation = ({
   )
 
   useEffect(() => {
-    const enableShow = () => {
-      setShow(true)
-    }
-
     if (nodeRef && nodeRef.current) {
       removeLoading()
       const currentHash = location.hash.replace("#", "")
       if (currentHash === path) {
         setTimeout(() => {
-          nodeRef.current?.scrollIntoView()
-          enableShow()
+          if (nodeRef.current && !checkElementInViewport(nodeRef.current, 10)) {
+            root?.scrollTo({
+              top: (
+                (nodeRef.current as HTMLElement).offsetParent as HTMLElement
+              )?.offsetTop,
+            })
+          }
+          setShow(true)
         }, 100)
       } else if (currentHash.split("_")[0] === path.split("_")[0]) {
-        enableShow()
+        setShow(true)
       }
     }
   }, [nodeRef, path])

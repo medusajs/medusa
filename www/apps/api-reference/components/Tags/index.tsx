@@ -31,7 +31,7 @@ const Tags = () => {
   const [loadData, setLoadData] = useState<boolean>(false)
   const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
-  const { addItems } = useSidebar()
+  const { addItems, setActivePath } = useSidebar()
   const { area, prevArea } = useArea()
 
   const { data } = useSWR<ExpandedDocument>(
@@ -90,7 +90,8 @@ const Tags = () => {
             children: childItems,
             loaded: childItems.length > 0,
             onOpen: () => {
-              window.location.hash = tagPathName
+              history.pushState({}, "", `#${tagPathName}`)
+              setActivePath(tagPathName)
             },
           })
         })
