@@ -55,6 +55,10 @@ jobs:
           medusa new cli-test --skip-db --v2 --branch feat/v2-ci
         working-directory: ..
 
+      - name: run medusa dev
+        run: medusa-dev --force-install
+        working-directory: ../cli-test
+
       - name: Run migrations
         run: medusa migrations run && medusa links sync
         working-directory: ../cli-test
