@@ -6,6 +6,7 @@ import {
   ArrowDownRightMini,
   ArrowLongRight,
   ArrowUturnLeft,
+  DocumentText,
   ExclamationCircle,
 } from "@medusajs/icons"
 import {
@@ -16,12 +17,14 @@ import {
   ReservationItemDTO,
 } from "@medusajs/types"
 import {
+  Badge,
   Button,
   Container,
   Copy,
   Heading,
   StatusBadge,
   Text,
+  Tooltip,
 } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -265,7 +268,7 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
 
   const { returns } = useReturns({
     order_id: order.id,
-    fields: "*items",
+    fields: "*items,*items.reason",
   })
 
   const itemsReturnsMap = useMemo(() => {
@@ -378,43 +381,61 @@ const ReturnBreakdown = ({
 
   if (
     !["requested", "received", "partially_received"].includes(
-      orderReturn.status
+      orderReturn.status || ""
     )
   ) {
     return null
   }
 
   const isRequested = orderReturn.status === "requested"
+  const item = orderReturn?.items?.find((ri) => ri.item_id === itemId)
 
   return (
-    <div
-      key={orderReturn.id}
-      className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
-    >
-      <div className="flex items-center gap-2">
-        <ArrowDownRightMini className="text-ui-fg-muted" />
-        <Text>
-          {t(
-            `orders.returns.${
-              isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
-            }`,
-            {
-              requestedItemsCount: orderReturn?.items?.find(
-                (ri) => ri.item_id === itemId
-              )?.[isRequested ? "quantity" : "received_quantity"],
-            }
-          )}
-        </Text>
-      </div>
+    item && (
+      <div
+        key={orderReturn.id}
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+      >
+        <div className="flex items-center gap-2">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+          <Text>
+            {t(
+              `orders.returns.${
+                isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
+              }`,
+              {
+                requestedItemsCount:
+                  item?.[isRequested ? "quantity" : "received_quantity"],
+              }
+            )}
+          </Text>
 
-      {orderReturn && (
-        <Text size="small" leading="compact" className="text-ui-fg-muted">
-          {getRelativeDate(
-            isRequested ? orderReturn.created_at : orderReturn.received_at
+          {item?.note && (
+            <Tooltip content={item.note}>
+              <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+            </Tooltip>
           )}
-        </Text>
-      )}
-    </div>
+
+          {item?.reason && (
+            <Badge
+              size="2xsmall"
+              className="cursor-default select-none capitalize"
+              rounded="full"
+            >
+              {item?.reason?.label}
+            </Badge>
+          )}
+        </div>
+
+        {orderReturn && (
+          <Text size="small" leading="compact" className="text-ui-fg-muted">
+            {getRelativeDate(
+              isRequested ? orderReturn.created_at : orderReturn.received_at
+            )}
+          </Text>
+        )}
+      </div>
+    )
   )
 }
 
