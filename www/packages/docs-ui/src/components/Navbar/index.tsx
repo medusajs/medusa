@@ -45,7 +45,7 @@ export const Navbar = ({
     <nav
       className={clsx(
         "h-navbar w-full justify-between",
-        "bg-docs-bg dark:bg-docs-bg-dark border-medusa-border-base border-b",
+        "bg-medusa-bg-base border-medusa-border-base border-b",
         className
       )}
     >

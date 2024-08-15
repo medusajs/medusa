@@ -27,7 +27,7 @@ export const RootLayout = ({
       <head />
       <body
         className={clsx(
-          "bg-docs-bg font-base text-medium w-full",
+          "bg-medusa-bg-base font-base text-medium w-full",
           "text-medusa-fg-subtle",
           "h-screen overflow-hidden",
           bodyClassName
