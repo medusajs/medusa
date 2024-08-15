@@ -56,6 +56,9 @@ export type SidebarContextType = {
   setSidebarTopHeight: React.Dispatch<React.SetStateAction<number>>
   resetItems: () => void
   isItemLoaded: (path: string) => boolean
+  updatePersistedCategoryState: (title: string, opened: boolean) => void
+  getPersistedCategoryState: (title: string) => boolean | undefined
+  persistState: boolean
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -191,6 +194,8 @@ export type SidebarProviderProps = {
   scrollableElement?: Element | Window
   staticSidebarItems?: boolean
   resetOnCondition?: () => boolean
+  projectName: string
+  persistState?: boolean
 } & SidebarStyleOptions
 
 export const SidebarProvider = ({
@@ -204,7 +209,10 @@ export const SidebarProvider = ({
   staticSidebarItems = false,
   disableActiveTransition = false,
   resetOnCondition,
+  projectName,
+  persistState = true,
 }: SidebarProviderProps) => {
+  const storage_key = `${projectName}_categories`
   const [items, dispatch] = useReducer(reducer, {
     default: initialItems?.default || [],
     mobile: initialItems?.mobile || [],
@@ -462,6 +470,29 @@ export const SidebarProvider = ({
     }
   }, [resetOnCondition, resetItems])
 
+  const updatePersistedCategoryState = (title: string, opened: boolean) => {
+    const storageData = JSON.parse(localStorage.getItem(storage_key) || "{}")
+    if (!Object.hasOwn(storageData, projectName)) {
+      storageData[projectName] = {}
+    }
+
+    storageData[projectName] = {
+      ...storageData[projectName],
+      [title]: opened,
+    }
+
+    localStorage.setItem(storage_key, JSON.stringify(storageData))
+  }
+
+  const getPersistedCategoryState = (title: string): boolean | undefined => {
+    const storageData = JSON.parse(localStorage.getItem(storage_key) || "{}")
+
+    return !Object.hasOwn(storageData, projectName) ||
+      !Object.hasOwn(storageData[projectName], title)
+      ? undefined
+      : storageData[projectName][title]
+  }
+
   return (
     <SidebarContext.Provider
       value={{
@@ -487,6 +518,9 @@ export const SidebarProvider = ({
         setSidebarTopHeight,
         resetItems,
         isItemLoaded,
+        updatePersistedCategoryState,
+        getPersistedCategoryState,
+        persistState,
       }}
     >
       {children}
