@@ -76,6 +76,14 @@
  *             type: number
  *             title: amount
  *             description: The payment's amount.
+ *           refund_reason_id:
+ *             type: string
+ *             title: refund_reason_id
+ *             description: The payment's refund reason id.
+ *           note:
+ *             type: string
+ *             title: note
+ *             description: The payment's note.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -85,6 +93,12 @@
  * tags:
  *   - Payments
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminPaymentResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -114,6 +114,12 @@
  * tags:
  *   - Fulfillment Providers
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminFulfillmentProviderListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

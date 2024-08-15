@@ -79,6 +79,57 @@
  * tags:
  *   - Carts
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           oneOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - type
+ *                 - cart
+ *                 - error
+ *               properties:
+ *                 type:
+ *                   type: string
+ *                   title: type
+ *                   description: The cart's type.
+ *                 cart:
+ *                   $ref: "#/components/schemas/StoreCart"
+ *                 error:
+ *                   type: object
+ *                   description: The cart's error.
+ *                   required:
+ *                     - message
+ *                     - name
+ *                     - type
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       title: message
+ *                       description: The error's message.
+ *                     name:
+ *                       type: string
+ *                       title: name
+ *                       description: The error's name.
+ *                     type:
+ *                       type: string
+ *                       title: type
+ *                       description: The error's type.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - type
+ *                 - order
+ *               properties:
+ *                 type:
+ *                   type: string
+ *                   title: type
+ *                   description: The cart's type.
+ *                 order:
+ *                   $ref: "#/components/schemas/StoreOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -91,6 +142,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: completeCartWorkflow
  * 
 */
 

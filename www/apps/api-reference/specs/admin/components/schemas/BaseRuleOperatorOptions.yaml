@@ -1,0 +1,20 @@
+type: object
+description: The operator's operators.
+x-schemaName: BaseRuleOperatorOptions
+required:
+  - id
+  - value
+  - label
+properties:
+  id:
+    type: string
+    title: id
+    description: The operator's ID.
+  value:
+    type: string
+    title: value
+    description: The operator's value.
+  label:
+    type: string
+    title: label
+    description: The operator's label.

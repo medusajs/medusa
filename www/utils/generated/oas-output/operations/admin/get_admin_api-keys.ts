@@ -69,6 +69,41 @@
  * tags:
  *   - Api Keys
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The api key's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The api key's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The api key's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - api_keys
+ *               properties:
+ *                 api_keys:
+ *                   type: array
+ *                   description: The api key's api keys.
+ *                   items:
+ *                     $ref: "#/components/schemas/ApiKeyResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

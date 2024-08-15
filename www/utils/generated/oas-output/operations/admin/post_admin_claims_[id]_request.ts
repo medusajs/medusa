@@ -74,6 +74,12 @@
  * tags:
  *   - Claims
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminClaimRequestResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -90,6 +96,7 @@
  *   content:
  *     application/json:
  *       schema: {}
+ * x-workflow: confirmClaimRequestWorkflow
  * 
 */
 

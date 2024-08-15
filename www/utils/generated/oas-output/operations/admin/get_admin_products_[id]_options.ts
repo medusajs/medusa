@@ -601,6 +601,9 @@
  *                                 x-schemaName: BaseProductOptionParams
  *                               - type: object
  *                                 description: The $or's details.
+ *         type: array
+ *         items:
+ *           type: object
  *   - name: $or
  *     in: query
  *     description: The product's $or.
@@ -1090,6 +1093,9 @@
  *                                 x-schemaName: BaseProductOptionParams
  *                               - type: object
  *                                 description: The $or's details.
+ *         type: array
+ *         items:
+ *           type: object
  * security:
  *   - api_token: []
  *   - cookie_auth: []

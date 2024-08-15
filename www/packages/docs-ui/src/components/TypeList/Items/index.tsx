@@ -205,14 +205,14 @@ const TypeListItem = ({
                 {item.type}
               </MarkdownContent>
             </span>
-            {item.optional === false && (
+            {item.optional === true && (
               <span
                 className={clsx(
-                  "text-compact-x-small-plus uppercase",
-                  "text-medusa-fg-error"
+                  "text-compact-x-small-plus",
+                  "text-medusa-tag-blue-text"
                 )}
               >
-                Required
+                Optional
               </span>
             )}
             {item.featureFlag && (
