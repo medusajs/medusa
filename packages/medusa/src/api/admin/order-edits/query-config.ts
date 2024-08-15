@@ -1,8 +1,6 @@
 export const defaultAdminOrderEditFields = [
   "id",
-  "type",
   "order_id",
-  "return_id",
   "display_id",
   "order_version",
   "created_at",
@@ -12,7 +10,6 @@ export const defaultAdminOrderEditFields = [
 
 export const defaultAdminDetailsOrderEditFields = [
   ...defaultAdminOrderEditFields,
-  "additional_items.*",
 ]
 
 export const retrieveTransformQueryConfig = {
