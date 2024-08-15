@@ -15,7 +15,7 @@ const ReferencePage = async () => {
         </h1>
         <DividedLayout
           mainContent={
-            <Section>
+            <Section checkActiveOnScroll={true}>
               <h1 className="!text-h2 hidden lg:block">
                 Medusa V2 Store API Reference
               </h1>

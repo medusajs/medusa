@@ -16,6 +16,7 @@ import {
 import SidebarProvider from "./sidebar"
 import SearchProvider from "./search"
 import { config } from "../config"
+import { MainNavProvider } from "./main-nav"
 
 type ProvidersProps = {
   children?: React.ReactNode
@@ -33,16 +34,18 @@ const Providers = ({ children }: ProvidersProps) => {
                   <ScrollControllerProvider scrollableSelector="#main">
                     <SidebarProvider>
                       <PaginationProvider>
-                        <SearchProvider>
-                          <HooksLoader
-                            options={{
-                              pageScrollManager: true,
-                              currentLearningPath: true,
-                            }}
-                          >
-                            {children}
-                          </HooksLoader>
-                        </SearchProvider>
+                        <MainNavProvider>
+                          <SearchProvider>
+                            <HooksLoader
+                              options={{
+                                pageScrollManager: true,
+                                currentLearningPath: true,
+                              }}
+                            >
+                              {children}
+                            </HooksLoader>
+                          </SearchProvider>
+                        </MainNavProvider>
                       </PaginationProvider>
                     </SidebarProvider>
                   </ScrollControllerProvider>
