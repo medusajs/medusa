@@ -23,8 +23,7 @@ export const SiteConfigProvider = ({
     initConfig || {
       baseUrl: "",
       sidebar: {
-        top: [],
-        bottom: [],
+        default: [],
         mobile: [],
       },
     }

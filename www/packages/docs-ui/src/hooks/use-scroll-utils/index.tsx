@@ -59,6 +59,10 @@ type ScrollController = {
   scrollableElement: Element | Window | undefined
   /** Retrieves the scroll top if the scrollable element */
   getScrolledTop: () => number
+  /** Scrolls to an element */
+  scrollToElement: (elm: HTMLElement) => void
+  /** Scrolls to a top value */
+  scrollToTop: (top: number, parentTop?: number) => void
 }
 
 function useScrollControllerContextValue({
@@ -83,6 +87,27 @@ function useScrollControllerContextValue({
     return scrollableElement ? getScrolledTopUtil(scrollableElement) : 0
   }
 
+  const scrollToElement = (elm: HTMLElement) => {
+    scrollToTop(elm.offsetTop)
+  }
+
+  const scrollToTop = (top: number, parentTop?: number) => {
+    const parentOffsetTop =
+      parentTop !== undefined
+        ? parentTop
+        : isElmWindow(scrollableElement)
+        ? 0
+        : scrollableElement instanceof HTMLElement
+        ? scrollableElement.offsetTop
+        : 0
+
+    scrollableElement?.scrollTo({
+      // 56 is the height of the navbar
+      // might need a better way to determine it.
+      top: top - parentOffsetTop - 56,
+    })
+  }
+
   return useMemo(
     () => ({
       scrollEventsEnabledRef,
@@ -94,6 +119,8 @@ function useScrollControllerContextValue({
       },
       scrollableElement,
       getScrolledTop,
+      scrollToElement,
+      scrollToTop,
     }),
     [scrollableElement]
   )

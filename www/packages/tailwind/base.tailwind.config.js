@@ -68,6 +68,9 @@ module.exports = {
             error: "var(--docs-border-error)",
             danger: "var(--docs-border-danger)",
             transparent: "var(--docs-border-transparent)",
+            menu: {
+              top: "var(--docs-border-menu-top)",
+            },
           },
           button: {
             inverted: {
@@ -269,33 +272,51 @@ module.exports = {
         "code-fade-bottom-to-top-dark": `linear-gradient(180deg, rgba(47, 47, 50, 0.00) 0%, #2F2F32 100%)`,
         "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
         "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
+        "border-dotted":
+          "linear-gradient(90deg,var(--docs-border-strong) 1px,transparent 1px)",
       },
       screens: {
-        xs: "576px",
-        lg: "1025px",
-        xl: "1419px",
-        xxl: "1440px",
+        xs: "568px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        xxl: "1536px",
+        xxxl: "3840px",
       },
       transitionTimingFunction: {
         ease: "ease",
       },
       width: {
-        sidebar: "321px",
-        "sidebar-hidden": "0px",
-        "main-content": "1140px",
-        "main-content-hidden-sidebar": "1440px",
-        "ref-sidebar": "280px",
-        "ref-main": "calc(100% - 280px)",
-        "ref-content": "calc(100% - 484px)",
-      },
-      height: {
-        navbar: "57px",
+        toc: "221px",
       },
       maxWidth: {
-        "main-content": "1140px",
-        "main-content-hidden-sidebar": "1440px",
-        xl: "1419px",
-        xxl: "1440px",
+        // sidebar
+        "sidebar-xs": "300px",
+        "sidebar-sm": "300px",
+        "sidebar-md": "300px",
+        "sidebar-lg": "221px",
+        "sidebar-xl": "221px",
+        "sidebar-xxl": "221px",
+        "sidebar-xxxl": "221px",
+        // main content
+        "main-content-xs": "100%",
+        "main-content-sm": "100%",
+        "main-content-md": "100%",
+        "main-content-lg": "751px",
+        "main-content-xl": "1007px",
+        "main-content-xxl": "1263px",
+        "main-content-xxxl": "3567px",
+        // inner content
+        "inner-content-xs": "272px",
+        "inner-content-sm": "592px",
+        "inner-content-md": "640px",
+        "inner-content-lg": "640px",
+        "inner-content-xl": "640px",
+        "inner-content-xxl": "640px",
+        "inner-content-xxxl": "640px",
+        // wide layout
+        "wide-content": "1112px",
       },
       minWidth: {
         xl: "1419px",
@@ -596,6 +617,24 @@ module.exports = {
             backgroundColor: "transparent",
           },
         },
+        slideInDown: {
+          from: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutUp: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "hidden",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -608,9 +647,11 @@ module.exports = {
         fadeOutRight: "fadeOutRight 500ms",
         tada: "tada 1s",
         slideInRight: "slideInRight 500ms",
-        slideOutRight: "slideOutRight 500ms",
+        slideOutRight: "slideOutRight 150ms",
+        slideOutUp: "slideOutUp 500ms",
         slideInLeft: "slideInLeft 500ms",
         slideOutLeft: "slideOutLeft 500ms",
+        slideInDown: "slideInDown 150ms",
         pulsingDots: "pulsingDots 1s alternate infinite",
         minimize: "minimize 500ms",
         maximize: "maximize 500ms",
