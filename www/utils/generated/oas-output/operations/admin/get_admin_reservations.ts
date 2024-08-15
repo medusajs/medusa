@@ -295,6 +295,41 @@
  * tags:
  *   - Reservations
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The reservation's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The reservation's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The reservation's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - reservations
+ *               properties:
+ *                 reservations:
+ *                   type: array
+ *                   description: The reservation's reservations.
+ *                   items:
+ *                     $ref: "#/components/schemas/ReservationResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

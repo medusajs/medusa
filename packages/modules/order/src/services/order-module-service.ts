@@ -294,7 +294,7 @@ export default class OrderModuleService<
     config.relations ??= []
     config.select ??= []
 
-    const requiredFieldsForTotals = [
+    const requiredRelationsForTotals = [
       "items",
       "items.tax_lines",
       "items.adjustments",
@@ -302,14 +302,15 @@ export default class OrderModuleService<
       "shipping_methods.tax_lines",
       "shipping_methods.adjustments",
     ]
+
     config.relations = deduplicate([
       ...config.relations,
-      ...requiredFieldsForTotals,
+      ...requiredRelationsForTotals,
     ])
 
     config.select = config.select.filter((field) => {
       return (
-        !requiredFieldsForTotals.some((val) =>
+        !requiredRelationsForTotals.some((val) =>
           val.startsWith(field as string)
         ) && !totalFields.includes(field)
       )
@@ -2017,12 +2018,7 @@ export default class OrderModuleService<
       orderId,
       {
         select: ["id", "version", "items.detail", "summary", "total"],
-        relations: [
-          "transactions",
-          "items",
-          "items.detail",
-          "shipping_methods",
-        ],
+        relations: ["transactions", "items", "shipping_methods"],
       },
       sharedContext
     )
@@ -2212,7 +2208,7 @@ export default class OrderModuleService<
     data: OrderTypes.ConfirmOrderChangeDTO[],
     sharedContext?: Context
   )
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async confirmOrderChange(
     orderChangeIdOrData:
       | string
@@ -2648,6 +2644,7 @@ export default class OrderModuleService<
     return Array.isArray(data) ? actions : actions[0]
   }
 
+  @InjectTransactionManager("baseRepository_")
   private async applyOrderChanges_(
     changeActions: ApplyOrderChangeDTO[],
     sharedContext?: Context
@@ -2683,7 +2680,7 @@ export default class OrderModuleService<
       }
     }
 
-    let orders = await super.listOrders(
+    let orders = await this.listOrders(
       { id: deduplicate(ordersIds) },
       {
         select: ["id", "version", "items.detail", "summary", "total"],
@@ -2693,8 +2690,9 @@ export default class OrderModuleService<
           "items.detail",
           "shipping_methods",
         ],
-      },
-      sharedContext
+      }
+      // sharedContext
+      // TODO: investigate issue while using sharedContext in receive return action
     )
     orders = formatOrder(orders, {
       entity: Order,

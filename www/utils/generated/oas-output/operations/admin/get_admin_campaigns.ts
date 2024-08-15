@@ -69,6 +69,41 @@
  * tags:
  *   - Campaigns
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The campaign's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The campaign's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The campaign's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - campaigns
+ *               properties:
+ *                 campaigns:
+ *                   type: array
+ *                   description: The campaign's campaigns.
+ *                   items:
+ *                     $ref: "#/components/schemas/CampaignResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

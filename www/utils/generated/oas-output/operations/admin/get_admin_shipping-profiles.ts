@@ -200,11 +200,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The shipping profile's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The shipping profile's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []

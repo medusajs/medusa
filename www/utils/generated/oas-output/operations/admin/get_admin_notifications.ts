@@ -95,11 +95,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The notification's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The notification's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -113,6 +123,12 @@
  * tags:
  *   - Notifications
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminNotificationListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

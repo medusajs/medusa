@@ -221,11 +221,21 @@ get:
     - name: $and
       in: query
       required: false
-      schema: {}
+      schema:
+        type: array
+        description: The promotion's $and.
+        items:
+          type: object
+        title: $and
     - name: $or
       in: query
       required: false
-      schema: {}
+      schema:
+        type: array
+        description: The promotion's $or.
+        items:
+          type: object
+        title: $or
   security:
     - api_token: []
     - cookie_auth: []
@@ -238,6 +248,41 @@ get:
   tags:
     - Promotions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The promotion's limit.
+                  offset:
+                    type: number
+                    title: offset
+                    description: The promotion's offset.
+                  count:
+                    type: number
+                    title: count
+                    description: The promotion's count.
+              - type: object
+                description: SUMMARY
+                required:
+                  - promotions
+                properties:
+                  promotions:
+                    type: array
+                    description: The promotion's promotions.
+                    items:
+                      $ref: ../components/schemas/AdminPromotion.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -319,13 +364,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
           description: SUMMARY
-          required:
-            - code
-            - type
-            - campaign_id
-            - application_method
           properties:
             code:
               type: string
@@ -595,6 +634,12 @@ post:
   tags:
     - Promotions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPromotionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

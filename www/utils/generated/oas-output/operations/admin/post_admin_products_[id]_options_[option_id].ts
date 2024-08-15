@@ -75,7 +75,19 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminUpdateProductOption"
+ *         description: SUMMARY
+ *         properties:
+ *           title:
+ *             type: string
+ *             title: title
+ *             description: The product's title.
+ *           values:
+ *             type: array
+ *             description: The product's values.
+ *             items:
+ *               type: string
+ *               title: values
+ *               description: The value's values.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

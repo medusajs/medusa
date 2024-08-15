@@ -87,11 +87,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The order's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The order's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -99,6 +109,41 @@
  * tags:
  *   - Orders
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The order's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The order's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The order's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - orders
+ *               properties:
+ *                 orders:
+ *                   type: array
+ *                   description: The order's orders.
+ *                   items:
+ *                     $ref: "#/components/schemas/StoreOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

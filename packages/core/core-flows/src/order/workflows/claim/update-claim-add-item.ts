@@ -3,6 +3,7 @@ import {
   OrderChangeDTO,
   OrderClaimDTO,
   OrderDTO,
+  OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -68,7 +69,7 @@ export const updateClaimAddItemWorkflow = createWorkflow(
   updateClaimAddItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.UpdateClaimAddNewItemWorkflowInput>
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
