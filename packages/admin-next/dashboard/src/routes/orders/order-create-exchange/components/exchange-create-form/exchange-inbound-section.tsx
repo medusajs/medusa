@@ -199,7 +199,6 @@ export const ExchangeInboundSection = ({
   }, [preview.shipping_methods])
 
   useEffect(() => {
-    console.log("inbound: updating location_id")
     form.setValue("location_id", orderReturn?.location_id)
   }, [orderReturn])
 
