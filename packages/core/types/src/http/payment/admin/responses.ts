@@ -1,5 +1,15 @@
 import { PaginatedResponse } from "../../common"
-import { AdminPayment, AdminPaymentProvider, AdminRefund, AdminRefundReason } from "./entities"
+import {
+  AdminPayment,
+  AdminPaymentCollection,
+  AdminPaymentProvider,
+  AdminRefund,
+  AdminRefundReason,
+} from "./entities"
+
+export interface AdminPaymentCollectionResponse {
+  payment_collection: AdminPaymentCollection
+}
 
 export interface AdminPaymentResponse {
   payment: AdminPayment

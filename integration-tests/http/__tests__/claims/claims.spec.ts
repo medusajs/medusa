@@ -100,7 +100,7 @@ medusaIntegrationTestRunner({
                 prices: [
                   {
                     currency_code: "usd",
-                    amount: 123456.1234657890123456789,
+                    amount: 50.25,
                   },
                 ],
               },
@@ -333,7 +333,7 @@ medusaIntegrationTestRunner({
         prices: [
           {
             currency_code: "usd",
-            amount: 1000,
+            amount: 15,
           },
         ],
         rules: [
@@ -359,7 +359,7 @@ medusaIntegrationTestRunner({
         prices: [
           {
             currency_code: "usd",
-            amount: 1000,
+            amount: 20,
           },
         ],
         rules: [
@@ -671,6 +671,40 @@ medusaIntegrationTestRunner({
           expect(reservationsResponseAfterCanceling.reservations).toHaveLength(
             0
           )
+        })
+
+        it("should create a payment collection successfully and throw on multiple", async () => {
+          const paymentDelta = 110.5
+
+          const paymentCollection = (
+            await api.post(
+              `/admin/payment-collections`,
+              { order_id: order.id },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(paymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: paymentDelta,
+              payment_sessions: [],
+            })
+          )
+
+          const { response } = await api
+            .post(
+              `/admin/payment-collections`,
+              { order_id: order.id },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.data).toEqual({
+            type: "not_allowed",
+            message:
+              "Active payment collections were found. Complete existing ones or delete them before proceeding.",
+          })
         })
       })
 
