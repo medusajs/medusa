@@ -10,11 +10,14 @@ import dropRight from "lodash/dropRight"
 import flatMap from "lodash/flatMap"
 import get from "lodash/get"
 import { ReactNode } from "react"
-import Nestable from "react-nestable"
-
 import { useTranslation } from "react-i18next"
-import "react-nestable/dist/styles/index.css"
+import * as NestableImport from "react-nestable"
+
 import { CategoryTreeItem } from "../../types"
+
+const Nestable = NestableImport.default
+
+import "react-nestable/dist/styles/index.css"
 import "./styles.css"
 
 type CategoryTreeProps = {
