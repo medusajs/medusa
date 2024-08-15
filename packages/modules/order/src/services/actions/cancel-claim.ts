@@ -1,6 +1,7 @@
 import {
   Context,
   CreateOrderChangeActionDTO,
+  OrderClaimDTO,
   OrderTypes,
 } from "@medusajs/types"
 import { ChangeActionType, promiseAll } from "@medusajs/utils"
@@ -33,7 +34,7 @@ export async function cancelClaim(
   data: OrderTypes.CancelOrderClaimDTO,
   sharedContext?: Context
 ) {
-  const claimOrder = await this.retrieveOrderClaim(
+  const claimOrder = (await this.retrieveOrderClaim(
     data.claim_id,
     {
       select: [
@@ -50,7 +51,7 @@ export async function cancelClaim(
       relations: ["claim_items", "additional_items", "shipping_methods"],
     },
     sharedContext
-  )
+  )) as OrderClaimDTO
 
   const actions: CreateOrderChangeActionDTO[] = []
 
@@ -88,7 +89,7 @@ export async function cancelClaim(
       claim_id: claimOrder.id,
       reference: "claim",
       reference_id: shipping.id,
-      amount: shipping.price,
+      amount: shipping.raw_amount ?? shipping.amount,
     })
   })
 
