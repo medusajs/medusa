@@ -1,5 +1,6 @@
 export * from "./AiAssistant"
 export * from "./CircleDottedLine"
+export * from "./DecisionProcess"
 export * from "./QuestionMark"
 export * from "./ShadedBg"
 export * from "./ThumbDown"
