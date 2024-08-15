@@ -1,39 +1,23 @@
 "use client"
 
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Button } from "@/components"
 import clsx from "clsx"
 import { CSSTransition } from "react-transition-group"
 import { HelpButtonActions } from "./Actions"
-import { useIsBrowser } from "../.."
+import { useClickOutside } from "../.."
 
 export const HelpButton = () => {
   const [showText, setShowText] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const isBrowser = useIsBrowser()
-
-  const onClickOutside = useCallback(
-    (e: MouseEvent) => {
-      if (!ref.current?.contains(e.target as Node)) {
-        setShowHelp(false)
-        setShowText(false)
-      }
+  useClickOutside({
+    elmRef: ref,
+    onClickOutside: () => {
+      setShowHelp(false)
+      setShowText(false)
     },
-    [ref.current]
-  )
-
-  useEffect(() => {
-    if (!isBrowser) {
-      return
-    }
-
-    window.document.addEventListener("click", onClickOutside)
-
-    return () => {
-      window.document.removeEventListener("click", onClickOutside)
-    }
-  }, [isBrowser])
+  })
 
   useEffect(() => {
     if (showHelp) {

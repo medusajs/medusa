@@ -14,6 +14,19 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
 
   const sidebarItems: ItemsToAdd[] = []
 
+  sidebarItems.push(
+    {
+      type: "link",
+      title: "Overview",
+      path: "/medusa-workflows-reference",
+      loaded: true,
+      isPathHref: true,
+    },
+    {
+      type: "separator",
+    }
+  )
+
   for (const directory of directories) {
     if (
       !directory.isDirectory() ||
@@ -66,21 +79,28 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
 
     if (workflowItems.length || stepItems.length) {
       const item: ItemsToAdd = {
+        type: "category",
         title: directory.name.replaceAll("_", " "),
         children: [],
+        loaded: true,
+        initialOpen: false,
       }
 
       if (workflowItems.length) {
         item.children!.push({
+          type: "sub-category",
           title: "Workflows",
           children: workflowItems,
+          loaded: true,
         })
       }
 
       if (stepItems.length) {
         item.children!.push({
+          type: "sub-category",
           title: "Steps",
           children: stepItems,
+          loaded: true,
         })
       }
 

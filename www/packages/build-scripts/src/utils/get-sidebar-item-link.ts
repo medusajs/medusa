@@ -3,6 +3,7 @@ import { ItemsToAdd, sidebarAttachHrefCommonOptions } from "../index.js"
 import { readFileSync } from "fs"
 import findMetadataTitle from "./find-metadata-title.js"
 import findPageHeading from "./find-page-heading.js"
+import { InteractiveSidebarItem } from "types"
 
 export async function getSidebarItemLink({
   filePath,
@@ -24,6 +25,7 @@ export async function getSidebarItemLink({
 
   const newItem = sidebarAttachHrefCommonOptions([
     {
+      type: "link",
       path:
         frontmatter.slug ||
         filePath.replace(basePath, "").replace(`/${fileBasename}`, ""),
@@ -33,7 +35,7 @@ export async function getSidebarItemLink({
         findPageHeading(fileContent) ||
         "",
     },
-  ])[0]
+  ])[0] as InteractiveSidebarItem
 
   return {
     ...newItem,

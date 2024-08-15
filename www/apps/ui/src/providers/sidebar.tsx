@@ -10,6 +10,7 @@ type SidebarProviderProps = {
 
 const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const { scrollableElement } = useScrollController()
+
   return (
     <UiSidebarProvider
       initialItems={docsConfig.sidebar}

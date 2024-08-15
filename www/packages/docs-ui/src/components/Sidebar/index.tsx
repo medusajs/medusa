@@ -5,125 +5,153 @@ import { useSidebar } from "@/providers"
 import clsx from "clsx"
 import { Loading } from "@/components"
 import { SidebarItem } from "./Item"
-import { SidebarTitle } from "./Title"
-import { SidebarBack } from "./Back"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
+import { SidebarTop, SidebarTopProps } from "./Top"
+import useResizeObserver from "@react-hook/resize-observer"
+import { SidebarSeparator } from "./Separator"
+import { useClickOutside, useKeyboardShortcut } from "@/hooks"
 
 export type SidebarProps = {
   className?: string
   expandItems?: boolean
-  banner?: React.ReactNode
+  sidebarTopProps?: Omit<SidebarTopProps, "parentItem">
 }
 
 export const Sidebar = ({
   className = "",
-  expandItems = false,
-  banner,
+  expandItems = true,
+  sidebarTopProps,
 }: SidebarProps) => {
+  const sidebarWrapperRef = useRef(null)
+  const sidebarTopRef = useRef<HTMLDivElement>(null)
   const {
     items,
     currentItems,
     mobileSidebarOpen,
-    desktopSidebarOpen,
+    setMobileSidebarOpen,
     staticSidebarItems,
     sidebarRef,
+    sidebarTopHeight,
+    setSidebarTopHeight,
+    desktopSidebarOpen,
+    setDesktopSidebarOpen,
   } = useSidebar()
+  useClickOutside({
+    elmRef: sidebarWrapperRef,
+    onClickOutside: () => {
+      if (mobileSidebarOpen) {
+        setMobileSidebarOpen(false)
+      }
+    },
+  })
+  useKeyboardShortcut({
+    metakey: true,
+    shortcutKeys: ["."],
+    action: () => {
+      setDesktopSidebarOpen((prev) => !prev)
+    },
+  })
 
   const sidebarItems = useMemo(
     () => currentItems || items,
     [items, currentItems]
   )
 
-  const sidebarHasParent = useMemo(
-    () => sidebarItems.parentItem !== undefined,
-    [sidebarItems]
-  )
+  useResizeObserver(sidebarTopRef, () => {
+    setSidebarTopHeight(sidebarTopRef.current?.clientHeight || 0)
+  })
 
   return (
-    <aside
-      className={clsx(
-        "clip bg-medusa-bg-base block",
-        "border-medusa-border-base border-0 border-r border-solid",
-        "fixed -left-full top-0 h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
-        "lg:w-sidebar w-full",
-        mobileSidebarOpen && "!left-0 z-50 top-[57px]",
-        !desktopSidebarOpen && "!absolute !-left-full",
-        className
+    <>
+      {mobileSidebarOpen && (
+        <div
+          className={clsx(
+            "lg:hidden bg-medusa-bg-overlay opacity-70",
+            "fixed top-0 left-0 w-full h-full z-10"
+          )}
+        ></div>
       )}
-      style={{
-        animationFillMode: "forwards",
-      }}
-    >
-      <ul
+      <aside
         className={clsx(
-          "sticky top-0 h-screen max-h-screen w-full list-none p-0",
-          "px-docs_1.5 pb-[57px] pt-docs_1.5",
-          "flex flex-col"
+          "bg-medusa-bg-base lg:bg-transparent block",
+          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:h-auto",
+          "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
+          "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
+          mobileSidebarOpen && [
+            "!left-docs_0.5 !top-docs_0.5 z-50 shadow-elevation-modal dark:shadow-elevation-modal-dark",
+            "rounded",
+            "lg:!left-0 lg:!top-0 lg:shadow-none",
+          ],
+          desktopSidebarOpen && "lg:left-0",
+          !desktopSidebarOpen && "lg:!absolute lg:!-left-full",
+          className
         )}
-        id="sidebar"
+        style={{
+          animationFillMode: "forwards",
+        }}
+        ref={sidebarWrapperRef}
       >
-        {banner && <div className="mb-docs_1">{banner}</div>}
-        {sidebarItems.parentItem && (
-          <div className={clsx("mb-docs_1", !banner && "mt-docs_1.5")}>
-            <SidebarBack />
-            <SidebarTitle item={sidebarItems.parentItem} />
-          </div>
-        )}
-        <SwitchTransition>
-          <CSSTransition
-            key={sidebarItems.parentItem?.title || "home"}
-            nodeRef={sidebarRef}
-            classNames={{
-              enter: "animate-fadeInLeft animate-fast",
-              exit: "animate-fadeOutLeft animate-fast",
-            }}
-            timeout={200}
-          >
-            <div className="overflow-auto" ref={sidebarRef}>
-              <div className={clsx("mb-docs_1.5 lg:hidden")}>
-                {!sidebarItems.mobile.length && !staticSidebarItems && (
-                  <Loading className="px-0" />
+        <ul className={clsx("h-full w-full", "flex flex-col")}>
+          <SidebarTop
+            {...sidebarTopProps}
+            parentItem={sidebarItems.parentItem}
+            ref={sidebarTopRef}
+          />
+          <SwitchTransition>
+            <CSSTransition
+              key={sidebarItems.parentItem?.title || "home"}
+              nodeRef={sidebarRef}
+              classNames={{
+                enter: "animate-fadeInLeft animate-fast",
+                exit: "animate-fadeOutLeft animate-fast",
+              }}
+              timeout={200}
+            >
+              <div
+                className={clsx(
+                  "overflow-y-scroll clip",
+                  "py-docs_0.75 flex-1"
                 )}
-                {sidebarItems.mobile.map((item, index) => (
-                  <SidebarItem
-                    item={item}
-                    key={index}
-                    expandItems={expandItems}
-                    sidebarHasParent={sidebarHasParent}
-                    isMobile={true}
-                  />
-                ))}
+                ref={sidebarRef}
+                style={{
+                  maxHeight: `calc(100vh - ${sidebarTopHeight}px)`,
+                }}
+                id="sidebar"
+              >
+                {/* MOBILE SIDEBAR */}
+                <div className={clsx("lg:hidden")}>
+                  {!sidebarItems.mobile.length && !staticSidebarItems && (
+                    <Loading className="px-0" />
+                  )}
+                  {sidebarItems.mobile.map((item, index) => (
+                    <SidebarItem
+                      item={item}
+                      key={index}
+                      expandItems={expandItems}
+                      hasNextItems={index !== sidebarItems.default.length - 1}
+                    />
+                  ))}
+                  <SidebarSeparator />
+                </div>
+                {/* DESKTOP SIDEBAR */}
+                <div className="mt-docs_0.75 lg:mt-0">
+                  {!sidebarItems.default.length && !staticSidebarItems && (
+                    <Loading className="px-0" />
+                  )}
+                  {sidebarItems.default.map((item, index) => (
+                    <SidebarItem
+                      item={item}
+                      key={index}
+                      expandItems={expandItems}
+                      hasNextItems={index !== sidebarItems.default.length - 1}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className={clsx("mb-docs_1.5")}>
-                {!sidebarItems.top.length && !staticSidebarItems && (
-                  <Loading className="px-0" />
-                )}
-                {sidebarItems.top.map((item, index) => (
-                  <SidebarItem
-                    item={item}
-                    key={index}
-                    expandItems={expandItems}
-                    sidebarHasParent={sidebarHasParent}
-                  />
-                ))}
-              </div>
-              <div className="mb-docs_1.5">
-                {!sidebarItems.bottom.length && !staticSidebarItems && (
-                  <Loading className="px-0" />
-                )}
-                {sidebarItems.bottom.map((item, index) => (
-                  <SidebarItem
-                    item={item}
-                    key={index}
-                    expandItems={expandItems}
-                    sidebarHasParent={sidebarHasParent}
-                  />
-                ))}
-              </div>
-            </div>
-          </CSSTransition>
-        </SwitchTransition>
-      </ul>
-    </aside>
+            </CSSTransition>
+          </SwitchTransition>
+        </ul>
+      </aside>
+    </>
   )
 }

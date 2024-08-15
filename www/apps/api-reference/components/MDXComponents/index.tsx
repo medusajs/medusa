@@ -14,9 +14,7 @@ const getCustomComponents = (scope?: ScopeType): MDXComponents => {
     ...UiMDXComponents,
     Security: () => <Security specs={scope?.specs} />,
     a: Link,
-    h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <H2 addToSidebar={scope?.addToSidebar} {...props} />
-    ),
+    h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <H2 {...props} />,
   }
 }
 
