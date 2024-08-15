@@ -18,6 +18,7 @@ import { useRemoteQueryStep } from "../../../common"
 import { updateOrderExchangesStep } from "../../steps/exchange/update-order-exchanges"
 import { previewOrderChangeStep } from "../../steps/preview-order-change"
 import { createReturnsStep } from "../../steps/return/create-returns"
+import { updateOrderChangesStep } from "../../steps/update-order-changes"
 import {
   throwIfIsCancelled,
   throwIfItemsDoesNotExistsInOrder,
@@ -121,6 +122,17 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     }).config({
       name: "order-change-query",
       status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+    })
+
+    when({ createdReturn }, ({ createdReturn }) => {
+      return !!createdReturn?.length
+    }).then(() => {
+      updateOrderChangesStep([
+        {
+          id: orderChange.id,
+          return_id: createdReturn?.[0]?.id,
+        },
+      ])
     })
 
     exchangeRequestItemReturnValidationStep({
