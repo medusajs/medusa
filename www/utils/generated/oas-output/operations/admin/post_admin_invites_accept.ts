@@ -93,6 +93,28 @@
  * tags:
  *   - Invites
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           oneOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - user
+ *               properties:
+ *                 user:
+ *                   $ref: "#/components/schemas/AdminUser"
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - message
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   title: message
+ *                   description: The invite's message.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

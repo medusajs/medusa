@@ -89,6 +89,12 @@ post:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimPreviewResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -101,6 +107,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateReturnShippingMethodWorkflow
 delete:
   operationId: DeleteClaimsIdInboundShippingMethodAction_id
   summary: Remove Shipping Methods from Claim
@@ -190,6 +197,12 @@ delete:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimReturnPreviewResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -202,3 +215,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: removeClaimShippingMethodWorkflow

@@ -92,6 +92,21 @@
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - attributes
+ *           properties:
+ *             attributes:
+ *               type: array
+ *               description: The promotion's attributes.
+ *               items:
+ *                 $ref: "#/components/schemas/AdminRuleAttributeOption"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

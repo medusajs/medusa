@@ -1,0 +1,26 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminNotificationListResponse
+required:
+  - limit
+  - offset
+  - count
+  - notifications
+properties:
+  limit:
+    type: number
+    title: limit
+    description: The notification's limit.
+  offset:
+    type: number
+    title: offset
+    description: The notification's offset.
+  count:
+    type: number
+    title: count
+    description: The notification's count.
+  notifications:
+    type: array
+    description: The notification's notifications.
+    items:
+      $ref: ./AdminNotification.yaml

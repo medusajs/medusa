@@ -64,6 +64,41 @@
  * tags:
  *   - Return Reasons
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The return reason's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The return reason's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The return reason's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - return_reasons
+ *               properties:
+ *                 return_reasons:
+ *                   type: array
+ *                   description: The return reason's return reasons.
+ *                   items:
+ *                     $ref: "#/components/schemas/StoreReturnReason"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
