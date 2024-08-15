@@ -27,7 +27,7 @@ export const getCircularReferences = async (
 export const getCircularPatchRecommendation = (
   circularRefs: string[],
   oas: OpenAPIObject
-): Record<string, string[]> => {
+): CircularReferenceSchema => {
   type circularReferenceMatch = {
     schema: string
     property: string
@@ -66,7 +66,7 @@ export const getCircularPatchRecommendation = (
       }
     })
 
-  const schemas = {}
+  const schemas: CircularReferenceSchema = {}
   for (const match of matches) {
     if (!schemas.hasOwnProperty(match.schema)) {
       schemas[match.schema] = []
@@ -77,7 +77,7 @@ export const getCircularPatchRecommendation = (
 }
 
 export const formatHintRecommendation = (
-  recommendation: Record<string, string[]>
+  recommendation: CircularReferenceSchema
 ) => {
   return jsonObjectToYamlString({
     decorators: { "medusa/circular-patch": { schemas: recommendation } },
