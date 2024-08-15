@@ -9,6 +9,7 @@ import { MainNavColorMode } from "./ColorMode"
 import Link from "next/link"
 import { MainNavDivider } from "./Divider"
 import { MainNavSidebarOpener } from "./SidebarOpener"
+import { MainNavHelpButton } from "./HelpButton"
 
 export const MainNav = () => {
   const { reportIssueLink } = useMainNav()
@@ -30,6 +31,7 @@ export const MainNav = () => {
           Report Issue
         </Link>
         <MainNavDivider />
+        <MainNavHelpButton />
         <MainNavColorMode />
         <SearchModalOpener />
       </div>
