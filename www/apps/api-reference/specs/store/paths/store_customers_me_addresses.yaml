@@ -183,6 +183,12 @@ get:
   tags:
     - Customers
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomerAddressListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -342,6 +348,12 @@ post:
   tags:
     - Customers
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomerResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

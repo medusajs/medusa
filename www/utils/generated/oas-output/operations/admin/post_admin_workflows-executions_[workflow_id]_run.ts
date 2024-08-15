@@ -81,6 +81,17 @@
  * tags:
  *   - Workflows Executions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - acknowledgement
+ *           properties:
+ *             acknowledgement: {}
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

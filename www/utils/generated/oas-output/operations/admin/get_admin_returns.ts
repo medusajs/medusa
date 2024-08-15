@@ -69,6 +69,41 @@
  * tags:
  *   - Returns
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The return's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The return's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The return's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - returns
+ *               properties:
+ *                 returns:
+ *                   type: array
+ *                   description: The return's returns.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminReturn"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

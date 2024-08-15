@@ -173,6 +173,51 @@
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - created
+ *             - updated
+ *             - deleted
+ *           properties:
+ *             created:
+ *               type: array
+ *               description: The promotion's created.
+ *               items:
+ *                 $ref: "#/components/schemas/AdminPromotionRule"
+ *             updated:
+ *               type: array
+ *               description: The promotion's updated.
+ *               items:
+ *                 $ref: "#/components/schemas/AdminPromotionRule"
+ *             deleted:
+ *               type: object
+ *               description: The promotion's deleted.
+ *               required:
+ *                 - ids
+ *                 - object
+ *                 - deleted
+ *               properties:
+ *                 ids:
+ *                   type: array
+ *                   description: The deleted's ids.
+ *                   items:
+ *                     type: string
+ *                     title: ids
+ *                     description: The id's ids.
+ *                 object:
+ *                   type: string
+ *                   title: object
+ *                   description: The deleted's object.
+ *                 deleted:
+ *                   type: boolean
+ *                   title: deleted
+ *                   description: The deleted's details.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -185,6 +230,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: batchPromotionRulesWorkflow
  * 
 */
 

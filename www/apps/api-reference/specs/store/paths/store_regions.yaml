@@ -69,6 +69,41 @@ get:
   tags:
     - Regions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The region's limit.
+                  offset:
+                    type: number
+                    title: offset
+                    description: The region's offset.
+                  count:
+                    type: number
+                    title: count
+                    description: The region's count.
+              - type: object
+                description: SUMMARY
+                required:
+                  - regions
+                properties:
+                  regions:
+                    type: array
+                    description: The region's regions.
+                    items:
+                      $ref: ../components/schemas/StoreRegion.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

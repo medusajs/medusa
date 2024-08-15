@@ -19,15 +19,29 @@ tags:
       description: How to implement cart functionality in your storefront
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreCart.yaml
   - name: Collections
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreCollection.yaml
   - name: Currencies
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreCurrency.yaml
   - name: Customers
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreCustomer.yaml
   - name: Orders
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreOrder.yaml
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+    x-associatedSchema:
+      $ref: ./components/schemas/StorePaymentCollection.yaml
   - name: Payment Providers
+    x-associatedSchema:
+      $ref: ./components/schemas/StorePaymentProvider.yaml
   - name: Product Categories
     x-associatedSchema:
       $ref: ./components/schemas/StoreProductCategory.yaml
@@ -45,9 +59,17 @@ tags:
       description: How to use regions in a storefront
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreRegion.yaml
   - name: Return
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreReturn.yaml
   - name: Return Reasons
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreReturnReason.yaml
   - name: Shipping Options
+    x-associatedSchema:
+      $ref: ./components/schemas/StoreShippingOption.yaml
 paths:
   /store/carts:
     $ref: paths/store_carts.yaml

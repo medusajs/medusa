@@ -323,11 +323,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The tax region's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The tax region's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -341,6 +351,41 @@
  * tags:
  *   - Tax Regions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The tax region's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The tax region's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The tax region's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - tax_regions
+ *               properties:
+ *                 tax_regions:
+ *                   type: array
+ *                   description: The tax region's tax regions.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminTaxRegion"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

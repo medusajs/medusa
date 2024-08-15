@@ -1,0 +1,31 @@
+/**
+ * @schema AdminProductTagListResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminProductTagListResponse
+ * required:
+ *   - limit
+ *   - offset
+ *   - count
+ *   - product_tags
+ * properties:
+ *   limit:
+ *     type: number
+ *     title: limit
+ *     description: The product tag's limit.
+ *   offset:
+ *     type: number
+ *     title: offset
+ *     description: The product tag's offset.
+ *   count:
+ *     type: number
+ *     title: count
+ *     description: The product tag's count.
+ *   product_tags:
+ *     type: array
+ *     description: The product tag's product tags.
+ *     items:
+ *       $ref: "#/components/schemas/AdminProductTag"
+ * 
+*/
+

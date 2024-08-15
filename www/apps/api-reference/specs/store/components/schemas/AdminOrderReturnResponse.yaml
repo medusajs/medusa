@@ -1,0 +1,11 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminOrderReturnResponse
+required:
+  - order
+  - return
+properties:
+  order:
+    $ref: ./Order.yaml
+  return:
+    $ref: ./AdminReturn.yaml

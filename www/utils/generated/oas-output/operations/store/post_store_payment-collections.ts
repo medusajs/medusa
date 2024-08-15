@@ -63,26 +63,11 @@
  *         description: SUMMARY
  *         required:
  *           - cart_id
- *           - region_id
- *           - currency_code
- *           - amount
  *         properties:
  *           cart_id:
  *             type: string
  *             title: cart_id
  *             description: The payment collection's cart id.
- *           region_id:
- *             type: string
- *             title: region_id
- *             description: The payment collection's region id.
- *           currency_code:
- *             type: string
- *             title: currency_code
- *             description: The payment collection's currency code.
- *           amount:
- *             type: number
- *             title: amount
- *             description: The payment collection's amount.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -98,6 +83,12 @@
  * tags:
  *   - Payment Collections
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/StorePaymentCollectionResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,0 +1,135 @@
+/**
+ * @schema AdminPayment
+ * type: object
+ * description: The payment's details.
+ * x-schemaName: AdminPayment
+ * required:
+ *   - id
+ *   - amount
+ *   - currency_code
+ *   - provider_id
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The payment's ID.
+ *   amount:
+ *     oneOf:
+ *       - type: string
+ *         title: amount
+ *         description: The payment's amount.
+ *       - type: number
+ *         title: amount
+ *         description: The payment's amount.
+ *       - type: string
+ *         title: amount
+ *         description: The payment's amount.
+ *       - $ref: "#/components/schemas/IBigNumber"
+ *   authorized_amount:
+ *     oneOf:
+ *       - type: string
+ *         title: authorized_amount
+ *         description: The payment's authorized amount.
+ *       - type: number
+ *         title: authorized_amount
+ *         description: The payment's authorized amount.
+ *       - type: string
+ *         title: authorized_amount
+ *         description: The payment's authorized amount.
+ *       - $ref: "#/components/schemas/IBigNumber"
+ *   currency_code:
+ *     type: string
+ *     title: currency_code
+ *     description: The payment's currency code.
+ *   provider_id:
+ *     type: string
+ *     title: provider_id
+ *     description: The payment's provider id.
+ *   cart_id:
+ *     type: string
+ *     title: cart_id
+ *     description: The payment's cart id.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The payment's order id.
+ *   order_edit_id:
+ *     type: string
+ *     title: order_edit_id
+ *     description: The payment's order edit id.
+ *   customer_id:
+ *     type: string
+ *     title: customer_id
+ *     description: The payment's customer id.
+ *   data:
+ *     type: object
+ *     description: The payment's data.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The payment's created at.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The payment's updated at.
+ *   captured_at:
+ *     oneOf:
+ *       - type: string
+ *         title: captured_at
+ *         description: The payment's captured at.
+ *       - type: string
+ *         title: captured_at
+ *         description: The payment's captured at.
+ *         format: date-time
+ *   canceled_at:
+ *     oneOf:
+ *       - type: string
+ *         title: canceled_at
+ *         description: The payment's canceled at.
+ *       - type: string
+ *         title: canceled_at
+ *         description: The payment's canceled at.
+ *         format: date-time
+ *   captured_amount:
+ *     oneOf:
+ *       - type: string
+ *         title: captured_amount
+ *         description: The payment's captured amount.
+ *       - type: number
+ *         title: captured_amount
+ *         description: The payment's captured amount.
+ *       - type: string
+ *         title: captured_amount
+ *         description: The payment's captured amount.
+ *       - $ref: "#/components/schemas/IBigNumber"
+ *   refunded_amount:
+ *     oneOf:
+ *       - type: string
+ *         title: refunded_amount
+ *         description: The payment's refunded amount.
+ *       - type: number
+ *         title: refunded_amount
+ *         description: The payment's refunded amount.
+ *       - type: string
+ *         title: refunded_amount
+ *         description: The payment's refunded amount.
+ *       - $ref: "#/components/schemas/IBigNumber"
+ *   captures:
+ *     type: array
+ *     description: The payment's captures.
+ *     items:
+ *       $ref: "#/components/schemas/BaseCapture"
+ *   refunds:
+ *     type: array
+ *     description: The payment's refunds.
+ *     items:
+ *       $ref: "#/components/schemas/BaseRefund"
+ *   payment_collection:
+ *     $ref: "#/components/schemas/BasePaymentCollection"
+ *   payment_session:
+ *     $ref: "#/components/schemas/BasePaymentSession"
+ * 
+*/
+
