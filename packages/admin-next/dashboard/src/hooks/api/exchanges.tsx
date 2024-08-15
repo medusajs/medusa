@@ -13,67 +13,68 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
 import { returnsQueryKeys } from "./returns"
 
-const CLAIMS_QUERY_KEY = "claims" as const
-export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
+const EXCHANGES_QUERY_KEY = "exchanges" as const
+export const exchangesQueryKeys = queryKeysFactory(EXCHANGES_QUERY_KEY)
 
-export const useClaim = (
+export const useExchange = (
   id: string,
-  query?: HttpTypes.AdminClaimListParams,
+  query?: HttpTypes.AdminExchangeListParams,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.AdminClaimResponse,
+      HttpTypes.AdminExchangeResponse,
       Error,
-      HttpTypes.AdminClaimResponse,
+      HttpTypes.AdminExchangeResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => sdk.admin.claim.retrieve(id, query),
-    queryKey: claimsQueryKeys.detail(id, query),
+    queryFn: async () => sdk.admin.exchange.retrieve(id, query),
+    queryKey: exchangesQueryKeys.detail(id, query),
     ...options,
   })
 
   return { ...data, ...rest }
 }
 
-export const useClaims = (
-  query?: HttpTypes.AdminClaimListParams,
+export const useExchanges = (
+  query?: HttpTypes.AdminExchangeListParams,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.AdminClaimListParams,
+      HttpTypes.AdminExchangeListParams,
       Error,
-      HttpTypes.AdminClaimListResponse,
+      HttpTypes.AdminExchangeListResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => sdk.admin.claim.list(query),
-    queryKey: claimsQueryKeys.list(query),
+    queryFn: async () => sdk.admin.exchange.list(query),
+    queryKey: exchangesQueryKeys.list(query),
     ...options,
   })
 
   return { ...data, ...rest }
 }
 
-export const useCreateClaim = (
+export const useCreateExchange = (
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminCreateClaim
+    HttpTypes.AdminCreateExchange
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminCreateClaim) =>
-      sdk.admin.claim.create(payload),
+    mutationFn: (payload: HttpTypes.AdminCreateExchange) =>
+      sdk.admin.exchange.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
       })
@@ -83,7 +84,7 @@ export const useCreateClaim = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
+        queryKey: exchangesQueryKeys.lists(),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -92,13 +93,13 @@ export const useCreateClaim = (
   })
 }
 
-export const useCancelClaim = (
+export const useCancelExchange = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.claim.cancel(id),
+    mutationFn: () => sdk.admin.exchange.cancel(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -112,11 +113,11 @@ export const useCancelClaim = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.details(),
+        queryKey: exchangesQueryKeys.details(),
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
+        queryKey: exchangesQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -124,13 +125,13 @@ export const useCancelClaim = (
   })
 }
 
-export const useDeleteClaim = (
+export const useDeleteExchange = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimDeleteResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeDeleteResponse, Error>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.claim.delete(id),
+    mutationFn: () => sdk.admin.exchange.delete(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -144,10 +145,10 @@ export const useDeleteClaim = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.details(),
+        queryKey: exchangesQueryKeys.details(),
       })
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
+        queryKey: exchangesQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -155,18 +156,18 @@ export const useDeleteClaim = (
   })
 }
 
-export const useAddClaimItems = (
+export const useAddExchangeItems = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminAddClaimItems
+    HttpTypes.AdminAddExchangeItems
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminAddClaimItems) =>
-      sdk.admin.claim.addItems(id, payload),
+    mutationFn: (payload: HttpTypes.AdminAddExchangeItems) =>
+      sdk.admin.exchange.addItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -177,21 +178,21 @@ export const useAddClaimItems = (
   })
 }
 
-export const useUpdateClaimItems = (
+export const useUpdateExchangeItems = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminUpdateClaimItem & { actionId: string }
+    HttpTypes.AdminUpdateExchangeItem & { actionId: string }
   >
 ) => {
   return useMutation({
     mutationFn: ({
       actionId,
       ...payload
-    }: HttpTypes.AdminUpdateClaimItem & { actionId: string }) => {
-      return sdk.admin.claim.updateItem(id, actionId, payload)
+    }: HttpTypes.AdminUpdateExchangeItem & { actionId: string }) => {
+      return sdk.admin.exchange.updateItem(id, actionId, payload)
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
@@ -203,7 +204,7 @@ export const useUpdateClaimItems = (
   })
 }
 
-export const useRemoveClaimItem = (
+export const useRemoveExchangeItem = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
@@ -221,18 +222,18 @@ export const useRemoveClaimItem = (
   })
 }
 
-export const useAddClaimInboundItems = (
+export const useAddExchangeInboundItems = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminAddClaimInboundItems
+    HttpTypes.AdminAddExchangeInboundItems
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminAddClaimInboundItems) =>
-      sdk.admin.claim.addInboundItems(id, payload),
+    mutationFn: (payload: HttpTypes.AdminAddExchangeInboundItems) =>
+      sdk.admin.exchange.addInboundItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -243,21 +244,21 @@ export const useAddClaimInboundItems = (
   })
 }
 
-export const useUpdateClaimInboundItem = (
+export const useUpdateExchangeInboundItem = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminUpdateClaimInboundItem & { actionId: string }
+    HttpTypes.AdminUpdateExchangeInboundItem & { actionId: string }
   >
 ) => {
   return useMutation({
     mutationFn: ({
       actionId,
       ...payload
-    }: HttpTypes.AdminUpdateClaimInboundItem & { actionId: string }) => {
-      return sdk.admin.claim.updateInboundItem(id, actionId, payload)
+    }: HttpTypes.AdminUpdateExchangeInboundItem & { actionId: string }) => {
+      return sdk.admin.exchange.updateInboundItem(id, actionId, payload)
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
@@ -269,14 +270,14 @@ export const useUpdateClaimInboundItem = (
   })
 }
 
-export const useRemoveClaimInboundItem = (
+export const useRemoveExchangeInboundItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error, string>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
-      sdk.admin.claim.removeInboundItem(id, actionId),
+      sdk.admin.exchange.removeInboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -291,18 +292,18 @@ export const useRemoveClaimInboundItem = (
   })
 }
 
-export const useAddClaimInboundShipping = (
+export const useAddExchangeInboundShipping = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminClaimAddInboundShipping
+    HttpTypes.AdminExchangeAddInboundShipping
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminClaimAddInboundShipping) =>
-      sdk.admin.claim.addInboundShipping(id, payload),
+    mutationFn: (payload: HttpTypes.AdminExchangeAddInboundShipping) =>
+      sdk.admin.exchange.addInboundShipping(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -313,87 +314,21 @@ export const useAddClaimInboundShipping = (
   })
 }
 
-export const useUpdateClaimInboundShipping = (
+export const useUpdateExchangeInboundShipping = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminClaimUpdateInboundShipping
-  >
-) => {
-  return useMutation({
-    mutationFn: ({
-      actionId,
-      ...payload
-    }: HttpTypes.AdminClaimUpdateInboundShipping & { actionId: string }) =>
-      sdk.admin.claim.updateInboundShipping(id, actionId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useDeleteClaimInboundShipping = (
-  id: string,
-  orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error, string>
-) => {
-  return useMutation({
-    mutationFn: (actionId: string) =>
-      sdk.admin.claim.deleteInboundShipping(id, actionId),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useAddClaimOutboundItems = (
-  id: string,
-  orderId: string,
-  options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
-    Error,
-    HttpTypes.AdminAddClaimOutboundItems
-  >
-) => {
-  return useMutation({
-    mutationFn: (payload: HttpTypes.AdminAddClaimOutboundItems) =>
-      sdk.admin.claim.addOutboundItems(id, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useUpdateClaimOutboundItems = (
-  id: string,
-  orderId: string,
-  options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
-    Error,
-    HttpTypes.AdminUpdateClaimOutboundItem & { actionId: string }
+    HttpTypes.AdminExchangeUpdateInboundShipping
   >
 ) => {
   return useMutation({
     mutationFn: ({
       actionId,
       ...payload
-    }: HttpTypes.AdminUpdateClaimOutboundItem & { actionId: string }) => {
-      return sdk.admin.claim.updateOutboundItem(id, actionId, payload)
-    },
+    }: HttpTypes.AdminExchangeUpdateInboundShipping & { actionId: string }) =>
+      sdk.admin.exchange.updateInboundShipping(id, actionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -404,14 +339,14 @@ export const useUpdateClaimOutboundItems = (
   })
 }
 
-export const useRemoveClaimOutboundItem = (
+export const useDeleteExchangeInboundShipping = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error, string>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
-      sdk.admin.claim.removeOutboundItem(id, actionId),
+      sdk.admin.exchange.deleteInboundShipping(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -422,18 +357,18 @@ export const useRemoveClaimOutboundItem = (
   })
 }
 
-export const useAddClaimOutboundShipping = (
+export const useAddExchangeOutboundItems = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminClaimAddOutboundShipping
+    HttpTypes.AdminAddExchangeOutboundItems
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminClaimAddOutboundShipping) =>
-      sdk.admin.claim.addOutboundShipping(id, payload),
+    mutationFn: (payload: HttpTypes.AdminAddExchangeOutboundItems) =>
+      sdk.admin.exchange.addOutboundItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -444,21 +379,22 @@ export const useAddClaimOutboundShipping = (
   })
 }
 
-export const useUpdateClaimOutboundShipping = (
+export const useUpdateExchangeOutboundItems = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminClaimUpdateOutboundShipping
+    HttpTypes.AdminUpdateExchangeOutboundItem & { actionId: string }
   >
 ) => {
   return useMutation({
     mutationFn: ({
       actionId,
       ...payload
-    }: HttpTypes.AdminClaimUpdateOutboundShipping & { actionId: string }) =>
-      sdk.admin.claim.updateOutboundShipping(id, actionId, payload),
+    }: HttpTypes.AdminUpdateExchangeOutboundItem & { actionId: string }) => {
+      return sdk.admin.exchange.updateOutboundItem(id, actionId, payload)
+    },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -469,14 +405,14 @@ export const useUpdateClaimOutboundShipping = (
   })
 }
 
-export const useDeleteClaimOutboundShipping = (
+export const useRemoveExchangeOutboundItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error, string>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
-      sdk.admin.claim.deleteOutboundShipping(id, actionId),
+      sdk.admin.exchange.removeOutboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -487,18 +423,83 @@ export const useDeleteClaimOutboundShipping = (
   })
 }
 
-export const useClaimConfirmRequest = (
+export const useAddExchangeOutboundShipping = (
   id: string,
   orderId: string,
   options?: UseMutationOptions<
-    HttpTypes.AdminClaimResponse,
+    HttpTypes.AdminExchangeResponse,
     Error,
-    HttpTypes.AdminRequestClaim
+    HttpTypes.AdminExchangeAddOutboundShipping
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminRequestClaim) =>
-      sdk.admin.claim.request(id, payload),
+    mutationFn: (payload: HttpTypes.AdminExchangeAddOutboundShipping) =>
+      sdk.admin.exchange.addOutboundShipping(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useUpdateExchangeOutboundShipping = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    Error,
+    HttpTypes.AdminExchangeUpdateOutboundShipping
+  >
+) => {
+  return useMutation({
+    mutationFn: ({
+      actionId,
+      ...payload
+    }: HttpTypes.AdminExchangeUpdateOutboundShipping & { actionId: string }) =>
+      sdk.admin.exchange.updateOutboundShipping(id, actionId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteExchangeOutboundShipping = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
+) => {
+  return useMutation({
+    mutationFn: (actionId: string) =>
+      sdk.admin.exchange.deleteOutboundShipping(id, actionId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useExchangeConfirmRequest = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    Error,
+    HttpTypes.AdminRequestExchange
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminRequestExchange) =>
+      sdk.admin.exchange.request(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: returnsQueryKeys.all,
@@ -507,6 +508,7 @@ export const useClaimConfirmRequest = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.lists(),
       })
@@ -516,7 +518,7 @@ export const useClaimConfirmRequest = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
+        queryKey: exchangesQueryKeys.lists(),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -525,13 +527,13 @@ export const useClaimConfirmRequest = (
   })
 }
 
-export const useCancelClaimRequest = (
+export const useCancelExchangeRequest = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminClaimResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.claim.cancelRequest(id),
+    mutationFn: () => sdk.admin.exchange.cancelRequest(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
@@ -545,10 +547,10 @@ export const useCancelClaimRequest = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.details(),
+        queryKey: exchangesQueryKeys.details(),
       })
       queryClient.invalidateQueries({
-        queryKey: claimsQueryKeys.lists(),
+        queryKey: exchangesQueryKeys.lists(),
       })
       options?.onSuccess?.(data, variables, context)
     },

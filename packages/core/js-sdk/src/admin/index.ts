@@ -2,6 +2,7 @@ import { Client } from "../client"
 import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
+import { Exchange } from "./exchange"
 import { Fulfillment } from "./fulfillment"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { FulfillmentSet } from "./fulfillment-set"
@@ -56,6 +57,7 @@ export class Admin {
   public order: Order
   public return: Return
   public claim: Claim
+  public exchange: Exchange
   public taxRate: TaxRate
   public taxRegion: TaxRegion
   public store: Store
@@ -99,5 +101,6 @@ export class Admin {
     this.payment = new Payment(client)
     this.productVariant = new ProductVariant(client)
     this.refundReason = new RefundReason(client)
+    this.exchange = new Exchange(client)
   }
 }
