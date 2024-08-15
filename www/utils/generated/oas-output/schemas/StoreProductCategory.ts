@@ -1,7 +1,7 @@
 /**
  * @schema StoreProductCategory
  * type: object
- * description: The product category's details.
+ * description: The category's categories.
  * x-schemaName: StoreProductCategory
  * required:
  *   - id
@@ -20,63 +20,63 @@
  * properties:
  *   products:
  *     type: array
- *     description: The product category's products.
+ *     description: The category's products.
  *     items:
  *       $ref: "#/components/schemas/StoreProduct"
  *   id:
  *     type: string
  *     title: id
- *     description: The product category's ID.
+ *     description: The category's ID.
  *   name:
  *     type: string
  *     title: name
- *     description: The product category's name.
+ *     description: The category's name.
  *   description:
  *     type: string
  *     title: description
- *     description: The product category's description.
+ *     description: The category's description.
  *   handle:
  *     type: string
  *     title: handle
- *     description: The product category's handle.
+ *     description: The category's handle.
  *   is_active:
  *     type: boolean
  *     title: is_active
- *     description: The product category's is active.
+ *     description: The category's is active.
  *   is_internal:
  *     type: boolean
  *     title: is_internal
- *     description: The product category's is internal.
+ *     description: The category's is internal.
  *   rank:
  *     type: number
  *     title: rank
- *     description: The product category's rank.
+ *     description: The category's rank.
  *   parent_category_id:
  *     type: string
  *     title: parent_category_id
- *     description: The product category's parent category id.
+ *     description: The category's parent category id.
  *   parent_category:
  *     $ref: "#/components/schemas/BaseProductCategory"
  *   category_children:
  *     type: array
- *     description: The product category's category children.
+ *     description: The category's category children.
  *     items:
  *       $ref: "#/components/schemas/BaseProductCategory"
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The product category's created at.
+ *     description: The category's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The product category's updated at.
+ *     description: The category's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The product category's deleted at.
+ *     description: The category's deleted at.
  * 
 */
 

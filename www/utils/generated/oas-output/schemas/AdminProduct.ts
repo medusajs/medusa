@@ -11,25 +11,25 @@
  *   - options
  *   - description
  *   - id
- *   - handle
- *   - hs_code
- *   - weight
- *   - height
- *   - width
- *   - origin_country
- *   - mid_code
- *   - material
- *   - thumbnail
  *   - created_at
  *   - updated_at
- *   - deleted_at
+ *   - handle
  *   - subtitle
  *   - is_giftcard
+ *   - thumbnail
+ *   - width
+ *   - weight
+ *   - height
+ *   - origin_country
+ *   - hs_code
+ *   - mid_code
+ *   - material
  *   - collection_id
  *   - type_id
  *   - images
  *   - discountable
  *   - external_id
+ *   - deleted_at
  * properties:
  *   collection:
  *     $ref: "#/components/schemas/AdminCollection"
@@ -86,42 +86,6 @@
  *   metadata:
  *     type: object
  *     description: The parent's metadata.
- *   handle:
- *     type: string
- *     title: handle
- *     description: The parent's handle.
- *   hs_code:
- *     type: string
- *     title: hs_code
- *     description: The parent's hs code.
- *   weight:
- *     type: number
- *     title: weight
- *     description: The parent's weight.
- *   height:
- *     type: number
- *     title: height
- *     description: The parent's height.
- *   width:
- *     type: number
- *     title: width
- *     description: The parent's width.
- *   origin_country:
- *     type: string
- *     title: origin_country
- *     description: The parent's origin country.
- *   mid_code:
- *     type: string
- *     title: mid_code
- *     description: The parent's mid code.
- *   material:
- *     type: string
- *     title: material
- *     description: The parent's material.
- *   thumbnail:
- *     type: string
- *     title: thumbnail
- *     description: The parent's thumbnail.
  *   created_at:
  *     type: string
  *     format: date-time
@@ -132,11 +96,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The parent's updated at.
- *   deleted_at:
+ *   handle:
  *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The parent's deleted at.
+ *     title: handle
+ *     description: The parent's handle.
  *   subtitle:
  *     type: string
  *     title: subtitle
@@ -145,6 +108,38 @@
  *     type: boolean
  *     title: is_giftcard
  *     description: The parent's is giftcard.
+ *   thumbnail:
+ *     type: string
+ *     title: thumbnail
+ *     description: The parent's thumbnail.
+ *   width:
+ *     type: number
+ *     title: width
+ *     description: The parent's width.
+ *   weight:
+ *     type: number
+ *     title: weight
+ *     description: The parent's weight.
+ *   height:
+ *     type: number
+ *     title: height
+ *     description: The parent's height.
+ *   origin_country:
+ *     type: string
+ *     title: origin_country
+ *     description: The parent's origin country.
+ *   hs_code:
+ *     type: string
+ *     title: hs_code
+ *     description: The parent's hs code.
+ *   mid_code:
+ *     type: string
+ *     title: mid_code
+ *     description: The parent's mid code.
+ *   material:
+ *     type: string
+ *     title: material
+ *     description: The parent's material.
  *   collection_id:
  *     type: string
  *     title: collection_id
@@ -166,6 +161,11 @@
  *     type: string
  *     title: external_id
  *     description: The parent's external id.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The parent's deleted at.
  * 
 */
 

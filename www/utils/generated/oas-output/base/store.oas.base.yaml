@@ -15,15 +15,29 @@ tags:
     externalDocs:
       description: How to implement cart functionality in your storefront
       url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreCart"
   - name: Collections
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreCollection"
   - name: Currencies
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreCurrency"
   - name: Customers
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreCustomer"
   - name: Orders
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreOrder"
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as
       for Order Edits, or installment payments.
+    x-associatedSchema:
+      $ref: "#/components/schemas/StorePaymentCollection"
   - name: Payment Providers
+    x-associatedSchema:
+      $ref: "#/components/schemas/StorePaymentProvider"
   - name: Product Categories
     x-associatedSchema:
       $ref: "#/components/schemas/StoreProductCategory"
@@ -39,9 +53,17 @@ tags:
     externalDocs:
       description: How to use regions in a storefront
       url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreRegion"
   - name: Return
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreReturn"
   - name: Return Reasons
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreReturnReason"
   - name: Shipping Options
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreShippingOption"
 servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
@@ -49,21 +71,39 @@ paths: {}
 components:
   schemas:
     Error:
-      title: "Response Error"
+      title: Response Error
       type: object
       properties:
         code:
           type: string
           description: A slug code to indicate the type of the error.
-          enum: [invalid_state_error, invalid_request_error, api_error, unknown_error]
+          enum:
+            - invalid_state_error
+            - invalid_request_error
+            - api_error
+            - unknown_error
         message:
           type: string
           description: Description of the error that occurred.
-          example: "first_name must be a string"
+          example: first_name must be a string
         type:
           type: string
           description: A slug indicating the type of the error.
-          enum: [QueryRunnerAlreadyReleasedError, TransactionAlreadyStartedError, TransactionNotStartedError, conflict, unauthorized, payment_authorization_error, duplicate_error, not_allowed, invalid_data, not_found, database_error, unexpected_state, invalid_argument, unknown_error]
+          enum:
+            - QueryRunnerAlreadyReleasedError
+            - TransactionAlreadyStartedError
+            - TransactionNotStartedError
+            - conflict
+            - unauthorized
+            - payment_authorization_error
+            - duplicate_error
+            - not_allowed
+            - invalid_data
+            - not_found
+            - database_error
+            - unexpected_state
+            - invalid_argument
+            - unknown_error
   responses:
     default_error:
       description: Default Error

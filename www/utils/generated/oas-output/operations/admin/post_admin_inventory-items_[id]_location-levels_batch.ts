@@ -126,6 +126,19 @@
  * tags:
  *   - Inventory Items
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - inventory_item
+ *           properties:
+ *             inventory_item:
+ *               type: object
+ *               description: The inventory item's details.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

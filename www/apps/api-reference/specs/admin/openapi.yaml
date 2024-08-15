@@ -12,6 +12,8 @@ tags:
   - name: Api Keys
   - name: Campaigns
   - name: Claims
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminClaim.yaml
   - name: Collections
     x-associatedSchema:
       $ref: ./components/schemas/AdminCollection.yaml
@@ -26,6 +28,8 @@ tags:
       description: How to manage currencies
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminCurrency.yaml
   - name: Customer Groups
     x-associatedSchema:
       $ref: ./components/schemas/AdminCustomerGroup.yaml
@@ -39,6 +43,9 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminCustomer.yaml
   - name: Draft Orders
+  - name: Exchanges
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminExchange.yaml
   - name: Fulfillment Providers
     x-associatedSchema:
       $ref: ./components/schemas/AdminFulfillmentProvider.yaml
@@ -46,7 +53,11 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminFulfillmentSet.yaml
   - name: Fulfillments
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminFulfillment.yaml
   - name: Inventory Items
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminInventoryItem.yaml
   - name: Invites
     description: >
       An admin can invite new users to manage their team. This would allow new
@@ -54,11 +65,23 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminInvite.yaml
   - name: Notifications
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminNotification.yaml
   - name: Orders
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminOrder.yaml
   - name: Payments
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPayment.yaml
   - name: Price Lists
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPriceList.yaml
   - name: Price Preferences
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPricePreference.yaml
   - name: Product Categories
     x-associatedSchema:
       $ref: ./components/schemas/AdminProductCategory.yaml
@@ -66,10 +89,18 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminProductTag.yaml
   - name: Product Types
+  - name: Product Variants
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminProductVariant.yaml
   - name: Products
     x-associatedSchema:
       $ref: ./components/schemas/AdminProduct.yaml
   - name: Promotions
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPromotion.yaml
+  - name: Refund Reasons
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminRefundReason.yaml
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -80,9 +111,15 @@ tags:
       description: How to manage regions
       url: >-
         https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminRegion.yaml
   - name: Reservations
   - name: Return Reasons
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminReturnReason.yaml
   - name: Returns
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminReturn.yaml
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
@@ -101,11 +138,21 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingProfile.yaml
   - name: Stock Locations
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminStockLocation.yaml
   - name: Stores
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminStore.yaml
   - name: Tax Rates
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminTaxRate.yaml
   - name: Tax Regions
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminTaxRegion.yaml
   - name: Uploads
   - name: Users
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminUser.yaml
   - name: Workflows Executions
 paths:
   /admin/api-keys:
@@ -124,6 +171,8 @@ paths:
     $ref: paths/admin_campaigns_{id}_promotions.yaml
   /admin/claims:
     $ref: paths/admin_claims.yaml
+  /admin/claims/{id}:
+    $ref: paths/admin_claims_{id}.yaml
   /admin/claims/{id}/cancel:
     $ref: paths/admin_claims_{id}_cancel.yaml
   /admin/claims/{id}/claim-items:
@@ -176,6 +225,28 @@ paths:
     $ref: paths/admin_draft-orders.yaml
   /admin/draft-orders/{id}:
     $ref: paths/admin_draft-orders_{id}.yaml
+  /admin/exchanges:
+    $ref: paths/admin_exchanges.yaml
+  /admin/exchanges/{id}/cancel:
+    $ref: paths/admin_exchanges_{id}_cancel.yaml
+  /admin/exchanges/{id}/inbound/items:
+    $ref: paths/admin_exchanges_{id}_inbound_items.yaml
+  /admin/exchanges/{id}/inbound/items/{action_id}:
+    $ref: paths/admin_exchanges_{id}_inbound_items_{action_id}.yaml
+  /admin/exchanges/{id}/inbound/shipping-method:
+    $ref: paths/admin_exchanges_{id}_inbound_shipping-method.yaml
+  /admin/exchanges/{id}/inbound/shipping-method/{action_id}:
+    $ref: paths/admin_exchanges_{id}_inbound_shipping-method_{action_id}.yaml
+  /admin/exchanges/{id}/outbound/items:
+    $ref: paths/admin_exchanges_{id}_outbound_items.yaml
+  /admin/exchanges/{id}/outbound/items/{action_id}:
+    $ref: paths/admin_exchanges_{id}_outbound_items_{action_id}.yaml
+  /admin/exchanges/{id}/outbound/shipping-method:
+    $ref: paths/admin_exchanges_{id}_outbound_shipping-method.yaml
+  /admin/exchanges/{id}/outbound/shipping-method/{action_id}:
+    $ref: paths/admin_exchanges_{id}_outbound_shipping-method_{action_id}.yaml
+  /admin/exchanges/{id}/request:
+    $ref: paths/admin_exchanges_{id}_request.yaml
   /admin/fulfillment-providers:
     $ref: paths/admin_fulfillment-providers.yaml
   /admin/fulfillment-sets/{id}:
@@ -266,6 +337,8 @@ paths:
     $ref: paths/admin_product-types.yaml
   /admin/product-types/{id}:
     $ref: paths/admin_product-types_{id}.yaml
+  /admin/product-variants:
+    $ref: paths/admin_product-variants.yaml
   /admin/products:
     $ref: paths/admin_products.yaml
   /admin/products/batch:
@@ -312,6 +385,10 @@ paths:
     $ref: paths/admin_promotions_{id}_target-rules_batch.yaml
   /admin/promotions/{id}/{rule_type}:
     $ref: paths/admin_promotions_{id}_{rule_type}.yaml
+  /admin/refund-reasons:
+    $ref: paths/admin_refund-reasons.yaml
+  /admin/refund-reasons/{id}:
+    $ref: paths/admin_refund-reasons_{id}.yaml
   /admin/regions:
     $ref: paths/admin_regions.yaml
   /admin/regions/{id}:

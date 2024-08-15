@@ -1,0 +1,27 @@
+/**
+ * @schema AdminPostOrderExchangesReqSchema
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminPostOrderExchangesReqSchema
+ * required:
+ *   - order_id
+ *   - metadata
+ * properties:
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The exchange's order id.
+ *   description:
+ *     type: string
+ *     title: description
+ *     description: The exchange's description.
+ *   internal_note:
+ *     type: string
+ *     title: internal_note
+ *     description: The exchange's internal note.
+ *   metadata:
+ *     type: object
+ *     description: The exchange's metadata.
+ * 
+*/
+

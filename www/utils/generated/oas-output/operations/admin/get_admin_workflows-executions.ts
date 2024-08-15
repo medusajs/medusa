@@ -98,6 +98,41 @@
  * tags:
  *   - Workflows Executions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The workflows execution's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The workflows execution's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The workflows execution's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - workflow_executions
+ *               properties:
+ *                 workflow_executions:
+ *                   type: array
+ *                   description: The workflows execution's workflow executions.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminWorkflowExecution"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

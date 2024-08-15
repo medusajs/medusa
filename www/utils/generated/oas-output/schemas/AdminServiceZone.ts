@@ -7,6 +7,7 @@
  *   - id
  *   - name
  *   - fulfillment_set_id
+ *   - fulfillment_set
  *   - geo_zones
  *   - shipping_options
  *   - created_at
@@ -25,6 +26,8 @@
  *     type: string
  *     title: fulfillment_set_id
  *     description: The service zone's fulfillment set id.
+ *   fulfillment_set:
+ *     $ref: "#/components/schemas/AdminFulfillmentSet"
  *   geo_zones:
  *     type: array
  *     description: The service zone's geo zones.

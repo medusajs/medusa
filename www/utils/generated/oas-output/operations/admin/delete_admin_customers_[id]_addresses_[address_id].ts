@@ -83,6 +83,33 @@
  * tags:
  *   - Customers
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - id
+ *             - object
+ *             - deleted
+ *           properties:
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The customer's ID.
+ *             object:
+ *               type: string
+ *               title: object
+ *               description: The customer's object.
+ *             deleted:
+ *               type: boolean
+ *               title: deleted
+ *               description: The customer's deleted.
+ *             parent:
+ *               type: object
+ *               description: The customer's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

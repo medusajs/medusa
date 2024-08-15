@@ -77,15 +77,13 @@ properties:
     items:
       type: object
       description: The tag's tags.
+      required:
+        - id
       properties:
         id:
           type: string
           title: id
           description: The tag's ID.
-        value:
-          type: string
-          title: value
-          description: The tag's value.
   options:
     type: array
     description: The update's options.
@@ -95,7 +93,168 @@ properties:
     type: array
     description: The update's variants.
     items:
-      $ref: ./AdminCreateProductVariant.yaml
+      oneOf:
+        - type: object
+          description: The variant's variants.
+          x-schemaName: AdminCreateProductVariant
+          required:
+            - title
+            - prices
+          properties:
+            title:
+              type: string
+              title: title
+              description: The variant's title.
+            sku:
+              type: string
+              title: sku
+              description: The variant's sku.
+            ean:
+              type: string
+              title: ean
+              description: The variant's ean.
+            upc:
+              type: string
+              title: upc
+              description: The variant's upc.
+            barcode:
+              type: string
+              title: barcode
+              description: The variant's barcode.
+            hs_code:
+              type: string
+              title: hs_code
+              description: The variant's hs code.
+            mid_code:
+              type: string
+              title: mid_code
+              description: The variant's mid code.
+            allow_backorder:
+              type: boolean
+              title: allow_backorder
+              description: The variant's allow backorder.
+            manage_inventory:
+              type: boolean
+              title: manage_inventory
+              description: The variant's manage inventory.
+            variant_rank:
+              type: number
+              title: variant_rank
+              description: The variant's variant rank.
+            weight:
+              type: number
+              title: weight
+              description: The variant's weight.
+            length:
+              type: number
+              title: length
+              description: The variant's length.
+            height:
+              type: number
+              title: height
+              description: The variant's height.
+            width:
+              type: number
+              title: width
+              description: The variant's width.
+            origin_country:
+              type: string
+              title: origin_country
+              description: The variant's origin country.
+            material:
+              type: string
+              title: material
+              description: The variant's material.
+            metadata:
+              type: object
+              description: The variant's metadata.
+            prices:
+              type: array
+              description: The variant's prices.
+              items:
+                $ref: ./AdminCreateProductVariantPrice.yaml
+            options:
+              type: object
+              description: The variant's options.
+        - type: object
+          description: The variant's variants.
+          x-schemaName: AdminUpdateProductVariant
+          properties:
+            title:
+              type: string
+              title: title
+              description: The variant's title.
+            sku:
+              type: string
+              title: sku
+              description: The variant's sku.
+            ean:
+              type: string
+              title: ean
+              description: The variant's ean.
+            upc:
+              type: string
+              title: upc
+              description: The variant's upc.
+            barcode:
+              type: string
+              title: barcode
+              description: The variant's barcode.
+            hs_code:
+              type: string
+              title: hs_code
+              description: The variant's hs code.
+            mid_code:
+              type: string
+              title: mid_code
+              description: The variant's mid code.
+            allow_backorder:
+              type: boolean
+              title: allow_backorder
+              description: The variant's allow backorder.
+            manage_inventory:
+              type: boolean
+              title: manage_inventory
+              description: The variant's manage inventory.
+            variant_rank:
+              type: number
+              title: variant_rank
+              description: The variant's variant rank.
+            weight:
+              type: number
+              title: weight
+              description: The variant's weight.
+            length:
+              type: number
+              title: length
+              description: The variant's length.
+            height:
+              type: number
+              title: height
+              description: The variant's height.
+            width:
+              type: number
+              title: width
+              description: The variant's width.
+            origin_country:
+              type: string
+              title: origin_country
+              description: The variant's origin country.
+            material:
+              type: string
+              title: material
+              description: The variant's material.
+            metadata:
+              type: object
+              description: The variant's metadata.
+            prices:
+              type: array
+              description: The variant's prices.
+              items:
+                $ref: ./AdminCreateProductVariantPrice.yaml
+            options:
+              type: object
+              description: The variant's options.
   sales_channels:
     type: array
     description: The update's sales channels.

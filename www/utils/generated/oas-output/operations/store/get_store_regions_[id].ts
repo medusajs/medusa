@@ -69,6 +69,18 @@
  * tags:
  *   - Regions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - region
+ *           properties:
+ *             region:
+ *               $ref: "#/components/schemas/StoreRegion"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

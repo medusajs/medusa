@@ -226,11 +226,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The stock location's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The stock location's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -244,6 +254,12 @@
  * tags:
  *   - Stock Locations
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminStockLocationListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
