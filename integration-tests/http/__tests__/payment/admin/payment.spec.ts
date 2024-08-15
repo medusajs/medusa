@@ -170,6 +170,104 @@ medusaIntegrationTestRunner({
       )
     })
 
+    it("should issue multiple refunds", async () => {
+      await api.post(
+        `/admin/payments/${payment.id}/capture`,
+        undefined,
+        adminHeaders
+      )
+
+      const refundReason = (
+        await api.post(`/admin/refund-reasons`, { label: "test" }, adminHeaders)
+      ).data.refund_reason
+
+      await api.post(
+        `/admin/payments/${payment.id}/refund`,
+        {
+          amount: 250,
+          refund_reason_id: refundReason.id,
+          note: "Do not like it",
+        },
+        adminHeaders
+      )
+
+      await api.post(
+        `/admin/payments/${payment.id}/refund`,
+        {
+          amount: 250,
+          refund_reason_id: refundReason.id,
+          note: "Do not like it",
+        },
+        adminHeaders
+      )
+
+      const refundedPayment = (
+        await api.get(`/admin/payments/${payment.id}`, adminHeaders)
+      ).data.payment
+
+      expect(refundedPayment).toEqual(
+        expect.objectContaining({
+          id: payment.id,
+          currency_code: "usd",
+          amount: 1000,
+          captured_at: expect.any(String),
+          captures: [
+            expect.objectContaining({
+              amount: 1000,
+            }),
+          ],
+          refunds: [
+            expect.objectContaining({
+              amount: 250,
+              note: "Do not like it",
+            }),
+            expect.objectContaining({
+              amount: 250,
+              note: "Do not like it",
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should throw if refund exceeds captured total", async () => {
+      await api.post(
+        `/admin/payments/${payment.id}/capture`,
+        undefined,
+        adminHeaders
+      )
+
+      const refundReason = (
+        await api.post(`/admin/refund-reasons`, { label: "test" }, adminHeaders)
+      ).data.refund_reason
+
+      await api.post(
+        `/admin/payments/${payment.id}/refund`,
+        {
+          amount: 250,
+          refund_reason_id: refundReason.id,
+          note: "Do not like it",
+        },
+        adminHeaders
+      )
+
+      const e = await api
+        .post(
+          `/admin/payments/${payment.id}/refund`,
+          {
+            amount: 1000,
+            refund_reason_id: refundReason.id,
+            note: "Do not like it",
+          },
+          adminHeaders
+        )
+        .catch((e) => e)
+
+      expect(e.response.data.message).toEqual(
+        "You cannot refund more than what is captured on the payment."
+      )
+    })
+
     it("should not update payment collection of other orders", async () => {
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await seedStorefrontDefaults(container, "dkk")
