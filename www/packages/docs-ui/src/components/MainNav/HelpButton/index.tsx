@@ -65,7 +65,7 @@ export const MainNavHelpButton = () => {
       <div
         className={clsx(
           "absolute bottom-0 left-0",
-          "z-50 -translate-x-1/2 translate-y-[calc(100%+8px)]",
+          "z-50 -translate-x-[40%] translate-y-[calc(100%+8px)]",
           !showMenu && "hidden"
         )}
       >
