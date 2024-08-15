@@ -2,26 +2,25 @@
 
 import React from "react"
 import { WorkflowStepUi } from "types"
-import { WorkflowDiagramStepNode } from "../Node"
-import { WorkflowDiagramLine } from "../Line"
+import { WorkflowDiagramStepNode } from "../../Common/Node"
+import { WorkflowDiagramLine } from "../../Common/Line"
 
-export type WorkflowDiagramDepthProps = {
+export type WorkflowDiagramListDepthProps = {
   cluster: WorkflowStepUi[]
   next: WorkflowStepUi[]
 }
 
-export const WorkflowDiagramDepth = ({
+export const WorkflowDiagramListDepth = ({
   cluster,
-  next,
-}: WorkflowDiagramDepthProps) => {
+}: WorkflowDiagramListDepthProps) => {
   return (
     <div className="flex items-start">
+      <WorkflowDiagramLine step={cluster} />
       <div className="flex flex-col justify-center gap-y-docs_0.5">
         {cluster.map((step) => (
           <WorkflowDiagramStepNode key={step.name} step={step} />
         ))}
       </div>
-      <WorkflowDiagramLine step={next} />
     </div>
   )
 }
