@@ -1420,11 +1420,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createExchangeShippingMethodWorkflow/page.mdx"
   },
   {
-    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep",
-    "newSlug": "/references/medusa-workflows/steps/createOrderChangeActionsStep",
-    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep/page.mdx"
-  },
-  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow",
     "newSlug": "/references/medusa-workflows/createOrderChangeActionsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow/page.mdx"

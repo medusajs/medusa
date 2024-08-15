@@ -11153,14 +11153,6 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
-                    "path": "/references/medusa-workflows/steps/createOrderChangeActionsStep",
-                    "title": "createOrderChangeActionsStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
                     "path": "/references/medusa-workflows/steps/createOrderChangeStep",
                     "title": "createOrderChangeStep",
                     "children": []
