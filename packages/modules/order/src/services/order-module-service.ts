@@ -2686,23 +2686,23 @@ export default class OrderModuleService<
       }
     }
 
-    const config = {
-      select: ["id", "version", "total"],
-      relations: [
-        "transactions",
-        "items",
-        "items.detail",
-        "summary",
-        "shipping_methods",
-      ],
-    }
-
     let orders = await this.listOrders(
       { id: deduplicate(ordersIds) },
-      config
+      {
+        select: ["id", "version", "items.detail", "summary", "total"],
+        relations: [
+          "transactions",
+          "items",
+          "items.detail",
+          "shipping_methods",
+        ],
+      }
       // sharedContext
       // TODO: investigate issue while using sharedContext in receive return action
     )
+    orders = formatOrder(orders, {
+      entity: Order,
+    }) as OrderDTO[]
 
     const {
       itemsToUpsert,
