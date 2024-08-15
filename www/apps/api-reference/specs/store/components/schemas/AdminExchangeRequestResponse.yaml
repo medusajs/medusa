@@ -1,0 +1,14 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminExchangeRequestResponse
+required:
+  - return
+  - order_preview
+  - exchange
+properties:
+  return:
+    $ref: ./AdminReturn.yaml
+  order_preview:
+    $ref: ./Order.yaml
+  exchange:
+    $ref: ./AdminExchange.yaml

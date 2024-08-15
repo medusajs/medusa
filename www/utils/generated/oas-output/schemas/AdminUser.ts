@@ -1,0 +1,58 @@
+/**
+ * @schema AdminUser
+ * type: object
+ * description: The user's details.
+ * x-schemaName: AdminUser
+ * required:
+ *   - id
+ *   - email
+ *   - first_name
+ *   - last_name
+ *   - avatar_url
+ *   - metadata
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The user's ID.
+ *   email:
+ *     type: string
+ *     title: email
+ *     description: The user's email.
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     title: first_name
+ *     description: The user's first name.
+ *   last_name:
+ *     type: string
+ *     title: last_name
+ *     description: The user's last name.
+ *   avatar_url:
+ *     type: string
+ *     title: avatar_url
+ *     description: The user's avatar url.
+ *   metadata:
+ *     type: object
+ *     description: The user's metadata.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The user's created at.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The user's updated at.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The user's deleted at.
+ * 
+*/
+

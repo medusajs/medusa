@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminCustomerAddressResponse
+required:
+  - address
+properties:
+  address:
+    $ref: ./AdminCustomerAddress.yaml

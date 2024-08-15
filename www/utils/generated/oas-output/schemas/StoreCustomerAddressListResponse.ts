@@ -1,0 +1,31 @@
+/**
+ * @schema StoreCustomerAddressListResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: StoreCustomerAddressListResponse
+ * required:
+ *   - limit
+ *   - offset
+ *   - count
+ *   - addresses
+ * properties:
+ *   limit:
+ *     type: number
+ *     title: limit
+ *     description: The customer's limit.
+ *   offset:
+ *     type: number
+ *     title: offset
+ *     description: The customer's offset.
+ *   count:
+ *     type: number
+ *     title: count
+ *     description: The customer's count.
+ *   addresses:
+ *     type: array
+ *     description: The customer's addresses.
+ *     items:
+ *       $ref: "#/components/schemas/StoreCustomerAddress"
+ * 
+*/
+

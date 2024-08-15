@@ -1,0 +1,31 @@
+/**
+ * @schema AdminStockLocationListResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminStockLocationListResponse
+ * required:
+ *   - limit
+ *   - offset
+ *   - count
+ *   - stock_locations
+ * properties:
+ *   limit:
+ *     type: number
+ *     title: limit
+ *     description: The stock location's limit.
+ *   offset:
+ *     type: number
+ *     title: offset
+ *     description: The stock location's offset.
+ *   count:
+ *     type: number
+ *     title: count
+ *     description: The stock location's count.
+ *   stock_locations:
+ *     type: array
+ *     description: The stock location's stock locations.
+ *     items:
+ *       $ref: "#/components/schemas/AdminStockLocation"
+ * 
+*/
+

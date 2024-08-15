@@ -63,16 +63,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
  *         description: SUMMARY
- *         required:
- *           - sales_channel_id
- *           - email
- *           - customer_id
- *           - region_id
- *           - currency_code
- *           - shipping_methods
- *           - metadata
  *         properties:
  *           status:
  *             type: boolean
@@ -371,6 +362,12 @@
  * tags:
  *   - Draft Orders
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminDraftOrderResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -383,6 +380,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createOrdersWorkflow
  * 
 */
 

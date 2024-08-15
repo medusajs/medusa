@@ -85,6 +85,33 @@ delete:
   tags:
     - Tax Rates
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: SUMMARY
+            required:
+              - id
+              - object
+              - deleted
+            properties:
+              id:
+                type: string
+                title: id
+                description: The tax rate's ID.
+              object:
+                type: string
+                title: object
+                description: The tax rate's object.
+              deleted:
+                type: boolean
+                title: deleted
+                description: The tax rate's deleted.
+              parent:
+                type: object
+                description: The tax rate's parent.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: StoreReturnReasonResponse
+required:
+  - return_reason
+properties:
+  return_reason:
+    $ref: ./StoreReturnReason.yaml

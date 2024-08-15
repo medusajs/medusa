@@ -79,7 +79,12 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminOrderCancelFulfillment.yaml
+          description: SUMMARY
+          properties:
+            no_notification:
+              type: boolean
+              title: no_notification
+              description: The order's no notification.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -89,6 +94,12 @@ post:
   tags:
     - Orders
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

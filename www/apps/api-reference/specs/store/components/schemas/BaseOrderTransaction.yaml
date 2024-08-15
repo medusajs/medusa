@@ -1,0 +1,51 @@
+type: object
+description: The transaction's transactions.
+x-schemaName: BaseOrderTransaction
+required:
+  - id
+  - order_id
+  - amount
+  - currency_code
+  - reference
+  - reference_id
+  - metadata
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    title: id
+    description: The transaction's ID.
+  order_id:
+    type: string
+    title: order_id
+    description: The transaction's order id.
+  amount:
+    type: number
+    title: amount
+    description: The transaction's amount.
+  currency_code:
+    type: string
+    title: currency_code
+    description: The transaction's currency code.
+  reference:
+    type: string
+    title: reference
+    description: The transaction's reference.
+  reference_id:
+    type: string
+    title: reference_id
+    description: The transaction's reference id.
+  metadata:
+    type: object
+    description: The transaction's metadata.
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The transaction's created at.
+  updated_at:
+    type: string
+    format: date-time
+    title: updated_at
+    description: The transaction's updated at.

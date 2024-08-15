@@ -3,18 +3,17 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminPostClaimsItemsActionReqSchema
+ * required:
+ *   - reason_id
  * properties:
  *   quantity:
  *     type: number
  *     title: quantity
  *     description: The claim's quantity.
- *   reason:
+ *   reason_id:
  *     type: string
- *     enum:
- *       - missing_item
- *       - wrong_item
- *       - production_failure
- *       - other
+ *     title: reason_id
+ *     description: The claim's reason id.
  *   internal_note:
  *     type: string
  *     title: internal_note
