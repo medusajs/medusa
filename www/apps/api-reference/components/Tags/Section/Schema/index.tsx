@@ -40,7 +40,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     },
   })
 
-  const { scrollableElement } = useScrollController()
+  const { scrollableElement, scrollToElement } = useScrollController()
   const root = useMemo(() => {
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [scrollableElement])
@@ -49,6 +49,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
     addItems(
       [
         {
+          type: "link",
           path: schemaSlug,
           title: `${formattedName} Object`,
           additionalElms: <Badge variant="neutral">Schema</Badge>,
@@ -56,8 +57,9 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
         },
       ],
       {
-        section: SidebarItemSections.BOTTOM,
+        section: SidebarItemSections.DEFAULT,
         parent: {
+          title: tagName,
           path: tagSlugName,
           changeLoaded: true,
         },
@@ -69,12 +71,12 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
 
   useEffect(() => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
-      const elm = document.getElementById(schemaSlug)
-      elm?.scrollIntoView({
-        block: "center",
-      })
+      const elm = document.getElementById(schemaSlug) as HTMLElement
+      if (!checkElementInViewport(elm, 40)) {
+        scrollToElement(elm)
+      }
     }
-  }, [])
+  }, [activePath, schemaSlug])
 
   const handleViewChange = (
     inView: boolean,

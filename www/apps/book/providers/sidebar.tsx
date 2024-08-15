@@ -1,4 +1,5 @@
 "use client"
+
 import {
   SidebarProvider as UiSidebarProvider,
   useScrollController,
@@ -20,7 +21,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       initialItems={config.sidebar}
       staticSidebarItems={true}
       disableActiveTransition={true}
-      noTitleStyling={true}
     >
       {children}
     </UiSidebarProvider>
