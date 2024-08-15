@@ -212,7 +212,8 @@ export const SidebarProvider = ({
   projectName,
   persistState = true,
 }: SidebarProviderProps) => {
-  const storage_key = `${projectName}_categories`
+  const categoriesStorageKey = `${projectName}_categories`
+  const hideSidebarStorageKey = `hide_sidebar`
   const [items, dispatch] = useReducer(reducer, {
     default: initialItems?.default || [],
     mobile: initialItems?.mobile || [],
@@ -470,8 +471,33 @@ export const SidebarProvider = ({
     }
   }, [resetOnCondition, resetItems])
 
+  useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    const storageValue = localStorage.getItem(hideSidebarStorageKey)
+
+    if (storageValue !== null) {
+      setDesktopSidebarOpen(storageValue === "false")
+    }
+  }, [isBrowser])
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    localStorage.setItem(
+      hideSidebarStorageKey,
+      `${desktopSidebarOpen === false}`
+    )
+  }, [isBrowser, desktopSidebarOpen])
+
   const updatePersistedCategoryState = (title: string, opened: boolean) => {
-    const storageData = JSON.parse(localStorage.getItem(storage_key) || "{}")
+    const storageData = JSON.parse(
+      localStorage.getItem(categoriesStorageKey) || "{}"
+    )
     if (!Object.hasOwn(storageData, projectName)) {
       storageData[projectName] = {}
     }
@@ -481,11 +507,13 @@ export const SidebarProvider = ({
       [title]: opened,
     }
 
-    localStorage.setItem(storage_key, JSON.stringify(storageData))
+    localStorage.setItem(categoriesStorageKey, JSON.stringify(storageData))
   }
 
   const getPersistedCategoryState = (title: string): boolean | undefined => {
-    const storageData = JSON.parse(localStorage.getItem(storage_key) || "{}")
+    const storageData = JSON.parse(
+      localStorage.getItem(categoriesStorageKey) || "{}"
+    )
 
     return !Object.hasOwn(storageData, projectName) ||
       !Object.hasOwn(storageData[projectName], title)
