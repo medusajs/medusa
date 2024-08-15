@@ -4,6 +4,7 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderPreviewDTO,
 } from "@medusajs/types"
 import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
 import {
@@ -173,7 +174,9 @@ export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
  */
 export const confirmExchangeRequestWorkflow = createWorkflow(
   confirmExchangeRequestWorkflowId,
-  function (input: ConfirmExchangeRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmExchangeRequestWorkflowInput
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],
