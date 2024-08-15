@@ -52,7 +52,7 @@ export default function (theme: MarkdownTheme) {
       })
 
       return (
-        `${Handlebars.helpers.titleLevel()} Diagram\n\n` +
+        `${Handlebars.helpers.titleLevel()} Steps\n\n` +
         formatWorkflowDiagramComponent({
           component: workflowDiagramComponent,
           componentItem: {
