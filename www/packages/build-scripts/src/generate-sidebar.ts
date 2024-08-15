@@ -1,10 +1,10 @@
-import type { RawSidebarItemType } from "types"
+import type { RawSidebarItem, SidebarItem } from "types"
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs"
 import path from "path"
 import { getSidebarItemLink, sidebarAttachHrefCommonOptions } from "./index.js"
 import getCoreFlowsRefSidebarChildren from "./utils/get-core-flows-ref-sidebar-children.js"
 
-export type ItemsToAdd = RawSidebarItemType & {
+export type ItemsToAdd = SidebarItem & {
   sidebar_position?: number
 }
 
@@ -37,19 +37,17 @@ async function getSidebarItems(
         true
       )
       if (nested && newItems.length > 1) {
-        items.push(
-          ...sidebarAttachHrefCommonOptions([
-            {
-              title:
-                fileBasename.charAt(0).toUpperCase() +
-                fileBasename.substring(1),
-              hasTitleStyling: true,
-              children: newItems,
-            },
-          ])
-        )
+        items.push({
+          type: "sub-category",
+          title:
+            fileBasename.charAt(0).toUpperCase() + fileBasename.substring(1),
+          children: newItems,
+          loaded: true,
+        })
       } else {
-        items.push(...sidebarAttachHrefCommonOptions(newItems))
+        items.push(
+          ...(sidebarAttachHrefCommonOptions(newItems) as ItemsToAdd[])
+        )
       }
       continue
     }
@@ -69,7 +67,11 @@ async function getSidebarItems(
     mainPageIndex = items.length - 1
   }
 
-  if (mainPageIndex !== -1 && items.length > 1) {
+  if (
+    mainPageIndex !== -1 &&
+    items.length > 1 &&
+    items[0].type !== "separator"
+  ) {
     // push all other items to be children of that page.
     const mainPageChildren = [
       ...items.splice(0, mainPageIndex),
@@ -84,9 +86,19 @@ async function getSidebarItems(
   return items
 }
 
-async function checkItem(
-  item: RawSidebarItemType
-): Promise<RawSidebarItemType> {
+async function checkItem(item: RawSidebarItem): Promise<RawSidebarItem> {
+  if (!item.type) {
+    throw new Error(
+      `ERROR: The following item doesn't have a type: ${JSON.stringify(
+        item,
+        undefined,
+        2
+      )}`
+    )
+  }
+  if (item.type === "separator") {
+    return item
+  }
   if (item.autogenerate_path) {
     item.children = (await getSidebarItems(item.autogenerate_path)).map(
       (child) => {
@@ -109,7 +121,7 @@ async function checkItem(
   return item
 }
 
-export async function generateSidebar(sidebar: RawSidebarItemType[]) {
+export async function generateSidebar(sidebar: RawSidebarItem[]) {
   const path = await import("path")
   const { writeFileSync } = await import("fs")
 

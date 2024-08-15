@@ -2,20 +2,21 @@
 
 import React, { MouseEvent, useMemo } from "react"
 import clsx from "clsx"
-import { useSearch } from "@/providers"
-import { Button, InputText, Kbd } from "@/components"
+import { useMobile, useSearch } from "@/providers"
+import { Button } from "@/components"
 import { MagnifyingGlass } from "@medusajs/icons"
 import { useKeyboardShortcut } from "@/hooks"
 
 export type SearchModalOpenerProps = {
   isLoading?: boolean
-  isMobile?: boolean
+  className?: string
 }
 
 export const SearchModalOpener = ({
   isLoading = false,
-  isMobile = false,
+  className,
 }: SearchModalOpenerProps) => {
+  const { isMobile } = useMobile()
   const { setIsOpen } = useSearch()
   const isApple = useMemo(() => {
     return typeof navigator !== "undefined"
@@ -52,39 +53,19 @@ export const SearchModalOpener = ({
         </Button>
       )}
       {!isMobile && (
-        <div
-          className={clsx("relative w-min hover:cursor-pointer group")}
+        <Button
+          className={clsx(
+            "relative hover:cursor-pointer group",
+            "flex gap-[6px] !py-docs_0.25 !px-docs_0.5",
+            "justify-between items-center text-medusa-fg-muted",
+            className
+          )}
+          variant="transparent-clear"
           onClick={handleOpen}
         >
-          <MagnifyingGlass
-            className={clsx(
-              "absolute left-docs_0.5 top-[5px]",
-              "text-medusa-fg-muted"
-            )}
-          />
-          <InputText
-            type="search"
-            className={clsx(
-              "placeholder:text-compact-small",
-              "!py-[5px] !pl-[36px] !pr-docs_0.5",
-              "cursor-pointer select-none"
-            )}
-            placeholder="Find something"
-            onClick={handleOpen}
-            onFocus={(e) => e.target.blur()}
-            tabIndex={-1}
-            addGroupStyling={true}
-          />
-          <span
-            className={clsx(
-              "gap-docs_0.25 flex",
-              "absolute right-docs_0.5 top-[5px]"
-            )}
-          >
-            <Kbd>{isApple ? "⌘" : "Ctrl"}</Kbd>
-            <Kbd>K</Kbd>
-          </span>
-        </div>
+          <MagnifyingGlass />
+          <span>{isApple ? "⌘" : "Ctrl"}K</span>
+        </Button>
       )}
     </>
   )

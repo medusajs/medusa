@@ -1,4 +1,5 @@
 "use client"
+
 import {
   SidebarProvider as UiSidebarProvider,
   usePageLoading,
@@ -6,8 +7,8 @@ import {
   useScrollController,
 } from "docs-ui"
 import { config } from "../config"
-import { usePathname } from "next/navigation"
 import { useCallback } from "react"
+import { usePathname } from "next/navigation"
 
 type SidebarProviderProps = {
   children?: React.ReactNode
@@ -17,11 +18,11 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const { isLoading, setIsLoading } = usePageLoading()
   const { scrollableElement } = useScrollController()
   const pathname = usePathname()
-  const prevPathname = usePrevious(pathname)
+  const prevPathName = usePrevious(pathname)
 
   const resetOnCondition = useCallback(
-    () => prevPathname !== undefined && prevPathname !== pathname,
-    [pathname, prevPathname]
+    () => prevPathName !== undefined && pathname !== prevPathName,
+    [pathname, prevPathName]
   )
 
   return (

@@ -1,5 +1,6 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
 import { rehypeComponent } from "./src/lib/rehype-component"
+import rehypeSlug from "rehype-slug"
 
 export const Doc = defineDocumentType(() => ({
   name: "Doc",
@@ -26,6 +27,6 @@ export default makeSource({
   contentDirPath: "./src/content",
   documentTypes: [Doc],
   mdx: {
-    rehypePlugins: [rehypeComponent],
+    rehypePlugins: [[rehypeComponent], [rehypeSlug]],
   },
 })
