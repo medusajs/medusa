@@ -2017,14 +2017,8 @@ export default class OrderModuleService<
     const order = await this.retrieveOrder(
       orderId,
       {
-        select: ["id", "version", "total"],
-        relations: [
-          "transactions",
-          "items",
-          "summary",
-          "items.detail",
-          "shipping_methods",
-        ],
+        select: ["id", "version", "items.detail", "summary", "total"],
+        relations: ["transactions", "items", "shipping_methods"],
       },
       sharedContext
     )
