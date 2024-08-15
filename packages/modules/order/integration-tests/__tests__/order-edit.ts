@@ -215,12 +215,16 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           select: [
             "id",
             "version",
-            "items.detail",
             "summary",
             "shipping_methods",
             "transactions",
           ],
-          relations: ["items", "shipping_methods", "transactions"],
+          relations: [
+            "items",
+            "shipping_methods",
+            "transactions",
+            "items.detail",
+          ],
         })
 
         const serializedFinalOrder = JSON.parse(JSON.stringify(finalOrder))
@@ -405,8 +409,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         })
 
         const changedOrder = await service.retrieveOrder(createdOrder.id, {
-          select: ["total", "items.detail", "summary"],
-          relations: ["items"],
+          select: ["total", "summary"],
+          relations: ["items", "items.detail"],
         })
 
         expect(
@@ -482,8 +486,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         })
 
         const modified = await service.retrieveOrder(createdOrder.id, {
-          select: ["total", "items.detail", "summary"],
-          relations: ["items"],
+          select: ["total", "summary"],
+          relations: ["items", "items.detail"],
         })
 
         expect(
@@ -654,14 +658,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         // Revert Last Changes
         await service.revertLastVersion(createdOrder.id)
         const revertedOrder = await service.retrieveOrder(createdOrder.id, {
-          select: [
-            "id",
-            "version",
-            "items.detail",
-            "summary",
-            "shipping_methods",
-          ],
-          relations: ["items"],
+          select: ["id", "version", "summary", "shipping_methods"],
+          relations: ["items", "items.detail"],
         })
 
         const serializedRevertedOrder = JSON.parse(
