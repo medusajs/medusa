@@ -8,14 +8,14 @@ export const config: DocsConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   // sidebar is auto generated
   sidebar: {
-    top: [
+    default: [
       {
+        type: "link",
         title: "Introduction",
         path: "",
         loaded: true,
       },
     ],
-    bottom: [],
     mobile: getMobileSidebarItems({
       baseUrl,
       version: "v2",

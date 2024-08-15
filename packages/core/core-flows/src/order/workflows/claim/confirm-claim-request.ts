@@ -253,13 +253,17 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       }
     )
 
-    updateReturnsStep([
-      {
-        id: returnId,
-        status: ReturnStatus.REQUESTED,
-        requested_at: new Date(),
-      },
-    ])
+    when({ returnId }, ({ returnId }) => {
+      return !!returnId
+    }).then(() => {
+      updateReturnsStep([
+        {
+          id: returnId,
+          status: ReturnStatus.REQUESTED,
+          requested_at: new Date(),
+        },
+      ])
+    })
 
     const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
       return createClaimItems?.[0]?.claim_id
@@ -330,9 +334,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       reserveInventoryStep(formatedInventoryItems)
     })
 
-    when({ returnShippingMethod }, ({ returnShippingMethod }) => {
-      return !!returnShippingMethod
-    }).then(() => {
+    when(
+      { returnShippingMethod, returnId },
+      ({ returnShippingMethod, returnId }) => {
+        return !!returnShippingMethod && !!returnId
+      }
+    ).then(() => {
       const returnShippingOption = useRemoteQueryStep({
         entry_point: "shipping_options",
         fields: [

@@ -13,6 +13,7 @@ import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
 import SearchProvider from "./search"
 import { config } from "../config"
+import { MainNavProvider } from "./main-nav"
 
 type ProvidersProps = {
   children?: React.ReactNode
@@ -28,9 +29,11 @@ const Providers = ({ children }: ProvidersProps) => {
               <BaseSpecsProvider>
                 <ScrollControllerProvider scrollableSelector="#main">
                   <SidebarProvider>
-                    <SearchProvider>
-                      <MobileProvider>{children}</MobileProvider>
-                    </SearchProvider>
+                    <MainNavProvider>
+                      <SearchProvider>
+                        <MobileProvider>{children}</MobileProvider>
+                      </SearchProvider>
+                    </MainNavProvider>
                   </SidebarProvider>
                 </ScrollControllerProvider>
               </BaseSpecsProvider>

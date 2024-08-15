@@ -1,12 +1,12 @@
 import path from "path"
 import type { Transformer } from "unified"
-import type { RawSidebarItemType } from "types"
+import type { RawSidebarItem } from "types"
 import type { UnistTree } from "./types/index.js"
 
 export function pageNumberRehypePlugin({
   sidebar,
 }: {
-  sidebar: RawSidebarItemType[]
+  sidebar: RawSidebarItem[]
 }): Transformer {
   return async (tree, file) => {
     const { valueToEstree } = await import("estree-util-value-to-estree")
@@ -66,12 +66,15 @@ export function pageNumberRehypePlugin({
 }
 
 function findSidebarItem(
-  sidebar: RawSidebarItemType[],
+  sidebar: RawSidebarItem[],
   path: string
-): RawSidebarItemType | undefined {
+): RawSidebarItem | undefined {
   let foundItem = undefined
   for (const item of sidebar) {
-    if (path === item.path) {
+    if (item.type === "separator") {
+      continue
+    }
+    if (item.type === "link" && path === item.path) {
       foundItem = item
     } else if (item.children) {
       foundItem = findSidebarItem(item.children, path)

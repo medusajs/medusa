@@ -1,168 +1,135 @@
 import React from "react"
-import { Badge, NavbarItem, HelpButton } from "@/components"
+import { Badge, HelpButton } from "@/components"
 import { OptionType } from "@/hooks"
-import { SidebarItemType } from "types"
+import { NavigationDropdownItem, SidebarItem } from "types"
 import { NotificationItemType } from "@/providers"
+import { NavigationDropdownDocIcon } from "./components/Icons/NavigationDropdown/Doc"
+import { NavigationDropdownStoreIcon } from "./components/Icons/NavigationDropdown/Store"
+import { NavigationDropdownAdminIcon } from "./components/Icons/NavigationDropdown/Admin"
+import { NavigationDropdownUiIcon } from "./components/Icons/NavigationDropdown/Ui"
+import { NavigationDropdownDocV1Icon } from "./components/Icons/NavigationDropdown/DocV1"
+import { NavigationDropdownUserIcon } from "./components/Icons/NavigationDropdown/User"
+import { NavigationDropdownResourcesIcon } from "./components/Icons/NavigationDropdown/Resources"
 
 export const GITHUB_ISSUES_PREFIX = `https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml`
 export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/new?labels=documentation`
 
-export const navbarItemsV1: NavbarItem[] = [
+export const navDropdownItemsV2: NavigationDropdownItem[] = [
   {
     type: "link",
-    props: {
-      label: "Docs",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/`,
-    },
+    path: `/v2`,
+    icon: NavigationDropdownDocIcon,
+    title: "Documentation",
   },
   {
     type: "link",
-    props: {
-      label: "User Guide",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/user-guide`,
-    },
+    path: `/v2/resources`,
+    icon: NavigationDropdownResourcesIcon,
+    title: "Learning Resources",
   },
   {
     type: "link",
-    props: {
-      label: "Store API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/api/store`,
-    },
+    path: `/v2/api/store`,
+    icon: NavigationDropdownStoreIcon,
+    title: "Store API",
   },
   {
     type: "link",
-    props: {
-      label: "Admin API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/api/admin`,
-    },
+    path: `/v2/api/admin`,
+    icon: NavigationDropdownAdminIcon,
+    title: "Admin API",
   },
   {
     type: "link",
-    props: {
-      label: "UI",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/ui`,
-    },
-  },
-  {
-    type: "divider",
+    path: `/ui`,
+    icon: NavigationDropdownUiIcon,
+    title: "UI",
   },
   {
     type: "link",
-    props: {
-      label: "Learn Medusa v2",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2`,
-      badge: {
-        variant: "blue",
-        children: "New",
-      },
-    },
+    path: `/`,
+    icon: NavigationDropdownDocV1Icon,
+    title: "Medusa v1",
   },
 ]
 
-export const navbarItemsV2: NavbarItem[] = [
+export const navDropdownItemsV1: NavigationDropdownItem[] = [
   {
     type: "link",
-    props: {
-      label: "Docs",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2`,
-    },
+    path: `/`,
+    icon: NavigationDropdownDocV1Icon,
+    title: "Documentation",
   },
   {
     type: "link",
-    props: {
-      label: "Learning Resources",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2/resources`,
-    },
+    path: `/user-guide`,
+    icon: NavigationDropdownUserIcon,
+    title: "User Guide",
   },
   {
     type: "link",
-    props: {
-      label: "Store API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2/api/store`,
-    },
+    path: `/api/store`,
+    icon: NavigationDropdownStoreIcon,
+    title: "Store API",
   },
   {
     type: "link",
-    props: {
-      label: "Admin API",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2/api/admin`,
-    },
+    path: `/api/admin`,
+    icon: NavigationDropdownAdminIcon,
+    title: "Admin API",
   },
   {
     type: "link",
-    props: {
-      label: "UI",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/ui`,
-    },
-  },
-  {
-    type: "divider",
+    path: `/ui`,
+    icon: NavigationDropdownUiIcon,
+    title: "UI",
   },
   {
     type: "link",
-    props: {
-      label: "Medusa v1",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/`,
-    },
+    path: `/v2`,
+    icon: NavigationDropdownDocIcon,
+    title: "Medusa v2",
   },
 ]
 
-export const mobileSidebarItemsV1: SidebarItemType[] = [
+export const mobileSidebarItemsV1: SidebarItem[] = [
   {
+    type: "link",
     title: "Docs",
     path: `/`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "User Guide",
     path: `/user-guide`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Store API",
     path: `/api/store`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Admin API",
     path: `/api/admin`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "UI",
     path: `/ui`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Learn Medusa V2",
     path: `/v2`,
     loaded: true,
@@ -171,38 +138,44 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
   },
 ]
 
-export const mobileSidebarItemsV2: SidebarItemType[] = [
+export const mobileSidebarItemsV2: SidebarItem[] = [
   {
+    type: "link",
     title: "Docs",
     path: `/v2`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Learning Resources",
     path: `/v2/resources`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Store API",
     path: `/v2/api/store`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Admin API",
     path: `/v2/api/admin`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "UI",
     path: `/ui`,
     loaded: true,
     isPathHref: true,
   },
   {
+    type: "link",
     title: "Medusa v1",
     path: `/`,
     loaded: true,

@@ -36,6 +36,7 @@ const light = {
   "--docs-border-error": "rgba(225, 29, 72, 1)",
   "--docs-border-danger": "rgba(190, 18, 60, 1)",
   "--docs-border-transparent": "rgba(255, 255, 255, 0)",
+  "--docs-border-menu-top": "rgba(228, 228, 231, 1)",
 
   "--docs-button-inverted": "rgba(39, 39, 42, 1)",
   "--docs-button-inverted-hover": "rgba(63, 63, 70, 1)",
@@ -125,7 +126,7 @@ const dark = {
 
   "--docs-fg-base": "rgba(244, 244, 245, 1)",
   "--docs-fg-subtle": "rgba(161, 161, 170, 1)",
-  "--docs-fg-muted": "rgba(161, 161, 170, 1)",
+  "--docs-fg-muted": "rgba(113, 113, 122, 1)",
   "--docs-fg-disabled": "rgba(82, 82, 91, 1)",
   "--docs-fg-on-color": "rgba(255, 255, 255, 1)",
   "--docs-fg-on-inverted": "rgba(9, 9, 11, 1)",
@@ -139,6 +140,7 @@ const dark = {
   "--docs-border-error": "rgba(251, 113, 133, 1)",
   "--docs-border-danger": "rgba(190, 18, 60, 1)",
   "--docs-border-transparent": "rgba(255, 255, 255, 0)",
+  "--docs-border-menu-top": "rgba(255, 255, 255, 0.08)",
 
   "--docs-button-inverted": "rgba(82, 82, 91, 1)",
   "--docs-button-inverted-hover": "rgba(113, 113, 122, 1)",
