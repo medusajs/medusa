@@ -15,6 +15,7 @@ export type BadgeType = "default" | "shaded"
 
 export type BadgeProps = {
   className?: string
+  childrenWrapperClassName?: string
   variant: BadgeVariant
   badgeType?: BadgeType
 } & React.HTMLAttributes<HTMLSpanElement>
@@ -24,6 +25,7 @@ export const Badge = ({
   variant,
   badgeType = "default",
   children,
+  childrenWrapperClassName,
 }: BadgeProps) => {
   return (
     <span
@@ -57,7 +59,12 @@ export const Badge = ({
           className={clsx("absolute top-0 left-0 w-full h-full")}
         />
       )}
-      <span className={clsx(badgeType === "shaded" && "relative z-[1]")}>
+      <span
+        className={clsx(
+          badgeType === "shaded" && "relative z-[1]",
+          childrenWrapperClassName
+        )}
+      >
         {children}
       </span>
     </span>

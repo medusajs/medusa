@@ -11,7 +11,7 @@ This documentation provides a reference to the `cancelOrderFulfillmentWorkflow`.
 
 This workflow cancels an order's fulfillment.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"cancelOrderFulfillmentWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"cancelOrderFulfillmentValidateOrder","description":"This step validates that an order fulfillment can be canceled.","link":"../core_flows.Order.cancelOrderFulfillmentValidateOrder/page.mdx","depth":2},{"type":"step","name":"cancelOrderFulfillmentStep","description":"This step cancels an order's fulfillment.","link":"../core_flows.Order.cancelOrderFulfillmentStep/page.mdx","depth":3},{"type":"step","name":"adjustInventoryLevelsStep","description":"This step adjusts one or more inventory levels.","link":"../../../Inventory/functions/core_flows.Inventory.adjustInventoryLevelsStep/page.mdx","depth":3},{"type":"workflow","name":"cancelFulfillmentWorkflow","description":"This workflow cancels a fulfillment.","link":"../../../Fulfillment/functions/core_flows.Fulfillment.cancelFulfillmentWorkflow/page.mdx","depth":4},{"type":"hook","name":"orderFulfillmentCanceled","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#orderFulfillmentCanceled","depth":5}]}} />
 

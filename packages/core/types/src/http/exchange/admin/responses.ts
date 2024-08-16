@@ -1,5 +1,5 @@
 import { OrderDTO, OrderPreviewDTO } from "../../../order"
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 import { AdminReturn } from "../../return"
 import { AdminExchange } from "./entities"
 
@@ -8,7 +8,7 @@ export interface AdminExchangeResponse {
 }
 
 export type AdminExchangeListResponse = PaginatedResponse<{
-  exchanges: AdminExchange
+  exchanges: AdminExchange[]
 }>
 
 export interface AdminExchangeOrderResponse {
@@ -30,3 +30,6 @@ export interface AdminExchangeReturnResponse {
   order_preview: OrderPreviewDTO
   return: AdminReturn
 }
+
+export interface AdminExchangeDeleteResponse
+  extends DeleteResponse<"exchange"> {}

@@ -56,6 +56,9 @@ export type SidebarContextType = {
   setSidebarTopHeight: React.Dispatch<React.SetStateAction<number>>
   resetItems: () => void
   isItemLoaded: (path: string) => boolean
+  updatePersistedCategoryState: (title: string, opened: boolean) => void
+  getPersistedCategoryState: (title: string) => boolean | undefined
+  persistState: boolean
 } & SidebarStyleOptions
 
 export const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -191,6 +194,8 @@ export type SidebarProviderProps = {
   scrollableElement?: Element | Window
   staticSidebarItems?: boolean
   resetOnCondition?: () => boolean
+  projectName: string
+  persistState?: boolean
 } & SidebarStyleOptions
 
 export const SidebarProvider = ({
@@ -204,7 +209,11 @@ export const SidebarProvider = ({
   staticSidebarItems = false,
   disableActiveTransition = false,
   resetOnCondition,
+  projectName,
+  persistState = true,
 }: SidebarProviderProps) => {
+  const categoriesStorageKey = `${projectName}_categories`
+  const hideSidebarStorageKey = `hide_sidebar`
   const [items, dispatch] = useReducer(reducer, {
     default: initialItems?.default || [],
     mobile: initialItems?.mobile || [],
@@ -462,6 +471,56 @@ export const SidebarProvider = ({
     }
   }, [resetOnCondition, resetItems])
 
+  useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    const storageValue = localStorage.getItem(hideSidebarStorageKey)
+
+    if (storageValue !== null) {
+      setDesktopSidebarOpen(storageValue === "false")
+    }
+  }, [isBrowser])
+
+  useEffect(() => {
+    if (!isBrowser) {
+      return
+    }
+
+    localStorage.setItem(
+      hideSidebarStorageKey,
+      `${desktopSidebarOpen === false}`
+    )
+  }, [isBrowser, desktopSidebarOpen])
+
+  const updatePersistedCategoryState = (title: string, opened: boolean) => {
+    const storageData = JSON.parse(
+      localStorage.getItem(categoriesStorageKey) || "{}"
+    )
+    if (!Object.hasOwn(storageData, projectName)) {
+      storageData[projectName] = {}
+    }
+
+    storageData[projectName] = {
+      ...storageData[projectName],
+      [title]: opened,
+    }
+
+    localStorage.setItem(categoriesStorageKey, JSON.stringify(storageData))
+  }
+
+  const getPersistedCategoryState = (title: string): boolean | undefined => {
+    const storageData = JSON.parse(
+      localStorage.getItem(categoriesStorageKey) || "{}"
+    )
+
+    return !Object.hasOwn(storageData, projectName) ||
+      !Object.hasOwn(storageData[projectName], title)
+      ? undefined
+      : storageData[projectName][title]
+  }
+
   return (
     <SidebarContext.Provider
       value={{
@@ -487,6 +546,9 @@ export const SidebarProvider = ({
         setSidebarTopHeight,
         resetItems,
         isItemLoaded,
+        updatePersistedCategoryState,
+        getPersistedCategoryState,
+        persistState,
       }}
     >
       {children}

@@ -20,7 +20,9 @@ export const MenuItem = ({ item }: MenuItemProps) => {
       )}
       href={item.link}
     >
-      <span className="text-medusa-fg-subtle">{item.icon}</span>
+      <span className="text-medusa-fg-subtle mt-[2.5px] block">
+        {item.icon}
+      </span>
       <span className="text-compact-small">{item.title}</span>
     </Link>
   )

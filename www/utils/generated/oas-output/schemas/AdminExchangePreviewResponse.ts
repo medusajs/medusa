@@ -8,7 +8,7 @@
  *   - exchange
  * properties:
  *   order_preview:
- *     $ref: "#/components/schemas/Order"
+ *     $ref: "#/components/schemas/OrderPreview"
  *   exchange:
  *     $ref: "#/components/schemas/AdminExchange"
  * 

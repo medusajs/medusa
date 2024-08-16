@@ -21,6 +21,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       initialItems={config.sidebar}
       staticSidebarItems={true}
       disableActiveTransition={true}
+      projectName="docs"
     >
       {children}
     </UiSidebarProvider>

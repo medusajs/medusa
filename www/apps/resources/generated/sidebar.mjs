@@ -10426,6 +10426,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/beginOrderEditOrderWorkflow",
+                    "title": "beginOrderEditOrderWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/beginReceiveReturnWorkflow",
                     "title": "beginReceiveReturnWorkflow",
                     "children": []
@@ -10444,6 +10452,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/cancelBeginOrderClaimWorkflow",
                     "title": "cancelBeginOrderClaimWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/cancelBeginOrderEditWorkflow",
+                    "title": "cancelBeginOrderEditWorkflow",
                     "children": []
                   },
                   {
@@ -10546,6 +10562,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/confirmOrderEditRequestWorkflow",
+                    "title": "confirmOrderEditRequestWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/confirmReturnReceiveWorkflow",
                     "title": "confirmReturnReceiveWorkflow",
                     "children": []
@@ -10596,6 +10620,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/createOrderChangeWorkflow",
                     "title": "createOrderChangeWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/createOrderEditShippingMethodWorkflow",
+                    "title": "createOrderEditShippingMethodWorkflow",
                     "children": []
                   },
                   {
@@ -10706,6 +10738,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/orderEditAddNewItemWorkflow",
+                    "title": "orderEditAddNewItemWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/orderExchangeAddNewItemWorkflow",
                     "title": "orderExchangeAddNewItemWorkflow",
                     "children": []
@@ -10778,6 +10818,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/removeItemOrderEditActionWorkflow",
+                    "title": "removeItemOrderEditActionWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/removeItemReceiveReturnActionWorkflow",
                     "title": "removeItemReceiveReturnActionWorkflow",
                     "children": []
@@ -10788,6 +10836,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/removeItemReturnActionWorkflow",
                     "title": "removeItemReturnActionWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/removeOrderEditShippingMethodWorkflow",
+                    "title": "removeOrderEditShippingMethodWorkflow",
                     "children": []
                   },
                   {
@@ -10852,6 +10908,22 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/updateOrderChangeActionsWorkflow",
                     "title": "updateOrderChangeActionsWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditAddItemWorkflow",
+                    "title": "updateOrderEditAddItemWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditShippingMethodWorkflow",
+                    "title": "updateOrderEditShippingMethodWorkflow",
                     "children": []
                   },
                   {
@@ -10953,8 +11025,24 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/beginorderEditValidationStep",
+                    "title": "beginorderEditValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/cancelBeginOrderClaimValidationStep",
                     "title": "cancelBeginOrderClaimValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/cancelBeginOrderEditValidationStep",
+                    "title": "cancelBeginOrderEditValidationStep",
                     "children": []
                   },
                   {
@@ -11097,6 +11185,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/confirmOrderEditRequestValidationStep",
+                    "title": "confirmOrderEditRequestValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/confirmReceiveReturnValidationStep",
                     "title": "confirmReceiveReturnValidationStep",
                     "children": []
@@ -11171,6 +11267,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/createOrderClaimsStep",
                     "title": "createOrderClaimsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/createOrderEditShippingMethodValidationStep",
+                    "title": "createOrderEditShippingMethodValidationStep",
                     "children": []
                   },
                   {
@@ -11353,6 +11457,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/orderEditAddNewItemValidationStep",
+                    "title": "orderEditAddNewItemValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/previewOrderChangeStep",
                     "title": "previewOrderChangeStep",
                     "children": []
@@ -11441,6 +11553,22 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/removeOrderEditItemActionValidationStep",
+                    "title": "removeOrderEditItemActionValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/removeOrderEditShippingMethodValidationStep",
+                    "title": "removeOrderEditShippingMethodValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/removeReturnItemActionValidationStep",
                     "title": "removeReturnItemActionValidationStep",
                     "children": []
@@ -11515,6 +11643,22 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/updateOrderChangeActionsStep",
                     "title": "updateOrderChangeActionsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditAddItemValidationStep",
+                    "title": "updateOrderEditAddItemValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditShippingMethodValidationStep",
+                    "title": "updateOrderEditShippingMethodValidationStep",
                     "children": []
                   },
                   {
