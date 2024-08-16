@@ -283,7 +283,7 @@ ___
 
 This workflow creates one or more customer address.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createCustomerAddressesWorkflow","steps":[{"type":"step","name":"maybeUnsetDefaultShippingAddressesStep","description":"This step unsets the `is_default_shipping` property of one or more addresses.","link":"../Customer/functions/core_flows.Customer.maybeUnsetDefaultShippingAddressesStep/page.mdx","depth":1},{"type":"step","name":"maybeUnsetDefaultBillingAddressesStep","description":"This step unsets the `is_default_billing` property of one or more addresses.","link":"../Customer/functions/core_flows.Customer.maybeUnsetDefaultBillingAddressesStep/page.mdx","depth":1},{"type":"step","name":"createCustomerAddressesStep","description":"This step creates one or more customer addresses.","link":"../Customer/functions/core_flows.Customer.createCustomerAddressesStep/page.mdx","depth":2},{"type":"hook","name":"addressesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#addressesCreated","depth":3}]}} />
 
@@ -323,7 +323,7 @@ ___
 
 This workflow creates an authentication account for a customer.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createCustomerAccountWorkflow","steps":[{"type":"step","name":"createCustomersStep","description":"This step creates one or more customers.","link":"../Customer/functions/core_flows.Customer.createCustomersStep/page.mdx","depth":1},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity.","link":"../Auth/functions/core_flows.Auth.setAuthAppMetadataStep/page.mdx","depth":2}]}} />
 
@@ -341,7 +341,7 @@ ___
 
 This workflow creates one or more customers.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createCustomersWorkflow","steps":[{"type":"step","name":"createCustomersStep","description":"This step creates one or more customers.","link":"../Customer/functions/core_flows.Customer.createCustomersStep/page.mdx","depth":1},{"type":"hook","name":"customersCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#customersCreated","depth":2}]}} />
 
@@ -381,7 +381,7 @@ ___
 
 This workflow deletes one or more customer addresses.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteCustomerAddressesWorkflow","steps":[{"type":"step","name":"deleteCustomerAddressesStep","description":"This step deletes one or more customer addresses.","link":"../Customer/functions/core_flows.Customer.deleteCustomerAddressesStep/page.mdx","depth":1},{"type":"hook","name":"addressesDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#addressesDeleted","depth":2}]}} />
 
@@ -417,7 +417,7 @@ ___
 
 This workflow deletes one or more customers.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteCustomersWorkflow","steps":[{"type":"step","name":"deleteCustomersStep","description":"This step deletes one or more customers.","link":"../Customer/functions/core_flows.Customer.deleteCustomersStep/page.mdx","depth":1},{"type":"hook","name":"customersDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#customersDeleted","depth":2}]}} />
 
@@ -453,7 +453,7 @@ ___
 
 This workflow updates one or more customer addresses.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateCustomerAddressesWorkflow","steps":[{"type":"step","name":"maybeUnsetDefaultShippingAddressesStep","description":"This step unsets the `is_default_shipping` property of one or more addresses.","link":"../Customer/functions/core_flows.Customer.maybeUnsetDefaultShippingAddressesStep/page.mdx","depth":1},{"type":"step","name":"maybeUnsetDefaultBillingAddressesStep","description":"This step unsets the `is_default_billing` property of one or more addresses.","link":"../Customer/functions/core_flows.Customer.maybeUnsetDefaultBillingAddressesStep/page.mdx","depth":1},{"type":"step","name":"updateCustomerAddressesStep","description":"This step updates one or more customer addresses.","link":"../Customer/functions/core_flows.Customer.updateCustomerAddressesStep/page.mdx","depth":2},{"type":"hook","name":"addressesUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#addressesUpdated","depth":3}]}} />
 
@@ -493,7 +493,7 @@ ___
 
 This workflow updates one or more customers.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateCustomersWorkflow","steps":[{"type":"step","name":"updateCustomersStep","description":"This step updates one or more customers.","link":"../Customer/functions/core_flows.Customer.updateCustomersStep/page.mdx","depth":1},{"type":"hook","name":"customersUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#customersUpdated","depth":2}]}} />
 

@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
-
-import Navbar from "@/components/Navbar"
 import Providers from "@/providers"
 import "../css/globals.css"
 import { TightLayout } from "docs-ui"
@@ -40,7 +38,6 @@ export default function RootLayout({
   return (
     <TightLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
       }}

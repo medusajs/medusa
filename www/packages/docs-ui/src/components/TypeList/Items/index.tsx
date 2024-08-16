@@ -25,6 +25,7 @@ import { useIsBrowser, useSiteConfig } from "../../.."
 
 type CommonProps = ParentCommonProps & {
   level?: number
+  referenceType?: "method" | "workflow"
 }
 
 type TypeListItemProps = {
@@ -39,6 +40,7 @@ const TypeListItem = ({
   expandUrl,
   elementKey,
   sectionTitle,
+  referenceType = "method",
 }: TypeListItemProps) => {
   const isBrowser = useIsBrowser()
   const pathname = usePathname()
@@ -198,21 +200,21 @@ const TypeListItem = ({
               />
             </CopyButton>
           )}
-          <div className="flex gap-0.75 flex-wrap">
+          <div className="flex gap-0.75 flex-wrap flex-1">
             <InlineCode>{decodeStr(item.name)}</InlineCode>
             <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
               <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
                 {item.type}
               </MarkdownContent>
             </span>
-            {item.optional === false && (
+            {item.optional === true && (
               <span
                 className={clsx(
-                  "text-compact-x-small-plus uppercase",
-                  "text-medusa-fg-error"
+                  "text-compact-x-small-plus",
+                  "text-medusa-tag-blue-text"
                 )}
               >
-                Required
+                Optional
               </span>
             )}
             {item.featureFlag && (
@@ -227,9 +229,9 @@ const TypeListItem = ({
             )}
             {item.expandable && (
               <ExpandableNotice
-                type="method"
+                type={referenceType}
                 link={expandUrl || "#"}
-                badgeClassName="!p-0 leading-none"
+                badgeClassName="!p-docs_0.25 block leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
             )}

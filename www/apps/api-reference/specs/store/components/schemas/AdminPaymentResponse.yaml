@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminPaymentResponse
+required:
+  - payment
+properties:
+  payment:
+    $ref: ./AdminPayment.yaml

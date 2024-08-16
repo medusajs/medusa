@@ -69,7 +69,12 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminCompleteOrder"
+ *         description: SUMMARY
+ *         properties:
+ *           order_id:
+ *             type: string
+ *             title: order_id
+ *             description: The order's order id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -83,6 +88,12 @@
  * tags:
  *   - Orders
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminOrderResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

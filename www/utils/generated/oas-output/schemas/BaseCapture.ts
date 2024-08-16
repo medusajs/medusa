@@ -1,0 +1,8 @@
+/**
+ * @schema BaseCapture
+ * type: object
+ * description: The capture's captures.
+ * x-schemaName: BaseCapture
+ * 
+*/
+

@@ -1205,6 +1205,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.beginExchangeOrderWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.beginOrderEditOrderWorkflow",
+    "newSlug": "/references/medusa-workflows/beginOrderEditOrderWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.beginOrderEditOrderWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.beginOrderExchangeValidationStep",
     "newSlug": "/references/medusa-workflows/steps/beginOrderExchangeValidationStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.beginOrderExchangeValidationStep/page.mdx"
@@ -1230,6 +1235,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.beginReturnOrderWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.beginorderEditValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/beginorderEditValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.beginorderEditValidationStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderClaimValidationStep",
     "newSlug": "/references/medusa-workflows/steps/cancelBeginOrderClaimValidationStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderClaimValidationStep/page.mdx"
@@ -1238,6 +1248,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderClaimWorkflow",
     "newSlug": "/references/medusa-workflows/cancelBeginOrderClaimWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderClaimWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderEditValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/cancelBeginOrderEditValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderEditValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderEditWorkflow",
+    "newSlug": "/references/medusa-workflows/cancelBeginOrderEditWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderEditWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.cancelBeginOrderExchangeValidationStep",
@@ -1365,6 +1385,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.confirmExchangeRequestWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.confirmOrderEditRequestValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/confirmOrderEditRequestValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.confirmOrderEditRequestValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.confirmOrderEditRequestWorkflow",
+    "newSlug": "/references/medusa-workflows/confirmOrderEditRequestWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.confirmOrderEditRequestWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.confirmReceiveReturnValidationStep",
     "newSlug": "/references/medusa-workflows/steps/confirmReceiveReturnValidationStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.confirmReceiveReturnValidationStep/page.mdx"
@@ -1420,11 +1450,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createExchangeShippingMethodWorkflow/page.mdx"
   },
   {
-    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep",
-    "newSlug": "/references/medusa-workflows/steps/createOrderChangeActionsStep",
-    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsStep/page.mdx"
-  },
-  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow",
     "newSlug": "/references/medusa-workflows/createOrderChangeActionsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderChangeActionsWorkflow/page.mdx"
@@ -1448,6 +1473,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderClaimsStep",
     "newSlug": "/references/medusa-workflows/steps/createOrderClaimsStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderClaimsStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderEditShippingMethodValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/createOrderEditShippingMethodValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderEditShippingMethodValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderEditShippingMethodWorkflow",
+    "newSlug": "/references/medusa-workflows/createOrderEditShippingMethodWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderEditShippingMethodWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderExchangeItemsFromActionsStep",
@@ -1610,6 +1645,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderClaimRequestItemReturnWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/orderEditAddNewItemValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemWorkflow",
+    "newSlug": "/references/medusa-workflows/orderEditAddNewItemWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow",
     "newSlug": "/references/medusa-workflows/orderExchangeAddNewItemWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow/page.mdx"
@@ -1705,6 +1750,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeItemExchangeActionWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeItemOrderEditActionWorkflow",
+    "newSlug": "/references/medusa-workflows/removeItemOrderEditActionWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeItemOrderEditActionWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeItemReceiveReturnActionValidationStep",
     "newSlug": "/references/medusa-workflows/steps/removeItemReceiveReturnActionValidationStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeItemReceiveReturnActionValidationStep/page.mdx"
@@ -1718,6 +1768,21 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeItemReturnActionWorkflow",
     "newSlug": "/references/medusa-workflows/removeItemReturnActionWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeItemReturnActionWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeOrderEditItemActionValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/removeOrderEditItemActionValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeOrderEditItemActionValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeOrderEditShippingMethodValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/removeOrderEditShippingMethodValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeOrderEditShippingMethodValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeOrderEditShippingMethodWorkflow",
+    "newSlug": "/references/medusa-workflows/removeOrderEditShippingMethodWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.removeOrderEditShippingMethodWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.removeReturnItemActionValidationStep",
@@ -1808,6 +1873,26 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderChangeActionsWorkflow",
     "newSlug": "/references/medusa-workflows/updateOrderChangeActionsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderChangeActionsWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/updateOrderEditAddItemValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow",
+    "newSlug": "/references/medusa-workflows/updateOrderEditAddItemWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/updateOrderEditShippingMethodValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodWorkflow",
+    "newSlug": "/references/medusa-workflows/updateOrderEditShippingMethodWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderExchangesStep",

@@ -87,6 +87,12 @@
  * tags:
  *   - Stores
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminStoreResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -99,6 +105,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: updateStoresWorkflow
  * 
 */
 

@@ -1,0 +1,46 @@
+type: object
+description: The supported currency's supported currencies.
+x-schemaName: AdminStoreCurrency
+required:
+  - id
+  - currency_code
+  - store_id
+  - is_default
+  - currency
+  - created_at
+  - updated_at
+  - deleted_at
+properties:
+  id:
+    type: string
+    title: id
+    description: The supported currency's ID.
+  currency_code:
+    type: string
+    title: currency_code
+    description: The supported currency's currency code.
+  store_id:
+    type: string
+    title: store_id
+    description: The supported currency's store id.
+  is_default:
+    type: boolean
+    title: is_default
+    description: The supported currency's is default.
+  currency:
+    $ref: ./AdminCurrency.yaml
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The supported currency's created at.
+  updated_at:
+    type: string
+    format: date-time
+    title: updated_at
+    description: The supported currency's updated at.
+  deleted_at:
+    type: string
+    format: date-time
+    title: deleted_at
+    description: The supported currency's deleted at.

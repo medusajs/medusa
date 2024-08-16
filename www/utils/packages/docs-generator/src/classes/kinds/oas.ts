@@ -1739,7 +1739,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       return
     }
 
-    const oldSchemaObj = (
+    let oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
         ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
         : oldSchema
@@ -1756,23 +1756,33 @@ class OasKindGenerator extends FunctionKindGenerator {
       return undefined
     }
 
-    // update schema
-    if (oldSchemaObj!.type !== newSchemaObj?.type) {
-      oldSchemaObj!.type = newSchemaObj?.type
-    }
+    const oldSchemaType = this.inferOasSchemaType(oldSchemaObj)
+    const newSchemaType = this.inferOasSchemaType(newSchemaObj)
 
-    if (
-      oldSchemaObj!.description !== newSchemaObj?.description &&
-      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
+    if (oldSchemaType !== newSchemaType && newSchemaType && newSchemaObj) {
+      oldSchemaObj = {
+        ...newSchemaObj,
+        description: oldSchemaObj?.description,
+      }
+    } else if (
+      oldSchemaObj?.allOf &&
+      newSchemaObj.allOf &&
+      oldSchemaObj.allOf.length !== newSchemaObj.allOf.length
     ) {
-      oldSchemaObj!.description =
-        newSchemaObj?.description || SUMMARY_PLACEHOLDER
-    }
-
-    oldSchemaObj!.required = newSchemaObj?.required
-    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
-
-    if (oldSchemaObj!.type === "object") {
+      oldSchemaObj.allOf = newSchemaObj.allOf
+    } else if (
+      oldSchemaObj?.oneOf &&
+      newSchemaObj.oneOf &&
+      oldSchemaObj.oneOf.length !== newSchemaObj.oneOf.length
+    ) {
+      oldSchemaObj.oneOf = newSchemaObj.oneOf
+    } else if (
+      oldSchemaObj?.anyOf &&
+      newSchemaObj.anyOf &&
+      oldSchemaObj.anyOf.length !== newSchemaObj.anyOf.length
+    ) {
+      oldSchemaObj.anyOf = newSchemaObj.anyOf
+    } else if (oldSchemaType === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
       } else if (!newSchemaObj?.properties) {
@@ -1823,7 +1833,44 @@ class OasKindGenerator extends FunctionKindGenerator {
         }) || oldSchemaObj.items
     }
 
+    // update schema
+
+    if (
+      oldSchemaObj!.description !== newSchemaObj?.description &&
+      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
+    ) {
+      oldSchemaObj!.description =
+        newSchemaObj?.description || SUMMARY_PLACEHOLDER
+    }
+
+    oldSchemaObj!.required = newSchemaObj?.required
+    oldSchemaObj!["x-schemaName"] = newSchemaObj?.["x-schemaName"]
+
     return oldSchemaObj
+  }
+
+  /**
+   * This method infers a schema's type.
+   *
+   * @param schema - The schema to infer its type
+   * @returns The type, if available.
+   */
+  inferOasSchemaType(schema?: OpenApiSchema): string | undefined {
+    switch (true) {
+      case schema === undefined:
+        return undefined
+      case schema?.allOf !== undefined:
+        return "allOf"
+      case schema?.anyOf !== undefined:
+        return "anyOf"
+      case schema?.oneOf !== undefined:
+        return "oneOf"
+      case schema?.type !== undefined:
+        return schema.type
+      case schema !== undefined:
+      default:
+        return "object"
+    }
   }
 
   /**

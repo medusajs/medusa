@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentProvider
  * type: object
- * description: The shipping option's provider.
+ * description: The fulfillment provider's fulfillment providers.
  * x-schemaName: AdminFulfillmentProvider
  * 
 */

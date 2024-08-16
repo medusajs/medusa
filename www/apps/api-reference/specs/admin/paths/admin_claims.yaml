@@ -73,6 +73,12 @@ get:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -163,6 +169,12 @@ post:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

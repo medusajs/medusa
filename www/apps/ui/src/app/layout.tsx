@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 
-import { Navbar } from "@/components/navbar"
 import { Providers } from "@/providers"
 
 import { siteConfig } from "@/config/site"
@@ -36,11 +35,11 @@ export default function RootLayout({
   return (
     <TightLayout
       ProvidersComponent={Providers}
-      NavbarComponent={Navbar}
       sidebarProps={{
         expandItems: true,
       }}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      showBanner={false}
     >
       {children}
     </TightLayout>

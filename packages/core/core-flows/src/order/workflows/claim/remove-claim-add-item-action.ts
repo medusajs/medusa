@@ -3,6 +3,7 @@ import {
   OrderChangeDTO,
   OrderClaimDTO,
   OrderDTO,
+  OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
@@ -64,7 +65,7 @@ export const removeAddItemClaimActionWorkflow = createWorkflow(
   removeAddItemClaimActionWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.DeleteOrderClaimItemActionWorkflowInput>
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -94,7 +95,12 @@ export const removeAddItemClaimActionWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    removeClaimAddItemActionValidationStep({ order, input, orderClaim, orderChange })
+    removeClaimAddItemActionValidationStep({
+      order,
+      input,
+      orderClaim,
+      orderChange,
+    })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 

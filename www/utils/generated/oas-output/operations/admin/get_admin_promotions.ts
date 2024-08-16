@@ -216,11 +216,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The promotion's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The promotion's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -234,6 +244,41 @@
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The promotion's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The promotion's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The promotion's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - promotions
+ *               properties:
+ *                 promotions:
+ *                   type: array
+ *                   description: The promotion's promotions.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminPromotion"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

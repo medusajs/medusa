@@ -89,6 +89,12 @@ post:
   tags:
     - Carts
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -178,6 +184,18 @@ delete:
   tags:
     - Carts
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: SUMMARY
+            required:
+              - cart
+            properties:
+              cart:
+                $ref: ../components/schemas/StoreCart.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

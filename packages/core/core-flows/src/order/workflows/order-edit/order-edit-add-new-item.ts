@@ -1,4 +1,9 @@
-import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  OrderPreviewDTO,
+  OrderWorkflow,
+} from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
@@ -33,15 +38,15 @@ export const orderEditAddNewItemValidationStep = createStep(
   }
 )
 
-export const orderOrderEditAddNewItemWorkflowId = "order-edit-add-new-item"
+export const orderEditAddNewItemWorkflowId = "order-edit-add-new-item"
 /**
  * This workflow adds new items to an order edit.
  */
-export const orderOrderEditAddNewItemWorkflow = createWorkflow(
-  orderOrderEditAddNewItemWorkflowId,
+export const orderEditAddNewItemWorkflow = createWorkflow(
+  orderEditAddNewItemWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.OrderEditAddNewItemWorkflowInput>
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "canceled_at", "items.*"],

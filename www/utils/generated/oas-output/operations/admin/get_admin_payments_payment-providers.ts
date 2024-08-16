@@ -81,11 +81,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The payment's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The payment's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -99,6 +109,41 @@
  * tags:
  *   - Payments
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The payment's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The payment's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The payment's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - payment_providers
+ *               properties:
+ *                 payment_providers:
+ *                   type: array
+ *                   description: The payment's payment providers.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminPaymentProvider"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

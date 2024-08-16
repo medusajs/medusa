@@ -1,0 +1,11 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminClaimPreviewResponse
+required:
+  - order_preview
+  - claim
+properties:
+  order_preview:
+    $ref: ./OrderPreview.yaml
+  claim:
+    $ref: ./AdminClaim.yaml

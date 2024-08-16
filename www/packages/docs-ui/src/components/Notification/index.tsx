@@ -26,7 +26,7 @@ export const NotificationContainer = () => {
     return (
       <TransitionGroup
         className={clsx(
-          "flex fixed flex-col gap-docs_0.5 right-0",
+          "flex fixed z-40 flex-col gap-docs_0.5 right-0",
           "md:w-auto w-full overflow-y-auto",
           "max-h-[50%] md:max-h-[calc(100vh-57px)]",
           "max-[768px]:max-h-[50%]",

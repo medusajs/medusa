@@ -11,7 +11,7 @@ This documentation provides a reference to the `beginClaimOrderWorkflow`. It bel
 
 This workflow creates an order claim in requested state.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"beginClaimOrderWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"beginClaimOrderValidationStep","description":"This step validates that the order associated with the claim isn't canceled.","link":"../core_flows.Order.beginClaimOrderValidationStep/page.mdx","depth":2},{"type":"step","name":"createOrderClaimsStep","description":"This step creates one or more order claims.","link":"../core_flows.Order.createOrderClaimsStep/page.mdx","depth":3},{"type":"step","name":"createOrderChangeStep","description":"This step creates an order change.","link":"../core_flows.Order.createOrderChangeStep/page.mdx","depth":4}]}} />
 

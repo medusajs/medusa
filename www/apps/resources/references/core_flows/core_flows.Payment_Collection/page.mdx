@@ -227,7 +227,7 @@ ___
 
 This workflow creates payment sessions.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createPaymentSessionsWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"createPaymentSessionStep","description":"This step creates a payment session.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.createPaymentSessionStep/page.mdx","depth":2},{"type":"workflow","name":"deletePaymentSessionsWorkflow","description":"This workflow deletes one or more payment sessions.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.deletePaymentSessionsWorkflow/page.mdx","depth":2}]}} />
 
@@ -245,7 +245,7 @@ ___
 
 This workflow creates one or more refund reasons.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createRefundReasonsWorkflow","steps":[{"type":"step","name":"createRefundReasonStep","description":"This step creates one or more refund reasons.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.createRefundReasonStep/page.mdx","depth":1}]}} />
 
@@ -263,7 +263,7 @@ ___
 
 This workflow deletes one or more payment sessions.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deletePaymentSessionsWorkflow","steps":[{"type":"step","name":"deletePaymentSessionsStep","description":"This step deletes one or more payment sessions.\n\nNote: This step should not be used alone as it doesn't consider a revert\nUse deletePaymentSessionsWorkflow instead that uses this step","link":"../Payment_Collection/functions/core_flows.Payment_Collection.deletePaymentSessionsStep/page.mdx","depth":1},{"type":"step","name":"validateDeletedPaymentSessionsStep","description":"This step validates that the specified payment session IDs were deleted.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.validateDeletedPaymentSessionsStep/page.mdx","depth":2}]}} />
 
@@ -281,7 +281,7 @@ ___
 
 This workflow updates one or more refund reasons.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateRefundReasonsWorkflow","steps":[{"type":"step","name":"updateRefundReasonsStep","description":"This step updates one or more refund reasons.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.updateRefundReasonsStep/page.mdx","depth":1}]}} />
 

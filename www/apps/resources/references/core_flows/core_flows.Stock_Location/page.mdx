@@ -136,7 +136,7 @@ ___
 
 This workflow creates links between location and fulfillment set records.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createLocationFulfillmentSetWorkflow","steps":[{"type":"step","name":"createFulfillmentSets","description":"This step creates one or more fulfillment sets.","link":"../Fulfillment/functions/core_flows.Fulfillment.createFulfillmentSets/page.mdx","depth":1}]}} />
 
@@ -150,7 +150,7 @@ ___
 
 This workflow creates one or more stock locations.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createStockLocationsWorkflow","steps":[{"type":"step","name":"createStockLocations","description":"This step creates one or more stock locations.","link":"../Stock_Location/functions/core_flows.Stock_Location.createStockLocations/page.mdx","depth":1}]}} />
 
@@ -168,7 +168,7 @@ ___
 
 This workflow deletes one or more stock locations.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteStockLocationsWorkflow","steps":[{"type":"step","name":"deleteStockLocationsStep","description":"This step deletes one or more stock locations.","link":"../Stock_Location/functions/core_flows.Stock_Location.deleteStockLocationsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)\n\n","link":"../Common/functions/core_flows.Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
 
@@ -182,7 +182,7 @@ ___
 
 This workflow creates and dismisses links between location and sales channel records.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"linkSalesChannelsToStockLocationWorkflow","steps":[{"type":"step","name":"associateLocationsWithSalesChannelsStep","description":"This step creates links between locations and sales channel records.","link":"../Sales_Channel/functions/core_flows.Sales_Channel.associateLocationsWithSalesChannelsStep/page.mdx","depth":1},{"type":"step","name":"detachLocationsFromSalesChannelsStep","description":"This step dismisses links between location and sales channel records.","link":"../Sales_Channel/functions/core_flows.Sales_Channel.detachLocationsFromSalesChannelsStep/page.mdx","depth":2}]}} />
 
@@ -196,7 +196,7 @@ ___
 
 This workflow updates stock locations matching the specified filters.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateStockLocationsWorkflow","steps":[{"type":"step","name":"updateStockLocationsStep","description":"This step updates stock locations matching the specified filters.","link":"../Stock_Location/functions/core_flows.Stock_Location.updateStockLocationsStep/page.mdx","depth":1}]}} />
 

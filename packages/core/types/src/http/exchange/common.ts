@@ -1,5 +1,7 @@
-import { BaseOrder } from "../order/common";
-import { AdminReturnItem, AdminReturn } from "../return";
+import { OperatorMap } from "../../dal"
+import { FindParams } from "../common"
+import { BaseOrder } from "../order/common"
+import { AdminReturn, AdminReturnItem } from "../return"
 
 export interface BaseExchangeItem {
   id: string
@@ -12,7 +14,8 @@ export interface BaseExchangeItem {
   updated_at: string | null
 }
 
-export interface BaseExchange extends Omit<BaseOrder, "status" | "version" | "items"> {
+export interface BaseExchange
+  extends Omit<BaseOrder, "status" | "version" | "items"> {
   order_id: string
   return_items: AdminReturnItem[]
   additional_items: BaseExchangeItem[]
@@ -20,4 +23,14 @@ export interface BaseExchange extends Omit<BaseOrder, "status" | "version" | "it
   difference_due?: number
   return?: AdminReturn
   return_id?: string
+}
+
+export interface BaseExchangeListParams extends FindParams {
+  q?: string
+  id?: string | string[]
+  order_id?: string | string[]
+  status?: string | string[]
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
 }
