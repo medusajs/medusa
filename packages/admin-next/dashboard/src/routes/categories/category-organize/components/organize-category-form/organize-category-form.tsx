@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 
+import { UniqueIdentifier } from "@dnd-kit/core"
 import { Spinner } from "@medusajs/icons"
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
@@ -33,7 +34,11 @@ export const OrganizeCategoryForm = () => {
     mutationFn: async ({
       value,
     }: {
-      value: CategoryTreeItem
+      value: {
+        id: string
+        parent_category_id: string | null
+        rank: number | null
+      }
       arr: CategoryTreeItem[]
     }) => {
       await sdk.admin.productCategory.update(value.id, {
@@ -72,21 +77,30 @@ export const OrganizeCategoryForm = () => {
 
       toast.error(error.message)
     },
-    onSettled: async (_data, _error, variables) => {
+    onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: categoriesQueryKeys.lists(),
-      })
-      await queryClient.invalidateQueries({
-        queryKey: categoriesQueryKeys.detail(variables.value.id),
+        queryKey: categoriesQueryKeys.all,
       })
     },
   })
 
   const handleRankChange = async (
-    value: CategoryTreeItem,
+    value: {
+      id: UniqueIdentifier
+      parentId: UniqueIdentifier | null
+      index: number
+    },
     arr: CategoryTreeItem[]
   ) => {
-    await mutateAsync({ value, arr })
+    const val = {
+      id: value.id as string,
+      parent_category_id: value.parentId as string | null,
+      rank: value.index,
+    }
+
+    console.log(val, arr)
+
+    await mutateAsync({ value: val, arr })
   }
 
   const loading = isPending || isMutating
@@ -104,6 +118,7 @@ export const OrganizeCategoryForm = () => {
       </RouteFocusModal.Header>
       <RouteFocusModal.Body className="bg-ui-bg-subtle flex flex-1 flex-col overflow-y-auto">
         <CategoryTree
+          renderValue={(item) => item.name}
           value={product_categories || []}
           onChange={handleRankChange}
         />

@@ -121,11 +121,15 @@ export const CreateCategoryForm = ({
 
   return (
     <RouteFocusModal.Form form={form}>
-      <ProgressTabs
-        value={activeTab}
-        onValueChange={(tab) => handleTabChange(tab as Tab)}
+      <form
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
       >
-        <form onSubmit={handleSubmit}>
+        <ProgressTabs
+          value={activeTab}
+          onValueChange={(tab) => handleTabChange(tab as Tab)}
+          className="flex size-full flex-col"
+        >
           <RouteFocusModal.Header>
             <div className="flex w-full items-center justify-between">
               <div className="-my-2 w-fit border-l">
@@ -133,57 +137,69 @@ export const CreateCategoryForm = ({
                   <ProgressTabs.Trigger
                     value={Tab.DETAILS}
                     status={detailsStatus}
+                    className="w-full min-w-0 max-w-[200px] overflow-hidden"
                   >
-                    {t("categories.create.tabs.details")}
+                    <span className="truncate">
+                      {t("categories.create.tabs.details")}
+                    </span>
                   </ProgressTabs.Trigger>
                   <ProgressTabs.Trigger
                     value={Tab.ORGANIZE}
                     status={nestingStatus}
+                    className="w-full min-w-0 max-w-[200px] overflow-hidden"
                   >
-                    {t("categories.create.tabs.organize")}
+                    <span className="truncate">
+                      {t("categories.create.tabs.organize")}
+                    </span>
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
               </div>
-              <div className="flex items-center justify-end gap-x-2">
-                <RouteFocusModal.Close asChild>
-                  <Button size="small" variant="secondary">
-                    {t("actions.cancel")}
-                  </Button>
-                </RouteFocusModal.Close>
-                {activeTab === Tab.ORGANIZE ? (
-                  <Button
-                    key="submit-btn"
-                    size="small"
-                    variant="primary"
-                    type="submit"
-                    isLoading={isPending}
-                  >
-                    {t("actions.save")}
-                  </Button>
-                ) : (
-                  <Button
-                    key="continue-btn"
-                    size="small"
-                    variant="primary"
-                    type="button"
-                    onClick={() => handleTabChange(Tab.ORGANIZE)}
-                  >
-                    {t("actions.continue")}
-                  </Button>
-                )}
-              </div>
             </div>
           </RouteFocusModal.Header>
-          <RouteFocusModal.Body>
+          <RouteFocusModal.Body className="flex size-full flex-col overflow-auto">
             <ProgressTabs.Content value={Tab.DETAILS}>
               <CreateCategoryDetails form={form} />
             </ProgressTabs.Content>
-            <ProgressTabs.Content value={Tab.ORGANIZE}>
+            <ProgressTabs.Content
+              value={Tab.ORGANIZE}
+              className="bg-ui-bg-subtle flex-1"
+            >
               <CreateCategoryNesting form={form} shouldFreeze={shouldFreeze} />
+              {/* <SortableTree collapsible /> */}
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
-        </form>
-      </ProgressTabs>
+          <RouteFocusModal.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteFocusModal.Close asChild>
+                <Button size="small" variant="secondary">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteFocusModal.Close>
+              {activeTab === Tab.ORGANIZE ? (
+                <Button
+                  key="submit-btn"
+                  size="small"
+                  variant="primary"
+                  type="submit"
+                  isLoading={isPending}
+                >
+                  {t("actions.save")}
+                </Button>
+              ) : (
+                <Button
+                  key="continue-btn"
+                  size="small"
+                  variant="primary"
+                  type="button"
+                  onClick={() => handleTabChange(Tab.ORGANIZE)}
+                >
+                  {t("actions.continue")}
+                </Button>
+              )}
+            </div>
+          </RouteFocusModal.Footer>
+        </ProgressTabs>
+      </form>
     </RouteFocusModal.Form>
   )
 }
