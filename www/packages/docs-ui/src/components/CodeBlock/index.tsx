@@ -381,7 +381,7 @@ export const CodeBlock = ({
                       })}
                   </code>
                 </pre>
-                {!codeTitle && (
+                {!hasInnerCodeBlock && (
                   <CodeBlockActions
                     {...actionsProps}
                     inHeader={false}
