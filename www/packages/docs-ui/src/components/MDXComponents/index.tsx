@@ -32,6 +32,7 @@ export const MDXComponents: MDXComponentsType = {
       <h1
         className={clsx(
           "h1-docs [&_code]:!h1-docs [&_code]:!font-mono mb-docs_1 text-medusa-fg-base",
+          props.id && "scroll-m-56",
           className
         )}
         {...props}
@@ -47,7 +48,7 @@ export const MDXComponents: MDXComponentsType = {
       <h2
         className={clsx(
           "h2-docs [&_code]:!h2-docs [&_code]:!font-mono mb-docs_1 mt-docs_4 text-medusa-fg-base",
-          props.id && "group/h2",
+          props.id && "group/h2 scroll-m-56",
           className
         )}
         {...props}
@@ -73,7 +74,7 @@ export const MDXComponents: MDXComponentsType = {
       <h3
         className={clsx(
           "h3-docs [&_code]:!h3-docs [&_code]:!font-mono mb-docs_0.5 mt-docs_3 text-medusa-fg-base",
-          props.id && "group/h3",
+          props.id && "group/h3 scroll-m-56",
           className
         )}
         {...props}

@@ -54,3 +54,9 @@ export type RawSidebarItem = SidebarItem & {
   custom_autogenerate?: string
   number?: string
 }
+
+export type PersistedSidebarCategoryState = {
+  [k: string]: {
+    [k: string]: boolean
+  }
+}

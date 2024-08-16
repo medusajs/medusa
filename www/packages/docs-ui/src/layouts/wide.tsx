@@ -13,7 +13,12 @@ export const WideLayout = ({
       {...props}
       mainWrapperClasses={clsx(props.mainWrapperClasses, "mx-auto flex")}
     >
-      <main className="lg:max-w-wide-content relative mt-4 w-full flex-1 lg:mt-7">
+      <main
+        className={clsx(
+          "max-w-inner-content-xs sm:max-w-inner-content-sm md:max-w-inner-content-md",
+          "lg:max-w-wide-content relative mt-4 w-full flex-1 lg:mt-7"
+        )}
+      >
         {children}
         {showPagination && <Pagination />}
       </main>
