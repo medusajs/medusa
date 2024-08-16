@@ -23,7 +23,12 @@ export const SidebarItemCategory = ({
     item.initialOpen !== undefined ? item.initialOpen : expandItems
   )
   const childrenRef = useRef<HTMLUListElement>(null)
-  const { isChildrenActive } = useSidebar()
+  const {
+    isChildrenActive,
+    updatePersistedCategoryState,
+    getPersistedCategoryState,
+    persistState,
+  } = useSidebar()
 
   useEffect(() => {
     if (open && !item.loaded) {
@@ -43,6 +48,16 @@ export const SidebarItemCategory = ({
       setOpen(true)
     }
   }, [isChildrenActive])
+
+  useEffect(() => {
+    if (!persistState) {
+      return
+    }
+    const persistedOpen = getPersistedCategoryState(item.title)
+    if (persistedOpen !== undefined) {
+      setOpen(persistedOpen)
+    }
+  }, [persistState])
 
   const handleOpen = () => {
     item.onOpen?.()
@@ -69,6 +84,9 @@ export const SidebarItemCategory = ({
           onClick={() => {
             if (!open) {
               handleOpen()
+            }
+            if (persistState) {
+              updatePersistedCategoryState(item.title, !open)
             }
             setOpen((prev) => !prev)
           }}

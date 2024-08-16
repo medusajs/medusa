@@ -17,6 +17,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       shouldHandlePathChange={true}
       scrollableElement={scrollableElement}
       disableActiveTransition={true}
+      projectName="ui"
     >
       {children}
     </UiSidebarProvider>
