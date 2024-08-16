@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
 import { SearchEmptyQueryBoundary } from "./EmptyQueryBoundary"

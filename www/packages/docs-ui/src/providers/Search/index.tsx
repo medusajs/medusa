@@ -10,7 +10,10 @@ import React, {
 } from "react"
 import { BadgeProps, Modal, Search, SearchProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
-import { SearchClient, algoliasearch } from "algoliasearch"
+import {
+  liteClient as algoliasearch,
+  LiteClient as SearchClient,
+} from "algoliasearch/lite"
 import clsx from "clsx"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 
