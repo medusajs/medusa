@@ -176,12 +176,8 @@ export const ChildDocs = ({
               />
             </>
           )}
-          {!HeadingComponent && (
-            <Card
-              title={item.title}
-              href={item.type === "link" ? item.path : ""}
-              showLinkIcon={false}
-            />
+          {!HeadingComponent && item.type === "link" && (
+            <Card title={item.title} href={item.path} showLinkIcon={false} />
           )}
         </React.Fragment>
       )
