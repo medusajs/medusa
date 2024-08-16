@@ -23,6 +23,7 @@ type CodeBlockLineProps = {
   showLineNumber: boolean
   lineNumberColorClassName: string
   lineNumberBgClassName: string
+  isTerminal: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
 export const CodeBlockLine = ({
@@ -34,6 +35,7 @@ export const CodeBlockLine = ({
   showLineNumber,
   lineNumberColorClassName,
   lineNumberBgClassName,
+  isTerminal,
 }: CodeBlockLineProps) => {
   const lineProps = getLineProps({ line, key: lineNumber })
 
@@ -194,19 +196,18 @@ export const CodeBlockLine = ({
 
   const getTokensElm = ({
     tokens,
-    isHighlighted,
+    isTokenHighlighted,
+    isLineHighlighted,
     offset,
   }: {
     tokens: Token[]
-    isHighlighted: boolean
+    isTokenHighlighted: boolean
+    isLineHighlighted: boolean
     offset: number
   }) => (
     <span
       className={clsx(
-        isHighlighted && [
-          "lg:py-px lg:px-[6px] lg:border-medusa-contrast-border-top lg:rounded-docs_sm",
-          "lg:bg-medusa-contrast-bg-highlight lg:cursor-pointer",
-        ]
+        isTokenHighlighted && "lg:bg-medusa-contrast-border-base cursor-default"
       )}
     >
       {tokens.map((token, key) => {
@@ -216,14 +217,22 @@ export const CodeBlockLine = ({
           key: tokenKey,
         })
         return (
-          <span key={tokenKey} className={clsx(tokenClassName)} {...rest} />
+          <span
+            key={tokenKey}
+            className={clsx(
+              tokenClassName,
+              (isTerminal || isTokenHighlighted || isLineHighlighted) &&
+                "!text-medusa-contrast-fg-primary"
+            )}
+            {...rest}
+          />
         )
       })}
     </span>
   )
 
   const isHighlightedLine = useMemo(
-    () => highlights.length && !highlightedTokens.length,
+    () => highlights.length !== 0 && highlightedTokens.length === 0,
     [highlights, highlightedTokens]
   )
 
@@ -233,11 +242,11 @@ export const CodeBlockLine = ({
       {...lineProps}
       className={clsx(
         "table-row",
-        isHighlightedLine && "bg-medusa-contrast-bg-highlight",
+        isHighlightedLine && "bg-medusa-contrast-border-base",
         lineProps.className
       )}
     >
-      {showLineNumber && (
+      {(showLineNumber || isTerminal) && (
         <span
           className={clsx(
             "mr-docs_1 table-cell select-none",
@@ -246,7 +255,7 @@ export const CodeBlockLine = ({
             lineNumberBgClassName
           )}
         >
-          {lineNumber + 1}
+          {showLineNumber ? lineNumber + 1 : "❯"}
         </span>
       )}
       <span>
@@ -274,10 +283,21 @@ export const CodeBlockLine = ({
                     </MarkdownContent>
                   )}
                 >
-                  {getTokensElm({ tokens, isHighlighted, offset })}
+                  {getTokensElm({
+                    tokens,
+                    isTokenHighlighted: isHighlighted,
+                    offset,
+                    isLineHighlighted: isHighlightedLine,
+                  })}
                 </Tooltip>
               )}
-              {!tooltipText && getTokensElm({ tokens, isHighlighted, offset })}
+              {!tooltipText &&
+                getTokensElm({
+                  tokens,
+                  isTokenHighlighted: isHighlighted,
+                  offset,
+                  isLineHighlighted: isHighlightedLine,
+                })}
             </React.Fragment>
           )
         })}
