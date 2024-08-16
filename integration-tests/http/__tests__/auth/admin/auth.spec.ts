@@ -12,7 +12,8 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, adminHeaders, getContainer())
     })
 
-    it.only("test the entire authentication flow", async () => {
+    // TODO: This test won't work since we don't allow creating a user through HTTP. We need to have the invite flow plugged in here.
+    it.skip("test the entire authentication flow", async () => {
       // BREAKING: `/admin/auth` changes to `/auth/user/emailpass`
       const signup = await api.post("/auth/user/emailpass", {
         email: "newadmin@medusa.js",
