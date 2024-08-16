@@ -10,7 +10,7 @@ import React, {
 } from "react"
 import { BadgeProps, Modal, Search, SearchProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
-import algoliasearch, { SearchClient } from "algoliasearch/lite"
+import { SearchClient, algoliasearch } from "algoliasearch"
 import clsx from "clsx"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 
@@ -72,8 +72,15 @@ export const SearchProvider = ({
     const algoliaClient = algoliasearch(algolia.appId, algolia.apiKey)
     return {
       ...algoliaClient,
-      async search(requests) {
-        if (requests.every(({ params }) => !params?.query)) {
+      async search(searchParams) {
+        const requests =
+          "requests" in searchParams ? searchParams.requests : searchParams
+        const noQueries = requests.every(
+          (item) =>
+            ("facetQuery" in item && !item.facetQuery) ||
+            ("query" in item && !item.query)
+        )
+        if (noQueries) {
           return Promise.resolve({
             results: requests.map(() => ({
               hits: [],
@@ -89,7 +96,7 @@ export const SearchProvider = ({
           })
         }
 
-        return algoliaClient.search(requests)
+        return algoliaClient.search(searchParams)
       },
     }
   }, [algolia.appId, algolia.apiKey])
