@@ -11,7 +11,7 @@
  *   return:
  *     $ref: "#/components/schemas/AdminReturn"
  *   order_preview:
- *     $ref: "#/components/schemas/Order"
+ *     $ref: "#/components/schemas/OrderPreview"
  *   claim:
  *     $ref: "#/components/schemas/AdminClaim"
  * 

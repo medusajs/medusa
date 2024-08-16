@@ -64,6 +64,7 @@ tags:
   - name: Notifications
     x-associatedSchema:
       $ref: '#/components/schemas/AdminNotification'
+  - name: Order Edits
   - name: Orders
     x-associatedSchema:
       $ref: '#/components/schemas/AdminOrder'
@@ -1689,18 +1690,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6421,18 +6416,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6530,18 +6519,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6607,11 +6590,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /admin/exchanges/{id}/cancel:
-    post:
-      operationId: PostExchangesIdCancel
-      summary: Add Cancels to Exchange
-      description: Add a list of cancels to a exchange.
+  /admin/exchanges/{id}:
+    get:
+      operationId: GetExchangesId
+      summary: Get a Exchange
+      description: Retrieve a exchange by its ID. You can expand the exchange's relations or select the fields that should be returned.
       x-authenticated: true
       parameters:
         - name: id
@@ -6642,6 +6625,90 @@ paths:
               Comma-separated fields that should be included in the returned data.
                * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
                * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/exchanges/{id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Exchanges
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminExchangeResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/exchanges/{id}/cancel:
+    post:
+      operationId: PostExchangesIdCancel
+      summary: Add Cancels to Exchange
+      description: Add a list of cancels to a exchange.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The exchange's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6725,18 +6792,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6827,18 +6888,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -6928,18 +6983,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7019,18 +7068,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7125,18 +7168,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7226,18 +7263,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7317,18 +7348,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7419,18 +7444,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7463,7 +7482,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminPostExhangesItemsActionReqSchema'
+              $ref: '#/components/schemas/AdminPostExchangesItemsActionReqSchema'
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -7520,18 +7539,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7611,18 +7624,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7717,18 +7724,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7818,18 +7819,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7909,18 +7904,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -7977,6 +7966,10 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: confirmExchangeRequestWorkflow
+      requestBody:
+        content:
+          application/json:
+            schema: {}
     delete:
       operationId: DeleteExchangesIdRequest
       summary: Remove Requests from Exchange
@@ -7999,18 +7992,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -11721,6 +11708,894 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /admin/order-edits:
+    post:
+      operationId: PostOrderEdits
+      summary: Create Order Edit
+      description: Create a order edit.
+      x-authenticated: true
+      parameters:
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "order_id": "{value}",
+              "metadata": {}
+            }'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/order-edits/{id}:
+    delete:
+      operationId: DeleteOrderEditsId
+      summary: Delete a Order Edit
+      description: Delete a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/order-edits/{id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: SUMMARY
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The order edit's ID.
+                  object:
+                    type: string
+                    title: object
+                    description: The order edit's object.
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: The order edit's deleted.
+                  parent:
+                    type: object
+                    description: The order edit's parent.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/order-edits/{id}/confirm:
+    post:
+      operationId: PostOrderEditsIdConfirm
+      summary: Add Confirms to Order Edit
+      description: Add a list of confirms to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/confirm' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: confirmOrderEditRequestWorkflow
+  /admin/order-edits/{id}/items:
+    post:
+      operationId: PostOrderEditsIdItems
+      summary: Add Items to Order Edit
+      description: Add a list of items to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsAddItemsReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/items' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: orderEditAddNewItemWorkflow
+  /admin/order-edits/{id}/items/{action_id}:
+    post:
+      operationId: PostOrderEditsIdItemsAction_id
+      summary: Add Items to Order Edit
+      description: Add a list of items to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The order edit's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsItemsActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updateOrderEditAddItemWorkflow
+    delete:
+      operationId: DeleteOrderEditsIdItemsAction_id
+      summary: Remove Items from Order Edit
+      description: Remove a list of items from a order edit. This doesn't delete the Item, only the association between the Item and the order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The order edit's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/order-edits/{id}/items/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: removeItemOrderEditActionWorkflow
+  /admin/order-edits/{id}/shipping-method:
+    post:
+      operationId: PostOrderEditsIdShippingMethod
+      summary: Add Shipping Methods to Order Edit
+      description: Add a list of shipping methods to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsShippingReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/shipping-method' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "shipping_option_id": "{value}"
+            }'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: createOrderEditShippingMethodWorkflow
+  /admin/order-edits/{id}/shipping-method/{action_id}:
+    post:
+      operationId: PostOrderEditsIdShippingMethodAction_id
+      summary: Add Shipping Methods to Order Edit
+      description: Add a list of shipping methods to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The order edit's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsShippingActionReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updateOrderEditShippingMethodWorkflow
+    delete:
+      operationId: DeleteOrderEditsIdShippingMethodAction_id
+      summary: Remove Shipping Methods from Order Edit
+      description: Remove a list of shipping methods from a order edit. This doesn't delete the Shipping Method, only the association between the Shipping Method and the order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: action_id
+          in: path
+          description: The order edit's action id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/order-edits/{id}/shipping-method/{action_id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: removeOrderEditShippingMethodWorkflow
   /admin/orders:
     get:
       operationId: GetOrders
@@ -16623,18 +17498,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -36616,18 +37485,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -36728,18 +37591,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -36842,18 +37699,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -36931,18 +37782,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -37041,18 +37886,12 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-             * without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: |-
-              Comma-separated fields that should be included in the returned data.
-               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-               * without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
         - name: offset
           in: query
           description: The number of items to skip when retrieving a list.
@@ -48445,7 +49284,7 @@ components:
         - claim
       properties:
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         claim:
           $ref: '#/components/schemas/AdminClaim'
     AdminClaimRequestResponse:
@@ -48460,7 +49299,7 @@ components:
         return:
           $ref: '#/components/schemas/AdminReturn'
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         claim:
           $ref: '#/components/schemas/AdminClaim'
     AdminClaimResponse:
@@ -48481,7 +49320,7 @@ components:
         - return
       properties:
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         return:
           $ref: '#/components/schemas/AdminReturn'
     AdminCollection:
@@ -50054,7 +50893,7 @@ components:
         - exchange
       properties:
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         exchange:
           $ref: '#/components/schemas/AdminExchange'
     AdminExchangeRequestResponse:
@@ -50069,7 +50908,7 @@ components:
         return:
           $ref: '#/components/schemas/AdminReturn'
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         exchange:
           $ref: '#/components/schemas/AdminExchange'
     AdminExchangeResponse:
@@ -50090,7 +50929,7 @@ components:
         - return
       properties:
         order_preview:
-          $ref: '#/components/schemas/Order'
+          $ref: '#/components/schemas/OrderPreview'
         return:
           $ref: '#/components/schemas/AdminReturn'
     AdminExportProductRequest:
@@ -51070,6 +51909,15 @@ components:
           type: number
           title: original_shipping_tax_total
           description: The order's original shipping tax total.
+    AdminOrderEditPreviewResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminOrderEditPreviewResponse
+      required:
+        - order_preview
+      properties:
+        order_preview:
+          $ref: '#/components/schemas/OrderPreview'
     AdminOrderPreview:
       type: object
       description: The return's order preview.
@@ -52202,6 +53050,19 @@ components:
               metadata:
                 type: object
                 description: The item's metadata.
+    AdminPostExchangesItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostExchangesItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The exchange's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The exchange's internal note.
     AdminPostExchangesRequestItemsReturnActionReqSchema:
       type: object
       description: SUMMARY
@@ -52302,19 +53163,6 @@ components:
         metadata:
           type: object
           description: The exchange's metadata.
-    AdminPostExhangesItemsActionReqSchema:
-      type: object
-      description: SUMMARY
-      x-schemaName: AdminPostExhangesItemsActionReqSchema
-      properties:
-        quantity:
-          type: number
-          title: quantity
-          description: The exchange's quantity.
-        internal_note:
-          type: string
-          title: internal_note
-          description: The exchange's internal note.
     AdminPostOrderClaimsReqSchema:
       type: object
       description: SUMMARY
@@ -52349,6 +53197,122 @@ components:
         metadata:
           type: object
           description: The claim's metadata.
+    AdminPostOrderEditsAddItemsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsAddItemsReqSchema
+      properties:
+        items:
+          type: array
+          description: The order edit's items.
+          items:
+            type: object
+            description: The item's items.
+            required:
+              - variant_id
+              - quantity
+            properties:
+              variant_id:
+                type: string
+                title: variant_id
+                description: The item's variant id.
+              quantity:
+                type: number
+                title: quantity
+                description: The item's quantity.
+              unit_price:
+                type: number
+                title: unit_price
+                description: The item's unit price.
+              internal_note:
+                type: string
+                title: internal_note
+                description: The item's internal note.
+              allow_backorder:
+                type: boolean
+                title: allow_backorder
+                description: The item's allow backorder.
+              metadata:
+                type: object
+                description: The item's metadata.
+    AdminPostOrderEditsItemsActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsItemsActionReqSchema
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The order edit's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
+    AdminPostOrderEditsReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsReqSchema
+      required:
+        - order_id
+        - metadata
+      properties:
+        order_id:
+          type: string
+          title: order_id
+          description: The order edit's order id.
+        description:
+          type: string
+          title: description
+          description: The order edit's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
+        metadata:
+          type: object
+          description: The order edit's metadata.
+    AdminPostOrderEditsShippingActionReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsShippingActionReqSchema
+      properties:
+        custom_price:
+          type: number
+          title: custom_price
+          description: The order edit's custom price.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
+        metadata:
+          type: object
+          description: The order edit's metadata.
+    AdminPostOrderEditsShippingReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsShippingReqSchema
+      required:
+        - shipping_option_id
+      properties:
+        shipping_option_id:
+          type: string
+          title: shipping_option_id
+          description: The order edit's shipping option id.
+        custom_price:
+          type: number
+          title: custom_price
+          description: The order edit's custom price.
+        description:
+          type: string
+          title: description
+          description: The order edit's description.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
+        metadata:
+          type: object
+          description: The order edit's metadata.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: SUMMARY
@@ -58881,13 +59845,259 @@ components:
           description: The inventory level's metadata.
     Order:
       type: object
-      description: The exchange's order preview.
+      description: The transaction's order.
       x-schemaName: Order
+    OrderAddress:
+      type: object
+      description: The order preview's billing address.
+      x-schemaName: OrderAddress
+      required:
+        - id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The billing address's ID.
+        customer_id:
+          type: string
+          title: customer_id
+          description: The billing address's customer id.
+        first_name:
+          type: string
+          title: first_name
+          description: The billing address's first name.
+        last_name:
+          type: string
+          title: last_name
+          description: The billing address's last name.
+        phone:
+          type: string
+          title: phone
+          description: The billing address's phone.
+        company:
+          type: string
+          title: company
+          description: The billing address's company.
+        address_1:
+          type: string
+          title: address_1
+          description: The billing address's address 1.
+        address_2:
+          type: string
+          title: address_2
+          description: The billing address's address 2.
+        city:
+          type: string
+          title: city
+          description: The billing address's city.
+        country_code:
+          type: string
+          title: country_code
+          description: The billing address's country code.
+        province:
+          type: string
+          title: province
+          description: The billing address's province.
+        postal_code:
+          type: string
+          title: postal_code
+          description: The billing address's postal code.
+        metadata:
+          type: object
+          description: The billing address's metadata.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The billing address's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The billing address's updated at.
+    OrderChange:
+      type: object
+      description: The order preview's order change.
+      x-schemaName: OrderChange
       required:
         - id
         - version
+        - order_id
+        - return_id
+        - exchange_id
+        - claim_id
+        - order
+        - return_order
+        - exchange
+        - claim
+        - actions
+        - status
+        - requested_by
+        - requested_at
+        - confirmed_by
+        - confirmed_at
+        - declined_by
+        - declined_reason
+        - metadata
+        - declined_at
+        - canceled_by
+        - canceled_at
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The order change's ID.
+        version:
+          type: number
+          title: version
+          description: The order change's version.
+        change_type:
+          type: string
+          enum:
+            - return
+            - exchange
+            - claim
+            - edit
+        order_id:
+          type: string
+          title: order_id
+          description: The order change's order id.
+        return_id:
+          type: string
+          title: return_id
+          description: The order change's return id.
+        exchange_id:
+          type: string
+          title: exchange_id
+          description: The order change's exchange id.
+        claim_id:
+          type: string
+          title: claim_id
+          description: The order change's claim id.
+        order:
+          type: object
+        return_order:
+          $ref: '#/components/schemas/Return'
+        exchange:
+          $ref: '#/components/schemas/OrderExchange'
+        claim:
+          $ref: '#/components/schemas/OrderClaim'
+        actions:
+          type: array
+          description: The order change's actions.
+          items:
+            $ref: '#/components/schemas/OrderChangeAction'
+        status:
+          type: string
+          title: status
+          description: The order change's status.
+        requested_by:
+          type: string
+          title: requested_by
+          description: The order change's requested by.
+        requested_at:
+          oneOf:
+            - type: string
+              title: requested_at
+              description: The order change's requested at.
+            - type: string
+              title: requested_at
+              description: The order change's requested at.
+              format: date-time
+        confirmed_by:
+          type: string
+          title: confirmed_by
+          description: The order change's confirmed by.
+        confirmed_at:
+          oneOf:
+            - type: string
+              title: confirmed_at
+              description: The order change's confirmed at.
+            - type: string
+              title: confirmed_at
+              description: The order change's confirmed at.
+              format: date-time
+        declined_by:
+          type: string
+          title: declined_by
+          description: The order change's declined by.
+        declined_reason:
+          type: string
+          title: declined_reason
+          description: The order change's declined reason.
+        metadata:
+          type: object
+          description: The order change's metadata.
+        declined_at:
+          oneOf:
+            - type: string
+              title: declined_at
+              description: The order change's declined at.
+            - type: string
+              title: declined_at
+              description: The order change's declined at.
+              format: date-time
+        canceled_by:
+          type: string
+          title: canceled_by
+          description: The order change's canceled by.
+        canceled_at:
+          oneOf:
+            - type: string
+              title: canceled_at
+              description: The order change's canceled at.
+            - type: string
+              title: canceled_at
+              description: The order change's canceled at.
+              format: date-time
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The order change's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The order change's updated at.
+    OrderChangeAction:
+      type: object
+      description: The action's actions.
+      x-schemaName: OrderChangeAction
+    OrderClaim:
+      type: object
+      description: The order change's claim.
+      x-schemaName: OrderClaim
+    OrderExchange:
+      type: object
+      description: The order change's exchange.
+      x-schemaName: OrderExchange
+    OrderItem:
+      type: object
+      description: The item's detail.
+      x-schemaName: OrderItem
+    OrderLineItemAdjustment:
+      type: object
+      description: The adjustment's adjustments.
+      x-schemaName: OrderLineItemAdjustment
+    OrderLineItemTaxLine:
+      type: object
+      description: The tax line's tax lines.
+      x-schemaName: OrderLineItemTaxLine
+    OrderPreview:
+      type: object
+      description: The exchange's order preview.
+      x-schemaName: OrderPreview
+      required:
+        - order_change
         - status
         - currency_code
+        - id
+        - version
         - original_item_total
         - original_item_subtotal
         - original_item_tax_total
@@ -58933,16 +60143,611 @@ components:
         - raw_original_shipping_subtotal
         - raw_original_shipping_tax_total
       properties:
-        id:
-          type: string
-          title: id
-          description: The order preview's ID.
-        version:
-          type: number
-          title: version
-          description: The order preview's version.
         order_change:
           $ref: '#/components/schemas/OrderChange'
+        items:
+          type: array
+          description: The order preview's items.
+          items:
+            allOf:
+              - type: object
+                description: The item's items.
+                x-schemaName: OrderLineItem
+                required:
+                  - id
+                  - title
+                  - requires_shipping
+                  - is_discountable
+                  - is_tax_inclusive
+                  - unit_price
+                  - raw_unit_price
+                  - quantity
+                  - raw_quantity
+                  - detail
+                  - created_at
+                  - updated_at
+                  - original_total
+                  - original_subtotal
+                  - original_tax_total
+                  - item_total
+                  - item_subtotal
+                  - item_tax_total
+                  - total
+                  - subtotal
+                  - tax_total
+                  - discount_total
+                  - discount_tax_total
+                  - refundable_total
+                  - refundable_total_per_unit
+                  - raw_original_total
+                  - raw_original_subtotal
+                  - raw_original_tax_total
+                  - raw_item_total
+                  - raw_item_subtotal
+                  - raw_item_tax_total
+                  - raw_total
+                  - raw_subtotal
+                  - raw_tax_total
+                  - raw_discount_total
+                  - raw_discount_tax_total
+                  - raw_refundable_total
+                  - raw_refundable_total_per_unit
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The item's ID.
+                  title:
+                    type: string
+                    title: title
+                    description: The item's title.
+                  subtitle:
+                    type: string
+                    title: subtitle
+                    description: The item's subtitle.
+                  thumbnail:
+                    type: string
+                    title: thumbnail
+                    description: The item's thumbnail.
+                  variant_id:
+                    type: string
+                    title: variant_id
+                    description: The item's variant id.
+                  product_id:
+                    type: string
+                    title: product_id
+                    description: The item's product id.
+                  product_title:
+                    type: string
+                    title: product_title
+                    description: The item's product title.
+                  product_description:
+                    type: string
+                    title: product_description
+                    description: The item's product description.
+                  product_subtitle:
+                    type: string
+                    title: product_subtitle
+                    description: The item's product subtitle.
+                  product_type:
+                    type: string
+                    title: product_type
+                    description: The item's product type.
+                  product_collection:
+                    type: string
+                    title: product_collection
+                    description: The item's product collection.
+                  product_handle:
+                    type: string
+                    title: product_handle
+                    description: The item's product handle.
+                  variant_sku:
+                    type: string
+                    title: variant_sku
+                    description: The item's variant sku.
+                  variant_barcode:
+                    type: string
+                    title: variant_barcode
+                    description: The item's variant barcode.
+                  variant_title:
+                    type: string
+                    title: variant_title
+                    description: The item's variant title.
+                  variant_option_values:
+                    type: object
+                    description: The item's variant option values.
+                  requires_shipping:
+                    type: boolean
+                    title: requires_shipping
+                    description: The item's requires shipping.
+                  is_discountable:
+                    type: boolean
+                    title: is_discountable
+                    description: The item's is discountable.
+                  is_tax_inclusive:
+                    type: boolean
+                    title: is_tax_inclusive
+                    description: The item's is tax inclusive.
+                  compare_at_unit_price:
+                    type: number
+                    title: compare_at_unit_price
+                    description: The item's compare at unit price.
+                  raw_compare_at_unit_price:
+                    type: object
+                    description: The item's raw compare at unit price.
+                  unit_price:
+                    type: number
+                    title: unit_price
+                    description: The item's unit price.
+                  raw_unit_price:
+                    type: object
+                    description: The item's raw unit price.
+                  quantity:
+                    type: number
+                    title: quantity
+                    description: The item's quantity.
+                  raw_quantity:
+                    type: object
+                    description: The item's raw quantity.
+                  tax_lines:
+                    type: array
+                    description: The item's tax lines.
+                    items:
+                      $ref: '#/components/schemas/OrderLineItemTaxLine'
+                  adjustments:
+                    type: array
+                    description: The item's adjustments.
+                    items:
+                      $ref: '#/components/schemas/OrderLineItemAdjustment'
+                  detail:
+                    $ref: '#/components/schemas/OrderItem'
+                  created_at:
+                    type: string
+                    title: created_at
+                    description: The item's created at.
+                    format: date-time
+                  updated_at:
+                    type: string
+                    title: updated_at
+                    description: The item's updated at.
+                    format: date-time
+                  metadata:
+                    type: object
+                    description: The item's metadata.
+                  original_total:
+                    oneOf:
+                      - type: string
+                        title: original_total
+                        description: The item's original total.
+                      - type: number
+                        title: original_total
+                        description: The item's original total.
+                      - type: string
+                        title: original_total
+                        description: The item's original total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  original_subtotal:
+                    oneOf:
+                      - type: string
+                        title: original_subtotal
+                        description: The item's original subtotal.
+                      - type: number
+                        title: original_subtotal
+                        description: The item's original subtotal.
+                      - type: string
+                        title: original_subtotal
+                        description: The item's original subtotal.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  original_tax_total:
+                    oneOf:
+                      - type: string
+                        title: original_tax_total
+                        description: The item's original tax total.
+                      - type: number
+                        title: original_tax_total
+                        description: The item's original tax total.
+                      - type: string
+                        title: original_tax_total
+                        description: The item's original tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  item_total:
+                    oneOf:
+                      - type: string
+                        title: item_total
+                        description: The item's item total.
+                      - type: number
+                        title: item_total
+                        description: The item's item total.
+                      - type: string
+                        title: item_total
+                        description: The item's item total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  item_subtotal:
+                    oneOf:
+                      - type: string
+                        title: item_subtotal
+                        description: The item's item subtotal.
+                      - type: number
+                        title: item_subtotal
+                        description: The item's item subtotal.
+                      - type: string
+                        title: item_subtotal
+                        description: The item's item subtotal.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  item_tax_total:
+                    oneOf:
+                      - type: string
+                        title: item_tax_total
+                        description: The item's item tax total.
+                      - type: number
+                        title: item_tax_total
+                        description: The item's item tax total.
+                      - type: string
+                        title: item_tax_total
+                        description: The item's item tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  total:
+                    oneOf:
+                      - type: string
+                        title: total
+                        description: The item's total.
+                      - type: number
+                        title: total
+                        description: The item's total.
+                      - type: string
+                        title: total
+                        description: The item's total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  subtotal:
+                    oneOf:
+                      - type: string
+                        title: subtotal
+                        description: The item's subtotal.
+                      - type: number
+                        title: subtotal
+                        description: The item's subtotal.
+                      - type: string
+                        title: subtotal
+                        description: The item's subtotal.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  tax_total:
+                    oneOf:
+                      - type: string
+                        title: tax_total
+                        description: The item's tax total.
+                      - type: number
+                        title: tax_total
+                        description: The item's tax total.
+                      - type: string
+                        title: tax_total
+                        description: The item's tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  discount_total:
+                    oneOf:
+                      - type: string
+                        title: discount_total
+                        description: The item's discount total.
+                      - type: number
+                        title: discount_total
+                        description: The item's discount total.
+                      - type: string
+                        title: discount_total
+                        description: The item's discount total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  discount_tax_total:
+                    oneOf:
+                      - type: string
+                        title: discount_tax_total
+                        description: The item's discount tax total.
+                      - type: number
+                        title: discount_tax_total
+                        description: The item's discount tax total.
+                      - type: string
+                        title: discount_tax_total
+                        description: The item's discount tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  refundable_total:
+                    oneOf:
+                      - type: string
+                        title: refundable_total
+                        description: The item's refundable total.
+                      - type: number
+                        title: refundable_total
+                        description: The item's refundable total.
+                      - type: string
+                        title: refundable_total
+                        description: The item's refundable total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  refundable_total_per_unit:
+                    oneOf:
+                      - type: string
+                        title: refundable_total_per_unit
+                        description: The item's refundable total per unit.
+                      - type: number
+                        title: refundable_total_per_unit
+                        description: The item's refundable total per unit.
+                      - type: string
+                        title: refundable_total_per_unit
+                        description: The item's refundable total per unit.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  raw_original_total:
+                    type: object
+                    description: The item's raw original total.
+                  raw_original_subtotal:
+                    type: object
+                    description: The item's raw original subtotal.
+                  raw_original_tax_total:
+                    type: object
+                    description: The item's raw original tax total.
+                  raw_item_total:
+                    type: object
+                    description: The item's raw item total.
+                  raw_item_subtotal:
+                    type: object
+                    description: The item's raw item subtotal.
+                  raw_item_tax_total:
+                    type: object
+                    description: The item's raw item tax total.
+                  raw_total:
+                    type: object
+                    description: The item's raw total.
+                  raw_subtotal:
+                    type: object
+                    description: The item's raw subtotal.
+                  raw_tax_total:
+                    type: object
+                    description: The item's raw tax total.
+                  raw_discount_total:
+                    type: object
+                    description: The item's raw discount total.
+                  raw_discount_tax_total:
+                    type: object
+                    description: The item's raw discount tax total.
+                  raw_refundable_total:
+                    type: object
+                    description: The item's raw refundable total.
+                  raw_refundable_total_per_unit:
+                    type: object
+                    description: The item's raw refundable total per unit.
+              - type: object
+                description: The item's items.
+                properties:
+                  actions:
+                    type: array
+                    description: The item's actions.
+                    items:
+                      type: object
+                      description: The action's actions.
+                      x-schemaName: OrderChangeAction
+        shipping_methods:
+          type: array
+          description: The order preview's shipping methods.
+          items:
+            allOf:
+              - type: object
+                description: The shipping method's shipping methods.
+                x-schemaName: OrderShippingMethod
+                required:
+                  - id
+                  - order_id
+                  - name
+                  - amount
+                  - raw_amount
+                  - is_tax_inclusive
+                  - created_at
+                  - updated_at
+                  - original_total
+                  - original_subtotal
+                  - original_tax_total
+                  - total
+                  - subtotal
+                  - tax_total
+                  - discount_total
+                  - discount_tax_total
+                  - raw_original_total
+                  - raw_original_subtotal
+                  - raw_original_tax_total
+                  - raw_total
+                  - raw_subtotal
+                  - raw_tax_total
+                  - raw_discount_total
+                  - raw_discount_tax_total
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The shipping method's ID.
+                  order_id:
+                    type: string
+                    title: order_id
+                    description: The shipping method's order id.
+                  name:
+                    type: string
+                    title: name
+                    description: The shipping method's name.
+                  description:
+                    type: string
+                    title: description
+                    description: The shipping method's description.
+                  amount:
+                    oneOf:
+                      - type: string
+                        title: amount
+                        description: The shipping method's amount.
+                      - type: number
+                        title: amount
+                        description: The shipping method's amount.
+                      - type: string
+                        title: amount
+                        description: The shipping method's amount.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  raw_amount:
+                    type: object
+                    description: The shipping method's raw amount.
+                  is_tax_inclusive:
+                    type: boolean
+                    title: is_tax_inclusive
+                    description: The shipping method's is tax inclusive.
+                  shipping_option_id:
+                    type: string
+                    title: shipping_option_id
+                    description: The shipping method's shipping option id.
+                  data:
+                    type: object
+                    description: The shipping method's data.
+                  metadata:
+                    type: object
+                    description: The shipping method's metadata.
+                  tax_lines:
+                    type: array
+                    description: The shipping method's tax lines.
+                    items:
+                      $ref: '#/components/schemas/OrderShippingMethodTaxLine'
+                  adjustments:
+                    type: array
+                    description: The shipping method's adjustments.
+                    items:
+                      $ref: '#/components/schemas/OrderShippingMethodAdjustment'
+                  created_at:
+                    type: string
+                    format: date-time
+                    title: created_at
+                    description: The shipping method's created at.
+                  updated_at:
+                    type: string
+                    format: date-time
+                    title: updated_at
+                    description: The shipping method's updated at.
+                  original_total:
+                    oneOf:
+                      - type: string
+                        title: original_total
+                        description: The shipping method's original total.
+                      - type: number
+                        title: original_total
+                        description: The shipping method's original total.
+                      - type: string
+                        title: original_total
+                        description: The shipping method's original total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  original_subtotal:
+                    oneOf:
+                      - type: string
+                        title: original_subtotal
+                        description: The shipping method's original subtotal.
+                      - type: number
+                        title: original_subtotal
+                        description: The shipping method's original subtotal.
+                      - type: string
+                        title: original_subtotal
+                        description: The shipping method's original subtotal.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  original_tax_total:
+                    oneOf:
+                      - type: string
+                        title: original_tax_total
+                        description: The shipping method's original tax total.
+                      - type: number
+                        title: original_tax_total
+                        description: The shipping method's original tax total.
+                      - type: string
+                        title: original_tax_total
+                        description: The shipping method's original tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  total:
+                    oneOf:
+                      - type: string
+                        title: total
+                        description: The shipping method's total.
+                      - type: number
+                        title: total
+                        description: The shipping method's total.
+                      - type: string
+                        title: total
+                        description: The shipping method's total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  subtotal:
+                    oneOf:
+                      - type: string
+                        title: subtotal
+                        description: The shipping method's subtotal.
+                      - type: number
+                        title: subtotal
+                        description: The shipping method's subtotal.
+                      - type: string
+                        title: subtotal
+                        description: The shipping method's subtotal.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  tax_total:
+                    oneOf:
+                      - type: string
+                        title: tax_total
+                        description: The shipping method's tax total.
+                      - type: number
+                        title: tax_total
+                        description: The shipping method's tax total.
+                      - type: string
+                        title: tax_total
+                        description: The shipping method's tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  discount_total:
+                    oneOf:
+                      - type: string
+                        title: discount_total
+                        description: The shipping method's discount total.
+                      - type: number
+                        title: discount_total
+                        description: The shipping method's discount total.
+                      - type: string
+                        title: discount_total
+                        description: The shipping method's discount total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  discount_tax_total:
+                    oneOf:
+                      - type: string
+                        title: discount_tax_total
+                        description: The shipping method's discount tax total.
+                      - type: number
+                        title: discount_tax_total
+                        description: The shipping method's discount tax total.
+                      - type: string
+                        title: discount_tax_total
+                        description: The shipping method's discount tax total.
+                      - $ref: '#/components/schemas/IBigNumber'
+                  raw_original_total:
+                    type: object
+                    description: The shipping method's raw original total.
+                  raw_original_subtotal:
+                    type: object
+                    description: The shipping method's raw original subtotal.
+                  raw_original_tax_total:
+                    type: object
+                    description: The shipping method's raw original tax total.
+                  raw_total:
+                    type: object
+                    description: The shipping method's raw total.
+                  raw_subtotal:
+                    type: object
+                    description: The shipping method's raw subtotal.
+                  raw_tax_total:
+                    type: object
+                    description: The shipping method's raw tax total.
+                  raw_discount_total:
+                    type: object
+                    description: The shipping method's raw discount total.
+                  raw_discount_tax_total:
+                    type: object
+                    description: The shipping method's raw discount tax total.
+              - type: object
+                description: The shipping method's shipping methods.
+                properties:
+                  actions:
+                    type: array
+                    description: The shipping method's actions.
+                    items:
+                      type: object
+                      description: The action's actions.
+                      x-schemaName: OrderChangeAction
         status:
           type: string
           enum:
@@ -58952,6 +60757,18 @@ components:
             - completed
             - draft
             - archived
+        currency_code:
+          type: string
+          title: currency_code
+          description: The order preview's currency code.
+        id:
+          type: string
+          title: id
+          description: The order preview's ID.
+        version:
+          type: number
+          title: version
+          description: The order preview's version.
         region_id:
           type: string
           title: region_id
@@ -58969,24 +60786,10 @@ components:
           title: email
           description: The order preview's email.
           format: email
-        currency_code:
-          type: string
-          title: currency_code
-          description: The order preview's currency code.
         shipping_address:
           $ref: '#/components/schemas/OrderAddress'
         billing_address:
           $ref: '#/components/schemas/OrderAddress'
-        items:
-          type: array
-          description: The order preview's items.
-          items:
-            $ref: '#/components/schemas/OrderLineItem'
-        shipping_methods:
-          type: array
-          description: The order preview's shipping methods.
-          items:
-            $ref: '#/components/schemas/OrderShippingMethod'
         transactions:
           type: array
           description: The order preview's transactions.
@@ -59225,15 +61028,6 @@ components:
         metadata:
           type: object
           description: The order preview's metadata.
-        canceled_at:
-          oneOf:
-            - type: string
-              title: canceled_at
-              description: The order preview's canceled at.
-            - type: string
-              title: canceled_at
-              description: The order preview's canceled at.
-              format: date-time
         created_at:
           type: string
           format: date-time
@@ -59508,6 +61302,15 @@ components:
               title: original_shipping_tax_total
               description: The order preview's original shipping tax total.
             - $ref: '#/components/schemas/IBigNumber'
+        canceled_at:
+          oneOf:
+            - type: string
+              title: canceled_at
+              description: The order preview's canceled at.
+            - type: string
+              title: canceled_at
+              description: The order preview's canceled at.
+              format: date-time
         raw_original_item_total:
           type: object
           description: The order preview's raw original item total.
@@ -59816,822 +61619,6 @@ components:
                 - type: number
                   title: value
                   description: The raw original shipping tax total's value.
-    OrderAddress:
-      type: object
-      description: The order preview's billing address.
-      x-schemaName: OrderAddress
-      required:
-        - id
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          title: id
-          description: The billing address's ID.
-        customer_id:
-          type: string
-          title: customer_id
-          description: The billing address's customer id.
-        first_name:
-          type: string
-          title: first_name
-          description: The billing address's first name.
-        last_name:
-          type: string
-          title: last_name
-          description: The billing address's last name.
-        phone:
-          type: string
-          title: phone
-          description: The billing address's phone.
-        company:
-          type: string
-          title: company
-          description: The billing address's company.
-        address_1:
-          type: string
-          title: address_1
-          description: The billing address's address 1.
-        address_2:
-          type: string
-          title: address_2
-          description: The billing address's address 2.
-        city:
-          type: string
-          title: city
-          description: The billing address's city.
-        country_code:
-          type: string
-          title: country_code
-          description: The billing address's country code.
-        province:
-          type: string
-          title: province
-          description: The billing address's province.
-        postal_code:
-          type: string
-          title: postal_code
-          description: The billing address's postal code.
-        metadata:
-          type: object
-          description: The billing address's metadata.
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The billing address's created at.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The billing address's updated at.
-    OrderChange:
-      type: object
-      description: The order preview's order change.
-      x-schemaName: OrderChange
-      required:
-        - id
-        - version
-        - order_id
-        - return_id
-        - exchange_id
-        - claim_id
-        - order
-        - return_order
-        - exchange
-        - claim
-        - actions
-        - status
-        - requested_by
-        - requested_at
-        - confirmed_by
-        - confirmed_at
-        - declined_by
-        - declined_reason
-        - metadata
-        - declined_at
-        - canceled_by
-        - canceled_at
-        - created_at
-        - updated_at
-      properties:
-        id:
-          type: string
-          title: id
-          description: The order change's ID.
-        version:
-          type: number
-          title: version
-          description: The order change's version.
-        change_type:
-          type: string
-          enum:
-            - return
-            - exchange
-            - claim
-            - edit
-        order_id:
-          type: string
-          title: order_id
-          description: The order change's order id.
-        return_id:
-          type: string
-          title: return_id
-          description: The order change's return id.
-        exchange_id:
-          type: string
-          title: exchange_id
-          description: The order change's exchange id.
-        claim_id:
-          type: string
-          title: claim_id
-          description: The order change's claim id.
-        order:
-          type: object
-        return_order:
-          $ref: '#/components/schemas/Return'
-        exchange:
-          $ref: '#/components/schemas/OrderExchange'
-        claim:
-          $ref: '#/components/schemas/OrderClaim'
-        actions:
-          type: array
-          description: The order change's actions.
-          items:
-            $ref: '#/components/schemas/OrderChangeAction'
-        status:
-          type: string
-          title: status
-          description: The order change's status.
-        requested_by:
-          type: string
-          title: requested_by
-          description: The order change's requested by.
-        requested_at:
-          oneOf:
-            - type: string
-              title: requested_at
-              description: The order change's requested at.
-            - type: string
-              title: requested_at
-              description: The order change's requested at.
-              format: date-time
-        confirmed_by:
-          type: string
-          title: confirmed_by
-          description: The order change's confirmed by.
-        confirmed_at:
-          oneOf:
-            - type: string
-              title: confirmed_at
-              description: The order change's confirmed at.
-            - type: string
-              title: confirmed_at
-              description: The order change's confirmed at.
-              format: date-time
-        declined_by:
-          type: string
-          title: declined_by
-          description: The order change's declined by.
-        declined_reason:
-          type: string
-          title: declined_reason
-          description: The order change's declined reason.
-        metadata:
-          type: object
-          description: The order change's metadata.
-        declined_at:
-          oneOf:
-            - type: string
-              title: declined_at
-              description: The order change's declined at.
-            - type: string
-              title: declined_at
-              description: The order change's declined at.
-              format: date-time
-        canceled_by:
-          type: string
-          title: canceled_by
-          description: The order change's canceled by.
-        canceled_at:
-          oneOf:
-            - type: string
-              title: canceled_at
-              description: The order change's canceled at.
-            - type: string
-              title: canceled_at
-              description: The order change's canceled at.
-              format: date-time
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The order change's created at.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The order change's updated at.
-    OrderChangeAction:
-      type: object
-      description: The action's actions.
-      x-schemaName: OrderChangeAction
-    OrderClaim:
-      type: object
-      description: The order change's claim.
-      x-schemaName: OrderClaim
-    OrderExchange:
-      type: object
-      description: The order change's exchange.
-      x-schemaName: OrderExchange
-    OrderItem:
-      type: object
-      description: The item's detail.
-      x-schemaName: OrderItem
-    OrderLineItem:
-      type: object
-      description: The item's items.
-      x-schemaName: OrderLineItem
-      required:
-        - id
-        - title
-        - requires_shipping
-        - is_discountable
-        - is_tax_inclusive
-        - unit_price
-        - raw_unit_price
-        - quantity
-        - raw_quantity
-        - detail
-        - created_at
-        - updated_at
-        - original_total
-        - original_subtotal
-        - original_tax_total
-        - item_total
-        - item_subtotal
-        - item_tax_total
-        - total
-        - subtotal
-        - tax_total
-        - discount_total
-        - discount_tax_total
-        - refundable_total
-        - refundable_total_per_unit
-        - raw_original_total
-        - raw_original_subtotal
-        - raw_original_tax_total
-        - raw_item_total
-        - raw_item_subtotal
-        - raw_item_tax_total
-        - raw_total
-        - raw_subtotal
-        - raw_tax_total
-        - raw_discount_total
-        - raw_discount_tax_total
-        - raw_refundable_total
-        - raw_refundable_total_per_unit
-      properties:
-        id:
-          type: string
-          title: id
-          description: The item's ID.
-        title:
-          type: string
-          title: title
-          description: The item's title.
-        subtitle:
-          type: string
-          title: subtitle
-          description: The item's subtitle.
-        thumbnail:
-          type: string
-          title: thumbnail
-          description: The item's thumbnail.
-        variant_id:
-          type: string
-          title: variant_id
-          description: The item's variant id.
-        product_id:
-          type: string
-          title: product_id
-          description: The item's product id.
-        product_title:
-          type: string
-          title: product_title
-          description: The item's product title.
-        product_description:
-          type: string
-          title: product_description
-          description: The item's product description.
-        product_subtitle:
-          type: string
-          title: product_subtitle
-          description: The item's product subtitle.
-        product_type:
-          type: string
-          title: product_type
-          description: The item's product type.
-        product_collection:
-          type: string
-          title: product_collection
-          description: The item's product collection.
-        product_handle:
-          type: string
-          title: product_handle
-          description: The item's product handle.
-        variant_sku:
-          type: string
-          title: variant_sku
-          description: The item's variant sku.
-        variant_barcode:
-          type: string
-          title: variant_barcode
-          description: The item's variant barcode.
-        variant_title:
-          type: string
-          title: variant_title
-          description: The item's variant title.
-        variant_option_values:
-          type: object
-          description: The item's variant option values.
-        requires_shipping:
-          type: boolean
-          title: requires_shipping
-          description: The item's requires shipping.
-        is_discountable:
-          type: boolean
-          title: is_discountable
-          description: The item's is discountable.
-        is_tax_inclusive:
-          type: boolean
-          title: is_tax_inclusive
-          description: The item's is tax inclusive.
-        compare_at_unit_price:
-          type: number
-          title: compare_at_unit_price
-          description: The item's compare at unit price.
-        raw_compare_at_unit_price:
-          type: object
-          description: The item's raw compare at unit price.
-        unit_price:
-          type: number
-          title: unit_price
-          description: The item's unit price.
-        raw_unit_price:
-          type: object
-          description: The item's raw unit price.
-        quantity:
-          type: number
-          title: quantity
-          description: The item's quantity.
-        raw_quantity:
-          type: object
-          description: The item's raw quantity.
-        tax_lines:
-          type: array
-          description: The item's tax lines.
-          items:
-            $ref: '#/components/schemas/OrderLineItemTaxLine'
-        adjustments:
-          type: array
-          description: The item's adjustments.
-          items:
-            $ref: '#/components/schemas/OrderLineItemAdjustment'
-        detail:
-          $ref: '#/components/schemas/OrderItem'
-        created_at:
-          type: string
-          title: created_at
-          description: The item's created at.
-          format: date-time
-        updated_at:
-          type: string
-          title: updated_at
-          description: The item's updated at.
-          format: date-time
-        metadata:
-          type: object
-          description: The item's metadata.
-        original_total:
-          oneOf:
-            - type: string
-              title: original_total
-              description: The item's original total.
-            - type: number
-              title: original_total
-              description: The item's original total.
-            - type: string
-              title: original_total
-              description: The item's original total.
-            - $ref: '#/components/schemas/IBigNumber'
-        original_subtotal:
-          oneOf:
-            - type: string
-              title: original_subtotal
-              description: The item's original subtotal.
-            - type: number
-              title: original_subtotal
-              description: The item's original subtotal.
-            - type: string
-              title: original_subtotal
-              description: The item's original subtotal.
-            - $ref: '#/components/schemas/IBigNumber'
-        original_tax_total:
-          oneOf:
-            - type: string
-              title: original_tax_total
-              description: The item's original tax total.
-            - type: number
-              title: original_tax_total
-              description: The item's original tax total.
-            - type: string
-              title: original_tax_total
-              description: The item's original tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        item_total:
-          oneOf:
-            - type: string
-              title: item_total
-              description: The item's item total.
-            - type: number
-              title: item_total
-              description: The item's item total.
-            - type: string
-              title: item_total
-              description: The item's item total.
-            - $ref: '#/components/schemas/IBigNumber'
-        item_subtotal:
-          oneOf:
-            - type: string
-              title: item_subtotal
-              description: The item's item subtotal.
-            - type: number
-              title: item_subtotal
-              description: The item's item subtotal.
-            - type: string
-              title: item_subtotal
-              description: The item's item subtotal.
-            - $ref: '#/components/schemas/IBigNumber'
-        item_tax_total:
-          oneOf:
-            - type: string
-              title: item_tax_total
-              description: The item's item tax total.
-            - type: number
-              title: item_tax_total
-              description: The item's item tax total.
-            - type: string
-              title: item_tax_total
-              description: The item's item tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        total:
-          oneOf:
-            - type: string
-              title: total
-              description: The item's total.
-            - type: number
-              title: total
-              description: The item's total.
-            - type: string
-              title: total
-              description: The item's total.
-            - $ref: '#/components/schemas/IBigNumber'
-        subtotal:
-          oneOf:
-            - type: string
-              title: subtotal
-              description: The item's subtotal.
-            - type: number
-              title: subtotal
-              description: The item's subtotal.
-            - type: string
-              title: subtotal
-              description: The item's subtotal.
-            - $ref: '#/components/schemas/IBigNumber'
-        tax_total:
-          oneOf:
-            - type: string
-              title: tax_total
-              description: The item's tax total.
-            - type: number
-              title: tax_total
-              description: The item's tax total.
-            - type: string
-              title: tax_total
-              description: The item's tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        discount_total:
-          oneOf:
-            - type: string
-              title: discount_total
-              description: The item's discount total.
-            - type: number
-              title: discount_total
-              description: The item's discount total.
-            - type: string
-              title: discount_total
-              description: The item's discount total.
-            - $ref: '#/components/schemas/IBigNumber'
-        discount_tax_total:
-          oneOf:
-            - type: string
-              title: discount_tax_total
-              description: The item's discount tax total.
-            - type: number
-              title: discount_tax_total
-              description: The item's discount tax total.
-            - type: string
-              title: discount_tax_total
-              description: The item's discount tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        refundable_total:
-          oneOf:
-            - type: string
-              title: refundable_total
-              description: The item's refundable total.
-            - type: number
-              title: refundable_total
-              description: The item's refundable total.
-            - type: string
-              title: refundable_total
-              description: The item's refundable total.
-            - $ref: '#/components/schemas/IBigNumber'
-        refundable_total_per_unit:
-          oneOf:
-            - type: string
-              title: refundable_total_per_unit
-              description: The item's refundable total per unit.
-            - type: number
-              title: refundable_total_per_unit
-              description: The item's refundable total per unit.
-            - type: string
-              title: refundable_total_per_unit
-              description: The item's refundable total per unit.
-            - $ref: '#/components/schemas/IBigNumber'
-        raw_original_total:
-          type: object
-          description: The item's raw original total.
-        raw_original_subtotal:
-          type: object
-          description: The item's raw original subtotal.
-        raw_original_tax_total:
-          type: object
-          description: The item's raw original tax total.
-        raw_item_total:
-          type: object
-          description: The item's raw item total.
-        raw_item_subtotal:
-          type: object
-          description: The item's raw item subtotal.
-        raw_item_tax_total:
-          type: object
-          description: The item's raw item tax total.
-        raw_total:
-          type: object
-          description: The item's raw total.
-        raw_subtotal:
-          type: object
-          description: The item's raw subtotal.
-        raw_tax_total:
-          type: object
-          description: The item's raw tax total.
-        raw_discount_total:
-          type: object
-          description: The item's raw discount total.
-        raw_discount_tax_total:
-          type: object
-          description: The item's raw discount tax total.
-        raw_refundable_total:
-          type: object
-          description: The item's raw refundable total.
-        raw_refundable_total_per_unit:
-          type: object
-          description: The item's raw refundable total per unit.
-    OrderLineItemAdjustment:
-      type: object
-      description: The adjustment's adjustments.
-      x-schemaName: OrderLineItemAdjustment
-    OrderLineItemTaxLine:
-      type: object
-      description: The tax line's tax lines.
-      x-schemaName: OrderLineItemTaxLine
-    OrderShippingMethod:
-      type: object
-      description: The shipping method's shipping methods.
-      x-schemaName: OrderShippingMethod
-      required:
-        - id
-        - order_id
-        - name
-        - amount
-        - raw_amount
-        - is_tax_inclusive
-        - created_at
-        - updated_at
-        - original_total
-        - original_subtotal
-        - original_tax_total
-        - total
-        - subtotal
-        - tax_total
-        - discount_total
-        - discount_tax_total
-        - raw_original_total
-        - raw_original_subtotal
-        - raw_original_tax_total
-        - raw_total
-        - raw_subtotal
-        - raw_tax_total
-        - raw_discount_total
-        - raw_discount_tax_total
-      properties:
-        id:
-          type: string
-          title: id
-          description: The shipping method's ID.
-        order_id:
-          type: string
-          title: order_id
-          description: The shipping method's order id.
-        name:
-          type: string
-          title: name
-          description: The shipping method's name.
-        description:
-          type: string
-          title: description
-          description: The shipping method's description.
-        amount:
-          oneOf:
-            - type: string
-              title: amount
-              description: The shipping method's amount.
-            - type: number
-              title: amount
-              description: The shipping method's amount.
-            - type: string
-              title: amount
-              description: The shipping method's amount.
-            - $ref: '#/components/schemas/IBigNumber'
-        raw_amount:
-          type: object
-          description: The shipping method's raw amount.
-        is_tax_inclusive:
-          type: boolean
-          title: is_tax_inclusive
-          description: The shipping method's is tax inclusive.
-        shipping_option_id:
-          type: string
-          title: shipping_option_id
-          description: The shipping method's shipping option id.
-        data:
-          type: object
-          description: The shipping method's data.
-        metadata:
-          type: object
-          description: The shipping method's metadata.
-        tax_lines:
-          type: array
-          description: The shipping method's tax lines.
-          items:
-            $ref: '#/components/schemas/OrderShippingMethodTaxLine'
-        adjustments:
-          type: array
-          description: The shipping method's adjustments.
-          items:
-            $ref: '#/components/schemas/OrderShippingMethodAdjustment'
-        created_at:
-          type: string
-          format: date-time
-          title: created_at
-          description: The shipping method's created at.
-        updated_at:
-          type: string
-          format: date-time
-          title: updated_at
-          description: The shipping method's updated at.
-        original_total:
-          oneOf:
-            - type: string
-              title: original_total
-              description: The shipping method's original total.
-            - type: number
-              title: original_total
-              description: The shipping method's original total.
-            - type: string
-              title: original_total
-              description: The shipping method's original total.
-            - $ref: '#/components/schemas/IBigNumber'
-        original_subtotal:
-          oneOf:
-            - type: string
-              title: original_subtotal
-              description: The shipping method's original subtotal.
-            - type: number
-              title: original_subtotal
-              description: The shipping method's original subtotal.
-            - type: string
-              title: original_subtotal
-              description: The shipping method's original subtotal.
-            - $ref: '#/components/schemas/IBigNumber'
-        original_tax_total:
-          oneOf:
-            - type: string
-              title: original_tax_total
-              description: The shipping method's original tax total.
-            - type: number
-              title: original_tax_total
-              description: The shipping method's original tax total.
-            - type: string
-              title: original_tax_total
-              description: The shipping method's original tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        total:
-          oneOf:
-            - type: string
-              title: total
-              description: The shipping method's total.
-            - type: number
-              title: total
-              description: The shipping method's total.
-            - type: string
-              title: total
-              description: The shipping method's total.
-            - $ref: '#/components/schemas/IBigNumber'
-        subtotal:
-          oneOf:
-            - type: string
-              title: subtotal
-              description: The shipping method's subtotal.
-            - type: number
-              title: subtotal
-              description: The shipping method's subtotal.
-            - type: string
-              title: subtotal
-              description: The shipping method's subtotal.
-            - $ref: '#/components/schemas/IBigNumber'
-        tax_total:
-          oneOf:
-            - type: string
-              title: tax_total
-              description: The shipping method's tax total.
-            - type: number
-              title: tax_total
-              description: The shipping method's tax total.
-            - type: string
-              title: tax_total
-              description: The shipping method's tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        discount_total:
-          oneOf:
-            - type: string
-              title: discount_total
-              description: The shipping method's discount total.
-            - type: number
-              title: discount_total
-              description: The shipping method's discount total.
-            - type: string
-              title: discount_total
-              description: The shipping method's discount total.
-            - $ref: '#/components/schemas/IBigNumber'
-        discount_tax_total:
-          oneOf:
-            - type: string
-              title: discount_tax_total
-              description: The shipping method's discount tax total.
-            - type: number
-              title: discount_tax_total
-              description: The shipping method's discount tax total.
-            - type: string
-              title: discount_tax_total
-              description: The shipping method's discount tax total.
-            - $ref: '#/components/schemas/IBigNumber'
-        raw_original_total:
-          type: object
-          description: The shipping method's raw original total.
-        raw_original_subtotal:
-          type: object
-          description: The shipping method's raw original subtotal.
-        raw_original_tax_total:
-          type: object
-          description: The shipping method's raw original tax total.
-        raw_total:
-          type: object
-          description: The shipping method's raw total.
-        raw_subtotal:
-          type: object
-          description: The shipping method's raw subtotal.
-        raw_tax_total:
-          type: object
-          description: The shipping method's raw tax total.
-        raw_discount_total:
-          type: object
-          description: The shipping method's raw discount total.
-        raw_discount_tax_total:
-          type: object
-          description: The shipping method's raw discount tax total.
     OrderShippingMethodAdjustment:
       type: object
       description: The adjustment's adjustments.

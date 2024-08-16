@@ -65,6 +65,7 @@ tags:
   - name: Notifications
     x-associatedSchema:
       $ref: "#/components/schemas/AdminNotification"
+  - name: Order Edits
   - name: Orders
     x-associatedSchema:
       $ref: "#/components/schemas/AdminOrder"

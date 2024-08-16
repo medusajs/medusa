@@ -8,7 +8,7 @@
  *   - return
  * properties:
  *   order_preview:
- *     $ref: "#/components/schemas/Order"
+ *     $ref: "#/components/schemas/OrderPreview"
  *   return:
  *     $ref: "#/components/schemas/AdminReturn"
  * 
