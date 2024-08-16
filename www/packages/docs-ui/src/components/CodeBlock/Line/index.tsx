@@ -255,7 +255,7 @@ export const CodeBlockLine = ({
             lineNumberBgClassName
           )}
         >
-          {showLineNumber ? lineNumber + 1 : "❯"}
+          {isTerminal ? "❯" : showLineNumber ? lineNumber + 1 : ""}
         </span>
       )}
       <span>

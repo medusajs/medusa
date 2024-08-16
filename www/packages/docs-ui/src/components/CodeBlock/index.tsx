@@ -83,7 +83,9 @@ export const CodeBlock = ({
   const apiRunnerRef = useRef<HTMLDivElement>(null)
   const [scrollable, setScrollable] = useState(false)
   const isTerminalCode = useMemo(() => {
-    return isTerminal === undefined ? lang === "bash" : isTerminal
+    return isTerminal === undefined
+      ? lang === "bash" && !source.startsWith("curl")
+      : isTerminal
   }, [isTerminal, lang])
   const codeTitle = useMemo(() => {
     if (title || hasTabs) {
