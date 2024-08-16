@@ -9,6 +9,6 @@ properties:
   return:
     $ref: ./AdminReturn.yaml
   order_preview:
-    $ref: ./Order.yaml
+    $ref: ./OrderPreview.yaml
   exchange:
     $ref: ./AdminExchange.yaml

@@ -70,6 +70,7 @@ tags:
   - name: Notifications
     x-associatedSchema:
       $ref: ./components/schemas/AdminNotification.yaml
+  - name: Order Edits
   - name: Orders
     x-associatedSchema:
       $ref: ./components/schemas/AdminOrder.yaml
@@ -227,6 +228,8 @@ paths:
     $ref: paths/admin_draft-orders_{id}.yaml
   /admin/exchanges:
     $ref: paths/admin_exchanges.yaml
+  /admin/exchanges/{id}:
+    $ref: paths/admin_exchanges_{id}.yaml
   /admin/exchanges/{id}/cancel:
     $ref: paths/admin_exchanges_{id}_cancel.yaml
   /admin/exchanges/{id}/inbound/items:
@@ -283,6 +286,20 @@ paths:
     $ref: paths/admin_notifications.yaml
   /admin/notifications/{id}:
     $ref: paths/admin_notifications_{id}.yaml
+  /admin/order-edits:
+    $ref: paths/admin_order-edits.yaml
+  /admin/order-edits/{id}:
+    $ref: paths/admin_order-edits_{id}.yaml
+  /admin/order-edits/{id}/confirm:
+    $ref: paths/admin_order-edits_{id}_confirm.yaml
+  /admin/order-edits/{id}/items:
+    $ref: paths/admin_order-edits_{id}_items.yaml
+  /admin/order-edits/{id}/items/{action_id}:
+    $ref: paths/admin_order-edits_{id}_items_{action_id}.yaml
+  /admin/order-edits/{id}/shipping-method:
+    $ref: paths/admin_order-edits_{id}_shipping-method.yaml
+  /admin/order-edits/{id}/shipping-method/{action_id}:
+    $ref: paths/admin_order-edits_{id}_shipping-method_{action_id}.yaml
   /admin/orders:
     $ref: paths/admin_orders.yaml
   /admin/orders/{id}:

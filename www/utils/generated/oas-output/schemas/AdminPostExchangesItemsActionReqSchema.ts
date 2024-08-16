@@ -1,8 +1,8 @@
 /**
- * @schema AdminPostExhangesItemsActionReqSchema
+ * @schema AdminPostExchangesItemsActionReqSchema
  * type: object
  * description: SUMMARY
- * x-schemaName: AdminPostExhangesItemsActionReqSchema
+ * x-schemaName: AdminPostExchangesItemsActionReqSchema
  * properties:
  *   quantity:
  *     type: number

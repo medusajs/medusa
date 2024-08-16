@@ -1,12 +1,12 @@
 type: object
 description: SUMMARY
-x-schemaName: AdminPostExhangesItemsActionReqSchema
+x-schemaName: AdminPostOrderEditsItemsActionReqSchema
 properties:
   quantity:
     type: number
     title: quantity
-    description: The exchange's quantity.
+    description: The order edit's quantity.
   internal_note:
     type: string
     title: internal_note
-    description: The exchange's internal note.
+    description: The order edit's internal note.

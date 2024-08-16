@@ -6,6 +6,6 @@ required:
   - claim
 properties:
   order_preview:
-    $ref: ./Order.yaml
+    $ref: ./OrderPreview.yaml
   claim:
     $ref: ./AdminClaim.yaml
