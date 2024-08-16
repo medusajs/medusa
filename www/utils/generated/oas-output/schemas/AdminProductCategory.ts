@@ -9,14 +9,14 @@
  *   - name
  *   - description
  *   - id
- *   - handle
  *   - created_at
  *   - updated_at
+ *   - handle
  *   - deleted_at
- *   - parent_category_id
- *   - is_internal
  *   - is_active
+ *   - is_internal
  *   - rank
+ *   - parent_category_id
  * properties:
  *   category_children:
  *     type: array
@@ -42,10 +42,6 @@
  *     type: string
  *     title: id
  *     description: The category's ID.
- *   handle:
- *     type: string
- *     title: handle
- *     description: The category's handle.
  *   created_at:
  *     type: string
  *     format: date-time
@@ -56,27 +52,31 @@
  *     format: date-time
  *     title: updated_at
  *     description: The category's updated at.
+ *   handle:
+ *     type: string
+ *     title: handle
+ *     description: The category's handle.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
  *     description: The category's deleted at.
- *   parent_category_id:
- *     type: string
- *     title: parent_category_id
- *     description: The category's parent category id.
- *   is_internal:
- *     type: boolean
- *     title: is_internal
- *     description: The category's is internal.
  *   is_active:
  *     type: boolean
  *     title: is_active
  *     description: The category's is active.
+ *   is_internal:
+ *     type: boolean
+ *     title: is_internal
+ *     description: The category's is internal.
  *   rank:
  *     type: number
  *     title: rank
  *     description: The category's rank.
+ *   parent_category_id:
+ *     type: string
+ *     title: parent_category_id
+ *     description: The category's parent category id.
  * 
 */
 

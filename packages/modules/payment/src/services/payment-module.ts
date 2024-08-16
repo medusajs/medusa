@@ -717,10 +717,25 @@ export default class PaymentModuleService
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PaymentDTO> {
-    const payment = await this.refundPayment_(data, sharedContext)
+    const payment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "payment_collection_id",
+          "amount",
+          "raw_amount",
+        ],
+        relations: ["captures.raw_amount", "refunds.raw_amount"],
+      },
+      sharedContext
+    )
+    const refund = await this.refundPayment_(payment, data, sharedContext)
 
     try {
-      await this.refundPaymentFromProvider_(payment, sharedContext)
+      await this.refundPaymentFromProvider_(payment, refund, sharedContext)
     } catch (error) {
       await super.deleteRefunds(data.payment_id, sharedContext)
       throw error
@@ -740,25 +755,10 @@ export default class PaymentModuleService
 
   @InjectTransactionManager("baseRepository_")
   private async refundPayment_(
+    payment: Payment,
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Payment> {
-    const payment = await this.paymentService_.retrieve(
-      data.payment_id,
-      {
-        select: [
-          "id",
-          "data",
-          "provider_id",
-          "payment_collection_id",
-          "amount",
-          "raw_amount",
-        ],
-        relations: ["captures.raw_amount", "refunds.raw_amount"],
-      },
-      sharedContext
-    )
-
+  ): Promise<Refund> {
     if (!data.amount) {
       data.amount = payment.amount as BigNumberInput
     }
@@ -771,10 +771,7 @@ export default class PaymentModuleService
       return MathBN.add(refundedAmount, next.raw_amount)
     }, MathBN.convert(0))
 
-    const totalRefundedAmount = MathBN.add(
-      refundedAmount,
-      data.amount
-    )
+    const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
     if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
       throw new MedusaError(
@@ -783,7 +780,7 @@ export default class PaymentModuleService
       )
     }
 
-    await this.refundService_.create(
+    const refund = await this.refundService_.create(
       {
         payment: data.payment_id,
         amount: data.amount,
@@ -794,12 +791,13 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return payment
+    return refund
   }
 
   @InjectManager("baseRepository_")
   private async refundPaymentFromProvider_(
     payment: Payment,
+    refund: Refund,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const paymentData = await this.paymentProviderService_.refundPayment(
@@ -807,7 +805,7 @@ export default class PaymentModuleService
         data: payment.data!,
         provider_id: payment.provider_id,
       },
-      payment.raw_amount
+      refund.raw_amount
     )
 
     await this.paymentService_.update(

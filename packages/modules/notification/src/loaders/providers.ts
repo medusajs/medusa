@@ -104,7 +104,7 @@ async function syncDatabaseProviders({
         providerService.update(
           providersToDisable.map((p) => ({
             id: p.id,
-            update: { is_enabled: false },
+            is_enabled: false,
           }))
         )
       )

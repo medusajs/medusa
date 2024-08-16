@@ -42,10 +42,13 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce((acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item)
-        return acc
-      }, {} as Record<string, number>),
+      quantity: fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item)
+          return acc
+        },
+        {} as Record<string, number>
+      ),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
@@ -107,6 +110,16 @@ export function OrderCreateFulfillmentForm({
       })
     }
   }, [fulfillableItems.length])
+
+  useEffect(() => {
+    const itemsToFulfill = order?.items?.filter(
+      (item) => getFulfillableQuantity(item) > 0
+    )
+
+    if (itemsToFulfill?.length) {
+      setFulfillableItems(itemsToFulfill)
+    }
+  }, [order.items])
 
   return (
     <RouteFocusModal.Form form={form}>

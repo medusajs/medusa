@@ -1,0 +1,71 @@
+/**
+ * @schema OrderTransaction
+ * type: object
+ * description: The transaction's transactions.
+ * x-schemaName: OrderTransaction
+ * required:
+ *   - id
+ *   - order_id
+ *   - order
+ *   - amount
+ *   - raw_amount
+ *   - currency_code
+ *   - reference
+ *   - reference_id
+ *   - created_at
+ *   - updated_at
+ *   - metadata
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The transaction's ID.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The transaction's order id.
+ *   order:
+ *     $ref: "#/components/schemas/Order"
+ *   amount:
+ *     oneOf:
+ *       - type: string
+ *         title: amount
+ *         description: The transaction's amount.
+ *       - type: number
+ *         title: amount
+ *         description: The transaction's amount.
+ *       - type: string
+ *         title: amount
+ *         description: The transaction's amount.
+ *       - $ref: "#/components/schemas/IBigNumber"
+ *   raw_amount:
+ *     type: object
+ *     description: The transaction's raw amount.
+ *   currency_code:
+ *     type: string
+ *     title: currency_code
+ *     description: The transaction's currency code.
+ *   reference:
+ *     type: string
+ *     title: reference
+ *     description: The transaction's reference.
+ *   reference_id:
+ *     type: string
+ *     title: reference_id
+ *     description: The transaction's reference id.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The transaction's created at.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The transaction's updated at.
+ *   metadata:
+ *     type: object
+ *     description: The transaction's metadata.
+ * 
+*/
+

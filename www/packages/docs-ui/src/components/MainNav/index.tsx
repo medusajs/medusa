@@ -4,15 +4,17 @@ import clsx from "clsx"
 import React from "react"
 import { MainNavigationDropdown } from "./NavigationDropdown"
 import { MainNavBreadcrumbs } from "./Breadcrumb"
-import { SearchModalOpener, useMainNav } from "../.."
+import { Button, SearchModalOpener, useMainNav, useSidebar } from "../.."
 import { MainNavColorMode } from "./ColorMode"
 import Link from "next/link"
 import { MainNavDivider } from "./Divider"
 import { MainNavSidebarOpener } from "./SidebarOpener"
 import { MainNavHelpButton } from "./HelpButton"
+import { SidebarLeftIcon } from "../Icons/SidebarLeft"
 
 export const MainNav = () => {
   const { reportIssueLink } = useMainNav()
+  const { setMobileSidebarOpen } = useSidebar()
   return (
     <div
       className={clsx(
@@ -22,6 +24,13 @@ export const MainNav = () => {
       )}
     >
       <div className="flex items-center gap-docs_0.25">
+        <Button
+          className="lg:hidden"
+          variant="transparent-clear"
+          onClick={() => setMobileSidebarOpen(true)}
+        >
+          <SidebarLeftIcon />
+        </Button>
         <MainNavSidebarOpener />
         <MainNavigationDropdown />
         <MainNavBreadcrumbs />

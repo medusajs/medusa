@@ -1,4 +1,9 @@
-import { BigNumberInput, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import {
+  BigNumberInput,
+  OrderChangeDTO,
+  OrderDTO,
+  OrderPreviewDTO,
+} from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
@@ -43,7 +48,7 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
     order_id: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowResponse<OrderDTO> {
+  }): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "currency_code", "canceled_at"],

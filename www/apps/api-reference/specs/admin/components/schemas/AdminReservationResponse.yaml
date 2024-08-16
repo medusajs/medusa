@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminReservationResponse
+required:
+  - reservation
+properties:
+  reservation:
+    $ref: ./ReservationResponse.yaml

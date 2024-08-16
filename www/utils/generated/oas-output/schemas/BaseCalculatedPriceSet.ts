@@ -1,7 +1,7 @@
 /**
  * @schema BaseCalculatedPriceSet
  * type: object
- * description: The updated's calculated price.
+ * description: The parent's calculated price.
  * x-schemaName: BaseCalculatedPriceSet
  * required:
  *   - id

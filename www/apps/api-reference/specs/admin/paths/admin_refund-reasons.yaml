@@ -1,0 +1,228 @@
+get:
+  operationId: GetRefundReasons
+  summary: List Refund Reasons
+  description: >-
+    Retrieve a list of refund reasons. The refund reasons can be filtered by
+    fields such as `id`. The refund reasons can also be sorted or paginated.
+  x-authenticated: true
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: |-
+        Comma-separated fields that should be included in the returned data.
+         * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+         * without prefix it will replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: |-
+          Comma-separated fields that should be included in the returned data.
+           * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+           * without prefix it will replace the entire default fields.
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
+      schema:
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
+      schema:
+        type: string
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_refund-reasons/get.sh
+  tags:
+    - Refund Reasons
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The refund reason's limit.
+                  offset:
+                    type: number
+                    title: offset
+                    description: The refund reason's offset.
+                  count:
+                    type: number
+                    title: count
+                    description: The refund reason's count.
+              - type: object
+                description: SUMMARY
+                required:
+                  - refund_reasons
+                properties:
+                  refund_reasons:
+                    type: array
+                    description: The refund reason's refund reasons.
+                    items:
+                      $ref: ../components/schemas/AdminRefundReason.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostRefundReasons
+  summary: Create Refund Reason
+  description: Create a refund reason.
+  x-authenticated: true
+  parameters:
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: |-
+        Comma-separated fields that should be included in the returned data.
+         * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+         * without prefix it will replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: |-
+          Comma-separated fields that should be included in the returned data.
+           * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+           * without prefix it will replace the entire default fields.
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
+      schema:
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
+      schema:
+        type: string
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: SUMMARY
+          required:
+            - label
+            - description
+          properties:
+            label:
+              type: string
+              title: label
+              description: The refund reason's label.
+            description:
+              type: string
+              title: description
+              description: The refund reason's description.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_refund-reasons/post.sh
+  tags:
+    - Refund Reasons
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/RefundReasonResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: createRefundReasonsWorkflow

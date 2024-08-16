@@ -1,0 +1,71 @@
+/**
+ * @schema StoreReturn
+ * type: object
+ * description: The return's details.
+ * x-schemaName: StoreReturn
+ * required:
+ *   - id
+ *   - order_id
+ *   - order_version
+ *   - display_id
+ *   - items
+ *   - received_at
+ *   - created_at
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The return's ID.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The return's order id.
+ *   status:
+ *     type: string
+ *     title: status
+ *     description: The return's status.
+ *   exchange_id:
+ *     type: string
+ *     title: exchange_id
+ *     description: The return's exchange id.
+ *   location_id:
+ *     type: string
+ *     title: location_id
+ *     description: The return's location id.
+ *   claim_id:
+ *     type: string
+ *     title: claim_id
+ *     description: The return's claim id.
+ *   order_version:
+ *     type: number
+ *     title: order_version
+ *     description: The return's order version.
+ *   display_id:
+ *     type: number
+ *     title: display_id
+ *     description: The return's display id.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: The return's no notification.
+ *   refund_amount:
+ *     type: number
+ *     title: refund_amount
+ *     description: The return's refund amount.
+ *   items:
+ *     type: array
+ *     description: The return's items.
+ *     items:
+ *       $ref: "#/components/schemas/BaseReturnItem"
+ *   received_at:
+ *     type: string
+ *     title: received_at
+ *     description: The return's received at.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The return's created at.
+ * 
+*/
+

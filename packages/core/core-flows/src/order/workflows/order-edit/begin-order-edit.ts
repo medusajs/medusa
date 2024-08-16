@@ -13,7 +13,7 @@ import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 /**
  * This step validates that an order-edit can be requested for an order.
  */
-export const beginOrderOrderEditValidationStep = createStep(
+export const beginorderEditValidationStep = createStep(
   "begin-order-edit-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
@@ -27,7 +27,7 @@ export const beginOrderEditOrderWorkflowId = "begin-order-edit-order"
 export const beginOrderEditOrderWorkflow = createWorkflow(
   beginOrderEditOrderWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.BeginOrderOrderEditWorkflowInput>
+    input: WorkflowData<OrderWorkflow.BeginorderEditWorkflowInput>
   ): WorkflowResponse<OrderChangeDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -37,7 +37,7 @@ export const beginOrderEditOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    beginOrderOrderEditValidationStep({ order })
+    beginorderEditValidationStep({ order })
 
     const orderChangeInput = transform({ input }, ({ input }) => {
       return {

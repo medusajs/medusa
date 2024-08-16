@@ -1,0 +1,31 @@
+/**
+ * @schema AdminPricePreferenceListResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminPricePreferenceListResponse
+ * required:
+ *   - limit
+ *   - offset
+ *   - count
+ *   - price_preferences
+ * properties:
+ *   limit:
+ *     type: number
+ *     title: limit
+ *     description: The price preference's limit.
+ *   offset:
+ *     type: number
+ *     title: offset
+ *     description: The price preference's offset.
+ *   count:
+ *     type: number
+ *     title: count
+ *     description: The price preference's count.
+ *   price_preferences:
+ *     type: array
+ *     description: The price preference's price preferences.
+ *     items:
+ *       $ref: "#/components/schemas/AdminPricePreference"
+ * 
+*/
+

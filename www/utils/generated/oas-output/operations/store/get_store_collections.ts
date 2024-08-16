@@ -63,6 +63,41 @@
  * tags:
  *   - Collections
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The collection's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The collection's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The collection's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - collections
+ *               properties:
+ *                 collections:
+ *                   type: array
+ *                   description: The collection's collections.
+ *                   items:
+ *                     $ref: "#/components/schemas/StoreCollection"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

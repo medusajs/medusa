@@ -93,6 +93,12 @@ post:
   tags:
     - Payment Collections
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StorePaymentCollectionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

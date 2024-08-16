@@ -73,6 +73,38 @@ get:
   tags:
     - Draft Orders
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - limit
+                  - offset
+                  - count
+                properties:
+                  limit:
+                    type: number
+                    title: limit
+                    description: The draft order's limit.
+                  offset:
+                    type: number
+                    title: offset
+                    description: The draft order's offset.
+                  count:
+                    type: number
+                    title: count
+                    description: The draft order's count.
+              - type: object
+                description: SUMMARY
+                required:
+                  - draft_orders
+                properties:
+                  draft_orders:
+                    $ref: ../components/schemas/AdminOrder.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -154,16 +186,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
           description: SUMMARY
-          required:
-            - sales_channel_id
-            - email
-            - customer_id
-            - region_id
-            - currency_code
-            - shipping_methods
-            - metadata
           properties:
             status:
               type: boolean
@@ -444,6 +467,12 @@ post:
   tags:
     - Draft Orders
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminDraftOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -456,3 +485,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createOrdersWorkflow

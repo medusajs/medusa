@@ -73,7 +73,12 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminCompleteOrder.yaml
+          description: SUMMARY
+          properties:
+            order_id:
+              type: string
+              title: order_id
+              description: The order's order id.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -82,6 +87,12 @@ post:
   tags:
     - Orders
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrderResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

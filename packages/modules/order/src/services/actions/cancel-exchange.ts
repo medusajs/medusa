@@ -1,6 +1,7 @@
 import {
   Context,
   CreateOrderChangeActionDTO,
+  OrderExchangeDTO,
   OrderTypes,
 } from "@medusajs/types"
 import { ChangeActionType, promiseAll } from "@medusajs/utils"
@@ -33,7 +34,7 @@ export async function cancelExchange(
   data: OrderTypes.CancelOrderExchangeDTO,
   sharedContext?: Context
 ) {
-  const exchangeOrder = await this.retrieveOrderExchange(
+  const exchangeOrder = (await this.retrieveOrderExchange(
     data.exchange_id,
     {
       select: [
@@ -46,7 +47,7 @@ export async function cancelExchange(
       relations: ["additional_items", "shipping_methods"],
     },
     sharedContext
-  )
+  )) as OrderExchangeDTO
 
   const actions: CreateOrderChangeActionDTO[] = []
 
@@ -73,7 +74,7 @@ export async function cancelExchange(
       exchange_id: exchangeOrder.id,
       reference: "exchange",
       reference_id: shipping.id,
-      amount: shipping.price,
+      amount: shipping.raw_amount ?? shipping.amount,
     })
   })
 

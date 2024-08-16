@@ -1,7 +1,7 @@
 import {
   OrderChangeActionDTO,
   OrderChangeDTO,
-  OrderDTO,
+  OrderPreviewDTO,
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
@@ -65,7 +65,7 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
   removeReturnShippingMethodWorkflowId,
   function (
     input: WorkflowData<OrderWorkflow.DeleteReturnShippingMethodWorkflowInput>
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -87,7 +87,11 @@ export const removeReturnShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    removeReturnShippingMethodValidationStep({ orderReturn, orderChange, input })
+    removeReturnShippingMethodValidationStep({
+      orderReturn,
+      orderChange,
+      input,
+    })
 
     const dataToRemove = transform(
       { orderChange, input },

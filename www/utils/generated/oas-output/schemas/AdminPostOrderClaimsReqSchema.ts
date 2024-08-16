@@ -6,6 +6,7 @@
  * required:
  *   - type
  *   - order_id
+ *   - reason_id
  *   - metadata
  * properties:
  *   type:
@@ -25,6 +26,10 @@
  *     type: string
  *     title: internal_note
  *     description: The claim's internal note.
+ *   reason_id:
+ *     type: string
+ *     title: reason_id
+ *     description: The claim's reason id.
  *   metadata:
  *     type: object
  *     description: The claim's metadata.

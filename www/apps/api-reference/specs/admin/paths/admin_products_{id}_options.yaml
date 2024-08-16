@@ -606,6 +606,9 @@ get:
                                   x-schemaName: BaseProductOptionParams
                                 - type: object
                                   description: The $or's details.
+          type: array
+          items:
+            type: object
     - name: $or
       in: query
       description: The product's $or.
@@ -1095,6 +1098,9 @@ get:
                                   x-schemaName: BaseProductOptionParams
                                 - type: object
                                   description: The $or's details.
+          type: array
+          items:
+            type: object
   security:
     - api_token: []
     - cookie_auth: []
@@ -1229,7 +1235,19 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminCreateProductOption.yaml
+          description: SUMMARY
+          properties:
+            title:
+              type: string
+              title: title
+              description: The product's title.
+            values:
+              type: array
+              description: The product's values.
+              items:
+                type: string
+                title: values
+                description: The value's values.
   x-codeSamples:
     - lang: Shell
       label: cURL

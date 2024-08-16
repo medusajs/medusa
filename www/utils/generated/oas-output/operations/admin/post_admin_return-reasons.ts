@@ -78,6 +78,12 @@
  * tags:
  *   - Return Reasons
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminReturnReasonResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

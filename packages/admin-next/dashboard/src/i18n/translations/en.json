@@ -852,7 +852,7 @@
       "returnTotal": "Return total",
       "inboundTotal": "Inbound total",
       "refundAmount": "Refund amount",
-      "outstandingAmount": "Difference amount",
+      "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
       "reasonHint": "Choose why the customer want to return items.",
       "note": "Note",
@@ -898,6 +898,25 @@
       "actions": {
         "cancelClaim": {
           "successToast": "Claim was successfully canceled."
+        }
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      }
+    },
+    "exchanges": {
+      "create": "Create Exchange",
+      "manage": "Manage Exchange",
+      "outbound": "Outbound",
+      "outboundItemAdded": "{{itemsCount}}x added through exchange",
+      "outboundTotal": "Outbound total",
+      "outboundShipping": "Outbound shipping",
+      "outboundShippingHint": "Choose which method you want to use.",
+      "refundAmount": "Estimated difference",
+      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "actions": {
+        "cancelExchange": {
+          "successToast": "Exchange was successfully canceled."
         }
       },
       "tooltips": {

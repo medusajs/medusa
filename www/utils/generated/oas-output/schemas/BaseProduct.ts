@@ -1,7 +1,7 @@
 /**
  * @schema BaseProduct
  * type: object
- * description: The updated's product.
+ * description: The parent's product.
  * x-schemaName: BaseProduct
  * required:
  *   - id
