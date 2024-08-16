@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import copy from "copy-text-to-clipboard"
 
 type useCopyReturnType = {
   isCopied: boolean
@@ -13,11 +12,15 @@ export const useCopy = (text: string): useCopyReturnType => {
   const copyTimeout = useRef<number>(0)
 
   const handleCopy = useCallback(() => {
-    copy(text)
-    setIsCopied(true)
-    copyTimeout.current = window.setTimeout(() => {
-      setIsCopied(false)
-    }, 1000)
+    navigator.clipboard
+      .writeText(text.trim())
+      .then(() => {
+        setIsCopied(true)
+        copyTimeout.current = window.setTimeout(() => {
+          setIsCopied(false)
+        }, 1000)
+      })
+      .catch(console.error)
   }, [text])
 
   useEffect(() => () => window.clearTimeout(copyTimeout.current), [])
