@@ -3,7 +3,6 @@
 import {
   AnalyticsProvider,
   ColorModeProvider,
-  helpButtonNotification,
   HooksLoader,
   LearningPathProvider,
   MobileProvider,
@@ -32,7 +31,7 @@ const Providers = ({ children }: ProvidersProps) => {
               <LearningPathProvider
                 baseUrl={process.env.NEXT_PUBLIC_BASE_PATH || "/resources"}
               >
-                <NotificationProvider initial={[helpButtonNotification]}>
+                <NotificationProvider>
                   <ScrollControllerProvider scrollableSelector="#main">
                     <SidebarProvider>
                       <PaginationProvider>

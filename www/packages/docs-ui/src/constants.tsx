@@ -1,8 +1,7 @@
 import React from "react"
-import { Badge, HelpButton } from "@/components"
+import { Badge } from "@/components"
 import { OptionType } from "@/hooks"
 import { NavigationDropdownItem, SidebarItem } from "types"
-import { NotificationItemType } from "@/providers"
 import { NavigationDropdownDocIcon } from "./components/Icons/NavigationDropdown/Doc"
 import { NavigationDropdownStoreIcon } from "./components/Icons/NavigationDropdown/Store"
 import { NavigationDropdownAdminIcon } from "./components/Icons/NavigationDropdown/Admin"
@@ -233,8 +232,3 @@ export const searchFiltersV1: OptionType[] = [
     label: "UI",
   },
 ]
-
-export const helpButtonNotification: NotificationItemType = {
-  layout: "empty",
-  children: <HelpButton />,
-}
