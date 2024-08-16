@@ -9,9 +9,9 @@
     "tsBuildInfoFile": "./dist/.tsbuildinfo-client",
     "noEmit": false,
     "jsx": "react",
-    "lib": ["dom", "ES2015", "es2022"],
+    "lib": ["dom", "es2022"],
     "module": "ESNext",
-    "target": "es6",
+    "target": "ESNext",
     "declaration": true,
     "declarationMap": true
   },

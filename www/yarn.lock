@@ -6013,6 +6013,7 @@ __metadata:
     "@types/react": ^18.2.0
     "@types/react-dom": ^18.2.0
     autoprefixer: ^10.0.1
+    build-scripts: "*"
     clsx: ^2.1.0
     docs-ui: "*"
     eslint: ^8
