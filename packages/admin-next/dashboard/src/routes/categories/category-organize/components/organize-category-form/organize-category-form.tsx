@@ -5,6 +5,7 @@ import { Spinner } from "@medusajs/icons"
 import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
+import { useState } from "react"
 import { RouteFocusModal } from "../../../../../components/modals"
 import {
   categoriesQueryKeys,
@@ -29,6 +30,8 @@ export const OrganizeCategoryForm = () => {
     isError,
     error: fetchError,
   } = useProductCategories(QUERY)
+
+  const [snapshot, setSnapshot] = useState<CategoryTreeItem[]>([])
 
   const { mutateAsync, isPending: isMutating } = useMutation({
     mutationFn: async ({
@@ -62,6 +65,7 @@ export const OrganizeCategoryForm = () => {
         product_categories: update.arr,
       }
 
+      // Optimistically update to the new value
       queryClient.setQueryData(categoriesQueryKeys.list(QUERY), nextValue)
 
       return {
@@ -98,6 +102,7 @@ export const OrganizeCategoryForm = () => {
       rank: value.index,
     }
 
+    setSnapshot(arr)
     await mutateAsync({ value: val, arr })
   }
 
@@ -117,7 +122,7 @@ export const OrganizeCategoryForm = () => {
       <RouteFocusModal.Body className="bg-ui-bg-subtle flex flex-1 flex-col overflow-y-auto">
         <CategoryTree
           renderValue={(item) => item.name}
-          value={product_categories || []}
+          value={loading ? snapshot : product_categories || []}
           onChange={handleRankChange}
         />
       </RouteFocusModal.Body>
