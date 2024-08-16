@@ -74,6 +74,12 @@
  * tags:
  *   - Returns
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminReturnResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

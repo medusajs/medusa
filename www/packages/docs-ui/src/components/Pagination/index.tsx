@@ -2,9 +2,8 @@
 
 import React from "react"
 import { usePagination } from "../../providers"
-import { Card } from "../Card"
-import { ChevronLeft, ChevronRight } from "@medusajs/icons"
 import clsx from "clsx"
+import { PaginationCard } from "./Card"
 
 export const Pagination = () => {
   const { previousPage, nextPage } = usePagination()
@@ -13,27 +12,23 @@ export const Pagination = () => {
     <div
       className={clsx(
         "flex justify-between",
-        "flex-col sm:flex-row gap-docs_1 sm:gap-0"
+        "flex-col sm:flex-row gap-docs_0.75"
       )}
     >
       {previousPage && (
-        <Card
+        <PaginationCard
+          type="previous"
           title={previousPage.title}
-          text={previousPage.parentTitle}
-          startIcon={<ChevronLeft />}
-          showLinkIcon={false}
-          href={previousPage.link}
-          className={clsx("ml-0 mr-auto items-center", "w-full sm:max-w-[45%]")}
+          parentTitle={previousPage.parentTitle}
+          link={previousPage.link}
         />
       )}
       {nextPage && (
-        <Card
+        <PaginationCard
+          type="next"
           title={nextPage.title}
-          text={nextPage.parentTitle}
-          endIcon={<ChevronRight />}
-          showLinkIcon={false}
-          href={nextPage.link}
-          className={clsx("mr-0 ml-auto items-center", "w-full sm:max-w-[45%]")}
+          parentTitle={nextPage.parentTitle}
+          link={nextPage.link}
         />
       )}
     </div>

@@ -9,6 +9,8 @@ tags:
   - name: Api Keys
   - name: Campaigns
   - name: Claims
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminClaim"
   - name: Collections
     x-associatedSchema:
       $ref: "#/components/schemas/AdminCollection"
@@ -21,6 +23,8 @@ tags:
     externalDocs:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminCurrency"
   - name: Customer Groups
     x-associatedSchema:
       $ref: "#/components/schemas/AdminCustomerGroup"
@@ -34,6 +38,9 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminCustomer"
   - name: Draft Orders
+  - name: Exchanges
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminExchange"
   - name: Fulfillment Providers
     x-associatedSchema:
       $ref: "#/components/schemas/AdminFulfillmentProvider"
@@ -41,7 +48,11 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminFulfillmentSet"
   - name: Fulfillments
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminFulfillment"
   - name: Inventory Items
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminInventoryItem"
   - name: Invites
     description: >
       An admin can invite new users to manage their team. This would allow new
@@ -49,11 +60,24 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminInvite"
   - name: Notifications
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminNotification"
+  - name: Order Edits
   - name: Orders
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminOrder"
   - name: Payments
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPayment"
   - name: Price Lists
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPriceList"
   - name: Price Preferences
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPricePreference"
   - name: Product Categories
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductCategory"
@@ -61,10 +85,18 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductTag"
   - name: Product Types
+  - name: Product Variants
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductVariant"
   - name: Products
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProduct"
   - name: Promotions
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminPromotion"
+  - name: Refund Reasons
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminRefundReason"
   - name: Regions
     description: >
       Regions are different countries or geographical regions that the commerce
@@ -74,9 +106,15 @@ tags:
     externalDocs:
       description: How to manage regions
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminRegion"
   - name: Reservations
   - name: Return Reasons
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminReturnReason"
   - name: Returns
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminReturn"
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
@@ -95,11 +133,21 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminShippingProfile"
   - name: Stock Locations
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminStockLocation"
   - name: Stores
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminStore"
   - name: Tax Rates
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminTaxRate"
   - name: Tax Regions
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminTaxRegion"
   - name: Uploads
   - name: Users
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminUser"
   - name: Workflows Executions
 servers:
   - url: http://localhost:9000
@@ -108,21 +156,39 @@ paths: {}
 components:
   schemas:
     Error:
-      title: "Response Error"
+      title: Response Error
       type: object
       properties:
         code:
           type: string
           description: A slug code to indicate the type of the error.
-          enum: [invalid_state_error, invalid_request_error, api_error, unknown_error]
+          enum:
+            - invalid_state_error
+            - invalid_request_error
+            - api_error
+            - unknown_error
         message:
           type: string
           description: Description of the error that occurred.
-          example: "first_name must be a string"
+          example: first_name must be a string
         type:
           type: string
           description: A slug indicating the type of the error.
-          enum: [QueryRunnerAlreadyReleasedError, TransactionAlreadyStartedError, TransactionNotStartedError, conflict, unauthorized, payment_authorization_error, duplicate_error, not_allowed, invalid_data, not_found, database_error, unexpected_state, invalid_argument, unknown_error]
+          enum:
+            - QueryRunnerAlreadyReleasedError
+            - TransactionAlreadyStartedError
+            - TransactionNotStartedError
+            - conflict
+            - unauthorized
+            - payment_authorization_error
+            - duplicate_error
+            - not_allowed
+            - invalid_data
+            - not_found
+            - database_error
+            - unexpected_state
+            - invalid_argument
+            - unknown_error
   responses:
     default_error:
       description: Default Error

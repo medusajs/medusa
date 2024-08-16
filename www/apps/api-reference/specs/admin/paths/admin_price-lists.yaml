@@ -73,6 +73,12 @@ get:
   tags:
     - Price Lists
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPriceListListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -163,6 +169,12 @@ post:
   tags:
     - Price Lists
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPriceListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

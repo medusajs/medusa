@@ -79,6 +79,12 @@ get:
   tags:
     - Returns
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminReturnResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -175,6 +181,12 @@ post:
   tags:
     - Returns
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminReturnPreviewResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -187,3 +199,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateReturnWorkflow

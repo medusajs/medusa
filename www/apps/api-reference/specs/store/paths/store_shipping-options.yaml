@@ -69,6 +69,12 @@ get:
   tags:
     - Shipping Options
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreShippingOptionListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -81,3 +87,4 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: listShippingOptionsForCartWorkflow

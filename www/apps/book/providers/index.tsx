@@ -3,7 +3,6 @@
 import {
   AnalyticsProvider,
   ColorModeProvider,
-  helpButtonNotification,
   HooksLoader,
   LearningPathProvider,
   MobileProvider,
@@ -16,6 +15,7 @@ import {
 import SidebarProvider from "./sidebar"
 import SearchProvider from "./search"
 import { config } from "../config"
+import { MainNavProvider } from "./main-nav"
 
 type ProvidersProps = {
   children?: React.ReactNode
@@ -29,20 +29,22 @@ const Providers = ({ children }: ProvidersProps) => {
           <ColorModeProvider>
             <ModalProvider>
               <LearningPathProvider>
-                <NotificationProvider initial={[helpButtonNotification]}>
+                <NotificationProvider>
                   <ScrollControllerProvider scrollableSelector="#main">
                     <SidebarProvider>
                       <PaginationProvider>
-                        <SearchProvider>
-                          <HooksLoader
-                            options={{
-                              pageScrollManager: true,
-                              currentLearningPath: true,
-                            }}
-                          >
-                            {children}
-                          </HooksLoader>
-                        </SearchProvider>
+                        <MainNavProvider>
+                          <SearchProvider>
+                            <HooksLoader
+                              options={{
+                                pageScrollManager: true,
+                                currentLearningPath: true,
+                              }}
+                            >
+                              {children}
+                            </HooksLoader>
+                          </SearchProvider>
+                        </MainNavProvider>
                       </PaginationProvider>
                     </SidebarProvider>
                   </ScrollControllerProvider>

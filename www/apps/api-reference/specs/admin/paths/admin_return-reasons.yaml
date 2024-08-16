@@ -61,6 +61,131 @@ get:
           The field to sort the data by. By default, the sort order is
           ascending. To change the order to descending, prefix the field name
           with `-`.
+    - name: q
+      in: query
+      description: The return reason's q.
+      required: false
+      schema:
+        type: string
+        title: q
+        description: The return reason's q.
+    - name: id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: id
+            description: The return reason's ID.
+          - type: array
+            description: The return reason's ID.
+            items:
+              type: string
+              title: id
+              description: The id's ID.
+    - name: value
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: value
+            description: The return reason's value.
+          - type: array
+            description: The return reason's value.
+            items:
+              type: string
+              title: value
+              description: The value's details.
+    - name: label
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: label
+            description: The return reason's label.
+          - type: array
+            description: The return reason's label.
+            items:
+              type: string
+              title: label
+              description: The label's details.
+    - name: description
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: description
+            description: The return reason's description.
+          - type: array
+            description: The return reason's description.
+            items:
+              type: string
+              title: description
+              description: The description's details.
+    - name: parent_return_reason_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: parent_return_reason_id
+            description: The return reason's parent return reason id.
+          - type: array
+            description: The return reason's parent return reason id.
+            items:
+              type: string
+              title: parent_return_reason_id
+              description: The parent return reason id's details.
+    - name: created_at
+      in: query
+      description: The return reason's created at.
+      required: false
+      schema:
+        type: string
+        format: date-time
+        title: created_at
+        description: The return reason's created at.
+    - name: updated_at
+      in: query
+      description: The return reason's updated at.
+      required: false
+      schema:
+        type: string
+        format: date-time
+        title: updated_at
+        description: The return reason's updated at.
+    - name: deleted_at
+      in: query
+      description: The return reason's deleted at.
+      required: false
+      schema:
+        type: string
+        format: date-time
+        title: deleted_at
+        description: The return reason's deleted at.
+    - name: $and
+      in: query
+      description: The return reason's $and.
+      required: false
+      schema:
+        type: array
+        description: The return reason's $and.
+        items:
+          type: object
+        title: $and
+    - name: $or
+      in: query
+      description: The return reason's $or.
+      required: false
+      schema:
+        type: array
+        description: The return reason's $or.
+        items:
+          type: object
+        title: $or
   security:
     - api_token: []
     - cookie_auth: []
@@ -73,6 +198,12 @@ get:
   tags:
     - Return Reasons
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminReturnReasonListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -163,6 +294,12 @@ post:
   tags:
     - Return Reasons
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminReturnReasonResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

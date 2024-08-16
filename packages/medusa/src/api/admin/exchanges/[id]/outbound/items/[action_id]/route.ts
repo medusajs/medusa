@@ -2,6 +2,7 @@ import {
   removeItemExchangeActionWorkflow,
   updateExchangeAddItemWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -10,11 +11,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
-import { AdminPostExhangesItemsActionReqSchemaType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { AdminPostExchangesItemsActionReqSchemaType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostExhangesItemsActionReqSchemaType>,
+  req: AuthenticatedMedusaRequest<AdminPostExchangesItemsActionReqSchemaType>,
   res: MedusaResponse<HttpTypes.AdminExchangePreviewResponse>
 ) => {
   const { id, action_id } = req.params

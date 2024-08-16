@@ -242,11 +242,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The product category's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The product category's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

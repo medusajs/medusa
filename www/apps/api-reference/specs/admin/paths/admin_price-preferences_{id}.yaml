@@ -79,6 +79,12 @@ get:
   tags:
     - Price Preferences
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPricePreferenceResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -175,6 +181,12 @@ post:
   tags:
     - Price Preferences
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPricePreferenceResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -266,6 +278,12 @@ delete:
   tags:
     - Price Preferences
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPricePreferenceDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

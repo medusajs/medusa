@@ -1,48 +1,45 @@
 import React from "react"
 import clsx from "clsx"
 import { Sidebar, SidebarProps } from "@/components"
+import { MobileNavigation } from "../components/MobileNavigation"
+import { Toc } from "../components/Toc"
+import { MainContentLayout, MainContentLayoutProps } from "./main-content"
 
 export type RootLayoutProps = {
-  children: React.ReactNode
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
-  NavbarComponent: React.FC
+  showToc?: boolean
   sidebarProps?: SidebarProps
   htmlClassName?: string
   bodyClassName?: string
-  mainWrapperClasses?: string
   showPagination?: boolean
-}
+} & MainContentLayoutProps
 
 export const RootLayout = ({
   ProvidersComponent,
-  NavbarComponent,
-  children,
   sidebarProps,
   htmlClassName,
   bodyClassName,
-  mainWrapperClasses,
+  showToc = true,
+  ...mainProps
 }: RootLayoutProps) => {
   return (
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
       <head />
       <body
         className={clsx(
-          "bg-docs-bg font-base text-medium w-full",
+          "bg-medusa-bg-subtle font-base text-medium w-full",
           "text-medusa-fg-subtle",
           "h-screen overflow-hidden",
+          "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
           bodyClassName
         )}
       >
         <ProvidersComponent>
-          <NavbarComponent />
-          <div
-            className="w-full h-[calc(100%-57px)] overflow-y-scroll overflow-x-hidden"
-            id="main"
-          >
-            <div className={clsx("max-w-xxl w-full", mainWrapperClasses)}>
-              <Sidebar {...sidebarProps} />
-              {children}
-            </div>
+          <MobileNavigation />
+          <Sidebar {...sidebarProps} />
+          <div className={clsx("relative", "h-screen", "flex")}>
+            <MainContentLayout {...mainProps} />
+            {showToc && <Toc />}
           </div>
         </ProvidersComponent>
       </body>

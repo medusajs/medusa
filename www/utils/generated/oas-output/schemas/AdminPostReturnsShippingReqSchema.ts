@@ -9,22 +9,22 @@
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The claim's shipping option id.
+ *     description: The exchange's shipping option id.
  *   custom_price:
  *     type: number
  *     title: custom_price
- *     description: The claim's custom price.
+ *     description: The exchange's custom price.
  *   description:
  *     type: string
  *     title: description
- *     description: The claim's description.
+ *     description: The exchange's description.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The claim's internal note.
+ *     description: The exchange's internal note.
  *   metadata:
  *     type: object
- *     description: The claim's metadata.
+ *     description: The exchange's metadata.
  * 
 */
 

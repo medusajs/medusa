@@ -685,6 +685,52 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should fully refund a payment through two refunds", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPaymentOne = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPaymentTwo = await service.refundPayment({
+              amount: 50,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPaymentOne).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+            expect(refundedPaymentTwo).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should throw if refund is greater than captured amount", async () => {
             await service.capturePayment({
               amount: 50,

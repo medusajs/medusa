@@ -160,11 +160,11 @@ export type AdminPostExchangesConfirmRequestReqSchemaType = z.infer<
   typeof AdminPostExchangesConfirmRequestReqSchema
 >
 
-export const AdminPostExhangesItemsActionReqSchema = z.object({
+export const AdminPostExchangesItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 
-export type AdminPostExhangesItemsActionReqSchemaType = z.infer<
-  typeof AdminPostExhangesItemsActionReqSchema
+export type AdminPostExchangesItemsActionReqSchemaType = z.infer<
+  typeof AdminPostExchangesItemsActionReqSchema
 >

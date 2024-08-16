@@ -11,7 +11,7 @@ This documentation provides a reference to the `cancelOrderWorkflow`. It belongs
 
 This workflow cancels an order.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"cancelOrderWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"cancelValidateOrder","description":"This step validates that an order can be canceled.","link":"../core_flows.Order.cancelValidateOrder/page.mdx","depth":2},{"type":"step","name":"deleteReservationsByLineItemsStep","description":"This step deletes reservations by their associated line items.","link":"../../../Reservation/functions/core_flows.Reservation.deleteReservationsByLineItemsStep/page.mdx","depth":3},{"type":"step","name":"cancelPaymentStep","description":"This step cancels one or more payments.","link":"../../../Payment/functions/core_flows.Payment.cancelPaymentStep/page.mdx","depth":3},{"type":"step","name":"cancelOrdersStep","description":"This step cancels one or more orders.","link":"../core_flows.Order.cancelOrdersStep/page.mdx","depth":3},{"type":"hook","name":"orderCanceled","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#orderCanceled","depth":4}]}} />
 

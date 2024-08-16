@@ -77,6 +77,12 @@ post:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimRequestResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -93,6 +99,7 @@ post:
     content:
       application/json:
         schema: {}
+  x-workflow: confirmClaimRequestWorkflow
 delete:
   operationId: DeleteClaimsIdRequest
   summary: Remove Requests from Claim
@@ -174,6 +181,12 @@ delete:
   tags:
     - Claims
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminClaimDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

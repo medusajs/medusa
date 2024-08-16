@@ -1,0 +1,14 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminClaimRequestResponse
+required:
+  - return
+  - order_preview
+  - claim
+properties:
+  return:
+    $ref: ./AdminReturn.yaml
+  order_preview:
+    $ref: ./OrderPreview.yaml
+  claim:
+    $ref: ./AdminClaim.yaml

@@ -69,6 +69,38 @@
  * tags:
  *   - Draft Orders
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - limit
+ *                 - offset
+ *                 - count
+ *               properties:
+ *                 limit:
+ *                   type: number
+ *                   title: limit
+ *                   description: The draft order's limit.
+ *                 offset:
+ *                   type: number
+ *                   title: offset
+ *                   description: The draft order's offset.
+ *                 count:
+ *                   type: number
+ *                   title: count
+ *                   description: The draft order's count.
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - draft_orders
+ *               properties:
+ *                 draft_orders:
+ *                   $ref: "#/components/schemas/AdminOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

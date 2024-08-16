@@ -5,16 +5,18 @@ import { useNavigate } from "react-router-dom"
 import {
   ArrowDownRightMini,
   ArrowLongRight,
+  ArrowPath,
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
 } from "@medusajs/icons"
 import {
   AdminClaim,
+  AdminExchange,
   AdminOrder,
+  AdminOrderLineItem,
   AdminOrderPreview,
   AdminReturn,
-  OrderLineItemDTO,
   ReservationItemDTO,
 } from "@medusajs/types"
 import {
@@ -32,6 +34,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims.tsx"
+import { useExchanges } from "../../../../../hooks/api/exchanges.tsx"
 import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
@@ -165,13 +168,35 @@ const Header = ({
                 label: t("orders.returns.create"),
                 to: `/orders/${order.id}/returns`,
                 icon: <ArrowUturnLeft />,
+                disabled:
+                  !!orderPreview?.order_change?.exchange_id ||
+                  !!orderPreview?.order_change?.claim_id,
               },
               {
-                label: orderPreview?.order_change?.id
-                  ? t("orders.claims.manage")
-                  : t("orders.claims.create"),
+                label:
+                  orderPreview?.order_change?.id &&
+                  orderPreview?.order_change?.exchange_id
+                    ? t("orders.exchanges.manage")
+                    : t("orders.exchanges.create"),
+                to: `/orders/${order.id}/exchanges`,
+                icon: <ArrowPath />,
+                disabled:
+                  (!!orderPreview?.order_change?.return_id &&
+                    !!!orderPreview?.order_change?.exchange_id) ||
+                  !!orderPreview?.order_change?.claim_id,
+              },
+              {
+                label:
+                  orderPreview?.order_change?.id &&
+                  orderPreview?.order_change?.claim_id
+                    ? t("orders.claims.manage")
+                    : t("orders.claims.create"),
                 to: `/orders/${order.id}/claims`,
                 icon: <ExclamationCircle />,
+                disabled:
+                  (!!orderPreview?.order_change?.return_id &&
+                    !!!orderPreview?.order_change?.claim_id) ||
+                  !!orderPreview?.order_change?.exchange_id,
               },
             ],
           },
@@ -187,15 +212,17 @@ const Item = ({
   reservation,
   returns,
   claims,
+  exchanges,
 }: {
-  item: OrderLineItemDTO
+  item: AdminOrderLineItem
   currencyCode: string
   reservation?: ReservationItemDTO | null
   returns: AdminReturn[]
   claims: AdminClaim[]
+  exchanges: AdminExchange[]
 }) => {
   const { t } = useTranslation()
-  const isInventoryManaged = item.variant.manage_inventory
+  const isInventoryManaged = item.variant?.manage_inventory
 
   return (
     <>
@@ -214,6 +241,7 @@ const Item = ({
             >
               {item.title}
             </Text>
+
             {item.variant_sku && (
               <div className="flex items-center gap-x-1">
                 <Text size="small">{item.variant_sku}</Text>
@@ -221,22 +249,25 @@ const Item = ({
               </div>
             )}
             <Text size="small">
-              {item.variant?.options.map((o) => o.value).join(" · ")}
+              {item.variant?.options?.map((o) => o.value).join(" · ")}
             </Text>
           </div>
         </div>
+
         <div className="grid grid-cols-3 items-center gap-x-4">
           <div className="flex items-center justify-end gap-x-4">
             <Text size="small">
               {getLocaleAmount(item.unit_price, currencyCode)}
             </Text>
           </div>
+
           <div className="flex items-center gap-x-2">
             <div className="w-fit min-w-[27px]">
               <Text size="small">
                 <span className="tabular-nums">{item.quantity}</span>x
               </Text>
             </div>
+
             <div className="overflow-visible">
               {isInventoryManaged && (
                 <StatusBadge
@@ -250,6 +281,7 @@ const Item = ({
               )}
             </div>
           </div>
+
           <div className="flex items-center justify-end">
             <Text size="small" className="pt-[1px]">
               {getLocaleAmount(item.subtotal || 0, currencyCode)}
@@ -257,12 +289,21 @@ const Item = ({
           </div>
         </div>
       </div>
+
       {returns.map((r) => (
         <ReturnBreakdown key={r.id} orderReturn={r} itemId={item.id} />
       ))}
 
       {claims.map((claim) => (
         <ClaimBreakdown key={claim.id} claim={claim} itemId={item.id} />
+      ))}
+
+      {exchanges.map((exchange) => (
+        <ExchangeBreakdown
+          key={exchange.id}
+          exchange={exchange}
+          itemId={item.id}
+        />
       ))}
     </>
   )
@@ -273,41 +314,24 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
     line_item_id: order.items.map((i) => i.id),
   })
 
-  const { claims } = useClaims({
+  const { claims = [] } = useClaims({
     order_id: order.id,
     fields: "*additional_items",
   })
 
-  const { returns } = useReturns({
+  const { exchanges = [] } = useExchanges({
+    order_id: order.id,
+    fields: "*additional_items",
+  })
+
+  const { returns = [] } = useReturns({
     order_id: order.id,
     fields: "*items,*items.reason",
   })
 
-  const itemsReturnsMap = useMemo(() => {
-    if (!returns) {
-      return {}
-    }
-
-    const ret = {}
-
-    order.items?.forEach((i) => {
-      returns.forEach((r) => {
-        if (r.items.some((ri) => ri.item_id === i.id)) {
-          if (ret[i.id]) {
-            ret[i.id].push(r)
-          } else {
-            ret[i.id] = [r]
-          }
-        }
-      })
-    })
-
-    return ret
-  }, [returns])
-
   return (
     <div>
-      {order.items.map((item) => {
+      {order.items?.map((item) => {
         const reservation = reservations
           ? reservations.find((r) => r.line_item_id === item.id)
           : null
@@ -318,8 +342,9 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
             item={item}
             currencyCode={order.currency_code}
             reservation={reservation}
-            returns={itemsReturnsMap[item.id] || []}
-            claims={claims || []}
+            returns={returns}
+            exchanges={exchanges}
+            claims={claims}
           />
         )
       })}
@@ -490,6 +515,45 @@ const ClaimBreakdown = ({
   )
 }
 
+const ExchangeBreakdown = ({
+  exchange,
+  itemId,
+}: {
+  exchange: AdminExchange
+  itemId: string
+}) => {
+  const { t } = useTranslation()
+  const { getRelativeDate } = useDate()
+  const items = exchange.additional_items.filter(
+    (item) => item?.item?.id === itemId
+  )
+
+  return (
+    !!items.length && (
+      <div
+        key={exchange.id}
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+      >
+        <div className="flex items-center gap-2">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+          <Text>
+            {t(`orders.exchanges.outboundItemAdded`, {
+              itemsCount: items.reduce(
+                (acc, item) => (acc = acc + item.quantity),
+                0
+              ),
+            })}
+          </Text>
+        </div>
+
+        <Text size="small" leading="compact" className="text-ui-fg-muted">
+          {getRelativeDate(exchange.created_at)}
+        </Text>
+      </div>
+    )
+  )
+}
+
 const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
@@ -524,9 +588,13 @@ const Total = ({ order }: { order: AdminOrder }) => {
         >
           {t("orders.returns.outstandingAmount")}
         </Text>
-        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        <Text
+          className="text-ui-fg-subtle text-bold"
+          size="small"
+          leading="compact"
+        >
           {getStylizedAmount(
-            order.summary.difference_sum || 0,
+            order.summary.pending_difference || 0,
             order.currency_code
           )}
         </Text>

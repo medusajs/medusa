@@ -115,7 +115,7 @@ ___
 
 This workflow creates one or more regions.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createRegionsWorkflow","steps":[{"type":"step","name":"createRegionsStep","description":"This step creates one or more regions.","link":"../Region/functions/core_flows.Region.createRegionsStep/page.mdx","depth":1},{"type":"workflow","name":"createPricePreferencesWorkflow","description":"This workflow creates one or more price preferences.","link":"../Pricing/functions/core_flows.Pricing.createPricePreferencesWorkflow/page.mdx","depth":2}]}} />
 
@@ -133,7 +133,7 @@ ___
 
 This workflow deletes one or more regions.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteRegionsWorkflow","steps":[{"type":"step","name":"deleteRegionsStep","description":"This step deletes one or more regions.","link":"../Region/functions/core_flows.Region.deleteRegionsStep/page.mdx","depth":1}]}} />
 
@@ -147,7 +147,7 @@ ___
 
 This workflow updates regions matching the specified filters.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateRegionsWorkflow","steps":[{"type":"step","name":"updateRegionsStep","description":"This step updates regions matching the specified filters.","link":"../Region/functions/core_flows.Region.updateRegionsStep/page.mdx","depth":1},{"type":"when","condition":"{\n      return data.normalizedInput.is_tax_inclusive !== undefined\n    }","depth":"2","steps":[{"type":"workflow","name":"updatePricePreferencesWorkflow","description":"This workflow updates one or more price preferences.","link":"../Pricing/functions/core_flows.Pricing.updatePricePreferencesWorkflow/page.mdx","depth":2}]}]}} />
 

@@ -11,7 +11,7 @@ This documentation provides a reference to the `createCustomerAddressesWorkflow`
 
 This workflow creates one or more customer address.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"createCustomerAddressesWorkflow","steps":[{"type":"step","name":"maybeUnsetDefaultShippingAddressesStep","description":"This step unsets the `is_default_shipping` property of one or more addresses.","link":"../core_flows.Customer.maybeUnsetDefaultShippingAddressesStep/page.mdx","depth":1},{"type":"step","name":"maybeUnsetDefaultBillingAddressesStep","description":"This step unsets the `is_default_billing` property of one or more addresses.","link":"../core_flows.Customer.maybeUnsetDefaultBillingAddressesStep/page.mdx","depth":1},{"type":"step","name":"createCustomerAddressesStep","description":"This step creates one or more customer addresses.","link":"../core_flows.Customer.createCustomerAddressesStep/page.mdx","depth":2},{"type":"hook","name":"addressesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#addressesCreated","depth":3}]}} />
 

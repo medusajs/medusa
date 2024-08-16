@@ -11,7 +11,7 @@ This documentation provides a reference to the `refundPaymentWorkflow`. It belon
 
 This workflow refunds a payment.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"refundPaymentWorkflow","steps":[{"type":"step","name":"refundPaymentStep","description":"This step refunds a payment.","link":"../core_flows.Payment.refundPaymentStep/page.mdx","depth":1},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":2},{"type":"when","condition":"{\n      return !!orderPayment?.order?.id\n    }","depth":"3","steps":[{"type":"step","name":"addOrderTransactionStep","description":"This step creates an order transaction.","link":"../../../Order/functions/core_flows.Order.addOrderTransactionStep/page.mdx","depth":3}]},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../Common/functions/core_flows.Common.emitEventStep/page.mdx","depth":4}]}} />
 

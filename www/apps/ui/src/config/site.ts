@@ -16,8 +16,7 @@ export const siteConfig: SiteConfig = {
   description: "Primitives for building Medusa applications.",
   // sidebar is defined in docs.tsx
   sidebar: {
-    top: [],
-    bottom: [],
+    default: [],
     mobile: [],
   },
 }

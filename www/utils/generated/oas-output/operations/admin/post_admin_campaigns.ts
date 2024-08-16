@@ -63,15 +63,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
  *         description: SUMMARY
- *         required:
- *           - name
- *           - campaign_identifier
- *           - description
- *           - budget
- *           - starts_at
- *           - ends_at
  *         properties:
  *           name:
  *             type: string
@@ -146,6 +138,12 @@
  * tags:
  *   - Campaigns
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminCampaignResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

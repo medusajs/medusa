@@ -11,6 +11,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
+import { returnsQueryKeys } from "./returns"
 
 const CLAIMS_QUERY_KEY = "claims" as const
 export const claimsQueryKeys = queryKeysFactory(CLAIMS_QUERY_KEY)
@@ -500,6 +501,10 @@ export const useClaimConfirmRequest = (
       sdk.admin.claim.request(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.all,
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
       queryClient.invalidateQueries({
@@ -509,6 +514,11 @@ export const useClaimConfirmRequest = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: claimsQueryKeys.lists(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

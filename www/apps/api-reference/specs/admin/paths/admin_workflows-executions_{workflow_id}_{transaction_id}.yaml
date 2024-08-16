@@ -86,6 +86,12 @@ get:
   tags:
     - Workflows Executions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminWorkflowExecutionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
