@@ -640,6 +640,7 @@ export default class OrderModuleService<
 
       const orderWithTotals = decorateCartTotals({
         ...ord,
+        shipping_methods,
         items,
       }) as any
       const calculated = calculateOrderChange({
