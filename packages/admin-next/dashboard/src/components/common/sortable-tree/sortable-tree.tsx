@@ -21,10 +21,10 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-import { CSS } from "@dnd-kit/utilities"
 import { sortableTreeKeyboardCoordinates } from "./keyboard-coordinates"
 import { SortableTreeItem } from "./sortable-tree-item"
 import type { FlattenedItem, SensorContext, TreeItem } from "./types"

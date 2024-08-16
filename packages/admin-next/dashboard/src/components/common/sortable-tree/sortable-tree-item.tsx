@@ -6,7 +6,7 @@ import { CSSProperties } from "react"
 import { TreeItem, Props as TreeItemProps } from "./tree-item"
 import { iOS } from "./utils"
 
-interface Props extends TreeItemProps {
+interface SortableTreeItemProps extends TreeItemProps {
   id: UniqueIdentifier
 }
 
@@ -17,7 +17,12 @@ const animateLayoutChanges: AnimateLayoutChanges = ({
   return isSorting || wasDragging ? false : true
 }
 
-export function SortableTreeItem({ id, depth, disabled, ...props }: Props) {
+export function SortableTreeItem({
+  id,
+  depth,
+  disabled,
+  ...props
+}: SortableTreeItemProps) {
   const {
     attributes,
     isDragging,
