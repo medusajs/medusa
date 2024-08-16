@@ -3,7 +3,7 @@ import { AnimateLayoutChanges, useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { CSSProperties } from "react"
 
-import { TreeItem, Props as TreeItemProps } from "./tree-item"
+import { TreeItem, TreeItemProps } from "./tree-item"
 import { iOS } from "./utils"
 
 interface SortableTreeItemProps extends TreeItemProps {

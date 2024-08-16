@@ -367,7 +367,7 @@ export function SortableTree<T extends TreeItem>({
                 clone
                 childCount={getChildCount(items, activeId, childrenProp) + 1}
                 value={renderValue(activeItem as unknown as T)}
-                indentationWidth={indentationWidth}
+                indentationWidth={0}
               />
             ) : null}
           </DragOverlay>,

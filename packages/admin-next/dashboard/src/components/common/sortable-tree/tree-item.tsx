@@ -10,7 +10,8 @@ import {
 import { Badge, clx, IconButton } from "@medusajs/ui"
 import { HandleProps } from "./types"
 
-export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
+export interface TreeItemProps
+  extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
   clone?: boolean
   collapsed?: boolean
@@ -26,7 +27,7 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   wrapperRef?(node: HTMLLIElement): void
 }
 
-export const TreeItem = forwardRef<HTMLDivElement, Props>(
+export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
     {
       childCount,

@@ -98,8 +98,6 @@ export const OrganizeCategoryForm = () => {
       rank: value.index,
     }
 
-    console.log(val, arr)
-
     await mutateAsync({ value: val, arr })
   }
 
