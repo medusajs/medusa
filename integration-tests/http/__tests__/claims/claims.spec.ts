@@ -752,6 +752,19 @@ medusaIntegrationTestRunner({
             message:
               "Active payment collections were found. Complete existing ones or delete them before proceeding.",
           })
+
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${paymentCollection.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(deleted).toEqual({
+            id: expect.any(String),
+            object: "payment-collection",
+            deleted: true,
+          })
         })
       })
 

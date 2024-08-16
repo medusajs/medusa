@@ -65,13 +65,12 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
 
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
-      fields: ["id"],
+      fields: ["id", "status"],
       variables: {
-        id: orderPaymentCollectionIds,
-        status: [
-          PaymentCollectionStatus.NOT_PAID,
-          PaymentCollectionStatus.AWAITING,
-        ],
+        filters: {
+          id: orderPaymentCollectionIds,
+          status: [PaymentCollectionStatus.NOT_PAID],
+        },
       },
       list: false,
     }).config({ name: "payment-collection-query" })

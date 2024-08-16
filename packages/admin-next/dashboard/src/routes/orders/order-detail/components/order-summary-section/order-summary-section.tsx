@@ -44,9 +44,14 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getTotalCaptured } from "../../../../../lib/payment.ts"
+import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
+}
+
+function delay(t, val) {
+  return new Promise((resolve) => setTimeout(resolve, t, val))
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
@@ -95,6 +100,9 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     return false
   }, [reservations])
 
+  const showPayment = (orderPreview?.summary?.pending_difference || 0) > 0
+  const showRefund = (orderPreview?.summary?.pending_difference || 0) < 0
+
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} orderPreview={orderPreview} />
@@ -102,38 +110,40 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {showAllocateButton ||
-        (showReturns && (
-          <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
-            {showReturns && (
-              <ButtonMenu
-                groups={[
-                  {
-                    actions: returns.map((r) => ({
-                      label: t("orders.returns.receive.receive", {
-                        label: `#${r.id.slice(-7)}`,
-                      }),
-                      icon: <ArrowLongRight />,
-                      to: `/orders/${order.id}/returns/${r.id}/receive`,
-                    })),
-                  },
-                ]}
-              >
-                <Button variant="secondary" size="small">
-                  {t("orders.returns.receive.action")}
-                </Button>
-              </ButtonMenu>
-            )}
-            {showAllocateButton && (
-              <Button
-                onClick={() => navigate(`./allocate-items`)}
-                variant="secondary"
-              >
-                {t("orders.allocateItems.action")}
+      {(showAllocateButton || showReturns || showPayment) && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
+          {showReturns && (
+            <ButtonMenu
+              groups={[
+                {
+                  actions: returns.map((r) => ({
+                    label: t("orders.returns.receive.receive", {
+                      label: `#${r.id.slice(-7)}`,
+                    }),
+                    icon: <ArrowLongRight />,
+                    to: `/orders/${order.id}/returns/${r.id}/receive`,
+                  })),
+                },
+              ]}
+            >
+              <Button variant="secondary" size="small">
+                {t("orders.returns.receive.action")}
               </Button>
-            )}
-          </div>
-        ))}
+            </ButtonMenu>
+          )}
+
+          {showAllocateButton && (
+            <Button
+              onClick={() => navigate(`./allocate-items`)}
+              variant="secondary"
+            >
+              {t("orders.allocateItems.action")}
+            </Button>
+          )}
+
+          {showPayment && <CopyPaymentLink order={order} />}
+        </div>
+      )}
     </Container>
   )
 }
