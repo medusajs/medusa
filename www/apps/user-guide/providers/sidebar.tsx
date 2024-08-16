@@ -20,6 +20,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       initialItems={config.sidebar}
       staticSidebarItems={true}
       disableActiveTransition={true}
+      projectName="user-guide"
     >
       {children}
     </UiSidebarProvider>

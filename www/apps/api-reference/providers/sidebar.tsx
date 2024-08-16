@@ -33,6 +33,8 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       scrollableElement={scrollableElement}
       initialItems={config.sidebar}
       resetOnCondition={resetOnCondition}
+      persistState={false}
+      projectName="api"
     >
       {children}
     </UiSidebarProvider>

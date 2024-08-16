@@ -12,7 +12,7 @@ export const config: DocsConfig = {
       {
         type: "link",
         title: "Introduction",
-        path: "",
+        path: "introduction",
         loaded: true,
       },
     ],

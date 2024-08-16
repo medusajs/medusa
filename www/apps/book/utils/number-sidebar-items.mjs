@@ -14,24 +14,27 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
   const numberedItems = []
   /** @type {import("@/types").SidebarItem | undefined} */
   let parentItem
-  sidebarItems.forEach((item) => {
+  sidebarItems.forEach((item, index) => {
     if (item.type === "separator") {
       ;(parentItem?.children || numberedItems).push(item)
     }
+
+    // append current number to the item's title
+    item.number = `${numbering.join(".")}.`
+    item.title = `${item.number} ${item.title.trim()}`
+
     if (isTopItems) {
       // Add chapter category
       numberedItems.push({
         type: "category",
-        title: `Chapter ${padNumber(numbering[0])}`,
+        title: item.title,
         children: [],
         loaded: true,
+        initialOpen: false,
       })
 
       parentItem = numberedItems[numberedItems.length - 1]
     }
-    // append current number to the item's title
-    item.number = `${numbering.join(".")}.`
-    item.title = `${item.number} ${item.title.trim()}`
 
     if (item.children) {
       item.children = numberSidebarItems(item.children, [...numbering, 1])
