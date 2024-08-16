@@ -657,6 +657,9 @@ module.exports = {
         maximize: "maximize 500ms",
         flash: "flash 1500ms 1",
       },
+      scrollMargin: {
+        56: "56px",
+      },
     },
     fontFamily: {
       base: [

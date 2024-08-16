@@ -10,15 +10,12 @@ const ReferencePage = async () => {
   return (
     <AreaProvider area={"admin"}>
       <PageTitleProvider>
-        <h1 className="!text-h2 block lg:hidden">
+        <h1 className="!text-h2 scroll-m-56 lg:pl-4" id="introduction">
           Medusa V2 Admin API Reference
         </h1>
         <DividedLayout
           mainContent={
             <Section checkActiveOnScroll={true}>
-              <h1 className="!text-h2 hidden lg:block">
-                Medusa V2 Admin API Reference
-              </h1>
               <AdminContentV2 />
             </Section>
           }
