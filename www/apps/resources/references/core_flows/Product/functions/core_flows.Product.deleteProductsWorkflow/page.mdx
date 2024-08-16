@@ -11,7 +11,7 @@ This documentation provides a reference to the `deleteProductsWorkflow`. It belo
 
 This workflow deletes one or more products.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"deleteProductsWorkflow","steps":[{"type":"step","name":"getProductsStep","description":"This step retrieves products.","link":"../core_flows.Product.getProductsStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)\n\n","link":"../../../Common/functions/core_flows.Common.removeRemoteLinkStep/page.mdx","depth":2},{"type":"step","name":"deleteProductsStep","description":"This step deletes one or more products.","link":"../core_flows.Product.deleteProductsStep/page.mdx","depth":2},{"type":"hook","name":"productsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productsDeleted","depth":3}]}} />
 

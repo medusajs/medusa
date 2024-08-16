@@ -11,7 +11,7 @@ This documentation provides a reference to the `upsertVariantPricesWorkflow`. It
 
 This workflow creates or updates variants' prices.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"upsertVariantPricesWorkflow","steps":[{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)\n\n","link":"../../../Common/functions/core_flows.Common.removeRemoteLinkStep/page.mdx","depth":1},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":2},{"type":"step","name":"updatePriceSetsStep","description":"This step updates price sets.","link":"../../../Pricing/functions/core_flows.Pricing.updatePriceSetsStep/page.mdx","depth":3},{"type":"step","name":"createPriceSetsStep","description":"This step creates one or more price sets.","link":"../../../Pricing/functions/core_flows.Pricing.createPriceSetsStep/page.mdx","depth":4},{"type":"step","name":"createVariantPricingLinkStep","description":"This step creates links between variant and price set records.","link":"../core_flows.Product.createVariantPricingLinkStep/page.mdx","depth":5}]}} />
 

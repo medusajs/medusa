@@ -334,7 +334,7 @@ ___
 
 This workflow creates and deletes inventory levels.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"bulkCreateDeleteLevelsWorkflow","steps":[{"type":"step","name":"deleteInventoryLevelsFromItemAndLocationsStep","description":"This step removes one or more inventory levels by their associated inventory item and location.","link":"../Inventory/functions/core_flows.Inventory.deleteInventoryLevelsFromItemAndLocationsStep/page.mdx","depth":1},{"type":"step","name":"createInventoryLevelsStep","description":"This step creates one or more inventory levels.","link":"../Inventory/functions/core_flows.Inventory.createInventoryLevelsStep/page.mdx","depth":2}]}} />
 
@@ -352,7 +352,7 @@ ___
 
 This workflow creates one or more inventory items.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createInventoryItemsWorkflow","steps":[{"type":"step","name":"createInventoryItemsStep","description":"This step creates one or more inventory items.","link":"../Inventory/functions/core_flows.Inventory.createInventoryItemsStep/page.mdx","depth":1},{"type":"workflow","name":"createInventoryLevelsWorkflow","description":"This workflow creates one or more inventory levels.","link":"../Inventory/functions/core_flows.Inventory.createInventoryLevelsWorkflow/page.mdx","depth":2}]}} />
 
@@ -370,7 +370,7 @@ ___
 
 This workflow creates one or more inventory levels.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createInventoryLevelsWorkflow","steps":[{"type":"step","name":"validateInventoryLocationsStep","description":"This step ensures that the inventory levels exist for each specified pair of inventory item and location.","link":"../Inventory/functions/core_flows.Inventory.validateInventoryLocationsStep/page.mdx","depth":1},{"type":"step","name":"createInventoryLevelsStep","description":"This step creates one or more inventory levels.","link":"../Inventory/functions/core_flows.Inventory.createInventoryLevelsStep/page.mdx","depth":2}]}} />
 
@@ -388,7 +388,7 @@ ___
 
 This workflow deletes one or more inventory items.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteInventoryItemWorkflow","steps":[{"type":"step","name":"deleteInventoryItemStep","description":"This step deletes one or more inventory items.","link":"../Inventory/functions/core_flows.Inventory.deleteInventoryItemStep/page.mdx","depth":1},{"type":"step","name":"removeRemoteLinkStep","description":"This step deletes linked records of a record.\n\nLearn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#cascade-delete-linked-records)\n\n","link":"../Common/functions/core_flows.Common.removeRemoteLinkStep/page.mdx","depth":2}]}} />
 
@@ -406,7 +406,7 @@ ___
 
 This workflow deletes one or more inventory levels.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteInventoryLevelsWorkflow","steps":[{"type":"step","name":"deleteInventoryLevelsStep","description":"This step deletes one or more inventory levels.","link":"../Inventory/functions/core_flows.Inventory.deleteInventoryLevelsStep/page.mdx","depth":1}]}} />
 
@@ -424,7 +424,7 @@ ___
 
 This workflow updates one or more inventory items.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateInventoryItemsWorkflow","steps":[{"type":"step","name":"updateInventoryItemsStep","description":"This step updates one or more inventory items.","link":"../Inventory/functions/core_flows.Inventory.updateInventoryItemsStep/page.mdx","depth":1}]}} />
 
@@ -442,7 +442,7 @@ ___
 
 This workflow updates one or more inventory levels.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateInventoryLevelsWorkflow","steps":[{"type":"step","name":"updateInventoryLevelsStep","description":"This step updates one or more inventory levels.","link":"../Inventory/functions/core_flows.Inventory.updateInventoryLevelsStep/page.mdx","depth":1}]}} />
 
