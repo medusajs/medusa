@@ -82,8 +82,8 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
       { order, input },
       ({ order, input }) => {
         const pendingPayment = MathBN.sub(
-          order.summary.current_order_total,
-          order.summary.original_order_total
+          order.summary.raw_current_order_total,
+          order.summary.raw_original_order_total
         )
 
         if (MathBN.lte(pendingPayment, 0)) {
