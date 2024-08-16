@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/cancelBeginOrderEditWorkflow
+sidebar_label: cancelBeginOrderEditWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelBeginOrderEditWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `cancelBeginOrderEditWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow cancels a requested order edit.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelBeginOrderEditWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":2},{"type":"step","name":"cancelBeginOrderEditValidationStep","description":"This step validates that a requested order edit can be canceled.","link":"../core_flows.Order.cancelBeginOrderEditValidationStep/page.mdx","depth":3},{"type":"step","name":"deleteOrderChangesStep","description":"This step deletes order changes.","link":"../core_flows.Order.deleteOrderChangesStep/page.mdx","depth":4},{"type":"step","name":"deleteOrderShippingMethods","description":"This step deletes order shipping methods.","link":"../core_flows.Order.deleteOrderShippingMethods/page.mdx","depth":4}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelBeginOrderEditWorkflowInput","type":"[CancelBeginOrderEditWorkflowInput](../../../types/core_flows.CancelBeginOrderEditWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelBeginOrderEditWorkflow"/>

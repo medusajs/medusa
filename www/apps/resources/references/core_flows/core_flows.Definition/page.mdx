@@ -1019,7 +1019,7 @@ ___
 
 This workflow adds shipping methods to a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"addShippingMethodToWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"validateCartShippingOptionsStep","description":"This step validates shipping options to ensure they can be applied on a cart.","link":"../Definition/functions/core_flows.Definition.validateCartShippingOptionsStep/page.mdx","depth":2},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":3},{"type":"step","name":"removeShippingMethodFromCartStep","description":"This step removes shipping methods from a cart.","link":"../Definition/functions/core_flows.Definition.removeShippingMethodFromCartStep/page.mdx","depth":4},{"type":"step","name":"addShippingMethodToCartStep","description":"This step adds shipping methods to a cart.","link":"../Definition/functions/core_flows.Definition.addShippingMethodToCartStep/page.mdx","depth":5},{"type":"workflow","name":"updateTaxLinesWorkflow","description":"This workflow updates a cart's tax lines.","link":"../Definition/functions/core_flows.Definition.updateTaxLinesWorkflow/page.mdx","depth":6},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":7}]}} />
 
@@ -1033,7 +1033,7 @@ ___
 
 This workflow adds items to a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"addToCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"validateVariantPricesStep","description":"This step validates the specified variant objects to ensure they have prices.","link":"../Definition/functions/core_flows.Definition.validateVariantPricesStep/page.mdx","depth":2},{"type":"step","name":"getLineItemActionsStep","description":"This step returns lists of cart line items to create or update based on the \nprovided input.","link":"../Definition/functions/core_flows.Definition.getLineItemActionsStep/page.mdx","depth":3},{"type":"workflow","name":"confirmVariantInventoryWorkflow","description":"This workflow confirms for one or more variants that their inventory has a required quantity.","link":"../Definition/functions/core_flows.Definition.confirmVariantInventoryWorkflow/page.mdx","depth":4},{"type":"step","name":"createLineItemsStep","description":"This step creates line item in a cart.","link":"../Definition/functions/core_flows.Definition.createLineItemsStep/page.mdx","depth":5},{"type":"step","name":"updateLineItemsStep","description":"This step updates a cart's line items.","link":"../Definition/functions/core_flows.Definition.updateLineItemsStep/page.mdx","depth":5},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":6},{"type":"step","name":"refreshCartShippingMethodsStep","description":"This step refreshes the shipping methods of a cart.","link":"../Definition/functions/core_flows.Definition.refreshCartShippingMethodsStep/page.mdx","depth":7},{"type":"workflow","name":"updateTaxLinesWorkflow","description":"This workflow updates a cart's tax lines.","link":"../Definition/functions/core_flows.Definition.updateTaxLinesWorkflow/page.mdx","depth":7},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":8},{"type":"workflow","name":"refreshPaymentCollectionForCartWorkflow","description":"This workflow refreshes the payment collections of a cart.","link":"../Definition/functions/core_flows.Definition.refreshPaymentCollectionForCartWorkflow/page.mdx","depth":9}]}} />
 
@@ -1051,7 +1051,7 @@ ___
 
 This workflow completes a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"completeCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"validateCartPaymentsStep","description":"This step validates a cart's payment sessions. Their status must\nbe `pending` or `requires_more`.","link":"../Definition/functions/core_flows.Definition.validateCartPaymentsStep/page.mdx","depth":2},{"type":"step","name":"authorizePaymentSessionStep","description":"This step authorizes a payment session.","link":"../Payment/functions/core_flows.Payment.authorizePaymentSessionStep/page.mdx","depth":3},{"type":"step","name":"reserveInventoryStep","description":"This step reserves the quantity of line items from the associated\nvariant's inventory.","link":"../Definition/functions/core_flows.Definition.reserveInventoryStep/page.mdx","depth":4},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":4},{"type":"step","name":"createOrdersStep","description":"This step creates one or more orders.","link":"../Order/functions/core_flows.Order.createOrdersStep/page.mdx","depth":5},{"type":"step","name":"createRemoteLinkStep","description":"This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).\n\n","link":"../Common/functions/core_flows.Common.createRemoteLinkStep/page.mdx","depth":6},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../Common/functions/core_flows.Common.emitEventStep/page.mdx","depth":7}]}} />
 
@@ -1069,7 +1069,7 @@ ___
 
 This workflow confirms for one or more variants that their inventory has a required quantity.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"confirmVariantInventoryWorkflow","steps":[{"type":"step","name":"confirmInventoryStep","description":"This step confirms for one or more variants that their inventory has a required quantity.","link":"../Definition/functions/core_flows.Definition.confirmInventoryStep/page.mdx","depth":1}]}} />
 
@@ -1087,7 +1087,7 @@ ___
 
 This workflow creates a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createCartWorkflow","steps":[{"type":"step","name":"findSalesChannelStep","description":"This step either retrieves a sales channel either using the ID provided as an input, or, if no ID\nis provided, the default sales channel of the first store.","link":"../Definition/functions/core_flows.Definition.findSalesChannelStep/page.mdx","depth":1},{"type":"step","name":"findOneOrAnyRegionStep","description":"This step retrieves a region either by the provided ID or the first region in the first store.","link":"../Definition/functions/core_flows.Definition.findOneOrAnyRegionStep/page.mdx","depth":1},{"type":"step","name":"findOrCreateCustomerStep","description":"This step either finds a customer matching the specified ID, or finds / create a customer \nmatching the specified email. If both ID and email are provided, ID takes precedence.","link":"../Definition/functions/core_flows.Definition.findOrCreateCustomerStep/page.mdx","depth":1},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":2},{"type":"step","name":"validateVariantPricesStep","description":"This step validates the specified variant objects to ensure they have prices.","link":"../Definition/functions/core_flows.Definition.validateVariantPricesStep/page.mdx","depth":3},{"type":"workflow","name":"confirmVariantInventoryWorkflow","description":"This workflow confirms for one or more variants that their inventory has a required quantity.","link":"../Definition/functions/core_flows.Definition.confirmVariantInventoryWorkflow/page.mdx","depth":4},{"type":"step","name":"getVariantPriceSetsStep","description":"This step retrieves the calculated price sets of the specified variants.","link":"../Definition/functions/core_flows.Definition.getVariantPriceSetsStep/page.mdx","depth":5},{"type":"step","name":"createCartsStep","description":"This step creates a cart.","link":"../Definition/functions/core_flows.Definition.createCartsStep/page.mdx","depth":6},{"type":"workflow","name":"updateTaxLinesWorkflow","description":"This workflow updates a cart's tax lines.","link":"../Definition/functions/core_flows.Definition.updateTaxLinesWorkflow/page.mdx","depth":7},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":8},{"type":"workflow","name":"refreshPaymentCollectionForCartWorkflow","description":"This workflow refreshes the payment collections of a cart.","link":"../Definition/functions/core_flows.Definition.refreshPaymentCollectionForCartWorkflow/page.mdx","depth":9},{"type":"hook","name":"cartCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#cartCreated","depth":10}]}} />
 
@@ -1137,7 +1137,7 @@ ___
 
 This workflow creates a payment collection for a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"createPaymentCollectionForCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"validateExistingPaymentCollectionStep","description":"This step validates that a cart doesn't have a payment collection.","link":"../Definition/functions/core_flows.Definition.validateExistingPaymentCollectionStep/page.mdx","depth":2},{"type":"step","name":"createPaymentCollectionsStep","description":"This step creates payment collections in a cart.","link":"../Definition/functions/core_flows.Definition.createPaymentCollectionsStep/page.mdx","depth":3},{"type":"step","name":"createRemoteLinkStep","description":"This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).\n\n","link":"../Common/functions/core_flows.Common.createRemoteLinkStep/page.mdx","depth":4}]}} />
 
@@ -1151,7 +1151,7 @@ ___
 
 This workflow lists the shipping options of a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"listShippingOptionsForCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1}]}} />
 
@@ -1169,7 +1169,7 @@ ___
 
 This workflow refreshes the payment collections of a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"refreshPaymentCollectionForCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"when","condition":"{\n      const valueIsEqual = MathBN.eq(\n        cart.payment_collection?.raw_amount ?? -1,\n        cart.raw_total\n      )\n\n      if (valueIsEqual) {\n        return cart.payment_collection.currency_code !== cart.currency_code\n      }\n\n      return true\n    }","depth":"2","steps":[{"type":"workflow","name":"deletePaymentSessionsWorkflow","description":"This workflow deletes one or more payment sessions.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.deletePaymentSessionsWorkflow/page.mdx","depth":2},{"type":"step","name":"updatePaymentCollectionStep","description":"This step updates payment collections matching the specified filters.","link":"../Payment_Collection/functions/core_flows.Payment_Collection.updatePaymentCollectionStep/page.mdx","depth":2}]}]}} />
 
@@ -1183,7 +1183,7 @@ ___
 
 This workflow updates a cart's promotions.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateCartPromotionsWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"getPromotionCodesToApply","description":"This step retrieves the promotion codes to apply on a cart.","link":"../Definition/functions/core_flows.Definition.getPromotionCodesToApply/page.mdx","depth":2},{"type":"step","name":"getActionsToComputeFromPromotionsStep","description":"This step retrieves the actions to compute based on the promotions\napplied on a cart.","link":"../Definition/functions/core_flows.Definition.getActionsToComputeFromPromotionsStep/page.mdx","depth":3},{"type":"step","name":"prepareAdjustmentsFromPromotionActionsStep","description":"This step prepares the line item or shipping method adjustments using\nactions computed by the Promotion Module.","link":"../Definition/functions/core_flows.Definition.prepareAdjustmentsFromPromotionActionsStep/page.mdx","depth":4},{"type":"step","name":"removeLineItemAdjustmentsStep","description":"This step removes line item adjustments from a cart.","link":"../Definition/functions/core_flows.Definition.removeLineItemAdjustmentsStep/page.mdx","depth":5},{"type":"step","name":"removeShippingMethodAdjustmentsStep","description":"This step removes shipping method adjustments from a cart.","link":"../Definition/functions/core_flows.Definition.removeShippingMethodAdjustmentsStep/page.mdx","depth":5},{"type":"step","name":"createLineItemAdjustmentsStep","description":"This step creates line item adjustments in a cart.","link":"../Definition/functions/core_flows.Definition.createLineItemAdjustmentsStep/page.mdx","depth":5},{"type":"step","name":"createShippingMethodAdjustmentsStep","description":"This step creates shipping method adjustments for a cart.","link":"../Definition/functions/core_flows.Definition.createShippingMethodAdjustmentsStep/page.mdx","depth":5},{"type":"step","name":"updateCartPromotionsStep","description":"This step updates the promotions applied on a cart.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsStep/page.mdx","depth":5}]}} />
 
@@ -1197,7 +1197,7 @@ ___
 
 This workflow updates a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateCartWorkflow","steps":[{"type":"step","name":"findSalesChannelStep","description":"This step either retrieves a sales channel either using the ID provided as an input, or, if no ID\nis provided, the default sales channel of the first store.","link":"../Definition/functions/core_flows.Definition.findSalesChannelStep/page.mdx","depth":1},{"type":"step","name":"findOneOrAnyRegionStep","description":"This step retrieves a region either by the provided ID or the first region in the first store.","link":"../Definition/functions/core_flows.Definition.findOneOrAnyRegionStep/page.mdx","depth":1},{"type":"step","name":"findOrCreateCustomerStep","description":"This step either finds a customer matching the specified ID, or finds / create a customer \nmatching the specified email. If both ID and email are provided, ID takes precedence.","link":"../Definition/functions/core_flows.Definition.findOrCreateCustomerStep/page.mdx","depth":1},{"type":"step","name":"updateCartsStep","description":"This step updates a cart.","link":"../Definition/functions/core_flows.Definition.updateCartsStep/page.mdx","depth":2},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":3},{"type":"step","name":"refreshCartShippingMethodsStep","description":"This step refreshes the shipping methods of a cart.","link":"../Definition/functions/core_flows.Definition.refreshCartShippingMethodsStep/page.mdx","depth":4},{"type":"workflow","name":"updateTaxLinesWorkflow","description":"This workflow updates a cart's tax lines.","link":"../Definition/functions/core_flows.Definition.updateTaxLinesWorkflow/page.mdx","depth":4},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":5},{"type":"workflow","name":"refreshPaymentCollectionForCartWorkflow","description":"This workflow refreshes the payment collections of a cart.","link":"../Definition/functions/core_flows.Definition.refreshPaymentCollectionForCartWorkflow/page.mdx","depth":6},{"type":"hook","name":"cartUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#cartUpdated","depth":7}]}} />
 
@@ -1237,7 +1237,7 @@ ___
 
 This workflow updates a cart's line item.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateLineItemInCartWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"validateVariantPricesStep","description":"This step validates the specified variant objects to ensure they have prices.","link":"../Definition/functions/core_flows.Definition.validateVariantPricesStep/page.mdx","depth":2},{"type":"workflow","name":"confirmVariantInventoryWorkflow","description":"This workflow confirms for one or more variants that their inventory has a required quantity.","link":"../Definition/functions/core_flows.Definition.confirmVariantInventoryWorkflow/page.mdx","depth":3},{"type":"step","name":"updateLineItemsStepWithSelector","description":"This step updates line items.","link":"../Definition/functions/core_flows.Definition.updateLineItemsStepWithSelector/page.mdx","depth":4},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../Common/functions/core_flows.Common.useRemoteQueryStep/page.mdx","depth":5},{"type":"step","name":"refreshCartShippingMethodsStep","description":"This step refreshes the shipping methods of a cart.","link":"../Definition/functions/core_flows.Definition.refreshCartShippingMethodsStep/page.mdx","depth":6},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":7},{"type":"workflow","name":"refreshPaymentCollectionForCartWorkflow","description":"This workflow refreshes the payment collections of a cart.","link":"../Definition/functions/core_flows.Definition.refreshPaymentCollectionForCartWorkflow/page.mdx","depth":8}]}} />
 
@@ -1255,7 +1255,7 @@ ___
 
 This workflow updates a cart's tax lines.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"updateTaxLinesWorkflow","steps":[{"type":"step","name":"retrieveCartWithLinksStep","description":"This step retrieves a cart's details with its linked records.","link":"../Definition/functions/core_flows.Definition.retrieveCartWithLinksStep/page.mdx","depth":1},{"type":"step","name":"getItemTaxLinesStep","description":"This step retrieves the tax lines of the specified line items in a cart.","link":"../Definition/functions/core_flows.Definition.getItemTaxLinesStep/page.mdx","depth":2},{"type":"step","name":"setTaxLinesForItemsStep","description":"This step sets the tax lines of shipping methods and line items in a cart.","link":"../Definition/functions/core_flows.Definition.setTaxLinesForItemsStep/page.mdx","depth":3}]}} />
 
@@ -1308,7 +1308,7 @@ ___
 
 This workflow deletes line items from a cart.
 
-### Diagram
+### Steps
 
 <WorkflowDiagram workflow={{"name":"deleteLineItemsWorkflow","steps":[{"type":"step","name":"deleteLineItemsStep","description":"This step deletes line items.","link":"../Definition/functions/core_flows.Definition.deleteLineItemsStep/page.mdx","depth":1},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../Definition/functions/core_flows.Definition.updateCartPromotionsWorkflow/page.mdx","depth":2}]}} />
 
