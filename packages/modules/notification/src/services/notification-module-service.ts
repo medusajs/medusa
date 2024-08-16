@@ -162,4 +162,34 @@ export default class NotificationModuleService
 
     return createdNotifications
   }
+
+  // @ts-expect-error
+  async handleEvent(event: any, sharedContext?: Context): Promise<void> {
+    const subscribers = this.subscribers[event.name] ?? []
+
+    await promiseAll(
+      subscribers.map(async (subscriber) => {
+        const subConfig = subscriber.config
+
+        const notificationData = {
+          template: "", // QUESTION: Do we need templates? Isn't that specific to SendGrid?
+          channel: subConfig.channel,
+          to: get(event.data, subConfig.to),
+          trigger_type: event.name,
+          resource_id: get(payload, event.resource_id),
+          data: event.data,
+        }
+
+        // We don't want to fail all handlers, so we catch and log errors only
+        try {
+          await this.createNotifications(notificationData)
+        } catch (err) {
+          logger.error(
+            `Failed to send notification for ${event.name}`,
+            err.message
+          )
+        }
+      })
+    )
+  }
 }
