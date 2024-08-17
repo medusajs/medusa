@@ -73,12 +73,26 @@ post:
     content:
       application/json:
         schema:
+          allOf:
+            - type: object
+              description: SUMMARY
+              required:
+                - order_id
+              properties:
+                order_id:
+                  type: string
+                  title: order_id
+                  description: The order's order id.
+            - type: object
+              description: SUMMARY
+              properties:
+                additional_data:
+                  type: object
+                  description: >-
+                    Pass additional custom data to the API route. This data is
+                    passed to the underlying workflow under the
+                    `additional_data` parameter.
           description: SUMMARY
-          properties:
-            order_id:
-              type: string
-              title: order_id
-              description: The order's order id.
   x-codeSamples:
     - lang: Shell
       label: cURL

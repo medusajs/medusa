@@ -1,15 +1,9 @@
-delete:
-  operationId: DeleteOrderEditsId
-  summary: Delete a Order Edit
-  description: Delete a order edit.
+post:
+  operationId: PostPaymentCollections
+  summary: Create Payment Collection
+  description: Create a payment collection.
   x-authenticated: true
   parameters:
-    - name: id
-      in: path
-      description: The order edit's ID.
-      required: true
-      schema:
-        type: string
     - name: expand
       in: query
       description: Comma-separated relations that should be expanded in the returned data.
@@ -22,20 +16,18 @@ delete:
           data.
     - name: fields
       in: query
-      description: >-
-        Comma-separated fields that should be included in the returned data. if
-        a field is prefixed with `+` it will be added to the default fields,
-        using `-` will remove it from the default fields. without prefix it will
-        replace the entire default fields.
+      description: |-
+        Comma-separated fields that should be included in the returned data.
+         * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+         * without prefix it will replace the entire default fields.
       required: false
       schema:
         type: string
         title: fields
-        description: >-
+        description: |-
           Comma-separated fields that should be included in the returned data.
-          if a field is prefixed with `+` it will be added to the default
-          fields, using `-` will remove it from the default fields. without
-          prefix it will replace the entire default fields.
+           * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+           * without prefix it will replace the entire default fields.
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -69,41 +61,37 @@ delete:
     - api_token: []
     - cookie_auth: []
     - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: SUMMARY
+          required:
+            - order_id
+          properties:
+            order_id:
+              type: string
+              title: order_id
+              description: The payment collection's order id.
+            amount:
+              type: number
+              title: amount
+              description: The payment collection's amount.
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/admin_order-edits_{id}/delete.sh
+        $ref: ../code_samples/Shell/admin_payment-collections/post.sh
   tags:
-    - Order Edits
+    - Payment Collections
   responses:
     '200':
       description: OK
       content:
         application/json:
           schema:
-            type: object
-            description: SUMMARY
-            required:
-              - id
-              - object
-              - deleted
-            properties:
-              id:
-                type: string
-                title: id
-                description: The order edit's ID.
-              object:
-                type: string
-                title: object
-                description: The order edit's object.
-              deleted:
-                type: boolean
-                title: deleted
-                description: The order edit's deleted.
-              parent:
-                type: object
-                description: The order edit's parent.
+            $ref: ../components/schemas/AdminPaymentCollectionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -116,3 +104,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createOrderPaymentCollectionWorkflow

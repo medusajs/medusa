@@ -75,19 +75,17 @@
  *   content:
  *     application/json:
  *       schema:
+ *         allOf:
+ *           - $ref: "#/components/schemas/AdminUpdateProductOption"
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
  *         description: SUMMARY
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The product's title.
- *           values:
- *             type: array
- *             description: The product's values.
- *             items:
- *               type: string
- *               title: values
- *               description: The value's values.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
