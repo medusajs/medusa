@@ -6,9 +6,11 @@ export default async function loadSubscribers({ container }) {
     ModuleRegistrationName.NOTIFICATION
   )
 
-  notificationService.subscribe(["order.created", "order.updated"], {
-    to: "email",
-    channel: "email",
-    resource_id: "id",
-  })
+  notificationService.subscribe(
+    ["order.created", "order.updated"],
+    "sendgrid",
+    {
+      channel: "email",
+    }
+  )
 }

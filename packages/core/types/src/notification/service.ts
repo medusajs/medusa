@@ -1,13 +1,37 @@
 import { FindConfig } from "../common"
+import { Event } from "../event-bus"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import { FilterableNotificationProps, NotificationDTO } from "./common"
 import { CreateNotificationDTO } from "./mutations"
 
+type EventNotificationData = {
+  resourceId: string
+  to: string
+}
+
 /**
  * The main service interface for the Notification Module.
  */
 export interface INotificationModuleService extends IModuleService {
+  /**
+   * This method is used by providers to subscribe to events.
+   * @param {string | string[]} event- The event(s) to subscribe to.
+   * @param {string} provider - The provider to subscribe to the event.
+   * @param {config} config - Specify how the provider
+   */
+  subscribe(
+    eventName: string | string[],
+    provider: string,
+    config: Record<string, unknown>
+  ): void
+
+  /**
+   * This method is used to handle incoming events and send notifications to the subscribed providers.
+   * @param {Event<T>} event- The event received
+   */
+  handleEvent<T extends EventNotificationData>(event: Event<T>): Promise<void>
+
   /**
    * This method is used to send multiple notifications, and store the requests in the DB.
    *

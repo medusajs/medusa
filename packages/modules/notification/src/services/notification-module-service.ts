@@ -1,9 +1,11 @@
 import {
   Context,
   DAL,
+  Event,
   InferEntityType,
   INotificationModuleService,
   InternalModuleDeclaration,
+  Logger,
   ModulesSdkTypes,
   NotificationTypes,
 } from "@medusajs/types"
@@ -26,6 +28,12 @@ type InjectedDependencies = {
     typeof Notification
   >
   notificationProviderService: NotificationProviderService
+  logger: Logger
+}
+
+type EventNotificationData = {
+  resourceId: string
+  to: string
 }
 
 export default class NotificationModuleService
@@ -39,12 +47,18 @@ export default class NotificationModuleService
     typeof Notification
   >
   protected readonly notificationProviderService_: NotificationProviderService
+  protected readonly logger_: Logger
+
+  protected subscribers: {
+    [event: string]: { provider: string; config: { channels: string[] } }[]
+  } = {}
 
   constructor(
     {
       baseRepository,
       notificationService,
       notificationProviderService,
+      logger,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -53,6 +67,40 @@ export default class NotificationModuleService
     this.baseRepository_ = baseRepository
     this.notificationService_ = notificationService
     this.notificationProviderService_ = notificationProviderService
+    this.logger_ = logger
+  }
+
+  __hooks = {
+    onApplicationStart: async () => {
+      await this.registerSubscribers()
+    },
+  }
+
+  async registerSubscribers() {
+    const providerSubscriptions =
+      this.notificationProviderService_.registerSubscribers()
+
+    providerSubscriptions.forEach(({ provider, events }) => {
+      Object.entries(events).forEach(([event, config]) => {
+        this.subscribe(event, provider, config)
+      })
+    })
+  }
+
+  subscribe(
+    event: string | string[],
+    provider: string,
+    config: { channels: string[] }
+  ): void {
+    const events = Array.isArray(event) ? event : [event]
+
+    events.forEach((e) => {
+      if (!this.subscribers[e]) {
+        this.subscribers[e] = []
+      }
+
+      this.subscribers[e].push({ provider, config })
+    })
   }
 
   // @ts-expect-error
@@ -163,28 +211,37 @@ export default class NotificationModuleService
     return createdNotifications
   }
 
-  // @ts-expect-error
-  async handleEvent(event: any, sharedContext?: Context): Promise<void> {
+  private buildNotificationData<T extends EventNotificationData>(
+    event: Event<T>,
+    config: { channels: string[] }
+  ) {
+    const data = {
+      template: "", // QUESTION: Do we need templates? Isn't that somewhat specific to SendGrid?
+      to: event.data.to ?? "",
+      trigger_type: event.name,
+      resource_id: event.data.resourceId,
+      data: event.data,
+    }
+
+    return config.channels.map((channel) => ({
+      ...data,
+      channel,
+    }))
+  }
+
+  async handleEvent<T extends EventNotificationData>(
+    event: Event<T>
+  ): Promise<void> {
     const subscribers = this.subscribers[event.name] ?? []
 
     await promiseAll(
-      subscribers.map(async (subscriber) => {
-        const subConfig = subscriber.config
+      subscribers.map(async ({ provider: providerId, config }) => {
+        const notifications = this.buildNotificationData(event, config)
 
-        const notificationData = {
-          template: "", // QUESTION: Do we need templates? Isn't that specific to SendGrid?
-          channel: subConfig.channel,
-          to: get(event.data, subConfig.to),
-          trigger_type: event.name,
-          resource_id: get(payload, event.resource_id),
-          data: event.data,
-        }
-
-        // We don't want to fail all handlers, so we catch and log errors only
         try {
-          await this.createNotifications(notificationData)
+          await this.createNotifications(notifications)
         } catch (err) {
-          logger.error(
+          this.logger_.error(
             `Failed to send notification for ${event.name}`,
             err.message
           )

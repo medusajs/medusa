@@ -10,12 +10,13 @@ export default async function notificationsHandler({
     ModuleRegistrationName.NOTIFICATION
   )
 
-  // @ts-ignore
+  console.log("In subscriber: ", notificationService)
+
   await notificationService.handleEvent(event)
 }
 
 export const config: SubscriberConfig = {
-  event: "*",
+  event: ["product.created", "product.updated"],
   context: {
     subscriberId: "nofications-handler",
   },

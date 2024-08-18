@@ -148,19 +148,7 @@ export async function loadInternalModule(
     )
   }
 
-  const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
-  const error = await runLoaders(loaders, {
-    container,
-    localContainer,
-    logger,
-    resolution,
-    loaderOnly,
-    registrationName,
-  })
-
-  if (error) {
-    return error
-  }
+  
 
   const moduleService = moduleResources.moduleService ?? loadedModule.service
 
@@ -174,6 +162,20 @@ export async function loadInternalModule(
       )
     }).singleton(),
   })
+
+  const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
+  const error = await runLoaders(loaders, {
+    container,
+    localContainer,
+    logger,
+    resolution,
+    loaderOnly,
+    registrationName,
+  })
+
+  if (error) {
+    return error
+  }
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
@@ -346,7 +348,7 @@ export async function loadResources(
   }
 }
 
-async function runLoaders(
+export async function runLoaders(
   loaders: Function[] = [],
   {
     localContainer,

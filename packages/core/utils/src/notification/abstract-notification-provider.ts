@@ -1,4 +1,4 @@
-import { NotificationTypes, INotificationProvider } from "@medusajs/types"
+import { INotificationProvider, NotificationTypes } from "@medusajs/types"
 
 /**
  * ### constructor
@@ -87,5 +87,9 @@ export class AbstractNotificationProviderService
         Object.getPrototypeOf(this).constructor.name
       }`
     )
+  }
+
+  getEvents(): { [event: string]: { channels: string[] } } {
+    return {}
   }
 }

@@ -1,7 +1,10 @@
 import { DAL, InferEntityType, NotificationTypes } from "@medusajs/types"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
-import { NotificationProviderRegistrationPrefix } from "@types"
+import {
+  NotificationIdentifiersRegistrationName,
+  NotificationProviderRegistrationPrefix,
+} from "@types"
 
 type InjectedDependencies = {
   notificationProviderRepository: DAL.RepositoryService<
@@ -31,6 +34,21 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
       container.notificationProviderRepository
   }
 
+  registerSubscribers(): {
+    provider: string
+    events: { [event: string]: { channels: string[] } }
+  }[] {
+    const providers = this.listProviderRegistrations()
+    const providerEvents = providers.map((providerId) => {
+      const provider = this.retrieveProviderRegistration(providerId)
+      const eventsConfig = provider.getEventsConfig()
+
+      return { provider: providerId, events: eventsConfig }
+    })
+
+    return providerEvents
+  }
+
   protected retrieveProviderRegistration(
     providerId: string
   ): NotificationTypes.INotificationProvider {
@@ -46,13 +64,23 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
     }
   }
 
+  protected listProviderRegistrations(): string[] {
+    try {
+      return this.__container__[NotificationIdentifiersRegistrationName]
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Could not find notification providers`
+      )
+    }
+  }
+
   async getProviderForChannel(
     channel: string
   ): Promise<InferEntityType<typeof NotificationProvider> | undefined> {
     if (!this.providersCache) {
       const providers = await this.notificationProviderRepository_.find()
 
-      type name = (typeof NotificationProvider)["name"]
       this.providersCache = new Map(
         providers.flatMap((provider) =>
           provider.channels.map((c) => [c, provider])

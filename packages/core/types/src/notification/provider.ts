@@ -45,4 +45,9 @@ export interface INotificationProvider {
   send(
     notification: ProviderSendNotificationDTO
   ): Promise<ProviderSendNotificationResultsDTO>
+
+  /**
+   * This method is a getter for events that the provider can handle.
+   */
+  getEventsConfig(): { [event: string]: { channels: string[] } }
 }

@@ -1,7 +1,8 @@
-import { Constructor } from "./index"
+import { Constructor } from "./index";
 
 export type ModuleProviderExports = {
   services: Constructor<any>[]
+  loaders?: ((options: { container: any; options: Record<string, unknown> }) => Promise<void>)[]
 }
 
 export type ModuleProvider = {
