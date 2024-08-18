@@ -237,7 +237,7 @@ export function SortableTree<T extends TreeItem>({
   function handleCollapse(id: UniqueIdentifier) {
     setCollapsedState((state) => ({
       ...state,
-      [id]: !state[id] ?? true,
+      [id]: state[id] ? false : true,
     }))
   }
 

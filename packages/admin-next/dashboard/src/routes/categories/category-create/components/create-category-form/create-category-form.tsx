@@ -165,7 +165,6 @@ export const CreateCategoryForm = ({
               className="bg-ui-bg-subtle flex-1"
             >
               <CreateCategoryNesting form={form} shouldFreeze={shouldFreeze} />
-              {/* <SortableTree collapsible /> */}
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
           <RouteFocusModal.Footer>

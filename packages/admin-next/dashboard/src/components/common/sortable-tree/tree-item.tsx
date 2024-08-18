@@ -59,6 +59,7 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
         className={clx("-mb-px list-none", {
           "pointer-events-none": disableInteraction,
           "select-none": disableSelection,
+          "[&:first-of-type>div]:border-t-0": !clone,
         })}
         {...props}
       >
