@@ -114,64 +114,15 @@ paths:
         content:
           application/json:
             schema:
+              allOf:
+                - $ref: '#/components/schemas/CreateCartWorkflowInput'
+                - type: object
+                  description: SUMMARY
+                  properties:
+                    additional_data:
+                      type: object
+                      description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
               description: SUMMARY
-              properties:
-                region_id:
-                  type: string
-                  title: region_id
-                  description: The cart's region id.
-                customer_id:
-                  type: string
-                  title: customer_id
-                  description: The cart's customer id.
-                sales_channel_id:
-                  type: string
-                  title: sales_channel_id
-                  description: The cart's sales channel id.
-                email:
-                  type: string
-                  title: email
-                  description: The cart's email.
-                  format: email
-                currency_code:
-                  type: string
-                  title: currency_code
-                  description: The cart's currency code.
-                shipping_address_id:
-                  type: string
-                  title: shipping_address_id
-                  description: The cart's shipping address id.
-                billing_address_id:
-                  type: string
-                  title: billing_address_id
-                  description: The cart's billing address id.
-                shipping_address:
-                  oneOf:
-                    - type: string
-                      title: shipping_address
-                      description: The cart's shipping address.
-                    - $ref: '#/components/schemas/CreateCartAddress'
-                billing_address:
-                  oneOf:
-                    - type: string
-                      title: billing_address
-                      description: The cart's billing address.
-                    - $ref: '#/components/schemas/CreateCartAddress'
-                metadata:
-                  type: object
-                  description: The cart's metadata.
-                items:
-                  type: array
-                  description: The cart's items.
-                  items:
-                    $ref: '#/components/schemas/CreateCartCreateLineItem'
-                promo_codes:
-                  type: array
-                  description: The cart's promo codes.
-                  items:
-                    type: string
-                    title: promo_codes
-                    description: The promo code's promo codes.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -332,48 +283,15 @@ paths:
         content:
           application/json:
             schema:
+              allOf:
+                - $ref: '#/components/schemas/UpdateCartData'
+                - type: object
+                  description: SUMMARY
+                  properties:
+                    additional_data:
+                      type: object
+                      description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
               description: SUMMARY
-              properties:
-                region_id:
-                  type: string
-                  title: region_id
-                  description: The cart's region id.
-                customer_id:
-                  type: string
-                  title: customer_id
-                  description: The cart's customer id.
-                sales_channel_id:
-                  type: string
-                  title: sales_channel_id
-                  description: The cart's sales channel id.
-                email:
-                  type: string
-                  title: email
-                  description: The cart's email.
-                  format: email
-                currency_code:
-                  type: string
-                  title: currency_code
-                  description: The cart's currency code.
-                shipping_address_id:
-                  type: string
-                  title: shipping_address_id
-                  description: The cart's shipping address id.
-                billing_address_id:
-                  type: string
-                  title: billing_address_id
-                  description: The cart's billing address id.
-                billing_address:
-                  oneOf:
-                    - $ref: '#/components/schemas/CreateAddress'
-                    - $ref: '#/components/schemas/UpdateAddress'
-                shipping_address:
-                  oneOf:
-                    - $ref: '#/components/schemas/CreateAddress'
-                    - $ref: '#/components/schemas/UpdateAddress'
-                metadata:
-                  type: object
-                  description: The cart's metadata.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -14625,6 +14543,15 @@ components:
           description: The payment collection's payments.
           items:
             $ref: '#/components/schemas/BasePayment'
+    AdminPaymentCollectionResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPaymentCollectionResponse
+      required:
+        - payment_collection
+      properties:
+        payment_collection:
+          $ref: '#/components/schemas/AdminPaymentCollection'
     AdminPaymentProvider:
       type: object
       description: The payment provider's payment providers.
@@ -21447,6 +21374,67 @@ components:
         metadata:
           type: object
           description: The item's metadata.
+    CreateCartWorkflowInput:
+      type: object
+      description: SUMMARY
+      x-schemaName: CreateCartWorkflowInput
+      properties:
+        region_id:
+          type: string
+          title: region_id
+          description: The cart's region id.
+        customer_id:
+          type: string
+          title: customer_id
+          description: The cart's customer id.
+        sales_channel_id:
+          type: string
+          title: sales_channel_id
+          description: The cart's sales channel id.
+        email:
+          type: string
+          title: email
+          description: The cart's email.
+          format: email
+        currency_code:
+          type: string
+          title: currency_code
+          description: The cart's currency code.
+        shipping_address_id:
+          type: string
+          title: shipping_address_id
+          description: The cart's shipping address id.
+        billing_address_id:
+          type: string
+          title: billing_address_id
+          description: The cart's billing address id.
+        shipping_address:
+          oneOf:
+            - type: string
+              title: shipping_address
+              description: The cart's shipping address.
+            - $ref: '#/components/schemas/CreateCartAddress'
+        billing_address:
+          oneOf:
+            - type: string
+              title: billing_address
+              description: The cart's billing address.
+            - $ref: '#/components/schemas/CreateCartAddress'
+        metadata:
+          type: object
+          description: The cart's metadata.
+        items:
+          type: array
+          description: The cart's items.
+          items:
+            $ref: '#/components/schemas/CreateCartCreateLineItem'
+        promo_codes:
+          type: array
+          description: The cart's promo codes.
+          items:
+            type: string
+            title: promo_codes
+            description: The promo code's promo codes.
     CreateOrderReturnReason:
       type: object
       description: SUMMARY
@@ -21474,33 +21462,6 @@ components:
         metadata:
           type: object
           description: The return reason's metadata.
-    CreateUser:
-      type: object
-      description: SUMMARY
-      x-schemaName: CreateUser
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          title: email
-          description: The user's email.
-          format: email
-        first_name:
-          type: string
-          title: first_name
-          description: The user's first name.
-        last_name:
-          type: string
-          title: last_name
-          description: The user's last name.
-        avatar_url:
-          type: string
-          title: avatar_url
-          description: The user's avatar url.
-        metadata:
-          type: object
-          description: The user's metadata.
     Error:
       title: Response Error
       type: object
@@ -25441,6 +25402,51 @@ components:
         metadata:
           type: object
           description: The shipping address's metadata.
+    UpdateCartData:
+      type: object
+      description: SUMMARY
+      x-schemaName: UpdateCartData
+      properties:
+        region_id:
+          type: string
+          title: region_id
+          description: The cart's region id.
+        customer_id:
+          type: string
+          title: customer_id
+          description: The cart's customer id.
+        sales_channel_id:
+          type: string
+          title: sales_channel_id
+          description: The cart's sales channel id.
+        email:
+          type: string
+          title: email
+          description: The cart's email.
+          format: email
+        currency_code:
+          type: string
+          title: currency_code
+          description: The cart's currency code.
+        shipping_address_id:
+          type: string
+          title: shipping_address_id
+          description: The cart's shipping address id.
+        billing_address_id:
+          type: string
+          title: billing_address_id
+          description: The cart's billing address id.
+        billing_address:
+          oneOf:
+            - $ref: '#/components/schemas/CreateAddress'
+            - $ref: '#/components/schemas/UpdateAddress'
+        shipping_address:
+          oneOf:
+            - $ref: '#/components/schemas/CreateAddress'
+            - $ref: '#/components/schemas/UpdateAddress'
+        metadata:
+          type: object
+          description: The cart's metadata.
     UpdateOrderReturnReason:
       type: object
       description: SUMMARY
