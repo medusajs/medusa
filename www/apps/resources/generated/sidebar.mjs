@@ -10642,6 +10642,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/createOrderPaymentCollectionWorkflow",
+                    "title": "createOrderPaymentCollectionWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/createOrderShipmentWorkflow",
                     "title": "createOrderShipmentWorkflow",
                     "children": []
@@ -11595,6 +11603,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/setOrderTaxLinesForItemsStep",
                     "title": "setOrderTaxLinesForItemsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/core_flows/Order/functions/core_flows.Order.throwIfActivePaymentCollectionExists",
+                    "title": "throwIfActivePaymentCollectionExists",
                     "children": []
                   },
                   {
