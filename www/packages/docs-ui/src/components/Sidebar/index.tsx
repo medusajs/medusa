@@ -46,7 +46,7 @@ export const Sidebar = ({
   })
   useKeyboardShortcut({
     metakey: true,
-    shortcutKeys: ["."],
+    shortcutKeys: ["\\"],
     action: () => {
       setDesktopSidebarOpen((prev) => !prev)
     },

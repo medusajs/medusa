@@ -69,150 +69,17 @@
  *   content:
  *     application/json:
  *       schema:
+ *         allOf:
+ *           - $ref: "#/components/schemas/AdminUpdateProduct"
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
  *         description: SUMMARY
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The product's title.
- *           subtitle:
- *             type: string
- *             title: subtitle
- *             description: The product's subtitle.
- *           description:
- *             type: string
- *             title: description
- *             description: The product's description.
- *           is_giftcard:
- *             type: boolean
- *             title: is_giftcard
- *             description: The product's is giftcard.
- *           discountable:
- *             type: boolean
- *             title: discountable
- *             description: The product's discountable.
- *           images:
- *             type: array
- *             description: The product's images.
- *             items:
- *               type: object
- *               description: The image's images.
- *               required:
- *                 - url
- *               properties:
- *                 url:
- *                   type: string
- *                   title: url
- *                   description: The image's url.
- *           thumbnail:
- *             type: string
- *             title: thumbnail
- *             description: The product's thumbnail.
- *           handle:
- *             type: string
- *             title: handle
- *             description: The product's handle.
- *           status:
- *             type: string
- *             enum:
- *               - draft
- *               - proposed
- *               - published
- *               - rejected
- *           type_id:
- *             type: string
- *             title: type_id
- *             description: The product's type id.
- *           collection_id:
- *             type: string
- *             title: collection_id
- *             description: The product's collection id.
- *           categories:
- *             type: array
- *             description: The product's categories.
- *             items:
- *               type: object
- *               description: The category's categories.
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The category's ID.
- *           tags:
- *             type: array
- *             description: The product's tags.
- *             items:
- *               type: object
- *               description: The tag's tags.
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The tag's ID.
- *           options:
- *             type: array
- *             description: The product's options.
- *             items:
- *               $ref: "#/components/schemas/AdminUpdateProductOption"
- *           variants:
- *             type: array
- *             description: The product's variants.
- *             items:
- *               oneOf:
- *                 - $ref: "#/components/schemas/AdminCreateProductVariant"
- *                 - $ref: "#/components/schemas/AdminUpdateProductVariant"
- *           sales_channels:
- *             type: array
- *             description: The product's sales channels.
- *             items:
- *               type: object
- *               description: The sales channel's sales channels.
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The sales channel's ID.
- *           weight:
- *             type: number
- *             title: weight
- *             description: The product's weight.
- *           length:
- *             type: number
- *             title: length
- *             description: The product's length.
- *           height:
- *             type: number
- *             title: height
- *             description: The product's height.
- *           width:
- *             type: number
- *             title: width
- *             description: The product's width.
- *           hs_code:
- *             type: string
- *             title: hs_code
- *             description: The product's hs code.
- *           mid_code:
- *             type: string
- *             title: mid_code
- *             description: The product's mid code.
- *           origin_country:
- *             type: string
- *             title: origin_country
- *             description: The product's origin country.
- *           material:
- *             type: string
- *             title: material
- *             description: The product's material.
- *           metadata:
- *             type: object
- *             description: The product's metadata.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
