@@ -6510,13 +6510,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-text-to-clipboard@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "copy-text-to-clipboard@npm:3.2.0"
-  checksum: d60fdadc59d526e19d56ad23cec2b292d33c771a5091621bd322d138804edd3c10eb2367d46ec71b39f5f7f7116a2910b332281aeb36a5b679199d746a8a5381
-  languageName: node
-  linkType: hard
-
 "copy-to-clipboard@npm:^3.3.3":
   version: 3.3.3
   resolution: "copy-to-clipboard@npm:3.3.3"
@@ -7264,7 +7257,6 @@ __metadata:
     "@uidotdev/usehooks": ^2.4.1
     algoliasearch: ^4.20.0
     clsx: ^2.0.0
-    copy-text-to-clipboard: ^3.2.0
     cpy-cli: ^5.0.0
     eslint: ^8
     eslint-config-docs: "*"
