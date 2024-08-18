@@ -79,19 +79,6 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("POST /admin/users", () => {
-      let token
-
-      beforeEach(async () => {
-        token = (
-          await api.post("/auth/user/emailpass", {
-            email: "test@test123.com",
-            password: "test123",
-          })
-        ).data.token
-      })
-    })
-
     describe("POST /admin/users/:id", () => {
       it("should update a user", async () => {
         const updateResponse = (
