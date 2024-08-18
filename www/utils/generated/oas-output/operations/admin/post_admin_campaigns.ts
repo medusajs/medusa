@@ -63,64 +63,82 @@
  *   content:
  *     application/json:
  *       schema:
- *         description: SUMMARY
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The campaign's name.
- *           campaign_identifier:
- *             type: string
- *             title: campaign_identifier
- *             description: The campaign's campaign identifier.
- *           description:
- *             type: string
- *             title: description
- *             description: The campaign's description.
- *           budget:
- *             type: object
- *             description: The campaign's budget.
+ *         allOf:
+ *           - type: object
+ *             description: SUMMARY
  *             required:
- *               - type
- *               - limit
- *               - currency_code
+ *               - name
+ *               - campaign_identifier
+ *               - description
+ *               - budget
+ *               - starts_at
+ *               - ends_at
  *             properties:
- *               type:
+ *               name:
  *                 type: string
- *                 enum:
- *                   - spend
- *                   - usage
- *               limit:
- *                 type: number
- *                 title: limit
- *                 description: The budget's limit.
- *               currency_code:
+ *                 title: name
+ *                 description: The campaign's name.
+ *               campaign_identifier:
  *                 type: string
- *                 title: currency_code
- *                 description: The budget's currency code.
- *           starts_at:
- *             type: string
- *             title: starts_at
- *             description: The campaign's starts at.
- *             format: date-time
- *           ends_at:
- *             type: string
- *             title: ends_at
- *             description: The campaign's ends at.
- *             format: date-time
- *           promotions:
- *             type: array
- *             description: The campaign's promotions.
- *             items:
- *               type: object
- *               description: The promotion's promotions.
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The promotion's ID.
+ *                 title: campaign_identifier
+ *                 description: The campaign's campaign identifier.
+ *               description:
+ *                 type: string
+ *                 title: description
+ *                 description: The campaign's description.
+ *               budget:
+ *                 type: object
+ *                 description: The campaign's budget.
+ *                 required:
+ *                   - type
+ *                   - limit
+ *                   - currency_code
+ *                 properties:
+ *                   type:
+ *                     type: string
+ *                     enum:
+ *                       - spend
+ *                       - usage
+ *                   limit:
+ *                     type: number
+ *                     title: limit
+ *                     description: The budget's limit.
+ *                   currency_code:
+ *                     type: string
+ *                     title: currency_code
+ *                     description: The budget's currency code.
+ *               starts_at:
+ *                 type: string
+ *                 title: starts_at
+ *                 description: The campaign's starts at.
+ *                 format: date-time
+ *               ends_at:
+ *                 type: string
+ *                 title: ends_at
+ *                 description: The campaign's ends at.
+ *                 format: date-time
+ *               promotions:
+ *                 type: array
+ *                 description: The campaign's promotions.
+ *                 items:
+ *                   type: object
+ *                   description: The promotion's promotions.
+ *                   required:
+ *                     - id
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       title: id
+ *                       description: The promotion's ID.
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
