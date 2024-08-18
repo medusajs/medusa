@@ -31,8 +31,8 @@ export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
     const theme = localStorage.getItem("theme")
     if (theme && (theme === "light" || theme === "dark")) {
       setColorMode(theme)
-      setLoaded(true)
     }
+    setLoaded(true)
   }, [])
 
   useEffect(() => {

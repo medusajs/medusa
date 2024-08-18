@@ -1505,6 +1505,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderLineItemsStep/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderPaymentCollectionWorkflow",
+    "newSlug": "/references/medusa-workflows/createOrderPaymentCollectionWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderPaymentCollectionWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.createOrderShipmentWorkflow",
     "newSlug": "/references/medusa-workflows/createOrderShipmentWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderShipmentWorkflow/page.mdx"
