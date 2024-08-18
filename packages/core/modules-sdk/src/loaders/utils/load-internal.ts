@@ -148,21 +148,6 @@ export async function loadInternalModule(
     )
   }
 
-  
-
-  const moduleService = moduleResources.moduleService ?? loadedModule.service
-
-  container.register({
-    [registrationName]: asFunction((cradle) => {
-      ;(moduleService as any).__type = MedusaModuleType
-      return new moduleService(
-        localContainer.cradle,
-        resolution.options,
-        resolution.moduleDeclaration
-      )
-    }).singleton(),
-  })
-
   const loaders = moduleResources.loaders ?? loadedModule?.loaders ?? []
   const error = await runLoaders(loaders, {
     container,
@@ -176,6 +161,19 @@ export async function loadInternalModule(
   if (error) {
     return error
   }
+
+  const moduleService = moduleResources.moduleService ?? loadedModule.service
+
+  container.register({
+    [registrationName]: asFunction((cradle) => {
+      ;(moduleService as any).__type = MedusaModuleType
+      return new moduleService(
+        localContainer.cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
+  })
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
@@ -348,7 +346,7 @@ export async function loadResources(
   }
 }
 
-export async function runLoaders(
+async function runLoaders(
   loaders: Function[] = [],
   {
     localContainer,

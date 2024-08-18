@@ -84,21 +84,21 @@ export async function loadModuleProvider(
     })
   )
 
-  // const loaders = loadedProvider?.loaders ?? []
-  // try {
-  //   for (const loader of loaders) {
-  //     await loader({
-  //       container,
-  //       options: provider.options,
-  //     })
-  //   }
-  // } catch (err) {
-  //   return {
-  //     error: new Error(
-  //       `Loaders for module provider ${moduleName} failed: ${err.message}`
-  //     ),
-  //   }
-  // }
+  const loaders = loadedProvider?.loaders ?? []
+  try {
+    for (const loader of loaders) {
+      await loader({
+        container,
+        options: provider.options,
+      })
+    }
+  } catch (err) {
+    return {
+      error: new Error(
+        `Loaders for module provider ${moduleName} failed: ${err.message}`
+      ),
+    }
+  }
 
   return services
 }

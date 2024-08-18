@@ -6,12 +6,15 @@ export default async function loadSubscribers({ container, options }) {
     ModuleRegistrationName.NOTIFICATION
   )
 
-  
   notificationService.subscribe(["order.created", "order.updated"], "local", {
     channels: ["email"],
   })
-  
-  notificationService.subscribe(["product.created", "product.updated"], "local", {
-    channels: ["log"],
-  })
+
+  notificationService.subscribe(
+    ["product.created", "product.updated"],
+    "local",
+    {
+      channels: ["log"],
+    }
+  )
 }

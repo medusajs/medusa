@@ -10,13 +10,11 @@ export default async function notificationsHandler({
     ModuleRegistrationName.NOTIFICATION
   )
 
-  console.log("In subscriber: ", notificationService)
-
   await notificationService.handleEvent(event)
 }
 
 export const config: SubscriberConfig = {
-  event: ["product.created", "product.updated"],
+  event: ["product.created", "product.updated"], // this should be the wildcard *
   context: {
     subscriberId: "nofications-handler",
   },

@@ -1,10 +1,7 @@
 import { DAL, InferEntityType, NotificationTypes } from "@medusajs/types"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
-import {
-  NotificationIdentifiersRegistrationName,
-  NotificationProviderRegistrationPrefix,
-} from "@types"
+import { NotificationProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {
   notificationProviderRepository: DAL.RepositoryService<
@@ -34,21 +31,6 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
       container.notificationProviderRepository
   }
 
-  registerSubscribers(): {
-    provider: string
-    events: { [event: string]: { channels: string[] } }
-  }[] {
-    const providers = this.listProviderRegistrations()
-    const providerEvents = providers.map((providerId) => {
-      const provider = this.retrieveProviderRegistration(providerId)
-      const eventsConfig = provider.getEventsConfig()
-
-      return { provider: providerId, events: eventsConfig }
-    })
-
-    return providerEvents
-  }
-
   protected retrieveProviderRegistration(
     providerId: string
   ): NotificationTypes.INotificationProvider {
@@ -60,17 +42,6 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Could not find a notification provider with id: ${providerId}`
-      )
-    }
-  }
-
-  protected listProviderRegistrations(): string[] {
-    try {
-      return this.__container__[NotificationIdentifiersRegistrationName]
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Could not find notification providers`
       )
     }
   }

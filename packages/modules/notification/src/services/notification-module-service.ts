@@ -70,23 +70,6 @@ export default class NotificationModuleService
     this.logger_ = logger
   }
 
-  __hooks = {
-    onApplicationStart: async () => {
-      await this.registerSubscribers()
-    },
-  }
-
-  async registerSubscribers() {
-    const providerSubscriptions =
-      this.notificationProviderService_.registerSubscribers()
-
-    providerSubscriptions.forEach(({ provider, events }) => {
-      Object.entries(events).forEach(([event, config]) => {
-        this.subscribe(event, provider, config)
-      })
-    })
-  }
-
   subscribe(
     event: string | string[],
     provider: string,

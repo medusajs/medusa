@@ -88,8 +88,4 @@ export class AbstractNotificationProviderService
       }`
     )
   }
-
-  getEvents(): { [event: string]: { channels: string[] } } {
-    return {}
-  }
 }
