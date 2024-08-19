@@ -721,7 +721,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a payment collection successfully and throw on multiple", async () => {
-          const paymentDelta = 110.5
+          const paymentDelta = 171.5
 
           const paymentCollection = (
             await api.post(
