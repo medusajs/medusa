@@ -9,7 +9,7 @@ import {
   clx,
   toast,
 } from "@medusajs/ui"
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -27,6 +27,7 @@ import {
   useCreateInventoryItem,
 } from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
+import { parseOptionalFormData } from "../../../../../lib/form-helpers"
 import { queryClient } from "../../../../../lib/query-client"
 import { optionalInt } from "../../../../../lib/validation"
 import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
@@ -60,7 +61,7 @@ const CreateInventoryItemSchema = zod.object({
 export function CreateInventoryItemForm() {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
+  const [tab, setTab] = useState<Tab>(Tab.DETAILS)
 
   const form = useForm<zod.infer<typeof CreateInventoryItemSchema>>({
     defaultValues: {
@@ -85,7 +86,9 @@ export function CreateInventoryItemForm() {
     useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { locations, ...payload } = data
+    const { locations, weight, length, height, width, ...payload } = data
+
+    const cleanData = parseOptionalFormData(payload)
 
     for (const k in payload) {
       if (payload[k] === "") {
