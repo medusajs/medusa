@@ -1,10 +1,5 @@
-import { EOL } from "os"
-
-import Stripe from "stripe"
-
 import {
   CreatePaymentProviderSession,
-  MedusaContainer,
   PaymentProviderError,
   PaymentProviderSessionResponse,
   ProviderWebhookPayload,
@@ -19,6 +14,8 @@ import {
   isDefined,
   isPaymentProviderError,
 } from "@medusajs/utils"
+import { EOL } from "os"
+import Stripe from "stripe"
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -33,13 +30,10 @@ import {
 abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
-  protected container_: MedusaContainer
 
-  protected constructor(container: MedusaContainer, options: StripeOptions) {
+  protected constructor(_, options: StripeOptions) {
     // @ts-ignore
     super(...arguments)
-
-    this.container_ = container
     this.options_ = options
 
     this.stripe_ = this.init()

@@ -7,14 +7,16 @@ import {
 } from "@medusajs/types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
-import * as providers from "../providers"
 import { PaymentProviderService } from "@services"
+import * as providers from "../providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = `pp_${klass.PROVIDER}_${pluginOptions.id}`
 
+  const provider = new klass({}, pluginOptions.options)
+
   container.register({
-    [key]: asFunction((cradle) => new klass(cradle, pluginOptions.options), {
+    [key]: asFunction(() => provider, {
       lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
     }),
   })
