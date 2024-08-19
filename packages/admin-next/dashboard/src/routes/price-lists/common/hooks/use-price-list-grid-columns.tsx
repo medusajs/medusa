@@ -4,8 +4,8 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Thumbnail } from "../../../../components/common/thumbnail"
-import { DataGridReadOnlyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
-import { getPriceColumns } from "../../../../components/data-grid/data-grid-columns/price-columns"
+import { DataGrid } from "../../../../components/data-grid"
+import { createDataGridPriceColumns } from "../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
 import { createDataGridHelper } from "../../../../components/data-grid/utils"
 import { isProductRow } from "../utils"
 
@@ -35,26 +35,26 @@ export const usePriceListGridColumns = ({
           const entity = row.original
           if (isProductRow(entity)) {
             return (
-              <DataGridReadOnlyCell>
+              <DataGrid.ReadonlyCell>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <Thumbnail src={entity.thumbnail} />
                   <span className="truncate">{entity.title}</span>
                 </div>
-              </DataGridReadOnlyCell>
+              </DataGrid.ReadonlyCell>
             )
           }
 
           return (
-            <DataGridReadOnlyCell>
+            <DataGrid.ReadonlyCell>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                 <span className="truncate">{entity.title}</span>
               </div>
-            </DataGridReadOnlyCell>
+            </DataGrid.ReadonlyCell>
           )
         },
         disableHiding: true,
       }),
-      ...getPriceColumns<
+      ...createDataGridPriceColumns<
         HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
       >({
         currencies: currencies.map((c) => c.currency_code),

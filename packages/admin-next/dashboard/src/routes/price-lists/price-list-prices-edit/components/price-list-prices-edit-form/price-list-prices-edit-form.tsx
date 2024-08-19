@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { DataGrid } from "../../../../../components/data-grid"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -92,7 +92,7 @@ export const PriceListPricesEditForm = ({
       <form onSubmit={handleSubmit} className="flex size-full flex-col">
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <DataGridRoot
+          <DataGrid
             columns={columns}
             data={products}
             getSubRows={(row) => {

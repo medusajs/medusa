@@ -7,7 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { DataGrid } from "../../../../../components/data-grid"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -83,9 +83,7 @@ export function EditShippingOptionsPricingForm({
     resolver: zodResolver(EditShippingOptionPricingSchema),
   })
 
-  const { mutateAsync, isPending: isLoading } = useUpdateShippingOptions(
-    shippingOption.id
-  )
+  const { mutateAsync, isPending } = useUpdateShippingOptions(shippingOption.id)
 
   const {
     store,
@@ -198,7 +196,7 @@ export function EditShippingOptionsPricingForm({
     )
   })
 
-  const initializing =
+  const isLoading =
     isStoreLoading || isRegionsLoading || !currencies || !regions
 
   if (isStoreError) {
@@ -215,7 +213,20 @@ export function EditShippingOptionsPricingForm({
         className="flex h-full flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
-        <RouteFocusModal.Header>
+        <RouteFocusModal.Header />
+
+        <RouteFocusModal.Body>
+          <div className="flex size-full flex-col divide-y overflow-hidden">
+            <DataGrid
+              isLoading={isLoading}
+              data={data}
+              columns={columns}
+              state={form}
+              onEditingChange={(editing) => setCloseOnEscape(!editing)}
+            />
+          </div>
+        </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
@@ -225,25 +236,14 @@ export function EditShippingOptionsPricingForm({
             <Button
               size="small"
               className="whitespace-nowrap"
-              isLoading={isLoading}
+              isLoading={isPending}
               onClick={handleSubmit}
               type="button"
             >
               {t("actions.save")}
             </Button>
           </div>
-        </RouteFocusModal.Header>
-
-        <RouteFocusModal.Body>
-          <div className="flex size-full flex-col divide-y overflow-hidden">
-            <DataGridRoot
-              data={data}
-              columns={columns}
-              state={form}
-              onEditingChange={(editing) => setCloseOnEscape(!editing)}
-            />
-          </div>
-        </RouteFocusModal.Body>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )
