@@ -1,12 +1,12 @@
 import { HttpTypes } from "@medusajs/types"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
-import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge"
+import { IncludesTaxTooltip } from "../../common/tax-badge/tax-badge"
 import { DataGridCurrencyCell } from "../data-grid-cells/data-grid-currency-cell"
-import { DataGridReadOnlyCell } from "../data-grid-cells/data-grid-readonly-cell"
+import { DataGridReadonlyCell } from "../data-grid-cells/data-grid-readonly-cell"
 import { createDataGridHelper } from "../utils"
 
-export const getPriceColumns = <TData,>({
+export const createDataGridPriceColumns = <TData,>({
   currencies,
   regions,
   pricePreferences,
@@ -44,7 +44,7 @@ export const getPriceColumns = <TData,>({
         ),
         cell: (context) => {
           if (isReadyOnly?.(context)) {
-            return <DataGridReadOnlyCell />
+            return <DataGridReadonlyCell />
           }
 
           return (
@@ -55,7 +55,6 @@ export const getPriceColumns = <TData,>({
             />
           )
         },
-        type: "string",
       })
     }) ?? []),
     ...(regions?.map((region) => {
@@ -78,7 +77,7 @@ export const getPriceColumns = <TData,>({
         ),
         cell: (context) => {
           if (isReadyOnly?.(context)) {
-            return <DataGridReadOnlyCell />
+            return <DataGridReadonlyCell />
           }
 
           const currency = currencies?.find((c) => c === region.currency_code)
@@ -94,7 +93,6 @@ export const getPriceColumns = <TData,>({
             />
           )
         },
-        type: "string",
       })
     }) ?? []),
   ]

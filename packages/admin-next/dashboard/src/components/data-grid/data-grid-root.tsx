@@ -29,19 +29,19 @@ import {
 } from "react"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useCommandHistory } from "../../../hooks/use-command-history"
-import { DataGridContext } from "../context"
-import { useGridQueryTool } from "../hooks"
-import { BulkUpdateCommand, Matrix, UpdateCommand } from "../models"
-import { CellCoords, CellType } from "../types"
+import { useCommandHistory } from "../../hooks/use-command-history"
+import { DataGridContext } from "./context"
+import { useGridQueryTool } from "./hooks"
+import { BulkUpdateCommand, Matrix, UpdateCommand } from "./models"
+import { CellCoords, CellSnapshot, CellType } from "./types"
 import {
   convertArrayToPrimitive,
   generateCellId,
   getColumnName,
   isCellMatch,
-} from "../utils"
+} from "./utils"
 
-interface DataGridRootProps<
+export interface DataGridRootProps<
   TData,
   TFieldValues extends FieldValues = FieldValues
 > {
@@ -91,17 +91,8 @@ export const DataGridRoot = <
   const [isDragging, setIsDragging] = useState(false)
 
   const [isEditing, setIsEditing] = useState(false)
-
-  const onEditingChangeHandler = useCallback(
-    (value: boolean) => {
-      if (onEditingChange) {
-        onEditingChange(value)
-      }
-
-      setIsEditing(value)
-    },
-    [onEditingChange]
-  )
+  const [cellValueSnapshot, setCellValueSnapshot] =
+    useState<CellSnapshot<TFieldValues> | null>(null)
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
@@ -232,6 +223,53 @@ export const DataGridRoot = <
   )
 
   const queryTool = useGridQueryTool(containerRef)
+
+  const createCellSnapshot =
+    useCallback((): CellSnapshot<TFieldValues> | null => {
+      if (!anchor) {
+        return null
+      }
+
+      const field = matrix.getCellField(anchor)
+
+      if (!field) {
+        return null
+      }
+
+      const value = getValues(field as Path<TFieldValues>)
+
+      return {
+        field,
+        value,
+      }
+    }, [getValues, matrix, anchor])
+
+  const restoreSnapshot = useCallback(() => {
+    if (!cellValueSnapshot) {
+      return
+    }
+
+    const { field, value } = cellValueSnapshot
+
+    requestAnimationFrame(() => {
+      setValue(field as Path<TFieldValues>, value)
+    })
+  }, [setValue, cellValueSnapshot])
+
+  const onEditingChangeHandler = useCallback(
+    (value: boolean) => {
+      if (onEditingChange) {
+        onEditingChange(value)
+      }
+
+      if (value) {
+        setCellValueSnapshot(createCellSnapshot())
+      }
+
+      setIsEditing(value)
+    },
+    [createCellSnapshot, onEditingChange]
+  )
 
   const registerCell = useCallback(
     (coords: CellCoords, field: string, type: CellType) => {
@@ -694,11 +732,14 @@ export const DataGridRoot = <
       e.preventDefault()
       e.stopPropagation()
 
+      // try to restore the previous value
+      restoreSnapshot()
+
       // Restore focus to the container element
       const container = queryTool?.getContainer(anchor)
       container?.focus()
     },
-    [queryTool, isEditing, anchor]
+    [queryTool, isEditing, anchor, restoreSnapshot]
   )
 
   const handleTabKey = useCallback(
