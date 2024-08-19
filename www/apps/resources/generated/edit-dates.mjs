@@ -131,7 +131,7 @@ export const generatedEditDates = {
   "app/contribution-guidelines/docs/page.mdx": "2024-05-13T18:55:11+03:00",
   "app/create-medusa-app/page.mdx": "2024-08-05T11:10:55+03:00",
   "app/deployment/admin/vercel/page.mdx": "2024-07-31T17:01:33+03:00",
-  "app/deployment/medusa-application/railway/page.mdx": "2024-07-31T17:01:33+03:00",
+  "app/deployment/medusa-application/railway/page.mdx": "2024-08-19T07:19:54.945Z",
   "app/deployment/storefront/vercel/page.mdx": "2024-07-26T07:21:31+00:00",
   "app/deployment/page.mdx": "2024-07-25T09:55:22+03:00",
   "app/integrations/page.mdx": "2024-07-19T08:49:08+00:00",
@@ -254,5 +254,6 @@ export const generatedEditDates = {
   "app/architectural-modules/cache/create/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/admin-widget-injection-zones/page.mdx": "2024-05-29T13:50:19+03:00",
   "app/architectural-modules/notification/page.mdx": "2024-07-04T17:26:03+03:00",
-  "app/architectural-modules/event/create/page.mdx": "2024-07-04T17:26:03+03:00"
+  "app/architectural-modules/event/create/page.mdx": "2024-07-04T17:26:03+03:00",
+  "app/troubleshooting/deployment/page.mdx": "2024-08-19T07:19:40.924Z"
 }
