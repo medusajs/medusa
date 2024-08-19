@@ -14,6 +14,7 @@ import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
 import { CodeBlockActions, CodeBlockActionsProps } from "./Actions"
 import { CodeBlockCollapsibleButton } from "./Collapsible/Button"
 import { CodeBlockCollapsibleFade } from "./Collapsible/Fade"
+import { CodeBlockInline } from "./Inline"
 
 export type Highlight = {
   line: number
@@ -40,7 +41,7 @@ export type CodeBlockMetaFields = {
   expandButtonLabel?: string
 } & CodeBlockHeaderMeta
 
-export type CodeBlockStyle = "loud" | "subtle"
+export type CodeBlockStyle = "loud" | "subtle" | "inline"
 
 export type CodeBlockProps = {
   source: string
@@ -72,6 +73,9 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
     source = children
+  }
+  if (blockStyle === "inline") {
+    return <CodeBlockInline source={source} />
   }
 
   const { colorMode } = useColorMode()
