@@ -6,7 +6,7 @@ export type PrerequisiteItemPosition = "top" | "middle" | "bottom" | "alone"
 
 export type PrerequisiteItemType = {
   text: string
-  link: string
+  link?: string
   position?: PrerequisiteItemPosition
 }
 
@@ -19,7 +19,7 @@ export const PrerequisiteItem = ({
 }: PrerequisiteItemProps) => {
   return (
     <Link
-      href={link}
+      href={link || "#"}
       className={clsx(
         "bg-medusa-tag-neutral-bg text-medusa-fg-subtle",
         "px-docs_0.75 py-docs_0.5 w-fit",
@@ -30,7 +30,8 @@ export const PrerequisiteItem = ({
         position === "top" && "rounded-tl-docs_xl rounded-bl-docs_DEFAULT",
         position === "middle" &&
           "rounded-tl-docs_DEFAULT rounded-bl-docs_DEFAULT",
-        position === "bottom" && "rounded-tl-docs_DEFAULT rounded-bl-docs_xl"
+        position === "bottom" && "rounded-tl-docs_DEFAULT rounded-bl-docs_xl",
+        !link && "cursor-text"
       )}
     >
       {text}↗
