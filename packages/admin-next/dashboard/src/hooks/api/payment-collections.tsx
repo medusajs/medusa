@@ -22,11 +22,7 @@ export const useCreatePaymentCollection = (
     mutationFn: (payload) => sdk.admin.paymentCollection.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
+        queryKey: ordersQueryKeys.all,
       })
 
       options?.onSuccess?.(data, variables, context)

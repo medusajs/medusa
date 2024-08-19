@@ -44,24 +44,23 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getTotalCaptured } from "../../../../../lib/payment.ts"
-import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
 import { getReturnableQuantity } from "../../../../../lib/rma.ts"
+import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
-}
-
-function delay(t, val) {
-  return new Promise((resolve) => setTimeout(resolve, t, val))
 }
 
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { reservations } = useReservationItems({
-    line_item_id: order.items.map((i) => i.id),
-  })
+  const { reservations } = useReservationItems(
+    {
+      line_item_id: order?.items?.map((i) => i.id),
+    },
+    { enabled: Array.isArray(order?.items) }
+  )
 
   const { order: orderPreview } = useOrderPreview(order.id!)
 
@@ -101,7 +100,18 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     return false
   }, [reservations])
 
-  const showPayment = (orderPreview?.summary?.pending_difference || 0) > 0
+  // TODO: We need a way to link payment collections to a change order to
+  // accurately differentiate order payments and order change payments
+  // This fix should be temporary.
+  const authorizedPaymentCollection = order.payment_collections.find(
+    (pc) =>
+      pc.status === "authorized" &&
+      pc.amount === order.summary?.pending_difference
+  )
+
+  const showPayment =
+    typeof authorizedPaymentCollection === "undefined" &&
+    (orderPreview?.summary?.pending_difference || 0) > 0
   const showRefund = (orderPreview?.summary?.pending_difference || 0) < 0
 
   return (
