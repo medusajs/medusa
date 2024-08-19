@@ -2,6 +2,8 @@
 sidebar_label: "Railway"
 ---
 
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `Deploy Medusa Application to Railway`,
 }
@@ -32,11 +34,12 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 ---
 
-<Note type="check">
-
-- [Medusa application](!docs!) hosted in a GitHub repository.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Medusa application’s codebase hosted on GitHub repository.",
+    link: "!docs!"
+  },
+]} />
 
 ## 1. Configure Medusa Application
 

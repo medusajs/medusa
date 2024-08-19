@@ -1,4 +1,5 @@
 import { Github, PlaySolid } from "@medusajs/icons"
+import { Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Digital Products Recipe Example`,
@@ -43,11 +44,12 @@ By following this example, you’ll have a commerce application with the followi
 
 ---
 
-<Note type="check">
-
-- [A new Medusa application installed.](!docs!#get-started)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "A new Medusa application installed.",
+    link: "!docs!#get-started"
+  },
+]} />
 
 ## Step 1: Create the Digital Product Module
 

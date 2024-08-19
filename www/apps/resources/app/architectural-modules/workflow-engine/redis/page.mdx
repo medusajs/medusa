@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Redis Workflow Engine Module`,
@@ -12,11 +12,12 @@ The Redis Workflow Engine Module uses Redis to track workflow executions and han
 
 ## Install the Redis Workflow Engine Module
 
-<Note type="check">
-
-- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Redis installed and Redis server running",
+    link: "https://redis.io/docs/getting-started/installation/"
+  }
+]} />
 
 To install Redis Workflow Engine Module, run the following command in the directory of your Medusa application:
 

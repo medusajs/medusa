@@ -1,4 +1,4 @@
-import { Table, DetailsList } from "docs-ui"
+import { Table, DetailsList, Prerequisites } from "docs-ui"
 import PortForwardingTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/forwarding.mdx"
 import DBUrlTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/db-url-error.mdx"
 import EaddrinuseTroubleshooting from "../troubleshooting/_sections/other/eaddrinuse.mdx"
@@ -17,13 +17,20 @@ export const metadata = {
 
 The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project and provides an onboarding experience.
 
-<Note type="check">
-
-- [Node.js v20+](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL](https://www.postgresql.org/download/)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
 
 ## Usage
 
