@@ -51,26 +51,29 @@ export const CodeBlockActions = ({
   return (
     <div
       className={clsx(
-        "absolute hidden md:block",
-        "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(17%+10px)] xs:h-full"
+        "hidden md:block",
+        !inHeader &&
+          "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(17%+10px)] xs:h-full"
       )}
     >
+      {!inHeader && (
+        <div
+          className={clsx(
+            !inHeader &&
+              showGradientBg && [
+                inInnerCode &&
+                  "xs:bg-subtle-code-fade-right-to-left dark:xs:bg-subtle-code-fade-right-to-left-dark",
+                !inInnerCode &&
+                  "xs:bg-base-code-fade-right-to-left dark:xs:bg-base-code-fade-right-to-left-dark",
+              ],
+            (inHeader || !showGradientBg) && "xs:bg-transparent",
+            "z-[9] w-full h-full absolute top-0 left-0"
+          )}
+        />
+      )}
       <div
         className={clsx(
-          !inHeader &&
-            showGradientBg && [
-              inInnerCode &&
-                "xs:bg-subtle-code-fade-right-to-left dark:xs:bg-subtle-code-fade-right-to-left-dark",
-              !inInnerCode &&
-                "xs:bg-base-code-fade-right-to-left dark:xs:bg-base-code-fade-right-to-left-dark",
-            ],
-          (inHeader || !showGradientBg) && "xs:bg-transparent",
-          "z-[9] w-full h-full absolute top-0 left-0"
-        )}
-      />
-      <div
-        className={clsx(
-          "md:flex md:justify-end z-[11] relative",
+          "md:flex md:justify-end md:gap-docs_0.25 z-[11] relative",
           !inHeader && [
             "md:pr-docs_0.5",
             isCollapsed && "md:pt-docs_2.5",
@@ -78,8 +81,7 @@ export const CodeBlockActions = ({
               isSingleLine && "md:pt-docs_0.25",
               !isSingleLine && "md:pt-docs_0.5",
             ],
-          ],
-          inHeader && "md:pr-docs_1 md:pt-docs_0.5"
+          ]
         )}
       >
         {canShowApiTesting && (
@@ -89,8 +91,9 @@ export const CodeBlockActions = ({
             className={clsx(
               "h-fit",
               !inHeader && "p-[6px]",
-              inHeader && "px-[6px] pb-[6px]"
+              inHeader && "p-[4.5px]"
             )}
+            innerClassName={clsx(inHeader && "flex")}
           >
             <PlaySolid
               className={clsx("cursor-pointer", iconColor)}
@@ -105,8 +108,9 @@ export const CodeBlockActions = ({
             className={clsx(
               "h-fit",
               !inHeader && "p-[6px]",
-              inHeader && "px-[6px] pb-[6px]"
+              inHeader && "p-[4.5px]"
             )}
+            innerClassName={clsx(inHeader && "flex")}
           >
             <Link
               href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(

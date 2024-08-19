@@ -768,9 +768,10 @@ module.exports = {
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
           },
-          ".code-block-highlight-dark": {
+          ".code-block-highlight": {
             "*::selection": {
-              "background-color": "var(--docs-contrast-bg-highlight)",
+              "background-color": "var(--docs-contrast-fg-secondary)",
+              color: "var(--docs-contrast-bg-base)",
             },
           },
           ".code-block-highlight-light": {
