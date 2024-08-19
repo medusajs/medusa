@@ -356,7 +356,9 @@ export const CodeBlock = ({
                     !codeTitle.length &&
                       (!noCopy || !noReport) &&
                       "xs:max-w-[83%]",
-                    noLineNumbers && "pl-docs_0.75",
+                    (noLineNumbers ||
+                      (tokens.length <= 1 && !isTerminalCode)) &&
+                      "pl-docs_1",
                     preClassName
                   )}
                 >
