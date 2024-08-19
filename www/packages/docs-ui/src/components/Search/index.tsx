@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
 import { SearchEmptyQueryBoundary } from "./EmptyQueryBoundary"
@@ -30,19 +30,6 @@ export const Search = ({
   const { isOpen, setIsOpen, defaultFilters, searchClient, modalRef } =
     useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
-  const formattedFilters: string = useMemo(() => {
-    let formatted = ""
-    filters.forEach((filter) => {
-      const split = filter.split("_")
-      split.forEach((f) => {
-        if (formatted.length) {
-          formatted += " OR "
-        }
-        formatted += `_tags:${f}`
-      })
-    })
-    return formatted
-  }, [filters])
   const searchBoxRef = useRef<HTMLFormElement>(null)
 
   const focusSearchInput = () =>
@@ -140,19 +127,7 @@ export const Search = ({
           >
             <SearchHitsWrapper
               configureProps={{
-                filters: formattedFilters,
-                attributesToSnippet: [
-                  "content",
-                  "hierarchy.lvl1",
-                  "hierarchy.lvl2",
-                  "hierarchy.lvl3",
-                ],
-                attributesToHighlight: [
-                  "content",
-                  "hierarchy.lvl1",
-                  "hierarchy.lvl2",
-                  "hierarchy.lvl3",
-                ],
+                tagRefinements: filters,
               }}
               indices={algolia.indices}
               checkInternalPattern={checkInternalPattern}

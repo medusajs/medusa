@@ -45,6 +45,7 @@ import {
 } from "../../../../../lib/money-amount-helpers"
 import { getTotalCaptured } from "../../../../../lib/payment.ts"
 import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
+import { getReturnableQuantity } from "../../../../../lib/rma.ts"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -157,6 +158,11 @@ const Header = ({
 }) => {
   const { t } = useTranslation()
 
+  // is ture if there is no shipped items ATM
+  const shouldDisableReturn = order.items.every(
+    (i) => !(getReturnableQuantity(i) > 0)
+  )
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.summary")}</Heading>
@@ -179,6 +185,7 @@ const Header = ({
                 to: `/orders/${order.id}/returns`,
                 icon: <ArrowUturnLeft />,
                 disabled:
+                  shouldDisableReturn ||
                   !!orderPreview?.order_change?.exchange_id ||
                   !!orderPreview?.order_change?.claim_id,
               },
@@ -191,6 +198,7 @@ const Header = ({
                 to: `/orders/${order.id}/exchanges`,
                 icon: <ArrowPath />,
                 disabled:
+                  shouldDisableReturn ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.exchange_id) ||
                   !!orderPreview?.order_change?.claim_id,
@@ -204,6 +212,7 @@ const Header = ({
                 to: `/orders/${order.id}/claims`,
                 icon: <ExclamationCircle />,
                 disabled:
+                  shouldDisableReturn ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.claim_id) ||
                   !!orderPreview?.order_change?.exchange_id,
@@ -441,7 +450,7 @@ const ReturnBreakdown = ({
     item && (
       <div
         key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -459,7 +468,7 @@ const ReturnBreakdown = ({
 
           {item?.note && (
             <Tooltip content={item.note}>
-              <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
             </Tooltip>
           )}
 
@@ -503,7 +512,7 @@ const ClaimBreakdown = ({
     !!items.length && (
       <div
         key={claim.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -542,7 +551,7 @@ const ExchangeBreakdown = ({
     !!items.length && (
       <div
         key={exchange.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
