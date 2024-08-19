@@ -18,6 +18,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
     )
 
     existing.quantity = action.details.quantity
+    existing.detail.quantity = action.details.quantity
 
     setActionReference(existing, action, options)
 
