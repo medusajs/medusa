@@ -208,6 +208,15 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         })
         const created = await service.createOrders(inpCopy)
 
+        expect(created.summary).toEqual(
+          expect.objectContaining({
+            transaction_total: 68,
+            pending_difference: -20.21999000999001,
+            paid_total: 68,
+            refunded_total: 0,
+          })
+        )
+
         const refund = await service.addTransactions([
           {
             order_id: created.id,
@@ -226,6 +235,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder.summary).toEqual(
           expect.objectContaining({
+            transaction_total: 48,
+            pending_difference: -0.21999000999001,
             paid_total: 68,
             refunded_total: 20,
           })
@@ -243,6 +254,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(serializedOrder2.summary).toEqual(
           expect.objectContaining({
+            transaction_total: 68,
+            pending_difference: -20.21999000999001,
             paid_total: 68,
             refunded_total: 0,
           })
@@ -268,6 +281,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           expect.objectContaining({
             paid_total: 68,
             refunded_total: 50,
+            transaction_total: 18,
+            pending_difference: 29.78000999000999,
           })
         )
 
@@ -285,6 +300,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           expect.objectContaining({
             paid_total: 68,
             refunded_total: 70,
+            transaction_total: -2,
+            pending_difference: 49.78000999000999,
           })
         )
       })

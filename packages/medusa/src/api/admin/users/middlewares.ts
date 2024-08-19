@@ -1,7 +1,6 @@
 import * as QueryConfig from "./query-config"
 
 import {
-  AdminCreateUser,
   AdminGetUserParams,
   AdminGetUsersParams,
   AdminUpdateUser,
@@ -23,18 +22,6 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetUsersParams,
         QueryConfig.listTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/users",
-    middlewares: [
-      authenticate("user", ["bearer", "session"], { allowUnregistered: true }),
-      validateAndTransformBody(AdminCreateUser),
-      validateAndTransformQuery(
-        AdminGetUserParams,
-        QueryConfig.retrieveTransformQueryConfig
       ),
     ],
   },

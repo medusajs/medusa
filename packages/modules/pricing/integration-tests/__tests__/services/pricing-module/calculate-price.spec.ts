@@ -897,6 +897,61 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           ])
         })
 
+        it("should return a price of 0", async () => {
+          const priceSet = await service.createPriceSets({
+            prices: [
+              {
+                amount: 0,
+                currency_code: "USD",
+              },
+            ],
+          })
+
+          const priceSetsResult = await service.calculatePrices(
+            { id: [priceSet.id] },
+            {
+              context: {
+                currency_code: "USD",
+              },
+            }
+          )
+
+          expect(priceSetsResult).toEqual([
+            {
+              id: priceSet.id,
+              is_calculated_price_price_list: false,
+              is_calculated_price_tax_inclusive: false,
+              calculated_amount: 0,
+              raw_calculated_amount: {
+                value: "0",
+                precision: 20,
+              },
+              is_original_price_price_list: false,
+              is_original_price_tax_inclusive: false,
+              original_amount: 0,
+              raw_original_amount: {
+                value: "0",
+                precision: 20,
+              },
+              currency_code: "USD",
+              calculated_price: {
+                id: expect.any(String),
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: null,
+                max_quantity: null,
+              },
+              original_price: {
+                id: expect.any(String),
+                price_list_id: null,
+                price_list_type: null,
+                min_quantity: null,
+                max_quantity: null,
+              },
+            },
+          ])
+        })
+
         describe("Price Lists", () => {
           it("should return price list prices when price list conditions match", async () => {
             await createPriceLists(service)

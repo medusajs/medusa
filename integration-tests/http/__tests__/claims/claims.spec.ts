@@ -393,51 +393,98 @@ medusaIntegrationTestRunner({
       ).data.shipping_option
 
       item = order.items[0]
-
-      await api.post(
-        `/admin/orders/${order.id}/fulfillments`,
-        {
-          items: [
-            {
-              id: item.id,
-              quantity: 2,
-            },
-          ],
-        },
-        adminHeaders
-      )
-
-      await api.post(
-        `/admin/orders/${order2.id}/fulfillments`,
-        {
-          items: [
-            {
-              id: order2.items[0].id,
-              quantity: 1,
-            },
-          ],
-        },
-        adminHeaders
-      )
-
-      baseClaim = (
-        await api.post(
-          "/admin/claims",
-          {
-            order_id: order.id,
-            type: ClaimType.REPLACE,
-            description: "Base claim",
-          },
-          adminHeaders
-        )
-      ).data.claim
     })
 
     describe("Claims lifecycle", () => {
       let claimId
 
+      describe("with accurate order summary", () => {
+        it("should verify order summary at each level", async () => {
+          /* Case:
+            Purchased:
+              items: {
+                unit_price: 25,
+                qty: 2
+                tax_total: 0
+                total: 50
+              }
+              shipping_methods: {
+                unit_price: 10,
+                qty: 1
+                tax_total: 1
+                total: 11
+              }
+          */
+          const orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderResult.summary).toEqual(
+            expect.objectContaining({
+              paid_total: 0,
+              difference_sum: 0,
+              refunded_total: 0,
+              transaction_total: 0,
+              pending_difference: 61,
+              current_order_total: 61,
+              original_order_total: 61,
+              temporary_difference: 0,
+            })
+          )
+
+          /* TODO: Check summary after each of these events in order
+            - Add payment collection + payment + capture
+            - Fulfill items
+            - Submit inbound claim
+            - Fulfill claim items
+            - Make payment
+            - Submit outbound claim
+            - Make payment
+            - Fulfill claim items
+          */
+        })
+      })
+
       describe("with inbound and outbound items", () => {
         beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/orders/${order2.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: order2.items[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
           let r2 = await api.post(
             "/admin/claims",
             {
@@ -513,7 +560,7 @@ medusaIntegrationTestRunner({
           await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
 
           claimId = baseClaim.id
-          const item = order.items[0]
+          item = order.items[0]
 
           let result = await api.post(
             `/admin/claims/${claimId}/inbound/items`,
@@ -710,8 +757,46 @@ medusaIntegrationTestRunner({
 
       describe("with only outbound items", () => {
         beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/orders/${order2.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: order2.items[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
           claimId = baseClaim.id
-          const item = order.items[0]
+          item = order.items[0]
 
           const {
             data: {
@@ -803,6 +888,44 @@ medusaIntegrationTestRunner({
 
     describe("GET /admin/claims/:id", () => {
       beforeEach(async () => {
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            items: [
+              {
+                id: item.id,
+                quantity: 2,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/orders/${order2.id}/fulfillments`,
+          {
+            items: [
+              {
+                id: order2.items[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        baseClaim = (
+          await api.post(
+            "/admin/claims",
+            {
+              order_id: order.id,
+              type: ClaimType.REPLACE,
+              description: "Base claim",
+            },
+            adminHeaders
+          )
+        ).data.claim
+
         await api.post(
           `/admin/claims/${baseClaim.id}/inbound/items`,
           {

@@ -640,6 +640,7 @@ export default class OrderModuleService<
 
       const orderWithTotals = decorateCartTotals({
         ...ord,
+        shipping_methods,
         items,
       }) as any
       const calculated = calculateOrderChange({
@@ -2920,7 +2921,18 @@ export default class OrderModuleService<
             op(summary.totals.refunded_total, MathBN.abs(trx.amount))
           )
         }
+
+        summary.totals.transaction_total = new BigNumber(
+          op(summary.totals.transaction_total, trx.amount)
+        )
       }
+
+      summary.totals.pending_difference = new BigNumber(
+        MathBN.sub(
+          summary.totals.current_order_total,
+          summary.totals.transaction_total
+        )
+      )
     })
 
     createRawPropertiesFromBigNumber(summaries)

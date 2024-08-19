@@ -3524,6 +3524,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.createOrderLineItemsStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderPaymentCollectionWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.createOrderPaymentCollectionWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.createOrderShipmentWorkflow/page.mdx",
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.createOrderShipmentWorkflow"
   },
@@ -3782,6 +3786,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.setOrderTaxLinesForItemsStep/page.mdx",
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.setOrderTaxLinesForItemsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.throwIfActivePaymentCollectionExists/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.throwIfActivePaymentCollectionExists"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateClaimAddItemValidationStep/page.mdx",
@@ -4078,6 +4086,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createOrderLineItemsStepId/page.mdx",
     "pathname": "/references/core_flows/Order/variables/core_flows.Order.createOrderLineItemsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createOrderPaymentCollectionWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Order/variables/core_flows.Order.createOrderPaymentCollectionWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.createOrderShipmentWorkflowId/page.mdx",

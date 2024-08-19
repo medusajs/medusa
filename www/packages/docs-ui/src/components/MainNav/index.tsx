@@ -11,9 +11,10 @@ import { MainNavDivider } from "./Divider"
 import { MainNavSidebarOpener } from "./SidebarOpener"
 import { MainNavHelpButton } from "./HelpButton"
 import { SidebarLeftIcon } from "../Icons/SidebarLeft"
+import { MainNavEditDate } from "./EditDate"
 
 export const MainNav = () => {
-  const { reportIssueLink } = useMainNav()
+  const { reportIssueLink, editDate } = useMainNav()
   const { setMobileSidebarOpen } = useSidebar()
   return (
     <div
@@ -35,14 +36,17 @@ export const MainNav = () => {
         <MainNavigationDropdown />
         <MainNavBreadcrumbs />
       </div>
-      <div className="flex items-center gap-docs_0.25">
-        <Link href={reportIssueLink} className="text-medusa-fg-muted">
-          Report Issue
-        </Link>
+      <div className="flex items-center gap-docs_0.75">
+        <div className="flex items-center gap-[6px] text-medusa-fg-muted">
+          {editDate && <MainNavEditDate date={editDate} />}
+          <Link href={reportIssueLink}>Report Issue</Link>
+        </div>
         <MainNavDivider />
-        <MainNavHelpButton />
-        <MainNavColorMode />
-        <SearchModalOpener />
+        <div className="flex items-center gap-docs_0.25">
+          <MainNavHelpButton />
+          <MainNavColorMode />
+          <SearchModalOpener />
+        </div>
       </div>
     </div>
   )

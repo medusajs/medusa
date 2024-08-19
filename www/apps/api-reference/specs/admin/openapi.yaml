@@ -74,6 +74,9 @@ tags:
   - name: Orders
     x-associatedSchema:
       $ref: ./components/schemas/AdminOrder.yaml
+  - name: Payment Collections
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminPaymentCollection.yaml
   - name: Payments
     x-associatedSchema:
       $ref: ./components/schemas/AdminPayment.yaml
@@ -318,6 +321,8 @@ paths:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
   /admin/orders/{id}/preview:
     $ref: paths/admin_orders_{id}_preview.yaml
+  /admin/payment-collections:
+    $ref: paths/admin_payment-collections.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:

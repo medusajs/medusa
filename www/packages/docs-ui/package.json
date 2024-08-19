@@ -67,7 +67,6 @@
     "@segment/analytics-next": "^1.55.0",
     "@uidotdev/usehooks": "^2.4.1",
     "algoliasearch": "^5.0.0",
-    "copy-text-to-clipboard": "^3.2.0",
     "framer-motion": "^11.3.21",
     "mermaid": "^10.9.0",
     "npm-to-yarn": "^2.1.0",

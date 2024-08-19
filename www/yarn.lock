@@ -6130,6 +6130,7 @@ __metadata:
     "@types/react": ^18.2.0
     "@types/react-dom": ^18.2.0
     autoprefixer: ^10.0.1
+    build-scripts: "*"
     clsx: ^2.1.0
     docs-ui: "*"
     eslint: ^8
@@ -6624,13 +6625,6 @@ __metadata:
   version: 2.0.0
   resolution: "convert-source-map@npm:2.0.0"
   checksum: 8f2f7a27a1a011cc6cc88cc4da2d7d0cfa5ee0369508baae3d98c260bb3ac520691464e5bbe4ae7cdf09860c1d69ecc6f70c63c6e7c7f7e3f18ec08484dc7d9b
-  languageName: node
-  linkType: hard
-
-"copy-text-to-clipboard@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "copy-text-to-clipboard@npm:3.2.0"
-  checksum: d60fdadc59d526e19d56ad23cec2b292d33c771a5091621bd322d138804edd3c10eb2367d46ec71b39f5f7f7116a2910b332281aeb36a5b679199d746a8a5381
   languageName: node
   linkType: hard
 
@@ -7381,7 +7375,6 @@ __metadata:
     "@uidotdev/usehooks": ^2.4.1
     algoliasearch: ^5.0.0
     clsx: ^2.0.0
-    copy-text-to-clipboard: ^3.2.0
     cpy-cli: ^5.0.0
     eslint: ^8
     eslint-config-docs: "*"
