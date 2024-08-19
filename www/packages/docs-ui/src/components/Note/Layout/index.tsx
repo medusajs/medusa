@@ -72,8 +72,7 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
           // TODO remove once we use the new prerequisites component across docs
           (type === "default" || type === "check") &&
             "bg-medusa-tag-neutral-icon",
-          type === "warning" && "bg-medusa-tag-orange-icon",
-          type === "error" && "bg-medusa-tag-red-icon",
+          (type === "error" || type === "warning") && "bg-medusa-tag-red-icon",
           type === "success" && "bg-medusa-tag-green-icon",
           // TODO remove once all soon components are removed
           type === "soon" && "bg-medusa-tag-blue-icon"
