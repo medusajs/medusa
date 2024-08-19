@@ -732,7 +732,6 @@ export const DataGridRoot = <
       }
 
       if (e.key === "z" && (e.metaKey || e.ctrlKey)) {
-        console.log("Undo/Redo")
         handleUndo(e)
         return
       }
