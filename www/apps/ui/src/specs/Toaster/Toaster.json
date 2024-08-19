@@ -11,38 +11,7 @@
       "description": "The position of the created toasts.",
       "tsType": {
         "name": "Position",
-        "elements": [
-          {
-            "name": "union",
-            "raw": "\"top-left\" \\| \"top-right\" \\| \"bottom-left\" \\| \"bottom-right\" \\| \"top-center\" \\| \"bottom-center\"",
-            "elements": [
-              {
-                "name": "literal",
-                "value": "\"top-left\""
-              },
-              {
-                "name": "literal",
-                "value": "\"top-right\""
-              },
-              {
-                "name": "literal",
-                "value": "\"bottom-left\""
-              },
-              {
-                "name": "literal",
-                "value": "\"bottom-right\""
-              },
-              {
-                "name": "literal",
-                "value": "\"top-center\""
-              },
-              {
-                "name": "literal",
-                "value": "\"bottom-center\""
-              }
-            ]
-          }
-        ],
+        "elements": [],
         "raw": "Position"
       },
       "required": false
