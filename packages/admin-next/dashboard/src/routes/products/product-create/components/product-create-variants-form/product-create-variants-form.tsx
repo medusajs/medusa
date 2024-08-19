@@ -3,11 +3,8 @@ import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
-import { DataGridReadOnlyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
-import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-text-cell"
-import { getPriceColumns } from "../../../../../components/data-grid/data-grid-columns/price-columns"
-import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { DataGrid } from "../../../../../components/data-grid"
+import { createDataGridPriceColumns } from "../../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { useRouteModal } from "../../../../../components/modals"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
@@ -103,16 +100,13 @@ export const ProductCreateVariantsForm = ({
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      {isPending ? (
-        <div>Loading...</div>
-      ) : (
-        <DataGridRoot
-          columns={columns}
-          data={variantData}
-          state={form}
-          onEditingChange={(editing) => setCloseOnEscape(!editing)}
-        />
-      )}
+      <DataGrid
+        isLoading={isPending}
+        columns={columns}
+        data={variantData}
+        state={form}
+        onEditingChange={(editing) => setCloseOnEscape(!editing)}
+      />
     </div>
   )
 }
@@ -145,9 +139,9 @@ const useColumns = ({
         ),
         cell: ({ row }) => {
           return (
-            <DataGridReadOnlyCell>
+            <DataGrid.ReadonlyCell>
               {options.map((o) => row.original.options[o.title]).join(" / ")}
-            </DataGridReadOnlyCell>
+            </DataGrid.ReadonlyCell>
           )
         },
         disableHiding: true,
@@ -158,7 +152,7 @@ const useColumns = ({
         header: t("fields.title"),
         cell: (context) => {
           return (
-            <DataGridTextCell
+            <DataGrid.TextCell
               context={context}
               field={`variants.${context.row.index}.title`}
             />
@@ -171,7 +165,7 @@ const useColumns = ({
         header: t("fields.sku"),
         cell: (context) => {
           return (
-            <DataGridTextCell
+            <DataGrid.TextCell
               context={context}
               field={`variants.${context.row.index}.sku`}
             />
@@ -184,13 +178,12 @@ const useColumns = ({
         header: t("fields.managedInventory"),
         cell: (context) => {
           return (
-            <DataGridBooleanCell
+            <DataGrid.BooleanCell
               context={context}
               field={`variants.${context.row.index}.manage_inventory`}
             />
           )
         },
-        type: "boolean",
       }),
       columnHelper.column({
         id: "allow_backorder",
@@ -198,13 +191,12 @@ const useColumns = ({
         header: t("fields.allowBackorder"),
         cell: (context) => {
           return (
-            <DataGridBooleanCell
+            <DataGrid.BooleanCell
               context={context}
               field={`variants.${context.row.index}.allow_backorder`}
             />
           )
         },
-        type: "boolean",
       }),
 
       columnHelper.column({
@@ -213,17 +205,16 @@ const useColumns = ({
         header: t("fields.inventoryKit"),
         cell: (context) => {
           return (
-            <DataGridBooleanCell
+            <DataGrid.BooleanCell
               context={context}
               field={`variants.${context.row.index}.inventory_kit`}
               disabled={!context.row.original.manage_inventory}
             />
           )
         },
-        type: "boolean",
       }),
 
-      ...getPriceColumns<ProductCreateVariantSchema>({
+      ...createDataGridPriceColumns<ProductCreateVariantSchema>({
         currencies,
         regions,
         pricePreferences,
