@@ -1,16 +1,14 @@
 import { exec } from "child_process"
 import { existsSync } from "fs"
-import { readdir, readFile, stat, writeFile } from "fs/promises"
+import { readFile, stat, writeFile } from "fs/promises"
 import path from "path"
 import util from "util"
+import { getAllProjectFiles } from "./utils/get-all-project-files.js"
+import { getChangedFiles } from "./utils/get-changed-files.js"
 
 const promiseExec = util.promisify(exec)
 
 const projectBasePath = path.resolve()
-const rootPath = path.resolve("..", "..", "..")
-const monorepoRelativePath = projectBasePath
-  .replace(rootPath, "")
-  .replace(/^\//, "")
 const generatedFilePath = path.join(
   projectBasePath,
   "generated",
@@ -52,76 +50,15 @@ const getOsLastEditDates = async (
   return editDates
 }
 
-const getChangedFiles = async (): Promise<string[]> => {
-  const changedFiles: string[] = []
-
-  // get untracked files
-  const untrackedFiles = await promiseExec(
-    `git ls-files --other --exclude-standard`
-  )
-
-  untrackedFiles.stdout.split("\n").forEach((file) => {
-    if (path.basename(file) !== "page.mdx") {
-      return
-    }
-
-    changedFiles.push(path.relative(projectBasePath, file))
-  })
-
-  // get tracked files
-  const trackedFiles = await promiseExec(
-    `{ git diff --name-only ; git diff --name-only --staged ; } | sort | uniq`
-  )
-
-  trackedFiles.stdout.split("\n").forEach((file) => {
-    // The above command retrieve the full file path relative to the monorepo
-    // so all parts before the project's path should be removed.
-    if (
-      !file.startsWith(monorepoRelativePath) ||
-      path.basename(file) !== "page.mdx"
-    ) {
-      return
-    }
-
-    changedFiles.push(file.replace(`${monorepoRelativePath}/`, ""))
-  })
-
-  return changedFiles
-}
-
-const getAllProjectFiles = async (): Promise<string[]> => {
-  const appDir = path.join(projectBasePath, "app")
-
-  const allFiles: string[] = []
-  const filesInDir = await readdir(appDir, {
-    withFileTypes: true,
-    recursive: true,
-  })
-
-  filesInDir.forEach((file) => {
-    if (file.isDirectory() || path.basename(file.name) !== "page.mdx") {
-      return
-    }
-
-    const fullFilePath = path.join(file.path, file.name)
-
-    // TODO check if this produces correct file paths
-    allFiles.push(path.relative(projectBasePath, fullFilePath))
-  })
-
-  return allFiles
-}
-
 export const generateEditedDates = async () => {
   const generatedFileExists = existsSync(generatedFilePath)
-  const type = generatedFileExists ? "git" : "all"
 
   let files: string[] = []
   let editDates: Record<string, string> = {}
 
-  if (type === "all") {
+  if (!generatedFileExists) {
     // get all files in a project
-    files = await getAllProjectFiles()
+    files = await getAllProjectFiles({})
     editDates = await getGitEditDatesOfPaths(files)
   } else {
     // set the last edit dates for git changes only
