@@ -4,10 +4,7 @@ import React from "react"
 export const MainNavDivider = () => {
   return (
     <span
-      className={clsx(
-        "h-docs_0.75 w-px block bg-medusa-border-base",
-        "mx-docs_0.5"
-      )}
+      className={clsx("h-docs_0.75 w-px block bg-medusa-border-base")}
     ></span>
   )
 }
