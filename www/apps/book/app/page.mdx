@@ -1,5 +1,6 @@
 import { CheckCircleSolid, BuildingStorefront, BuildingsSolid, ComputerDesktop, FlyingBox } from "@medusajs/icons"
 import { config } from "@/config"
+import { Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Introduction - ${config.titleSuffix}`,
@@ -20,14 +21,20 @@ With these tools, you save time you would spend with other platforms on maintain
 
 ## Get started
 
-
-<Note type="check">
-
-- [Node.js v20+](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL](https://www.postgresql.org/download/)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
 
 Create your first Medusa store by running the following command:
 
