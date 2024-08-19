@@ -31,7 +31,8 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
         "children" in child.props &&
         child.props.children
       ) {
-        if (child.type.toString().includes(`"li"`)) {
+        const typeStr = child.type.toString()
+        if (typeStr.includes(`"li"`)) {
           allStringChildren = false
           return
         } else if (
@@ -39,6 +40,12 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
           typeof child.props.children === "string"
         ) {
           stringChildren.push(`[${child.props.children}](${child.props.href})`)
+          return
+        } else if (
+          typeStr.includes("InlineCode") &&
+          typeof child.props.children === "string"
+        ) {
+          stringChildren.push(`\`${child.props.children}\``)
           return
         }
 
@@ -91,7 +98,10 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
             {title}:&nbsp;
           </span>
           {allStringChildren && (
-            <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
+            <MarkdownContent
+              allowedElements={["a", "code"]}
+              unwrapDisallowed={true}
+            >
               {stringChildren}
             </MarkdownContent>
           )}
