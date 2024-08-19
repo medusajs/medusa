@@ -24,10 +24,10 @@ import {
 } from "../../utils/order-validation"
 
 /**
- * This step validates that a new item can be updated from an order edit.
+ * This step validates that an item can be updated from an order edit.
  */
-export const updateOrderEditAddItemValidationStep = createStep(
-  "update-order-edit-add-item-validation",
+export const updateOrderEditItemQuantityValidationStep = createStep(
+  "update-order-edit-update-quantity-validation",
   async function (
     {
       order,
@@ -36,7 +36,7 @@ export const updateOrderEditAddItemValidationStep = createStep(
     }: {
       order: OrderDTO
       orderChange: OrderChangeDTO
-      input: OrderWorkflow.UpdateOrderEditAddNewItemWorkflowInput
+      input: OrderWorkflow.UpdateOrderEditItemQuantityWorkflowInput
     },
     context
   ) {
@@ -49,22 +49,23 @@ export const updateOrderEditAddItemValidationStep = createStep(
 
     if (!associatedAction) {
       throw new Error(
-        `No request to add item for order ${input.order_id} in order change ${orderChange.id}`
+        `No request to update item quantity for order ${input.order_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.ITEM_ADD) {
-      throw new Error(`Action ${associatedAction.id} is not adding an item`)
+    } else if (associatedAction.action !== ChangeActionType.ITEM_UPDATE) {
+      throw new Error(`Action ${associatedAction.id} is not updating an item`)
     }
   }
 )
 
-export const updateOrderEditAddItemWorkflowId = "update-order-edit-add-item"
+export const updateOrderEditItemQuantityWorkflowId =
+  "update-order-edit-update-quantity"
 /**
  * This workflow updates a new item in the order edit.
  */
-export const updateOrderEditAddItemWorkflow = createWorkflow(
-  updateOrderEditAddItemWorkflowId,
+export const updateOrderEditItemQuantityWorkflow = createWorkflow(
+  updateOrderEditItemQuantityWorkflowId,
   function (
-    input: WorkflowData<OrderWorkflow.UpdateOrderEditAddNewItemWorkflowInput>
+    input: WorkflowData<OrderWorkflow.UpdateOrderEditItemQuantityWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -86,7 +87,7 @@ export const updateOrderEditAddItemWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    updateOrderEditAddItemValidationStep({
+    updateOrderEditItemQuantityValidationStep({
       order,
       input,
       orderChange,
