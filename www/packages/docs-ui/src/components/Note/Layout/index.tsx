@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import { NoteProps } from ".."
 import clsx from "clsx"
+import { MarkdownContent } from "../../.."
 
 type StringInfo = {
   allStringChildren: boolean
@@ -32,6 +33,12 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
       ) {
         if (child.type.toString().includes(`"li"`)) {
           allStringChildren = false
+          return
+        } else if (
+          "href" in child.props &&
+          typeof child.props.children === "string"
+        ) {
+          stringChildren.push(`[${child.props.children}](${child.props.href})`)
           return
         }
 
@@ -83,7 +90,11 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
           <span className={clsx("text-small-plus text-medusa-fg-base")}>
             {title}:&nbsp;
           </span>
-          {allStringChildren && stringChildren}
+          {allStringChildren && (
+            <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
+              {stringChildren}
+            </MarkdownContent>
+          )}
           {!allStringChildren && children}
         </div>
       </div>
