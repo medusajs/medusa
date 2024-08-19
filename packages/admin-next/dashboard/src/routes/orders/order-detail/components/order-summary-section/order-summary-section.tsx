@@ -111,8 +111,8 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
 
   const showPayment =
     typeof authorizedPaymentCollection === "undefined" &&
-    (orderPreview?.summary?.pending_difference || 0) > 0
-  const showRefund = (orderPreview?.summary?.pending_difference || 0) < 0
+    (order?.summary?.pending_difference || 0) > 0
+  const showRefund = (order?.summary?.pending_difference || 0) < 0
 
   return (
     <Container className="divide-y divide-dashed p-0">

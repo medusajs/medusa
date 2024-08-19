@@ -89,6 +89,11 @@ export const useCreateOrderFulfillment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -107,6 +112,11 @@ export const useCancelOrderFulfillment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -129,6 +139,11 @@ export const useCreateOrderShipment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

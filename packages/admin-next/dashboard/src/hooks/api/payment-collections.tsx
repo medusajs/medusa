@@ -25,6 +25,10 @@ export const useCreatePaymentCollection = (
         queryKey: ordersQueryKeys.all,
       })
 
+      queryClient.invalidateQueries({
+        queryKey: paymentCollectionQueryKeys.all,
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -43,12 +47,12 @@ export const useDeletePaymentCollection = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.paymentCollection.delete(id),
-    onSuccess: async (data, variables, context) => {
-      await queryClient.invalidateQueries({
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
       })
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: paymentCollectionQueryKeys.all,
       })
 
