@@ -804,7 +804,7 @@
     "summary": {
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
-      "editItems": "Edit items"
+      "editOrder": "Edit order"
     },
     "payment": {
       "title": "Payments",
