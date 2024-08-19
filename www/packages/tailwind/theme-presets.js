@@ -96,7 +96,7 @@ const light = {
   "--docs-contrast-bg-alpha": "rgba(9, 9, 11, 0.8)",
   "--docs-contrast-fg-primary": "rgba(255, 255, 255, 0.88)",
   "--docs-contrast-fg-secondary": "rgba(255, 255, 255, 0.56)",
-  "--docs-contrast-border-base": "rgba(255, 255, 255, 0.15)",
+  "--docs-contrast-border-base": "rgba(255, 255, 255, 0.16)",
   "--docs-contrast-border-top": "rgba(9, 9, 11, 1)",
   "--docs-contrast-border-bot": "rgba(255, 255, 255, 0.1)",
 }
