@@ -18,6 +18,7 @@ import {
   PaymentSessionStatus,
   isDefined,
   isPaymentProviderError,
+  isPresent,
 } from "@medusajs/utils"
 import {
   ErrorCodes,
@@ -281,7 +282,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
       return result
     } else {
-      if (amount && data.amount === amountNumeric) {
+      if (isPresent(amount) && data.amount === amountNumeric) {
         return { data }
       }
 
@@ -302,7 +303,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     try {
       // Prevent from updating the amount from here as it should go through
       // the updatePayment method to perform the correct logic
-      if (data.amount) {
+      if (isPresent(data.amount)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Cannot update amount, use updatePayment instead"

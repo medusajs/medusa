@@ -36,7 +36,13 @@ export function getComputedActionsForBuyGet(
 
   const validQuantity = MathBN.sum(
     ...itemsContext
-      .filter((item) => areRulesValidForContext(buyRules, item))
+      .filter((item) =>
+        areRulesValidForContext(
+          buyRules,
+          item,
+          ApplicationMethodTargetType.ITEMS
+        )
+      )
       .map((item) => item.quantity)
   )
 
@@ -49,7 +55,13 @@ export function getComputedActionsForBuyGet(
   }
 
   const validItemsForTargetRules = itemsContext
-    .filter((item) => areRulesValidForContext(targetRules, item))
+    .filter((item) =>
+      areRulesValidForContext(
+        targetRules,
+        item,
+        ApplicationMethodTargetType.ITEMS
+      )
+    )
     .filter((item) => isPresent(item.subtotal) && isPresent(item.quantity))
     .sort((a, b) => {
       const aPrice = MathBN.div(a.subtotal, a.quantity)

@@ -5372,7 +5372,6 @@ __metadata:
     vite: ^4.3.9
     vite-plugin-turbosnap: ^1.0.2
     vitest: ^0.32.2
-    yarn: ^1.22.22
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
@@ -31546,16 +31545,6 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b1dbfefa679848442454b60053a6c95d62f2d2e21dd28def92b647587f415969173c6e99a0f3bab4f1b67ee8283bf735ebe3544013f09491186ba9e8a9a2b651
-  languageName: node
-  linkType: hard
-
-"yarn@npm:^1.22.22":
-  version: 1.22.22
-  resolution: "yarn@npm:1.22.22"
-  bin:
-    yarn: bin/yarn.js
-    yarnpkg: bin/yarn.js
-  checksum: 8c77198c93d7542e7f4e131c63b66de357b7076ecfbcfe709ec0d674115c2dd9edaa45196e5510e6e9366d368707a802579e3402071002e1c9d9a99d491478de
   languageName: node
   linkType: hard
 

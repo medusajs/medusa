@@ -1,16 +1,16 @@
 import { Table } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
-import { Skeleton } from "../../../common/skeleton"
+import { Skeleton } from "../common/skeleton"
 
-type DataTableSkeletonProps = {
-  columns: ColumnDef<any, any>[]
-  rowCount: number
+type DataGridSkeletonProps<TData> = {
+  columns: ColumnDef<TData>[]
+  rows?: number
 }
 
-export const DataGridSkeleton = ({
+export const DataGridSkeleton = <TData,>({
   columns,
-  rowCount,
-}: DataTableSkeletonProps) => {
+  rows: rowCount = 10,
+}: DataGridSkeletonProps<TData>) => {
   const rows = Array.from({ length: rowCount }, (_, i) => i)
 
   const colCount = columns.length
