@@ -5,6 +5,7 @@ import {
 } from "@medusajs/types"
 import {
   ApplicationMethodAllocation,
+  ApplicationMethodTargetType,
   ComputedActions,
   MathBN,
   MedusaError,
@@ -172,7 +173,8 @@ function getValidItemsForPromotion(
       const isQuantityPresent = "quantity" in item
       const isPromotionApplicableToItem = areRulesValidForContext(
         promotion?.application_method?.target_rules!,
-        item
+        item,
+        ApplicationMethodTargetType.ITEMS
       )
 
       return (
