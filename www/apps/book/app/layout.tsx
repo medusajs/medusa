@@ -43,10 +43,10 @@ export default function RootLayout({
       }}
       showPagination={true}
       bodyClassName={clsx(inter.variable, robotoMono.variable)}
+      feedbackComponent={<Feedback className="my-2" />}
+      editComponent={<EditButton />}
     >
       {children}
-      <Feedback className="my-2" />
-      <EditButton />
     </TightLayout>
   )
 }
