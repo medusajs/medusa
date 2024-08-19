@@ -12,7 +12,6 @@ import {
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import * as zod from "zod"
 
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
@@ -27,10 +26,13 @@ import {
   useCreateInventoryItem,
 } from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
-import { parseOptionalFormData } from "../../../../../lib/form-helpers"
+import {
+  transformNullableFormData,
+  transformNullableFormNumbers,
+} from "../../../../../lib/form-helpers"
 import { queryClient } from "../../../../../lib/query-client"
-import { optionalInt } from "../../../../../lib/validation"
 import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
+import { CreateInventoryItemSchema } from "./schema"
 
 enum Tab {
   DETAILS = "details",
@@ -41,29 +43,12 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-const CreateInventoryItemSchema = zod.object({
-  title: zod.string().min(1),
-  description: zod.string().optional(),
-  sku: zod.string().optional(),
-  hs_code: zod.string().optional(),
-  weight: optionalInt,
-  length: optionalInt,
-  height: optionalInt,
-  width: optionalInt,
-  origin_country: zod.string().optional(),
-  mid_code: zod.string().optional(),
-  material: zod.string().optional(),
-  requires_shipping: zod.boolean().optional(),
-  thumbnail: zod.string().optional(),
-  locations: zod.record(zod.string(), zod.number().optional()).optional(),
-})
-
 export function CreateInventoryItemForm() {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
 
-  const form = useForm<zod.infer<typeof CreateInventoryItemSchema>>({
+  const form = useForm<CreateInventoryItemSchema>({
     defaultValues: {
       title: "",
       sku: "",
@@ -88,43 +73,53 @@ export function CreateInventoryItemForm() {
   const handleSubmit = form.handleSubmit(async (data) => {
     const { locations, weight, length, height, width, ...payload } = data
 
-    const cleanData = parseOptionalFormData(payload)
+    const cleanData = transformNullableFormData(payload, false)
+    const cleanNumbers = transformNullableFormNumbers(
+      {
+        weight,
+        length,
+        height,
+        width,
+      },
+      false
+    )
 
-    for (const k in payload) {
-      if (payload[k] === "") {
-        delete payload[k]
-        continue
+    const { inventory_item } = await createInventoryItem(
+      {
+        ...cleanData,
+        ...cleanNumbers,
+      },
+      {
+        onError: (e) => {
+          toast.error(e.message)
+          return
+        },
       }
+    )
 
-      if (["weight", "length", "height", "width"].includes(k)) {
-        payload[k] = parseInt(payload[k])
-      }
-    }
-
-    try {
-      const { inventory_item } = await createInventoryItem(payload)
-
-      try {
-        await sdk.admin.inventoryItem.batchUpdateLevels(inventory_item.id, {
-          create: Object.entries(locations)
-            .filter(([_, quantiy]) => !!quantiy)
-            .map(([location_id, stocked_quantity]) => ({
-              location_id,
-              stocked_quantity,
-            })),
-        })
-
+    await sdk.admin.inventoryItem
+      .batchUpdateLevels(inventory_item.id, {
+        create: Object.entries(locations ?? {})
+          .filter(([_, quantiy]) => !!quantiy)
+          .map(([location_id, stocked_quantity]) => ({
+            location_id,
+            stocked_quantity,
+          })),
+      })
+      .then(async () => {
         await queryClient.invalidateQueries({
           queryKey: inventoryItemsQueryKeys.lists(),
         })
-      } catch (e) {
+      })
+      .catch((e) => {
+        // Since the inventory item is created, we only log the error,
+        // but still close the modal to prevent the user from trying to
+        // create the same item again.
         toast.error(e.message)
-      }
-
-      handleSuccess()
-    } catch (e) {
-      toast.error(e.message)
-    }
+      })
+      .finally(() => {
+        handleSuccess()
+      })
   })
 
   const [status, setStatus] = useState<StepStatus>({

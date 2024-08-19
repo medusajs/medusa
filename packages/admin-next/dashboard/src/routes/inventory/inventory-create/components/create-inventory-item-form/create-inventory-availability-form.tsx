@@ -9,9 +9,10 @@ import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { useRouteModal } from "../../../../../components/modals"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { CreateInventoryItemSchema } from "./schema"
 
 type Props = {
-  form: UseFormReturn<{}>
+  form: UseFormReturn<CreateInventoryItemSchema>
 }
 
 export const CreateInventoryAvailabilityForm = ({ form }: Props) => {
@@ -72,7 +73,6 @@ const useColumns = () => {
           )
         },
         disableHiding: true,
-        type: "number",
       }),
     ],
     [t]
