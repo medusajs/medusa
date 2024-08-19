@@ -28,7 +28,7 @@ const Header = ({ className, ...props }: HeaderProps) => {
       className={clsx(
         className,
         "!border-0 bg-medusa-bg-component [&_tr]:!bg-medusa-bg-component",
-        "rounded-docs_DEFAULT"
+        "rounded-docs_DEFAULT [&_tr]:rounded-docs_DEFAULT"
       )}
       {...props}
     />
@@ -43,21 +43,8 @@ const HeaderCell = ({ className, ...props }: HeaderCellProps) => {
       className={clsx(
         className,
         "text-left px-docs_0.75 py-docs_0.5 break-words",
-        "!text-compact-small-plus text-medusa-fg-subtle"
-      )}
-      {...props}
-    />
-  )
-}
-
-type RowProps = React.HTMLAttributes<HTMLTableRowElement>
-
-const Row = ({ className, ...props }: RowProps) => {
-  return (
-    <UiTable.Row
-      className={clsx(
-        className
-        // "[&_td:last-child]:pr-docs_1.5 [&_th:last-child]:pr-docs_1.5 [&_td:first-child]:pl-docs_1.5 [&_th:first-child]:pl-docs_1.5"
+        "!text-compact-small-plus text-medusa-fg-subtle",
+        "first:rounded-tl-docs_DEFAULT last:rounded-tr-docs_DEFAULT"
       )}
       {...props}
     />
@@ -69,18 +56,32 @@ type CellProps = React.HTMLAttributes<HTMLTableCellElement>
 const Cell = ({ className, ...props }: CellProps) => {
   return (
     <UiTable.Cell
-      className={clsx(className, "px-docs_0.75 py-docs_0.5 break-words")}
+      className={clsx(
+        className,
+        "px-docs_0.75 py-docs_0.5 break-words align-top"
+      )}
+      {...props}
+    />
+  )
+}
+
+type BodyProps = React.HTMLAttributes<HTMLTableSectionElement>
+
+const Body = ({ className, ...props }: BodyProps) => {
+  return (
+    <UiTable.Body
+      className={clsx(className, "[&_tr:last-child]:border-b-0 border-b-0")}
       {...props}
     />
   )
 }
 
 const Table = Object.assign(Root, {
-  Row,
+  Row: UiTable.Row,
   Cell,
   Header,
   HeaderCell,
-  Body: UiTable.Body,
+  Body,
 })
 
 export { Table }
