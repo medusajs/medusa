@@ -6,6 +6,8 @@ import { Pagination } from ".."
 export const TightLayout = ({
   children,
   showPagination,
+  feedbackComponent,
+  editComponent,
   ...props
 }: RootLayoutProps) => {
   return (
@@ -19,7 +21,9 @@ export const TightLayout = ({
         )}
       >
         {children}
+        {feedbackComponent}
         {showPagination && <Pagination />}
+        {editComponent}
       </div>
     </RootLayout>
   )
