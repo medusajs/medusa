@@ -23,6 +23,7 @@ export function pgConnectionLoader(): ReturnType<
     configModule.projectConfig.databaseDriverOptions || {}
   const schema = configModule.projectConfig.databaseSchema || "public"
   const idleTimeoutMillis = driverOptions.pool?.idleTimeoutMillis ?? undefined // prevent null to be passed
+  const poolMin = driverOptions.pool?.min ?? 2
   const poolMax = driverOptions.pool?.max
 
   delete driverOptions.pool
@@ -32,6 +33,7 @@ export function pgConnectionLoader(): ReturnType<
     schema,
     driverOptions,
     pool: {
+      min: poolMin,
       max: poolMax,
       idleTimeoutMillis,
     },
