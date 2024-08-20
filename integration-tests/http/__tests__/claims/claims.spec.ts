@@ -789,8 +789,6 @@ medusaIntegrationTestRunner({
             )
           ).data.payment_collection
 
-          console.log("finalPaymentCollection -- ", finalPaymentCollection)
-
           expect(finalPaymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
