@@ -32,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
@@ -379,6 +380,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "exchange-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

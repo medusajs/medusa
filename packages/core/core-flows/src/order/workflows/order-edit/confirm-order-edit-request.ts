@@ -15,6 +15,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
@@ -160,6 +161,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
     )
 
     reserveInventoryStep(formatedInventoryItems)
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
+    })
 
     return new WorkflowResponse(orderPreview)
   }
