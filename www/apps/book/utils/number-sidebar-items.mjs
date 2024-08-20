@@ -21,13 +21,16 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
 
     // append current number to the item's title
     item.number = `${numbering.join(".")}.`
+    item.chapterTitle = `${item.number} ${
+      item.chapterTitle?.trim() || item.title?.trim()
+    }`
     item.title = `${item.number} ${item.title.trim()}`
 
     if (isTopItems) {
       // Add chapter category
       numberedItems.push({
         type: "category",
-        title: item.title,
+        title: item.chapterTitle,
         children: [],
         loaded: true,
         initialOpen: false,
