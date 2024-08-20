@@ -25,7 +25,7 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
-import { getTotalCaptured } from "../../../../../lib/payment"
+import { getTotalCaptured, getTotalPending } from "../../../../../lib/payment"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
@@ -321,15 +321,34 @@ const Total = ({
   currencyCode: string
 }) => {
   const { t } = useTranslation()
+  const totalPending = getTotalPending(paymentCollections)
 
   return (
-    <div className="flex items-center justify-between px-6 py-4">
-      <Text size="small" weight="plus" leading="compact">
-        {t("orders.payment.totalPaidByCustomer")}
-      </Text>
-      <Text size="small" weight="plus" leading="compact">
-        {getStylizedAmount(getTotalCaptured(paymentCollections), currencyCode)}
-      </Text>
+    <div>
+      <div className="flex items-center justify-between px-6 py-4">
+        <Text size="small" weight="plus" leading="compact">
+          {t("orders.payment.totalPaidByCustomer")}
+        </Text>
+
+        <Text size="small" weight="plus" leading="compact">
+          {getStylizedAmount(
+            getTotalCaptured(paymentCollections),
+            currencyCode
+          )}
+        </Text>
+      </div>
+
+      {totalPending > 0 && (
+        <div className="flex items-center justify-between px-6 py-4">
+          <Text size="small" weight="plus" leading="compact">
+            Total pending
+          </Text>
+
+          <Text size="small" weight="plus" leading="compact">
+            {getStylizedAmount(totalPending, currencyCode)}
+          </Text>
+        </div>
+      )}
     </div>
   )
 }

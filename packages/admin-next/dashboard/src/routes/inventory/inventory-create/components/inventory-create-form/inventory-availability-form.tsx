@@ -1,18 +1,23 @@
-import { useMemo } from "react"
-
 import { HttpTypes } from "@medusajs/types"
+import { useMemo } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { DataGrid } from "../../../../../components/data-grid"
-import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+
+import {
+  DataGrid,
+  createDataGridHelper,
+} from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { CreateInventoryItemSchema } from "./schema"
 
-type Props = {
-  form: UseFormReturn<{}>
+type InventoryAvailabilityFormProps = {
+  form: UseFormReturn<CreateInventoryItemSchema>
 }
 
-export const CreateInventoryAvailabilityForm = ({ form }: Props) => {
+export const InventoryAvailabilityForm = ({
+  form,
+}: InventoryAvailabilityFormProps) => {
   const { isPending, stock_locations = [] } = useStockLocations({ limit: 999 })
   const { setCloseOnEscape } = useRouteModal()
 

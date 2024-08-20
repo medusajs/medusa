@@ -1,5 +1,10 @@
-import { PromotionRuleDTO, PromotionRuleOperatorValues } from "@medusajs/types"
 import {
+  ApplicationMethodTargetTypeValues,
+  PromotionRuleDTO,
+  PromotionRuleOperatorValues,
+} from "@medusajs/types"
+import {
+  ApplicationMethodTargetType,
   MedusaError,
   PromotionRuleOperator,
   isPresent,
@@ -46,7 +51,8 @@ export function validatePromotionRuleAttributes(
 
 export function areRulesValidForContext(
   rules: PromotionRuleDTO[],
-  context: Record<string, any>
+  context: Record<string, any>,
+  contextScope: ApplicationMethodTargetTypeValues
 ): boolean {
   return rules.every((rule) => {
     const validRuleValues = rule.values?.map((ruleValue) => ruleValue.value)
@@ -55,7 +61,10 @@ export function areRulesValidForContext(
       return false
     }
 
-    const valuesToCheck = pickValueFromObject(rule.attribute, context)
+    const valuesToCheck = pickValueFromObject(
+      fetchRuleAttributeForContext(rule.attribute, contextScope),
+      context
+    )
 
     return evaluateRuleValueCondition(
       validRuleValues.filter(isString),
@@ -63,6 +72,38 @@ export function areRulesValidForContext(
       valuesToCheck
     )
   })
+}
+
+/*
+  The context here can either be either:
+  - a cart context
+  - an item context under a cart
+  - a shipping method context under a cart
+
+  The rule's attributes are set from the perspective of the cart context. For example: items.product.id
+  
+  When the context here is item or shipping_method, we need to drop the "items."" or "shipping_method."
+  from the rule attribute string to accurate pick the values from the context.
+*/
+function fetchRuleAttributeForContext(
+  ruleAttribute: string,
+  contextScope: ApplicationMethodTargetTypeValues
+): string {
+  if (contextScope === ApplicationMethodTargetType.ITEMS) {
+    ruleAttribute = ruleAttribute.replace(
+      `${ApplicationMethodTargetType.ITEMS}.`,
+      ""
+    )
+  }
+
+  if (contextScope === ApplicationMethodTargetType.SHIPPING_METHODS) {
+    ruleAttribute = ruleAttribute.replace(
+      `${ApplicationMethodTargetType.SHIPPING_METHODS}.`,
+      ""
+    )
+  }
+
+  return ruleAttribute
 }
 
 export function evaluateRuleValueCondition(

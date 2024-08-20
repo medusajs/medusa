@@ -28,7 +28,8 @@ export function getComputedActionsForShippingMethods(
   for (const shippingMethodContext of shippingMethodApplicationContext) {
     const isPromotionApplicableToItem = areRulesValidForContext(
       promotion.application_method?.target_rules!,
-      shippingMethodContext
+      shippingMethodContext,
+      ApplicationMethodTargetType.SHIPPING_METHODS
     )
 
     if (!isPromotionApplicableToItem) {

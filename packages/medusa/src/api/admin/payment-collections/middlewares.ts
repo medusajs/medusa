@@ -19,4 +19,9 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/payment-collections/:id",
+    middlewares: [],
+  },
 ]
