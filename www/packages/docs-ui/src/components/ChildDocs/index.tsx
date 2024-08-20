@@ -141,7 +141,6 @@ export const ChildDocs = ({
             return {
               title: childItem.title,
               href,
-              showLinkIcon: false,
             }
           }) || []
         }
@@ -170,14 +169,13 @@ export const ChildDocs = ({
                   itemChildren?.map((childItem) => ({
                     title: childItem.title,
                     href: childItem.type === "link" ? childItem.path : "",
-                    showLinkIcon: false,
                   })) || []
                 }
               />
             </>
           )}
           {!HeadingComponent && item.type === "link" && (
-            <Card title={item.title} href={item.path} showLinkIcon={false} />
+            <Card title={item.title} href={item.path} />
           )}
         </React.Fragment>
       )
