@@ -12,6 +12,9 @@ export async function createAuthIdentities(
           provider: "manual",
         },
       ],
+      app_metadata: {
+        user_id: "user-1",
+      },
     },
     {
       id: "test-id-1",
