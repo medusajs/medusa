@@ -70,12 +70,6 @@ export async function mikroOrmCreateConnection(
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
-    /**
-     * "connect=false" will not query the database as soon as a
-     * new instance is created.
-     * https://github.com/mikro-orm/mikro-orm/blob/master/packages/core/src/MikroORM.ts#L57C25-L59
-     */
-    connect: false,
     discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
