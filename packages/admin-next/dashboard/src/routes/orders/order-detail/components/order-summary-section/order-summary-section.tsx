@@ -212,6 +212,21 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
               {t("orders.payment.markAsPaid")}
             </Button>
           )}
+
+          {showRefund && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => navigate(`/orders/${order.id}/refund`)}
+            >
+              {t("orders.payment.refundAmount", {
+                amount: getStylizedAmount(
+                  (order?.summary?.pending_difference || 0) * -1,
+                  order?.currency_code
+                ),
+              })}
+            </Button>
+          )}
         </div>
       )}
     </Container>
