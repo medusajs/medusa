@@ -557,9 +557,7 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "create",
                     lazy: () =>
-                      import(
-                        "../../routes/reservations/reservation-list/create-reservation"
-                      ),
+                      import("../../routes/reservations/reservation-create"),
                   },
                 ],
               },

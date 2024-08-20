@@ -4,19 +4,19 @@ import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../../components/modals"
+} from "../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Form } from "../../../../../../components/common/form"
-import { Combobox } from "../../../../../../components/inputs/combobox"
-import { useInventoryItems } from "../../../../../../hooks/api/inventory"
-import { useCreateReservationItem } from "../../../../../../hooks/api/reservations"
-import { useStockLocations } from "../../../../../../hooks/api/stock-locations"
-import { InventoryItemRes } from "../../../../../../types/api-responses"
+import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
+import { useInventoryItems } from "../../../../../hooks/api/inventory"
+import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { InventoryItemRes } from "../../../../../types/api-responses"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
@@ -44,7 +44,7 @@ const AttributeGridRow = ({
   )
 }
 
-export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
+export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [inventorySearch, setInventorySearch] = React.useState<string | null>(
@@ -109,25 +109,12 @@ export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              isLoading={isPending}
-            >
-              {t("actions.create")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
+      <form
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
+      >
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex flex-1 flex-col items-center overflow-auto py-16">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <Heading>{t("inventory.reservation.create")}</Heading>
             <div className="grid grid-cols-2 gap-4">
@@ -193,7 +180,7 @@ export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
                 }}
               />
             </div>
-            <div className="text-ui-fg-subtle shadow-elevation-card-rest grid grid-rows-4 divide-y rounded-lg border">
+            <div className="text-ui-fg-subtle shadow-elevation-card-rest grid grid-rows-4 divide-y rounded-lg">
               <AttributeGridRow
                 title={t("fields.title")}
                 value={
@@ -282,6 +269,23 @@ export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
             />
           </div>
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button variant="secondary" size="small">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              isLoading={isPending}
+            >
+              {t("actions.create")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )
