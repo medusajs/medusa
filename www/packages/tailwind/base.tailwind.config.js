@@ -309,7 +309,8 @@ module.exports = {
         "inner-content-xxl": "640px",
         "inner-content-xxxl": "640px",
         // wide layout
-        "wide-content": "1112px",
+        "xl-wide-content": "1112px",
+        "lg-wide-content": "800px",
       },
       minWidth: {
         xl: "1419px",
@@ -439,6 +440,20 @@ module.exports = {
           {
             lineHeight: "1.3125rem",
             fontWeight: "400",
+          },
+        ],
+        small: [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "small-plus": [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
           },
         ],
         "code-label": [

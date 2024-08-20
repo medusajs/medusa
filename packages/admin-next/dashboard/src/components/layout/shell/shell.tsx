@@ -53,11 +53,24 @@ const Breadcrumbs = () => {
     .map((match) => {
       const handle = match.handle
 
+      let label: string | null = null
+
+      try {
+        label = handle.crumb!(match.data)
+      } catch (error) {
+        // noop
+      }
+
+      if (!label) {
+        return null
+      }
+
       return {
-        label: handle.crumb!(match.data),
+        label: label,
         path: match.pathname,
       }
     })
+    .filter(Boolean) as { label: string; path: string }[]
 
   return (
     <ol
