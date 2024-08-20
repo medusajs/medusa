@@ -9,7 +9,8 @@ import type { Client } from "pg"
 
 const ADMIN_EMAIL = "admin@medusa-test.com"
 const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com"
-const ADMIN_CORS = "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com"
+const ADMIN_CORS =
+  "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com"
 const AUTH_CORS = ADMIN_CORS
 const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
@@ -72,13 +73,13 @@ export default async ({
   let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret`
 
   if (!skipDb) {
-    env += `${EOL}DATABASE_URL=${dbConnectionString}${EOL}POSTGRES_URL=${dbConnectionString}`
+    env += `${EOL}DATABASE_URL=${dbConnectionString}`
   }
 
   if (nextjsDirectory) {
     env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
   }
-  
+
   fs.appendFileSync(path.join(directory, `.env`), env)
 
   factBoxOptions.interval = displayFactBox({
@@ -183,10 +184,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await execute(
-          [
-            `npx medusa user -e ${ADMIN_EMAIL} --invite`,
-            npxOptions,
-          ],
+          [`npx medusa user -e ${ADMIN_EMAIL} --invite`, npxOptions],
           { verbose, needOutput: true }
         )
 
