@@ -64,8 +64,11 @@ export function getComputedActionsForBuyGet(
     )
     .filter((item) => isPresent(item.subtotal) && isPresent(item.quantity))
     .sort((a, b) => {
-      const aPrice = MathBN.div(a.subtotal, a.quantity)
-      const bPrice = MathBN.div(b.subtotal, b.quantity)
+      const divA = MathBN.eq(a.quantity, 0) ? 1 : a.quantity
+      const divB = MathBN.eq(b.quantity, 0) ? 1 : b.quantity
+
+      const aPrice = MathBN.div(a.subtotal, divA)
+      const bPrice = MathBN.div(b.subtotal, divB)
 
       return MathBN.lt(bPrice, aPrice) ? -1 : 1
     })
@@ -75,10 +78,8 @@ export function getComputedActionsForBuyGet(
   for (const method of validItemsForTargetRules) {
     const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
     const multiplier = MathBN.min(method.quantity, remainingQtyToApply)
-    const amount = MathBN.mult(
-      MathBN.div(method.subtotal, method.quantity),
-      multiplier
-    )
+    const div = MathBN.eq(method.quantity, 0) ? 1 : method.quantity
+    const amount = MathBN.mult(MathBN.div(method.subtotal, div), multiplier)
     const newRemainingQtyToApply = MathBN.sub(remainingQtyToApply, multiplier)
 
     if (MathBN.lt(newRemainingQtyToApply, 0) || MathBN.lte(amount, 0)) {

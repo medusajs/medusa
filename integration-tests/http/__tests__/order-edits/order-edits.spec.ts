@@ -298,21 +298,6 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_option
-
-      const item = order.items[0]
-
-      await api.post(
-        `/admin/orders/${order.id}/fulfillments`,
-        {
-          items: [
-            {
-              id: item.id,
-              quantity: 2,
-            },
-          ],
-        },
-        adminHeaders
-      )
     })
 
     describe("Order Edits lifecycle", () => {
@@ -369,6 +354,22 @@ medusaIntegrationTestRunner({
         expect(result.summary.current_order_total).toEqual(134)
         expect(result.summary.original_order_total).toEqual(60)
 
+        // Remove the item by setting the quantity to 0
+
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/items/item/${item.id}`,
+            {
+              quantity: 0,
+            },
+            adminHeaders
+          )
+        ).data.order_preview
+
+        expect(result.summary.current_order_total).toEqual(34)
+        expect(result.summary.original_order_total).toEqual(60)
+        expect(result.items.length).toEqual(2)
+
         result = (
           await api.post(
             `/admin/order-edits/${orderId}/confirm`,
@@ -380,7 +381,8 @@ medusaIntegrationTestRunner({
         result = (await api.get(`/admin/orders/${orderId}`, adminHeaders)).data
           .order
 
-        expect(result.total).toEqual(134)
+        expect(result.total).toEqual(34)
+        expect(result.items.length).toEqual(1)
       })
     })
   },
