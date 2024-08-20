@@ -39,6 +39,7 @@ export const markPaymentCollectionAsPaid = createWorkflow(
     input: WorkflowData<{
       payment_collection_id: string
       order_id: string
+      captured_by?: string
     }>
   ) => {
     const paymentCollection = useRemoteQueryStep({
@@ -68,7 +69,7 @@ export const markPaymentCollectionAsPaid = createWorkflow(
     capturePaymentWorkflow.runAsStep({
       input: {
         payment_id: payment.id,
-        captured_by: "req.auth_context.actor_id",
+        captured_by: input.captured_by,
         amount: paymentCollection.amount,
       },
     })

@@ -17,6 +17,7 @@ export const POST = async (
     input: {
       ...req.body,
       payment_collection_id: id,
+      captured_by: req.auth_context.actor_id,
     },
   })
 
