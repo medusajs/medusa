@@ -18,7 +18,7 @@ export const POST = async (
         )
     }
 
-    res.cookie(jwtTokenStorageKey, authToken, {
+    res.cookie(jwtTokenStorageKey as string, authToken, {
         httpOnly: true,
         secure: true,
     })
