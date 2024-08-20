@@ -27,10 +27,6 @@ export const RouteMap: RouteObject[] = [
     lazy: () => import("../../routes/login"),
   },
   {
-    path: "/",
-    lazy: () => import("../../routes/home"),
-  },
-  {
     path: "*",
     lazy: () => import("../../routes/no-match"),
   },
@@ -47,7 +43,13 @@ export const RouteMap: RouteObject[] = [
         element: <MainLayout />,
         children: [
           {
+            index: true,
+            errorElement: <ErrorBoundary />,
+            lazy: () => import("../../routes/home"),
+          },
+          {
             path: "/products",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Products",
             },
@@ -158,6 +160,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/categories",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Categories",
             },
@@ -206,6 +209,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/orders",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Orders",
             },
@@ -264,6 +268,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/promotions",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Promotions",
             },
@@ -305,6 +310,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/campaigns",
+            errorElement: <ErrorBoundary />,
             handle: { crumb: () => "Campaigns" },
             children: [
               {
@@ -341,6 +347,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/collections",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Collections",
             },
@@ -383,6 +390,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/price-lists",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Price Lists",
             },
@@ -434,6 +442,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/customers",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Customers",
             },
@@ -479,6 +488,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/customer-groups",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Customer Groups",
             },
@@ -534,6 +544,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/reservations",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Reservations",
             },
@@ -579,6 +590,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/inventory",
+            errorElement: <ErrorBoundary />,
             handle: {
               crumb: () => "Inventory",
             },
@@ -662,10 +674,12 @@ export const RouteMap: RouteObject[] = [
         children: [
           {
             index: true,
+            errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/settings"),
           },
           {
             path: "profile",
+            errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/profile/profile-detail"),
             handle: {
               crumb: () => "Profile",
@@ -679,6 +693,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "regions",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Regions",
@@ -717,6 +732,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "store",
+            errorElement: <ErrorBoundary />,
             lazy: () => import("../../routes/store/store-detail"),
             handle: {
               crumb: () => "Store",
@@ -738,6 +754,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "users",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Users",
@@ -770,6 +787,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "sales-channels",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Sales Channels",
@@ -816,6 +834,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "locations",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Locations & Shipping",
@@ -867,6 +886,7 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: "shipping-option-types",
+                errorElement: <ErrorBoundary />,
                 element: <Outlet />,
                 handle: {
                   crumb: () => "Shipping Option Types",
@@ -964,6 +984,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "product-tags",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Product Tags",
@@ -1001,6 +1022,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "workflows",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Workflows",
@@ -1033,6 +1055,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "product-types",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Product Types",
@@ -1071,6 +1094,7 @@ export const RouteMap: RouteObject[] = [
 
           {
             path: "publishable-api-keys",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Publishable API Keys",
@@ -1130,6 +1154,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "secret-api-keys",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Secret API Keys",
@@ -1182,6 +1207,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "tax-regions",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Tax Regions",
@@ -1300,6 +1326,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "return-reasons",
+            errorElement: <ErrorBoundary />,
             element: <Outlet />,
             handle: {
               crumb: () => "Return Reasons",
