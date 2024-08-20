@@ -123,13 +123,15 @@ export default class AuthModuleService
 
   async authenticate(
     provider: string,
-    authenticationData: AuthenticationInput
+    authenticationData: AuthenticationInput,
+    { isRegistration = false }: { isRegistration?: boolean } = {}
   ): Promise<AuthenticationResponse> {
     try {
       return await this.authProviderService_.authenticate(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService(provider)
+        this.getAuthIdentityProviderService(provider),
+        { isRegistration }
       )
     } catch (error) {
       return { success: false, error: error.message }

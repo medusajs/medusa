@@ -1,3 +1,6 @@
+import { FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   AuthIdentityDTO,
   AuthenticationInput,
@@ -6,9 +9,6 @@ import {
   FilterableAuthIdentityProps,
   UpdateAuthIdentityDTO,
 } from "./common"
-import { Context } from "../shared-context"
-import { FindConfig } from "../common"
-import { IModuleService } from "../modules-sdk"
 
 /**
  * The main service interface for the Auth Module.
@@ -42,7 +42,8 @@ export interface IAuthModuleService extends IModuleService {
    */
   authenticate(
     provider: string,
-    providerData: AuthenticationInput
+    providerData: AuthenticationInput,
+    { isRegistration }?: { isRegistration?: boolean }
   ): Promise<AuthenticationResponse>
 
   /**

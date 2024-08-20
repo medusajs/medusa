@@ -8,8 +8,8 @@ import {
   MedusaError,
   ModuleRegistrationName,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { generateJwtTokenForAuthIdentity } from "../../utils/generate-jwt-token"
+import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
@@ -43,7 +43,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const { success, error, authIdentity, location } = await service.authenticate(
     auth_provider,
-    authData
+    authData,
+    { isRegistration: true }
   )
 
   if (location) {

@@ -10,6 +10,32 @@ export class Auth {
     this.config = config
   }
 
+  register = async (
+    actor: "customer" | "user",
+    method: "emailpass",
+    payload: { email: string; password: string }
+  ) => {
+    const { token } = await this.client.fetch<{ token: string }>(
+      `/auth/${actor}/${method}/register`,
+      {
+        method: "POST",
+        body: payload,
+      }
+    )
+
+    // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
+    if (this.config?.auth?.type === "session") {
+      await this.client.fetch("/auth/session", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    } else {
+      this.client.setToken(token)
+    }
+
+    return token
+  }
+
   login = async (
     actor: "customer" | "user",
     method: "emailpass",

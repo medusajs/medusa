@@ -1,15 +1,15 @@
 import {
-  Logger,
-  EmailPassAuthProviderOptions,
-  AuthenticationResponse,
   AuthenticationInput,
-  AuthIdentityProviderService,
+  AuthenticationResponse,
   AuthIdentityDTO,
+  AuthIdentityProviderService,
+  EmailPassAuthProviderOptions,
+  Logger,
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
-  MedusaError,
   isString,
+  MedusaError,
 } from "@medusajs/utils"
 import Scrypt from "scrypt-kdf"
 
@@ -37,7 +37,8 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   async authenticate(
     userData: AuthenticationInput,
-    authIdentityService: AuthIdentityProviderService
+    authIdentityService: AuthIdentityProviderService,
+    config: { isRegistration: boolean }
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body ?? {}
 
@@ -60,10 +61,25 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       authIdentity = await authIdentityService.retrieve({
         entity_id: email,
       })
+
+      if (config.isRegistration) {
+        return {
+          success: false,
+          error: "Invalid email or password",
+        }
+      }
+
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const config = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
-        const passwordHash = await Scrypt.kdf(password, config)
+        if (!config.isRegistration) {
+          return {
+            success: false,
+            error: "Invalid email or password",
+          }
+        }
+
+        const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
+        const passwordHash = await Scrypt.kdf(password, hashConfig)
 
         const createdAuthIdentity = await authIdentityService.create({
           entity_id: email,
