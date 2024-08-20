@@ -8,9 +8,10 @@ import { SearchSuggestions, type SearchSuggestionType } from "./Suggestions"
 import { AlgoliaProps, useSearch } from "@/providers"
 import { checkArraySameElms } from "@/utils"
 import { SearchHitsWrapper } from "./Hits"
-import { Button, Kbd, SelectBadge } from "@/components"
+import { Button, Kbd, SelectBadge, SpinnerLoading } from "@/components"
 import { MagnifyingGlass, XMark } from "@medusajs/icons"
 import { useSearchNavigation, type OptionType } from "@/hooks"
+import { SearchFooter } from "./Footer"
 
 export type SearchProps = {
   algolia: AlgoliaProps
@@ -68,7 +69,31 @@ export const Search = ({
   })
 
   return (
-    <div className="h-full">
+    <div className="h-full flex flex-col">
+      {filterOptions.length && (
+        <SelectBadge
+          multiple
+          options={filterOptions}
+          value={filters}
+          setSelected={(value) =>
+            setFilters(Array.isArray(value) ? [...value] : [value])
+          }
+          addSelected={(value) => setFilters((prev) => [...prev, value])}
+          removeSelected={(value) =>
+            setFilters((prev) => prev.filter((v) => v !== value))
+          }
+          showClearButton={false}
+          placeholder="Filters"
+          handleAddAll={(isAllSelected: boolean) => {
+            if (isAllSelected) {
+              setFilters(defaultFilters)
+            } else {
+              setFilters(filterOptions.map((option) => option.value))
+            }
+          }}
+          className="px-docs_1 pt-docs_1 bg-medusa-bg-base"
+        />
+      )}
       <InstantSearch
         indexName={algolia.mainIndexName}
         searchClient={searchClient}
@@ -86,27 +111,25 @@ export const Search = ({
               ),
               form: clsx("h-full md:rounded-t-docs_xl bg-transparent"),
               input: clsx(
-                "w-full h-full pl-docs_3 text-medusa-fg-base",
-                "placeholder:text-medusa-fg-muted",
-                "md:rounded-t-docs_xl text-compact-medium bg-transparent",
+                "w-full h-full px-docs_1 py-docs_0.75 text-medusa-fg-base",
+                "placeholder:text-medusa-fg-muted bg-medusa-bg-base",
+                "md:rounded-t-docs_xl text-compact-medium",
                 "appearance-none search-cancel:hidden border-0 active:outline-none focus:outline-none"
               ),
               submit: clsx("absolute top-[18px] left-docs_1 btn-clear p-0"),
-              reset: clsx(
-                "absolute top-docs_0.75 right-docs_1 hover:bg-medusa-bg-base-hover",
-                "p-[5px] md:rounded-docs_DEFAULT btn-clear"
-              ),
+              reset: clsx("absolute top-[18px] right-docs_1", "btn-clear"),
               loadingIndicator: clsx("absolute top-[18px] right-docs_1"),
             }}
-            submitIconComponent={() => (
-              <MagnifyingGlass className="text-medusa-fg-muted" />
-            )}
+            submitIconComponent={() => <></>}
             resetIconComponent={() => (
-              <XMark className="hidden md:block text-medusa-fg-subtle" />
+              <span className="text-medusa-fg-muted text-compact-small-plus hover:text-medusa-fg-subtle">
+                Clear
+              </span>
             )}
             placeholder="Find something..."
             autoFocus
             formRef={searchBoxRef}
+            loadingIconComponent={() => <SpinnerLoading />}
           />
           <Button
             variant="transparent"
@@ -121,7 +144,7 @@ export const Search = ({
             <XMark className="text-medusa-fg-muted" />
           </Button>
         </div>
-        <div className="mx-docs_0.5 md:flex-initial h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)]">
+        <div className="md:flex-initial h-[calc(100%-150px)] md:h-[calc(100%-150px)] lg:max-h-[calc(100%-145px)] lg:min-h-[calc(100%-145px)]">
           <SearchEmptyQueryBoundary
             fallback={<SearchSuggestions suggestions={suggestions} />}
           >
@@ -135,59 +158,7 @@ export const Search = ({
           </SearchEmptyQueryBoundary>
         </div>
       </InstantSearch>
-      <div
-        className={clsx(
-          "py-docs_0.75 flex items-center justify-between px-docs_1",
-          "border-0 border-solid h-[57px]",
-          "border-medusa-border-base border-t",
-          "bg-medusa-bg-base"
-        )}
-      >
-        {filterOptions.length && (
-          <SelectBadge
-            multiple
-            options={filterOptions}
-            value={filters}
-            setSelected={(value) =>
-              setFilters(Array.isArray(value) ? [...value] : [value])
-            }
-            addSelected={(value) => setFilters((prev) => [...prev, value])}
-            removeSelected={(value) =>
-              setFilters((prev) => prev.filter((v) => v !== value))
-            }
-            showClearButton={false}
-            placeholder="Filters"
-            handleAddAll={(isAllSelected: boolean) => {
-              if (isAllSelected) {
-                setFilters(defaultFilters)
-              } else {
-                setFilters(filterOptions.map((option) => option.value))
-              }
-            }}
-          />
-        )}
-        <div className="hidden items-center gap-docs_1 md:flex">
-          <div className="flex items-center gap-docs_0.5">
-            <span
-              className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
-            >
-              Navigation
-            </span>
-            <span className="gap-docs_0.25 flex">
-              <Kbd>↑</Kbd>
-              <Kbd>↓</Kbd>
-            </span>
-          </div>
-          <div className="flex items-center gap-docs_0.5">
-            <span
-              className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
-            >
-              Open Result
-            </span>
-            <Kbd>↵</Kbd>
-          </div>
-        </div>
-      </div>
+      <SearchFooter />
     </div>
   )
 }

@@ -310,6 +310,11 @@ module.exports = {
         "inner-content-xxxl": "640px",
         // wide layout
         "wide-content": "1112px",
+        // modal
+        "modal-xs": "304px",
+        "modal-sm": "624px",
+        "modal-md": "752px",
+        "modal-lg": "640px",
       },
       minWidth: {
         xl: "1419px",

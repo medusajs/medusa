@@ -19,6 +19,7 @@ export type SelectDropdownProps = {
   parentRef?: React.RefObject<HTMLDivElement>
   className?: string
   passedRef?: Ref<HTMLDivElement>
+  setSelectedValues?: (values: string[]) => void
 }
 
 export const SelectDropdown = ({
@@ -34,6 +35,7 @@ export const SelectDropdown = ({
   parentRef,
   className,
   passedRef,
+  setSelectedValues,
 }: SelectDropdownProps) => {
   const ref = useRef<HTMLDivElement | null>(null)
   const setRefs = useCallback(
@@ -50,7 +52,11 @@ export const SelectDropdown = ({
   )
 
   const handleChange = (clickedValue: string, wasSelected: boolean) => {
-    handleSelectChange?.(clickedValue, wasSelected)
+    if (isAllSelected && setSelectedValues) {
+      setSelectedValues([clickedValue])
+    } else {
+      handleSelectChange?.(clickedValue, wasSelected)
+    }
     if (!multiple) {
       setOpen(false)
     }
@@ -78,43 +84,69 @@ export const SelectDropdown = ({
   }, [handleOutsideClick])
 
   const getSelectOption = (option: OptionType, index: number) => {
-    const isSelected = option.isAllOption
-      ? isAllSelected
-      : isValueSelected(option.value)
+    const originalIsSelected = isValueSelected(option.value)
+    const isSelected = isAllSelected
+      ? option.isAllOption || false
+      : originalIsSelected
 
     return (
       <li
         key={index}
         className={clsx(
-          "pr-docs_0.75 relative rounded-docs_sm py-docs_0.5 pl-docs_2.5",
-          "hover:bg-medusa-bg-base-hover",
-          "[&>svg]:left-docs_0.75 cursor-pointer [&>svg]:absolute [&>svg]:top-docs_0.5",
+          "px-docs_0.75 py-docs_0.5 relative flex-1 min-w-max",
+          "hover:bg-medusa-bg-component-hover cursor-pointer",
+          "flex gap-docs_0.5 text-medusa-fg-base items-center",
           !isSelected && "text-compact-small",
-          isSelected && "text-compact-small-plus"
+          isSelected && "text-compact-small-plus",
+          index <= 0 && "rounded-t-docs_DEFAULT",
+          index === options.length - 1 && "rounded-b-docs_DEFAULT"
         )}
         onClick={() => {
           if (option.isAllOption) {
             handleSelectAll()
           } else {
-            handleChange(option.value, isSelected)
+            handleChange(option.value, originalIsSelected)
           }
         }}
       >
-        {isSelected && (
-          <>
-            {multiple && <CheckMini className="text-medusa-fg-base" />}
-            {!multiple && <EllipseMiniSolid className="text-medusa-fg-base" />}
-          </>
-        )}
-        {option.label}
+        <span>
+          {isSelected && (
+            <>
+              {option.isAllOption && <EllipseMiniSolid />}
+              {!option.isAllOption && (
+                <>
+                  {multiple && <CheckMini />}
+                  {!multiple && <EllipseMiniSolid />}
+                </>
+              )}
+            </>
+          )}
+          {!isSelected && <EllipseMiniSolid className="invisible" />}
+        </span>
+        <span className="flex-1">{option.label}</span>
       </li>
     )
   }
 
+  const getDivider = () => (
+    <svg
+      width="176"
+      height="8"
+      viewBox="0 0 176 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="168" height="8" transform="translate(4)" fill="#FAFAFA" />
+      <rect y="4" width="176" height="1" fill="white" />
+      <rect y="3" width="176" height="1" fill="#E4E4E7" />
+    </svg>
+  )
+
   return (
     <div
       className={clsx(
-        "absolute top-full left-0 w-full",
+        "absolute left-0 md:left-docs_1",
+        "z-10",
         "h-0 translate-y-0 overflow-hidden transition-transform",
         open && "h-auto translate-y-docs_0.5 !overflow-visible",
         className
@@ -123,20 +155,25 @@ export const SelectDropdown = ({
     >
       <ul
         className={clsx(
-          "p-docs_0.25 mb-0 w-full overflow-auto rounded-docs_DEFAULT",
-          "bg-medusa-bg-base text-medusa-fg-base",
-          "shadow-elevation-flyout dark:shadow-elevation-flyout-dark list-none"
+          "mb-0 overflow-auto rounded-docs_DEFAULT",
+          "bg-medusa-bg-component text-medusa-fg-base",
+          "shadow-elevation-flyout dark:shadow-elevation-flyout-dark list-none",
+          "flex flex-col"
         )}
       >
-        {addAll &&
-          getSelectOption(
-            {
-              value: "all",
-              label: "All Areas",
-              isAllOption: true,
-            },
-            -1
-          )}
+        {addAll && (
+          <>
+            {getSelectOption(
+              {
+                value: "all",
+                label: "All Areas",
+                isAllOption: true,
+              },
+              -1
+            )}
+            {getDivider()}
+          </>
+        )}
         {options.map(getSelectOption)}
       </ul>
     </div>

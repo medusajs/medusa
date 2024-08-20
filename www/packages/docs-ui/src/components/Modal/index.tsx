@@ -89,7 +89,7 @@ export const Modal = ({
       className={clsx(
         "fixed top-0 left-0 flex h-screen w-screen items-center justify-center",
         "bg-medusa-bg-overlay z-50",
-        "hidden open:flex border-0 p-0",
+        "hidden open:flex border-0 px-docs_0.5 lg:p-0",
         className
       )}
       onClick={handleClick}
@@ -99,17 +99,17 @@ export const Modal = ({
     >
       <div
         className={clsx(
-          "bg-medusa-bg-base rounded-docs_sm",
-          "border-medusa-border-base border border-solid",
+          "bg-medusa-bg-base rounded-docs_lg",
           "shadow-elevation-modal dark:shadow-elevation-modal-dark",
-          "w-[90%] md:h-auto md:w-[75%] lg:w-[560px]",
+          "max-w-full sm:max-w-modal-sm md:max-w-modal-md lg:max-w-modal-lg",
+          "h-auto w-full",
           modalContainerClassName
         )}
       >
         {title && <ModalHeader title={title} />}
         <div
           className={clsx(
-            "overflow-auto py-docs_1.5 px-docs_2",
+            "overflow-auto py-docs_1.5 px-docs_2 rounded-docs_lg",
             contentClassName
           )}
         >

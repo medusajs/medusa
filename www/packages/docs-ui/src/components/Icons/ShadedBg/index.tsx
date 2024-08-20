@@ -16,17 +16,17 @@ export const ShadedBgIcon = ({
     switch (variant) {
       case "neutral":
       case "code":
-        return "#E4E4E7"
+        return "var(--docs-tags-neutral-border)"
       case "blue":
-        return "#BFDBFE"
+        return "var(--docs-tags-blue-border)"
       case "purple":
-        return "#DDD6FE"
+        return "var(--docs-tags-purple-border)"
       case "green":
-        return "#A7F3D0"
+        return "var(--docs-tags-green-border)"
       case "orange":
-        return "#FED7AA"
+        return "var(--docs-tags-orange-border)"
       case "red":
-        return "#FECDD3"
+        return "var(--docs-tags-red-border)"
     }
   }, [variant])
 
