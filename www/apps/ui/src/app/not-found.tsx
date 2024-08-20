@@ -32,26 +32,22 @@ export default function NotFound() {
           {
             title: "Get Started Docs",
             href: "/",
-            showLinkIcon: false,
-            startIcon: <BookOpen />,
+            icon: BookOpen,
           },
           {
             title: "Learning Resources",
             href: "!resources!",
-            showLinkIcon: false,
-            startIcon: <AcademicCapSolid />,
+            icon: AcademicCapSolid,
           },
           {
             title: "Admin API reference",
             href: "!api!/admin",
-            showLinkIcon: false,
-            startIcon: <ComputerDesktopSolid />,
+            icon: ComputerDesktopSolid,
           },
           {
             title: "Store API reference",
             href: "!api!/store",
-            showLinkIcon: false,
-            startIcon: <BuildingStorefront />,
+            icon: BuildingStorefront,
           },
         ]}
       />

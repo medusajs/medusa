@@ -557,7 +557,11 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
+          const testRes = await api.post(
+            `/admin/claims/${claimId2}/request`,
+            {},
+            adminHeaders
+          )
 
           claimId = baseClaim.id
           item = order.items[0]
@@ -682,6 +686,17 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
+          const paymentCollections = fulfillOrder.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: 171.5,
+              currency_code: "usd",
+            })
+          )
+
           const fulfillableItem = fulfillOrder.items.find(
             (item) => item.detail.fulfilled_quantity === 0
           )
@@ -720,13 +735,26 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully and throw on multiple", async () => {
-          const paymentDelta = 110.5
+        it("should create a payment collection successfully", async () => {
+          const orderForPayment = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const paymentCollections = orderForPayment.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: 171.5,
+              currency_code: "usd",
+            })
+          )
 
           const paymentCollection = (
             await api.post(
               `/admin/payment-collections`,
-              { order_id: order.id },
+              { order_id: order.id, amount: 100 },
               adminHeaders
             )
           ).data.payment_collection
@@ -734,23 +762,22 @@ medusaIntegrationTestRunner({
           expect(paymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
-              amount: paymentDelta,
-              payment_sessions: [],
+              amount: 100,
+              status: "not_paid",
             })
           )
 
-          const { response } = await api
-            .post(
-              `/admin/payment-collections`,
-              { order_id: order.id },
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${paymentCollections[0].id}`,
               adminHeaders
             )
-            .catch((e) => e)
+          ).data
 
-          expect(response.data).toEqual({
-            type: "not_allowed",
-            message:
-              "Active payment collections were found. Complete existing ones or delete them before proceeding.",
+          expect(deleted).toEqual({
+            id: expect.any(String),
+            object: "payment-collection",
+            deleted: true,
           })
         })
       })
@@ -960,7 +987,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
-        await api.post(
+
+        const { response } = await api.post(
           `/admin/claims/${baseClaim.id}/request`,
           {},
           adminHeaders

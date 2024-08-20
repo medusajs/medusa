@@ -12,6 +12,8 @@ export type RootLayoutProps = {
   htmlClassName?: string
   bodyClassName?: string
   showPagination?: boolean
+  feedbackComponent?: React.ReactNode
+  editComponent?: React.ReactNode
 } & MainContentLayoutProps
 
 export const RootLayout = ({

@@ -24,7 +24,7 @@ import {
 } from "../../utils/order-validation"
 
 /**
- * This step validates that a new item can be removed from an order edit.
+ * This step validates that a new item can be updated from an order edit.
  */
 export const updateOrderEditAddItemValidationStep = createStep(
   "update-order-edit-add-item-validation",

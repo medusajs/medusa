@@ -1,7 +1,7 @@
 import {
   DistributedTransaction,
-  DistributedTransactionType,
   DistributedTransactionEvents,
+  DistributedTransactionType,
   TransactionHandlerType,
   TransactionStep,
   WorkflowScheduler,
@@ -109,6 +109,7 @@ export class WorkflowOrchestratorService {
       transactionId,
       resultFrom,
       throwOnError,
+      logOnError,
       events: eventHandlers,
       container,
     } = options ?? {}
@@ -148,6 +149,7 @@ export class WorkflowOrchestratorService {
     const ret = await flow.run({
       input,
       throwOnError,
+      logOnError,
       resultFrom,
       context,
       events,
@@ -223,6 +225,7 @@ export class WorkflowOrchestratorService {
     const {
       context,
       throwOnError,
+      logOnError,
       resultFrom,
       container,
       events: eventHandlers,
@@ -251,6 +254,7 @@ export class WorkflowOrchestratorService {
       context,
       resultFrom,
       throwOnError,
+      logOnError,
       events,
       response: stepResponse,
     })
@@ -285,6 +289,7 @@ export class WorkflowOrchestratorService {
     const {
       context,
       throwOnError,
+      logOnError,
       resultFrom,
       container,
       events: eventHandlers,
@@ -313,6 +318,7 @@ export class WorkflowOrchestratorService {
       context,
       resultFrom,
       throwOnError,
+      logOnError,
       events,
       response: stepResponse,
     })

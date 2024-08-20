@@ -4,6 +4,7 @@ import React from "react"
 import { Tabs as UiTabs } from "@medusajs/ui"
 import { ComponentProps } from "react"
 import clsx from "clsx"
+import { EllipseMiniSolid } from "@medusajs/icons"
 
 type TabsProps = ComponentProps<typeof UiTabs> & {
   layoutType?: "horizontal" | "vertical"
@@ -22,6 +23,7 @@ export const Tabs = ({
         "flex gap-docs_1",
         "[&_[role=tablist]]:flex-col [&_[role=tablist]]:items-start",
         "[&_[role=tablist]+*]:flex-1 [&_[role=tablist]+*]:!mt-0",
+        "[&_[role=tablist]+*]:w-3/4 [&_[role=tablist]]:w-1/4",
       ]
     )}
   />
@@ -46,6 +48,25 @@ export const TabsTrigger = ({
       "hover:text-ui-fg-base focus-visible:border-ui-border-interactive focus-visible:!shadow-borders-focus focus-visible:bg-ui-bg-base"
     )}
   />
+)
+
+export const TabsTriggerVertical = ({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof UiTabs.Trigger>) => (
+  <UiTabs.Trigger
+    {...props}
+    className={clsx(
+      className,
+      "px-docs_0.5 py-docs_0.25 !text-medusa-fg-base text-compact-small data-[state=active]:!text-compact-small-plus",
+      "[&[data-state=active]_svg]:!visible hover:!bg-medusa-bg-base-hover rounded-docs_DEFAULT",
+      "!shadow-none"
+    )}
+  >
+    <EllipseMiniSolid className="invisible" />
+    {children}
+  </UiTabs.Trigger>
 )
 
 type TabsContentWrapperProps = {

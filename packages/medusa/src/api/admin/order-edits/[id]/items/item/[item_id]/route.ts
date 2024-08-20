@@ -1,0 +1,31 @@
+import { orderEditUpdateItemQuantityWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../../types/routing"
+import { AdminPostOrderEditsUpdateItemQuantityReqSchemaType } from "../../../../validators"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminPostOrderEditsUpdateItemQuantityReqSchemaType>,
+  res: MedusaResponse<HttpTypes.AdminOrderEditPreviewResponse>
+) => {
+  const { id, item_id } = req.params
+
+  const { result } = await orderEditUpdateItemQuantityWorkflow(req.scope).run({
+    input: {
+      ...req.validatedBody,
+      order_id: id,
+      items: [
+        {
+          ...req.validatedBody,
+          id: item_id,
+        },
+      ],
+    },
+  })
+
+  res.json({
+    order_preview: result,
+  })
+}

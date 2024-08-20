@@ -32,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
@@ -383,6 +384,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "claim-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

@@ -11,6 +11,7 @@ import { Invite } from "./invite"
 import { Notification } from "./notification"
 import { Order } from "./order"
 import { Payment } from "./payment"
+import { PaymentCollection } from "./payment-collection"
 import { PriceList } from "./price-list"
 import { PricePreference } from "./price-preference"
 import { Product } from "./product"
@@ -69,6 +70,7 @@ export class Admin {
   public payment: Payment
   public productVariant: ProductVariant
   public refundReason: RefundReason
+  public paymentCollection: PaymentCollection
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -105,5 +107,6 @@ export class Admin {
     this.productVariant = new ProductVariant(client)
     this.refundReason = new RefundReason(client)
     this.exchange = new Exchange(client)
+    this.paymentCollection = new PaymentCollection(client)
   }
 }

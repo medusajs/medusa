@@ -30,6 +30,9 @@ export function getMikroOrmConfig({
     entities: Object.values(mikroOrmEntities),
     schema: schema ?? process.env.MEDUSA_DB_SCHEMA,
     debug: false,
+    pool: {
+      min: 2,
+    },
     migrations: {
       pathTs: pathToMigrations,
       silent: true,

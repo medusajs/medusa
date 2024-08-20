@@ -20,6 +20,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "API Key Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -198,6 +199,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Auth Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -431,6 +433,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Cart Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -1007,6 +1010,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Currency",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -1127,6 +1131,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Customer",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -1447,6 +1452,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Fulfillment Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -2192,6 +2198,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Inventory Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -2600,6 +2607,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Order Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -3945,6 +3953,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Payment Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -4418,6 +4427,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Pricing Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -4939,6 +4949,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Product Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -5629,6 +5640,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Promotion Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -6023,6 +6035,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Region Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -6223,6 +6236,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Sales Channel Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -6399,6 +6413,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Stock Location Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -6583,6 +6598,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Store Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -6759,6 +6775,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "Tax Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -7071,6 +7088,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "category",
         "title": "User Module",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -10754,6 +10772,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow",
+                    "title": "orderEditUpdateItemQuantityWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/orderExchangeAddNewItemWorkflow",
                     "title": "orderExchangeAddNewItemWorkflow",
                     "children": []
@@ -10924,6 +10950,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/updateOrderEditAddItemWorkflow",
                     "title": "updateOrderEditAddItemWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditItemQuantityWorkflow",
+                    "title": "updateOrderEditItemQuantityWorkflow",
                     "children": []
                   },
                   {
@@ -11473,6 +11507,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/orderEditUpdateItemQuantityValidationStep",
+                    "title": "orderEditUpdateItemQuantityValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/previewOrderChangeStep",
                     "title": "previewOrderChangeStep",
                     "children": []
@@ -11667,6 +11709,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/updateOrderEditAddItemValidationStep",
                     "title": "updateOrderEditAddItemValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditItemQuantityValidationStep",
+                    "title": "updateOrderEditItemQuantityValidationStep",
                     "children": []
                   },
                   {

@@ -6,7 +6,7 @@ import Link from "next/link"
 import clsx from "clsx"
 import { EllipseMiniSolid } from "@medusajs/icons"
 import { MainNavigationDropdownIcon } from "../../Icon"
-import { SidebarSeparator } from "../../../../Sidebar/Separator"
+import { DottedSeparator } from "../../../.."
 
 export type MainNavigationDropdownMenuItemProps = {
   item: NavigationDropdownItem
@@ -19,7 +19,7 @@ export const MainNavigationDropdownMenuItem = ({
 }: MainNavigationDropdownMenuItemProps) => {
   switch (item.type) {
     case "divider":
-      return <SidebarSeparator className="my-docs_0.25" />
+      return <DottedSeparator className="my-docs_0.25" />
     case "link":
       return (
         <Link

@@ -1,34 +1,12 @@
-import { PaymentCollectionDTO } from "@medusajs/types"
-import {
-  MathBN,
-  MedusaError,
-  Modules,
-  PaymentCollectionStatus,
-} from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
-  createStep,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createPaymentCollectionsStep } from "../../definition"
-
-/**
- * This step validates that the order doesn't have an active payment collection.
- */
-export const throwIfActivePaymentCollectionExists = createStep(
-  "validate-existing-payment-collection",
-  ({ paymentCollection }: { paymentCollection: PaymentCollectionDTO }) => {
-    if (paymentCollection) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Active payment collections were found. Complete existing ones or delete them before proceeding.`
-      )
-    }
-  }
-)
 
 export const createOrderPaymentCollectionWorkflowId =
   "create-order-payment-collection"
@@ -40,7 +18,7 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
   (
     input: WorkflowData<{
       order_id: string
-      amount?: number
+      amount: number
     }>
   ) => {
     const order = useRemoteQueryStep({
@@ -51,58 +29,12 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
       list: false,
     })
 
-    const orderPaymentCollections = useRemoteQueryStep({
-      entry_point: "order_payment_collection",
-      fields: ["payment_collection_id"],
-      variables: { order_id: order.id },
-    }).config({ name: "order-payment-collection-query" })
-
-    const orderPaymentCollectionIds = transform(
-      { orderPaymentCollections },
-      ({ orderPaymentCollections }) =>
-        orderPaymentCollections.map((opc) => opc.payment_collection_id)
-    )
-
-    const paymentCollection = useRemoteQueryStep({
-      entry_point: "payment_collection",
-      fields: ["id"],
-      variables: {
-        id: orderPaymentCollectionIds,
-        status: [
-          PaymentCollectionStatus.NOT_PAID,
-          PaymentCollectionStatus.AWAITING,
-        ],
-      },
-      list: false,
-    }).config({ name: "payment-collection-query" })
-
-    throwIfActivePaymentCollectionExists({ paymentCollection })
-
     const paymentCollectionData = transform(
       { order, input },
       ({ order, input }) => {
-        const pendingPayment = MathBN.sub(
-          order.summary.raw_current_order_total,
-          order.summary.raw_original_order_total
-        )
-
-        if (MathBN.lte(pendingPayment, 0)) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            `Cannot create a payment collection for amount less than 0`
-          )
-        }
-
-        if (input.amount && MathBN.gt(input.amount, pendingPayment)) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            `Cannot create a payment collection for amount greater than ${pendingPayment}`
-          )
-        }
-
         return {
           currency_code: order.currency_code,
-          amount: input.amount ?? pendingPayment,
+          amount: input.amount,
           region_id: order.region_id,
         }
       }

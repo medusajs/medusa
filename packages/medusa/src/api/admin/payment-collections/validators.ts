@@ -12,6 +12,6 @@ export type AdminCreatePaymentCollectionType = z.infer<
 export const AdminCreatePaymentCollection = z
   .object({
     order_id: z.string(),
-    amount: z.number().optional(),
+    amount: z.number(),
   })
   .strict()

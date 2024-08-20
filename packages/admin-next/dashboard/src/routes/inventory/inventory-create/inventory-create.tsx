@@ -1,10 +1,10 @@
 import { RouteFocusModal } from "../../../components/modals"
-import { CreateInventoryItemForm } from "./components/create-inventory-item-form"
+import { InventoryCreateForm } from "./components/inventory-create-form"
 
 export function InventoryCreate() {
   return (
     <RouteFocusModal>
-      <CreateInventoryItemForm />
+      <InventoryCreateForm />
     </RouteFocusModal>
   )
 }
