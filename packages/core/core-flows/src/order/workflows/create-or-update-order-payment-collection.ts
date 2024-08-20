@@ -1,5 +1,5 @@
 import { PaymentCollectionDTO } from "@medusajs/types"
-import { MedusaError, PaymentCollectionStatus } from "@medusajs/utils"
+import { MathBN, MedusaError, PaymentCollectionStatus } from "@medusajs/utils"
 import {
   createWorkflow,
   transform,
@@ -57,7 +57,8 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     }).config({ name: "payment-collection-query" })
 
     const amountPending = transform({ order, input }, ({ order, input }) => {
-      const pendingPayment = order.summary.raw_pending_difference ?? order.summary.pending_difference
+      const pendingPayment =
+        order.summary.raw_pending_difference ?? order.summary.pending_difference
 
       if (MathBN.gt(input.amount ?? 0, pendingPayment)) {
         throw new MedusaError(
