@@ -735,7 +735,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully and throw on multiple", async () => {
+        it("should create a payment collection successfully", async () => {
           const orderForPayment = (
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order

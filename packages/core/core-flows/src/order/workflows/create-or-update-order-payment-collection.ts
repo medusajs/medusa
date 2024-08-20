@@ -57,9 +57,9 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     }).config({ name: "payment-collection-query" })
 
     const amountPending = transform({ order, input }, ({ order, input }) => {
-      const pendingPayment = order.summary.pending_difference
+      const pendingPayment = order.summary.raw_pending_difference ?? order.summary.pending_difference
 
-      if (input.amount && input.amount > pendingPayment) {
+      if (MathBN.gt(input.amount ?? 0, pendingPayment)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `Amount cannot be greater than ${pendingPayment}`
@@ -72,7 +72,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     const updatedPaymentCollections = when(
       { existingPaymentCollection, amountPending },
       ({ existingPaymentCollection, amountPending }) => {
-        return !!existingPaymentCollection?.id && amountPending > 0
+        return !!existingPaymentCollection?.id && MathBN.gt(amountPending, 0)
       }
     ).then(() => {
       return updatePaymentCollectionStep({
@@ -86,7 +86,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     const createdPaymentCollection = when(
       { existingPaymentCollection, amountPending },
       ({ existingPaymentCollection, amountPending }) => {
-        return !!!existingPaymentCollection?.id && amountPending > 0
+        return !!!existingPaymentCollection?.id && MathBN.gt(amountPending, 0)
       }
     ).then(() => {
       return createOrderPaymentCollectionWorkflow.runAsStep({
