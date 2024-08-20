@@ -11,11 +11,11 @@ import {
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useCancelOrder } from "../../../../../hooks/api/orders"
 import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
-import { useCancelOrder } from "../../../../../hooks/api/orders"
 
 type OrderGeneralSectionProps = {
   order: Order
@@ -25,7 +25,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useCancelOrder(order.id)
+  const { mutateAsync: cancelOrder } = useCancelOrder()
 
   const handleCancel = async () => {
     const res = await prompt({
@@ -41,7 +41,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
       return
     }
 
-    await mutateAsync()
+    await cancelOrder(order.id)
   }
 
   return (

@@ -107,10 +107,14 @@ export default class PaymentSession {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "payses")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "payses")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 }

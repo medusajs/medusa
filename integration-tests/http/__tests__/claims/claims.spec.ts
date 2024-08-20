@@ -721,7 +721,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a payment collection successfully and throw on multiple", async () => {
-          const paymentDelta = 110.5
+          const paymentDelta = 171.5
 
           const paymentCollection = (
             await api.post(
@@ -751,6 +751,19 @@ medusaIntegrationTestRunner({
             type: "not_allowed",
             message:
               "Active payment collections were found. Complete existing ones or delete them before proceeding.",
+          })
+
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${paymentCollection.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(deleted).toEqual({
+            id: expect.any(String),
+            object: "payment-collection",
+            deleted: true,
           })
         })
       })
