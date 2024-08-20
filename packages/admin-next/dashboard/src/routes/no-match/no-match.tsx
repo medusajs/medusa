@@ -8,7 +8,7 @@ export const NoMatch = () => {
   const { t } = useTranslation()
 
   const title = t("errorBoundary.notFoundTitle")
-  const message = t("errorBoundary.notFoundMessage")
+  const message = t("errorBoundary.noMatchMessage")
 
   return (
     <div className="flex size-full min-h-screen items-center justify-center">

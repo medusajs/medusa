@@ -253,6 +253,7 @@
     "internalServerErrorMessage": "An unexpected error occurred on the server. Please try again later.",
     "defaultTitle": "An error occurred",
     "defaultMessage": "An unexpected error occurred while rendering this page.",
+    "noMatchMessage": "The page you are looking for does not exist.",
     "backToDashboard": "Back to dashboard"
   },
   "addresses": {
