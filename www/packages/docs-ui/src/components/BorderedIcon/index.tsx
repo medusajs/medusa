@@ -17,6 +17,7 @@ export const BorderedIcon = ({
   iconWrapperClassName,
   iconClassName,
   iconColorClassName = "",
+  wrapperClassName,
 }: BorderedIconProps) => {
   return (
     <span
@@ -34,14 +35,16 @@ export const BorderedIcon = ({
         />
       )}
       {IconComponent && (
-        <IconComponent
-          className={clsx(
-            "text-medusa-fg-subtle rounded-docs_sm",
-            iconClassName,
-            "bordered-icon",
-            iconColorClassName
-          )}
-        />
+        <span className={clsx("rounded-docs_xs", wrapperClassName)}>
+          <IconComponent
+            className={clsx(
+              "text-medusa-fg-subtle rounded-docs_xs",
+              iconClassName,
+              "bordered-icon",
+              iconColorClassName
+            )}
+          />
+        </span>
       )}
     </span>
   )
