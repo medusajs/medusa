@@ -1,7 +1,7 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { createAuthIdentities } from "../../__fixtures__/auth-identity"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createAuthIdentities } from "../../__fixtures__/auth-identity"
 
 jest.setTimeout(30000)
 
@@ -257,6 +257,66 @@ moduleIntegrationTestRunner<IAuthModuleService>({
               id: "test",
             })
           )
+        })
+      })
+
+      describe("createProviderIdentity", () => {
+        it("should create a providerIdentity successfully", async () => {
+          let authIdentity = await service.retrieveAuthIdentity("test-id", {
+            relations: ["provider_identities"],
+          })
+
+          expect(authIdentity).toEqual(
+            expect.not.objectContaining({
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+                expect.objectContaining({ provider: "github" }),
+              ],
+            })
+          )
+
+          await service.createProviderIdentities({
+            id: "test",
+            entity_id: "christian@medusajs.com",
+            provider: "github",
+            auth_identity_id: authIdentity.id,
+          })
+
+          authIdentity = await service.retrieveAuthIdentity("test-id", {
+            relations: ["provider_identities"],
+          })
+
+          expect(authIdentity).toEqual(
+            expect.objectContaining({
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+                expect.objectContaining({ provider: "github" }),
+              ],
+            })
+          )
+        })
+
+        it("should list authIdentities by newly created provider", async () => {
+          await service.createProviderIdentities([
+            {
+              id: "test",
+              entity_id: "christian@medusajs.com",
+              provider: "github",
+              auth_identity_id: "test-id",
+            },
+          ])
+
+          const authIdentities = await service.listAuthIdentities({
+            provider_identities: {
+              provider: "github",
+            },
+          })
+
+          expect(authIdentities).toEqual([
+            expect.objectContaining({
+              id: "test-id",
+            }),
+          ])
         })
       })
     })

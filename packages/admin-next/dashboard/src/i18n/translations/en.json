@@ -245,14 +245,16 @@
     "addFilter": "Add filter"
   },
   "errorBoundary": {
-    "badRequestTitle": "Bad request",
-    "badRequestMessage": "The request was invalid.",
-    "notFoundTitle": "Not found",
-    "notFoundMessage": "The page you are looking for does not exist.",
-    "internalServerErrorTitle": "Internal server error",
-    "internalServerErrorMessage": "An error occurred on the server.",
+    "badRequestTitle": "400 - Bad request",
+    "badRequestMessage": "The request could not be understood by the server due to malformed syntax.",
+    "notFoundTitle": "404 - There is no page at this address",
+    "notFoundMessage": "Check the URL and try again, or use the search bar to find what you are looking for.",
+    "internalServerErrorTitle": "500 - Internal server error",
+    "internalServerErrorMessage": "An unexpected error occurred on the server. Please try again later.",
     "defaultTitle": "An error occurred",
-    "defaultMessage": "An error occurred while rendering this page."
+    "defaultMessage": "An unexpected error occurred while rendering this page.",
+    "noMatchMessage": "The page you are looking for does not exist.",
+    "backToDashboard": "Back to dashboard"
   },
   "addresses": {
     "shippingAddress": {
@@ -830,7 +832,9 @@
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
-      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
+      "refundAmount": "Refund {{ amount }}",
+      "paymentLink": "Copy payment link for {{ amount }}"
     },
 
     "edits": {

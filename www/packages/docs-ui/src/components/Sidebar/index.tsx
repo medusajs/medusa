@@ -3,12 +3,11 @@
 import React, { useMemo, useRef } from "react"
 import { useSidebar } from "@/providers"
 import clsx from "clsx"
-import { Loading } from "@/components"
+import { DottedSeparator, Loading } from "@/components"
 import { SidebarItem } from "./Item"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { SidebarTop, SidebarTopProps } from "./Top"
 import useResizeObserver from "@react-hook/resize-observer"
-import { SidebarSeparator } from "./Separator"
 import { useClickOutside, useKeyboardShortcut } from "@/hooks"
 
 export type SidebarProps = {
@@ -131,7 +130,7 @@ export const Sidebar = ({
                       hasNextItems={index !== sidebarItems.default.length - 1}
                     />
                   ))}
-                  <SidebarSeparator />
+                  <DottedSeparator />
                 </div>
                 {/* DESKTOP SIDEBAR */}
                 <div className="mt-docs_0.75 lg:mt-0">

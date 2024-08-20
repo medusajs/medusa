@@ -297,6 +297,8 @@ paths:
     $ref: paths/admin_order-edits_{id}_confirm.yaml
   /admin/order-edits/{id}/items:
     $ref: paths/admin_order-edits_{id}_items.yaml
+  /admin/order-edits/{id}/items/item/{item_id}:
+    $ref: paths/admin_order-edits_{id}_items_item_{item_id}.yaml
   /admin/order-edits/{id}/items/{action_id}:
     $ref: paths/admin_order-edits_{id}_items_{action_id}.yaml
   /admin/order-edits/{id}/shipping-method:

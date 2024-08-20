@@ -362,7 +362,8 @@ export default class PromotionModuleService
 
       const isPromotionApplicable = areRulesValidForContext(
         promotionRules,
-        applicationContext
+        applicationContext,
+        ApplicationMethodTargetType.ORDER
       )
 
       if (!isPromotionApplicable) {

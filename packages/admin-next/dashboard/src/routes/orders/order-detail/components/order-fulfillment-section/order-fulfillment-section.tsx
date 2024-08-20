@@ -1,5 +1,10 @@
 import { Buildings, XCircle } from "@medusajs/icons"
-import { AdminOrder, FulfillmentDTO, OrderLineItemDTO } from "@medusajs/types"
+import {
+  AdminOrder,
+  AdminOrderFulfillment,
+  HttpTypes,
+  OrderLineItemDTO,
+} from "@medusajs/types"
 import {
   Button,
   Container,
@@ -152,7 +157,7 @@ const Fulfillment = ({
   order,
   index,
 }: {
-  fulfillment: FulfillmentDTO
+  fulfillment: AdminOrderFulfillment
   order: AdminOrder
   index: number
 }) => {

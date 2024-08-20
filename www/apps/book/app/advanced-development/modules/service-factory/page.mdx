@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger } from "docs-ui"
+import { Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTriggerVertical } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Service Factory`,
@@ -68,14 +68,14 @@ Find a complete reference of each of the methods in [this documentation](!resour
 
 <Tabs defaultValue="listMyCustoms" layoutType="vertical" className="mt-2">
   <TabsList>
-    <TabsTrigger value="listMyCustoms">listMyCustoms</TabsTrigger>
-    <TabsTrigger value="listAndCountMyCustoms">listAndCountMyCustoms</TabsTrigger>
-    <TabsTrigger value="retrieveMyCustom">retrieveMyCustom</TabsTrigger>
-    <TabsTrigger value="createMyCustoms">createMyCustoms</TabsTrigger>
-    <TabsTrigger value="updateMyCustoms">updateMyCustoms</TabsTrigger>
-    <TabsTrigger value="deleteMyCustoms">deleteMyCustoms</TabsTrigger>
-    <TabsTrigger value="softDeleteMyCustoms">softDeleteMyCustoms</TabsTrigger>
-    <TabsTrigger value="restoreMyCustoms">restoreMyCustoms</TabsTrigger>
+    <TabsTriggerVertical value="listMyCustoms">listMyCustoms</TabsTriggerVertical>
+    <TabsTriggerVertical value="listAndCountMyCustoms">listAndCount</TabsTriggerVertical>
+    <TabsTriggerVertical value="retrieveMyCustom">retrieveMyCustom</TabsTriggerVertical>
+    <TabsTriggerVertical value="createMyCustoms">createMyCustoms</TabsTriggerVertical>
+    <TabsTriggerVertical value="updateMyCustoms">updateMyCustoms</TabsTriggerVertical>
+    <TabsTriggerVertical value="deleteMyCustoms">deleteMyCustoms</TabsTriggerVertical>
+    <TabsTriggerVertical value="softDeleteMyCustoms">softDeleteMyCustoms</TabsTriggerVertical>
+    <TabsTriggerVertical value="restoreMyCustoms">restoreMyCustoms</TabsTriggerVertical>
   </TabsList>
   <TabsContentWrapper className="[&_h3]:!mt-0">
     <TabsContent value="listMyCustoms">

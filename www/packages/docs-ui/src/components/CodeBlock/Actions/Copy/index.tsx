@@ -28,11 +28,8 @@ export const CodeBlockCopyAction = ({
     <CopyButton
       text={source}
       tooltipClassName="font-base"
-      className={clsx(
-        "h-fit",
-        !inHeader && "p-[6px]",
-        inHeader && "px-[6px] pb-[6px]"
-      )}
+      className={clsx("h-fit", !inHeader && "p-[6px]", inHeader && "p-[4.5px]")}
+      tooltipInnerClassName={clsx(inHeader && "flex")}
       onCopy={() => setCopied(true)}
     >
       {!copied && <SquareTwoStack className={clsx(iconColor)} />}

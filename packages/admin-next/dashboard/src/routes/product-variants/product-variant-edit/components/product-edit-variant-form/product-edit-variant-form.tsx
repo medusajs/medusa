@@ -15,8 +15,8 @@ import {
 } from "../../../../../components/modals"
 import { useUpdateProductVariant } from "../../../../../hooks/api/products"
 import {
-  parseOptionalFormData,
-  parseOptionalFormNumber,
+  transformNullableFormData,
+  transformNullableFormNumber,
 } from "../../../../../lib/form-helpers"
 import { optionalInt } from "../../../../../lib/validation"
 
@@ -98,15 +98,15 @@ export const ProductEditVariantForm = ({
       ...optional
     } = data
 
-    const nullableData = parseOptionalFormData(optional)
+    const nullableData = transformNullableFormData(optional)
 
     await mutateAsync(
       {
         id: variant.id,
-        weight: parseOptionalFormNumber(weight),
-        height: parseOptionalFormNumber(height),
-        width: parseOptionalFormNumber(width),
-        length: parseOptionalFormNumber(length),
+        weight: transformNullableFormNumber(weight),
+        height: transformNullableFormNumber(height),
+        width: transformNullableFormNumber(width),
+        length: transformNullableFormNumber(length),
         title,
         allow_backorder,
         manage_inventory,

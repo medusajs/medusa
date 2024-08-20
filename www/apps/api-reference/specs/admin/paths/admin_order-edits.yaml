@@ -81,7 +81,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/AdminOrderResponse.yaml
+            $ref: ../components/schemas/AdminOrderEditResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

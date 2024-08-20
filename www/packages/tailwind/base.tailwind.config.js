@@ -309,7 +309,8 @@ module.exports = {
         "inner-content-xxl": "640px",
         "inner-content-xxxl": "640px",
         // wide layout
-        "wide-content": "1112px",
+        "xl-wide-content": "1112px",
+        "lg-wide-content": "800px",
       },
       minWidth: {
         xl: "1419px",
@@ -782,9 +783,10 @@ module.exports = {
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
           },
-          ".code-block-highlight-dark": {
+          ".code-block-highlight": {
             "*::selection": {
-              "background-color": "var(--docs-contrast-bg-highlight)",
+              "background-color": "var(--docs-contrast-fg-secondary)",
+              color: "var(--docs-contrast-bg-base)",
             },
           },
           ".code-block-highlight-light": {
