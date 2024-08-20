@@ -1,4 +1,4 @@
-import { TypeList, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { TypeList, Tabs, TabsList, TabsTriggerVertical, TabsContent, TabsContentWrapper } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Remote Query`,
@@ -242,10 +242,10 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
 
 <Tabs defaultValue="basic" layoutType="vertical" className="mt-2">
   <TabsList>
-    <TabsTrigger value="basic">Basic Usage</TabsTrigger>
-    <TabsTrigger value="filters">Apply Filters</TabsTrigger>
-    <TabsTrigger value="sort">Sort Records</TabsTrigger>
-    <TabsTrigger value="pagination">Apply Pagination</TabsTrigger>
+    <TabsTriggerVertical value="basic">Basic Usage</TabsTriggerVertical>
+    <TabsTriggerVertical value="filters">Apply Filters</TabsTriggerVertical>
+    <TabsTriggerVertical value="sort">Sort Records</TabsTriggerVertical>
+    <TabsTriggerVertical value="pagination">Apply Pagination</TabsTriggerVertical>
   </TabsList>
   <TabsContentWrapper>
     <TabsContent value="basic" className="[&_h3]:!mt-0">

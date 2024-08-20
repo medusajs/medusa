@@ -1,22 +1,21 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import * as zod from "zod"
-
 import {
   Button,
   Heading,
   Input,
   ProgressStatus,
   ProgressTabs,
-  Switch,
   Textarea,
   clx,
   toast,
 } from "@medusajs/ui"
+import { useCallback, useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { SwitchBox } from "../../../../../components/common/switch-box"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
@@ -27,9 +26,13 @@ import {
   useCreateInventoryItem,
 } from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
+import {
+  transformNullableFormData,
+  transformNullableFormNumbers,
+} from "../../../../../lib/form-helpers"
 import { queryClient } from "../../../../../lib/query-client"
-import { optionalInt } from "../../../../../lib/validation"
-import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
+import { InventoryAvailabilityForm } from "./inventory-availability-form"
+import { CreateInventoryItemSchema } from "./schema"
 
 enum Tab {
   DETAILS = "details",
@@ -40,31 +43,12 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-const CreateInventoryItemSchema = zod.object({
-  title: zod.string().min(1),
-
-  sku: zod.string().optional(),
-  hs_code: zod.string().optional(),
-  weight: optionalInt,
-  length: optionalInt,
-  height: optionalInt,
-  width: optionalInt,
-  origin_country: zod.string().optional(),
-  mid_code: zod.string().optional(),
-  material: zod.string().optional(),
-  description: zod.string().optional(),
-  requires_shipping: zod.boolean().optional(),
-  thumbnail: zod.string().optional(),
-  locations: zod.record(zod.string(), zod.number().optional()).optional(),
-  // metadata: zod.record(zod.string(), zod.unknown()).optional(),
-})
-
-export function CreateInventoryItemForm() {
+export function InventoryCreateForm() {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
+  const [tab, setTab] = useState<Tab>(Tab.DETAILS)
 
-  const form = useForm<zod.infer<typeof CreateInventoryItemSchema>>({
+  const form = useForm<CreateInventoryItemSchema>({
     defaultValues: {
       title: "",
       sku: "",
@@ -83,66 +67,86 @@ export function CreateInventoryItemForm() {
     resolver: zodResolver(CreateInventoryItemSchema),
   })
 
+  const {
+    trigger,
+    formState: { isDirty },
+  } = form
+
   const { mutateAsync: createInventoryItem, isPending: isLoading } =
     useCreateInventoryItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { locations, ...payload } = data
+    const { locations, weight, length, height, width, ...payload } = data
 
-    for (const k in payload) {
-      if (payload[k] === "") {
-        delete payload[k]
-        continue
+    const cleanData = transformNullableFormData(payload, false)
+    const cleanNumbers = transformNullableFormNumbers(
+      {
+        weight,
+        length,
+        height,
+        width,
+      },
+      false
+    )
+
+    const { inventory_item } = await createInventoryItem(
+      {
+        ...cleanData,
+        ...cleanNumbers,
+      },
+      {
+        onError: (e) => {
+          toast.error(e.message)
+          return
+        },
       }
+    )
 
-      if (["weight", "length", "height", "width"].includes(k)) {
-        payload[k] = parseInt(payload[k])
-      }
-    }
-
-    try {
-      const { inventory_item } = await createInventoryItem(payload)
-
-      try {
-        await sdk.admin.inventoryItem.batchUpdateLevels(inventory_item.id, {
-          create: Object.entries(locations)
-            .filter(([_, quantiy]) => !!quantiy)
-            .map(([location_id, stocked_quantity]) => ({
-              location_id,
-              stocked_quantity,
-            })),
-        })
-
+    await sdk.admin.inventoryItem
+      .batchUpdateLevels(inventory_item.id, {
+        create: Object.entries(locations ?? {})
+          .filter(([_, quantiy]) => !!quantiy)
+          .map(([location_id, stocked_quantity]) => ({
+            location_id,
+            stocked_quantity,
+          })),
+      })
+      .then(async () => {
         await queryClient.invalidateQueries({
           queryKey: inventoryItemsQueryKeys.lists(),
         })
-      } catch (e) {
+      })
+      .catch((e) => {
+        // Since the inventory item is created, we only log the error,
+        // but still close the modal to prevent the user from trying to
+        // create the same item again.
         toast.error(e.message)
-      }
-
-      handleSuccess()
-    } catch (e) {
-      toast.error(e.message)
-    }
+      })
+      .finally(() => {
+        handleSuccess()
+      })
   })
 
-  const [status, setStatus] = React.useState<StepStatus>({
+  const [status, setStatus] = useState<StepStatus>({
     [Tab.AVAILABILITY]: "not-started",
     [Tab.DETAILS]: "not-started",
   })
 
-  const onTabChange = React.useCallback(async (value: Tab) => {
-    const result = await form.trigger()
+  const onTabChange = useCallback(
+    async (value: Tab) => {
+      const result = await trigger()
 
-    if (!result) {
-      return
-    }
+      if (!result) {
+        return
+      }
 
-    setTab(value)
-  }, [])
+      setTab(value)
+    },
+    [trigger]
+  )
 
-  const onNext = React.useCallback(async () => {
-    const result = await form.trigger()
+  const onNext = useCallback(async () => {
+    const result = await trigger()
 
     if (!result) {
       return
@@ -156,18 +160,18 @@ export function CreateInventoryItemForm() {
       case Tab.AVAILABILITY:
         break
     }
-  }, [tab])
+  }, [tab, trigger])
 
   useEffect(() => {
-    if (form.formState.isDirty) {
+    if (isDirty) {
       setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "in-progress" }))
     } else {
       setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "not-started" }))
     }
-  }, [form.formState.isDirty])
+  }, [isDirty])
 
   useEffect(() => {
-    if (tab === Tab.DETAILS && form.formState.isDirty) {
+    if (tab === Tab.DETAILS && isDirty) {
       setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "in-progress" }))
     }
 
@@ -178,18 +182,18 @@ export function CreateInventoryItemForm() {
         [Tab.AVAILABILITY]: "in-progress",
       }))
     }
-  }, [tab])
+  }, [tab, isDirty])
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form
-        className="flex h-full flex-col overflow-hidden"
-        onSubmit={handleSubmit}
+      <ProgressTabs
+        value={tab}
+        className="h-full"
+        onValueChange={(tab) => onTabChange(tab as Tab)}
       >
-        <ProgressTabs
-          value={tab}
-          className="h-full"
-          onValueChange={(tab) => onTabChange(tab as Tab)}
+        <form
+          className="flex h-full flex-col overflow-hidden"
+          onSubmit={handleSubmit}
         >
           <RouteFocusModal.Header>
             <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
@@ -212,123 +216,52 @@ export function CreateInventoryItemForm() {
                 </span>
               </ProgressTabs.Trigger>
             </ProgressTabs.List>
-            <div className="flex items-center justify-end gap-x-2">
-              <RouteFocusModal.Close asChild>
-                <Button variant="secondary" size="small">
-                  {t("actions.cancel")}
-                </Button>
-              </RouteFocusModal.Close>
-              <Button
-                size="small"
-                className="whitespace-nowrap"
-                isLoading={isLoading}
-                onClick={tab !== Tab.AVAILABILITY ? onNext : undefined}
-                key={tab === Tab.AVAILABILITY ? "details" : "pricing"}
-                type={tab === Tab.AVAILABILITY ? "submit" : "button"}
-              >
-                {tab === Tab.AVAILABILITY
-                  ? t("actions.save")
-                  : t("general.next")}
-              </Button>
-            </div>
           </RouteFocusModal.Header>
 
           <RouteFocusModal.Body
             className={clx(
-              "flex h-full w-full flex-col items-center divide-y overflow-hidden",
+              "flex h-full w-full flex-col items-center divide-y overflow-hidden px-3",
               { "mx-auto": tab === Tab.DETAILS }
             )}
           >
-            <ProgressTabs.Content value={Tab.DETAILS} className="h-full w-full">
-              <div className="mx-auto w-[720px] px-1 py-8">
-                <Heading level="h2" className="mb-12 mt-8 text-2xl">
-                  {t("inventory.create.title")}
-                </Heading>
-
-                <div className="flex flex-col gap-y-6">
-                  <div className="grid grid-cols-1 gap-x-3 gap-y-6 lg:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="title"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.title")}</Form.Label>
-                            <Form.Control>
-                              <Input
-                                {...field}
-                                placeholder={t("fields.title")}
-                              />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-
-                    <Form.Field
-                      control={form.control}
-                      name="sku"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.sku")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} placeholder="sku-123" />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-
-                    <div className="col-span-2">
+            <ProgressTabs.Content
+              value={Tab.DETAILS}
+              className="h-full w-full overflow-auto"
+            >
+              <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-px py-16">
+                <div className="flex flex-col gap-y-8">
+                  <Heading>{t("inventory.create.title")}</Heading>
+                  <div className="flex flex-col gap-y-6">
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                       <Form.Field
                         control={form.control}
-                        name="description"
+                        name="title"
                         render={({ field }) => {
                           return (
                             <Form.Item>
-                              <Form.Label optional>
-                                {t("products.fields.description.label")}
-                              </Form.Label>
+                              <Form.Label>{t("fields.title")}</Form.Label>
                               <Form.Control>
-                                <Textarea
+                                <Input
                                   {...field}
-                                  placeholder="The item description"
+                                  placeholder={t("fields.title")}
                                 />
                               </Form.Control>
+                              <Form.ErrorMessage />
                             </Form.Item>
                           )
                         }}
                       />
-                    </div>
-                    <div className="col-span-2">
+
                       <Form.Field
                         control={form.control}
-                        name="requires_shipping"
-                        render={({ field: { value, onChange, ...field } }) => {
+                        name="sku"
+                        render={({ field }) => {
                           return (
                             <Form.Item>
-                              <div className="flex flex-col gap-y-1">
-                                <div className="flex items-center justify-between">
-                                  <Form.Label>
-                                    {t("inventory.create.requiresShipping")}
-                                  </Form.Label>
-                                  <Form.Control>
-                                    <Switch
-                                      checked={value}
-                                      onCheckedChange={(checked) =>
-                                        onChange(!!checked)
-                                      }
-                                      {...field}
-                                    />
-                                  </Form.Control>
-                                </div>
-                                <Form.Hint>
-                                  {t("inventory.create.requiresShippingHint")}
-                                </Form.Hint>
-                              </div>
+                              <Form.Label>{t("fields.sku")}</Form.Label>
+                              <Form.Control>
+                                <Input {...field} placeholder="sku-123" />
+                              </Form.Control>
                               <Form.ErrorMessage />
                             </Form.Item>
                           )
@@ -336,40 +269,43 @@ export function CreateInventoryItemForm() {
                       />
                     </div>
 
-                    {/* <Form.Field*/}
-                    {/*  className="col-span-1"*/}
-                    {/*  control={form.control}*/}
-                    {/*  name="location_ids"*/}
-                    {/*  render={({ field }) => {*/}
-                    {/*    return (*/}
-                    {/*      <Form.Item>*/}
-                    {/*        <Form.Label optional>*/}
-                    {/*          {t("inventory.create.locations")}*/}
-                    {/*        </Form.Label>*/}
-                    {/*        <Form.Control>*/}
-                    {/*          <Combobox*/}
-                    {/*            {...field}*/}
-                    {/*            multiple*/}
-                    {/*            options={locations.options}*/}
-                    {/*            searchValue={locations.searchValue}*/}
-                    {/*            onSearchValueChange={*/}
-                    {/*              locations.onSearchValueChange*/}
-                    {/*            }*/}
-                    {/*            fetchNextPage={locations.fetchNextPage}*/}
-                    {/*          />*/}
-                    {/*        </Form.Control>*/}
-                    {/*        <Form.ErrorMessage />*/}
-                    {/*      </Form.Item>*/}
-                    {/*    )*/}
-                    {/*  }}*/}
-                    {/* />*/}
+                    <Form.Field
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label optional>
+                              {t("products.fields.description.label")}
+                            </Form.Label>
+                            <Form.Control>
+                              <Textarea
+                                {...field}
+                                placeholder="The item description"
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
                   </div>
 
-                  <Heading level="h3" className="my-6">
+                  <SwitchBox
+                    control={form.control}
+                    name="requires_shipping"
+                    label={t("inventory.create.requiresShipping")}
+                    description={t("inventory.create.requiresShippingHint")}
+                  />
+                </div>
+
+                <Divider />
+
+                <div className="flex flex-col gap-y-6">
+                  <Heading level="h2">
                     {t("inventory.create.attributes")}
                   </Heading>
 
-                  <div className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 lg:gap-y-8">
                     <Form.Field
                       control={form.control}
                       name="width"
@@ -534,11 +470,32 @@ export function CreateInventoryItemForm() {
               value={Tab.AVAILABILITY}
               className="size-full"
             >
-              <CreateInventoryAvailabilityForm form={form} />
+              <InventoryAvailabilityForm form={form} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
-        </ProgressTabs>
-      </form>
+          <RouteFocusModal.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteFocusModal.Close asChild>
+                <Button variant="secondary" size="small">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteFocusModal.Close>
+              <Button
+                size="small"
+                className="whitespace-nowrap"
+                isLoading={isLoading}
+                onClick={tab !== Tab.AVAILABILITY ? onNext : undefined}
+                key={tab === Tab.AVAILABILITY ? "details" : "pricing"}
+                type={tab === Tab.AVAILABILITY ? "submit" : "button"}
+              >
+                {tab === Tab.AVAILABILITY
+                  ? t("actions.save")
+                  : t("general.next")}
+              </Button>
+            </div>
+          </RouteFocusModal.Footer>
+        </form>
+      </ProgressTabs>
     </RouteFocusModal.Form>
   )
 }

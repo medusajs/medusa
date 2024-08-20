@@ -9,11 +9,11 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConfig: { clientUrl } }) => {
     describe("Standalone Modules", () => {
       beforeAll(async () => {
-        process.env.POSTGRES_URL = clientUrl
+        process.env.DATABASE_URL = clientUrl
       })
 
       afterAll(async () => {
-        process.env.POSTGRES_URL = undefined
+        process.env.DATABASE_URL = undefined
       })
 
       it("Should migrate database and initialize Product module using connection string from environment variable ", async function () {
