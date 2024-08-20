@@ -100,18 +100,12 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     return false
   }, [reservations])
 
-  // TODO: We need a way to link payment collections to a change order to
-  // accurately differentiate order payments and order change payments
-  // This fix should be temporary.
-  const authorizedPaymentCollection = order.payment_collections.find(
-    (pc) =>
-      pc.status === "authorized" &&
-      pc.amount === order.summary?.pending_difference
+  const unpaidPaymentCollection = order.payment_collections.find(
+    (pc) => pc.status === "not_paid"
   )
 
   const showPayment =
-    typeof authorizedPaymentCollection === "undefined" &&
-    (order?.summary?.pending_difference || 0) > 0
+    unpaidPaymentCollection && (order?.summary?.pending_difference || 0) > 0
   const showRefund = (order?.summary?.pending_difference || 0) < 0
 
   return (
@@ -152,7 +146,12 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
             </Button>
           )}
 
-          {showPayment && <CopyPaymentLink order={order} />}
+          {showPayment && (
+            <CopyPaymentLink
+              paymentCollection={unpaidPaymentCollection}
+              order={order}
+            />
+          )}
         </div>
       )}
     </Container>
