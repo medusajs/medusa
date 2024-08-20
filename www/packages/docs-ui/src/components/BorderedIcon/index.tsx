@@ -27,15 +27,15 @@ export const BorderedIcon = ({
         iconWrapperClassName
       )}
     >
-      {!IconComponent && (
-        <img
-          src={icon || ""}
-          className={clsx(iconClassName, "bordered-icon")}
-          alt=""
-        />
-      )}
-      {IconComponent && (
-        <span className={clsx("rounded-docs_xs", wrapperClassName)}>
+      <span className={clsx("rounded-docs_xs", wrapperClassName)}>
+        {!IconComponent && (
+          <img
+            src={icon || ""}
+            className={clsx(iconClassName, "bordered-icon")}
+            alt=""
+          />
+        )}
+        {IconComponent && (
           <IconComponent
             className={clsx(
               "text-medusa-fg-subtle rounded-docs_xs",
@@ -44,8 +44,8 @@ export const BorderedIcon = ({
               iconColorClassName
             )}
           />
-        </span>
-      )}
+        )}
+      </span>
     </span>
   )
 }

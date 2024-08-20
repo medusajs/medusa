@@ -7,6 +7,7 @@ import { useIsExternalLink } from "../../../.."
 
 export const CardDefaultLayout = ({
   icon,
+  image,
   title,
   text,
   href,
@@ -37,6 +38,15 @@ export const CardDefaultLayout = ({
             iconClassName
           )}
           IconComponent={icon}
+        />
+      )}
+      {image && (
+        <BorderedIcon
+          wrapperClassName={clsx(
+            "p-[4.5px] bg-medusa-bg-component-hover",
+            iconClassName
+          )}
+          icon={image}
         />
       )}
       <div className={clsx("flex flex-col flex-1", contentClassName)}>
