@@ -268,6 +268,24 @@ export const CodeBlock = ({
     ]
   )
 
+  const codeTheme = useMemo(() => {
+    const prismTheme =
+      blockStyle === "loud" || colorMode === "dark"
+        ? themes.vsDark
+        : themes.vsLight
+
+    return {
+      ...prismTheme,
+      plain: {
+        ...prismTheme,
+        color:
+          colorMode === "light"
+            ? "rgba(255, 255, 255, 0.88)"
+            : "rgba(250, 250, 250, 1)",
+      },
+    }
+  }, [blockStyle, colorMode])
+
   if (!source.length) {
     return <></>
   }
@@ -310,11 +328,7 @@ export const CodeBlock = ({
           )}
         >
           <Highlight
-            theme={
-              blockStyle === "loud" || colorMode === "dark"
-                ? themes.vsDark
-                : themes.vsLight
-            }
+            theme={codeTheme}
             code={source.trim()}
             language={language}
             {...rest}

@@ -126,12 +126,11 @@ export const ApiRunner = React.forwardRef<HTMLDivElement, ApiRunnerProps>(
             lang="json"
             title="Testing Result"
             collapsed={true}
-            blockStyle="subtle"
             noReport={true}
-            badgeLabel={responseCode}
+            badgeLabel={responseCode || "Failed"}
             badgeColor={
               !responseCode
-                ? undefined
+                ? "red"
                 : responseCode.startsWith("2")
                 ? "green"
                 : "red"
