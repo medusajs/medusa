@@ -1,18 +1,16 @@
-import { useTranslation } from "react-i18next"
-import { AdminOrder, AdminReturn } from "@medusajs/types"
-import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
-import React, { useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrrowRight } from "@medusajs/icons"
+import { AdminOrder, AdminReturn } from "@medusajs/types"
+import { Alert, Button, Input, Switch, Text, toast } from "@medusajs/ui"
+import { useEffect, useMemo } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { Form } from "../../../../../components/common/form"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useStockLocation } from "../../../../../hooks/api"
-import { ReceiveReturnSchema } from "./constants"
-import { Form } from "../../../../../components/common/form"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
   useAddReceiveItems,
   useCancelReceiveReturn,
@@ -20,6 +18,8 @@ import {
   useRemoveReceiveItems,
   useUpdateReceiveItem,
 } from "../../../../../hooks/api/returns"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { ReceiveReturnSchema } from "./constants"
 import WrittenOffQuantity from "./written-off-quantity"
 
 type OrderAllocateItemsFormProps = {
@@ -318,7 +318,7 @@ export function OrderReceiveReturnForm({
               </span>
               <span className="txt-small font-medium">
                 {getStylizedAmount(
-                  preview.summary.difference_sum || 0,
+                  preview.summary.pending_difference || 0,
                   order.currency_code
                 )}
               </span>

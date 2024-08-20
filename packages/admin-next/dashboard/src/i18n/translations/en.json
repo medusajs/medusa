@@ -832,7 +832,9 @@
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
-      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
+      "refundAmount": "Refund {{ amount }}",
+      "paymentLink": "Copy payment link for {{ amount }}"
     },
 
     "edits": {

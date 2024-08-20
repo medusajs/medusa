@@ -1,7 +1,7 @@
 /**
  * @schema OrderPreview
  * type: object
- * description: The exchange's order preview.
+ * description: The order edit's order preview.
  * x-schemaName: OrderPreview
  * required:
  *   - order_change

@@ -4,13 +4,17 @@ import {
   BaseOrderAddress,
   BaseOrderChange,
   BaseOrderChangeAction,
+  BaseOrderFulfillment,
   BaseOrderLineItem,
   BaseOrderShippingMethod,
 } from "../common"
 
 export interface AdminOrder extends BaseOrder {
   payment_collections: AdminPaymentCollection[]
+  fulfillments?: BaseOrderFulfillment[]
 }
+
+export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
 export interface AdminOrderLineItem extends BaseOrderLineItem {}
 export interface AdminOrderAddress extends BaseOrderAddress {}
