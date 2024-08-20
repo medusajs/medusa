@@ -21,48 +21,41 @@ export const OrderEditCreate = () => {
   })
 
   const { order: preview } = useOrderPreview(id!)
-  const [activeEditId, setActiveEditId] = useState<string>()
-  const { mutateAsync: createOrderEdit } = useCreateOrderEdit(order.id)
+  const { mutateAsync: createOrderEdit } = useCreateOrderEdit()
 
-  // useOrderEdit(activeEditId!, undefined, {
-  //   enabled: !!activeEditId,
-  // })
+  useEffect(() => {
+    async function run() {
+      if (IS_REQUEST_RUNNING || !preview) {
+        return
+      }
 
-  // useEffect(() => {
-  //   async function run() {
-  //     if (IS_REQUEST_RUNNING || !preview) {
-  //       return
-  //     }
-  //
-  //     if (preview.order_change) {
-  //       if (preview.order_change.change_type === "order_edit") {
-  //         setActiveEditId(preview.order_change.exchange_id)
-  //       } else {
-  //         navigate(`/orders/${preview.id}`, { replace: true })
-  //         toast.error(t("orders.edits.activeChangeError"))
-  //       }
-  //
-  //       return
-  //     }
-  //
-  //     IS_REQUEST_RUNNING = true
-  //
-  //     try {
-  //       const { orderEdit: createdEdit } = await createOrderEdit({
-  //         order_id: preview.id,
-  //       })
-  //
-  //       setActiveEditId(createdEdit.id)
-  //     } catch (e) {
-  //       toast.error(e.message)
-  //       navigate(`/orders/${preview.id}`, { replace: true })
-  //     } finally {
-  //       IS_REQUEST_RUNNING = false
-  //     }
-  //   }
-  //
-  //   run()
-  // }, [preview])
+      if (preview.order_change) {
+        if (preview.order_change.change_type === "edit") {
+          // NOOP
+        } else {
+          navigate(`/orders/${preview.id}`, { replace: true })
+          toast.error(t("orders.edits.activeChangeError"))
+        }
+
+        return
+      }
+
+      IS_REQUEST_RUNNING = true
+
+      try {
+        const { order } = await createOrderEdit({
+          order_id: preview.id,
+        })
+      } catch (e) {
+        toast.error(e.message)
+        navigate(`/orders/${preview.id}`, { replace: true })
+      } finally {
+        IS_REQUEST_RUNNING = false
+      }
+    }
+
+    run()
+  }, [preview])
 
   return (
     <RouteFocusModal>

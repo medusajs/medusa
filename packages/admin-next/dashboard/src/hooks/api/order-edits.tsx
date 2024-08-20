@@ -13,16 +13,15 @@ import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
 
 export const useCreateOrderEdit = (
-  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderResponse,
     Error,
-    HttpTypes.AdminCreateOrderFulfillment
+    HttpTypes.AdminInitiateOrderEditRequest
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminCreateOrderFulfillment) =>
-      sdk.admin.orderEdit.create(orderId, payload),
+    mutationFn: (payload: HttpTypes.AdminInitiateOrderEditRequest) =>
+      sdk.admin.orderEdit.initiateRequest(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
