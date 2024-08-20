@@ -1660,6 +1660,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/orderEditUpdateItemQuantityValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow",
+    "newSlug": "/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow",
     "newSlug": "/references/medusa-workflows/orderExchangeAddNewItemWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow/page.mdx"
@@ -1888,6 +1898,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow",
     "newSlug": "/references/medusa-workflows/updateOrderEditAddItemWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep",
+    "newSlug": "/references/medusa-workflows/steps/updateOrderEditItemQuantityValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityWorkflow",
+    "newSlug": "/references/medusa-workflows/updateOrderEditItemQuantityWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodValidationStep",
