@@ -17,7 +17,7 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
         item.type === "answer" && "!pr-[20px]"
       )}
     >
-      {item.type === "answer" && <AiAssistantIcon />}
+      {item.type !== "question" && <AiAssistantIcon />}
       <div
         className={clsx(
           "txt-small text-medusa-fg-subtle",
