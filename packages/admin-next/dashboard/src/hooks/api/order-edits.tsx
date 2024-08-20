@@ -48,3 +48,24 @@ export const useCancelOrderEdit = (
     ...options,
   })
 }
+
+export const useAddOrderEditItems = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderEditPreviewResponse,
+    Error,
+    HttpTypes.AdminAddOrderEditItems
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminAddOrderEditItems) =>
+      sdk.admin.orderEdit.addItems(id, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(id),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

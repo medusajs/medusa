@@ -30,9 +30,7 @@ export const OrderEditCreate = () => {
       }
 
       if (preview.order_change) {
-        if (preview.order_change.change_type === "edit") {
-          // NOOP
-        } else {
+        if (preview.order_change.change_type !== "edit") {
           navigate(`/orders/${preview.id}`, { replace: true })
           toast.error(t("orders.edits.activeChangeError"))
         }

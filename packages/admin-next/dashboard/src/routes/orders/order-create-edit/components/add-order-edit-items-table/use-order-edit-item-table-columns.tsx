@@ -10,7 +10,7 @@ import {
 
 const columnHelper = createColumnHelper<any>()
 
-export const useExchangeOutboundItemTableColumns = (currencyCode: string) => {
+export const useOrderEditItemsTableColumns = (currencyCode: string) => {
   const { t } = useTranslation()
 
   return useMemo(

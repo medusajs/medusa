@@ -1,12 +1,12 @@
 import { XCircle } from "@medusajs/icons"
-import { AdminOrderLineItem, HttpTypes } from "@medusajs/types"
-import { Input, Text } from "@medusajs/ui"
-import { UseFormReturn } from "react-hook-form"
+import { AdminOrderLineItem } from "@medusajs/types"
+import { Badge, Input, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
+import { useMemo } from "react"
 
 type ExchangeInboundItemProps = {
   item: AdminOrderLineItem
@@ -24,24 +24,37 @@ function OrderEditItem({
 }: ExchangeInboundItemProps) {
   const { t } = useTranslation()
 
+  const isAddedItem = useMemo(
+    () => !!item.actions?.find((a) => a.action === "ITEM_ADD"),
+    []
+  )
+
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
       <div className="flex flex-col items-center gap-x-2 gap-y-2 border-b p-3 text-sm md:flex-row">
-        <div className="flex flex-1 items-center gap-x-3">
-          <Thumbnail src={item.thumbnail} />
+        <div className="flex flex-1 items-center justify-between">
+          <div className="flex flex-row items-center gap-x-3">
+            <Thumbnail src={item.thumbnail} />
 
-          <div className="flex flex-col">
-            <div>
-              <Text className="txt-small" as="span" weight="plus">
-                {item.title}{" "}
+            <div className="flex flex-col">
+              <div>
+                <Text className="txt-small" as="span" weight="plus">
+                  {item.title}{" "}
+                </Text>
+
+                {item.variant?.sku && <span>({item.variant.sku})</span>}
+              </div>
+              <Text as="div" className="text-ui-fg-subtle txt-small">
+                {item.variant?.product?.title}
               </Text>
-
-              {item.variant?.sku && <span>({item.variant.sku})</span>}
             </div>
-            <Text as="div" className="text-ui-fg-subtle txt-small">
-              {item.variant?.product?.title}
-            </Text>
           </div>
+
+          {isAddedItem && (
+            <Badge size="2xsmall" rounded="full" color="blue" className="mr-1">
+              New
+            </Badge>
+          )}
         </div>
 
         <div className="flex flex-1 justify-between">
@@ -66,10 +79,7 @@ function OrderEditItem({
           </div>
 
           <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
-            <MoneyAmountCell
-              currencyCode={currencyCode}
-              amount={item.return_requested_total}
-            />
+            <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
           </div>
 
           <ActionMenu

@@ -14,6 +14,7 @@ import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
 import { OrderEditItemsSection } from "./order-edit-items-section"
+import { useCancelOrderEdit } from "../../../../../hooks/api/order-edits"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -34,7 +35,8 @@ export const OrderEditCreateForm = ({
    */
   const { mutateAsync: confirmOrderEditRequest, isPending: isConfirming } = {} // useOrderEditConfirmRequest(exchange.id, order.id)
 
-  const { mutateAsync: cancelOrderRequest, isPending: isCanceling } = {} // useCancelOrderEditRequest(exchange.id, order.id)
+  const { mutateAsync: cancelOrderRequest, isPending: isCanceling } =
+    useCancelOrderEdit(order.id)
 
   const isRequestLoading = isConfirming || isCanceling
 
@@ -44,7 +46,7 @@ export const OrderEditCreateForm = ({
   const form = useForm<CreateOrderEditSchemaType>({
     defaultValues: () => {
       return Promise.resolve({
-        note: "", // TODO: note
+        note: "", // TODO: add note when update edit route is added
         send_notification: false,
       })
     },
@@ -94,11 +96,7 @@ export const OrderEditCreateForm = ({
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
             <Heading level="h1">{t("orders.edits.create")}</Heading>
 
-            <OrderEditItemsSection
-              form={form}
-              preview={preview}
-              order={order}
-            />
+            <OrderEditItemsSection preview={preview} order={order} />
 
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { AdminOrderEditDeleteResponse, HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -35,7 +35,7 @@ export class OrderEdit {
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminOrderResponse>(
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
       `/admin/order-edits`,
       {
         method: "POST",
@@ -51,11 +51,28 @@ export class OrderEdit {
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminOrderResponse>(
+    return await this.client.fetch<HttpTypes.AdminOrderEditDeleteResponse>(
       `/admin/order-edits/${id}`,
       {
         method: "DELETE",
         headers,
+        query,
+      }
+    )
+  }
+
+  async addItems(
+    id: string,
+    body: HttpTypes.AdminAddOrderEditItems,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/items`,
+      {
+        method: "POST",
+        headers,
+        body,
         query,
       }
     )

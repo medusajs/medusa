@@ -5,33 +5,24 @@ import {
   AdminReturn,
   InventoryLevelDTO,
 } from "@medusajs/types"
-import { Alert, Button, Heading, Text, toast } from "@medusajs/ui"
+import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
-import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-
 import {
   RouteFocusModal,
   StackedFocusModal,
   useStackedModal,
 } from "../../../../../components/modals"
-import { useShippingOptions, useStockLocations } from "../../../../../hooks/api"
-import {
-  useAddExchangeInboundItems,
-  useAddExchangeInboundShipping,
-  useDeleteExchangeInboundShipping,
-  useRemoveExchangeInboundItem,
-  useUpdateExchangeInboundItem,
-} from "../../../../../hooks/api/exchanges"
-import { useUpdateReturn } from "../../../../../hooks/api/returns"
-import { sdk } from "../../../../../lib/client"
 import { AddOrderEditItemsTable } from "../add-order-edit-items-table"
 import { OrderEditItem } from "./order-edit-item"
+import { useAddOrderEditItems } from "../../../../../hooks/api/order-edits.tsx"
 
 type ExchangeInboundSectionProps = {
   order: AdminOrder
   preview: AdminOrderPreview
 }
+
+let addedVariants: string[] = []
 
 export const OrderEditItemsSection = ({
   order,
@@ -44,8 +35,23 @@ export const OrderEditItemsSection = ({
    */
   const { setIsOpen } = useStackedModal()
 
+  /*
+   * MUTATIONS
+   */
+
+  const { mutateAsync: addItems } = useAddOrderEditItems(order.id)
+
   const onItemsSelected = async () => {
-    // TODO logic on add
+    try {
+      await addItems({
+        items: addedVariants.map((i) => ({
+          variant_id: i,
+          quantity: 1,
+        })),
+      })
+    } catch (e) {
+      toast.error(e.message)
+    }
 
     setIsOpen("inbound-items", false)
   }
@@ -65,21 +71,14 @@ export const OrderEditItemsSection = ({
           <StackedFocusModal.Content>
             <StackedFocusModal.Header />
 
-            {/*<AddOrderEditItemsTable*/}
-            {/*  items={order.items!}*/}
-            {/*  selectedItems={inboundItems.map((i) => i.item_id)}*/}
-            {/*  currencyCode={order.currency_code}*/}
-            {/*  onSelectionChange={(finalSelection) => {*/}
-            {/*    const alreadySelected = inboundItems.map((i) => i.item_id)*/}
-
-            {/*    itemsToAdd = finalSelection.filter(*/}
-            {/*      (selection) => !alreadySelected.includes(selection)*/}
-            {/*    )*/}
-            {/*    itemsToRemove = alreadySelected.filter(*/}
-            {/*      (selection) => !finalSelection.includes(selection)*/}
-            {/*    )*/}
-            {/*  }}*/}
-            {/*/>*/}
+            <AddOrderEditItemsTable
+              items={preview.items}
+              selectedItems={[] /* TODO */}
+              currencyCode={order.currency_code}
+              onSelectionChange={(finalSelection) => {
+                addedVariants = finalSelection
+              }}
+            />
 
             <StackedFocusModal.Footer>
               <div className="flex w-full items-center justify-end gap-x-4">

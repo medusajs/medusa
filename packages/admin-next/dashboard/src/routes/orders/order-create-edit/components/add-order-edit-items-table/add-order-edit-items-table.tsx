@@ -4,9 +4,9 @@ import { useState } from "react"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useVariants } from "../../../../../hooks/api"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useExchangeOutboundItemTableColumns } from "./use-exchange-outbound-item-table-columns"
-import { useOrderEditItemTableFilters } from "./use-order-edit-item-table-filters.tsx"
-import { useOrderEditItemTableQuery } from "./use-order-edit-item-table-query.tsx"
+import { useOrderEditItemTableFilters } from "./use-order-edit-item-table-filters"
+import { useOrderEditItemTableQuery } from "./use-order-edit-item-table-query"
+import { useOrderEditItemsTableColumns } from "./use-order-edit-item-table-columns"
 
 const PAGE_SIZE = 50
 const PREFIX = "rit"
@@ -47,7 +47,7 @@ export const AddOrderEditItemsTable = ({
     fields: "*inventory_items.inventory.location_levels,+inventory_quantity",
   })
 
-  const columns = useExchangeOutboundItemTableColumns(currencyCode)
+  const columns = useOrderEditItemsTableColumns(currencyCode)
   const filters = useOrderEditItemTableFilters()
 
   const { table } = useDataTable({
