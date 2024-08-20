@@ -10,3 +10,12 @@ export const getTotalCaptured = (
         (paymentCollection.refunded_amount as number))
     return acc
   }, 0)
+
+export const getTotalPending = (paymentCollections: AdminPaymentCollection[]) =>
+  paymentCollections.reduce((acc, paymentCollection) => {
+    acc +=
+      (paymentCollection.amount as number) -
+      (paymentCollection.captured_amount as number)
+
+    return acc
+  }, 0)

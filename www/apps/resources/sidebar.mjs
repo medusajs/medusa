@@ -16,6 +16,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "API Key Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -89,6 +90,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Auth Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -198,6 +200,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Cart Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -279,6 +282,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Currency",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -345,6 +349,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Customer",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -416,6 +421,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Fulfillment Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -509,6 +515,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Inventory Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -586,6 +593,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Order Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -688,6 +696,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Payment Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -807,6 +816,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Pricing Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -894,6 +904,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Product Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -966,6 +977,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Promotion Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1054,6 +1066,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Region Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1120,6 +1133,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Sales Channel Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1193,6 +1207,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Stock Location Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1267,6 +1282,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Store Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1333,6 +1349,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Tax Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1419,6 +1436,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "User Module",
+        initialOpen: false,
         children: [
           {
             type: "link",

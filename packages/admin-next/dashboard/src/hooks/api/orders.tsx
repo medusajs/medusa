@@ -89,6 +89,11 @@ export const useCreateOrderFulfillment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -107,6 +112,11 @@ export const useCancelOrderFulfillment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -129,6 +139,11 @@ export const useCreateOrderShipment = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -136,18 +151,15 @@ export const useCreateOrderShipment = (
 }
 
 export const useCancelOrder = (
-  orderId: string,
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.order.cancel(orderId),
+    mutationFn: (id) => sdk.admin.order.cancel(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

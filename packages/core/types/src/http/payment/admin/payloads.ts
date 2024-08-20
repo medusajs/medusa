@@ -12,3 +12,8 @@ export interface AdminCreateRefundReason {
   label: string
   description?: string
 }
+
+export interface AdminCreatePaymentCollection {
+  order_id: string
+  amount?: number
+}

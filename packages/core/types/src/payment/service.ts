@@ -369,6 +369,43 @@ export interface IPaymentModuleService extends IModuleService {
   ): Promise<void>
 
   /**
+   * This method soft deletes payment collections by their IDs.
+   *
+   * @param {string[]} id - The IDs of payment collections.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were also soft deleted.
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await paymentModule.softDeletePaymentCollections(["paycol_123"])
+   */
+  softDeletePaymentCollections<TReturnableLinkableKeys extends string = string>(
+    id: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  /**
+   * This method restores soft deleted payment collection by their IDs.
+   *
+   * @param {string[]} id - The IDs of payment collections.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the payment collection. You can pass to its `returnLinkableKeys`
+   * property any of the payment collection's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<TReturnableLinkableKeys, string[]>>} An object that includes the IDs of related records that were restored.
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await paymentModule.restorePaymentCollections(["paycol_123"])
+   */
+  restorePaymentCollections<TReturnableLinkableKeys extends string = string>(
+    id: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  /**
    * This method marks a payment collection as completed by settings its `completed_at` field to the current date and time.
    *
    * @param {string} paymentCollectionId - The payment collection's ID.
