@@ -252,7 +252,8 @@
     "internalServerErrorTitle": "500 - Internal server error",
     "internalServerErrorMessage": "An unexpected error occurred on the server. Please try again later.",
     "defaultTitle": "An error occurred",
-    "defaultMessage": "An unexpected error occurred while rendering this page."
+    "defaultMessage": "An unexpected error occurred while rendering this page.",
+    "backToDashboard": "Back to dashboard"
   },
   "addresses": {
     "shippingAddress": {
