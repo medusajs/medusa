@@ -15,7 +15,10 @@ import {
 } from "../../../../../components/modals"
 import { AddOrderEditItemsTable } from "../add-order-edit-items-table"
 import { OrderEditItem } from "./order-edit-item"
-import { useAddOrderEditItems } from "../../../../../hooks/api/order-edits.tsx"
+import {
+  useAddOrderEditItems,
+  useRemoveOrderEditItem,
+} from "../../../../../hooks/api/order-edits.tsx"
 
 type ExchangeInboundSectionProps = {
   order: AdminOrder
@@ -40,6 +43,7 @@ export const OrderEditItemsSection = ({
    */
 
   const { mutateAsync: addItems } = useAddOrderEditItems(order.id)
+  const { mutateAsync: removeItem } = useRemoveOrderEditItem(order.id)
 
   const onItemsSelected = async () => {
     try {
@@ -105,13 +109,25 @@ export const OrderEditItemsSection = ({
         </StackedFocusModal>
       </div>
 
-      {preview.items.map((item, index) => (
+      {preview.items.map((item) => (
         <OrderEditItem
           key={item.id}
           item={item}
           currencyCode={order.currency_code}
-          onRemove={() => {
-            // TODO: on remove logic
+          onRemove={async () => {
+            const addItemAction = item.actions?.find(
+              (a) => a.action === "ITEM_ADD"
+            )
+
+            if (addItemAction) {
+              try {
+                await removeItem(addItemAction.id)
+              } catch (e) {
+                toast.error(e.message)
+              }
+            } else {
+              // TODO: set quantity to 0
+            }
           }}
           onUpdate={(payload) => {
             // TODO: on update logic

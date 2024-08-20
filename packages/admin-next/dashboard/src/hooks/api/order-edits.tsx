@@ -69,3 +69,25 @@ export const useAddOrderEditItems = (
     ...options,
   })
 }
+
+export const useRemoveOrderEditItem = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderEditPreviewResponse,
+    Error,
+    string
+  >
+) => {
+  return useMutation({
+    mutationFn: (actionId: string) =>
+      sdk.admin.orderEdit.removeItem(id, actionId),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

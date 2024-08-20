@@ -77,4 +77,20 @@ export class OrderEdit {
       }
     )
   }
+
+  async removeItem(
+    id: string,
+    actionId: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/items/${actionId}`,
+      {
+        method: "DELETE",
+        headers,
+        query,
+      }
+    )
+  }
 }
