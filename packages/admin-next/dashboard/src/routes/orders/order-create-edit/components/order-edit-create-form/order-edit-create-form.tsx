@@ -13,6 +13,7 @@ import {
 import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
+import { OrderEditItemsSection } from "./order-edit-items-section"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -43,18 +44,7 @@ export const OrderEditCreateForm = ({
   const form = useForm<CreateOrderEditSchemaType>({
     defaultValues: () => {
       return Promise.resolve({
-        items: preview.items.map((i) => {
-          // const inboundAction = i.actions?.find(
-          //   (a) => a.action === "EDIT_ITEM_ADD"
-          // )
-
-          return {
-            item_id: i.id,
-            variant_id: i.variant_id,
-            quantity: i.detail.return_requested_quantity,
-          }
-        }),
-
+        note: "", // TODO: note
         send_notification: false,
       })
     },
@@ -83,9 +73,7 @@ export const OrderEditCreateForm = ({
       if (IS_CANCELING) {
         cancelOrderRequest(undefined, {
           onSuccess: () => {
-            toast.success(
-              t("orders.exchanges.actions.cancelExchange.successToast")
-            )
+            toast.success(t("orders.edits.actions.cancel.successToast"))
           },
           onError: (error) => {
             toast.error(error.message)
@@ -104,15 +92,13 @@ export const OrderEditCreateForm = ({
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
-            <Heading level="h1">{t("orders.exchanges.create")}</Heading>
+            <Heading level="h1">{t("orders.edits.create")}</Heading>
 
-            {/*<ExchangeInboundSection*/}
-            {/*  form={form}*/}
-            {/*  preview={preview}*/}
-            {/*  order={order}*/}
-            {/*  exchange={exchange}*/}
-            {/*  orderReturn={orderReturn}*/}
-            {/*/>*/}
+            <OrderEditItemsSection
+              form={form}
+              preview={preview}
+              order={order}
+            />
 
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
@@ -132,7 +118,7 @@ export const OrderEditCreateForm = ({
                 </span>
 
                 <span className="txt-small text-ui-fg-subtle">
-                  {getStylizedAmount(preview.total, preview.currency_code)}
+                  {getStylizedAmount(preview.total, order.currency_code)}
                 </span>
               </div>
 
@@ -148,6 +134,7 @@ export const OrderEditCreateForm = ({
                 </span>
               </div>
             </div>
+
             {/*SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field

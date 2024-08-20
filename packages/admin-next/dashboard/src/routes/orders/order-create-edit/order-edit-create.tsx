@@ -7,6 +7,7 @@ import { RouteFocusModal } from "../../../components/modals"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
 import { DEFAULT_FIELDS } from "../order-detail/constants"
 import { OrderEditCreateForm } from "./components/order-edit-create-form"
+import { useCreateOrderEdit } from "../../../hooks/api/order-edits"
 
 let IS_REQUEST_RUNNING = false
 
@@ -21,9 +22,8 @@ export const OrderEditCreate = () => {
 
   const { order: preview } = useOrderPreview(id!)
   const [activeEditId, setActiveEditId] = useState<string>()
-  const { mutateAsync: createOrderEdit } = {} // useCreateExchange(order.id)
+  const { mutateAsync: createOrderEdit } = useCreateOrderEdit(order.id)
 
-  const { orderEdit } = {}
   // useOrderEdit(activeEditId!, undefined, {
   //   enabled: !!activeEditId,
   // })
@@ -66,7 +66,7 @@ export const OrderEditCreate = () => {
 
   return (
     <RouteFocusModal>
-      {orderEdit && preview && order && (
+      {preview && order && (
         <OrderEditCreateForm order={order} preview={preview} />
       )}
     </RouteFocusModal>

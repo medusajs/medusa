@@ -163,7 +163,7 @@ const Header = ({
             actions: [
               {
                 label: t("orders.summary.editOrder"),
-                to: `/orders/${order.id}/edit`,
+                to: `/orders/${order.id}/edits`,
                 icon: <PencilSquare />,
               },
             ],
