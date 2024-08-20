@@ -441,6 +441,20 @@ module.exports = {
             fontWeight: "400",
           },
         ],
+        small: [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "small-plus": [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
+          },
+        ],
         "code-label": [
           "12px",
           {
