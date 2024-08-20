@@ -11,6 +11,14 @@ const hasStorage = (storage: "localStorage" | "sessionStorage") => {
   return false
 }
 
+const hasCookies_ = (): boolean => {
+  if (hasStorage("localStorage") && typeof document !== "undefined") {
+    return "cookie" in document
+  }
+
+  return false
+};
+
 const toBase64 = (str: string) => {
   if (typeof window !== "undefined") {
     return window.btoa(str)
@@ -46,6 +54,11 @@ const normalizeRequest = (
 }
 
 const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
+  if (resp.status === 301 || resp.status === 302 || resp.status === 303) {
+    // Return the location URL for redirect handling
+    return { location: resp.headers.get('location')! }
+  }
+  
   if (resp.status >= 300) {
     const jsonError = (await resp.json().catch(() => ({}))) as {
       message?: string
@@ -134,6 +147,15 @@ export class Client {
         window.sessionStorage.removeItem(storageKey)
         break
       }
+      case "cookie": {
+        this.fetch(
+          `/auth/cookie`,
+          {
+            method: "DELETE"
+          }
+        )
+        break
+      }
       case "memory": {
         this.token = ""
         break
@@ -192,7 +214,10 @@ export class Client {
       // Any non-request errors (eg. invalid JSON in the response) will be thrown as-is.
       return await fetch(
         normalizedInput,
-        normalizeRequest(init, headers, this.config)
+        {
+          ...normalizeRequest(init, headers, this.config),
+          credentials: "include"
+        }
       ).then((resp) => {
         this.logger.debug(`Received response with status ${resp.status}\n`)
         return normalizeResponse(resp, headers)
@@ -235,6 +260,18 @@ export class Client {
         window.sessionStorage.setItem(storageKey, token)
         break
       }
+      case "cookie": {
+        this.fetch(
+          `/auth/cookie`,
+          {
+            method: "POST",
+            body: {
+              authToken: token
+            }
+          }
+        )
+        break
+      }
       case "memory": {
         this.token = token
         break
@@ -251,6 +288,14 @@ export class Client {
       case "session": {
         return window.sessionStorage.getItem(storageKey)
       }
+      case "cookie": {
+        const cookieValue = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith(`${storageKey}=`))
+          ?.split("=")[1]
+
+        return cookieValue ? cookieValue : null;
+      }
       case "memory": {
         return this.token
       }
@@ -262,6 +307,7 @@ export class Client {
   protected getTokenStorageInfo_ = () => {
     const hasLocal = hasStorage("localStorage")
     const hasSession = hasStorage("sessionStorage")
+    const hasCookies = hasCookies_()
 
     const storageMethod =
       this.config.auth?.jwtTokenStorageMethod || (hasLocal ? "local" : "memory")
@@ -273,6 +319,9 @@ export class Client {
     }
     if (!hasSession && storageMethod === "session") {
       throw new Error("Session JWT storage is only available in the browser")
+    }
+    if (!hasCookies && storageMethod === "cookie") {
+      throw new Error("Cookie JWT storage is only available in the browser")
     }
 
     return {

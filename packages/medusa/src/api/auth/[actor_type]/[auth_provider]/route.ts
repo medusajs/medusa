@@ -13,6 +13,7 @@ import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
+  const shouldRedirect = req.query.redirect === 'true' || req.query.redirect === undefined
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
@@ -47,7 +48,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   )
 
   if (location) {
-    res.redirect(location)
+    if (shouldRedirect) {
+      res.redirect(location)
+    } else {
+      res.status(200).json({ location })
+    }
     return
   }
 

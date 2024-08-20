@@ -1,3 +1,9 @@
+export type AuthResponse = { token: string } | { location: string }
+
+export type AuthActor = "customer" | "user" | (string & {})
+export type AuthMethod = "emailpass" | (string & {})
+export type AuthPayload = { email: string; password: string } | (Object & {})
+
 export type Logger = {
   error: (...messages: string[]) => void
   warn: (...messages: string[]) => void
@@ -13,7 +19,7 @@ export type Config = {
   auth?: {
     type?: "jwt" | "session"
     jwtTokenStorageKey?: string
-    jwtTokenStorageMethod?: "local" | "session" | "memory"
+    jwtTokenStorageMethod?: "local" | "session" | "memory" | "cookie"
   }
   logger?: Logger
   debug?: boolean

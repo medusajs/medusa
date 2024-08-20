@@ -72,6 +72,12 @@ export const authenticate = (
         ContainerRegistrationKeys.CONFIG_MODULE
       )
 
+      const authToken = req.cookies[http.jwtTokenStorageKey!]
+
+      if (authToken) {
+          req.headers['authorization'] = `Bearer ${authToken}`
+      }
+
       authContext = getAuthContextFromJwtToken(
         req.headers.authorization,
         http.jwtSecret!,

@@ -1,5 +1,5 @@
 import { Client } from "../client"
-import { Config } from "../types"
+import { AuthActor, AuthMethod, AuthPayload, AuthResponse, Config } from "../types"
 
 export class Auth {
   private client: Client
@@ -11,17 +11,25 @@ export class Auth {
   }
 
   login = async (
-    actor: "customer" | "user",
-    method: "emailpass",
-    payload: { email: string; password: string }
+    actor: AuthActor,
+    method: AuthMethod,
+    payload: AuthPayload
   ) => {
-    const { token } = await this.client.fetch<{ token: string }>(
-      `/auth/${actor}/${method}`,
+    const response = await this.client.fetch<AuthResponse>(
+      `/auth/${actor}/${method}?redirect=false`, // set redirect to false, to disable automatic redirect -> otherwise cors error
       {
         method: "POST",
         body: payload,
       }
     )
+
+    // Redirect to 3rd Party Login
+    if ("location" in response) {
+      window.location.href = response.location
+      return response.location
+    }
+
+    const { token } = response as { token: string }
 
     // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
     if (this.config?.auth?.type === "session") {
@@ -47,11 +55,11 @@ export class Auth {
   }
 
   create = async (
-    actor: "customer" | "user",
-    method: "emailpass",
-    payload: { email: string; password: string }
+    actor: AuthActor,
+    method: AuthMethod,
+    payload: AuthPayload
   ): Promise<{ token: string }> => {
-    return await this.client.fetch(`/auth/${actor}/${method}`, {
+    return await this.client.fetch(`/auth/${actor}/${method}?redirect=false`, {
       method: "POST",
       body: payload,
     })
