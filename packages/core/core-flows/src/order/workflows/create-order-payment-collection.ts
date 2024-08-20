@@ -65,13 +65,12 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
 
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
-      fields: ["id"],
+      fields: ["id", "status"],
       variables: {
-        id: orderPaymentCollectionIds,
-        status: [
-          PaymentCollectionStatus.NOT_PAID,
-          PaymentCollectionStatus.AWAITING,
-        ],
+        filters: {
+          id: orderPaymentCollectionIds,
+          status: [PaymentCollectionStatus.NOT_PAID],
+        },
       },
       list: false,
     }).config({ name: "payment-collection-query" })
@@ -81,10 +80,7 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
     const paymentCollectionData = transform(
       { order, input },
       ({ order, input }) => {
-        const pendingPayment = MathBN.sub(
-          order.summary.raw_current_order_total,
-          order.summary.raw_original_order_total
-        )
+        const pendingPayment = order.summary.raw_pending_difference
 
         if (MathBN.lte(pendingPayment, 0)) {
           throw new MedusaError(
@@ -93,7 +89,10 @@ export const createOrderPaymentCollectionWorkflow = createWorkflow(
           )
         }
 
-        if (input.amount && MathBN.gt(input.amount, pendingPayment)) {
+        if (
+          input.amount &&
+          MathBN.gt(input.amount ?? pendingPayment, pendingPayment)
+        ) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `Cannot create a payment collection for amount greater than ${pendingPayment}`

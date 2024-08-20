@@ -4,7 +4,7 @@ import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const REFUND_REASON_QUERY_KEY = "refund-reason" as const
-export const paymentQueryKeys = queryKeysFactory(REFUND_REASON_QUERY_KEY)
+export const refundReasonQueryKeys = queryKeysFactory(REFUND_REASON_QUERY_KEY)
 
 export const useRefundReasons = (
   query?: HttpTypes.RefundReasonFilters,
