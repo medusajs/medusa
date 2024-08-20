@@ -735,7 +735,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully", async () => {
+        it("should create a payment collection successfully & mark as paid", async () => {
+          const paymentDelta = 171.5
           const orderForPayment = (
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
@@ -746,12 +747,12 @@ medusaIntegrationTestRunner({
           expect(paymentCollections[0]).toEqual(
             expect.objectContaining({
               status: "not_paid",
-              amount: 171.5,
+              amount: paymentDelta,
               currency_code: "usd",
             })
           )
 
-          const paymentCollection = (
+          const createdPaymentCollection = (
             await api.post(
               `/admin/payment-collections`,
               { order_id: order.id, amount: 100 },
@@ -759,7 +760,7 @@ medusaIntegrationTestRunner({
             )
           ).data.payment_collection
 
-          expect(paymentCollection).toEqual(
+          expect(createdPaymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               amount: 100,
@@ -769,16 +770,37 @@ medusaIntegrationTestRunner({
 
           const deleted = (
             await api.delete(
-              `/admin/payment-collections/${paymentCollections[0].id}`,
+              `/admin/payment-collections/${createdPaymentCollection.id}`,
               adminHeaders
             )
           ).data
 
           expect(deleted).toEqual({
-            id: expect.any(String),
+            id: createdPaymentCollection.id,
             object: "payment-collection",
             deleted: true,
           })
+
+          const finalPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections/${paymentCollections[0].id}/mark-as-paid`,
+              { order_id: order.id },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          console.log("finalPaymentCollection -- ", finalPaymentCollection)
+
+          expect(finalPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: paymentDelta,
+              status: "authorized",
+              authorized_amount: paymentDelta,
+              captured_amount: paymentDelta,
+              refunded_amount: 0,
+            })
+          )
         })
       })
 
