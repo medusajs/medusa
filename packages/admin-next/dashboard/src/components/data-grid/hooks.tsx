@@ -52,12 +52,16 @@ export const useDataGridCell = <TData, TValue>({
     () => ({ row: rowIndex, col: columnIndex }),
     [rowIndex, columnIndex]
   )
+
+  const isFirstColumn = useMemo(() => columnIndex === 0, [columnIndex])
+
   const id = generateCellId(coords)
 
   const {
     register,
     control,
     anchor,
+    errors,
     setIsEditing,
     setSingleRange,
     setIsSelecting,
@@ -214,6 +218,9 @@ export const useDataGridCell = <TData, TValue>({
 
   const renderProps: DataGridCellRenderProps = {
     container: {
+      field,
+      errors,
+      isFirstColumn,
       isAnchor,
       isSelected: getIsCellSelected(coords),
       isDragSelected: getIsCellDragSelected(coords),

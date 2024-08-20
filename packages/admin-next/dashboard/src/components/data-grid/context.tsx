@@ -1,11 +1,18 @@
 import { FocusEvent, MouseEvent, createContext } from "react"
-import { Control, FieldValues, Path, UseFormRegister } from "react-hook-form"
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form"
 import { CellCoords, CellType } from "./types"
 
 type DataGridContextType<TForm extends FieldValues> = {
   // Grid state
   anchor: CellCoords | null
   trapActive: boolean
+  errors: FieldErrors<TForm>
   // Cell handlers
   registerCell: (coords: CellCoords, field: string, type: CellType) => void
   getIsCellSelected: (coords: CellCoords) => boolean

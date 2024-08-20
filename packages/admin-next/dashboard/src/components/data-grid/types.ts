@@ -1,6 +1,6 @@
 import { CellContext } from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
-import { FieldValues, Path, PathValue } from "react-hook-form"
+import { FieldErrors, FieldValues, Path, PathValue } from "react-hook-form"
 
 export type CellType = "text" | "number" | "select" | "boolean"
 
@@ -61,8 +61,11 @@ interface OverlayProps {
 }
 
 export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
+  field: string
+  errors: FieldErrors
   innerProps: InnerProps
   overlayProps: OverlayProps
+  isFirstColumn: boolean
   isAnchor: boolean
   isSelected: boolean
   isDragSelected: boolean

@@ -55,8 +55,9 @@ const CreateInventoryItemSchema = zod.object({
   description: zod.string().optional(),
   requires_shipping: zod.boolean().optional(),
   thumbnail: zod.string().optional(),
-  locations: zod.record(zod.string(), zod.number().optional()).optional(),
-  // metadata: zod.record(zod.string(), zod.unknown()).optional(),
+  locations: zod
+    .record(zod.string(), zod.union([zod.number().min(0), zod.undefined()]))
+    .optional(),
 })
 
 export function CreateInventoryItemForm() {

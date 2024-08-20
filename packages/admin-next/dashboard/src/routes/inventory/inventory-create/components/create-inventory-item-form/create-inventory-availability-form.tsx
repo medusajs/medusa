@@ -59,7 +59,6 @@ const useColumns = () => {
         cell: (context) => {
           return (
             <DataGrid.NumberCell
-              min={0}
               placeholder="0"
               context={context}
               field={`locations.${context.row.original.id}`}

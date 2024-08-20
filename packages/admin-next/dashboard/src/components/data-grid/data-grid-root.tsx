@@ -79,7 +79,13 @@ export const DataGridRoot = <
   const containerRef = useRef<HTMLDivElement>(null)
 
   const { redo, undo, execute } = useCommandHistory()
-  const { register, control, getValues, setValue } = state
+  const {
+    register,
+    control,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = state
 
   const [trapActive, setTrapActive] = useState(false)
 
@@ -1046,6 +1052,10 @@ export const DataGridRoot = <
     setRangeEnd(anchor)
   }, [anchor, rangeEnd])
 
+  // Maybe we can do something like this to check which cells to add to the matrix or not, without having to render them first.
+  // or maybe we render them all in an offscreen div and then add them to the matrix.
+  // columns[0].meta.registerToMatrix(data[0])
+
   useEffect(() => {
     if (!anchor && matrix) {
       const coords = matrix.getFirstNavigableCell()
@@ -1061,6 +1071,7 @@ export const DataGridRoot = <
       anchor,
       control,
       trapActive,
+      errors,
       setIsSelecting,
       setIsEditing: onEditingChangeHandler,
       setSingleRange,
@@ -1078,6 +1089,7 @@ export const DataGridRoot = <
       anchor,
       control,
       trapActive,
+      errors,
       setIsSelecting,
       onEditingChangeHandler,
       setSingleRange,

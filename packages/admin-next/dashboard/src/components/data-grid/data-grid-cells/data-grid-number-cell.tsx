@@ -84,7 +84,8 @@ const Inner = ({
         inputMode="decimal"
         className={clx(
           "txt-compact-small size-full bg-transparent px-4 py-2.5 outline-none",
-          "placeholder:text-ui-fg-muted"
+          "placeholder:text-ui-fg-muted",
+          "group-data-[has-error=true]/cell:pl-0"
         )}
         tabIndex={-1}
         {...props}
