@@ -67,7 +67,10 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
       if (addItemAction) {
         await removeItem(addItemAction.id)
       } else {
-        await updateOriginalItem({ quantity: 0, itemId: item.id })
+        await updateOriginalItem({
+          quantity: item.quantity - item.detail.fulfilled_quantity,
+          itemId: item.id,
+        })
       }
     } catch (e) {
       toast.error(e.message)
@@ -118,6 +121,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             <Input
               className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
               type="number"
+              disabled={item.detail.fulfilled_quantity === item.quantity}
               min={item.detail.fulfilled_quantity}
               defaultValue={item.quantity}
               onBlur={(e) => {
@@ -146,6 +150,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
                     label: t("actions.remove"),
                     onClick: onRemove,
                     icon: <XCircle />,
+                    disabled: item.detail.fulfilled_quantity === item.quantity,
                   },
                 ].filter(Boolean),
               },

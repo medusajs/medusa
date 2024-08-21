@@ -9,10 +9,7 @@ import {
 } from "../../../../../components/modals"
 import { AddOrderEditItemsTable } from "../add-order-edit-items-table"
 import { OrderEditItem } from "./order-edit-item"
-import {
-  useAddOrderEditItems,
-  useRemoveOrderEditItem,
-} from "../../../../../hooks/api/order-edits"
+import { useAddOrderEditItems } from "../../../../../hooks/api/order-edits"
 
 type ExchangeInboundSectionProps = {
   order: AdminOrder

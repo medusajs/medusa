@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminOrder, AdminOrderPreview } from "@medusajs/types"
-import { Button, Heading, Input, Switch, Textarea, toast } from "@medusajs/ui"
-import { useEffect } from "react"
+import { Button, Heading, Input, Switch, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
@@ -13,18 +12,13 @@ import {
 import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
+import { useCancelOrderEdit } from "../../../../../hooks/api/order-edits"
 import { OrderEditItemsSection } from "./order-edit-items-section"
-import {
-  useCancelOrderEdit,
-  useConfirmOrderEditRequest,
-} from "../../../../../hooks/api/order-edits"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
   preview: AdminOrderPreview
 }
-
-let IS_CANCELING = false
 
 export const OrderEditCreateForm = ({
   order,
@@ -36,13 +30,9 @@ export const OrderEditCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmOrderEditRequest, isPending: isConfirming } =
-    useConfirmOrderEditRequest(order.id)
 
   const { mutateAsync: cancelOrderEditRequest, isPending: isCanceling } =
     useCancelOrderEdit(order.id)
-
-  const isRequestLoading = isConfirming || isCanceling
 
   /**
    * FORM
@@ -59,11 +49,16 @@ export const OrderEditCreateForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      await confirmOrderEditRequest({
-        // no_notification: !data.send_notification, TODO: add to API
-      })
+      /**
+       * DO NOTHING ON SAVE for now.
+       * Order change is created when request is initiated
+       */
 
-      toast.success(t("orders.edits.createSuccessToast"))
+      //   await confirmOrderEditRequest({
+      //     // no_notification: !data.send_notification, TODO: add to API
+      //   })
+      //
+      //   toast.success(t("orders.edits.createSuccessToast"))
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
@@ -72,28 +67,22 @@ export const OrderEditCreateForm = ({
     }
   })
 
-  useEffect(() => {
-    /**
-     * Unmount hook
-     */
-    return () => {
-      if (IS_CANCELING) {
-        cancelOrderEditRequest(undefined, {
-          onSuccess: () => {
-            toast.success(t("orders.edits.cancelSuccessToast"))
-          },
-          onError: (error) => {
-            toast.error(error.message)
-          },
-        })
-
-        IS_CANCELING = false
-      }
-    }
-  }, [])
-
   return (
-    <RouteFocusModal.Form form={form}>
+    <RouteFocusModal.Form
+      form={form}
+      onClose={(isSubmitSuccessful) => {
+        if (!isSubmitSuccessful) {
+          cancelOrderEditRequest(undefined, {
+            onSuccess: () => {
+              toast.success(t("orders.edits.cancelSuccessToast"))
+            },
+            onError: (error) => {
+              toast.error(error.message)
+            },
+          })
+        }
+      }}
+    >
       <form onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
 
@@ -201,12 +190,7 @@ export const OrderEditCreateForm = ({
           <div className="flex w-full items-center justify-end gap-x-4">
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
-                <Button
-                  type="button"
-                  onClick={() => (IS_CANCELING = true)}
-                  variant="secondary"
-                  size="small"
-                >
+                <Button type="button" variant="secondary" size="small">
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
@@ -215,7 +199,7 @@ export const OrderEditCreateForm = ({
                 type="submit"
                 variant="primary"
                 size="small"
-                isLoading={isRequestLoading}
+                isLoading={isCanceling}
               >
                 {t("actions.save")}
               </Button>
