@@ -1,4 +1,4 @@
-import { XCircle } from "@medusajs/icons"
+import { DocumentSeries, XCircle } from "@medusajs/icons"
 import { AdminOrderLineItem } from "@medusajs/types"
 import { Badge, Input, Text, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -8,6 +8,7 @@ import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { useMemo } from "react"
 import {
+  useAddOrderEditItems,
   useRemoveOrderEditItem,
   useUpdateOrderEditAddedItem,
   useUpdateOrderEditOriginalItem,
@@ -22,6 +23,7 @@ type OrderEditItemProps = {
 function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
   const { t } = useTranslation()
 
+  const { mutateAsync: addItems } = useAddOrderEditItems(orderId)
   const { mutateAsync: updateAddedItem } = useUpdateOrderEditAddedItem(orderId)
   const { mutateAsync: updateOriginalItem } =
     useUpdateOrderEditOriginalItem(orderId)
@@ -76,6 +78,21 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
           itemId: item.id,
         })
       }
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
+
+  const onDuplicate = async () => {
+    try {
+      await addItems({
+        items: [
+          {
+            variant_id: item.variant_id,
+            quantity: item.quantity,
+          },
+        ],
+      })
     } catch (e) {
       toast.error(e.message)
     }
@@ -151,6 +168,15 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
 
           <ActionMenu
             groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.duplicate"),
+                    onClick: onDuplicate,
+                    icon: <DocumentSeries />,
+                  },
+                ],
+              },
               {
                 actions: [
                   {
