@@ -1039,7 +1039,8 @@
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
-          "canceled": "Payment canceled"
+          "canceled": "Payment canceled",
+          "refunded": "Payment refunded"
         },
         "fulfillment": {
           "created": "Items fulfilled",
@@ -1057,6 +1058,16 @@
         "note": {
           "comment": "Comment",
           "byLine": "by {{author}}"
+        },
+        "claim": {
+          "created": "Claim #{{claimId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
+        },
+        "exchange": {
+          "created": "Exchange #{{exchangeId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
         }
       }
     }
