@@ -205,7 +205,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "path": "/commerce-modules/api-key",
+            "path": "/commerce-modules/auth",
             "title": "Overview",
             "children": []
           },
