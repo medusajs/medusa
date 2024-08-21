@@ -142,7 +142,7 @@ const Payment = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useCapturePayment(payment.id)
+  const { mutateAsync } = useCapturePayment(order.id, payment.id)
 
   const handleCapture = async () => {
     const res = await prompt({
