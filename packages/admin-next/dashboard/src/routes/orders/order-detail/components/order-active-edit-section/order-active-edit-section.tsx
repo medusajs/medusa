@@ -1,7 +1,11 @@
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useOrderPreview } from "../../../../../hooks/api"
 import { ExclamationCircleSolid } from "@medusajs/icons"
+import {
+  useCancelOrderEdit,
+  useConfirmOrderEdit,
+} from "../../../../../hooks/api/order-edits"
 
 type OrderActiveEditSectionProps = {
   orderId: string
@@ -14,7 +18,28 @@ export const OrderActiveEditSection = ({
 
   const { order: orderPreview } = useOrderPreview(orderId)
 
-  console.log(orderPreview)
+  const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(orderId)
+  const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(orderId)
+
+  const onConfirmOrderEdit = async () => {
+    try {
+      await confirmOrderEdit()
+
+      toast.success(t("orders.edits.toast.confirmedSuccessfully"))
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
+
+  const onCancelOrderEdit = async () => {
+    try {
+      await cancelOrderEdit()
+
+      toast.success(t("orders.edits.toast.canceledSuccessfully"))
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
 
   if (!orderPreview || orderPreview.order_change.change_type !== "edit") {
     return null
@@ -48,10 +73,18 @@ export const OrderActiveEditSection = ({
           </div>
 
           <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={() => {}}>
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={onConfirmOrderEdit}
+            >
               {t("actions.forceConfirm")}
             </Button>
-            <Button size="small" variant="secondary" onClick={() => {}}>
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={onCancelOrderEdit}
+            >
               {t("actions.cancel")}
             </Button>
           </div>

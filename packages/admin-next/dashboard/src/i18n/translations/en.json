@@ -860,6 +860,10 @@
       "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
       "panel": {
         "title": "Order edit requested"
+      },
+      "toast": {
+        "canceledSuccessfully": "Order edit cancelled",
+        "confirmedSuccessfully": "Order edit confirmed"
       }
     },
     "returns": {

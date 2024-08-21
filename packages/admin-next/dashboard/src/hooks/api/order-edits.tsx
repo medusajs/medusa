@@ -31,7 +31,7 @@ export const useCreateOrderEdit = (
   })
 }
 
-export const useConfirmOrderEditRequest = (
+export const useConfirmOrderEdit = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
@@ -60,8 +60,7 @@ export const useCancelOrderEdit = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: { no_notification?: boolean }) =>
-      sdk.admin.orderEdit.cancelRequest(orderId, payload),
+    mutationFn: () => sdk.admin.orderEdit.cancelRequest(orderId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
