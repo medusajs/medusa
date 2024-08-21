@@ -59,6 +59,7 @@ export const usePayment = (
 }
 
 export const useCapturePayment = (
+  orderId: string,
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
@@ -70,7 +71,11 @@ export const useCapturePayment = (
     mutationFn: (payload) => sdk.admin.payment.capture(paymentId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -80,6 +85,7 @@ export const useCapturePayment = (
 }
 
 export const useRefundPayment = (
+  orderId: string,
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
@@ -91,7 +97,11 @@ export const useRefundPayment = (
     mutationFn: (payload) => sdk.admin.payment.refund(paymentId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)

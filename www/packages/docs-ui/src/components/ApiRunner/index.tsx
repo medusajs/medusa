@@ -4,10 +4,13 @@ import React from "react"
 import { useEffect, useMemo, useState } from "react"
 import { useRequestRunner } from "../../hooks"
 import { CodeBlock } from "../CodeBlock"
-import { Card } from "../Card"
 import { Button } from "../.."
 import { ApiMethod, ApiTestingOptions } from "types"
 import { ApiRunnerParamInputs } from "./ParamInputs"
+import clsx from "clsx"
+import { ArrowDownRightMini } from "@medusajs/icons"
+import { ArrowRightDownIcon } from "../Icons/ArrowRightDown"
+import { ApiRunnerFooterBackground } from "./FooterBackground"
 
 type ApiRunnerProps = {
   apiMethod: ApiMethod
@@ -71,54 +74,82 @@ export const ApiRunner = React.forwardRef<HTMLDivElement, ApiRunnerProps>(
     }, [isRunning, ran])
 
     return (
-      <div ref={ref}>
+      <div className="mb-docs_1" ref={ref}>
         {manualTestTrigger && (
-          <Card className="font-base mb-docs_1" contentClassName="gap-docs_0.5">
-            {apiTestingOptions.pathData && (
-              <ApiRunnerParamInputs
-                data={apiTestingOptions.pathData}
-                title="Path Parameters"
-                baseObjPath="pathData"
-                setValue={
-                  setApiTestingOptions as React.Dispatch<
-                    React.SetStateAction<unknown>
-                  >
-                }
-              />
+          <div
+            className={clsx(
+              "bg-medusa-bg-component rounded-docs_DEFAULT",
+              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
+              "mb-docs_0.75"
             )}
-            {apiTestingOptions.bodyData && (
-              <ApiRunnerParamInputs
-                data={apiTestingOptions.bodyData}
-                title="Request Body Parameters"
-                baseObjPath="bodyData"
-                setValue={
-                  setApiTestingOptions as React.Dispatch<
-                    React.SetStateAction<unknown>
-                  >
-                }
-              />
-            )}
-            {apiTestingOptions.queryData && (
-              <ApiRunnerParamInputs
-                data={apiTestingOptions.queryData}
-                title="Request Query Parameters"
-                baseObjPath="queryData"
-                setValue={
-                  setApiTestingOptions as React.Dispatch<
-                    React.SetStateAction<unknown>
-                  >
-                }
-              />
-            )}
-            <Button
-              onClick={() => {
-                setIsRunning(true)
-                setRan(false)
-              }}
+          >
+            <div
+              className={clsx(
+                "flex items-center gap-docs_0.75",
+                "px-docs_0.75 pb-docs_0.75 pt-docs_0.5"
+              )}
             >
-              Send Request
-            </Button>
-          </Card>
+              <ArrowDownRightMini className="text-medusa-fg-muted" />
+              <div className="flex-1 flex items-center gap-docs_0.75">
+                {apiTestingOptions.pathData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.pathData}
+                    title="Path Parameters"
+                    baseObjPath="pathData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+                {apiTestingOptions.bodyData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.bodyData}
+                    title="Request Body Parameters"
+                    baseObjPath="bodyData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+                {apiTestingOptions.queryData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.queryData}
+                    title="Request Query Parameters"
+                    baseObjPath="queryData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+              </div>
+              <ArrowRightDownIcon className="text-medusa-fg-muted" />
+            </div>
+            <div
+              className={clsx(
+                "border-t border-medusa-border-base",
+                "py-docs_0.5 px-docs_0.75 relative",
+                "flex justify-end items-center gap-docs_0.5"
+              )}
+            >
+              <ApiRunnerFooterBackground />
+              <Button
+                onClick={() => {
+                  setIsRunning(true)
+                  setRan(false)
+                }}
+                className="relative"
+                variant="secondary"
+              >
+                Send Request
+              </Button>
+            </div>
+          </div>
         )}
         {(isRunning || ran) && (
           <CodeBlock
@@ -126,12 +157,11 @@ export const ApiRunner = React.forwardRef<HTMLDivElement, ApiRunnerProps>(
             lang="json"
             title="Testing Result"
             collapsed={true}
-            blockStyle="subtle"
             noReport={true}
-            badgeLabel={responseCode}
+            badgeLabel={responseCode || "Failed"}
             badgeColor={
               !responseCode
-                ? undefined
+                ? "red"
                 : responseCode.startsWith("2")
                 ? "green"
                 : "red"

@@ -112,6 +112,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   )
 
   const { mutateAsync: markAsPaid } = useMarkPaymentCollectionAsPaid(
+    order.id,
     unpaidPaymentCollection?.id!
   )
 

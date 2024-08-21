@@ -2,10 +2,10 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
+import { HttpTypes } from "@medusajs/types"
 import { client, sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
-import { HttpTypes } from "@medusajs/types"
 
 const FULFILLMENTS_QUERY_KEY = "fulfillments" as const
 export const fulfillmentsQueryKeys = queryKeysFactory(FULFILLMENTS_QUERY_KEY)
