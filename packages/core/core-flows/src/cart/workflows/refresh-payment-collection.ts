@@ -6,9 +6,9 @@ import {
   transform,
   when,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import { updatePaymentCollectionStep } from "../../../payment-collection"
-import { deletePaymentSessionsWorkflow } from "../../../payment-collection/workflows/delete-payment-sessions"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
+import { updatePaymentCollectionStep } from "../../payment-collection"
+import { deletePaymentSessionsWorkflow } from "../../payment-collection/workflows/delete-payment-sessions"
 
 export type RefreshPaymentCollectionForCartWorklowInput = {
   cart_id: string

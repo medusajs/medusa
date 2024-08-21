@@ -9,7 +9,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createLineItemsStep,
   getLineItemActionsStep,
