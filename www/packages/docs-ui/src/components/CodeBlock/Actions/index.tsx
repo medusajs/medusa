@@ -1,10 +1,9 @@
 "use client"
 
 import clsx from "clsx"
-import React, { useMemo } from "react"
-import { CodeBlockStyle, Link, Tooltip } from "@/components"
+import React from "react"
+import { Link, Tooltip } from "@/components"
 import { ExclamationCircle, PlaySolid } from "@medusajs/icons"
-import { useColorMode } from "@/providers"
 import { GITHUB_ISSUES_PREFIX } from "@/constants"
 import { CodeBlockCopyAction } from "./Copy"
 
@@ -16,7 +15,6 @@ export type CodeBlockActionsProps = {
   inInnerCode?: boolean
   isCollapsed: boolean
   canShowApiTesting?: boolean
-  blockStyle: CodeBlockStyle
   onApiTesting: React.Dispatch<React.SetStateAction<boolean>>
   noReport?: boolean
   noCopy?: boolean
@@ -30,23 +28,15 @@ export const CodeBlockActions = ({
   isCollapsed,
   isSingleLine = false,
   canShowApiTesting = false,
-  blockStyle,
   onApiTesting,
   noReport = false,
   noCopy = false,
 }: CodeBlockActionsProps) => {
-  const { colorMode } = useColorMode()
-  const iconColor = useMemo(
-    () =>
-      clsx(
-        blockStyle === "loud" && "text-medusa-contrast-fg-secondary",
-        blockStyle === "subtle" && [
-          colorMode === "light" && "text-medusa-fg-muted",
-          colorMode === "dark" && "text-medusa-fg-secondary",
-        ]
-      ),
-    [blockStyle, colorMode]
-  )
+  const iconClassName = [
+    "text-medusa-contrast-fg-secondary",
+    "group-hover:text-medusa-contrast-fg-primary",
+    "group-focus:text-medusa-contrast-fg-primary",
+  ]
 
   return (
     <div
@@ -89,14 +79,16 @@ export const CodeBlockActions = ({
             text="Test API"
             tooltipClassName="font-base"
             className={clsx(
-              "h-fit",
+              "h-fit rounded-docs_sm",
               !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]"
+              inHeader && "p-[4.5px]",
+              "group",
+              "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
             innerClassName={clsx(inHeader && "flex")}
           >
             <PlaySolid
-              className={clsx("cursor-pointer", iconColor)}
+              className={clsx("cursor-pointer", iconClassName)}
               onClick={() => onApiTesting(true)}
             />
           </Tooltip>
@@ -106,9 +98,11 @@ export const CodeBlockActions = ({
             text="Report Issue"
             tooltipClassName="font-base"
             className={clsx(
-              "h-fit",
+              "h-fit rounded-docs_sm",
               !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]"
+              inHeader && "p-[4.5px]",
+              "group",
+              "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
             innerClassName={clsx(inHeader && "flex")}
           >
@@ -124,17 +118,11 @@ export const CodeBlockActions = ({
               )}
               rel="noreferrer"
             >
-              <ExclamationCircle className={clsx(iconColor)} />
+              <ExclamationCircle className={clsx(iconClassName)} />
             </Link>
           </Tooltip>
         )}
-        {!noCopy && (
-          <CodeBlockCopyAction
-            source={source}
-            inHeader={inHeader}
-            iconColor={iconColor}
-          />
-        )}
+        {!noCopy && <CodeBlockCopyAction source={source} inHeader={inHeader} />}
       </div>
     </div>
   )
