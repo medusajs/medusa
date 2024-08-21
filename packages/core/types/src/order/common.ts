@@ -1584,6 +1584,11 @@ export interface OrderClaimDTO
    * The refund amount of the claim.
    */
   refund_amount?: BigNumberValue
+
+  /**
+   * The id of the user that creates the order claim
+   */
+  created_by?: string | null
 }
 
 /**
@@ -1630,6 +1635,11 @@ export interface OrderExchangeDTO
    * The associated return's ID.
    */
   return_id?: string
+
+  /**
+   * The id of the user that creates the order exchange
+   */
+  created_by?: string | null
 }
 
 /**

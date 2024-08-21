@@ -5,6 +5,7 @@ export const defaultAdminExchangeFields = [
   "return_id",
   "display_id",
   "order_version",
+  "created_by",
   "created_at",
   "updated_at",
   "canceled_at",

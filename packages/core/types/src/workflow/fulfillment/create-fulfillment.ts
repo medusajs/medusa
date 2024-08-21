@@ -132,6 +132,11 @@ export type CreateFulfillmentWorkflowInput = {
   shipped_at?: Date | null
 
   /**
+   * The id of the user that creates the fulfillment
+   */
+  created_by?: string | null
+
+  /**
    * The date the fulfillment was delivered.
    */
   delivered_at?: Date | null
