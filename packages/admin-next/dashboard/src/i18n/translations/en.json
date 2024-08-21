@@ -837,7 +837,8 @@
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
       "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
       "refundAmount": "Refund {{ amount }}",
-      "paymentLink": "Copy payment link for {{ amount }}"
+      "paymentLink": "Copy payment link for {{ amount }}",
+      "selectPaymentToRefund": "Select payment to refund"
     },
 
     "edits": {
