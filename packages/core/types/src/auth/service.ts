@@ -43,7 +43,11 @@ export interface IAuthModuleService extends IModuleService {
   authenticate(
     provider: string,
     providerData: AuthenticationInput,
-    { isRegistration }?: { isRegistration?: boolean }
+  ): Promise<AuthenticationResponse>
+
+  register(
+    provider: string,
+    providerData: AuthenticationInput,
   ): Promise<AuthenticationResponse>
 
   /**

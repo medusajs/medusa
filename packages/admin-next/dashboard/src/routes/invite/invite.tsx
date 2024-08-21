@@ -10,7 +10,7 @@ import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { useSignUpEmailPass } from "../../hooks/api/auth"
+import { useSignUpWithEmailPass } from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
 
@@ -205,14 +205,14 @@ const CreateView = ({
   })
 
   const { mutateAsync: signUpEmailPass, isPending: isCreatingAuthUser } =
-    useSignUpEmailPass()
+    useSignUpWithEmailPass()
 
   const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
     useAcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      const { token: authToken } = await signUpEmailPass({
+      const authToken = await signUpEmailPass({
         email: data.email,
         password: data.password,
       })

@@ -23,15 +23,7 @@ export class Auth {
       }
     )
 
-    // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
-    if (this.config?.auth?.type === "session") {
-      await this.client.fetch("/auth/session", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    } else {
-      this.client.setToken(token)
-    }
+    this.client.setToken(token)
 
     return token
   }

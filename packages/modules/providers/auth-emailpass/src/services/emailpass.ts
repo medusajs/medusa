@@ -35,13 +35,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     this.logger_ = logger
   }
 
-  async authenticate(
-    userData: AuthenticationInput,
-    authIdentityService: AuthIdentityProviderService,
-    config: { isRegistration: boolean }
-  ): Promise<AuthenticationResponse> {
-    const { email, password } = userData.body ?? {}
-
+  private validateEmailPass({ email, password }) {
     if (!password || !isString(password)) {
       return {
         success: false,
@@ -55,48 +49,49 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         error: "Email should be a string",
       }
     }
+
+    return
+  }
+
+  protected async createAuthIdentity({ email, password, authIdentityService }) {
+    const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
+    const passwordHash = await Scrypt.kdf(password, hashConfig)
+
+    const createdAuthIdentity = await authIdentityService.create({
+      entity_id: email,
+      provider_metadata: {
+        password: passwordHash.toString("base64"),
+      },
+    })
+
+    const copy = JSON.parse(JSON.stringify(createdAuthIdentity))
+    const providerIdentity = copy.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
+    delete providerIdentity.provider_metadata?.password
+
+    return copy
+  }
+
+  async authenticate(
+    userData: AuthenticationInput,
+    authIdentityService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    const { email, password } = userData.body ?? {}
+
+    this.validateEmailPass({ email, password })
+
     let authIdentity: AuthIdentityDTO | undefined
 
     try {
       authIdentity = await authIdentityService.retrieve({
         entity_id: email,
       })
-
-      if (config.isRegistration) {
+    } catch (error) {
+      if (error.type === MedusaError.Types.NOT_FOUND) {
         return {
           success: false,
           error: "Invalid email or password",
-        }
-      }
-
-    } catch (error) {
-      if (error.type === MedusaError.Types.NOT_FOUND) {
-        if (!config.isRegistration) {
-          return {
-            success: false,
-            error: "Invalid email or password",
-          }
-        }
-
-        const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
-        const passwordHash = await Scrypt.kdf(password, hashConfig)
-
-        const createdAuthIdentity = await authIdentityService.create({
-          entity_id: email,
-          provider_metadata: {
-            password: passwordHash.toString("base64"),
-          },
-        })
-
-        const copy = JSON.parse(JSON.stringify(createdAuthIdentity))
-        const providerIdentity = copy.provider_identities?.find(
-          (pi) => pi.provider === this.provider
-        )!
-        delete providerIdentity.provider_metadata?.password
-
-        return {
-          success: true,
-          authIdentity: copy,
         }
       }
 
@@ -129,6 +124,41 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return {
       success: false,
       error: "Invalid email or password",
+    }
+  }
+
+  async register(
+    userData: AuthenticationInput,
+    authIdentityService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    const { email, password } = userData.body ?? {}
+
+    this.validateEmailPass({ email, password })
+
+    try {
+      await authIdentityService.retrieve({
+        entity_id: email,
+      })
+
+      return {
+        success: false,
+        error: "Identity with email already exists",
+      }
+    } catch (error) {
+      if (error.type === MedusaError.Types.NOT_FOUND) {
+        const createdAuthIdentity = await this.createAuthIdentity({
+          email,
+          password,
+          authIdentityService,
+        })
+
+        return {
+          success: true,
+          authIdentity: createdAuthIdentity,
+        }
+      }
+
+      return { success: false, error: error.message }
     }
   }
 }

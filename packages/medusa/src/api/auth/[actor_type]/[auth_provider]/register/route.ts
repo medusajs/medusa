@@ -11,7 +11,7 @@ import {
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-token"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
@@ -41,16 +41,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, location } = await service.authenticate(
+  const { success, error, authIdentity } = await service.register(
     auth_provider,
-    authData,
-    { isRegistration: true }
+    authData
   )
-
-  if (location) {
-    res.redirect(location)
-    return
-  }
 
   if (success) {
     const { http } = config.projectConfig
@@ -73,8 +67,4 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     MedusaError.Types.UNAUTHORIZED,
     error || "Authentication failed"
   )
-}
-
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  await GET(req, res)
 }

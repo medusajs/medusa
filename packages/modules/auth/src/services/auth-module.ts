@@ -121,17 +121,30 @@ export default class AuthModuleService
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  async register(
+    provider: string,
+    authenticationData: AuthenticationInput
+  ): Promise<AuthenticationResponse> {
+    try {
+      return await this.authProviderService_.register(
+        provider,
+        authenticationData,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
   async authenticate(
     provider: string,
-    authenticationData: AuthenticationInput,
-    { isRegistration = false }: { isRegistration?: boolean } = {}
+    authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
       return await this.authProviderService_.authenticate(
         provider,
         authenticationData,
-        this.getAuthIdentityProviderService(provider),
-        { isRegistration }
+        this.getAuthIdentityProviderService(provider)
       )
     } catch (error) {
       return { success: false, error: error.message }

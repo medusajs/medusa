@@ -219,9 +219,17 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    */
   abstract authenticate(
     data: AuthenticationInput,
-    authIdentityProviderService: AuthIdentityProviderService,
-    config: { isRegistration: boolean }
+    authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse>
+
+  register(
+    data: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    throw new Error(
+      `Method 'register' not implemented for provider ${this.provider}`
+    )
+  }
 
   /**
    * This method validates the callback of an authentication request.

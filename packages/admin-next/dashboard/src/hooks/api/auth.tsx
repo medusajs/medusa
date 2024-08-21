@@ -3,7 +3,7 @@ import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
 import { EmailPassReq } from "../../types/api-payloads"
 
-export const useSignInEmailPass = (
+export const useSignInWithEmailPassword = (
   options?: UseMutationOptions<void, Error, EmailPassReq>
 ) => {
   return useMutation({
@@ -15,8 +15,8 @@ export const useSignInEmailPass = (
   })
 }
 
-export const useSignUpEmailPass = (
-  options?: UseMutationOptions<{ token: string }, Error, EmailPassReq>
+export const useSignUpWithEmailPass = (
+  options?: UseMutationOptions<string, Error, EmailPassReq>
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.auth.register("user", "emailpass", payload),

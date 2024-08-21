@@ -24,8 +24,11 @@ export interface AuthIdentityProviderService {
 export interface IAuthProvider {
   authenticate(
     data: AuthenticationInput,
-    authIdentityProviderService: AuthIdentityProviderService,
-    config: { isRegistration: boolean }
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse>
+  register(
+    data: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse>
   validateCallback(
     data: AuthenticationInput,

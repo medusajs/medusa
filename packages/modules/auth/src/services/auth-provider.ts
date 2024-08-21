@@ -36,11 +36,19 @@ export default class AuthProviderService {
   async authenticate(
     provider: string,
     auth: AuthenticationInput,
-    authIdentityProviderService: AuthIdentityProviderService,
-    config: { isRegistration: boolean }
+    authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse> {
     const providerHandler = this.retrieveProviderRegistration(provider)
-    return await providerHandler.authenticate(auth, authIdentityProviderService, config)
+    return await providerHandler.authenticate(auth, authIdentityProviderService)
+  }
+
+  async register(
+    provider: string,
+    auth: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    const providerHandler = this.retrieveProviderRegistration(provider)
+    return await providerHandler.register(auth, authIdentityProviderService)
   }
 
   async validateCallback(
