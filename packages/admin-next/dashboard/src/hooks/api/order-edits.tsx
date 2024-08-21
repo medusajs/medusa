@@ -84,6 +84,9 @@ export const useAddOrderEditItems = (
   })
 }
 
+/**
+ * Update (quantity) of an item that was originally on the order.
+ */
 export const useUpdateOrderEditOriginalItem = (
   id: string,
   options?: UseMutationOptions<
@@ -109,6 +112,9 @@ export const useUpdateOrderEditOriginalItem = (
   })
 }
 
+/**
+ * Update (quantity) of an item that was added to the order edit.
+ */
 export const useUpdateOrderEditAddedItem = (
   id: string,
   options?: UseMutationOptions<
@@ -134,9 +140,12 @@ export const useUpdateOrderEditAddedItem = (
   })
 }
 
+/**
+ * Remove item that was added to the edit.
+ * To remove an original item on the order, set quantity to 0.
+ */
 export const useRemoveOrderEditItem = (
   id: string,
-  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
     Error,
@@ -145,10 +154,10 @@ export const useRemoveOrderEditItem = (
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
-      sdk.admin.orderEdit.removeItem(id, actionId),
+      sdk.admin.orderEdit.removeAddedItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
+        queryKey: ordersQueryKeys.preview(id),
       })
       options?.onSuccess?.(data, variables, context)
     },

@@ -1,12 +1,8 @@
 import {
-  AdminExchange,
   AdminOrder,
   AdminOrderPreview,
-  AdminReturn,
-  InventoryLevelDTO,
 } from "@medusajs/types"
-import { Button, Heading, Text, toast } from "@medusajs/ui"
-import { useEffect, useMemo, useState } from "react"
+import { Button, Heading,, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
@@ -62,8 +58,10 @@ export const OrderEditItemsSection = ({
 
   return (
     <div>
-      <div className="mt-8 flex items-center justify-between">
-        <Heading level="h2">{t("orders.edits.items")}</Heading>
+      <div className="mb-2 mt-8 flex items-center justify-between">
+        <Heading level="h2">{t("fields.items")}</Heading>
+
+
 
         <StackedFocusModal id="inbound-items">
           <StackedFocusModal.Trigger asChild>

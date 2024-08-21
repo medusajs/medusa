@@ -836,7 +836,6 @@
       "refundAmount": "Refund {{ amount }}",
       "paymentLink": "Copy payment link for {{ amount }}"
     },
-
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -845,7 +844,9 @@
       "addItems": "Add items",
       "amountPaid": "Amount paid",
       "newTotal": "New total",
-      "differenceDue": "Difference due"
+      "differenceDue": "Difference due",
+      "create": "Edit Order",
+      "currentTotal": "Current total"
     },
     "returns": {
       "create": "Create Return",

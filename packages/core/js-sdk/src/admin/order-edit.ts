@@ -107,7 +107,7 @@ export class OrderEdit {
     )
   }
 
-  async removeItem(
+  async removeAddedItem(
     id: string,
     actionId: string,
     query?: HttpTypes.SelectParams,
