@@ -865,6 +865,9 @@
       "toast": {
         "canceledSuccessfully": "Order edit cancelled",
         "confirmedSuccessfully": "Order edit confirmed"
+      },
+      "validation": {
+        "quantityLowerThanFulfillment": "Cannot set quantity to be less then or equal to fulfilled quantity"
       }
     },
     "returns": {
