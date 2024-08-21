@@ -2,20 +2,20 @@ import { loadDatabaseConfig } from "../load-module-database-config"
 
 describe("loadDatabaseConfig", function () {
   afterEach(() => {
-    delete process.env.POSTGRES_URL
-    delete process.env.MEDUSA_POSTGRES_URL
-    delete process.env.PRODUCT_POSTGRES_URL
+    delete process.env.DATABASE_URL
+    delete process.env.MEDUSA_DATABASE_URL
+    delete process.env.PRODUCT_DATABASE_URL
   })
 
   it("should return the local configuration using the environment variable respecting their precedence", function () {
-    process.env.MEDUSA_POSTGRES_URL = "postgres://localhost:5432/medusa"
-    process.env.PRODUCT_POSTGRES_URL = "postgres://localhost:5432/product"
-    process.env.POSTGRES_URL = "postgres://localhost:5432/share_db"
+    process.env.MEDUSA_DATABASE_URL = "postgres://localhost:5432/medusa"
+    process.env.PRODUCT_DATABASE_URL = "postgres://localhost:5432/product"
+    process.env.DATABASE_URL = "postgres://localhost:5432/share_db"
 
     let config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
-      clientUrl: process.env.PRODUCT_POSTGRES_URL,
+      clientUrl: process.env.PRODUCT_DATABASE_URL,
       driverOptions: {
         connection: {
           ssl: false,
@@ -25,11 +25,11 @@ describe("loadDatabaseConfig", function () {
       schema: "",
     })
 
-    delete process.env.PRODUCT_POSTGRES_URL
+    delete process.env.PRODUCT_DATABASE_URL
     config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
-      clientUrl: process.env.MEDUSA_POSTGRES_URL,
+      clientUrl: process.env.MEDUSA_DATABASE_URL,
       driverOptions: {
         connection: {
           ssl: false,
@@ -39,11 +39,11 @@ describe("loadDatabaseConfig", function () {
       schema: "",
     })
 
-    delete process.env.MEDUSA_POSTGRES_URL
+    delete process.env.MEDUSA_DATABASE_URL
     config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
-      clientUrl: process.env.POSTGRES_URL,
+      clientUrl: process.env.DATABASE_URL,
       driverOptions: {
         connection: {
           ssl: false,
@@ -55,11 +55,11 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the remote configuration using the environment variable", function () {
-    process.env.POSTGRES_URL = "postgres://https://test.com:5432/medusa"
+    process.env.DATABASE_URL = "postgres://https://test.com:5432/medusa"
     let config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
-      clientUrl: process.env.POSTGRES_URL,
+      clientUrl: process.env.DATABASE_URL,
       driverOptions: {
         connection: {
           ssl: {
@@ -71,12 +71,12 @@ describe("loadDatabaseConfig", function () {
       schema: "",
     })
 
-    delete process.env.POSTGRES_URL
-    process.env.PRODUCT_POSTGRES_URL = "postgres://https://test.com:5432/medusa"
+    delete process.env.DATABASE_URL
+    process.env.PRODUCT_DATABASE_URL = "postgres://https://test.com:5432/medusa"
     config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
-      clientUrl: process.env.PRODUCT_POSTGRES_URL,
+      clientUrl: process.env.PRODUCT_DATABASE_URL,
       driverOptions: {
         connection: {
           ssl: {
@@ -90,7 +90,7 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the local configuration using the options", function () {
-    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
       database: {
         clientUrl: "postgres://localhost:5432/medusa-test",
@@ -112,7 +112,7 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the local configuration using the options", function () {
-    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
       database: {
         clientUrl: "postgres://127.0.0.1:5432/medusa-test",
@@ -134,7 +134,7 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the remote configuration using the options", function () {
-    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
       database: {
         clientUrl: "postgres://https://test.com:5432/medusa-test",
@@ -158,7 +158,7 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the local configuration using the client url ssl_mode=disable", function () {
-    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
       database: {
         clientUrl:
@@ -181,7 +181,7 @@ describe("loadDatabaseConfig", function () {
   })
 
   it("should return the remote configuration using the client url ssl_mode=false", function () {
-    process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
+    process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
       database: {
         clientUrl:
@@ -212,7 +212,7 @@ describe("loadDatabaseConfig", function () {
     }
 
     expect(error.message).toEqual(
-      "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_POSTGRES_URL, MEDUSA_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
+      "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_DATABASE_URL, MEDUSA_DATABASE_URL or DATABASE_URL environment variable or the options object in the initialize function."
     )
   })
 })

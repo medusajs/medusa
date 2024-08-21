@@ -69,7 +69,25 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminCompleteOrder"
+ *         allOf:
+ *           - type: object
+ *             description: SUMMARY
+ *             required:
+ *               - order_id
+ *             properties:
+ *               order_id:
+ *                 type: string
+ *                 title: order_id
+ *                 description: The order's order id.
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -83,6 +101,12 @@
  * tags:
  *   - Orders
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminOrderResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -14,6 +14,7 @@ import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
 import { CodeBlockActions, CodeBlockActionsProps } from "./Actions"
 import { CodeBlockCollapsibleButton } from "./Collapsible/Button"
 import { CodeBlockCollapsibleFade } from "./Collapsible/Fade"
+import { CodeBlockInline } from "./Inline"
 
 export type Highlight = {
   line: number
@@ -38,9 +39,10 @@ export type CodeBlockMetaFields = {
   noLineNumbers?: boolean
   collapsibleLines?: string
   expandButtonLabel?: string
+  isTerminal?: boolean
 } & CodeBlockHeaderMeta
 
-export type CodeBlockStyle = "loud" | "subtle"
+export type CodeBlockStyle = "loud" | "subtle" | "inline"
 
 export type CodeBlockProps = {
   source: string
@@ -68,10 +70,14 @@ export const CodeBlock = ({
   children,
   collapsibleLines,
   expandButtonLabel,
+  isTerminal,
   ...rest
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
     source = children
+  }
+  if (blockStyle === "inline") {
+    return <CodeBlockInline source={source} />
   }
 
   const { colorMode } = useColorMode()
@@ -80,9 +86,25 @@ export const CodeBlock = ({
   const codeRef = useRef<HTMLElement>(null)
   const apiRunnerRef = useRef<HTMLDivElement>(null)
   const [scrollable, setScrollable] = useState(false)
+  const isTerminalCode = useMemo(() => {
+    return isTerminal === undefined
+      ? lang === "bash" && !source.startsWith("curl")
+      : isTerminal
+  }, [isTerminal, lang])
+  const codeTitle = useMemo(() => {
+    if (title || hasTabs) {
+      return title
+    }
+
+    if (isTerminalCode) {
+      return "Terminal"
+    }
+
+    return "Code"
+  }, [title, isTerminalCode, hasTabs])
   const hasInnerCodeBlock = useMemo(
-    () => hasTabs || title.length > 0,
-    [hasTabs, title]
+    () => hasTabs || codeTitle.length > 0,
+    [hasTabs, codeTitle]
   )
   const canShowApiTesting = useMemo(
     () =>
@@ -198,6 +220,7 @@ export const CodeBlock = ({
           key={offsettedLineNumber}
           lineNumberColorClassName={lineNumbersColor}
           lineNumberBgClassName={innerBgColor}
+          isTerminal={isTerminalCode}
           {...highlightProps}
         />
       )
@@ -249,6 +272,24 @@ export const CodeBlock = ({
     ]
   )
 
+  const codeTheme = useMemo(() => {
+    const prismTheme =
+      blockStyle === "loud" || colorMode === "dark"
+        ? themes.vsDark
+        : themes.vsLight
+
+    return {
+      ...prismTheme,
+      plain: {
+        ...prismTheme,
+        color:
+          colorMode === "light"
+            ? "rgba(255, 255, 255, 0.88)"
+            : "rgba(250, 250, 250, 1)",
+      },
+    }
+  }, [blockStyle, colorMode])
+
   if (!source.length) {
     return <></>
   }
@@ -260,16 +301,15 @@ export const CodeBlock = ({
           hasInnerCodeBlock && "rounded-docs_lg",
           !hasInnerCodeBlock && "rounded-docs_DEFAULT",
           !hasTabs && boxShadow,
-          (blockStyle === "loud" || colorMode !== "light") &&
-            "code-block-highlight-dark",
+          blockStyle === "loud" && "code-block-highlight",
           blockStyle === "subtle" &&
             colorMode === "light" &&
             "code-block-highlight-light"
         )}
       >
-        {title && (
+        {codeTitle && (
           <CodeBlockHeader
-            title={title}
+            title={codeTitle}
             blockStyle={blockStyle}
             badgeLabel={rest.badgeLabel}
             badgeColor={rest.badgeColor}
@@ -292,11 +332,7 @@ export const CodeBlock = ({
           )}
         >
           <Highlight
-            theme={
-              blockStyle === "loud" || colorMode === "dark"
-                ? themes.vsDark
-                : themes.vsLight
-            }
+            theme={codeTheme}
             code={source.trim()}
             language={language}
             {...rest}
@@ -334,17 +370,20 @@ export const CodeBlock = ({
                     "rounded-docs_DEFAULT",
                     !hasInnerCodeBlock &&
                       tokens.length <= 1 &&
-                      "px-docs_0.5 py-[6px]",
-                    !title.length && (!noCopy || !noReport) && "xs:max-w-[83%]",
-                    noLineNumbers && "pl-docs_1",
+                      "px-docs_1 py-[6px]",
+                    !codeTitle.length &&
+                      (!noCopy || !noReport) &&
+                      "xs:max-w-[83%]",
+                    (noLineNumbers ||
+                      (tokens.length <= 1 && !isTerminalCode)) &&
+                      "pl-docs_1",
                     preClassName
                   )}
                 >
                   <code
                     className={clsx(
                       "text-code-body font-monospace table min-w-full print:whitespace-pre-wrap",
-                      tokens.length > 1 && "py-docs_0.75",
-                      tokens.length <= 1 && "!py-[6px] px-docs_0.5"
+                      "py-docs_0.75"
                     )}
                     ref={codeRef}
                   >
@@ -364,7 +403,7 @@ export const CodeBlock = ({
                       })}
                   </code>
                 </pre>
-                {!title && (
+                {!hasInnerCodeBlock && (
                   <CodeBlockActions
                     {...actionsProps}
                     inHeader={false}

@@ -11,13 +11,13 @@ This documentation provides a reference to the `deleteCustomersWorkflow`. It bel
 
 This workflow deletes one or more customers.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"deleteCustomersWorkflow","steps":[{"type":"step","name":"deleteCustomersStep","description":"This step deletes one or more customers.","link":"../core_flows.Customer.deleteCustomersStep/page.mdx","depth":1},{"type":"hook","name":"customersDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#customersDeleted","depth":2}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"DeleteCustomersWorkflowInput","type":"[DeleteCustomersWorkflowInput](../../../types/core_flows.DeleteCustomersWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteCustomersWorkflow"/>
+<TypeList types={[{"name":"DeleteCustomersWorkflowInput","type":"[DeleteCustomersWorkflowInput](../../../types/core_flows.DeleteCustomersWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteCustomersWorkflow"/>
 
 ## Hooks
 
@@ -39,4 +39,4 @@ deleteCustomersWorkflow.hooks.customersDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="customersDeleted"/>
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="customersDeleted"/>

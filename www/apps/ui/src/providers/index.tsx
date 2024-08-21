@@ -11,6 +11,7 @@ import {
 import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"
 import { siteConfig } from "../config/site"
+import { MainNavProvider } from "./main-nav"
 
 type ProvidersProps = {
   children: React.ReactNode
@@ -25,7 +26,9 @@ const Providers = ({ children }: ProvidersProps) => {
             <ModalProvider>
               <ScrollControllerProvider scrollableSelector="#main">
                 <SidebarProvider>
-                  <SearchProvider>{children}</SearchProvider>
+                  <MainNavProvider>
+                    <SearchProvider>{children}</SearchProvider>
+                  </MainNavProvider>
                 </SidebarProvider>
               </ScrollControllerProvider>
             </ModalProvider>

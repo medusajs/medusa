@@ -2,6 +2,7 @@ import {
   FulfillmentWorkflow,
   OrderChangeDTO,
   OrderDTO,
+  OrderPreviewDTO,
   ReturnDTO,
 } from "@medusajs/types"
 import {
@@ -27,6 +28,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
@@ -137,7 +139,9 @@ export const confirmReturnRequestWorkflowId = "confirm-return-request"
  */
 export const confirmReturnRequestWorkflow = createWorkflow(
   confirmReturnRequestWorkflowId,
-  function (input: ConfirmReturnRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmReturnRequestWorkflowInput
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
       fields: ["id", "status", "order_id", "location_id", "canceled_at"],
@@ -255,6 +259,12 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       ]),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
+    })
 
     return new WorkflowResponse(orderPreview)
   }

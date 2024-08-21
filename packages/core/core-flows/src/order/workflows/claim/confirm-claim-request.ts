@@ -4,6 +4,7 @@ import {
   OrderChangeDTO,
   OrderClaimDTO,
   OrderDTO,
+  OrderPreviewDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
@@ -31,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
@@ -183,7 +185,7 @@ export const confirmClaimRequestWorkflow = createWorkflow(
   confirmClaimRequestWorkflowId,
   function (
     input: ConfirmClaimRequestWorkflowInput
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -252,13 +254,17 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       }
     )
 
-    updateReturnsStep([
-      {
-        id: returnId,
-        status: ReturnStatus.REQUESTED,
-        requested_at: new Date(),
-      },
-    ])
+    when({ returnId }, ({ returnId }) => {
+      return !!returnId
+    }).then(() => {
+      updateReturnsStep([
+        {
+          id: returnId,
+          status: ReturnStatus.REQUESTED,
+          requested_at: new Date(),
+        },
+      ])
+    })
 
     const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
       return createClaimItems?.[0]?.claim_id
@@ -329,9 +335,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       reserveInventoryStep(formatedInventoryItems)
     })
 
-    when({ returnShippingMethod }, ({ returnShippingMethod }) => {
-      return !!returnShippingMethod
-    }).then(() => {
+    when(
+      { returnShippingMethod, returnId },
+      ({ returnShippingMethod, returnId }) => {
+        return !!returnShippingMethod && !!returnId
+      }
+    ).then(() => {
       const returnShippingOption = useRemoteQueryStep({
         entry_point: "shipping_options",
         fields: [
@@ -375,6 +384,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "claim-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

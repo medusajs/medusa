@@ -29,15 +29,13 @@ By following this example, you’ll have a commerce application with the followi
     href: "https://github.com/medusajs/examples/tree/main/digital-product",
     title: "Digital Products Example Repository",
     text: "Find the full code for this recipe example in this repository.",
-    startIcon: <Github />,
-    showLinkIcon: false
+    icon: Github,
   },
   {
     href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1721654620/OpenApi/Digital_Products_Postman_vjr3jg.yml",
     title: "OpenApi Specs for Postman",
     text: "Imported this OpenApi Specs file into tools like Postman.",
-    startIcon: <PlaySolid />,
-    showLinkIcon: false
+    icon: PlaySolid,
   },
 ]} />
 
@@ -686,7 +684,7 @@ export const createDigitalProductsSchema = z.object({
     file_id: z.string(),
     mime_type: z.string(),
   })),
-  product: AdminCreateProduct,
+  product: AdminCreateProduct(),
 })
 ```
 

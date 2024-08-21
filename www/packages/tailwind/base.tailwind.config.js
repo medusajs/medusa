@@ -68,6 +68,9 @@ module.exports = {
             error: "var(--docs-border-error)",
             danger: "var(--docs-border-danger)",
             transparent: "var(--docs-border-transparent)",
+            menu: {
+              top: "var(--docs-border-menu-top)",
+            },
           },
           button: {
             inverted: {
@@ -183,43 +186,36 @@ module.exports = {
             },
           },
         },
-        /* docs defaults */
-        docs: {
-          bg: {
-            DEFAULT: "var(--docs-bg)",
-            surface: "var(--docs-bg-surface)",
-          },
-        },
       },
       boxShadow: {
         "elevation-card-rest":
           "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 2px 4px 0px rgba(0, 0, 0, 0.04)",
         "elevation-card-rest-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
         "elevation-card-hover":
           "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 2px 8px 0px rgba(0, 0, 0, 0.1)",
         "elevation-card-hover-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 1px 4px 0px rgba(0, 0, 0, 0.48), 0px 2px 8px 0px rgba(0, 0, 0, 0.48)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 1px 4px 0px rgba(0, 0, 0, 0.48), 0px 2px 8px 0px rgba(0, 0, 0, 0.48)",
         "elevation-tooltip":
           "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 2px 4px 0px rgba(0, 0, 0, 0.08), 0px 4px 8px 0px rgba(0, 0, 0, 0.08)",
         "elevation-tooltip-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 2px 4px 0px rgba(0, 0, 0, 0.32), 0px 4px 8px 0px rgba(0, 0, 0, 0.32)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 2px 4px 0px rgba(0, 0, 0, 0.32), 0px 4px 8px 0px rgba(0, 0, 0, 0.32)",
         "elevation-flyout":
           "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 4px 8px 0px rgba(0, 0, 0, 0.08), 0px 8px 16px 0px rgba(0, 0, 0, 0.08)",
         "elevation-flyout-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 8px 16px 0px rgba(0, 0, 0, 0.32)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 8px 16px 0px rgba(0, 0, 0, 0.32)",
         "elevation-modal":
           "0px 0px 0px 1px rgba(255, 255, 255, 1) inset, 0px 0px 0px 1.5px rgba(228, 228, 231, 0.6) inset, 0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 8px 16px 0px rgba(0, 0, 0, 0.08), 0px 16px 32px 0px rgba(0, 0, 0, 0.08)",
         "elevation-modal-dark":
-          "0px 0px 0px 1px rgba(24, 24, 27, 1) inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.06) inset, 0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 8px 16px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32)",
+          "0px 0px 0px 1px rgba(24, 24, 27, 1) inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.06) inset, 0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 8px 16px 0px rgba(0, 0, 0, 0.32)",
         "button-neutral":
           "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08)",
         "button-neutral-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.08), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
         "button-neutral-focused":
           "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 0px 0px 2px rgba(255, 255, 255, 1), 0px 0px 0px 4px rgba(59, 130, 246, 0.6)",
         "button-neutral-focused-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.08), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
         "button-danger":
           "0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(190, 18, 60, 0.4), 0px 0px 0px 1px rgba(190, 18, 60, 1)",
         "button-danger-dark":
@@ -238,15 +234,15 @@ module.exports = {
           "0px -1px 0px 0px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(82, 82, 91, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
 
         "elevation-code-block":
-          "0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.20) inset",
+          "0px 0px 0px 1px rgba(24, 24, 27, 1) inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.2) inset",
         "elevation-code-block-dark":
-          "0px 0px 0px 1px #27272A inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.10) inset",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
         active: "0px 0px 0px 3px #E1F0FF",
         "active-dark": "0px 0px 0px 3px #2C2250",
         "border-base":
           "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08)",
         "border-base-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px #18181B, 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
       },
       borderRadius: {
         xxs: "2px",
@@ -269,162 +265,195 @@ module.exports = {
         "code-fade-bottom-to-top-dark": `linear-gradient(180deg, rgba(47, 47, 50, 0.00) 0%, #2F2F32 100%)`,
         "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
         "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
+        "border-dotted":
+          "linear-gradient(90deg,var(--docs-border-strong) 1px,transparent 1px)",
       },
       screens: {
-        xs: "576px",
-        lg: "1025px",
-        xl: "1419px",
-        xxl: "1440px",
+        xs: "568px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        xxl: "1536px",
+        xxxl: "3840px",
       },
       transitionTimingFunction: {
         ease: "ease",
       },
       width: {
-        sidebar: "321px",
-        "sidebar-hidden": "0px",
-        "main-content": "1140px",
-        "main-content-hidden-sidebar": "1440px",
-        "ref-sidebar": "280px",
-        "ref-main": "calc(100% - 280px)",
-        "ref-content": "calc(100% - 484px)",
-      },
-      height: {
-        navbar: "57px",
+        toc: "221px",
       },
       maxWidth: {
-        "main-content": "1140px",
-        "main-content-hidden-sidebar": "1440px",
-        xl: "1419px",
-        xxl: "1440px",
+        // sidebar
+        "sidebar-xs": "300px",
+        "sidebar-sm": "300px",
+        "sidebar-md": "300px",
+        "sidebar-lg": "221px",
+        "sidebar-xl": "221px",
+        "sidebar-xxl": "221px",
+        "sidebar-xxxl": "221px",
+        // main content
+        "main-content-xs": "100%",
+        "main-content-sm": "100%",
+        "main-content-md": "100%",
+        "main-content-lg": "751px",
+        "main-content-xl": "1007px",
+        "main-content-xxl": "1263px",
+        "main-content-xxxl": "3567px",
+        // inner content
+        "inner-content-xs": "272px",
+        "inner-content-sm": "592px",
+        "inner-content-md": "640px",
+        "inner-content-lg": "640px",
+        "inner-content-xl": "640px",
+        "inner-content-xxl": "640px",
+        "inner-content-xxxl": "640px",
+        // wide layout
+        "xl-wide-content": "1112px",
+        "lg-wide-content": "800px",
       },
       minWidth: {
         xl: "1419px",
       },
       fontSize: {
         h1: [
-          "32px",
+          "2rem",
           {
-            lineHeight: "44px",
+            lineHeight: "2.75rem",
             fontWeight: "500",
           },
         ],
         h2: [
-          "24px",
+          "1.5rem",
           {
-            lineHeight: "32px",
+            lineHeight: "2rem",
             fontWeight: "500",
           },
         ],
         h3: [
-          "18px",
+          "1.125rem",
           {
-            lineHeight: "28px",
+            lineHeight: "1.75rem",
             fontWeight: "500",
           },
         ],
         h4: [
-          "16px",
+          "1rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "500",
           },
         ],
         "compact-large-plus": [
-          "16px",
+          "1rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "500",
           },
         ],
         "compact-large": [
-          "16px",
+          "1rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "400",
           },
         ],
         "compact-medium-plus": [
-          "14px",
+          "0.875rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "500",
           },
         ],
         "compact-medium": [
-          "14px",
+          "0.875rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "400",
           },
         ],
         "compact-small-plus": [
-          "13px",
+          "0.8125rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "500",
           },
         ],
         "compact-small": [
-          "13px",
+          "0.8125rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "400",
           },
         ],
         "compact-x-small-plus": [
-          "12px",
+          "0.75rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "500",
           },
         ],
         "compact-x-small": [
-          "13px",
+          "0.75rem",
           {
-            lineHeight: "20px",
+            lineHeight: "1.25rem",
             fontWeight: "400",
           },
         ],
         "x-large-plus": [
-          "18px",
+          "1.125rem",
           {
-            lineHeight: "32px",
+            lineHeight: "1.6875rem",
             fontWeight: "500",
           },
         ],
         "x-large": [
-          "18px",
+          "1.125rem",
           {
-            lineHeight: "32px",
+            lineHeight: "1.6875rem",
             fontWeight: "400",
           },
         ],
         "large-plus": [
-          "16px",
+          "1rem",
           {
-            lineHeight: "28px",
+            lineHeight: "1.5rem",
             fontWeight: "500",
           },
         ],
         large: [
-          "16px",
+          "1rem",
           {
-            lineHeight: "28px",
+            lineHeight: "1.5rem",
             fontWeight: "400",
           },
         ],
         "medium-plus": [
-          "14px",
+          "0.875rem",
           {
-            lineHeight: "24px",
+            lineHeight: "1.3125rem",
             fontWeight: "500",
           },
         ],
         medium: [
-          "14px",
+          "0.875rem",
           {
-            lineHeight: "24px",
+            lineHeight: "1.3125rem",
             fontWeight: "400",
+          },
+        ],
+        small: [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "small-plus": [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
           },
         ],
         "code-label": [
@@ -437,7 +466,7 @@ module.exports = {
         "code-body": [
           "12px",
           {
-            lineHeight: "22px",
+            lineHeight: "18px",
             fontWeight: "400",
           },
         ],
@@ -596,6 +625,24 @@ module.exports = {
             backgroundColor: "transparent",
           },
         },
+        slideInDown: {
+          from: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutUp: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            transform: "translate3d(0, -100%, 0)",
+            visibility: "hidden",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -608,13 +655,18 @@ module.exports = {
         fadeOutRight: "fadeOutRight 500ms",
         tada: "tada 1s",
         slideInRight: "slideInRight 500ms",
-        slideOutRight: "slideOutRight 500ms",
+        slideOutRight: "slideOutRight 150ms",
+        slideOutUp: "slideOutUp 500ms",
         slideInLeft: "slideInLeft 500ms",
         slideOutLeft: "slideOutLeft 500ms",
+        slideInDown: "slideInDown 150ms",
         pulsingDots: "pulsingDots 1s alternate infinite",
         minimize: "minimize 500ms",
         maximize: "maximize 500ms",
         flash: "flash 1500ms 1",
+      },
+      scrollMargin: {
+        56: "56px",
       },
     },
     fontFamily: {
@@ -731,9 +783,10 @@ module.exports = {
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
           },
-          ".code-block-highlight-dark": {
+          ".code-block-highlight": {
             "*::selection": {
-              "background-color": "var(--docs-contrast-bg-highlight)",
+              "background-color": "var(--docs-contrast-fg-secondary)",
+              color: "var(--docs-contrast-bg-base)",
             },
           },
           ".code-block-highlight-light": {

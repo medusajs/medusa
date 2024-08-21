@@ -1,19 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import { Button, CurrencyInput, Textarea, toast } from "@medusajs/ui"
+import {
+  Button,
+  CurrencyInput,
+  Label,
+  Select,
+  Textarea,
+  toast,
+} from "@medusajs/ui"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import * as zod from "zod"
-import { upperCaseFirst } from "../../../../../../../../core/utils/src/common/upper-case-first"
 import { Form } from "../../../../../components/common/form"
-import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useRefundPayment } from "../../../../../hooks/api"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import { getPaymentsFromOrder } from "../../../order-detail/components/order-payment-section"
 
 type CreateRefundFormProps = {
-  payment: HttpTypes.AdminPayment
+  order: HttpTypes.AdminOrder
   refundReasons: HttpTypes.AdminRefundReason[]
 }
 
@@ -24,12 +33,17 @@ const CreateRefundSchema = zod.object({
 })
 
 export const CreateRefundForm = ({
-  payment,
+  order,
   refundReasons,
 }: CreateRefundFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const paymentAmount = payment.amount as unknown as number
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const paymentId = searchParams.get("paymentId")
+  const payments = getPaymentsFromOrder(order)
+  const payment = payments.find((p) => p.id === paymentId)!
+  const paymentAmount = (payment?.amount || 0) as number
 
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
@@ -39,7 +53,21 @@ export const CreateRefundForm = ({
     resolver: zodResolver(CreateRefundSchema),
   })
 
-  const { mutateAsync, isPending } = useRefundPayment(payment.id)
+  useEffect(() => {
+    const pendingDifference = order.summary.pending_difference as number
+    const paymentAmount = (payment?.amount || 0) as number
+    const pendingAmount =
+      pendingDifference < 0
+        ? Math.min(pendingDifference, paymentAmount)
+        : paymentAmount
+
+    const normalizedAmount =
+      pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
+
+    form.setValue("amount", normalizedAmount as number)
+  }, [payment])
+
+  const { mutateAsync, isPending } = useRefundPayment(order.id, payment?.id!)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -52,7 +80,7 @@ export const CreateRefundForm = ({
         onSuccess: () => {
           toast.success(
             t("orders.payment.refundPaymentSuccess", {
-              amount: formatCurrency(data.amount, payment.currency_code),
+              amount: formatCurrency(data.amount, payment?.currency_code!),
             })
           )
 
@@ -70,6 +98,41 @@ export const CreateRefundForm = ({
       <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
         <RouteDrawer.Body>
           <div className="flex flex-col gap-y-4">
+            <Select
+              value={payment?.id}
+              onValueChange={(value) => {
+                navigate(`/orders/${order.id}/refund?paymentId=${value}`, {
+                  replace: true,
+                })
+              }}
+            >
+              <Label className="font-sans txt-compact-small font-medium mb-[-6px]">
+                {t("orders.payment.selectPaymentToRefund")}
+              </Label>
+
+              <Select.Trigger>
+                <Select.Value
+                  placeholder={t("orders.payment.selectPaymentToRefund")}
+                />
+              </Select.Trigger>
+
+              <Select.Content>
+                {payments.map((payment) => (
+                  <Select.Item value={payment!.id} key={payment.id}>
+                    <span>
+                      {getLocaleAmount(
+                        payment.amount as number,
+                        payment.currency_code
+                      )}
+                      {" - "}
+                    </span>
+                    <span>{payment.provider_id}</span>
+                    <span> - ({payment.id.replace("pay_", "")})</span>
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+
             <Form.Field
               control={form.control}
               name="amount"
@@ -109,8 +172,8 @@ export const CreateRefundForm = ({
                             }
                           }
                         }}
-                        code={payment.currency_code}
-                        symbol={getCurrencySymbol(payment.currency_code)}
+                        code={order.currency_code}
+                        symbol={getCurrencySymbol(order.currency_code)}
                         value={field.value}
                       />
                     </Form.Control>

@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: StoreCurrencyResponse
+required:
+  - currency
+properties:
+  currency:
+    $ref: ./StoreCurrency.yaml

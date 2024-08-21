@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -5,12 +6,11 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { HttpTypes } from "@medusajs/types"
 
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import { ordersQueryKeys } from "./orders"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { ordersQueryKeys } from "./orders"
 
 const RETURNS_QUERY_KEY = "returns" as const
 export const returnsQueryKeys = queryKeysFactory(RETURNS_QUERY_KEY)
@@ -72,8 +72,9 @@ export const useInitiateReturn = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       queryClient.invalidateQueries({
@@ -100,9 +101,6 @@ export const useConfirmReturnRequest = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -131,9 +129,6 @@ export const useCancelReturnRequest = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -167,8 +162,13 @@ export const useAddReturnItem = (
       sdk.admin.return.addReturnItem(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -193,8 +193,13 @@ export const useUpdateReturnItem = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -211,8 +216,13 @@ export const useRemoveReturnItem = (
       sdk.admin.return.removeReturnItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -234,8 +244,13 @@ export const useUpdateReturn = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -256,8 +271,13 @@ export const useAddReturnShipping = (
       sdk.admin.return.addReturnShipping(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -281,8 +301,13 @@ export const useUpdateReturnShipping = (
       sdk.admin.return.updateReturnShipping(id, actionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -299,8 +324,13 @@ export const useDeleteReturnShipping = (
       sdk.admin.return.deleteReturnShipping(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -327,13 +357,11 @@ export const useInitiateReceiveReturn = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -354,8 +382,13 @@ export const useAddReceiveItems = (
       sdk.admin.return.receiveItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -380,8 +413,13 @@ export const useUpdateReceiveItem = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -399,8 +437,13 @@ export const useRemoveReceiveItems = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -421,8 +464,13 @@ export const useAddDismissItems = (
       sdk.admin.return.dismissItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -447,8 +495,13 @@ export const useUpdateDismissItem = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -466,8 +519,13 @@ export const useRemoveDismissItem = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -489,9 +547,6 @@ export const useConfirmReturnReceive = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -520,9 +575,6 @@ export const useCancelReceiveReturn = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({

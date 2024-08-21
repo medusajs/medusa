@@ -4,7 +4,7 @@ export default function checkElementInViewport(
   height?: number
 ) {
   const rect = element.getBoundingClientRect()
-  const windowHeight =
+  const windowHeight: number | undefined =
     height || window.innerHeight || document.documentElement.clientHeight
 
   return !(

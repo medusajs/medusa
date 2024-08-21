@@ -79,6 +79,12 @@
  * tags:
  *   - Sales Channels
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminSalesChannelResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -91,6 +97,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createSalesChannelsWorkflow
  * 
 */
 

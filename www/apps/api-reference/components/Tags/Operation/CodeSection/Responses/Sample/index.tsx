@@ -51,12 +51,14 @@ const TagsOperationCodeSectionResponsesSample = ({
             </select>
           )}
           {selectedExample && (
-            <CodeBlock
-              source={selectedExample.content}
-              lang={getLanguageFromMedia(Object.keys(response.content)[0])}
-              collapsed={true}
-              className="mt-2 mb-0"
-            />
+            <div className="mt-2">
+              <CodeBlock
+                source={selectedExample.content}
+                lang={getLanguageFromMedia(Object.keys(response.content)[0])}
+                collapsed={true}
+                className="mb-0"
+              />
+            </div>
           )}
           {!selectedExample && <>Empty Response</>}
         </>

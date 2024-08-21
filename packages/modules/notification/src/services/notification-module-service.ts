@@ -17,8 +17,8 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { Notification } from "@models"
-import NotificationProviderService from "./notification-provider"
 import { eventBuilders } from "@utils"
+import NotificationProviderService from "./notification-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -135,6 +135,13 @@ export default class NotificationModuleService
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Could not find a notification provider for channel: ${entry.channel}`
+          )
+        }
+
+        if (!provider.is_enabled) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
           )
         }
 

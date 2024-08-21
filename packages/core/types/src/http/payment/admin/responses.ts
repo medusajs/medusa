@@ -1,5 +1,22 @@
-import { PaginatedResponse } from "../../common"
-import { AdminPayment, AdminPaymentProvider, AdminRefund, AdminRefundReason } from "./entities"
+import { DeleteResponse, PaginatedResponse } from "../../common"
+import {
+  AdminPayment,
+  AdminPaymentCollection,
+  AdminPaymentProvider,
+  AdminRefund,
+  AdminRefundReason,
+} from "./entities"
+
+export interface AdminPaymentCollectionResponse {
+  payment_collection: AdminPaymentCollection
+}
+
+export interface AdminDeletePaymentCollectionResponse
+  extends DeleteResponse<"payment-collection"> {}
+
+export interface AdminPaymentCollectionsResponse {
+  payment_collections: AdminPaymentCollection[]
+}
 
 export interface AdminPaymentResponse {
   payment: AdminPayment

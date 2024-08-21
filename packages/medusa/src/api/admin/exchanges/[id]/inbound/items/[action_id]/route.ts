@@ -2,6 +2,7 @@ import {
   removeItemReturnActionWorkflow,
   updateRequestItemReturnWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -10,9 +11,9 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../../types/routing"
+import { refetchEntity } from "../../../../../../utils/refetch-entity"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostExchangesRequestItemsReturnActionReqSchemaType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostExchangesRequestItemsReturnActionReqSchemaType>,
@@ -69,11 +70,15 @@ export const DELETE = async (
 
   const { id, action_id } = req.params
 
+  const exchange = await refetchEntity("order_exchange", id, req.scope, [
+    "return_id",
+  ])
+
   const { result: orderPreview } = await removeItemReturnActionWorkflow(
     req.scope
   ).run({
     input: {
-      return_id: id,
+      return_id: exchange.return_id,
       action_id,
     },
   })
@@ -81,7 +86,7 @@ export const DELETE = async (
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "return",
     variables: {
-      id,
+      id: exchange.return_id,
       filters: {
         ...req.filterableFields,
       },

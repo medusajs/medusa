@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminPromotionResponse
+required:
+  - promotion
+properties:
+  promotion:
+    $ref: ./AdminPromotion.yaml

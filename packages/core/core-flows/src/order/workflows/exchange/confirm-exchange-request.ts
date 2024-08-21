@@ -4,8 +4,14 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderPreviewDTO,
 } from "@medusajs/types"
-import { ChangeActionType, Modules, OrderChangeStatus } from "@medusajs/utils"
+import {
+  ChangeActionType,
+  Modules,
+  OrderChangeStatus,
+  ReturnStatus,
+} from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -18,7 +24,7 @@ import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
-import { previewOrderChangeStep } from "../../steps"
+import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createOrderExchangeItemsFromActionsStep } from "../../steps/exchange/create-exchange-items-from-actions"
 import { createReturnItemsFromActionsStep } from "../../steps/return/create-return-items-from-actions"
@@ -26,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
@@ -56,7 +63,6 @@ function prepareFulfillmentData({
   items,
   shippingOption,
   deliveryAddress,
-  isReturn,
 }: {
   order: OrderDTO
   items: any[]
@@ -73,17 +79,15 @@ function prepareFulfillmentData({
     }
   }
   deliveryAddress?: Record<string, any>
-  isReturn?: boolean
 }) {
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
     order.items!.map((i) => [i.id, i])
   )
   const fulfillmentItems = items.map((i) => {
-    const orderItem = orderItemsMap.get(i.item_id) ?? i.item
+    const orderItem = orderItemsMap.get(i.id) ?? i.item
     return {
       line_item_id: i.item_id,
-      quantity: !isReturn ? i.quantity : undefined,
-      return_quantity: isReturn ? i.quantity : undefined,
+      quantity: i.quantity,
       title: orderItem.variant_title ?? orderItem.title,
       sku: orderItem.variant_sku || "",
       barcode: orderItem.variant_barcode || "",
@@ -173,7 +177,9 @@ export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
  */
 export const confirmExchangeRequestWorkflow = createWorkflow(
   confirmExchangeRequestWorkflowId,
-  function (input: ConfirmExchangeRequestWorkflowInput): WorkflowResponse<OrderDTO> {
+  function (
+    input: ConfirmExchangeRequestWorkflowInput
+  ): WorkflowResponse<OrderPreviewDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],
@@ -188,11 +194,8 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
         "id",
         "version",
         "canceled_at",
-        "items.id",
-        "items.title",
-        "items.variant_title",
-        "items.variant_sku",
-        "items.variant_barcode",
+        "items.*",
+        "items.item.id",
         "shipping_address.*",
       ],
       variables: { id: orderExchange.order_id },
@@ -244,6 +247,18 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
         return createdReturnItems?.[0]?.return_id
       }
     )
+
+    when({ returnId }, ({ returnId }) => {
+      return !!returnId
+    }).then(() => {
+      updateReturnsStep([
+        {
+          id: returnId,
+          status: ReturnStatus.REQUESTED,
+          requested_at: new Date(),
+        },
+      ])
+    })
 
     const exchangeId = transform(
       { createExchangeItems },
@@ -317,9 +332,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       reserveInventoryStep(formatedInventoryItems)
     })
 
-    when({ returnShippingMethod }, ({ returnShippingMethod }) => {
-      return !!returnShippingMethod
-    }).then(() => {
+    when(
+      { returnShippingMethod, returnId },
+      ({ returnShippingMethod, returnId }) => {
+        return !!returnShippingMethod && !!returnId
+      }
+    ).then(() => {
       const returnShippingOption = useRemoteQueryStep({
         entry_point: "shipping_options",
         fields: [
@@ -340,7 +358,6 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
           order,
           items: order.items!,
           shippingOption: returnShippingOption,
-          isReturn: true,
         },
         prepareFulfillmentData
       )
@@ -363,6 +380,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "exchange-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

@@ -11,6 +11,7 @@ type FlowRunOptions<TData = unknown> = {
   context?: Context
   resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
+  logOnError?: boolean
   events?: Record<string, Function>
 }
 

@@ -1,4 +1,5 @@
-import { NavbarItem, navbarItemsV1, navbarItemsV2 } from ".."
+import { NavigationDropdownItem } from "types"
+import { navDropdownItemsV1, navDropdownItemsV2 } from ".."
 
 type Options = {
   basePath: string
@@ -6,24 +7,21 @@ type Options = {
   version?: "v1" | "v2"
 }
 
-export function getNavbarItems({
+export function getNavDropdownItems({
   basePath,
   activePath,
   version = "v1",
-}: Options): NavbarItem[] {
-  const navbarItems = version === "v2" ? navbarItemsV2 : navbarItemsV1
-  return navbarItems.map((item) => {
+}: Options): NavigationDropdownItem[] {
+  const items = version === "v2" ? navDropdownItemsV2 : navDropdownItemsV1
+  return items.map((item) => {
     if (item.type === "divider") {
       return item
     }
 
     return {
       ...item,
-      props: {
-        ...item.props,
-        isActive: activePath === item.props?.href,
-        href: `${basePath}${item.props?.href}`,
-      },
+      isActive: activePath === item.path,
+      path: `${basePath}${item.path}`,
     }
   })
 }

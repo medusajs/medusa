@@ -11,13 +11,13 @@ This documentation provides a reference to the `deletePromotionsWorkflow`. It be
 
 This workflow deletes one or more promotions.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"deletePromotionsWorkflow","steps":[{"type":"step","name":"deletePromotionsStep","description":"This step deletes one or more promotions.","link":"../core_flows.Promotion.deletePromotionsStep/page.mdx","depth":1},{"type":"hook","name":"promotionsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#promotionsDeleted","depth":2}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"DeletePromotionsWorkflowInput","type":"[DeletePromotionsWorkflowInput](../../../types/core_flows.DeletePromotionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deletePromotionsWorkflow"/>
+<TypeList types={[{"name":"DeletePromotionsWorkflowInput","type":"[DeletePromotionsWorkflowInput](../../../types/core_flows.DeletePromotionsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePromotionsWorkflow"/>
 
 ## Hooks
 
@@ -39,4 +39,4 @@ deletePromotionsWorkflow.hooks.promotionsDeleted(
 
 Handlers consuming this hook accept the following input.
 
-<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="promotionsDeleted"/>
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="promotionsDeleted"/>

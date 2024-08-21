@@ -11,6 +11,7 @@ import { useArea } from "../../../../providers/area"
 import { Feedback, Badge, Link, FeatureFlagNotice } from "docs-ui"
 import { usePathname } from "next/navigation"
 import formatReportLink from "../../../../utils/format-report-link"
+import { TagsOperationDescriptionSectionWorkflowBadgeProps } from "./WorkflowBadge"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -26,6 +27,12 @@ const TagsOperationDescriptionSectionResponses =
   dynamic<TagsOperationDescriptionSectionResponsesProps>(
     async () => import("./Responses")
   ) as React.FC<TagsOperationDescriptionSectionResponsesProps>
+
+const TagsOperationDescriptionSectionWorkflowBadge =
+  dynamic<TagsOperationDescriptionSectionWorkflowBadgeProps>(
+    async () => import("./WorkflowBadge")
+  ) as React.FC<TagsOperationDescriptionSectionWorkflowBadgeProps>
+
 type TagsOperationDescriptionSectionProps = {
   operation: Operation
 }
@@ -55,6 +62,11 @@ const TagsOperationDescriptionSection = ({
       <div className="my-1">
         <MDXContentClient content={operation.description} />
       </div>
+      {operation["x-workflow"] && (
+        <TagsOperationDescriptionSectionWorkflowBadge
+          workflow={operation["x-workflow"]}
+        />
+      )}
       <Feedback
         event="survey_api-ref"
         extraData={{

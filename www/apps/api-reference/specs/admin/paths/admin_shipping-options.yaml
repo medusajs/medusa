@@ -241,6 +241,20 @@ get:
           $lt: {}
           $lte: {}
         title: deleted_at
+    - name: stock_location_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: stock_location_id
+            description: The shipping option's stock location id.
+          - type: array
+            description: The shipping option's stock location id.
+            items:
+              type: string
+              title: stock_location_id
+              description: The stock location id's details.
   security:
     - api_token: []
     - cookie_auth: []

@@ -74,6 +74,33 @@
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - id
+ *             - object
+ *             - deleted
+ *           properties:
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The promotion's ID.
+ *             object:
+ *               type: string
+ *               title: object
+ *               description: The promotion's object.
+ *             deleted:
+ *               type: boolean
+ *               title: deleted
+ *               description: The promotion's deleted.
+ *             parent:
+ *               type: object
+ *               description: The promotion's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

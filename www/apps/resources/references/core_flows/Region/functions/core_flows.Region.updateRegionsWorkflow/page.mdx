@@ -11,14 +11,14 @@ This documentation provides a reference to the `updateRegionsWorkflow`. It belon
 
 This workflow updates regions matching the specified filters.
 
-## Diagram
+## Steps
 
 <WorkflowDiagram workflow={{"name":"updateRegionsWorkflow","steps":[{"type":"step","name":"updateRegionsStep","description":"This step updates regions matching the specified filters.","link":"../core_flows.Region.updateRegionsStep/page.mdx","depth":1},{"type":"when","condition":"{\n      return data.normalizedInput.is_tax_inclusive !== undefined\n    }","depth":"2","steps":[{"type":"workflow","name":"updatePricePreferencesWorkflow","description":"This workflow updates one or more price preferences.","link":"../../../Pricing/functions/core_flows.Pricing.updatePricePreferencesWorkflow/page.mdx","depth":2}]}]}} />
 
 ## Input
 
-<TypeList types={[{"name":"UpdateRegionsWorkflowInput","type":"`UpdateRegionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateRegionsWorkflow"/>
+<TypeList types={[{"name":"UpdateRegionsWorkflowInput","type":"`UpdateRegionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRegionsWorkflow"/>
 
 ## Output
 
-<TypeList types={[{"name":"UpdateRegionsWorkflowOutput","type":"`UpdateRegionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateRegionsWorkflow"/>
+<TypeList types={[{"name":"UpdateRegionsWorkflowOutput","type":"`UpdateRegionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRegionsWorkflow"/>

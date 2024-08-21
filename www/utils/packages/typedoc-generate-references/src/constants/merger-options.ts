@@ -50,6 +50,10 @@ const mergerOptions: Partial<TypeDocOptions> = {
       parameterStyle: "component",
       parameterComponent: "TypeList",
       mdxImports: [`import { TypeList } from "docs-ui"`],
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation",
+      },
     },
     internal: {
       maxLevel: 1,

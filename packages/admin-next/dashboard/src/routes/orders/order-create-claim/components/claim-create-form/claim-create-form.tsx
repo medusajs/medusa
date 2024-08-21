@@ -232,6 +232,12 @@ export const ClaimCreateForm = ({
       )
   )
 
+  const outboundShipping = preview.shipping_methods.find((s) => {
+    const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+
+    return action && !!!action?.return?.id
+  })
+
   const {
     fields: inboundItems,
     append,
@@ -456,7 +462,6 @@ export const ClaimCreateForm = ({
   }, [preview.shipping_methods])
 
   const returnTotal = preview.return_requested_total
-  const refundAmount = returnTotal - shippingTotal
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -672,20 +677,49 @@ export const ClaimCreateForm = ({
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
                 <span className="txt-small text-ui-fg-subtle">
-                  {t("orders.returns.returnTotal")}
+                  {t("orders.returns.inboundTotal")}
                 </span>
+
                 <span className="txt-small text-ui-fg-subtle">
                   {getStylizedAmount(
-                    returnTotal ? -1 * returnTotal : returnTotal,
+                    inboundPreviewItems.reduce((acc, item) => {
+                      const action = item.actions?.find(
+                        (act) => act.action === "RETURN_ITEM"
+                      )
+                      acc = acc + (action?.amount || 0)
+
+                      return acc
+                    }, 0) * -1,
                     order.currency_code
                   )}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="txt-small text-ui-fg-subtle">
+                  {t("orders.claims.outboundTotal")}
+                </span>
+
+                <span className="txt-small text-ui-fg-subtle">
+                  {getStylizedAmount(
+                    outboundPreviewItems.reduce((acc, item) => {
+                      const action = item.actions?.find(
+                        (act) => act.action === "ITEM_ADD"
+                      )
+                      acc = acc + (action?.amount || 0)
+
+                      return acc
+                    }, 0),
+                    order.currency_code
+                  )}
+                </span>
+              </div>
+
+              <div className="mb-2 flex items-center justify-between">
                 <span className="txt-small text-ui-fg-subtle">
                   {t("orders.returns.inboundShipping")}
                 </span>
+
                 <span className="txt-small text-ui-fg-subtle flex items-center">
                   {!isShippingPriceEdit && (
                     <IconButton
@@ -699,6 +733,7 @@ export const ClaimCreateForm = ({
                       <PencilSquare />
                     </IconButton>
                   )}
+
                   {isShippingPriceEdit ? (
                     <CurrencyInput
                       id="js-shipping-input"
@@ -750,13 +785,26 @@ export const ClaimCreateForm = ({
                 </span>
               </div>
 
+              <div className="flex items-center justify-between">
+                <span className="txt-small text-ui-fg-subtle">
+                  {t("orders.claims.outboundShipping")}
+                </span>
+
+                <span className="txt-small text-ui-fg-subtle flex items-center">
+                  {getStylizedAmount(
+                    outboundShipping?.amount ?? 0,
+                    order.currency_code
+                  )}
+                </span>
+              </div>
+
               <div className="mt-4 flex items-center justify-between border-t border-dotted pt-4">
                 <span className="txt-small font-medium">
                   {t("orders.claims.refundAmount")}
                 </span>
                 <span className="txt-small font-medium">
                   {getStylizedAmount(
-                    refundAmount ? -1 * refundAmount : refundAmount,
+                    preview.summary.pending_difference,
                     order.currency_code
                   )}
                 </span>

@@ -65,7 +65,17 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateCartData"
+ *         allOf:
+ *           - $ref: "#/components/schemas/UpdateCartData"
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -73,6 +83,18 @@
  * tags:
  *   - Carts
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - cart
+ *           properties:
+ *             cart:
+ *               $ref: "#/components/schemas/StoreCart"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

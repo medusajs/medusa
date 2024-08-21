@@ -80,13 +80,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           description: SUMMARY
- *           required:
- *             - customer
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/AdminCustomer"
+ *           $ref: "#/components/schemas/AdminCustomerResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
