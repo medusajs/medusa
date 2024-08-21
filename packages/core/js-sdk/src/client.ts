@@ -179,6 +179,7 @@ export class Client {
     return async (input: FetchInput, init?: FetchArgs) => {
       // We always want to fetch the up-to-date JWT token before firing off a request.
       const headers = new Headers(defaultHeaders)
+      const { storageMethod} = this.getTokenStorageInfo_()
       const customHeaders = {
         ...this.config.globalHeaders,
         ...this.getJwtHeader_(),
@@ -216,7 +217,7 @@ export class Client {
         normalizedInput,
         {
           ...normalizeRequest(init, headers, this.config),
-          credentials: "include"
+          ...(storageMethod === "cookie" ? { credentials: "include" } : {})
         }
       ).then((resp) => {
         this.logger.debug(`Received response with status ${resp.status}\n`)
