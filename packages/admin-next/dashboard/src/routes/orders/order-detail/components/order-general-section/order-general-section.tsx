@@ -25,7 +25,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync: cancelOrder } = useCancelOrder()
+  const { mutateAsync: cancelOrder } = useCancelOrder(order.id)
 
   const handleCancel = async () => {
     const res = await prompt({

@@ -74,9 +74,6 @@ export const useCreateClaim = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -102,9 +99,6 @@ export const useCancelClaim = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -134,9 +128,6 @@ export const useDeleteClaim = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -169,8 +160,13 @@ export const useAddClaimItems = (
       sdk.admin.claim.addItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -195,8 +191,13 @@ export const useUpdateClaimItems = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -213,8 +214,13 @@ export const useRemoveClaimItem = (
       sdk.admin.return.removeReturnItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -235,8 +241,13 @@ export const useAddClaimInboundItems = (
       sdk.admin.claim.addInboundItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -261,8 +272,13 @@ export const useUpdateClaimInboundItem = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -279,10 +295,11 @@ export const useRemoveClaimInboundItem = (
       sdk.admin.claim.removeInboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
+        queryKey: ordersQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -305,8 +322,13 @@ export const useAddClaimInboundShipping = (
       sdk.admin.claim.addInboundShipping(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -330,8 +352,13 @@ export const useUpdateClaimInboundShipping = (
       sdk.admin.claim.updateInboundShipping(id, actionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -348,8 +375,13 @@ export const useDeleteClaimInboundShipping = (
       sdk.admin.claim.deleteInboundShipping(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -370,8 +402,13 @@ export const useAddClaimOutboundItems = (
       sdk.admin.claim.addOutboundItems(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -396,8 +433,13 @@ export const useUpdateClaimOutboundItems = (
     },
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -414,8 +456,13 @@ export const useRemoveClaimOutboundItem = (
       sdk.admin.claim.removeOutboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -436,8 +483,13 @@ export const useAddClaimOutboundShipping = (
       sdk.admin.claim.addOutboundShipping(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -461,8 +513,13 @@ export const useUpdateClaimOutboundShipping = (
       sdk.admin.claim.updateOutboundShipping(id, actionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -479,8 +536,13 @@ export const useDeleteClaimOutboundShipping = (
       sdk.admin.claim.deleteOutboundShipping(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -507,9 +569,6 @@ export const useClaimConfirmRequest = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
@@ -535,9 +594,6 @@ export const useCancelClaimRequest = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({

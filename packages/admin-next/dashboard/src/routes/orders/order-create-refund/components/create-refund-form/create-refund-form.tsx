@@ -67,7 +67,7 @@ export const CreateRefundForm = ({
     form.setValue("amount", normalizedAmount as number)
   }, [payment])
 
-  const { mutateAsync, isPending } = useRefundPayment(payment?.id!)
+  const { mutateAsync, isPending } = useRefundPayment(order.id, payment?.id!)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
