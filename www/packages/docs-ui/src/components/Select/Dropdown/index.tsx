@@ -93,11 +93,7 @@ export const SelectDropdown = ({
       <li
         key={index}
         className={clsx(
-          "px-docs_0.75 py-docs_0.5 relative flex-1 min-w-max",
-          "hover:bg-medusa-bg-component-hover cursor-pointer",
-          "flex gap-docs_0.5 text-medusa-fg-base items-center",
-          !isSelected && "text-compact-small",
-          isSelected && "text-compact-small-plus",
+          "px-docs_0.25",
           index <= 0 && "rounded-t-docs_DEFAULT",
           index === options.length - 1 && "rounded-b-docs_DEFAULT"
         )}
@@ -109,21 +105,31 @@ export const SelectDropdown = ({
           }
         }}
       >
-        <span>
-          {isSelected && (
-            <>
-              {option.isAllOption && <EllipseMiniSolid />}
-              {!option.isAllOption && (
-                <>
-                  {multiple && <CheckMini />}
-                  {!multiple && <EllipseMiniSolid />}
-                </>
-              )}
-            </>
+        <div
+          className={clsx(
+            "px-docs_0.5 py-docs_0.25 flex-1 min-w-max rounded-docs_xs",
+            "hover:bg-medusa-bg-component-hover cursor-pointer",
+            "flex gap-docs_0.5 text-medusa-fg-base items-center",
+            !isSelected && "text-compact-small",
+            isSelected && "text-compact-small-plus"
           )}
-          {!isSelected && <EllipseMiniSolid className="invisible" />}
-        </span>
-        <span className="flex-1">{option.label}</span>
+        >
+          <span>
+            {isSelected && (
+              <>
+                {option.isAllOption && <EllipseMiniSolid />}
+                {!option.isAllOption && (
+                  <>
+                    {multiple && <CheckMini />}
+                    {!multiple && <EllipseMiniSolid />}
+                  </>
+                )}
+              </>
+            )}
+            {!isSelected && <EllipseMiniSolid className="invisible" />}
+          </span>
+          <span className="flex-1">{option.label}</span>
+        </div>
       </li>
     )
   }
@@ -155,7 +161,7 @@ export const SelectDropdown = ({
     >
       <ul
         className={clsx(
-          "mb-0 overflow-auto rounded-docs_DEFAULT",
+          "mb-0 py-docs_0.25 overflow-auto rounded-docs_DEFAULT",
           "bg-medusa-bg-component text-medusa-fg-base",
           "shadow-elevation-flyout dark:shadow-elevation-flyout-dark list-none",
           "flex flex-col"

@@ -373,7 +373,7 @@ export const AiAssistant = () => {
           Clear
         </span>
       </div>
-      <div className="h-[calc(100%-150px)] md:h-[calc(100%-150px)] lg:max-h-[calc(100%-145px)] lg:min-h-[calc(100%-145px)] overflow-auto">
+      <div className="h-[calc(100%-95px)] lg:max-h-[calc(100%-140px)] lg:min-h-[calc(100%-140px)] overflow-auto">
         <div ref={contentRef}>
           {!thread.length && (
             <div className="mx-docs_0.5">
@@ -428,8 +428,22 @@ export const AiAssistant = () => {
                   Navigate FAQ
                 </span>
                 <span className="gap-[5px] flex">
-                  <Kbd>↑</Kbd>
-                  <Kbd>↓</Kbd>
+                  <Kbd
+                    className={clsx(
+                      "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                      "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+                    )}
+                  >
+                    ↑
+                  </Kbd>
+                  <Kbd
+                    className={clsx(
+                      "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                      "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+                    )}
+                  >
+                    ↓
+                  </Kbd>
                 </span>
               </>
             )}
@@ -450,7 +464,14 @@ export const AiAssistant = () => {
             >
               Ask Question
             </span>
-            <Kbd>↵</Kbd>
+            <Kbd
+              className={clsx(
+                "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+              )}
+            >
+              ↵
+            </Kbd>
           </div>
         </div>
       </div>

@@ -144,7 +144,7 @@ export const Search = ({
             <XMark className="text-medusa-fg-muted" />
           </Button>
         </div>
-        <div className="md:flex-initial h-[calc(100%-150px)] md:h-[calc(100%-150px)] lg:max-h-[calc(100%-145px)] lg:min-h-[calc(100%-145px)]">
+        <div className="md:flex-initial h-[calc(100%-95px)] lg:max-h-[calc(100%-140px)] lg:min-h-[calc(100%-140px)]">
           <SearchEmptyQueryBoundary
             fallback={<SearchSuggestions suggestions={suggestions} />}
           >
