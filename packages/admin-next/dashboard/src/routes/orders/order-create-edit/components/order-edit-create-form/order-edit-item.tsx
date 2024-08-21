@@ -29,12 +29,12 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
 
   const isAddedItem = useMemo(
     () => !!item.actions?.find((a) => a.action === "ITEM_ADD"),
-    []
+    [item]
   )
 
   const ITEM_UPDATE = useMemo(
     () => !!item.actions?.find((a) => a.action === "ITEM_UPDATE"),
-    []
+    [item]
   )
 
   /**
