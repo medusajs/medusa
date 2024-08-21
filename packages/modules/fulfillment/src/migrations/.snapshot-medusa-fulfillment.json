@@ -874,7 +874,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'calculated'",
+          "default": "'flat'",
           "enumItems": [
             "calculated",
             "flat"
@@ -899,8 +899,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "fulfillment_provider_id": {
-          "name": "fulfillment_provider_id",
+        "provider_id": {
+          "name": "provider_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -1001,14 +1001,14 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_shipping_profile_id\" ON \"shipping_option\" (shipping_profile_id) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_shipping_option_fulfillment_provider_id",
+          "keyName": "IDX_shipping_option_provider_id",
           "columnNames": [
-            "fulfillment_provider_id"
+            "provider_id"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_fulfillment_provider_id\" ON \"shipping_option\" (fulfillment_provider_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_option_provider_id\" ON \"shipping_option\" (provider_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_option_shipping_option_type_id",
@@ -1068,10 +1068,10 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "shipping_option_fulfillment_provider_id_foreign": {
-          "constraintName": "shipping_option_fulfillment_provider_id_foreign",
+        "shipping_option_provider_id_foreign": {
+          "constraintName": "shipping_option_provider_id_foreign",
           "columnNames": [
-            "fulfillment_provider_id"
+            "provider_id"
           ],
           "localTableName": "public.shipping_option",
           "referencedColumnNames": [
@@ -1275,6 +1275,24 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "marked_shipped_by": {
+          "name": "marked_shipped_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "delivered_at": {
           "name": "delivered_at",
