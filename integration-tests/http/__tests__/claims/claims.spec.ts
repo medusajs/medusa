@@ -877,7 +877,7 @@ medusaIntegrationTestRunner({
               items: [
                 {
                   variant_id: productExtra.variants[0].id,
-                  quantity: 2,
+                  quantity: 3,
                 },
               ],
             },
@@ -917,7 +917,7 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
-          const fulfillableItem = fulfillOrder.items.find(
+          const fulfillableItem = fulfillOrder.items.filter(
             (item) => item.detail.fulfilled_quantity === 0
           )
 
@@ -925,10 +925,85 @@ medusaIntegrationTestRunner({
             `/admin/orders/${order.id}/fulfillments`,
             {
               location_id: location.id,
-              items: [{ id: fulfillableItem.id, quantity: 1 }],
+              items: [{ id: fulfillableItem[0].id, quantity: 1 }],
             },
             adminHeaders
           )
+
+          let orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_fulfilled")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem[0].id, quantity: 2 }],
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("fulfilled")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[0].id}/shipments`,
+            {
+              items: orderResult.fulfillments[0]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_shipped")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[1].id}/shipments`,
+            {
+              items: orderResult.fulfillments[1]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[2].id}/shipments`,
+            {
+              items: orderResult.fulfillments[2]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("shipped")
         })
       })
     })
