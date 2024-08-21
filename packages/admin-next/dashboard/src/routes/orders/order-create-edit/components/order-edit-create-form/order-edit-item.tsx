@@ -1,33 +1,78 @@
 import { XCircle } from "@medusajs/icons"
 import { AdminOrderLineItem } from "@medusajs/types"
-import { Badge, Input, Text } from "@medusajs/ui"
+import { Badge, Input, Text, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { useMemo } from "react"
+import {
+  useRemoveOrderEditItem,
+  useUpdateOrderEditAddedItem,
+  useUpdateOrderEditOriginalItem,
+} from "../../../../../hooks/api/order-edits"
 
-type ExchangeInboundItemProps = {
+type OrderEditItemProps = {
   item: AdminOrderLineItem
   currencyCode: string
-
-  onRemove: () => void
-  onUpdate: (payload: any) => void
+  orderId: string
 }
 
-function OrderEditItem({
-  item,
-  currencyCode,
-  onRemove,
-  onUpdate,
-}: ExchangeInboundItemProps) {
+function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
   const { t } = useTranslation()
+
+  const { mutateAsync: updateAddedItem } = useUpdateOrderEditAddedItem(orderId)
+  const { mutateAsync: updateOriginalItem } =
+    useUpdateOrderEditOriginalItem(orderId)
+  const { mutateAsync: removeItem } = useRemoveOrderEditItem(orderId)
 
   const isAddedItem = useMemo(
     () => !!item.actions?.find((a) => a.action === "ITEM_ADD"),
     []
   )
+
+  const ITEM_UPDATE = useMemo(
+    () => !!item.actions?.find((a) => a.action === "ITEM_UPDATE"),
+    []
+  )
+
+  /**
+   * HANDLERS
+   */
+
+  const onUpdate = async (quantity: number) => {
+    // if (quantity < item.detail.fulfilled_quantit) {
+    //   toast.error(t("orders.edits.validation.quantityLowerThanFulfillment"))
+    //   return
+    // }
+
+    const addItemAction = item.actions?.find((a) => a.action === "ITEM_ADD")
+
+    try {
+      if (addItemAction) {
+        await updateAddedItem({ quantity, actionId: addItemAction.id })
+      } else {
+        await updateOriginalItem({ quantity, itemId: item.id })
+      }
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
+
+  const onRemove = async () => {
+    const addItemAction = item.actions?.find((a) => a.action === "ITEM_ADD")
+
+    try {
+      if (addItemAction) {
+        await removeItem(addItemAction.id)
+      } else {
+        await updateOriginalItem({ quantity: 0, itemId: item.id })
+      }
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
@@ -52,7 +97,18 @@ function OrderEditItem({
 
           {isAddedItem && (
             <Badge size="2xsmall" rounded="full" color="blue" className="mr-1">
-              New
+              {t("general.new")}
+            </Badge>
+          )}
+
+          {ITEM_UPDATE && (
+            <Badge
+              size="2xsmall"
+              rounded="full"
+              color="orange"
+              className="mr-1"
+            >
+              {t("general.modified")}
             </Badge>
           )}
         </div>
@@ -69,7 +125,7 @@ function OrderEditItem({
                 const payload = val === "" ? null : Number(val)
 
                 if (payload) {
-                  onUpdate({ quantity: payload })
+                  onUpdate(payload)
                 }
               }}
             />

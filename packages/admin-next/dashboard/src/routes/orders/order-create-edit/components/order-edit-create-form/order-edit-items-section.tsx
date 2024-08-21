@@ -37,7 +37,6 @@ export const OrderEditItemsSection = ({
    * MUTATIONS
    */
   const { mutateAsync: addItems } = useAddOrderEditItems(order.id)
-  const { mutateAsync: removeItem } = useRemoveOrderEditItem(order.id)
 
   /**
    * CALLBACKS
@@ -126,25 +125,8 @@ export const OrderEditItemsSection = ({
         <OrderEditItem
           key={item.id}
           item={item}
+          orderId={order.id}
           currencyCode={order.currency_code}
-          onRemove={async () => {
-            const addItemAction = item.actions?.find(
-              (a) => a.action === "ITEM_ADD"
-            )
-
-            if (addItemAction) {
-              try {
-                await removeItem(addItemAction.id)
-              } catch (e) {
-                toast.error(e.message)
-              }
-            } else {
-              // TODO: set quantity to 0
-            }
-          }}
-          onUpdate={(payload) => {
-            // TODO: on update logic
-          }}
         />
       ))}
 

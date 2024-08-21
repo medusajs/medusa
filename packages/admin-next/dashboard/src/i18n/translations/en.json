@@ -29,6 +29,8 @@
     "expired": "Expired",
     "active": "Active",
     "revoked": "Revoked",
+    "new": "New",
+    "modified": "Modified",
     "admin": "Admin",
     "store": "Store",
     "details": "Details",
@@ -847,7 +849,10 @@
       "differenceDue": "Difference due",
       "create": "Edit Order",
       "currentTotal": "Current total",
-      "noteHint": "Add an internal note for the edit"
+      "noteHint": "Add an internal note for the edit",
+      "cancelSuccessToast": "Order edit canceled",
+      "createSuccessToast": "Order edit request created",
+      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order."
     },
     "returns": {
       "create": "Create Return",

@@ -63,6 +63,7 @@ export const OrderEditCreateForm = ({
         // no_notification: !data.send_notification, TODO: add to API
       })
 
+      toast.success(t("orders.edits.createSuccessToast"))
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
@@ -79,7 +80,7 @@ export const OrderEditCreateForm = ({
       if (IS_CANCELING) {
         cancelOrderEditRequest(undefined, {
           onSuccess: () => {
-            toast.success(t("orders.edits.actions.cancel.successToast"))
+            toast.success(t("orders.edits.cancelSuccessToast"))
           },
           onError: (error) => {
             toast.error(error.message)
