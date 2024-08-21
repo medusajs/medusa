@@ -3,6 +3,8 @@ export const defaultAdminFulfillmentsFields = [
   "location_id",
   "packed_at",
   "shipped_at",
+  "marked_shipped_by",
+  "created_by",
   "delivered_at",
   "canceled_at",
   "data",
