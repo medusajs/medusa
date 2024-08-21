@@ -25,25 +25,26 @@ import LineItem from "./line-item"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
+const tableName = "order_claim_item"
 const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
+  tableName,
   columns: "claim_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
+  tableName,
   columns: "item_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item_image",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_claim_item" })
+@Entity({ tableName })
 export default class OrderClaimItem {
   [OptionalProps]?: OptionalLineItemProps
 
