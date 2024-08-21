@@ -67,6 +67,20 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           ])
         })
+
+        it("should list authIdentities by meta data", async () => {
+          const authIdentities = await service.listAuthIdentities({
+            app_metadata: {
+              user_id: "user-1",
+            },
+          })
+
+          expect(authIdentities).toEqual([
+            expect.objectContaining({
+              id: "test-id",
+            }),
+          ])
+        })
       })
 
       describe("listAndCountAuthIdentities", () => {
@@ -226,7 +240,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           const [authIdentity] = await service.listAuthIdentities({ id: [id] })
           expect(authIdentity).toEqual(
             expect.objectContaining({
-              app_metadata: { email: "test@email.com" },
+              app_metadata: expect.objectContaining({
+                email: "test@email.com",
+              }),
             })
           )
         })
