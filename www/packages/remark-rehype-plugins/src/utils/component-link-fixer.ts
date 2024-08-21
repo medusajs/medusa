@@ -24,7 +24,7 @@ function matchMdLinks(
 ) {
   let linkMatches
   while ((linkMatches = MD_LINK_REGEX.exec(str)) !== null) {
-    if (!linkMatches.groups?.link) {
+    if (!linkMatches.groups?.link || linkMatches.groups?.link.startsWith("http")) {
       return
     }
 
@@ -43,7 +43,7 @@ function matchValueLink(
   str: string,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
-  if (!VALUE_LINK_REGEX.exec(str)) {
+  if (!VALUE_LINK_REGEX.exec(str) || str.startsWith("http")) {
     return str
   }
 
