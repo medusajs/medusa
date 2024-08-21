@@ -31,7 +31,6 @@
     "winston": "^3.8.2"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "exit 0"

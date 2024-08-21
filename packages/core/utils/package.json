@@ -45,7 +45,6 @@
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "jest --silent --bail --maxWorkers=50% --forceExit --testPathIgnorePatterns='/integration-tests/' -- src/**/__tests__/**/*.ts",
