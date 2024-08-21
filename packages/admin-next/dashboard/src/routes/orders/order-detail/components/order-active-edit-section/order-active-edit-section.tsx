@@ -1,14 +1,51 @@
-import { Button, Container, Heading, toast } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Copy,
+  Heading,
+  StatusBadge,
+  Text,
+  toast,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { useOrderPreview } from "../../../../../hooks/api"
 import { ExclamationCircleSolid } from "@medusajs/icons"
+
+import { useOrderPreview } from "../../../../../hooks/api"
 import {
   useCancelOrderEdit,
   useConfirmOrderEdit,
 } from "../../../../../hooks/api/order-edits"
+import { useMemo } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { Thumbnail } from "../../../../../components/common/thumbnail"
 
 type OrderActiveEditSectionProps = {
   orderId: string
+}
+
+function EditItem({ item }: { item: HttpTypes.AdminOrderLineItem }) {
+  return (
+    <div key={item.id} className="text-ui-fg-subtle items-center gap-x-2">
+      <div className="flex items-center gap-x-2">
+        <div className="w-fit min-w-[27px]">
+          <span className="txt-small tabular-nums">{item.quantity}</span>x
+        </div>
+
+        <Thumbnail src={item.thumbnail} />
+
+        <span className="txt-small txt-subtile font-medium">{item.title}</span>
+
+        {item.variant_sku && " · "}
+
+        {item.variant_sku && (
+          <div className="flex items-center gap-x-1">
+            <span className="txt-small">{item.variant_sku}</span>
+            <Copy content={item.variant_sku} className="text-ui-fg-muted" />
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 export const OrderActiveEditSection = ({
@@ -20,6 +57,12 @@ export const OrderActiveEditSection = ({
 
   const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(orderId)
   const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(orderId)
+
+  const addedItems = useMemo(() => {
+    return (orderPreview?.items || []).filter(
+      (i) => !!i.actions?.find((a) => a.action === "ITEM_ADD")
+    )
+  }, [orderPreview])
 
   const onConfirmOrderEdit = async () => {
     try {
@@ -63,7 +106,12 @@ export const OrderActiveEditSection = ({
           {/*ADDED ITEMS*/}
           <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
             <span className="flex-1 font-medium">{t("labels.added")}</span>
-            <div className="flex-1">TODO</div>
+
+            <div className="flex flex-1 flex-col gap-y-2">
+              {addedItems.map((item) => (
+                <EditItem key={item.id} item={item} />
+              ))}
+            </div>
           </div>
 
           {/*REMOVED ITEMS*/}
