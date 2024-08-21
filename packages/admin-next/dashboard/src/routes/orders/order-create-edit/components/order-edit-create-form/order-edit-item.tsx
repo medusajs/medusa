@@ -47,6 +47,10 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
     //   return
     // }
 
+    if (quantity === item.quantity) {
+      return
+    }
+
     const addItemAction = item.actions?.find((a) => a.action === "ITEM_ADD")
 
     try {
