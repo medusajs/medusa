@@ -2,13 +2,12 @@ import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
+import { DuplicateIdPropertyError } from "../errors"
 import {
   createMikrORMEntity,
   toMikroOrmEntities,
   toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
-import { User } from "@medusajs/icons"
-import { DuplicateIdPropertyError } from "../errors"
 
 describe("Entity builder", () => {
   beforeEach(() => {
