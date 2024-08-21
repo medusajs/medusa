@@ -78,33 +78,35 @@ export const CodeBlockActions = ({
           <Tooltip
             text="Test API"
             tooltipClassName="font-base"
-            className={clsx(
+            className={clsx("group")}
+            innerClassName={clsx(
+              inHeader && "flex",
               "h-fit rounded-docs_sm",
-              !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]",
-              "group",
               "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
-            innerClassName={clsx(inHeader && "flex")}
           >
-            <PlaySolid
-              className={clsx("cursor-pointer", iconClassName)}
+            <span
+              className={clsx(
+                !inHeader && "p-[6px]",
+                inHeader && "p-[4.5px]",
+                "cursor-pointer"
+              )}
               onClick={() => onApiTesting(true)}
-            />
+            >
+              <PlaySolid className={clsx(iconClassName)} />
+            </span>
           </Tooltip>
         )}
         {!noReport && (
           <Tooltip
             text="Report Issue"
             tooltipClassName="font-base"
-            className={clsx(
+            className={clsx("group")}
+            innerClassName={clsx(
+              inHeader && "flex",
               "h-fit rounded-docs_sm",
-              !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]",
-              "group",
               "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
-            innerClassName={clsx(inHeader && "flex")}
           >
             <Link
               href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(
@@ -114,7 +116,9 @@ export const CodeBlockActions = ({
               className={clsx(
                 "bg-transparent border-none cursor-pointer rounded",
                 "[&:not(:first-child)]:ml-docs_0.5",
-                "inline-flex justify-center items-center invisible xs:visible"
+                "inline-flex justify-center items-center invisible xs:visible",
+                !inHeader && "p-[6px]",
+                inHeader && "p-[4.5px]"
               )}
               rel="noreferrer"
             >
