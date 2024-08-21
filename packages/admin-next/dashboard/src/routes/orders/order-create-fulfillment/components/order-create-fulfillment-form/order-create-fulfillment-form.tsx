@@ -7,6 +7,7 @@ import { AdminOrder } from "@medusajs/types"
 import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
+import { OrderLineItemDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
@@ -118,8 +119,18 @@ export function OrderCreateFulfillmentForm({
 
     if (itemsToFulfill?.length) {
       setFulfillableItems(itemsToFulfill)
+
+      const quantityMap = fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
+          return acc
+        },
+        {} as Record<string, number>
+      )
+
+      form.setValue("quantity", quantityMap)
     }
-  }, [order.items])
+  }, [order.items?.length])
 
   return (
     <RouteFocusModal.Form form={form}>

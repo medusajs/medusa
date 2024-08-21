@@ -144,10 +144,14 @@ export default class Payment {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "pay")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "pay")
+    this.payment_collection_id ??=
+      this.payment_collection_id ?? this.payment_collection?.id
   }
 }

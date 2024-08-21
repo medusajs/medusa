@@ -189,4 +189,6 @@ export interface FilterableAuthIdentityProps
      */
     provider?: string
   }
+
+  app_metadata?: Record<string, unknown>
 }

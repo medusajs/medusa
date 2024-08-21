@@ -557,7 +557,11 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
+          const testRes = await api.post(
+            `/admin/claims/${claimId2}/request`,
+            {},
+            adminHeaders
+          )
 
           claimId = baseClaim.id
           item = order.items[0]
@@ -682,6 +686,17 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
+          const paymentCollections = fulfillOrder.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: 171.5,
+              currency_code: "usd",
+            })
+          )
+
           const fulfillableItem = fulfillOrder.items.find(
             (item) => item.detail.fulfilled_quantity === 0
           )
@@ -720,38 +735,70 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully and throw on multiple", async () => {
-          const paymentDelta = 110.5
+        it("should create a payment collection successfully & mark as paid", async () => {
+          const paymentDelta = 171.5
+          const orderForPayment = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
 
-          const paymentCollection = (
+          const paymentCollections = orderForPayment.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: paymentDelta,
+              currency_code: "usd",
+            })
+          )
+
+          const createdPaymentCollection = (
             await api.post(
               `/admin/payment-collections`,
+              { order_id: order.id, amount: 100 },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(createdPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 100,
+              status: "not_paid",
+            })
+          )
+
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${createdPaymentCollection.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(deleted).toEqual({
+            id: createdPaymentCollection.id,
+            object: "payment-collection",
+            deleted: true,
+          })
+
+          const finalPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections/${paymentCollections[0].id}/mark-as-paid`,
               { order_id: order.id },
               adminHeaders
             )
           ).data.payment_collection
 
-          expect(paymentCollection).toEqual(
+          expect(finalPaymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               amount: paymentDelta,
-              payment_sessions: [],
+              status: "authorized",
+              authorized_amount: paymentDelta,
+              captured_amount: paymentDelta,
+              refunded_amount: 0,
             })
           )
-
-          const { response } = await api
-            .post(
-              `/admin/payment-collections`,
-              { order_id: order.id },
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.data).toEqual({
-            type: "not_allowed",
-            message:
-              "Active payment collections were found. Complete existing ones or delete them before proceeding.",
-          })
         })
       })
 
@@ -960,7 +1007,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
-        await api.post(
+
+        const { response } = await api.post(
           `/admin/claims/${baseClaim.id}/request`,
           {},
           adminHeaders

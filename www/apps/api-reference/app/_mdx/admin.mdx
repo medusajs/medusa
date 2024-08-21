@@ -24,6 +24,8 @@ All API Routes are prefixed with `/admin`. So, during development, the API Route
   }}
   reportLink={formatReportLink("admin", "Introduction")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -166,6 +168,8 @@ fetch(`<BACKEND_URL>/admin/products`, {
   }}
   reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -190,6 +194,8 @@ x-no-compression: true
   }}
   reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -394,6 +400,8 @@ curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17&created
   }}
   reportLink={formatReportLink("admin", "Query Parameter Types")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -472,6 +480,8 @@ This sorts the products by their `created_at` field in the descending order.
   }}
   reportLink={formatReportLink("admin", "Pagination")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>

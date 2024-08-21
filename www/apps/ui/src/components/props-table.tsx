@@ -1,11 +1,11 @@
 "use client"
 
 import { InformationCircleSolid } from "@medusajs/icons"
-import { Table, Tooltip } from "@medusajs/ui"
+import { Tooltip } from "@medusajs/ui"
 
 import { PropData, PropDataMap, PropSpecType } from "@/types/props"
 import { useCallback, useMemo } from "react"
-import { InlineCode, MarkdownContent } from "docs-ui"
+import { InlineCode, MarkdownContent, Table } from "docs-ui"
 
 type PropTableProps = {
   props: PropDataMap
@@ -13,12 +13,12 @@ type PropTableProps = {
 
 const PropTable = ({ props }: PropTableProps) => {
   return (
-    <Table>
+    <Table className="!mb-0">
       <Table.Header className="border-t-0">
         <Table.Row>
           <Table.HeaderCell>Prop</Table.HeaderCell>
           <Table.HeaderCell>Type</Table.HeaderCell>
-          <Table.HeaderCell className="text-right">Default</Table.HeaderCell>
+          <Table.HeaderCell className="!text-right">Default</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body className="border-b-0 [&_tr:last-child]:border-b-0">
