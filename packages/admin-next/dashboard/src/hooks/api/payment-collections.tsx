@@ -35,6 +35,32 @@ export const useCreatePaymentCollection = (
   })
 }
 
+export const useMarkPaymentCollectionAsPaid = (
+  paymentCollectionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPaymentCollectionResponse,
+    Error,
+    HttpTypes.AdminMarkPaymentCollectionAsPaid
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.paymentCollection.markAsPaid(paymentCollectionId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.all,
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: paymentCollectionQueryKeys.all,
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeletePaymentCollection = (
   options?: Omit<
     UseMutationOptions<

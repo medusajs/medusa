@@ -145,10 +145,8 @@ export default class AuthModuleService
     )
 
     return await this.baseRepository_.serialize<
-      AuthTypes.ProviderIdentityDTO[]
-    >(providerIdentities, {
-      populate: true,
-    })
+      AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]
+    >(providerIdentities)
   }
 
   async authenticate(

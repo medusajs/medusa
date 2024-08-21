@@ -57,17 +57,18 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
     }).config({ name: "payment-collection-query" })
 
     const amountPending = transform({ order, input }, ({ order, input }) => {
-      const pendingPayment =
+      const amountToCharge = input.amount ?? 0
+      const amountPending =
         order.summary.raw_pending_difference ?? order.summary.pending_difference
 
-      if (MathBN.gt(input.amount ?? 0, pendingPayment)) {
+      if (amountToCharge > 0 && MathBN.gt(amountToCharge, amountPending)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Amount cannot be greater than ${pendingPayment}`
+          `Amount cannot be greater than ${amountPending}`
         )
       }
 
-      return pendingPayment
+      return amountPending
     })
 
     const updatedPaymentCollections = when(

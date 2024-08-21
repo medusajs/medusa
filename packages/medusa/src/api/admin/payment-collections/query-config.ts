@@ -3,7 +3,11 @@ export const defaultPaymentCollectionFields = [
   "currency_code",
   "amount",
   "status",
+  "authorized_amount",
+  "captured_amount",
+  "refunded_amount",
   "*payment_sessions",
+  "*payments",
 ]
 
 export const retrievePaymentCollectionTransformQueryConfig = {

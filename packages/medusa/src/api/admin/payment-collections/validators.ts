@@ -15,3 +15,12 @@ export const AdminCreatePaymentCollection = z
     amount: z.number(),
   })
   .strict()
+
+export type AdminMarkPaymentCollectionPaidType = z.infer<
+  typeof AdminMarkPaymentCollectionPaid
+>
+export const AdminMarkPaymentCollectionPaid = z
+  .object({
+    order_id: z.string(),
+  })
+  .strict()
