@@ -24,10 +24,7 @@ function matchMdLinks(
 ) {
   let linkMatches
   while ((linkMatches = MD_LINK_REGEX.exec(str)) !== null) {
-    if (!linkMatches.groups?.link) {
-      return
-    }
-    if (linkMatches.groups?.link.startsWith("http")) {
+    if (!linkMatches.groups?.link || linkMatches.groups?.link.startsWith("http")) {
       return
     }
 
