@@ -1,4 +1,4 @@
-export type AuthResponse = { token: string } | { location: string }
+export type AuthResponse = { authToken: string, csrfToken: string } | { location: string }
 
 export type AuthActor = "customer" | "user" | (string & {})
 export type AuthMethod = "emailpass" | (string & {})
@@ -20,6 +20,7 @@ export type Config = {
     type?: "jwt" | "session"
     jwtTokenStorageKey?: string
     jwtTokenStorageMethod?: "local" | "session" | "memory" | "cookie"
+    csrfTokenStorageKey?: string
   }
   logger?: Logger
   debug?: boolean

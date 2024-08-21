@@ -77,6 +77,7 @@ export class ConfigManager {
 
     http.jwtExpiresIn = http?.jwtExpiresIn ?? "1d"
     http.jwtTokenStorageKey = http.jwtTokenStorageKey ?? "medusa_auth_token"
+    http.csrfTokenStorageKey = http.csrfTokenStorageKey ?? "medusa_csrf_token"
     http.authCors = http.authCors ?? ""
     http.storeCors = http.storeCors ?? ""
     http.adminCors = http.adminCors ?? ""
