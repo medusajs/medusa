@@ -52,7 +52,7 @@ export const useCancelOrderEdit = (
 ) => {
   return useMutation({
     mutationFn: (payload: { no_notification?: boolean }) =>
-      sdk.admin.order.cancel(orderId, payload),
+      sdk.admin.orderEdit.cancel(orderId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

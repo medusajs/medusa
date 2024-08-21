@@ -13,21 +13,14 @@ const PREFIX = "rit"
 
 type AddExchangeOutboundItemsTableProps = {
   onSelectionChange: (ids: string[]) => void
-  selectedItems: string[]
   currencyCode: string
 }
 
 export const AddOrderEditItemsTable = ({
   onSelectionChange,
-  selectedItems,
   currencyCode,
 }: AddExchangeOutboundItemsTableProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
-    selectedItems.reduce((acc, id) => {
-      acc[id] = true
-      return acc
-    }, {} as RowSelectionState)
-  )
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
     const newState: RowSelectionState =
