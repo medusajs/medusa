@@ -8,7 +8,29 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn about how the Auth Provider is used in an authentication flow.
+In this document, you'll learn how to use the Auth Provider's main service's methods to implement an authentication flow.
+
+## How to Register an Auth Identity
+
+The `register` method of the Auth Module's main service creates an auth identity that can be authenticated later.
+
+{/* TODO add link */}
+
+For example:
+
+```ts
+const data = await authModuleService.register(
+  "emailpass",
+  // passed to auth provider
+  {
+    // ...
+  }
+)
+```
+
+This method calls the `register` method of the provider specified in the first parameter and returns its data.
+
+---
 
 ## How to Authenticate a User
 
@@ -26,9 +48,7 @@ const data = await authModuleService.authenticate(
 
 This method calls the `authenticate` method of the provider specified in the first parameter and returns its data.
 
----
-
-## Basic Authentication Flow
+### Basic Authentication Flow
 
 If the `authenticate` method returns the following object:
 
@@ -51,9 +71,7 @@ Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for
 
 ![Diagram showcasing the basic authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711373749/Medusa%20Resources/basic-auth_lgpqsj.jpg)
 
----
-
-## Authentication with Third-Party Service Flow
+### Authentication with Third-Party Service Flow
 
 If the `authenticate` method returns the following object:
 
@@ -68,7 +86,7 @@ It means the authentication process requires the user to perform an action with 
 
 ![Diagram showcasing the first part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711374847/Medusa%20Resources/third-party-auth-1_enyedy.jpg)
 
-### validateCallback
+#### validateCallback
 
 Providers handling this authentication flow must implement the `validateCallback` method. It implements the logic to validate the authentication with the third-party service.
 

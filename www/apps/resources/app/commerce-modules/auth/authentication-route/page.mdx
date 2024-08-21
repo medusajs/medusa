@@ -4,31 +4,58 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn about the `/auth` route and how to use it to create or log-in users.
+In this document, you'll learn about the authentication routes and how to use them to create or log-in users.
 
-## `/auth` Route
+## Register Route
 
-The Medusa application defines an API route at `/auth/{actor_type}/{provider}` used to obtain a token used later for authentication purposes.
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}/register` that creates an auth identity for an actor type, such as a `customer`. It returns a JWT token that you pass to an API route that creates the user.
+
+For example, if you're registering a customer, you:
+
+1. Send a request to `/auth/customer/emailpass/register` to retrieve the registration JWT token.
+2. Send a request to the [Create Customer API route](!api!/store#customers_postcustomers) to create the customer, passing the [JWT token in the header](!api!/store#authentication).
+
+### Path Parameters
 
 Its path parameters are:
 
 - `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
 - `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
 
+### Request Body Parameters
+
 This route accepts in the request body the data that the specified authentication provider requires to handle authentication.
 
 For example, the EmailPass provider requires an `email` and `password` fields in the request body.
+
+### Response Fields
 
 If the authentication is successful, you'll receive a `token` field in the response body.
 
 ---
 
-## How to Use the Authentication Token
+## Auth Route
 
-There are two ways the returned authentication token is useful:
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](!api!/store#authentication) to send authenticated requests.
 
-1. Send authenticated requests to restricted routes. For example, if the token is of an admin user, you use it in the bearer header of subsequent requests to the admin API routes.
-2. Before creating a user of an actor type, such as a `customer` or a custom actor type. You use it in the bearer header of the request to the API route that creates the user.
+For example, if you're authenticating a customer, you send a request to `/auth/customer/emailpass`.
+
+### Path Parameters
+
+Its path parameters are:
+
+- `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
+- `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
+
+### Request Body Parameters
+
+This route accepts in the request body the data that the specified authentication provider requires to handle authentication.
+
+For example, the EmailPass provider requires an `email` and `password` fields in the request body.
+
+### Response Fields
+
+If the authentication is successful, you'll receive a `token` field in the response body.
 
 <Note title="Example">
 
