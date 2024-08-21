@@ -10,6 +10,7 @@ import { ApiRunnerParamInputs } from "./ParamInputs"
 import clsx from "clsx"
 import { ArrowDownRightMini } from "@medusajs/icons"
 import { ArrowRightDownIcon } from "../Icons/ArrowRightDown"
+import { ApiRunnerFooterBackground } from "./FooterBackground"
 
 type ApiRunnerProps = {
   apiMethod: ApiMethod
@@ -73,12 +74,13 @@ export const ApiRunner = React.forwardRef<HTMLDivElement, ApiRunnerProps>(
     }, [isRunning, ran])
 
     return (
-      <div ref={ref}>
+      <div className="mb-docs_1" ref={ref}>
         {manualTestTrigger && (
           <div
             className={clsx(
               "bg-medusa-bg-component rounded-docs_DEFAULT",
-              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark"
+              "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
+              "mb-docs_0.75"
             )}
           >
             <div
@@ -88,56 +90,61 @@ export const ApiRunner = React.forwardRef<HTMLDivElement, ApiRunnerProps>(
               )}
             >
               <ArrowDownRightMini className="text-medusa-fg-muted" />
-              {apiTestingOptions.pathData && (
-                <ApiRunnerParamInputs
-                  data={apiTestingOptions.pathData}
-                  title="Path Parameters"
-                  baseObjPath="pathData"
-                  setValue={
-                    setApiTestingOptions as React.Dispatch<
-                      React.SetStateAction<unknown>
-                    >
-                  }
-                />
-              )}
-              {apiTestingOptions.bodyData && (
-                <ApiRunnerParamInputs
-                  data={apiTestingOptions.bodyData}
-                  title="Request Body Parameters"
-                  baseObjPath="bodyData"
-                  setValue={
-                    setApiTestingOptions as React.Dispatch<
-                      React.SetStateAction<unknown>
-                    >
-                  }
-                />
-              )}
-              {apiTestingOptions.queryData && (
-                <ApiRunnerParamInputs
-                  data={apiTestingOptions.queryData}
-                  title="Request Query Parameters"
-                  baseObjPath="queryData"
-                  setValue={
-                    setApiTestingOptions as React.Dispatch<
-                      React.SetStateAction<unknown>
-                    >
-                  }
-                />
-              )}
+              <div className="flex-1 flex items-center gap-docs_0.75">
+                {apiTestingOptions.pathData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.pathData}
+                    title="Path Parameters"
+                    baseObjPath="pathData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+                {apiTestingOptions.bodyData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.bodyData}
+                    title="Request Body Parameters"
+                    baseObjPath="bodyData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+                {apiTestingOptions.queryData && (
+                  <ApiRunnerParamInputs
+                    data={apiTestingOptions.queryData}
+                    title="Request Query Parameters"
+                    baseObjPath="queryData"
+                    setValue={
+                      setApiTestingOptions as React.Dispatch<
+                        React.SetStateAction<unknown>
+                      >
+                    }
+                  />
+                )}
+              </div>
               <ArrowRightDownIcon className="text-medusa-fg-muted" />
             </div>
             <div
               className={clsx(
                 "border-t border-medusa-border-base",
-                "py-docs_0.5 px-docs_0.75",
+                "py-docs_0.5 px-docs_0.75 relative",
                 "flex justify-end items-center gap-docs_0.5"
               )}
             >
+              <ApiRunnerFooterBackground />
               <Button
                 onClick={() => {
                   setIsRunning(true)
                   setRan(false)
                 }}
+                className="relative"
+                variant="secondary"
               >
                 Send Request
               </Button>

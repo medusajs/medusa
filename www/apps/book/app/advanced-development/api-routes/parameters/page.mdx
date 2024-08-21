@@ -16,7 +16,7 @@ export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/route.ts" highlights={singlePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}" testApiMethod="GET" testPathParams={{ "id": "1" }}
+```ts title="src/api/store/hello-world/[id]/route.ts" highlights={singlePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}" testApiMethod="GET" testPathParams={{ "id": "" }}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -45,7 +45,7 @@ export const multiplePathHighlights = [
   ["13", "req.params.name", "Access the path parameter `name`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}/name/{name}" testApiMethod="GET" testPathParams={{ "id": "1", "name": "John" }}
+```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}/name/{name}" testApiMethod="GET" testPathParams={{ "id": "", "name": "" }}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -77,7 +77,7 @@ export const queryHighlights = [
   ["11", "req.query.name", "Access the query parameter `name`"],
 ]
 
-```ts title="src/api/store/hello-world/route.ts" highlights={queryHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="GET" testQueryParams={{ "name": "John" }}
+```ts title="src/api/store/hello-world/route.ts" highlights={queryHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="GET" testQueryParams={{ "name": "" }}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -130,7 +130,7 @@ In this example, you use the `name` request body parameter to create the message
 
 To test it out, send the following request to your Medusa application:
 
-```bash apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="POST" testBodyParams={{ "name": "John" }}
+```bash apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="POST" testBodyParams={{ "name": "" }}
 curl -X POST 'http://localhost:9000/store/hello-world' \
 -H 'Content-Type: application/json' \
 --data-raw '{
