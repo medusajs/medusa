@@ -9,11 +9,13 @@ import { MainNavigationDropdownIcon } from "../Icon"
 export type MainNavigationDropdownSelectedProps = {
   item: NavigationDropdownItem
   onClick: () => void
+  isActive: boolean
 }
 
 export const MainNavigationDropdownSelected = ({
   item,
   onClick,
+  isActive,
 }: MainNavigationDropdownSelectedProps) => {
   if (item.type === "divider") {
     return <></>
@@ -22,15 +24,22 @@ export const MainNavigationDropdownSelected = ({
   return (
     <div
       className={clsx(
-        "flex justify-between items-center",
-        "cursor-pointer rounded-docs_sm hover:bg-medusa-bg-hover"
+        "flex justify-between items-center gap-docs_0.25",
+        "cursor-pointer rounded-docs_sm group"
       )}
       tabIndex={-1}
       onClick={onClick}
     >
       <MainNavigationDropdownIcon icon={item.icon} />
-      <div className="flex gap-[6px] py-docs_0.25 px-docs_0.5 items-center">
-        <span className="text-medusa-fg-base whitespace-nowrap flex-1">
+      <div
+        className={clsx(
+          "flex gap-[6px] py-docs_0.25 px-docs_0.5",
+          "items-center group-hover:bg-medusa-button-transparent-hover",
+          "rounded-docs_sm",
+          isActive && "bg-medusa-button-transparent-hover"
+        )}
+      >
+        <span className="text-medusa-fg-base whitespace-nowrap flex-1 text-compact-small-plus">
           {item.title}
         </span>
         <TrianglesMini className="text-medusa-fg-muted" />

@@ -311,6 +311,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.return.created_by).toEqual(expect.any(String))
+
         let r2 = await api.post(
           "/admin/returns",
           {

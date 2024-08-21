@@ -24,7 +24,7 @@ export const SidebarTop = React.forwardRef<HTMLDivElement, SidebarTopProps>(
               <SidebarChild item={parentItem} />
             </>
           )}
-          <DottedSeparator className="!my-0" />
+          <DottedSeparator wrapperClassName="!my-0" />
         </div>
       </div>
     )

@@ -76,6 +76,12 @@ export default class Fulfillment {
   })
   shipped_at: Date | null = null
 
+  @Property({ columnType: "text", nullable: true })
+  marked_shipped_by: string | null = null
+
+  @Property({ columnType: "text", nullable: true })
+  created_by: string | null = null
+
   @Property({
     columnType: "timestamptz",
     nullable: true,

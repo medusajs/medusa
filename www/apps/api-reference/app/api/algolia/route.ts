@@ -2,7 +2,6 @@ import OpenAPIParser from "@readme/openapi-parser"
 import algoliasearch from "algoliasearch"
 import type { ExpandedDocument, Operation } from "../../../types/openapi"
 import path from "path"
-import getPathsOfTag from "../../../utils/get-paths-of-tag"
 import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
 import { JSDOM } from "jsdom"
@@ -50,74 +49,71 @@ export async function GET() {
 
     // find and index tag and operations
     const baseSpecs = (await OpenAPIParser.parse(
-      path.join(process.cwd(), `specs/${area}/openapi.yaml`)
+      path.join(process.cwd(), `specs/${area}/openapi.full.yaml`)
     )) as ExpandedDocument
 
-    await Promise.all(
-      baseSpecs.tags?.map(async (tag) => {
-        const tagName = getSectionId([tag.name])
-        const url = getUrl(area, tagName)
+    baseSpecs.tags?.map((tag) => {
+      const tagName = getSectionId([tag.name])
+      const url = getUrl(area, tagName)
+      indices.push({
+        objectID: getObjectId(area, tagName),
+        hierarchy: getHierarchy(area, [tag.name]),
+        type: "lvl1",
+        content: null,
+        url,
+        url_without_variables: url,
+        url_without_anchor: url,
+        ...defaultIndexData,
+      })
+    })
+
+    const paths = baseSpecs.paths
+
+    Object.values(paths).forEach((path) => {
+      Object.values(path).forEach((op) => {
+        const operation = op as Operation
+        const tag = operation.tags?.[0]
+        const operationName = getSectionId([tag || "", operation.operationId])
+        const url = getUrl(area, operationName)
         indices.push({
-          objectID: getObjectId(area, tagName),
-          hierarchy: getHierarchy(area, [tag.name]),
-          type: "lvl1",
-          content: null,
+          objectID: getObjectId(area, operationName),
+          hierarchy: getHierarchy(area, [tag || "", operation.summary]),
+          type: "content",
+          content: operation.summary,
+          content_camel: operation.summary,
           url,
           url_without_variables: url,
           url_without_anchor: url,
           ...defaultIndexData,
         })
-        const paths = await getPathsOfTag(tagName, area)
 
-        Object.values(paths.paths).forEach((path) => {
-          Object.values(path).forEach((op) => {
-            const operation = op as Operation
-            const operationName = getSectionId([
-              tag.name,
-              operation.operationId,
-            ])
-            const url = getUrl(area, operationName)
-            indices.push({
-              objectID: getObjectId(area, operationName),
-              hierarchy: getHierarchy(area, [tag.name, operation.summary]),
-              type: "content",
-              content: operation.summary,
-              content_camel: operation.summary,
-              url,
-              url_without_variables: url,
-              url_without_anchor: url,
-              ...defaultIndexData,
-            })
+        // index its description
+        const operationDescriptionId = getSectionId([
+          tag || "",
+          operation.operationId,
+          operation.description.substring(
+            0,
+            Math.min(20, operation.description.length)
+          ),
+        ])
 
-            // index its description
-            const operationDescriptionId = getSectionId([
-              tag.name,
-              operation.operationId,
-              operation.description.substring(
-                0,
-                Math.min(20, operation.description.length)
-              ),
-            ])
-
-            indices.push({
-              objectID: getObjectId(area, operationDescriptionId),
-              hierarchy: getHierarchy(area, [
-                tag.name,
-                operation.summary,
-                operation.description,
-              ]),
-              type: "content",
-              content: operation.description,
-              content_camel: operation.description,
-              url,
-              url_without_variables: url,
-              url_without_anchor: url,
-              ...defaultIndexData,
-            })
-          })
+        indices.push({
+          objectID: getObjectId(area, operationDescriptionId),
+          hierarchy: getHierarchy(area, [
+            tag || "",
+            operation.summary,
+            operation.description,
+          ]),
+          type: "content",
+          content: operation.description,
+          content_camel: operation.description,
+          url,
+          url_without_variables: url,
+          url_without_anchor: url,
+          ...defaultIndexData,
         })
-      }) || []
-    )
+      })
+    })
   }
 
   if (indices.length) {
