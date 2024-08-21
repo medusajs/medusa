@@ -21,7 +21,7 @@ export const PaginationCard = ({
   return (
     <div
       className={clsx(
-        "relative flex flex-1 gap-docs_0.75 items-center",
+        "relative flex-1",
         "py-docs_0.5 px-docs_0.75 rounded",
         "bg-medusa-bg-component hover:bg-medusa-bg-component-hover",
         "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
@@ -30,28 +30,30 @@ export const PaginationCard = ({
       )}
     >
       <Link href={link} className="absolute top-0 left-0 w-full h-full" />
-      {type === "previous" && (
-        <TriangleLeftMini className="text-medusa-fg-muted" />
-      )}
-      <div
-        className={clsx(
-          "flex-1",
-          type === "previous" && "text-left",
-          type === "next" && "text-right"
+      <div className={clsx("h-[40px] flex gap-docs_0.75 items-center")}>
+        {type === "previous" && (
+          <TriangleLeftMini className="text-medusa-fg-muted" />
         )}
-      >
-        {parentTitle && (
-          <span className="block text-compact-small text-medusa-fg-subtle">
-            {parentTitle}
+        <div
+          className={clsx(
+            "flex-1",
+            type === "previous" && "text-left",
+            type === "next" && "text-right"
+          )}
+        >
+          {parentTitle && (
+            <span className="block text-compact-small text-medusa-fg-subtle">
+              {parentTitle}
+            </span>
+          )}
+          <span className="block text-compact-small-plus text-medusa-fg-base">
+            {title}
           </span>
+        </div>
+        {type === "next" && (
+          <TriangleRightMini className="text-medusa-fg-muted" />
         )}
-        <span className="block text-compact-small-plus text-medusa-fg-base">
-          {title}
-        </span>
       </div>
-      {type === "next" && (
-        <TriangleRightMini className="text-medusa-fg-muted" />
-      )}
     </div>
   )
 }

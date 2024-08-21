@@ -14,7 +14,7 @@ export const Menu = ({ items, className }: MenuProps) => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-component p-docs_0.25 rounded-docs_DEFAULT",
+        "bg-medusa-bg-component py-docs_0.25 rounded-docs_DEFAULT",
         "shadow-elevation-flyout dark:shadow-elevation-flyout-dark",
         className
       )}
