@@ -1,5 +1,6 @@
 import { CellContext } from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
+import { FieldValues, Path, PathValue } from "react-hook-form"
 
 export type CellType = "text" | "number" | "select" | "boolean"
 
@@ -70,3 +71,8 @@ export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
 }
 
 export type DataGridColumnType = "string" | "number" | "boolean"
+
+export type CellSnapshot<TFieldValues extends FieldValues = FieldValues> = {
+  field: string
+  value: PathValue<TFieldValues, Path<TFieldValues>>
+}

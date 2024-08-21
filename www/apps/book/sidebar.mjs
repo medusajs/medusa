@@ -13,11 +13,13 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/first-customizations",
       title: "Your First Customizations",
+      chapterTitle: "First Customization",
     },
     {
       type: "link",
       path: "/basics",
       title: "The Basics",
+      chapterTitle: "Basics",
       children: [
         {
           type: "link",
@@ -85,6 +87,7 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/advanced-development",
       title: "Advanced Development",
+      chapterTitle: "Advanced",
       children: [
         {
           type: "sub-category",
@@ -340,6 +343,7 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/storefront-development",
       title: "Storefront Development",
+      chapterTitle: "Storefront",
       children: [
         {
           type: "link",
@@ -357,6 +361,7 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/debugging-and-testing",
       title: "Debugging and Testing",
+      chapterTitle: "Debugging & Testing",
       children: [
         {
           type: "link",

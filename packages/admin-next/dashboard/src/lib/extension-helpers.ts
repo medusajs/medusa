@@ -1,4 +1,5 @@
 import { RouteObject } from "react-router-dom"
+import { ErrorBoundary } from "../components/utilities/error-boundary"
 
 /**
  * Used to test if a route is a settings route.
@@ -32,6 +33,7 @@ export const createRouteMap = (
       route.children ||= []
       route.children.push({
         path: "",
+        ErrorBoundary: ErrorBoundary,
         async lazy() {
           return { Component }
         },

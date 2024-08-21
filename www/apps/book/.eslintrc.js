@@ -8,4 +8,7 @@ module.exports = {
       rootDir: ".",
     },
   },
+  ignorePatterns: [
+    "generated"
+  ]
 }

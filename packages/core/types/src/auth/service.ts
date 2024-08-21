@@ -6,7 +6,9 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   CreateAuthIdentityDTO,
+  CreateProviderIdentityDTO,
   FilterableAuthIdentityProps,
+  ProviderIdentityDTO,
   UpdateAuthIdentityDTO,
 } from "./common"
 
@@ -279,4 +281,49 @@ export interface IAuthModuleService extends IModuleService {
    * await authModuleService.deleteAuthIdentities(["authusr_123", "authusr_321"])
    */
   deleteAuthIdentities(ids: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method creates provider identities.
+   *
+   * @param {CreateProviderIdentityDTO[]} data - The provider identities to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO[]>} The created provider identities.
+   *
+   * @example
+   * const providerIdentities = await authModuleService.createProviderIdentities([
+   *   {
+   *      provider: "emailpass",
+   *      entity_id: "user@example.com",
+   *      auth_identity_id: "uid_1"
+   *   },
+   *   {
+   *      provider: "github",
+   *      entity_id: "github_handle",
+   *      auth_identity_id: "uid_1"
+   *   },
+   * ])
+   */
+  createProviderIdentities(
+    data: CreateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO[]>
+
+  /**
+   * This method creates a provider identity.
+   *
+   * @param {CreateProviderIdentityDTO} data - The provider identity to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO>} The created provider identity.
+   *
+   * @example
+   * const providerIdentity = await authModuleService.createProviderIdentities({
+   *     provider: "github",
+   *     entity_id: "github_handle",
+   *     auth_identity_id: "uid_1"
+   * })
+   */
+  createProviderIdentities(
+    data: CreateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO>
 }

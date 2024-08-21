@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { SalesChannelDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   Button,
   Container,
@@ -60,7 +60,7 @@ export const SalesChannelListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <div>
-          <Heading level="h2">{t("salesChannels.domain")}</Heading>
+          <Heading>{t("salesChannels.domain")}</Heading>
           <Text className="text-ui-fg-subtle" size="small">
             {t("salesChannels.subtitle")}
           </Text>
@@ -90,7 +90,7 @@ export const SalesChannelListTable = () => {
 const SalesChannelActions = ({
   salesChannel,
 }: {
-  salesChannel: SalesChannelDTO
+  salesChannel: HttpTypes.AdminSalesChannel
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -148,7 +148,7 @@ const SalesChannelActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannelDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminSalesChannel>()
 
 const useColumns = () => {
   const base = useSalesChannelTableColumns()

@@ -66,9 +66,5 @@ function expressionToJs(
     case "JSXElement":
       // ignore JSXElements
       return
-    default:
-      console.warn(
-        `[expressionToJs] can't parse expression of type ${expression.type}`
-      )
   }
 }

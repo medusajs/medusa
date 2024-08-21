@@ -54,7 +54,7 @@ export const CodeBlockHeader = ({
     <div
       className={clsx(
         "py-docs_0.5 px-docs_1 mb-0",
-        "rounded-t-docs_lg relative",
+        "rounded-t-docs_lg relative flex justify-between items-center",
         blockStyle === "subtle" && [
           "border border-solid border-b-0",
           colorMode === "light" && "border-medusa-border-base",
@@ -63,7 +63,7 @@ export const CodeBlockHeader = ({
         bgColor
       )}
     >
-      <div className={clsx("xs:max-w-[83%]", "flex gap-docs_0.75 items-start")}>
+      <div className={clsx("flex-1", "flex gap-docs_0.75 items-start")}>
         {badgeLabel && (
           <Badge variant={badgeColor || "code"} className="font-base">
             {badgeLabel}

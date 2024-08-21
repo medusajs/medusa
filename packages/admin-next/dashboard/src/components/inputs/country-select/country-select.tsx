@@ -40,7 +40,7 @@ export const CountrySelect = forwardRef<
           )}
         />
         <select
-          value={value ? value.toLowerCase() : undefined}
+          value={value !== undefined ? value.toLowerCase() : undefined}
           defaultValue={defaultValue ? defaultValue.toLowerCase() : undefined}
           disabled={disabled}
           className={clx(

@@ -297,6 +297,8 @@ paths:
     $ref: paths/admin_order-edits_{id}_confirm.yaml
   /admin/order-edits/{id}/items:
     $ref: paths/admin_order-edits_{id}_items.yaml
+  /admin/order-edits/{id}/items/item/{item_id}:
+    $ref: paths/admin_order-edits_{id}_items_item_{item_id}.yaml
   /admin/order-edits/{id}/items/{action_id}:
     $ref: paths/admin_order-edits_{id}_items_{action_id}.yaml
   /admin/order-edits/{id}/shipping-method:
@@ -323,6 +325,10 @@ paths:
     $ref: paths/admin_orders_{id}_preview.yaml
   /admin/payment-collections:
     $ref: paths/admin_payment-collections.yaml
+  /admin/payment-collections/{id}:
+    $ref: paths/admin_payment-collections_{id}.yaml
+  /admin/payment-collections/{id}/mark-as-paid:
+    $ref: paths/admin_payment-collections_{id}_mark-as-paid.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:

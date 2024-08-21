@@ -1,5 +1,7 @@
 import React from "react"
-import { Button } from "../.."
+import Link from "next/link"
+import clsx from "clsx"
+import { ArrowUpRightOnBox } from "@medusajs/icons"
 
 type EditButtonProps = {
   filePath: string
@@ -7,10 +9,15 @@ type EditButtonProps = {
 
 export const EditButton = ({ filePath }: EditButtonProps) => {
   return (
-    <Button variant="secondary" className="mb-docs_1">
-      <a href={`https://github.com/medusajs/medusa/edit/develop${filePath}`}>
-        Edit this page
-      </a>
-    </Button>
+    <Link
+      href={`https://github.com/medusajs/medusa/edit/develop${filePath}`}
+      className={clsx(
+        "flex w-fit gap-docs_0.25 my-docs_2 items-center",
+        "text-medusa-fg-muted hover:text-medusa-fg-subtle"
+      )}
+    >
+      <span>Edit this page</span>
+      <ArrowUpRightOnBox />
+    </Link>
   )
 }

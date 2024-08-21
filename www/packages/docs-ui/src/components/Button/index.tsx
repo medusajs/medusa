@@ -28,7 +28,7 @@ export const Button = ({
 }: ButtonProps) => {
   const variantClasses = {
     primary: [
-      "px-[10px] py-[6px] rounded-docs_sm cursor-pointer",
+      "px-docs_0.5 py-docs_0.25 rounded-docs_sm cursor-pointer",
       "bg-medusa-button-inverted",
       "hover:bg-medusa-button-inverted-hover hover:no-underline",
       "active:bg-medusa-button-inverted-pressed",
@@ -44,7 +44,7 @@ export const Button = ({
       "select-none",
     ],
     secondary: [
-      "px-[10px] py-[6px] rounded-docs_sm cursor-pointer",
+      "px-docs_0.5 py-docs_0.25 rounded-docs_sm cursor-pointer",
       "bg-medusa-button-neutral",
       "hover:bg-medusa-button-neutral-hover hover:no-underline",
       "active:bg-medusa-button-neutral-pressed",
@@ -58,7 +58,7 @@ export const Button = ({
       "select-none",
     ],
     transparent: [
-      "px-[10px] py-[6px] rounded-docs_sm cursor-pointer",
+      "px-docs_0.5 py-docs_0.25 rounded-docs_sm cursor-pointer",
       "bg-transparent shadow-none border-0 outline-none",
       "text-compact-small-plus text-medusa-fg-base",
       "hover:bg-medusa-button-transparent-hover",
@@ -68,7 +68,7 @@ export const Button = ({
       "disabled:cursor-not-allowed disabled:text-medusa-fg-disabled",
     ],
     transparentClear: [
-      "px-[10px] py-[6px] rounded-docs_sm cursor-pointer",
+      "px-docs_0.5 py-docs_0.25 rounded-docs_sm cursor-pointer",
       "bg-transparent shadow-none border-0 outline-none",
       "text-compact-small-plus text-medusa-fg-muted",
       "hover:bg-medusa-button-transparent-hover",
@@ -82,7 +82,7 @@ export const Button = ({
   return (
     <button
       className={clsx(
-        "inline-flex flex-row justify-center items-center gap-[6px]",
+        "inline-flex flex-row justify-center items-center gap-[6px] font-base",
         variant === "primary" && variantClasses.primary,
         variant === "secondary" && variantClasses.secondary,
         variant === "transparent" && variantClasses.transparent,

@@ -1,13 +1,13 @@
 import { InformationCircleSolid } from "@medusajs/icons"
-import { Table, Tooltip } from "@medusajs/ui"
+import { Tooltip } from "@medusajs/ui"
 
 import { HookData, HookDataMap } from "@/types/hooks"
 import { EnumType, FunctionType, ObjectType } from "@/types/props"
-import { InlineCode } from "docs-ui"
+import { InlineCode, Table } from "docs-ui"
 
 const HookTable = ({ props }: { props: HookDataMap }) => {
   return (
-    <Table>
+    <Table className="!mb-0">
       <Table.Header className="border-t-0">
         <Table.Row>
           <Table.HeaderCell>Value</Table.HeaderCell>

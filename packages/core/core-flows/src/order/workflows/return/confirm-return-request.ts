@@ -28,6 +28,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
@@ -258,6 +259,12 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       ]),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
+    })
 
     return new WorkflowResponse(orderPreview)
   }

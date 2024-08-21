@@ -1,3 +1,4 @@
+export * from "./generate-edited-dates.js"
 export * from "./generate-sidebar.js"
 
 export * from "./utils/find-metadata-title.js"
