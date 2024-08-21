@@ -1600,6 +1600,15 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -1878,6 +1887,15 @@
           "nullable": false,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
@@ -2278,6 +2296,15 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "metadata": {
           "name": "metadata",
