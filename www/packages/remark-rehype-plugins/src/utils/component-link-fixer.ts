@@ -46,11 +46,8 @@ function matchValueLink(
   str: string,
   linkOptions: Omit<FixLinkOptions, "linkedPath">
 ) {
-  if (!VALUE_LINK_REGEX.exec(str)) {
+  if (!VALUE_LINK_REGEX.exec(str) || str.startsWith("http")) {
     return str
-  }
-  if (str.startsWith("http")) {
-    return
   }
 
   return fixLinkUtil({
