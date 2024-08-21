@@ -21,7 +21,7 @@ export const OrderEditCreate = () => {
   })
 
   const { order: preview } = useOrderPreview(id!)
-  const { mutateAsync: createOrderEdit } = useCreateOrderEdit()
+  const { mutateAsync: createOrderEdit } = useCreateOrderEdit(order.id)
 
   useEffect(() => {
     async function run() {

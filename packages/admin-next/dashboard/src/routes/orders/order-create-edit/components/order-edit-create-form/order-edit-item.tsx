@@ -42,7 +42,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
    */
 
   const onUpdate = async (quantity: number) => {
-    // if (quantity < item.detail.fulfilled_quantit) {
+    // if (quantity < item.detail.fulfilled_quantity) {
     //   toast.error(t("orders.edits.validation.quantityLowerThanFulfillment"))
     //   return
     // }

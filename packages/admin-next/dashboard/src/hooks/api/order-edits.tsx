@@ -7,6 +7,7 @@ import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
 
 export const useCreateOrderEdit = (
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
     Error,
@@ -19,6 +20,10 @@ export const useCreateOrderEdit = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -40,6 +45,10 @@ export const useConfirmOrderEditRequest = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(id),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -56,6 +65,10 @@ export const useCancelOrderEdit = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
       options?.onSuccess?.(data, variables, context)
     },
