@@ -1,4 +1,4 @@
-import { ApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
+import { ApiKeyDTO, IApiKeyModuleService, ICacheService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -71,13 +71,19 @@ export const authenticate = (
       } = req.scope.resolve<ConfigModule>(
         ContainerRegistrationKeys.CONFIG_MODULE
       )
+      const cacheService: ICacheService = req.scope.resolve(
+        ModuleRegistrationName.CACHE
+      )
 
       const authToken = req.cookies[http.jwtTokenStorageKey!]
       const csrfToken = req.headers["x-csrf-token"]
 
-      console.log(csrfToken)
+      const csrfTokenCache = await cacheService.get(authToken)
 
-      // TODO: verify the CSRF Token here, if it is not verifyable, throw for missing authentication
+      if (csrfTokenCache && (csrfToken !== csrfTokenCache)) {
+        res.status(401).json({ message: "Unauthorized" })
+        return
+      }
 
       if (authToken) {
           req.headers['authorization'] = `Bearer ${authToken}`
