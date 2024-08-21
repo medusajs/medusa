@@ -134,7 +134,7 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   // Whenever there are any unfulfilled items in the order, it should be
   // considered partially_[STATUS] where status is picked up from the hierarchy
   // of statuses
-  const unfulfilledItems = order.items!.filter(
+  const unfulfilledItems = (order.items || [])?.filter(
     (i) =>
       isDefined(i?.detail?.fulfilled_quantity) &&
       i.detail.fulfilled_quantity < i.quantity
