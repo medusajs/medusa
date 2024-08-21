@@ -846,7 +846,8 @@
       "newTotal": "New total",
       "differenceDue": "Difference due",
       "create": "Edit Order",
-      "currentTotal": "Current total"
+      "currentTotal": "Current total",
+      "noteHint": "Add an internal note for the edit"
     },
     "returns": {
       "create": "Create Return",

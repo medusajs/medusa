@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminOrder, AdminOrderPreview } from "@medusajs/types"
-import { Button, Heading, Switch, toast } from "@medusajs/ui"
+import { Button, Heading, Input, Switch, Textarea, toast } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -136,6 +136,31 @@ export const OrderEditCreateForm = ({
                 </span>
               </div>
             </div>
+
+            {/*NOTE*/}
+            <Form.Field
+              control={form.control}
+              name="note"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <div className="mt-8 flex">
+                      <div className="block flex-1">
+                        <Form.Label>{t("fields.note")}</Form.Label>
+                        <Form.Hint className="!mt-1">
+                          {t("orders.edits.noteHint")}
+                        </Form.Hint>
+                      </div>
+                      <div className="w-full flex-1 flex-grow">
+                        <Form.Control>
+                          <Input {...field} placeholder={t("fields.note")} />
+                        </Form.Control>
+                      </div>
+                    </div>
+                  </Form.Item>
+                )
+              }}
+            />
 
             {/*SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
