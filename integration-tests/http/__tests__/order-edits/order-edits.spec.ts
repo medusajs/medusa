@@ -2,6 +2,7 @@ import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
+  OrderChangeStatus,
   RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -366,6 +367,19 @@ medusaIntegrationTestRunner({
           )
         ).data.order_preview
 
+        expect(result.summary.current_order_total).toEqual(34)
+        expect(result.summary.original_order_total).toEqual(60)
+        expect(result.items.length).toEqual(2)
+
+        result = (
+          await api.post(
+            `/admin/order-edits/${orderId}/request`,
+            {},
+            adminHeaders
+          )
+        ).data.order_preview
+
+        expect(result.order_change.status).toEqual(OrderChangeStatus.REQUESTED)
         expect(result.summary.current_order_total).toEqual(34)
         expect(result.summary.original_order_total).toEqual(60)
         expect(result.items.length).toEqual(2)

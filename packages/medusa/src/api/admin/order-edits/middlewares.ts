@@ -72,6 +72,11 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/order-edits/:id/request",
+    middlewares: [],
+  },
+  {
     method: ["DELETE"],
     matcher: "/admin/order-edits/:id",
     middlewares: [],
