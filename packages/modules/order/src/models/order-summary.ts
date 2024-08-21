@@ -36,19 +36,21 @@ type OrderSummaryTotals = {
   refunded_total: BigNumber
 }
 
+const tableName = "order_summary"
+
 const OrderIdVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_summary",
+  tableName,
   columns: ["order_id", "version"],
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_summary" })
+@Entity({ tableName })
 @OrderIdVersionIndex.MikroORMIndex()
 export default class OrderSummary {
   @PrimaryKey({ columnType: "text" })
