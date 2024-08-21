@@ -33,7 +33,7 @@
   "scripts": {
     "watch": "tsc --watch -p ./tsconfig.build.json",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc -p ./tsconfig.build.json",
     "build": "rimraf dist && tsc --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
@@ -56,6 +56,7 @@
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
     "awilix": "^8.0.0",
+    "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",

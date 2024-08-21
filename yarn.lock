@@ -4615,6 +4615,7 @@ __metadata:
     "@types/express": ^4.17.17
     "@types/jsonwebtoken": ^8.5.9
     awilix: ^8.0.0
+    connect-redis: ^5.0.0
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     cross-env: ^7.0.3
@@ -4870,33 +4871,21 @@ __metadata:
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
     awilix: ^8.0.0
-    body-parser: ^1.19.0
     boxen: ^5.0.1
     chalk: ^4.0.0
     chokidar: ^3.4.2
     compression: ^1.7.4
-    connect-redis: ^5.0.0
-    cookie-parser: ^1.4.6
     core-js: ^3.6.5
-    cors: ^2.8.5
     cross-env: ^5.2.1
     dotenv: ^16.4.5
     express: ^4.18.2
-    express-session: ^1.17.3
     fs-exists-cached: ^1.0.0
     glob: ^7.1.6
-    ioredis: ^5.4.1
-    ioredis-mock: 8.4.0
     jest: ^29.7.0
     lodash: ^4.17.21
     medusa-telemetry: ^0.0.17
-    morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
-    passport: ^0.6.0
-    passport-custom: ^1.1.1
-    passport-jwt: ^4.0.1
-    passport-local: ^1.0.0
     qs: ^6.11.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
@@ -21611,7 +21600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^9.0.0, jsonwebtoken@npm:^9.0.2":
+"jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:
@@ -24421,52 +24410,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-custom@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "passport-custom@npm:1.1.1"
-  dependencies:
-    passport-strategy: 1.x.x
-  checksum: 49b6fcd125dcd60272d4f02c27acb3b61b2659f3148bc10b31b7c439314054ce32c83a12f422215bdfa83d0463668a1f38ca6e8d68ccd32c922f73ccaa5ac9b3
-  languageName: node
-  linkType: hard
-
-"passport-jwt@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "passport-jwt@npm:4.0.1"
-  dependencies:
-    jsonwebtoken: ^9.0.0
-    passport-strategy: ^1.0.0
-  checksum: d7e2b472d399f596a1db31310f8e63d10777ab7468b9a378c964156e5f0a772598b007417356ead578cfdaf60dc2bba39a55f0033ca865186fdb2a2b198e2e7e
-  languageName: node
-  linkType: hard
-
-"passport-local@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-local@npm:1.0.0"
-  dependencies:
-    passport-strategy: 1.x.x
-  checksum: 59becb988014921a5d6056470d9373c41db452fcf113323064f39d53baa6f184e72151bf269ca6770511f7f0260e13632dacc7b6afdbf60ebf63e90327e186d4
-  languageName: node
-  linkType: hard
-
-"passport-strategy@npm:1.x.x, passport-strategy@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "passport-strategy@npm:1.0.0"
-  checksum: cf4cd32e1bf2538a239651581292fbb91ccc83973cde47089f00d2014c24bed63d3e65af21da8ddef649a8896e089eb9c3ac9ca639f36c797654ae9ee4ed65e1
-  languageName: node
-  linkType: hard
-
-"passport@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "passport@npm:0.6.0"
-  dependencies:
-    passport-strategy: 1.x.x
-    pause: 0.0.1
-    utils-merge: ^1.0.1
-  checksum: 1d8651a4a1a72b84ea08c498cff9cfc209aebfe18baed4cf93292ded3f8e30a04e30b404fdfce39dfb6aa7247e205f1df43fbfd7bc7c1a67a600884359d46ee6
-  languageName: node
-  linkType: hard
-
 "password-prompt@npm:^1.1.2":
   version: 1.1.3
   resolution: "password-prompt@npm:1.1.3"
@@ -24575,13 +24518,6 @@ __metadata:
   version: 1.1.1
   resolution: "pathval@npm:1.1.1"
   checksum: f63e1bc1b33593cdf094ed6ff5c49c1c0dc5dc20a646ca9725cc7fe7cd9995002d51d5685b9b2ec6814342935748b711bafa840f84c0bb04e38ff40a335c94dc
-  languageName: node
-  linkType: hard
-
-"pause@npm:0.0.1":
-  version: 0.0.1
-  resolution: "pause@npm:0.0.1"
-  checksum: f362655dfa7f44b946302c5a033148852ed5d05f744bd848b1c7eae6a543f743e79c7751ee896ba519fd802affdf239a358bb2ea5ca1b1c1e4e916279f83ab75
   languageName: node
   linkType: hard
 
@@ -30551,7 +30487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utils-merge@npm:1.0.1, utils-merge@npm:^1.0.1":
+"utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
