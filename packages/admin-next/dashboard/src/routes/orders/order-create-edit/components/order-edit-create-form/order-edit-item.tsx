@@ -72,7 +72,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         await removeItem(addItemAction.id)
       } else {
         await updateOriginalItem({
-          quantity: item.quantity - item.detail.fulfilled_quantity,
+          quantity: item.detail.fulfilled_quantity, //
           itemId: item.id,
         })
       }
@@ -82,7 +82,10 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
   }
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
+    <div
+      key={item.quantity}
+      className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl "
+    >
       <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex flex-row items-center gap-x-3">
