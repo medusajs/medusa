@@ -102,6 +102,7 @@
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "forceConfirm": "Force confirm",
     "enable": "Enable",
     "disable": "Disable",
     "complete": "Complete",
@@ -856,7 +857,10 @@
       "noteHint": "Add an internal note for the edit",
       "cancelSuccessToast": "Order edit canceled",
       "createSuccessToast": "Order edit request created",
-      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order."
+      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
+      "panel": {
+        "title": "Order edit requested"
+      }
     },
     "returns": {
       "create": "Create Return",
@@ -2322,7 +2326,9 @@
     "productVariant": "Product Variant",
     "prices": "Prices",
     "available": "Available",
-    "inStock": "In stock"
+    "inStock": "In stock",
+    "added": "Added",
+    "removed": "Removed"
   },
   "fields": {
     "amount": "Amount",
