@@ -14,7 +14,10 @@ import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
 import { OrderEditItemsSection } from "./order-edit-items-section"
-import { useCancelOrderEdit } from "../../../../../hooks/api/order-edits"
+import {
+  useCancelOrderEdit,
+  useConfirmOrderEditRequest,
+} from "../../../../../hooks/api/order-edits"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -33,9 +36,10 @@ export const OrderEditCreateForm = ({
   /**
    * MUTATIONS
    */
-  const { mutateAsync: confirmOrderEditRequest, isPending: isConfirming } = {} // useOrderEditConfirmRequest(exchange.id, order.id)
+  const { mutateAsync: confirmOrderEditRequest, isPending: isConfirming } =
+    useConfirmOrderEditRequest(order.id)
 
-  const { mutateAsync: cancelOrderRequest, isPending: isCanceling } =
+  const { mutateAsync: cancelOrderEditRequest, isPending: isCanceling } =
     useCancelOrderEdit(order.id)
 
   const isRequestLoading = isConfirming || isCanceling
@@ -47,7 +51,7 @@ export const OrderEditCreateForm = ({
     defaultValues: () => {
       return Promise.resolve({
         note: "", // TODO: add note when update edit route is added
-        send_notification: false,
+        send_notification: false, // TODO: not supported in the API ATM
       })
     },
     resolver: zodResolver(OrderEditCreateSchema),
@@ -56,7 +60,7 @@ export const OrderEditCreateForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       await confirmOrderEditRequest({
-        no_notification: !data.send_notification,
+        // no_notification: !data.send_notification, TODO: add to API
       })
 
       handleSuccess()
@@ -73,7 +77,7 @@ export const OrderEditCreateForm = ({
      */
     return () => {
       if (IS_CANCELING) {
-        cancelOrderRequest(undefined, {
+        cancelOrderEditRequest(undefined, {
           onSuccess: () => {
             toast.success(t("orders.edits.actions.cancel.successToast"))
           },

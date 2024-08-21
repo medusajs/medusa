@@ -15,3 +15,8 @@ export interface AdminAddOrderEditItems {
     metadata?: Record<string, unknown>
   }[]
 }
+
+export interface AdminUpdateOrderEditItem {
+  quantity?: number
+  internal_note?: string | null
+}

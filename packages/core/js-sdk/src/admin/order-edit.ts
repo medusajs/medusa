@@ -1,4 +1,4 @@
-import { AdminOrderEditDeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -7,28 +7,6 @@ export class OrderEdit {
   constructor(client: Client) {
     this.client = client
   }
-
-  // async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
-  //   return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
-  //     `/admin/order-edits/${id}`,
-  //     {
-  //       query,
-  //       headers,
-  //     }
-  //   )
-  // }
-  //
-  // async list(
-  //   queryParams?: FindParams & HttpTypes.AdminOrderFilters,
-  //   headers?: ClientHeaders
-  // ) {
-  //   return await this.client.fetch<
-  //     PaginatedResponse<{ orders: HttpTypes.AdminOrder[] }>
-  //   >(`/admin/order-edits`, {
-  //     query: queryParams,
-  //     headers,
-  //   })
-  // }
 
   async initiateRequest(
     body: HttpTypes.AdminInitiateOrderEditRequest,
@@ -41,6 +19,21 @@ export class OrderEdit {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  async confirmRequest(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/confirm`,
+      {
+        method: "POST",
+        headers,
         query,
       }
     )
@@ -69,6 +62,42 @@ export class OrderEdit {
   ) {
     return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
       `/admin/order-edits/${id}/items`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async updateOriginalItem(
+    id: string,
+    itemId: string,
+    body: HttpTypes.AdminUpdateOrderEditItem,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/items/item/${itemId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async updateAddedItem(
+    id: string,
+    actionId: string,
+    body: HttpTypes.AdminUpdateOrderEditItem,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/items/${actionId}`,
       {
         method: "POST",
         headers,
