@@ -136,7 +136,7 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   // of statuses
   const hasUnfulfilledItems = (order.items || [])?.filter(
     (i) =>
-      isDefined(i?.detail?.fulfilled_quantity) &&
+      isDefined(i?.detail?.raw_fulfilled_quantity) &&
       MathBN.lt(i.detail.raw_fulfilled_quantity, i.raw_quantity)
   ).length > 0
 
