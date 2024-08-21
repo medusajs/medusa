@@ -67,6 +67,7 @@
  *         description: SUMMARY
  *         required:
  *           - order_id
+ *           - amount
  *         properties:
  *           order_id:
  *             type: string

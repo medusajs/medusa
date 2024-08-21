@@ -46,6 +46,11 @@ properties:
     description: The order's payment collections.
     items:
       $ref: ./AdminPaymentCollection.yaml
+  fulfillments:
+    type: array
+    description: The order's fulfillments.
+    items:
+      $ref: ./BaseOrderFulfillment.yaml
   id:
     type: string
     title: id
@@ -106,11 +111,6 @@ properties:
       - partially_refunded
       - refunded
       - requires_action
-  fulfillments:
-    type: array
-    description: The order's fulfillments.
-    items:
-      $ref: ./BaseOrderFulfillment.yaml
   fulfillment_status:
     type: string
     enum:
