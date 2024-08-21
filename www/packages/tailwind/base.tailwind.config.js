@@ -317,128 +317,142 @@ module.exports = {
       },
       fontSize: {
         h1: [
-          "2rem",
+          "24px",
           {
-            lineHeight: "2.75rem",
+            lineHeight: "36px",
             fontWeight: "500",
           },
         ],
         h2: [
-          "1.5rem",
+          "18px",
           {
-            lineHeight: "2rem",
+            lineHeight: "28px",
             fontWeight: "500",
           },
         ],
         h3: [
-          "1.125rem",
+          "16px",
           {
-            lineHeight: "1.75rem",
+            lineHeight: "24px",
             fontWeight: "500",
           },
         ],
         h4: [
           "1rem",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
-        "compact-large-plus": [
-          "1rem",
+        "compact-x-large-plus": [
+          "18px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "compact-x-large": [
+          "18px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "compact-large-plus": [
+          "16px",
+          {
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-large": [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-medium-plus": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-medium": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-small-plus": [
-          "0.8125rem",
+          "13px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-small": [
-          "0.8125rem",
+          "13px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-x-small-plus": [
-          "0.75rem",
+          "12px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-x-small": [
-          "0.75rem",
+          "12px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "x-large-plus": [
-          "1.125rem",
+          "18px",
           {
-            lineHeight: "1.6875rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         "x-large": [
-          "1.125rem",
+          "18px",
           {
-            lineHeight: "1.6875rem",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
         "large-plus": [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.5rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         large: [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.5rem",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
         "medium-plus": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.3125rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         medium: [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.3125rem",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
@@ -456,6 +470,20 @@ module.exports = {
             fontWeight: "500",
           },
         ],
+        "x-small": [
+          "12px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "x-small-plus": [
+          "12px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
+          },
+        ],
         "code-label": [
           "12px",
           {
@@ -466,7 +494,7 @@ module.exports = {
         "code-body": [
           "12px",
           {
-            lineHeight: "18px",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
