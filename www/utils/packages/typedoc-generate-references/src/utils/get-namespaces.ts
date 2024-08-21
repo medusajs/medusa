@@ -19,7 +19,7 @@ export function getCoreFlowNamespaces(): NamespaceGenerateDetails[] {
     withFileTypes: true,
   })
 
-  const loopDirectories = (dirs: Dirent[], nested = false) => {
+  const loopDirectories = (dirs: Dirent[], parentDirs: string[] = []) => {
     dirs.forEach((directory) => {
       if (!directory.isDirectory()) {
         return
@@ -30,15 +30,15 @@ export function getCoreFlowNamespaces(): NamespaceGenerateDetails[] {
           readdirSync(path.join(rootPathPrefix, directory.name), {
             withFileTypes: true,
           }),
-          true
+          [...parentDirs, directory.name]
         )
         return
       }
 
       const namespaceName = kebabToTitle(directory.name)
-      const pathPattern = `**/packages/core/core-flows/src/${
-        nested ? "**/" : ""
-      }${directory.name}/**`
+      const pathPattern = `**/packages/core/core-flows/src/${parentDirs.join(
+        "/"
+      )}${directory.name}/**`
 
       const namespace: NamespaceGenerateDetails = {
         name: namespaceName,
