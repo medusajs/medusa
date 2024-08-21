@@ -134,17 +134,17 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   // Whenever there are any unfulfilled items in the order, it should be
   // considered partially_[STATUS] where status is picked up from the hierarchy
   // of statuses
-  const unfulfilledItems = (order.items || [])?.filter(
+  const hasUnfulfilledItems = (order.items || [])?.filter(
     (i) =>
       isDefined(i?.detail?.fulfilled_quantity) &&
-      i.detail.fulfilled_quantity < i.quantity
-  )
+      MathBN.lt(i.detail.raw_fulfilled_quantity, i.raw_quantity)
+  ).length > 0
 
   if (fulfillmentStatus[FulfillmentStatus.DELIVERED] > 0) {
     if (
       fulfillmentStatus[FulfillmentStatus.DELIVERED] ===
         totalFulfillmentsExceptCanceled &&
-      !unfulfilledItems.length
+      !hasUnfulfilledItems
     ) {
       return FulfillmentStatus.DELIVERED
     }
