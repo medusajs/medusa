@@ -4038,7 +4038,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/commerce-modules/payment/relation-to-other-modules",
+                "path": "/commerce-modules/payment/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
               }
