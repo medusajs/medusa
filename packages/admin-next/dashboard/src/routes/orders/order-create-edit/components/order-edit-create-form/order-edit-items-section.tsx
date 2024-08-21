@@ -58,8 +58,10 @@ export const OrderEditItemsSection = ({
   }
 
   const filteredItems = useMemo(() => {
-    return preview.items.filter((i) =>
-      i.title.toLowerCase().includes(filterTerm)
+    return preview.items.filter(
+      (i) =>
+        i.title.toLowerCase().includes(filterTerm) ||
+        i.product_title.toLowerCase().includes(filterTerm)
     )
   }, [preview, filterTerm])
 

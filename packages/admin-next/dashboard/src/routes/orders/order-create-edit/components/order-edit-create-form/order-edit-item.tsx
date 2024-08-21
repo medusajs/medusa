@@ -42,10 +42,10 @@ function OrderEditItem({
                   {item.title}{" "}
                 </Text>
 
-                {item.variant?.sku && <span>({item.variant.sku})</span>}
+                {item.variant_sku && <span>({item.variant_sku})</span>}
               </div>
               <Text as="div" className="text-ui-fg-subtle txt-small">
-                {item.variant?.product?.title}
+                {item.product_title}
               </Text>
             </div>
           </div>
