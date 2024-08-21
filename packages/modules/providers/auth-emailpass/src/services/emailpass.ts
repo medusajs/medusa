@@ -35,24 +35,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     this.logger_ = logger
   }
 
-  private validateEmailPass({ email, password }) {
-    if (!password || !isString(password)) {
-      return {
-        success: false,
-        error: "Password should be a string",
-      }
-    }
-
-    if (!email || !isString(email)) {
-      return {
-        success: false,
-        error: "Email should be a string",
-      }
-    }
-
-    return
-  }
-
   protected async createAuthIdentity({ email, password, authIdentityService }) {
     const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
     const passwordHash = await Scrypt.kdf(password, hashConfig)
@@ -79,7 +61,19 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body ?? {}
 
-    this.validateEmailPass({ email, password })
+    if (!password || !isString(password)) {
+      return {
+        success: false,
+        error: "Password should be a string",
+      }
+    }
+
+    if (!email || !isString(email)) {
+      return {
+        success: false,
+        error: "Email should be a string",
+      }
+    }
 
     let authIdentity: AuthIdentityDTO | undefined
 
@@ -133,7 +127,19 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
   ): Promise<AuthenticationResponse> {
     const { email, password } = userData.body ?? {}
 
-    this.validateEmailPass({ email, password })
+    if (!password || !isString(password)) {
+      return {
+        success: false,
+        error: "Password should be a string",
+      }
+    }
+
+    if (!email || !isString(email)) {
+      return {
+        success: false,
+        error: "Email should be a string",
+      }
+    }
 
     try {
       await authIdentityService.retrieve({
