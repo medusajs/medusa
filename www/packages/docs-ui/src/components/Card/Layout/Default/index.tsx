@@ -49,7 +49,7 @@ export const CardDefaultLayout = ({
           icon={image}
         />
       )}
-      <div className={clsx("flex flex-col flex-1", contentClassName)}>
+      <div className={clsx("flex flex-col flex-1 truncate", contentClassName)}>
         {title && (
           <div className="text-compact-small-plus text-medusa-fg-base truncate">
             {title}
