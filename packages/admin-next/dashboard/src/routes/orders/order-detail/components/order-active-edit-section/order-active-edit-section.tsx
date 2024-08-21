@@ -41,7 +41,7 @@ export const OrderActiveEditSection = ({
     }
   }
 
-  if (!orderPreview || orderPreview.order_change.change_type !== "edit") {
+  if (!orderPreview || orderPreview.order_change?.change_type !== "edit") {
     return null
   }
 
