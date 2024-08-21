@@ -143,6 +143,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
               }}
               pathName={pathname}
               reportLink={formatReportLink(area, tag.name)}
+              vertical
             />
           </SectionContainer>
         }

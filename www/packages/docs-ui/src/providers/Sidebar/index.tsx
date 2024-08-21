@@ -530,7 +530,7 @@ export const SidebarProvider = ({
         activePath,
         setActivePath,
         isLinkActive: isLinkActive,
-        isChildrenActive: isChildrenActive,
+        isChildrenActive,
         findItemInSection,
         mobileSidebarOpen,
         setMobileSidebarOpen,
