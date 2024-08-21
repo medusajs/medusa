@@ -735,7 +735,8 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully", async () => {
+        it("should create a payment collection successfully & mark as paid", async () => {
+          const paymentDelta = 171.5
           const orderForPayment = (
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
@@ -746,12 +747,12 @@ medusaIntegrationTestRunner({
           expect(paymentCollections[0]).toEqual(
             expect.objectContaining({
               status: "not_paid",
-              amount: 171.5,
+              amount: paymentDelta,
               currency_code: "usd",
             })
           )
 
-          const paymentCollection = (
+          const createdPaymentCollection = (
             await api.post(
               `/admin/payment-collections`,
               { order_id: order.id, amount: 100 },
@@ -759,7 +760,7 @@ medusaIntegrationTestRunner({
             )
           ).data.payment_collection
 
-          expect(paymentCollection).toEqual(
+          expect(createdPaymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               amount: 100,
@@ -769,16 +770,35 @@ medusaIntegrationTestRunner({
 
           const deleted = (
             await api.delete(
-              `/admin/payment-collections/${paymentCollections[0].id}`,
+              `/admin/payment-collections/${createdPaymentCollection.id}`,
               adminHeaders
             )
           ).data
 
           expect(deleted).toEqual({
-            id: expect.any(String),
+            id: createdPaymentCollection.id,
             object: "payment-collection",
             deleted: true,
           })
+
+          const finalPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections/${paymentCollections[0].id}/mark-as-paid`,
+              { order_id: order.id },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(finalPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: paymentDelta,
+              status: "authorized",
+              authorized_amount: paymentDelta,
+              captured_amount: paymentDelta,
+              refunded_amount: 0,
+            })
+          )
         })
       })
 
@@ -857,7 +877,7 @@ medusaIntegrationTestRunner({
               items: [
                 {
                   variant_id: productExtra.variants[0].id,
-                  quantity: 2,
+                  quantity: 3,
                 },
               ],
             },
@@ -897,7 +917,7 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
-          const fulfillableItem = fulfillOrder.items.find(
+          const fulfillableItem = fulfillOrder.items.filter(
             (item) => item.detail.fulfilled_quantity === 0
           )
 
@@ -905,10 +925,85 @@ medusaIntegrationTestRunner({
             `/admin/orders/${order.id}/fulfillments`,
             {
               location_id: location.id,
-              items: [{ id: fulfillableItem.id, quantity: 1 }],
+              items: [{ id: fulfillableItem[0].id, quantity: 1 }],
             },
             adminHeaders
           )
+
+          let orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_fulfilled")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem[0].id, quantity: 2 }],
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("fulfilled")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[0].id}/shipments`,
+            {
+              items: orderResult.fulfillments[0]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_shipped")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[1].id}/shipments`,
+            {
+              items: orderResult.fulfillments[1]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[2].id}/shipments`,
+            {
+              items: orderResult.fulfillments[2]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("shipped")
         })
       })
     })

@@ -76,10 +76,6 @@ export const useCreateExchange = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
-
-      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
@@ -103,9 +99,6 @@ export const useCancelExchange = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -135,9 +128,6 @@ export const useDeleteExchange = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({
@@ -283,7 +273,7 @@ export const useRemoveExchangeInboundItem = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -510,10 +500,6 @@ export const useExchangeConfirmRequest = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
-      })
-
-      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
@@ -537,9 +523,6 @@ export const useCancelExchangeRequest = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
       })
 
       queryClient.invalidateQueries({

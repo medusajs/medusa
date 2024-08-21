@@ -21,10 +21,6 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
 
     setActionReference(existing, action, options)
 
-    if (MathBN.lte(existing.quantity, 0)) {
-      currentOrder.items.splice(existingIndex, 1)
-    }
-
     return MathBN.mult(existing.unit_price, action.details.quantity)
   },
   validate({ action, currentOrder }) {

@@ -9,10 +9,16 @@ import {
 import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
-import { queryKeysFactory } from "../../lib/query-key-factory"
+import { queryKeysFactory, TQueryKey } from "../../lib/query-key-factory"
 
 const ORDERS_QUERY_KEY = "orders" as const
-const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY)
+const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<
+  "orders",
+  any,
+  string
+> & {
+  preview: (orderId: string) => any
+}
 
 _orderKeys.preview = function (id: string) {
   return [this.detail(id), "preview"]
@@ -94,6 +100,10 @@ export const useCreateOrderFulfillment = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -151,13 +161,18 @@ export const useCreateOrderShipment = (
 }
 
 export const useCancelOrder = (
+  orderId: string,
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
     mutationFn: (id) => sdk.admin.order.cancel(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)

@@ -48,6 +48,11 @@
  *     description: The order's payment collections.
  *     items:
  *       $ref: "#/components/schemas/AdminPaymentCollection"
+ *   fulfillments:
+ *     type: array
+ *     description: The order's fulfillments.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   id:
  *     type: string
  *     title: id
@@ -108,11 +113,6 @@
  *       - partially_refunded
  *       - refunded
  *       - requires_action
- *   fulfillments:
- *     type: array
- *     description: The order's fulfillments.
- *     items:
- *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   fulfillment_status:
  *     type: string
  *     enum:

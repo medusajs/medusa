@@ -61,8 +61,8 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
   }),
   "medusa-config": getOptions({
-    entryPointPath: "packages/core/types/src/common/config-module.ts",
-    tsConfigName: "types.json",
+    entryPointPath: "packages/framework/framework/src/config/types.ts",
+    tsConfigName: "framework.json",
     name: "medusa-config",
   }),
   medusa: getOptions({

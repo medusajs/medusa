@@ -814,6 +814,7 @@
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
       "refund": "Refund",
+      "markAsPaid": "Mark as paid",
       "statusLabel": "Payment status",
       "statusTitle": "Payment Status",
       "status": {
@@ -830,11 +831,14 @@
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
+      "markAsPaidPayment": "Payment of {{amount}} will be marked as paid.",
+      "markAsPaidPaymentSuccess": "Payment of {{amount}} successfully marked as paid",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
       "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
       "refundAmount": "Refund {{ amount }}",
-      "paymentLink": "Copy payment link for {{ amount }}"
+      "paymentLink": "Copy payment link for {{ amount }}",
+      "selectPaymentToRefund": "Select payment to refund"
     },
 
     "edits": {
@@ -1035,7 +1039,8 @@
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
-          "canceled": "Payment canceled"
+          "canceled": "Payment canceled",
+          "refunded": "Payment refunded"
         },
         "fulfillment": {
           "created": "Items fulfilled",
@@ -1053,6 +1058,16 @@
         "note": {
           "comment": "Comment",
           "byLine": "by {{author}}"
+        },
+        "claim": {
+          "created": "Claim #{{claimId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
+        },
+        "exchange": {
+          "created": "Exchange #{{exchangeId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
         }
       }
     }

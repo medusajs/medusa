@@ -27,18 +27,23 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   Tooltip,
+  usePrompt,
 } from "@medusajs/ui"
 
+import { AdminPaymentCollection } from "../../../../../../../../core/types/dist/http/payment/admin/entities"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims.tsx"
 import { useExchanges } from "../../../../../hooks/api/exchanges.tsx"
 import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
+import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment-collections.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import { formatCurrency } from "../../../../../lib/format-currency.ts"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -54,6 +59,7 @@ type OrderSummarySectionProps = {
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
 
   const { reservations } = useReservationItems(
     {
@@ -104,9 +110,54 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     (pc) => pc.status === "not_paid"
   )
 
+  const { mutateAsync: markAsPaid } = useMarkPaymentCollectionAsPaid(
+    order.id,
+    unpaidPaymentCollection?.id!
+  )
+
   const showPayment =
     unpaidPaymentCollection && (order?.summary?.pending_difference || 0) > 0
   const showRefund = (order?.summary?.pending_difference || 0) < 0
+
+  const handleMarkAsPaid = async (
+    paymentCollection: AdminPaymentCollection
+  ) => {
+    const res = await prompt({
+      title: t("orders.payment.markAsPaid"),
+      description: t("orders.payment.markAsPaidPayment", {
+        amount: formatCurrency(
+          paymentCollection.amount as number,
+          order.currency_code
+        ),
+      }),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (!res) {
+      return
+    }
+
+    await markAsPaid(
+      { order_id: order.id },
+      {
+        onSuccess: () => {
+          toast.success(
+            t("orders.payment.markAsPaidPaymentSuccess", {
+              amount: formatCurrency(
+                paymentCollection.amount as number,
+                order.currency_code
+              ),
+            })
+          )
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+  }
 
   return (
     <Container className="divide-y divide-dashed p-0">
@@ -151,6 +202,31 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
               paymentCollection={unpaidPaymentCollection}
               order={order}
             />
+          )}
+
+          {showPayment && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
+            >
+              {t("orders.payment.markAsPaid")}
+            </Button>
+          )}
+
+          {showRefund && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => navigate(`/orders/${order.id}/refund`)}
+            >
+              {t("orders.payment.refundAmount", {
+                amount: getStylizedAmount(
+                  (order?.summary?.pending_difference || 0) * -1,
+                  order?.currency_code
+                ),
+              })}
+            </Button>
           )}
         </div>
       )}

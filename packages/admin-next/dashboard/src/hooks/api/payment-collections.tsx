@@ -12,6 +12,7 @@ export const paymentCollectionQueryKeys = queryKeysFactory(
 )
 
 export const useCreatePaymentCollection = (
+  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentCollectionResponse,
     Error,
@@ -22,7 +23,42 @@ export const useCreatePaymentCollection = (
     mutationFn: (payload) => sdk.admin.paymentCollection.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: paymentCollectionQueryKeys.all,
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useMarkPaymentCollectionAsPaid = (
+  orderId: string,
+  paymentCollectionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPaymentCollectionResponse,
+    Error,
+    HttpTypes.AdminMarkPaymentCollectionAsPaid
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.paymentCollection.markAsPaid(paymentCollectionId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       queryClient.invalidateQueries({
@@ -36,6 +72,7 @@ export const useCreatePaymentCollection = (
 }
 
 export const useDeletePaymentCollection = (
+  orderId: string,
   options?: Omit<
     UseMutationOptions<
       HttpTypes.AdminDeletePaymentCollectionResponse,
@@ -49,7 +86,11 @@ export const useDeletePaymentCollection = (
     mutationFn: (id: string) => sdk.admin.paymentCollection.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.all,
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       queryClient.invalidateQueries({
