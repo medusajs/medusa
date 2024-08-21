@@ -31,6 +31,30 @@ export const useCreateOrderEdit = (
   })
 }
 
+export const useRequestOrderEdit = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderEditPreviewResponse,
+    Error,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.orderEdit.request(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(id),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useConfirmOrderEdit = (
   id: string,
   options?: UseMutationOptions<
@@ -40,7 +64,7 @@ export const useConfirmOrderEdit = (
   >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.orderEdit.confirmRequest(id),
+    mutationFn: () => sdk.admin.orderEdit.confirm(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),

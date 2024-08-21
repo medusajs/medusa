@@ -24,7 +24,22 @@ export class OrderEdit {
     )
   }
 
-  async confirmRequest(
+  async request(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderEditPreviewResponse>(
+      `/admin/order-edits/${id}/request`,
+      {
+        method: "POST",
+        headers,
+        query,
+      }
+    )
+  }
+
+  async confirm(
     id: string,
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders

@@ -12,7 +12,10 @@ import {
 import { Form } from "../../../../../components/common/form"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
-import { useCancelOrderEdit } from "../../../../../hooks/api/order-edits"
+import {
+  useCancelOrderEdit,
+  useRequestOrderEdit,
+} from "../../../../../hooks/api/order-edits"
 import { OrderEditItemsSection } from "./order-edit-items-section"
 
 type ReturnCreateFormProps = {
@@ -34,6 +37,11 @@ export const OrderEditCreateForm = ({
   const { mutateAsync: cancelOrderEditRequest, isPending: isCanceling } =
     useCancelOrderEdit(order.id)
 
+  const { mutateAsync: requestOrderEdit, isPending: isRequesting } =
+    useRequestOrderEdit(order.id)
+
+  const isRequestRunning = isCanceling || isRequesting
+
   /**
    * FORM
    */
@@ -49,16 +57,9 @@ export const OrderEditCreateForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      /**
-       * DO NOTHING ON SAVE for now.
-       * Order change is created when request is initiated
-       */
+      await requestOrderEdit()
 
-      //   await confirmOrderEditRequest({
-      //     // no_notification: !data.send_notification, TODO: add to API
-      //   })
-      //
-      //   toast.success(t("orders.edits.createSuccessToast"))
+      toast.success(t("orders.edits.createSuccessToast"))
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
@@ -199,7 +200,7 @@ export const OrderEditCreateForm = ({
                 type="submit"
                 variant="primary"
                 size="small"
-                isLoading={isCanceling}
+                isLoading={isRequestRunning}
               >
                 {t("actions.save")}
               </Button>
