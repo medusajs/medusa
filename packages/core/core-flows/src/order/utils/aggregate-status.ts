@@ -1,5 +1,5 @@
 import { OrderDetailDTO } from "@medusajs/types"
-import { MathBN } from "@medusajs/utils"
+import { isDefined, MathBN } from "@medusajs/utils"
 
 export const getLastPaymentStatus = (order: OrderDetailDTO) => {
   const PaymentStatus = {
@@ -103,17 +103,22 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   }
 
   let fulfillmentStatus = {}
+
   for (const status in FulfillmentStatus) {
     fulfillmentStatus[FulfillmentStatus[status]] = 0
   }
 
   const statusMap = {
-    packed_at: FulfillmentStatus.FULFILLED,
-    shipped_at: FulfillmentStatus.SHIPPED,
-    delivered_at: FulfillmentStatus.DELIVERED,
     canceled_at: FulfillmentStatus.CANCELED,
+    delivered_at: FulfillmentStatus.DELIVERED,
+    shipped_at: FulfillmentStatus.SHIPPED,
+    packed_at: FulfillmentStatus.FULFILLED,
   }
+
   for (const fulfillmentCollection of order.fulfillments) {
+    // Note: The order of the statusMap keys is important as we break
+    // the loop when we have found a match. The match should be prioritized
+    // based on order of precedence of statuses
     for (const key in statusMap) {
       if (fulfillmentCollection[key]) {
         fulfillmentStatus[statusMap[key]] += 1
@@ -126,10 +131,20 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   const totalFulfillmentsExceptCanceled =
     totalFulfillments - fulfillmentStatus[FulfillmentStatus.CANCELED]
 
+  // Whenever there are any unfulfilled items in the order, it should be
+  // considered partially_[STATUS] where status is picked up from the hierarchy
+  // of statuses
+  const unfulfilledItems = order.items!.filter(
+    (i) =>
+      isDefined(i?.detail?.fulfilled_quantity) &&
+      i.detail.fulfilled_quantity < i.quantity
+  )
+
   if (fulfillmentStatus[FulfillmentStatus.DELIVERED] > 0) {
     if (
       fulfillmentStatus[FulfillmentStatus.DELIVERED] ===
-      totalFulfillmentsExceptCanceled
+        totalFulfillmentsExceptCanceled &&
+      !unfulfilledItems.length
     ) {
       return FulfillmentStatus.DELIVERED
     }
@@ -140,7 +155,8 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   if (fulfillmentStatus[FulfillmentStatus.SHIPPED] > 0) {
     if (
       fulfillmentStatus[FulfillmentStatus.SHIPPED] ===
-      totalFulfillmentsExceptCanceled
+        totalFulfillmentsExceptCanceled &&
+      !unfulfilledItems.length
     ) {
       return FulfillmentStatus.SHIPPED
     }
@@ -151,7 +167,8 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   if (fulfillmentStatus[FulfillmentStatus.FULFILLED] > 0) {
     if (
       fulfillmentStatus[FulfillmentStatus.FULFILLED] ===
-      totalFulfillmentsExceptCanceled
+        totalFulfillmentsExceptCanceled &&
+      !unfulfilledItems.length
     ) {
       return FulfillmentStatus.FULFILLED
     }
