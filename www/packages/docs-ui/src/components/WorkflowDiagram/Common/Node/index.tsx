@@ -17,7 +17,7 @@ export const WorkflowDiagramStepNode = ({ step }: WorkflowDiagramNodeProps) => {
 
   return (
     <Tooltip
-      tooltipClassName="!text-left max-w-full text-pretty overflow-scroll"
+      tooltipClassName="!text-left max-w-[300px] text-pretty overflow-scroll"
       tooltipChildren={
         <>
           <h4 className="text-compact-x-small-plus">{step.name}</h4>
@@ -38,6 +38,7 @@ export const WorkflowDiagramStepNode = ({ step }: WorkflowDiagramNodeProps) => {
         </>
       }
       clickable={true}
+      place="right"
     >
       <Link
         href={step.link || `#${step.name}`}
