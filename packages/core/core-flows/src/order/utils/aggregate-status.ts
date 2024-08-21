@@ -156,7 +156,7 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
     if (
       fulfillmentStatus[FulfillmentStatus.SHIPPED] ===
         totalFulfillmentsExceptCanceled &&
-      !unfulfilledItems.length
+      !hasUnfulfilledItems
     ) {
       return FulfillmentStatus.SHIPPED
     }
@@ -168,7 +168,7 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
     if (
       fulfillmentStatus[FulfillmentStatus.FULFILLED] ===
         totalFulfillmentsExceptCanceled &&
-      !unfulfilledItems.length
+      !hasUnfulfilledItems
     ) {
       return FulfillmentStatus.FULFILLED
     }
