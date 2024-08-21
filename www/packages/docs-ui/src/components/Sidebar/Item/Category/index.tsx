@@ -47,7 +47,7 @@ export const SidebarItemCategory = ({
     if (isActive && !open) {
       setOpen(true)
     }
-  }, [isChildrenActive])
+  }, [isChildrenActive, item.children])
 
   useEffect(() => {
     if (!persistState) {
