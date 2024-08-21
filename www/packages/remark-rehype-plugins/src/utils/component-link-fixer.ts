@@ -27,6 +27,9 @@ function matchMdLinks(
     if (!linkMatches.groups?.link) {
       return
     }
+    if (linkMatches.groups?.link.startsWith("http")) {
+      return
+    }
 
     const newUrl = fixLinkUtil({
       ...linkOptions,
@@ -45,6 +48,9 @@ function matchValueLink(
 ) {
   if (!VALUE_LINK_REGEX.exec(str)) {
     return str
+  }
+  if (str.startsWith("http")) {
+    return
   }
 
   return fixLinkUtil({
