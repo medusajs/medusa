@@ -53,8 +53,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    const { jwtSecret, jwtExpiresIn } = http
-    const token = generateJwtToken(
+    const { jwtSecret, jwtExpiresIn, jwtTokenStorageKey } = http
+    const authToken = generateJwtToken(
       {
         actor_id: entityId ?? "",
         actor_type,
@@ -73,12 +73,21 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
     if (successRedirectUrl) {
       const url = new URL(successRedirectUrl!)
-      url.searchParams.append("access_token", token)
+      url.searchParams.append("access_token", authToken)
 
       return res.redirect(url.toString())
     }
 
-    return res.json({ token })
+    if (successRedirectUrl) {
+      res.cookie(jwtTokenStorageKey, authToken, {
+          httpOnly: true,
+          secure: true,
+      })
+
+      return res.redirect(successRedirectUrl)
+  }
+
+    return res.json({ authToken })
   }
 
   throw new MedusaError(
