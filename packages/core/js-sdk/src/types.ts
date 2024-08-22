@@ -1,4 +1,4 @@
-export type AuthResponse = { token: string } | { location: string }
+export type AuthResponse = { authToken: string } | { location: string }
 
 export type AuthActor = "customer" | "user" | (string & {})
 export type AuthMethod = "emailpass" | (string & {})

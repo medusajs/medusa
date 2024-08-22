@@ -136,7 +136,7 @@ export class Client {
     this.clearToken_()
   }
 
-  protected clearToken_() {
+  protected async clearToken_() {
     const { storageMethod, storageKey } = this.getTokenStorageInfo_()
     switch (storageMethod) {
       case "local": {
@@ -148,8 +148,8 @@ export class Client {
         break
       }
       case "cookie": {
-        this.fetch(
-          `/auth/cookie`,
+        await this.fetch(
+          `/auth/cookie?storageKey=${storageKey}`,
           {
             method: "DELETE"
           }
@@ -250,7 +250,7 @@ export class Client {
     return token ? { Authorization: `Bearer ${token}` } : {}
   }
 
-  protected setToken_ = (token: string) => {
+  protected setToken_ = async (token: string) => {
     const { storageMethod, storageKey } = this.getTokenStorageInfo_()
     switch (storageMethod) {
       case "local": {
@@ -262,12 +262,13 @@ export class Client {
         break
       }
       case "cookie": {
-        this.fetch(
+        await this.fetch(
           `/auth/cookie`,
           {
             method: "POST",
             body: {
-              authToken: token
+              storageKey: storageKey,
+              storageValue: token
             }
           }
         )

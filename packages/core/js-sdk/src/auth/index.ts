@@ -29,19 +29,19 @@ export class Auth {
       return response.location
     }
 
-    const { token } = response as { token: string }
+    const { authToken } = response as { authToken: string }
 
     // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
     if (this.config?.auth?.type === "session") {
       await this.client.fetch("/auth/session", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       })
     } else {
-      this.client.setToken(token)
+      this.client.setToken(authToken)
     }
 
-    return token
+    return authToken
   }
 
   logout = async () => {
