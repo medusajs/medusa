@@ -11,7 +11,7 @@ import { swrFetcher, useSidebar } from "docs-ui"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
-import { SidebarItemSections } from "types"
+import { SidebarItem, SidebarItemSections } from "types"
 import basePathUrl from "../../utils/base-path-url"
 
 const TagSection = dynamic<TagSectionProps>(
@@ -31,7 +31,7 @@ const Tags = () => {
   const [loadData, setLoadData] = useState<boolean>(false)
   const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
-  const { addItems } = useSidebar()
+  const { addItems, setActivePath } = useSidebar()
   const { area, prevArea } = useArea()
 
   const { data } = useSWR<ExpandedDocument>(
@@ -65,30 +65,42 @@ const Tags = () => {
     if (baseSpecs) {
       if (prevArea !== area) {
         setBaseSpecs(null)
+        setLoadData(true)
         return
       }
 
-      addItems(
-        baseSpecs.tags?.map((tag) => {
+      const itemsToAdd: SidebarItem[] = [
+        {
+          type: "separator",
+        },
+      ]
+
+      if (baseSpecs.tags) {
+        baseSpecs.tags.forEach((tag) => {
           const tagPathName = getSectionId([tag.name.toLowerCase()])
           const childItems =
             baseSpecs.expandedTags &&
             Object.hasOwn(baseSpecs.expandedTags, tagPathName)
               ? getTagChildSidebarItems(baseSpecs.expandedTags[tagPathName])
               : []
-          return {
-            path: tagPathName,
+          itemsToAdd.push({
+            type: "category",
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
-          }
-        }) || [],
-        {
-          section: SidebarItemSections.BOTTOM,
-        }
-      )
+            onOpen: () => {
+              history.pushState({}, "", `#${tagPathName}`)
+              setActivePath(tagPathName)
+            },
+          })
+        })
+      }
+
+      addItems(itemsToAdd, {
+        section: SidebarItemSections.DEFAULT,
+      })
     }
-  }, [baseSpecs, addItems])
+  }, [baseSpecs, prevArea, area])
 
   return (
     <>

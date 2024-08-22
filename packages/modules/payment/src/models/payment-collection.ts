@@ -103,12 +103,12 @@ export default class PaymentCollection {
   payment_providers = new Collection<Rel<PaymentProvider>>(this)
 
   @OneToMany(() => PaymentSession, (ps) => ps.payment_collection, {
-    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST] as any,
   })
   payment_sessions = new Collection<Rel<PaymentSession>>(this)
 
   @OneToMany(() => Payment, (payment) => payment.payment_collection, {
-    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+    cascade: [Cascade.PERSIST] as any,
   })
   payments = new Collection<Rel<Payment>>(this)
 

@@ -59,7 +59,17 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateCartWorkflowInput"
+ *         allOf:
+ *           - $ref: "#/components/schemas/CreateCartWorkflowInput"
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -67,6 +77,12 @@
  * tags:
  *   - Carts
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/StoreCartResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -79,6 +95,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: createCartWorkflow
  * 
 */
 

@@ -1,0 +1,37 @@
+type: object
+description: The fulfillment set's location.
+x-schemaName: AdminStockLocation
+required:
+  - id
+  - name
+  - address_id
+properties:
+  id:
+    type: string
+    title: id
+    description: The location's ID.
+  name:
+    type: string
+    title: name
+    description: The location's name.
+  address_id:
+    type: string
+    title: address_id
+    description: The location's address id.
+  address:
+    $ref: ./AdminStockLocationAddress.yaml
+  sales_channels:
+    type: array
+    description: The location's sales channels.
+    items:
+      $ref: ./AdminSalesChannel.yaml
+  fulfillment_providers:
+    type: array
+    description: The location's fulfillment providers.
+    items:
+      $ref: ./AdminFulfillmentProvider.yaml
+  fulfillment_sets:
+    type: array
+    description: The location's fulfillment sets.
+    items:
+      type: object

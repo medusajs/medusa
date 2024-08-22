@@ -272,6 +272,7 @@ export default class PricingModuleService
           defaultPrice
         let originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
           defaultPrice
+
         if (priceListPrice) {
           calculatedPrice = priceListPrice
 
@@ -338,8 +339,9 @@ export default class PricingModuleService
               calculatedPrice.currency_code!,
               pricingContext.context?.region_id as string
             ),
-            calculated_amount:
-              parseFloat((calculatedPrice?.amount as string) || "") || null,
+            calculated_amount: isPresent(calculatedPrice?.amount)
+              ? parseFloat(calculatedPrice?.amount as string)
+              : null,
             raw_calculated_amount: calculatedPrice?.raw_amount || null,
 
             is_original_price_price_list: !!originalPrice?.price_list_id,
@@ -351,8 +353,9 @@ export default class PricingModuleService
                   pricingContext.context?.region_id as string
                 )
               : false,
-            original_amount:
-              parseFloat((originalPrice?.amount as string) || "") || null,
+            original_amount: isPresent(originalPrice?.amount)
+              ? parseFloat(originalPrice?.amount as string)
+              : null,
             raw_original_amount: originalPrice?.raw_amount || null,
 
             currency_code: calculatedPrice?.currency_code || null,

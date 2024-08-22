@@ -12,7 +12,7 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { parseOptionalFormData } from "../../../../../lib/form-helpers"
+import { transformNullableFormData } from "../../../../../lib/form-helpers"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct
@@ -50,7 +50,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     const { title, discountable, handle, status, ...optional } = data
 
-    const nullableData = parseOptionalFormData(optional)
+    const nullableData = transformNullableFormData(optional)
 
     await mutateAsync(
       {

@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminFileResponse
+required:
+  - file
+properties:
+  file:
+    $ref: ./AdminFile.yaml

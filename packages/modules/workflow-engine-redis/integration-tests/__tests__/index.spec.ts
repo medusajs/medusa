@@ -11,20 +11,20 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
   Module,
   Modules,
   TransactionHandlerType,
   TransactionStepState,
+  createMedusaContainer,
 } from "@medusajs/utils"
+import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
 import { asFunction, asValue } from "awilix"
+import Redis from "ioredis"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
-import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
-import Redis from "ioredis"
 
 jest.setTimeout(100000)
 
@@ -216,6 +216,7 @@ describe("Workflow Orchestrator module", function () {
             myInput: "123",
           },
           throwOnError: false,
+          logOnError: true,
         }
       )
 

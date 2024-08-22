@@ -245,14 +245,16 @@
     "addFilter": "Add filter"
   },
   "errorBoundary": {
-    "badRequestTitle": "Bad request",
-    "badRequestMessage": "The request was invalid.",
-    "notFoundTitle": "Not found",
-    "notFoundMessage": "The page you are looking for does not exist.",
-    "internalServerErrorTitle": "Internal server error",
-    "internalServerErrorMessage": "An error occurred on the server.",
+    "badRequestTitle": "400 - Bad request",
+    "badRequestMessage": "The request could not be understood by the server due to malformed syntax.",
+    "notFoundTitle": "404 - There is no page at this address",
+    "notFoundMessage": "Check the URL and try again, or use the search bar to find what you are looking for.",
+    "internalServerErrorTitle": "500 - Internal server error",
+    "internalServerErrorMessage": "An unexpected error occurred on the server. Please try again later.",
     "defaultTitle": "An error occurred",
-    "defaultMessage": "An error occurred while rendering this page."
+    "defaultMessage": "An unexpected error occurred while rendering this page.",
+    "noMatchMessage": "The page you are looking for does not exist.",
+    "backToDashboard": "Back to dashboard"
   },
   "addresses": {
     "shippingAddress": {
@@ -812,6 +814,7 @@
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
       "refund": "Refund",
+      "markAsPaid": "Mark as paid",
       "statusLabel": "Payment status",
       "statusTitle": "Payment Status",
       "status": {
@@ -828,9 +831,14 @@
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
+      "markAsPaidPayment": "Payment of {{amount}} will be marked as paid.",
+      "markAsPaidPaymentSuccess": "Payment of {{amount}} successfully marked as paid",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
-      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
+      "refundAmount": "Refund {{ amount }}",
+      "paymentLink": "Copy payment link for {{ amount }}",
+      "selectPaymentToRefund": "Select payment to refund"
     },
 
     "edits": {
@@ -850,6 +858,7 @@
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
+      "inboundTotal": "Inbound total",
       "refundAmount": "Refund amount",
       "outstandingAmount": "Outstanding amount",
       "reason": "Reason",
@@ -886,7 +895,10 @@
     },
     "claims": {
       "create": "Create Claim",
+      "manage": "Manage Claim",
       "outbound": "Outbound",
+      "outboundItemAdded": "{{itemsCount}}x added through claim",
+      "outboundTotal": "Outbound total",
       "outboundShipping": "Outbound shipping",
       "outboundShippingHint": "Choose which method you want to use.",
       "refundAmount": "Estimated difference",
@@ -894,6 +906,25 @@
       "actions": {
         "cancelClaim": {
           "successToast": "Claim was successfully canceled."
+        }
+      },
+      "tooltips": {
+        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      }
+    },
+    "exchanges": {
+      "create": "Create Exchange",
+      "manage": "Manage Exchange",
+      "outbound": "Outbound",
+      "outboundItemAdded": "{{itemsCount}}x added through exchange",
+      "outboundTotal": "Outbound total",
+      "outboundShipping": "Outbound shipping",
+      "outboundShippingHint": "Choose which method you want to use.",
+      "refundAmount": "Estimated difference",
+      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "actions": {
+        "cancelExchange": {
+          "successToast": "Exchange was successfully canceled."
         }
       },
       "tooltips": {
@@ -1008,7 +1039,8 @@
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
-          "canceled": "Payment canceled"
+          "canceled": "Payment canceled",
+          "refunded": "Payment refunded"
         },
         "fulfillment": {
           "created": "Items fulfilled",
@@ -1026,6 +1058,16 @@
         "note": {
           "comment": "Comment",
           "byLine": "by {{author}}"
+        },
+        "claim": {
+          "created": "Claim #{{claimId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
+        },
+        "exchange": {
+          "created": "Exchange #{{exchangeId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
         }
       }
     }
@@ -2369,8 +2411,8 @@
     "variants": "Variants",
     "orders": "Orders",
     "account": "Account",
-    "total": "Total",
-    "paidTotal": "Paid total",
+    "total": "Order Total",
+    "paidTotal": "Total captured",
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",

@@ -125,7 +125,7 @@ const Order = model.define("order", {
 
 const Product = model.define("product", {
   id: model.id().primaryKey(),
-  order: model.manyToMany(() => Order),
+  orders: model.manyToMany(() => Order),
 })
 ```
 

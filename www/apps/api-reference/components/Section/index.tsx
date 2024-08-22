@@ -1,14 +1,25 @@
 "use client"
 
 import clsx from "clsx"
+import { useActiveOnScroll, useSidebar } from "docs-ui"
 import { useEffect, useRef } from "react"
 
 export type SectionProps = {
-  addToSidebar?: boolean
+  checkActiveOnScroll?: boolean
 } & React.AllHTMLAttributes<HTMLDivElement>
 
-const Section = ({ children, className }: SectionProps) => {
+const Section = ({
+  children,
+  className,
+  checkActiveOnScroll = false,
+}: SectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const { activeItemId } = useActiveOnScroll({
+    rootElm: sectionRef.current || undefined,
+    enable: checkActiveOnScroll,
+    useDefaultIfNoActive: false,
+  })
+  const { setActivePath } = useSidebar()
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -16,6 +27,13 @@ const Section = ({ children, className }: SectionProps) => {
       history.scrollRestoration = "manual"
     }
   }, [])
+
+  useEffect(() => {
+    if (activeItemId.length) {
+      history.pushState({}, "", `#${activeItemId}`)
+      setActivePath(activeItemId)
+    }
+  }, [activeItemId])
 
   return (
     <div

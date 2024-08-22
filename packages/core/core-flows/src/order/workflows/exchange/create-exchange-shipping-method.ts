@@ -3,6 +3,7 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderPreviewDTO,
 } from "@medusajs/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
@@ -52,7 +53,7 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
     exchange_id?: string
     shipping_option_id: string
     custom_price?: BigNumberInput
-  }): WorkflowResponse<OrderDTO> {
+  }): WorkflowResponse<OrderPreviewDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
       fields: ["id", "status", "order_id", "canceled_at"],

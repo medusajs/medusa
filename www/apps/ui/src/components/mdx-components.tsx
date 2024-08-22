@@ -10,7 +10,7 @@ import { HookValues } from "@/components/hook-values"
 import { IconSearch } from "@/components/icon-search"
 import { PackageInstall } from "@/components/package-install"
 import { Feedback } from "@/components/feedback"
-import { FigmaIcon } from "@/components/figma-icon"
+import { FigmaCard } from "@/components/figma-card"
 import { ComponentReference } from "@/components/component-reference"
 import { Link, Card, BorderedIcon, MDXComponents, CodeBlock } from "docs-ui"
 
@@ -53,7 +53,7 @@ const components = {
   Colors,
   Card,
   BorderedIcon,
-  FigmaIcon,
+  FigmaCard,
   ComponentReference,
 }
 

@@ -1,0 +1,21 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminProductVariantInventoryLinkDeleteResponse
+required:
+  - id
+  - object
+  - deleted
+  - parent
+properties:
+  id:
+    $ref: ./AdminProductVariantInventoryLink.yaml
+  object:
+    type: string
+    title: object
+    description: The product's object.
+  deleted:
+    type: boolean
+    title: deleted
+    description: The product's deleted.
+  parent:
+    $ref: ./AdminProductVariant.yaml

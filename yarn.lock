@@ -4504,7 +4504,6 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
-    react-nestable: ^3.0.2
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
     tsup: ^8.0.2
@@ -5350,7 +5349,6 @@ __metadata:
     vite: ^4.3.9
     vite-plugin-turbosnap: ^1.0.2
     vitest: ^0.32.2
-    yarn: ^1.22.22
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
@@ -25895,24 +25893,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-addons-shallow-compare@npm:^15.6.3":
-  version: 15.6.3
-  resolution: "react-addons-shallow-compare@npm:15.6.3"
-  dependencies:
-    object-assign: ^4.1.0
-  checksum: ad1a2ef7adf1a307b55de58a99ccf40998a1f7c84dcaadb1a2dd40c0e21e911b84fe04ab5f3494a1118846fc7537043287d54bcaffc2daf819b6c45eef5635ce
-  languageName: node
-  linkType: hard
-
-"react-addons-update@npm:^15.6.3":
-  version: 15.6.3
-  resolution: "react-addons-update@npm:15.6.3"
-  dependencies:
-    object-assign: ^4.1.0
-  checksum: b6d98b459eb37393b8103309090b36649c0a0e95c7dbe010e692616eb025baf62b53cb187925ecce0c3ed0377357ce03c3a45a8ec2d91e6886f8d2eb55b0dfd1
-  languageName: node
-  linkType: hard
-
 "react-aria@npm:^3.33.1":
   version: 3.33.1
   resolution: "react-aria@npm:3.33.1"
@@ -26121,19 +26101,6 @@ __metadata:
     fsevents:
       optional: true
   checksum: cbe27de003233f42126cb55ad6e8f368cc67d477f0b316afab2f9750f66b5f0b65703f682f6e2f85149427aa74c4674f548e64707fdfcbbf7146fec0659b8324
-  languageName: node
-  linkType: hard
-
-"react-nestable@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "react-nestable@npm:3.0.2"
-  dependencies:
-    classnames: ^2.3.2
-    react: ^18.2.0
-    react-addons-shallow-compare: ^15.6.3
-    react-addons-update: ^15.6.3
-    react-dom: ^18.2.0
-  checksum: e2a7947382ca28e12048c534a2ad6e544dff60a56e712b7a1b00838434c5b5444b4c50c1fd652e032710b567674b4eff36ee4c3a5021c02f933d11c7b88ce7b9
   languageName: node
   linkType: hard
 
@@ -31509,16 +31476,6 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b1dbfefa679848442454b60053a6c95d62f2d2e21dd28def92b647587f415969173c6e99a0f3bab4f1b67ee8283bf735ebe3544013f09491186ba9e8a9a2b651
-  languageName: node
-  linkType: hard
-
-"yarn@npm:^1.22.22":
-  version: 1.22.22
-  resolution: "yarn@npm:1.22.22"
-  bin:
-    yarn: bin/yarn.js
-    yarnpkg: bin/yarn.js
-  checksum: 8c77198c93d7542e7f4e131c63b66de357b7076ecfbcfe709ec0d674115c2dd9edaa45196e5510e6e9366d368707a802579e3402071002e1c9d9a99d491478de
   languageName: node
   linkType: hard
 

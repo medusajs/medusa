@@ -62,6 +62,7 @@ function createContextualWorkflowRunner<
     method,
     {
       throwOnError,
+      logOnError = false,
       resultFrom,
       isCancel = false,
       container: executionContainer,
@@ -86,7 +87,7 @@ function createContextualWorkflowRunner<
 
     const { eventGroupId } = context
 
-    attachOnFinishReleaseEvents(events, eventGroupId!, flow)
+    attachOnFinishReleaseEvents(events, eventGroupId!, flow, { logOnError })
 
     const flowMetadata = {
       eventGroupId,
@@ -143,21 +144,18 @@ function createContextualWorkflowRunner<
     }
   }
 
-  const newRun = async (
-    {
-      input,
-      context: outerContext,
-      throwOnError,
-      resultFrom,
-      events,
-      container,
-    }: FlowRunOptions = {
-      throwOnError: true,
-      resultFrom: defaultResult,
-    }
-  ) => {
+  const newRun = async ({
+    input,
+    context: outerContext,
+    throwOnError,
+    logOnError,
+    resultFrom,
+    events,
+    container,
+  }: FlowRunOptions = {}) => {
     resultFrom ??= defaultResult
     throwOnError ??= true
+    logOnError ??= false
 
     const context = {
       ...outerContext,
@@ -185,7 +183,12 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRun,
-      { throwOnError, resultFrom, container },
+      {
+        throwOnError,
+        resultFrom,
+        container,
+        logOnError,
+      },
       context.transactionId,
       input,
       context,
@@ -200,17 +203,18 @@ function createContextualWorkflowRunner<
       idempotencyKey,
       context: outerContext,
       throwOnError,
+      logOnError,
       resultFrom,
       events,
       container,
     }: FlowRegisterStepSuccessOptions = {
       idempotencyKey: "",
-      throwOnError: true,
-      resultFrom: defaultResult,
     }
   ) => {
+    idempotencyKey ??= ""
     resultFrom ??= defaultResult
     throwOnError ??= true
+    logOnError ??= false
 
     const [, transactionId] = idempotencyKey.split(":")
     const context = {
@@ -223,7 +227,12 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRegisterStepSuccess,
-      { throwOnError, resultFrom, container },
+      {
+        throwOnError,
+        resultFrom,
+        container,
+        logOnError,
+      },
       idempotencyKey,
       response,
       context,
@@ -238,17 +247,18 @@ function createContextualWorkflowRunner<
       idempotencyKey,
       context: outerContext,
       throwOnError,
+      logOnError,
       resultFrom,
       events,
       container,
     }: FlowRegisterStepFailureOptions = {
       idempotencyKey: "",
-      throwOnError: true,
-      resultFrom: defaultResult,
     }
   ) => {
+    idempotencyKey ??= ""
     resultFrom ??= defaultResult
     throwOnError ??= true
+    logOnError ??= false
 
     const [, transactionId] = idempotencyKey.split(":")
     const context = {
@@ -261,7 +271,12 @@ function createContextualWorkflowRunner<
 
     return await originalExecution(
       originalRegisterStepFailure,
-      { throwOnError, resultFrom, container },
+      {
+        throwOnError,
+        resultFrom,
+        container,
+        logOnError,
+      },
       idempotencyKey,
       response,
       context,
@@ -270,19 +285,17 @@ function createContextualWorkflowRunner<
   }
   flow.registerStepFailure = newRegisterStepFailure as any
 
-  const newCancel = async (
-    {
-      transaction,
-      transactionId,
-      context: outerContext,
-      throwOnError,
-      events,
-      container,
-    }: FlowCancelOptions = {
-      throwOnError: true,
-    }
-  ) => {
+  const newCancel = async ({
+    transaction,
+    transactionId,
+    context: outerContext,
+    throwOnError,
+    logOnError,
+    events,
+    container,
+  }: FlowCancelOptions = {}) => {
     throwOnError ??= true
+    logOnError ??= false
 
     const context = {
       ...outerContext,
@@ -299,6 +312,7 @@ function createContextualWorkflowRunner<
         resultFrom: undefined,
         isCancel: true,
         container,
+        logOnError,
       },
       transaction ?? transactionId!,
       undefined,
@@ -478,7 +492,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 function attachOnFinishReleaseEvents(
   events: DistributedTransactionEvents = {},
   eventGroupId: string,
-  flow: LocalWorkflow
+  flow: LocalWorkflow,
+  {
+    logOnError,
+  }: {
+    logOnError?: boolean
+  } = {}
 ) {
   const onFinish = events.onFinish
 
@@ -487,6 +506,30 @@ function attachOnFinishReleaseEvents(
     result?: unknown
     errors?: unknown[]
   }) => {
+    const { transaction } = args
+
+    const logger =
+      (flow.container as MedusaContainer).resolve(
+        ContainerRegistrationKeys.LOGGER,
+        { allowUnregistered: true }
+      ) || console
+
+    if (logOnError) {
+      const TERMINAL_SIZE = process.stdout?.columns ?? 60
+      const separator = new Array(TERMINAL_SIZE).join("-")
+
+      const worflowName = transaction.getFlow().modelId
+      const allWorkflowErrors = transaction
+        .getErrors()
+        .map(
+          (err) =>
+            `${worflowName}:${err?.action}:${err?.handlerType} - ${err?.error?.message}${EOL}${err?.error?.stack}`
+        )
+        .join(EOL + separator + EOL)
+
+      logger.error(allWorkflowErrors)
+    }
+
     await onFinish?.(args)
 
     const eventBusService = (flow.container as MedusaContainer).resolve(
@@ -498,13 +541,6 @@ function attachOnFinishReleaseEvents(
       return
     }
 
-    const logger =
-      (flow.container as MedusaContainer).resolve(
-        ContainerRegistrationKeys.LOGGER,
-        { allowUnregistered: true }
-      ) || console
-
-    const { transaction } = args
     const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
 
     if (failedStatus.includes(transaction.getState())) {

@@ -79,6 +79,12 @@ get:
   tags:
     - Tax Regions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTaxRegionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -170,6 +176,12 @@ delete:
   tags:
     - Tax Regions
   responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTaxRegionDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

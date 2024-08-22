@@ -21,4 +21,6 @@ export interface BaseReturn {
   no_notification?: boolean
   refund_amount?: number
   items: BaseReturnItem[]
+  received_at: string
+  created_at: string
 }

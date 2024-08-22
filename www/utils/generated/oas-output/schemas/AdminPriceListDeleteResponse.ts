@@ -1,0 +1,29 @@
+/**
+ * @schema AdminPriceListDeleteResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminPriceListDeleteResponse
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The price list's ID.
+ *   object:
+ *     type: string
+ *     title: object
+ *     description: The price list's object.
+ *     default: price_list
+ *   deleted:
+ *     type: boolean
+ *     title: deleted
+ *     description: The price list's deleted.
+ *   parent:
+ *     type: object
+ *     description: The price list's parent.
+ * 
+*/
+

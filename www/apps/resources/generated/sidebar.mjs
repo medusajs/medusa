@@ -2,29 +2,38 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/",
     "title": "Overview",
-    "hasTitleStyling": true,
     "children": []
   },
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/commerce-modules",
     "title": "Commerce Modules",
     "isChildSidebar": true,
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/api-key",
+        "type": "category",
         "title": "API Key Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/api-key",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/api-key/examples",
             "title": "Examples",
             "children": []
@@ -32,11 +41,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/api-key/concepts",
                 "title": "API Key Concepts",
                 "children": []
@@ -44,6 +55,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/api-key/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -53,11 +65,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/api-key",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -66,6 +80,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/api_key/IApiKeyModuleService/methods",
@@ -149,6 +164,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/api-key/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -157,6 +173,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/api_key_models/classes",
@@ -180,13 +197,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/auth",
+        "type": "category",
         "title": "Auth Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/api-key",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/auth/module-options",
             "title": "Module Options",
             "children": []
@@ -194,6 +220,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/auth/examples",
             "title": "Examples",
             "children": []
@@ -201,11 +228,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/auth/auth-identity-and-actor-types",
                 "title": "Identity and Actor Types",
                 "children": []
@@ -213,12 +242,14 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
                 "children": [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "link",
                     "path": "/commerce-modules/auth/auth-providers/emailpass",
                     "title": "Emailpass Auth Provider Module",
                     "children": []
@@ -228,6 +259,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/auth/authentication-route",
                 "title": "Authentication Route",
                 "children": []
@@ -235,6 +267,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/auth/auth-flows",
                 "title": "Auth Flows",
                 "children": []
@@ -244,11 +277,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
                 "children": []
@@ -258,11 +293,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/auth/provider",
                 "title": "Create Auth Provider Module",
                 "children": []
@@ -270,6 +307,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/auth",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -278,8 +316,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/auth/IAuthModuleService/methods",
                     "children": [
                       {
@@ -353,6 +391,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/auth/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -361,8 +400,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/auth_models/classes",
                     "children": [
                       {
@@ -392,13 +431,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/cart",
+        "type": "category",
         "title": "Cart Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/cart",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/cart/examples",
             "title": "Examples",
             "children": []
@@ -406,11 +454,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/cart/concepts",
                 "title": "Cart Concepts",
                 "children": []
@@ -418,6 +468,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/cart/promotions",
                 "title": "Promotion Adjustments",
                 "children": []
@@ -425,6 +476,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/cart/tax-lines",
                 "title": "Tax Lines",
                 "children": []
@@ -432,6 +484,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/cart/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -441,11 +494,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/cart",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -454,8 +509,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/cart/ICartModuleService/methods",
                     "children": [
                       {
@@ -865,6 +920,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/cart/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -873,8 +929,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/cart_models/classes",
                     "children": [
                       {
@@ -952,13 +1008,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/currency",
-        "title": "Currency Module",
-        "hasTitleStyling": true,
+        "type": "category",
+        "title": "Currency",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/currency",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/currency/examples",
             "title": "Examples",
             "children": []
@@ -966,11 +1031,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/currency/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -980,11 +1047,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/currency",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -993,8 +1062,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/currency/ICurrencyModuleService/methods",
                     "children": [
                       {
@@ -1028,6 +1097,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/currency/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -1036,8 +1106,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/currency_models/variables",
                     "children": [
                       {
@@ -1059,13 +1129,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/customer",
-        "title": "Customer Module",
-        "hasTitleStyling": true,
+        "type": "category",
+        "title": "Customer",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/customer",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/customer/examples",
             "title": "Examples",
             "children": []
@@ -1073,11 +1152,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/customer/customer-accounts",
                 "title": "Customer Accounts",
                 "children": []
@@ -1085,6 +1166,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/customer/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -1094,11 +1176,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/customer",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -1107,8 +1191,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/customer/ICustomerModuleService/methods",
                     "children": [
                       {
@@ -1310,6 +1394,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/customer/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -1318,8 +1403,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/customer_models/classes",
                     "children": [
                       {
@@ -1365,13 +1450,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/fulfillment",
+        "type": "category",
         "title": "Fulfillment Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/fulfillment",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/fulfillment/module-options",
             "title": "Module Options",
             "children": []
@@ -1379,11 +1473,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/fulfillment/concepts",
                 "title": "Fulfillment Concepts",
                 "children": []
@@ -1391,6 +1487,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/fulfillment/fulfillment-provider",
                 "title": "Fulfillment Provider",
                 "children": []
@@ -1398,6 +1495,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/fulfillment/shipping-option",
                 "title": "Shipping Option",
                 "children": []
@@ -1405,6 +1503,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/fulfillment/item-fulfillment",
                 "title": "Item Fulfillment",
                 "children": []
@@ -1412,6 +1511,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/fulfillment/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -1421,11 +1521,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/fulfillment/provider",
                 "title": "Create Fulfillment Provider Module",
                 "children": []
@@ -1433,6 +1535,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/fulfillment",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -1441,8 +1544,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/fulfillment/IFulfillmentModuleService/methods",
                     "children": [
                       {
@@ -1972,6 +2075,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/fulfillment/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -1980,6 +2084,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/fulfillment_models/classes",
@@ -2091,13 +2196,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/inventory",
+        "type": "category",
         "title": "Inventory Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/inventory",
+            "title": "Inventory Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/inventory/examples",
             "title": "Examples",
             "children": []
@@ -2105,11 +2219,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/inventory/concepts",
                 "title": "Inventory Concepts",
                 "children": []
@@ -2117,6 +2233,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/inventory/inventory-in-flows",
                 "title": "Inventory in Flows",
                 "children": []
@@ -2124,6 +2241,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/inventory/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -2133,11 +2251,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/inventory_next",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -2146,8 +2266,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/inventory_next/IInventoryService/methods",
                     "children": [
                       {
@@ -2437,6 +2557,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/inventory_next/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -2445,8 +2566,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/inventory_next_models/classes",
                     "children": [
                       {
@@ -2484,18 +2605,28 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/order",
+        "type": "category",
         "title": "Order Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/order",
+            "title": "Order Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/concepts",
                 "title": "Order Concepts",
                 "children": []
@@ -2503,6 +2634,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/promotion-adjustments",
                 "title": "Promotions Adjustments",
                 "children": []
@@ -2510,6 +2642,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/tax-lines",
                 "title": "Tax Lines",
                 "children": []
@@ -2517,6 +2650,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/transactions",
                 "title": "Transactions",
                 "children": []
@@ -2524,6 +2658,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/order-versioning",
                 "title": "Order Versioning",
                 "children": []
@@ -2531,6 +2666,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/return",
                 "title": "Return",
                 "children": []
@@ -2538,6 +2674,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/exchange",
                 "title": "Exchange",
                 "children": []
@@ -2545,6 +2682,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/claim",
                 "title": "Claim",
                 "children": []
@@ -2552,6 +2690,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/order/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -2561,11 +2700,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/order",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -2574,8 +2715,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/order/IOrderModuleService/methods",
                     "children": [
                       {
@@ -3609,6 +3750,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/order/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -3617,6 +3759,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/order_models/classes",
@@ -3808,13 +3951,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/payment",
+        "type": "category",
         "title": "Payment Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/payment",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/payment/module-options",
             "title": "Module Options",
             "children": []
@@ -3822,6 +3974,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/payment/examples",
             "title": "Examples",
             "children": []
@@ -3829,11 +3982,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/payment-collection",
                 "title": "Payment Collections",
                 "children": []
@@ -3841,6 +3996,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/payment-session",
                 "title": "Payment Session",
                 "children": []
@@ -3848,6 +4004,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/payment",
                 "title": "Payment",
                 "children": []
@@ -3855,12 +4012,14 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/payment-provider",
                 "title": "Payment Provider Module",
                 "children": [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "link",
                     "path": "/commerce-modules/payment/payment-provider/stripe",
                     "title": "Stripe",
                     "children": []
@@ -3870,6 +4029,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/webhook-events",
                 "title": "Webhook Events",
                 "children": []
@@ -3877,6 +4037,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/relation-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -3886,11 +4047,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/payment/payment-flow",
                 "title": "Accept Payment Flow",
                 "children": []
@@ -3900,11 +4063,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/payment/provider",
                 "title": "Payment Provider Reference",
                 "children": []
@@ -3912,6 +4077,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/payment",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -3920,8 +4086,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/payment/IPaymentModuleService/methods",
                     "children": [
                       {
@@ -4171,6 +4337,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/payment/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -4179,8 +4346,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/payment_models/classes",
                     "children": [
                       {
@@ -4258,13 +4425,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/pricing",
+        "type": "category",
         "title": "Pricing Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/pricing",
+            "title": "Pricing Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/pricing/examples",
             "title": "Examples",
             "children": []
@@ -4272,11 +4448,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/pricing/concepts",
                 "title": "Pricing Concepts",
                 "children": []
@@ -4284,6 +4462,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/pricing/price-rules",
                 "title": "Price Rules",
                 "children": []
@@ -4291,6 +4470,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/pricing/price-calculation",
                 "title": "Prices Calculation",
                 "children": []
@@ -4298,6 +4478,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/pricing/tax-inclusive-pricing",
                 "title": "Tax-Inclusive Pricing",
                 "children": []
@@ -4305,6 +4486,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/pricing/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -4314,11 +4496,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/pricing",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -4327,8 +4511,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/pricing/IPricingModuleService/methods",
                     "children": [
                       {
@@ -4690,6 +4874,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/pricing/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -4698,6 +4883,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/pricing_models/classes",
@@ -4761,13 +4947,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/product",
+        "type": "category",
         "title": "Product Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/product",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/product/examples",
             "title": "Examples",
             "children": []
@@ -4775,11 +4970,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/product/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -4789,6 +4986,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "autogenerate_path": "/commerce-modules/product/guides",
             "children": [
@@ -4813,11 +5011,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/product",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -4826,8 +5026,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/product/IProductModuleService/methods",
                     "children": [
                       {
@@ -5341,6 +5541,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/product/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -5349,6 +5550,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/product_models/classes",
@@ -5436,13 +5638,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/promotion",
+        "type": "category",
         "title": "Promotion Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/promotion",
+            "title": "Promotion Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/promotion/examples",
             "title": "Examples",
             "children": []
@@ -5450,11 +5661,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/promotion/concepts",
                 "title": "Promotion",
                 "children": []
@@ -5462,6 +5675,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/promotion/application-method",
                 "title": "Application Method",
                 "children": []
@@ -5469,6 +5683,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/promotion/campaign",
                 "title": "Campaign",
                 "children": []
@@ -5476,6 +5691,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/promotion/actions",
                 "title": "Promotion Actions",
                 "children": []
@@ -5483,6 +5699,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/promotion/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -5492,11 +5709,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/promotion",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -5505,6 +5724,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/promotion/IPromotionModuleService/methods",
@@ -5740,6 +5960,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/promotion/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -5748,6 +5969,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/promotion_models/classes",
@@ -5811,13 +6033,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/region",
+        "type": "category",
         "title": "Region Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/region",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/region/examples",
             "title": "Examples",
             "children": []
@@ -5825,11 +6056,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/region/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
@@ -5839,11 +6072,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/region",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -5852,8 +6087,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/region/IRegionModuleService/methods",
                     "children": [
                       {
@@ -5959,6 +6194,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/region/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -5967,8 +6203,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/region_models/variables",
                     "children": [
                       {
@@ -5998,13 +6234,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/sales-channel",
+        "type": "category",
         "title": "Sales Channel Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/sales-channel",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/sales-channel/examples",
             "title": "Examples",
             "children": []
@@ -6012,11 +6257,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/sales-channel/publishable-api-keys",
                 "title": "Publishable API Keys",
                 "children": []
@@ -6024,6 +6271,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/sales-channel/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -6033,11 +6281,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/sales-channel",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -6046,8 +6296,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/sales_channel/ISalesChannelModuleService/methods",
                     "children": [
                       {
@@ -6129,6 +6379,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/sales-channel/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -6137,8 +6388,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/sales_channel_models/classes",
                     "children": [
                       {
@@ -6160,13 +6411,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/stock-location",
+        "type": "category",
         "title": "Stock Location Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/stock-location",
+            "title": "Stock Location Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/stock-location/examples",
             "title": "Examples",
             "children": []
@@ -6174,11 +6434,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/stock-location/concepts",
                 "title": "Stock Location Concepts",
                 "children": []
@@ -6186,6 +6448,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/stock-location/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -6195,11 +6458,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/stock-location",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -6208,8 +6473,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/stock_location_next/IStockLocationService/methods",
                     "children": [
                       {
@@ -6291,6 +6556,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/stock-location/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -6299,8 +6565,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/stock_location_next_models/classes",
                     "children": [
                       {
@@ -6330,13 +6596,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/store",
+        "type": "category",
         "title": "Store Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/store",
+            "title": "Store Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/store/examples",
             "title": "Examples",
             "children": []
@@ -6344,11 +6619,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/store/relations-to-other-modules",
                 "title": "Relation to Modules",
                 "children": []
@@ -6358,11 +6635,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/store",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -6371,8 +6650,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/store/IStoreModuleService/methods",
                     "children": [
                       {
@@ -6454,6 +6733,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/store/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -6462,8 +6742,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/store_models/classes",
                     "children": [
                       {
@@ -6493,13 +6773,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/tax",
+        "type": "category",
         "title": "Tax Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/tax",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/tax/module-options",
             "title": "Module Options",
             "children": []
@@ -6507,6 +6796,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/tax/examples",
             "title": "Examples",
             "children": []
@@ -6514,11 +6804,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/tax/tax-region",
                 "title": "Tax Region",
                 "children": []
@@ -6526,6 +6818,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/tax/tax-rates-and-rules",
                 "title": "Tax Rates and Rules",
                 "children": []
@@ -6533,6 +6826,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/tax/tax-calculation-with-provider",
                 "title": "Tax Calculation and Providers",
                 "children": []
@@ -6542,11 +6836,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/tax/provider",
                 "title": "Tax Provider Reference",
                 "children": []
@@ -6554,6 +6850,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/tax",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -6562,8 +6859,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/tax/ITaxModuleService/methods",
                     "children": [
                       {
@@ -6733,6 +7030,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/tax/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -6741,8 +7039,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/tax_models/classes",
                     "children": [
                       {
@@ -6788,13 +7086,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/commerce-modules/user",
+        "type": "category",
         "title": "User Module",
-        "hasTitleStyling": true,
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/commerce-modules/user",
+            "title": "User Module",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/user/module-options",
             "title": "Module Options",
             "children": []
@@ -6802,6 +7109,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/user/examples",
             "title": "Examples",
             "children": []
@@ -6809,11 +7117,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Concepts",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/commerce-modules/user/user-creation-flows",
                 "title": "User Creation Flows",
                 "children": []
@@ -6823,11 +7133,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "References",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/user",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -6836,8 +7148,8 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Methods",
-                    "hasTitleStyling": true,
                     "autogenerate_path": "/references/user/IUserModuleService/methods",
                     "children": [
                       {
@@ -6991,6 +7303,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/user/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
@@ -6999,6 +7312,7 @@ export const generatedSidebar = [
                   {
                     "loaded": true,
                     "isPathHref": true,
+                    "type": "category",
                     "title": "Data Models",
                     "hasTitleStyling": true,
                     "autogenerate_path": "/references/user_models/classes",
@@ -7032,20 +7346,21 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/integrations",
     "title": "Integrations",
     "isChildSidebar": true,
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "category",
         "title": "File",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/file/s3",
             "title": "AWS S3 (and Compatible APIs)",
             "children": []
@@ -7055,12 +7370,13 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "category",
         "title": "Notification",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/notification/sendgrid",
             "title": "SendGrid",
             "children": []
@@ -7070,12 +7386,13 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "category",
         "title": "Payment",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/commerce-modules/payment/payment-provider/stripe",
             "title": "Stripe",
             "children": []
@@ -7087,20 +7404,22 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/recipes",
     "title": "Recipes",
-    "hasTitleStyling": true,
     "isChildSidebar": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/marketplace",
         "title": "Marketplace",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/recipes/marketplace/examples/vendors",
             "title": "Example: Vendors",
             "children": []
@@ -7110,12 +7429,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/subscriptions",
         "title": "Subscriptions",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/recipes/subscriptions/examples/standard",
             "title": "Example",
             "children": []
@@ -7125,12 +7446,14 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/digital-products",
         "title": "Digital Products",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/recipes/digital-products/examples/standard",
             "title": "Example",
             "children": []
@@ -7140,6 +7463,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/b2b",
         "title": "B2B",
         "children": []
@@ -7147,6 +7471,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/commerce-automation",
         "title": "Commerce Automation",
         "children": []
@@ -7154,6 +7479,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/ecommerce",
         "title": "Ecommerce",
         "children": []
@@ -7161,6 +7487,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/integrate-ecommerce-stack",
         "title": "Integrate Ecommerce Stack",
         "children": []
@@ -7168,6 +7495,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/multi-region-store",
         "title": "Multi-Region Store",
         "children": []
@@ -7175,6 +7503,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/omnichannel",
         "title": "Omnichannel Store",
         "children": []
@@ -7182,6 +7511,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/oms",
         "title": "OMS",
         "children": []
@@ -7189,6 +7519,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/personalized-products",
         "title": "Personalized Products",
         "children": []
@@ -7196,6 +7527,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/recipes/pos",
         "title": "POS",
         "children": []
@@ -7203,14 +7535,18 @@ export const generatedSidebar = [
     ]
   },
   {
+    "type": "separator"
+  },
+  {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "title": "SDKs and Tools",
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/create-medusa-app",
         "title": "create-medusa-app",
         "children": []
@@ -7218,6 +7554,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/medusa-cli",
         "title": "Medusa CLI",
         "children": []
@@ -7225,6 +7562,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/nextjs-starter",
         "title": "Next.js Starter",
         "children": []
@@ -7234,21 +7572,29 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/architectural-modules",
     "title": "Architectural Modules",
     "isChildSidebar": true,
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/architectural-modules/cache",
+        "type": "category",
         "title": "Cache Modules",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/architectural-modules/cache",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/cache/in-memory",
             "title": "In-Memory",
             "children": []
@@ -7256,6 +7602,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/cache/redis",
             "title": "Redis",
             "children": []
@@ -7263,11 +7610,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/architectural-modules/cache/create",
                 "title": "Create Cache Module",
                 "children": []
@@ -7279,13 +7628,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/architectural-modules/event",
+        "type": "category",
         "title": "Event Modules",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/architectural-modules/event",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/event/local",
             "title": "Local",
             "children": []
@@ -7293,6 +7650,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/event/redis",
             "title": "Redis",
             "children": []
@@ -7300,11 +7658,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/architectural-modules/event/create",
                 "title": "Create Event Module",
                 "children": []
@@ -7316,13 +7676,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/architectural-modules/file",
+        "type": "category",
         "title": "File Provider Modules",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/architectural-modules/file",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/file/local",
             "title": "Local",
             "children": []
@@ -7330,6 +7698,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/file/s3",
             "title": "AWS S3 (and Compatible APIs)",
             "children": []
@@ -7337,11 +7706,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/file-provider-module",
                 "title": "Create File Provider",
                 "children": []
@@ -7353,13 +7724,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/architectural-modules/notification",
+        "type": "category",
         "title": "Notification Provider Modules",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/architectural-modules/notification",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/notification/local",
             "title": "Local",
             "children": []
@@ -7367,6 +7746,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/notification/sendgrid",
             "title": "SendGrid",
             "children": []
@@ -7374,11 +7754,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "sub-category",
             "title": "Guides",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/architectural-modules/notification/send-notification",
                 "title": "Send Notification",
                 "children": []
@@ -7386,6 +7768,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/references/notification-provider-module",
                 "title": "Create Notification Provider",
                 "children": []
@@ -7397,13 +7780,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/architectural-modules/workflow-engine",
+        "type": "category",
         "title": "Workflow Engine Modules",
-        "hasTitleStyling": true,
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/architectural-modules/workflow-engine",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/workflow-engine/in-memory",
             "title": "In-Memory",
             "children": []
@@ -7411,6 +7802,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/architectural-modules/workflow-engine/redis",
             "title": "Redis",
             "children": []
@@ -7422,27 +7814,40 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/storefront-development",
     "title": "Storefront Development",
-    "hasTitleStyling": true,
     "isChildSidebar": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/storefront-development/tips",
         "title": "Tips",
         "children": []
       },
       {
+        "type": "separator"
+      },
+      {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/regions",
+        "type": "category",
         "title": "Regions",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/regions",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/regions/list",
             "title": "List Regions",
             "children": []
@@ -7450,6 +7855,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/regions/store-retrieve-region",
             "title": "Store and Retrieve Regions",
             "children": []
@@ -7457,6 +7863,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/regions/context",
             "title": "Region React Context",
             "children": []
@@ -7466,12 +7873,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/products",
+        "type": "category",
         "title": "Products",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/products",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/list",
             "title": "List Products",
             "children": []
@@ -7479,6 +7895,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/retrieve",
             "title": "Retrieve a Product",
             "children": []
@@ -7486,6 +7903,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/variants",
             "title": "Select a Variant",
             "children": []
@@ -7493,6 +7911,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/price",
             "title": "Retrieve Variant Prices",
             "autogenerate_path": "storefront-development/products/price/examples",
@@ -7526,12 +7945,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/categories",
             "title": "Categories",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/categories/list",
                 "title": "List Categories",
                 "children": []
@@ -7539,6 +7960,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/categories/retrieve",
                 "title": "Retrieve a Category",
                 "children": []
@@ -7546,6 +7968,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/categories/products",
                 "title": "Retrieve a Category's Products",
                 "children": []
@@ -7553,6 +7976,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/categories/nested-categories",
                 "title": "Retrieve Nested Categories",
                 "children": []
@@ -7562,12 +7986,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/collections",
             "title": "Collections",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/collections/list",
                 "title": "List Collections",
                 "children": []
@@ -7575,6 +8001,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/collections/retrieve",
                 "title": "Retrieve a Collection",
                 "children": []
@@ -7582,6 +8009,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/products/collections/products",
                 "title": "Retrieve a Collection's Products",
                 "children": []
@@ -7593,12 +8021,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/cart",
+        "type": "category",
         "title": "Carts",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/cart",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/cart/create",
             "title": "Create Cart",
             "children": []
@@ -7606,6 +8043,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/cart/retrieve",
             "title": "Retrieve Cart",
             "children": []
@@ -7613,6 +8051,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/cart/context",
             "title": "Cart React Context",
             "children": []
@@ -7620,6 +8059,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/cart/update",
             "title": "Update Cart",
             "children": []
@@ -7627,6 +8067,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/cart/manage-items",
             "title": "Manage Line Items",
             "children": []
@@ -7636,12 +8077,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/checkout",
+        "type": "category",
         "title": "Checkout",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/checkout",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/checkout/email",
             "title": "1. Enter Email",
             "children": []
@@ -7649,6 +8099,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/checkout/address",
             "title": "2. Enter Address",
             "children": []
@@ -7656,6 +8107,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/checkout/shipping",
             "title": "3. Choose Shipping Method",
             "children": []
@@ -7663,12 +8115,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/checkout/payment",
             "title": "4. Choose Payment Provider",
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/storefront-development/checkout/payment/stripe",
                 "title": "Example: Stripe",
                 "children": []
@@ -7678,6 +8132,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/checkout/complete-cart",
             "title": "5. Complete Cart",
             "children": []
@@ -7687,12 +8142,21 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/customers",
+        "type": "category",
         "title": "Customers",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/customers",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/register",
             "title": "Register Customer",
             "children": []
@@ -7700,6 +8164,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/login",
             "title": "Login Customer",
             "children": []
@@ -7707,6 +8172,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/retrieve",
             "title": "Retrieve Customer",
             "children": []
@@ -7714,6 +8180,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/context",
             "title": "Customer React Context",
             "children": []
@@ -7721,6 +8188,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/profile",
             "title": "Edit Customer Profile",
             "children": []
@@ -7728,6 +8196,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/addresses",
             "title": "Manage Customer Addresses",
             "children": []
@@ -7735,6 +8204,7 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/log-out",
             "title": "Log-out Customer",
             "children": []
@@ -7746,20 +8216,24 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "link",
     "path": "/references/medusa-config",
     "title": "Medusa Configurations",
-    "hasTitleStyling": true,
     "children": []
+  },
+  {
+    "type": "separator"
   },
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "title": "General",
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/upgrade-guides",
         "title": "Upgrade Guides",
         "children": []
@@ -7767,6 +8241,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/deployment",
         "title": "Deployment Guides",
         "isChildSidebar": true,
@@ -7774,8 +8249,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Medusa Application",
-            "hasTitleStyling": true,
             "autogenerate_path": "/deployment/medusa-application",
             "children": [
               {
@@ -7791,8 +8266,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Medusa Admin",
-            "hasTitleStyling": true,
             "autogenerate_path": "/deployment/admin",
             "children": [
               {
@@ -7808,8 +8283,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Next.js Starter",
-            "hasTitleStyling": true,
             "autogenerate_path": "/deployment/storefront",
             "children": [
               {
@@ -7827,6 +8302,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/troubleshooting",
         "title": "Troubleshooting Guides",
         "isChildSidebar": true,
@@ -7834,12 +8310,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Installation",
-            "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/create-medusa-app-errors",
                 "title": "Create Medusa App Errors",
                 "children": []
@@ -7847,6 +8324,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/errors-installing-cli",
                 "title": "Errors Installing CLI",
                 "children": []
@@ -7854,6 +8332,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/pnpm-errors",
                 "title": "pnpm Errors",
                 "children": []
@@ -7861,6 +8340,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/general-errors",
                 "title": "General Errors",
                 "children": []
@@ -7870,12 +8350,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Medusa Application",
-            "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/eaddrinuse",
                 "title": "EADDRINUSE Error",
                 "children": []
@@ -7883,6 +8364,7 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/database-errors",
                 "title": "Database Errors",
                 "children": []
@@ -7892,12 +8374,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Upgrade",
-            "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/errors-after-upgrading",
                 "title": "Errors After Upgrading",
                 "children": []
@@ -7907,12 +8390,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Frontend",
-            "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/cors-errors",
                 "title": "CORS Errors",
                 "children": []
@@ -7922,12 +8406,14 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Integrations",
             "hasTitleStyling": true,
             "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "type": "link",
                 "path": "/troubleshooting/s3",
                 "title": "S3 Module Provider Errors",
                 "children": []
@@ -7941,12 +8427,13 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "title": "Lists",
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/medusa-container-resources",
         "title": "Medusa Container Resources",
         "children": []
@@ -7954,6 +8441,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/admin-widget-injection-zones",
         "title": "Admin Widget Injection Zones",
         "children": []
@@ -7963,12 +8451,13 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "title": "References",
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/references/workflows",
         "title": "Workflow API",
         "isChildSidebar": true,
@@ -7976,8 +8465,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Functions",
-            "hasTitleStyling": true,
             "autogenerate_path": "/references/workflows/functions",
             "children": [
               {
@@ -8035,6 +8524,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/references/data-model",
         "title": "Data Model API",
         "childSidebarTitle": "Data Model API Reference",
@@ -8043,17 +8533,19 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/references/data-model/define",
             "title": "Define Method",
-            "hasTitleStyling": true,
             "children": []
+          },
+          {
+            "type": "separator"
           },
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/references/data-model/property-types",
+            "type": "category",
             "title": "Property Types",
-            "hasTitleStyling": true,
             "autogenerate_path": "/references/dml/Property_Types/methods",
             "children": [
               {
@@ -8133,9 +8625,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/references/data-model/relationship-methods",
+            "type": "category",
             "title": "Relationship Methods",
-            "hasTitleStyling": true,
             "autogenerate_path": "/references/dml/Relationship_Methods/methods",
             "children": [
               {
@@ -8175,9 +8666,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/references/data-model/model-methods",
+            "type": "category",
             "title": "Model Methods",
-            "hasTitleStyling": true,
             "autogenerate_path": "/references/dml/Model_Methods/methods",
             "children": [
               {
@@ -8201,9 +8691,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "path": "/references/data-model/property-configuration",
+            "type": "category",
             "title": "Property Configuration Methods",
-            "hasTitleStyling": true,
             "autogenerate_path": "/references/dml/Property_Configuration_Methods/methods",
             "children": [
               {
@@ -8245,6 +8734,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/service-factory-reference",
         "title": "Service Factory Reference",
         "isChildSidebar": true,
@@ -8252,8 +8742,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Methods",
-            "hasTitleStyling": true,
             "autogenerate_path": "/service-factory-reference/methods",
             "children": [
               {
@@ -8325,8 +8815,8 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "category",
             "title": "Tips",
-            "hasTitleStyling": true,
             "autogenerate_path": "/service-factory-reference/tips",
             "children": [
               {
@@ -8344,6 +8834,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/references/helper-steps",
         "title": "Helper Steps Reference",
         "isChildSidebar": true,
@@ -8402,11 +8893,22 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "title": "Medusa Workflows Reference",
         "path": "/medusa-workflows-reference",
         "isChildSidebar": true,
         "custom_autogenerate": "core-flows",
         "children": [
+          {
+            "type": "link",
+            "title": "Overview",
+            "path": "/medusa-workflows-reference",
+            "loaded": true,
+            "isPathHref": true
+          },
+          {
+            "type": "separator"
+          },
           {
             "type": "category",
             "title": "Api Key",
@@ -8455,7 +8957,8 @@ export const generatedSidebar = [
                     "title": "updateApiKeysWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8509,9 +9012,12 @@ export const generatedSidebar = [
                     "title": "validateSalesChannelsExistStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8529,9 +9035,12 @@ export const generatedSidebar = [
                     "title": "setAuthAppMetadataStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8573,7 +9082,8 @@ export const generatedSidebar = [
                     "title": "updateLinksWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8627,9 +9137,12 @@ export const generatedSidebar = [
                     "title": "useRemoteQueryStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8695,7 +9208,8 @@ export const generatedSidebar = [
                     "title": "updateCustomersWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8765,9 +9279,12 @@ export const generatedSidebar = [
                     "title": "updateCustomersStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8809,7 +9326,8 @@ export const generatedSidebar = [
                     "title": "updateCustomerGroupsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8847,9 +9365,12 @@ export const generatedSidebar = [
                     "title": "updateCustomerGroupsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8867,7 +9388,8 @@ export const generatedSidebar = [
                     "title": "createDefaultsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -8881,9 +9403,12 @@ export const generatedSidebar = [
                     "title": "createDefaultStoreStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -8997,7 +9522,8 @@ export const generatedSidebar = [
                     "title": "updateTaxLinesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9283,9 +9809,12 @@ export const generatedSidebar = [
                     "title": "validateVariantPricesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9311,7 +9840,8 @@ export const generatedSidebar = [
                     "title": "uploadFilesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9333,9 +9863,12 @@ export const generatedSidebar = [
                     "title": "uploadFilesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9465,7 +9998,8 @@ export const generatedSidebar = [
                     "title": "updateShippingProfilesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9607,9 +10141,12 @@ export const generatedSidebar = [
                     "title": "validateShipmentStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9675,7 +10212,8 @@ export const generatedSidebar = [
                     "title": "updateInventoryLevelsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9769,9 +10307,12 @@ export const generatedSidebar = [
                     "title": "validateInventoryLocationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9813,7 +10354,8 @@ export const generatedSidebar = [
                     "title": "refreshInviteTokensWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -9851,9 +10393,12 @@ export const generatedSidebar = [
                     "title": "validateTokenStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -9899,6 +10444,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/beginOrderEditOrderWorkflow",
+                    "title": "beginOrderEditOrderWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/beginReceiveReturnWorkflow",
                     "title": "beginReceiveReturnWorkflow",
                     "children": []
@@ -9917,6 +10470,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/cancelBeginOrderClaimWorkflow",
                     "title": "cancelBeginOrderClaimWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/cancelBeginOrderEditWorkflow",
+                    "title": "cancelBeginOrderEditWorkflow",
                     "children": []
                   },
                   {
@@ -10019,6 +10580,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/confirmOrderEditRequestWorkflow",
+                    "title": "confirmOrderEditRequestWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/confirmReturnReceiveWorkflow",
                     "title": "confirmReturnReceiveWorkflow",
                     "children": []
@@ -10075,8 +10644,24 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/createOrderEditShippingMethodWorkflow",
+                    "title": "createOrderEditShippingMethodWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/createOrderFulfillmentWorkflow",
                     "title": "createOrderFulfillmentWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/createOrderPaymentCollectionWorkflow",
+                    "title": "createOrderPaymentCollectionWorkflow",
                     "children": []
                   },
                   {
@@ -10179,6 +10764,22 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/orderEditAddNewItemWorkflow",
+                    "title": "orderEditAddNewItemWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/orderEditUpdateItemQuantityWorkflow",
+                    "title": "orderEditUpdateItemQuantityWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/orderExchangeAddNewItemWorkflow",
                     "title": "orderExchangeAddNewItemWorkflow",
                     "children": []
@@ -10251,6 +10852,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/removeItemOrderEditActionWorkflow",
+                    "title": "removeItemOrderEditActionWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/removeItemReceiveReturnActionWorkflow",
                     "title": "removeItemReceiveReturnActionWorkflow",
                     "children": []
@@ -10261,6 +10870,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/removeItemReturnActionWorkflow",
                     "title": "removeItemReturnActionWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/removeOrderEditShippingMethodWorkflow",
+                    "title": "removeOrderEditShippingMethodWorkflow",
                     "children": []
                   },
                   {
@@ -10331,6 +10948,30 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditAddItemWorkflow",
+                    "title": "updateOrderEditAddItemWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditItemQuantityWorkflow",
+                    "title": "updateOrderEditItemQuantityWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/updateOrderEditShippingMethodWorkflow",
+                    "title": "updateOrderEditShippingMethodWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/updateOrderTaxLinesWorkflow",
                     "title": "updateOrderTaxLinesWorkflow",
                     "children": []
@@ -10367,7 +11008,8 @@ export const generatedSidebar = [
                     "title": "updateReturnWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -10425,8 +11067,24 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/beginorderEditValidationStep",
+                    "title": "beginorderEditValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/cancelBeginOrderClaimValidationStep",
                     "title": "cancelBeginOrderClaimValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/cancelBeginOrderEditValidationStep",
+                    "title": "cancelBeginOrderEditValidationStep",
                     "children": []
                   },
                   {
@@ -10569,6 +11227,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/confirmOrderEditRequestValidationStep",
+                    "title": "confirmOrderEditRequestValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/confirmReceiveReturnValidationStep",
                     "title": "confirmReceiveReturnValidationStep",
                     "children": []
@@ -10625,14 +11291,6 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
-                    "path": "/references/medusa-workflows/steps/createOrderChangeActionsStep",
-                    "title": "createOrderChangeActionsStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
                     "path": "/references/medusa-workflows/steps/createOrderChangeStep",
                     "title": "createOrderChangeStep",
                     "children": []
@@ -10651,6 +11309,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/createOrderClaimsStep",
                     "title": "createOrderClaimsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/createOrderEditShippingMethodValidationStep",
+                    "title": "createOrderEditShippingMethodValidationStep",
                     "children": []
                   },
                   {
@@ -10833,6 +11499,22 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/orderEditAddNewItemValidationStep",
+                    "title": "orderEditAddNewItemValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/orderEditUpdateItemQuantityValidationStep",
+                    "title": "orderEditUpdateItemQuantityValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/previewOrderChangeStep",
                     "title": "previewOrderChangeStep",
                     "children": []
@@ -10921,6 +11603,22 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/steps/removeOrderEditItemActionValidationStep",
+                    "title": "removeOrderEditItemActionValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/removeOrderEditShippingMethodValidationStep",
+                    "title": "removeOrderEditShippingMethodValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/steps/removeReturnItemActionValidationStep",
                     "title": "removeReturnItemActionValidationStep",
                     "children": []
@@ -10947,6 +11645,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/setOrderTaxLinesForItemsStep",
                     "title": "setOrderTaxLinesForItemsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/core_flows/Order/functions/core_flows.Order.throwIfActivePaymentCollectionExists",
+                    "title": "throwIfActivePaymentCollectionExists",
                     "children": []
                   },
                   {
@@ -10995,6 +11701,30 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/updateOrderChangeActionsStep",
                     "title": "updateOrderChangeActionsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditAddItemValidationStep",
+                    "title": "updateOrderEditAddItemValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditItemQuantityValidationStep",
+                    "title": "updateOrderEditItemQuantityValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/steps/updateOrderEditShippingMethodValidationStep",
+                    "title": "updateOrderEditShippingMethodValidationStep",
                     "children": []
                   },
                   {
@@ -11061,9 +11791,12 @@ export const generatedSidebar = [
                     "title": "updateReturnsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11089,7 +11822,8 @@ export const generatedSidebar = [
                     "title": "refundPaymentWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11127,9 +11861,12 @@ export const generatedSidebar = [
                     "title": "refundPaymentStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11171,7 +11908,8 @@ export const generatedSidebar = [
                     "title": "updateRefundReasonsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11233,9 +11971,12 @@ export const generatedSidebar = [
                     "title": "validateDeletedPaymentSessionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11301,7 +12042,8 @@ export const generatedSidebar = [
                     "title": "updatePriceListsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11379,9 +12121,12 @@ export const generatedSidebar = [
                     "title": "validateVariantPriceLinksStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11415,7 +12160,8 @@ export const generatedSidebar = [
                     "title": "updatePricePreferencesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11469,9 +12215,12 @@ export const generatedSidebar = [
                     "title": "updatePriceSetsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11681,7 +12430,8 @@ export const generatedSidebar = [
                     "title": "upsertVariantPricesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11895,9 +12645,12 @@ export const generatedSidebar = [
                     "title": "waitConfirmationProductImportStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -11931,7 +12684,8 @@ export const generatedSidebar = [
                     "title": "updateProductCategoriesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -11961,9 +12715,12 @@ export const generatedSidebar = [
                     "title": "updateProductCategoriesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12061,7 +12818,8 @@ export const generatedSidebar = [
                     "title": "updatePromotionsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12155,9 +12913,12 @@ export const generatedSidebar = [
                     "title": "updatePromotionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12191,7 +12952,8 @@ export const generatedSidebar = [
                     "title": "updateRegionsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12221,9 +12983,12 @@ export const generatedSidebar = [
                     "title": "updateRegionsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12265,7 +13030,8 @@ export const generatedSidebar = [
                     "title": "updateReservationsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12303,9 +13069,12 @@ export const generatedSidebar = [
                     "title": "updateReservationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12339,7 +13108,8 @@ export const generatedSidebar = [
                     "title": "updateReturnReasonsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12369,9 +13139,12 @@ export const generatedSidebar = [
                     "title": "updateReturnReasonsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12413,7 +13186,8 @@ export const generatedSidebar = [
                     "title": "updateSalesChannelsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12483,9 +13257,12 @@ export const generatedSidebar = [
                     "title": "updateSalesChannelsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12503,9 +13280,12 @@ export const generatedSidebar = [
                     "title": "listShippingOptionsForContextStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12523,7 +13303,8 @@ export const generatedSidebar = [
                     "title": "deleteShippingProfileWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12537,9 +13318,12 @@ export const generatedSidebar = [
                     "title": "deleteShippingProfilesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12589,7 +13373,8 @@ export const generatedSidebar = [
                     "title": "updateStockLocationsWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12619,9 +13404,12 @@ export const generatedSidebar = [
                     "title": "updateStockLocationsStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12655,7 +13443,8 @@ export const generatedSidebar = [
                     "title": "updateStoresWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12685,9 +13474,12 @@ export const generatedSidebar = [
                     "title": "updateStoresStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12761,7 +13553,8 @@ export const generatedSidebar = [
                     "title": "updateTaxRatesWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12847,9 +13640,12 @@ export const generatedSidebar = [
                     "title": "updateTaxRatesStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           },
           {
             "type": "category",
@@ -12891,7 +13687,8 @@ export const generatedSidebar = [
                     "title": "updateUsersWorkflow",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               },
               {
                 "type": "sub-category",
@@ -12921,9 +13718,12 @@ export const generatedSidebar = [
                     "title": "updateUsersStep",
                     "children": []
                   }
-                ]
+                ],
+                "loaded": true
               }
-            ]
+            ],
+            "loaded": true,
+            "initialOpen": false
           }
         ]
       }
@@ -12932,17 +13732,19 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "type": "category",
     "title": "Other",
-    "hasTitleStyling": true,
     "children": [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "sub-category",
         "title": "Contribution Guidelines",
         "children": [
           {
             "loaded": true,
             "isPathHref": true,
+            "type": "link",
             "path": "/contribution-guidelines/docs",
             "title": "Docs",
             "children": []
@@ -12952,6 +13754,7 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "type": "link",
         "path": "/usage",
         "title": "Usage",
         "children": []

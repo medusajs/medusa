@@ -95,11 +95,21 @@
  *   - name: $and
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The store's $and.
+ *       items:
+ *         type: object
+ *       title: $and
  *   - name: $or
  *     in: query
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: array
+ *       description: The store's $or.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -113,6 +123,12 @@
  * tags:
  *   - Stores
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminStoreListResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,16 +1,12 @@
+import { BetaBadge } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Manage Relationships`,
 }
 
-# {metadata.title}
+# {metadata.title} <BetaBadge tooltipText="Data model relationships are in active development and may change." text="Beta" />
 
-In this chapter, you'll learn how to manage relationships between data models when creating or updating their records using the module's main service.
-
-<Note type="soon" title="Important">
-
-Data model relationships are in active development and may change.
-
-</Note>
+In this chapter, you'll learn how to manage relationships between data models when creating, updating, or retrieving records using the module's main service.
 
 ## Manage One-to-One and One-to-Many Relationship
 
@@ -69,3 +65,28 @@ const order = await helloModuleService.updateOrder({
 ```
 
 In the example above, you pass the `order_ids` property when you create (or update) a product, and you pass the `product_ids` property when you update (or create) an order.
+
+---
+
+## Retrieve Records of Relation
+
+The `list`, `listAndCount`, and `retrieve` methods of a module's main service accept as a second parameter an object of options.
+
+To retrieve the records associated with a data model's records through a relationship, pass in the second parameter object a `relations` property whose value is an array of relationship names.
+
+For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship):
+
+export const retrieveHighlights = [
+  ["4", `"orders"`, "Retrieve the records associated with the product\nthrough the `orders` relationship."]
+]
+
+```ts highlights={retrieveHighlights}
+const product = await helloModuleService.retrieveProduct(
+  "123",
+  {
+    relations: ["orders"]
+  }
+)
+```
+
+In the example above, the retrieved product has an `orders` property, whose value is an array of orders associated with the product.

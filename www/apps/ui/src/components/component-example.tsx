@@ -44,7 +44,7 @@ export function ComponentExample({
           >
             <div
               className={clx(
-                "bg-docs-bg border-medusa-border-base flex max-h-[400px] min-h-[400px]",
+                "bg-medusa-bg-base border-medusa-border-base flex max-h-[400px] min-h-[400px]",
                 "w-full items-center justify-center overflow-auto rounded-md border px-10 py-5"
               )}
             >

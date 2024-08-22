@@ -59,6 +59,7 @@ export const usePayment = (
 }
 
 export const useCapturePayment = (
+  orderId: string,
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
@@ -74,7 +75,7 @@ export const useCapturePayment = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -84,6 +85,7 @@ export const useCapturePayment = (
 }
 
 export const useRefundPayment = (
+  orderId: string,
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
@@ -99,7 +101,7 @@ export const useRefundPayment = (
       })
 
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.lists(),
+        queryKey: ordersQueryKeys.preview(orderId),
       })
 
       options?.onSuccess?.(data, variables, context)

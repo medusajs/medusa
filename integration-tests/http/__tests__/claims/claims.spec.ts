@@ -100,7 +100,7 @@ medusaIntegrationTestRunner({
                 prices: [
                   {
                     currency_code: "usd",
-                    amount: 123456.1234657890123456789,
+                    amount: 50.25,
                   },
                 ],
               },
@@ -333,7 +333,7 @@ medusaIntegrationTestRunner({
         prices: [
           {
             currency_code: "usd",
-            amount: 1000,
+            amount: 15,
           },
         ],
         rules: [
@@ -359,7 +359,7 @@ medusaIntegrationTestRunner({
         prices: [
           {
             currency_code: "usd",
-            amount: 1000,
+            amount: 20,
           },
         ],
         rules: [
@@ -393,134 +393,629 @@ medusaIntegrationTestRunner({
       ).data.shipping_option
 
       item = order.items[0]
-
-      await api.post(
-        `/admin/orders/${order.id}/fulfillments`,
-        {
-          items: [
-            {
-              id: item.id,
-              quantity: 2,
-            },
-          ],
-        },
-        adminHeaders
-      )
-
-      await api.post(
-        `/admin/orders/${order2.id}/fulfillments`,
-        {
-          items: [
-            {
-              id: order2.items[0].id,
-              quantity: 1,
-            },
-          ],
-        },
-        adminHeaders
-      )
-
-      baseClaim = (
-        await api.post(
-          "/admin/claims",
-          {
-            order_id: order.id,
-            type: ClaimType.REPLACE,
-            description: "Base claim",
-          },
-          adminHeaders
-        )
-      ).data.claim
     })
 
     describe("Claims lifecycle", () => {
       let claimId
 
-      beforeEach(async () => {
-        let r2 = await api.post(
-          "/admin/claims",
-          {
-            order_id: order2.id,
-            type: ClaimType.REFUND,
-          },
-          adminHeaders
-        )
+      describe("with accurate order summary", () => {
+        it("should verify order summary at each level", async () => {
+          /* Case:
+            Purchased:
+              items: {
+                unit_price: 25,
+                qty: 2
+                tax_total: 0
+                total: 50
+              }
+              shipping_methods: {
+                unit_price: 10,
+                qty: 1
+                tax_total: 1
+                total: 11
+              }
+          */
+          const orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
 
-        const claimId2 = r2.data.claim.id
-        const item2 = order2.items[0]
+          expect(orderResult.summary).toEqual(
+            expect.objectContaining({
+              paid_total: 0,
+              difference_sum: 0,
+              refunded_total: 0,
+              transaction_total: 0,
+              pending_difference: 61,
+              current_order_total: 61,
+              original_order_total: 61,
+              temporary_difference: 0,
+            })
+          )
 
-        const {
-          data: {
-            order_preview: {
-              items: [previewItem],
+          /* TODO: Check summary after each of these events in order
+            - Add payment collection + payment + capture
+            - Fulfill items
+            - Submit inbound claim
+            - Fulfill claim items
+            - Make payment
+            - Submit outbound claim
+            - Make payment
+            - Fulfill claim items
+          */
+        })
+      })
+
+      describe("with inbound and outbound items", () => {
+        beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
             },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/items`,
-          { items: [{ id: item2.id, quantity: 1 }] },
-          adminHeaders
-        )
+            adminHeaders
+          )
 
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId2}/inbound/items/${previewItem.actions[0].id}`,
-          adminHeaders
-        )
+          await api.post(
+            `/admin/orders/${order2.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: order2.items[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
 
-        const {
-          data: { return: returnData },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/items`,
-          { items: [{ id: item2.id, quantity: 1 }] },
-          adminHeaders
-        )
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
 
+          let r2 = await api.post(
+            "/admin/claims",
+            {
+              order_id: order2.id,
+              type: ClaimType.REFUND,
+            },
+            adminHeaders
+          )
+
+          const claimId2 = r2.data.claim.id
+          const item2 = order2.items[0]
+
+          const {
+            data: {
+              order_preview: {
+                items: [previewItem],
+              },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/items`,
+            { items: [{ id: item2.id, quantity: 1 }] },
+            adminHeaders
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId2}/inbound/items/${previewItem.actions[0].id}`,
+            adminHeaders
+          )
+
+          const {
+            data: { return: returnData },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/items`,
+            { items: [{ id: item2.id, quantity: 1 }] },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/returns/${returnData.id}`,
+            {
+              location_id: location.id,
+              no_notification: true,
+            },
+            adminHeaders
+          )
+
+          const {
+            data: {
+              order_preview: { shipping_methods: inboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId2}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+          const inboundShippingMethod = inboundShippingMethods.find(
+            (m) => m.shipping_option_id == returnShippingOption.id
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId2}/inbound/shipping-method/${inboundShippingMethod.actions[0].id}`,
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId2}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          const testRes = await api.post(
+            `/admin/claims/${claimId2}/request`,
+            {},
+            adminHeaders
+          )
+
+          claimId = baseClaim.id
+          item = order.items[0]
+
+          let result = await api.post(
+            `/admin/claims/${claimId}/inbound/items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason_id: returnReason.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          const {
+            data: {
+              order_preview: { shipping_methods: outboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const outboundShippingMethod = outboundShippingMethods.find(
+            (m) => m.shipping_option_id == outboundShippingOption.id
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          // updated the requested quantity
+          const updateReturnItemActionId =
+            result.data.order_preview.items[0].actions[0].id
+
+          result = await api.post(
+            `/admin/claims/${claimId}/inbound/items/${updateReturnItemActionId}`,
+            {
+              quantity: 1,
+            },
+            adminHeaders
+          )
+
+          // New Items
+          await api.post(
+            `/admin/claims/${claimId}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          // Claim Items
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          result = await api.post(
+            `/admin/claims/${claimId}/request`,
+            {},
+            adminHeaders
+          )
+
+          result = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(result).toHaveLength(2)
+          expect(result[0].additional_items).toHaveLength(1)
+          expect(result[0].claim_items).toHaveLength(1)
+          expect(result[0].canceled_at).toBeNull()
+
+          const reservationsResponse = (
+            await api.get(
+              `/admin/reservations?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(reservationsResponse.reservations).toHaveLength(1)
+        })
+
+        it("should complete flow with fulfilled items successfully", async () => {
+          const fulfillOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const paymentCollections = fulfillOrder.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: 171.5,
+              currency_code: "usd",
+            })
+          )
+
+          const fulfillableItem = fulfillOrder.items.find(
+            (item) => item.detail.fulfilled_quantity === 0
+          )
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem.id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+        })
+
+        it("should go through cancel flow successfully", async () => {
+          await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
+
+          const [claim] = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(claim.canceled_at).toBeDefined()
+
+          const reservationsResponseAfterCanceling = (
+            await api.get(
+              `/admin/reservations?location_id[]=${location.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(reservationsResponseAfterCanceling.reservations).toHaveLength(
+            0
+          )
+        })
+
+        it("should create a payment collection successfully & mark as paid", async () => {
+          const paymentDelta = 171.5
+          const orderForPayment = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const paymentCollections = orderForPayment.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: paymentDelta,
+              currency_code: "usd",
+            })
+          )
+
+          const createdPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections`,
+              { order_id: order.id, amount: 100 },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(createdPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 100,
+              status: "not_paid",
+            })
+          )
+
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${createdPaymentCollection.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(deleted).toEqual({
+            id: createdPaymentCollection.id,
+            object: "payment-collection",
+            deleted: true,
+          })
+
+          const finalPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections/${paymentCollections[0].id}/mark-as-paid`,
+              { order_id: order.id },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(finalPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: paymentDelta,
+              status: "authorized",
+              authorized_amount: paymentDelta,
+              captured_amount: paymentDelta,
+              refunded_amount: 0,
+            })
+          )
+        })
+      })
+
+      describe("with only outbound items", () => {
+        beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/orders/${order2.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: order2.items[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          claimId = baseClaim.id
+          item = order.items[0]
+
+          const {
+            data: {
+              order_preview: { shipping_methods: outboundShippingMethods },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          const outboundShippingMethod = outboundShippingMethods.find(
+            (m) => m.shipping_option_id == outboundShippingOption.id
+          )
+
+          // Delete & recreate again to ensure it works for both delete and create
+          await api.delete(
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 3,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        })
+
+        it("should complete flow with fulfilled items successfully", async () => {
+          await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+          const claim = (
+            await api.get(
+              `/admin/claims/${claimId}?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claim
+
+          expect(claim.additional_items).toHaveLength(1)
+          expect(claim.claim_items).toHaveLength(1)
+          expect(claim.canceled_at).toBeNull()
+
+          const fulfillOrder = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          const fulfillableItem = fulfillOrder.items.filter(
+            (item) => item.detail.fulfilled_quantity === 0
+          )
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem[0].id, quantity: 1 }],
+            },
+            adminHeaders
+          )
+
+          let orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_fulfilled")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem[0].id, quantity: 2 }],
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("fulfilled")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[0].id}/shipments`,
+            {
+              items: orderResult.fulfillments[0]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_shipped")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[1].id}/shipments`,
+            {
+              items: orderResult.fulfillments[1]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[2].id}/shipments`,
+            {
+              items: orderResult.fulfillments[2]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("shipped")
+        })
+      })
+    })
+
+    describe("GET /admin/claims/:id", () => {
+      beforeEach(async () => {
         await api.post(
-          `/admin/returns/${returnData.id}`,
-          {
-            location_id: location.id,
-            no_notification: true,
-          },
-          adminHeaders
-        )
-
-        const {
-          data: {
-            order_preview: { shipping_methods: inboundShippingMethods },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId2}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-        const inboundShippingMethod = inboundShippingMethods.find(
-          (m) => m.shipping_option_id == returnShippingOption.id
-        )
-
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId2}/inbound/shipping-method/${inboundShippingMethod.actions[0].id}`,
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/claims/${claimId2}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-
-        await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
-
-        claimId = baseClaim.id
-        const item = order.items[0]
-
-        let result = await api.post(
-          `/admin/claims/${claimId}/inbound/items`,
+          `/admin/orders/${order.id}/fulfillments`,
           {
             items: [
               {
                 id: item.id,
-                reason_id: returnReason.id,
                 quantity: 2,
               },
             ],
@@ -529,71 +1024,11 @@ medusaIntegrationTestRunner({
         )
 
         await api.post(
-          `/admin/claims/${claimId}/inbound/shipping-method`,
-          { shipping_option_id: returnShippingOption.id },
-          adminHeaders
-        )
-
-        const {
-          data: {
-            order_preview: { shipping_methods: outboundShippingMethods },
-          },
-        } = await api.post(
-          `/admin/claims/${claimId}/outbound/shipping-method`,
-          { shipping_option_id: outboundShippingOption.id },
-          adminHeaders
-        )
-
-        const outboundShippingMethod = outboundShippingMethods.find(
-          (m) => m.shipping_option_id == outboundShippingOption.id
-        )
-
-        // Delete & recreate again to ensure it works for both delete and create
-        await api.delete(
-          `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
-          adminHeaders
-        )
-
-        await api.post(
-          `/admin/claims/${claimId}/outbound/shipping-method`,
-          { shipping_option_id: outboundShippingOption.id },
-          adminHeaders
-        )
-
-        // updated the requested quantity
-        const updateReturnItemActionId =
-          result.data.order_preview.items[0].actions[0].id
-
-        result = await api.post(
-          `/admin/claims/${claimId}/inbound/items/${updateReturnItemActionId}`,
-          {
-            quantity: 1,
-          },
-          adminHeaders
-        )
-
-        // New Items
-        await api.post(
-          `/admin/claims/${claimId}/outbound/items`,
+          `/admin/orders/${order2.id}/fulfillments`,
           {
             items: [
               {
-                variant_id: productExtra.variants[0].id,
-                quantity: 2,
-              },
-            ],
-          },
-          adminHeaders
-        )
-
-        // Claim Items
-        await api.post(
-          `/admin/claims/${claimId}/claim-items`,
-          {
-            items: [
-              {
-                id: item.id,
-                reason: ClaimReason.PRODUCTION_FAILURE,
+                id: order2.items[0].id,
                 quantity: 1,
               },
             ],
@@ -601,78 +1036,18 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        result = await api.post(
-          `/admin/claims/${claimId}/request`,
-          {},
-          adminHeaders
-        )
-
-        result = (
-          await api.get(
-            `/admin/claims?fields=*claim_items,*additional_items`,
+        baseClaim = (
+          await api.post(
+            "/admin/claims",
+            {
+              order_id: order.id,
+              type: ClaimType.REPLACE,
+              description: "Base claim",
+            },
             adminHeaders
           )
-        ).data.claims
+        ).data.claim
 
-        expect(result).toHaveLength(2)
-        expect(result[0].additional_items).toHaveLength(1)
-        expect(result[0].claim_items).toHaveLength(1)
-        expect(result[0].canceled_at).toBeNull()
-
-        const reservationsResponse = (
-          await api.get(
-            `/admin/reservations?location_id[]=${location.id}`,
-            adminHeaders
-          )
-        ).data
-
-        expect(reservationsResponse.reservations).toHaveLength(1)
-      })
-
-      it("should complete flow with fulfilled items successfully", async () => {
-        const fulfillOrder = (
-          await api.get(`/admin/orders/${order.id}`, adminHeaders)
-        ).data.order
-
-        const fulfillableItem = fulfillOrder.items.find(
-          (item) => item.detail.fulfilled_quantity === 0
-        )
-
-        await api.post(
-          `/admin/orders/${order.id}/fulfillments`,
-          {
-            location_id: location.id,
-            items: [{ id: fulfillableItem.id, quantity: 1 }],
-          },
-          adminHeaders
-        )
-      })
-
-      it("should go through cancel flow successfully", async () => {
-        await api.post(`/admin/claims/${claimId}/cancel`, {}, adminHeaders)
-
-        const [claim] = (
-          await api.get(
-            `/admin/claims?fields=*claim_items,*additional_items`,
-            adminHeaders
-          )
-        ).data.claims
-
-        expect(claim.canceled_at).toBeDefined()
-
-        const reservationsResponseAfterCanceling = (
-          await api.get(
-            `/admin/reservations?location_id[]=${location.id}`,
-            adminHeaders
-          )
-        ).data
-
-        expect(reservationsResponseAfterCanceling.reservations).toHaveLength(0)
-      })
-    })
-
-    describe("GET /admin/claims/:id", () => {
-      beforeEach(async () => {
         await api.post(
           `/admin/claims/${baseClaim.id}/inbound/items`,
           {
@@ -707,7 +1082,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
-        await api.post(
+
+        const { response } = await api.post(
           `/admin/claims/${baseClaim.id}/request`,
           {},
           adminHeaders

@@ -63,274 +63,284 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - code
- *           - type
- *           - campaign_id
- *           - application_method
- *         properties:
- *           code:
- *             type: string
- *             title: code
- *             description: The promotion's code.
- *           is_automatic:
- *             type: boolean
- *             title: is_automatic
- *             description: The promotion's is automatic.
- *           type:
- *             type: string
- *             enum:
- *               - standard
- *               - buyget
- *           campaign_id:
- *             type: string
- *             title: campaign_id
- *             description: The promotion's campaign id.
- *           campaign:
- *             type: object
- *             description: The promotion's campaign.
+ *         allOf:
+ *           - type: object
+ *             description: SUMMARY
  *             required:
- *               - name
- *               - campaign_identifier
- *               - description
- *               - budget
- *               - starts_at
- *               - ends_at
- *             properties:
- *               name:
- *                 type: string
- *                 title: name
- *                 description: The campaign's name.
- *               campaign_identifier:
- *                 type: string
- *                 title: campaign_identifier
- *                 description: The campaign's campaign identifier.
- *               description:
- *                 type: string
- *                 title: description
- *                 description: The campaign's description.
- *               budget:
- *                 type: object
- *                 description: The campaign's budget.
- *                 required:
- *                   - type
- *                   - limit
- *                   - currency_code
- *                 properties:
- *                   type:
- *                     type: string
- *                     enum:
- *                       - spend
- *                       - usage
- *                   limit:
- *                     type: number
- *                     title: limit
- *                     description: The budget's limit.
- *                   currency_code:
- *                     type: string
- *                     title: currency_code
- *                     description: The budget's currency code.
- *               starts_at:
- *                 type: string
- *                 title: starts_at
- *                 description: The campaign's starts at.
- *                 format: date-time
- *               ends_at:
- *                 type: string
- *                 title: ends_at
- *                 description: The campaign's ends at.
- *                 format: date-time
- *               promotions:
- *                 type: array
- *                 description: The campaign's promotions.
- *                 items:
- *                   type: object
- *                   description: The promotion's promotions.
- *                   required:
- *                     - id
- *                   properties:
- *                     id:
- *                       type: string
- *                       title: id
- *                       description: The promotion's ID.
- *           application_method:
- *             type: object
- *             description: The promotion's application method.
- *             required:
- *               - description
- *               - value
- *               - currency_code
- *               - max_quantity
+ *               - code
  *               - type
- *               - target_type
- *               - apply_to_quantity
- *               - buy_rules_min_quantity
+ *               - campaign_id
+ *               - application_method
  *             properties:
- *               description:
+ *               code:
  *                 type: string
- *                 title: description
- *                 description: The application method's description.
- *               value:
- *                 type: number
- *                 title: value
- *                 description: The application method's value.
- *               currency_code:
- *                 type: string
- *                 title: currency_code
- *                 description: The application method's currency code.
- *               max_quantity:
- *                 type: number
- *                 title: max_quantity
- *                 description: The application method's max quantity.
+ *                 title: code
+ *                 description: The promotion's code.
+ *               is_automatic:
+ *                 type: boolean
+ *                 title: is_automatic
+ *                 description: The promotion's is automatic.
  *               type:
  *                 type: string
  *                 enum:
- *                   - fixed
- *                   - percentage
- *               target_type:
+ *                   - standard
+ *                   - buyget
+ *               campaign_id:
  *                 type: string
- *                 enum:
- *                   - order
- *                   - shipping_methods
- *                   - items
- *               allocation:
- *                 type: string
- *                 enum:
- *                   - each
- *                   - across
- *               target_rules:
- *                 type: array
- *                 description: The application method's target rules.
- *                 items:
- *                   type: object
- *                   description: The target rule's target rules.
- *                   required:
- *                     - operator
- *                     - description
- *                     - attribute
- *                     - values
- *                   properties:
- *                     operator:
- *                       type: string
- *                       enum:
- *                         - gte
- *                         - lte
- *                         - gt
- *                         - lt
- *                         - eq
- *                         - ne
- *                         - in
- *                     description:
- *                       type: string
- *                       title: description
- *                       description: The target rule's description.
- *                     attribute:
- *                       type: string
- *                       title: attribute
- *                       description: The target rule's attribute.
- *                     values:
- *                       oneOf:
- *                         - type: string
- *                           title: values
- *                           description: The target rule's values.
- *                         - type: array
- *                           description: The target rule's values.
- *                           items:
- *                             type: string
- *                             title: values
- *                             description: The value's values.
- *               buy_rules:
- *                 type: array
- *                 description: The application method's buy rules.
- *                 items:
- *                   type: object
- *                   description: The buy rule's buy rules.
- *                   required:
- *                     - operator
- *                     - description
- *                     - attribute
- *                     - values
- *                   properties:
- *                     operator:
- *                       type: string
- *                       enum:
- *                         - gte
- *                         - lte
- *                         - gt
- *                         - lt
- *                         - eq
- *                         - ne
- *                         - in
- *                     description:
- *                       type: string
- *                       title: description
- *                       description: The buy rule's description.
- *                     attribute:
- *                       type: string
- *                       title: attribute
- *                       description: The buy rule's attribute.
- *                     values:
- *                       oneOf:
- *                         - type: string
- *                           title: values
- *                           description: The buy rule's values.
- *                         - type: array
- *                           description: The buy rule's values.
- *                           items:
- *                             type: string
- *                             title: values
- *                             description: The value's values.
- *               apply_to_quantity:
- *                 type: number
- *                 title: apply_to_quantity
- *                 description: The application method's apply to quantity.
- *               buy_rules_min_quantity:
- *                 type: number
- *                 title: buy_rules_min_quantity
- *                 description: The application method's buy rules min quantity.
- *           rules:
- *             type: array
- *             description: The promotion's rules.
- *             items:
- *               type: object
- *               description: The rule's rules.
- *               required:
- *                 - operator
- *                 - description
- *                 - attribute
- *                 - values
- *               properties:
- *                 operator:
- *                   type: string
- *                   enum:
- *                     - gte
- *                     - lte
- *                     - gt
- *                     - lt
- *                     - eq
- *                     - ne
- *                     - in
- *                 description:
- *                   type: string
- *                   title: description
- *                   description: The rule's description.
- *                 attribute:
- *                   type: string
- *                   title: attribute
- *                   description: The rule's attribute.
- *                 values:
- *                   oneOf:
- *                     - type: string
- *                       title: values
- *                       description: The rule's values.
- *                     - type: array
- *                       description: The rule's values.
- *                       items:
+ *                 title: campaign_id
+ *                 description: The promotion's campaign id.
+ *               campaign:
+ *                 type: object
+ *                 description: The promotion's campaign.
+ *                 required:
+ *                   - name
+ *                   - campaign_identifier
+ *                   - description
+ *                   - budget
+ *                   - starts_at
+ *                   - ends_at
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     title: name
+ *                     description: The campaign's name.
+ *                   campaign_identifier:
+ *                     type: string
+ *                     title: campaign_identifier
+ *                     description: The campaign's campaign identifier.
+ *                   description:
+ *                     type: string
+ *                     title: description
+ *                     description: The campaign's description.
+ *                   budget:
+ *                     type: object
+ *                     description: The campaign's budget.
+ *                     required:
+ *                       - type
+ *                       - limit
+ *                       - currency_code
+ *                     properties:
+ *                       type:
  *                         type: string
- *                         title: values
- *                         description: The value's values.
+ *                         enum:
+ *                           - spend
+ *                           - usage
+ *                       limit:
+ *                         type: number
+ *                         title: limit
+ *                         description: The budget's limit.
+ *                       currency_code:
+ *                         type: string
+ *                         title: currency_code
+ *                         description: The budget's currency code.
+ *                   starts_at:
+ *                     type: string
+ *                     title: starts_at
+ *                     description: The campaign's starts at.
+ *                     format: date-time
+ *                   ends_at:
+ *                     type: string
+ *                     title: ends_at
+ *                     description: The campaign's ends at.
+ *                     format: date-time
+ *                   promotions:
+ *                     type: array
+ *                     description: The campaign's promotions.
+ *                     items:
+ *                       type: object
+ *                       description: The promotion's promotions.
+ *                       required:
+ *                         - id
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           title: id
+ *                           description: The promotion's ID.
+ *               application_method:
+ *                 type: object
+ *                 description: The promotion's application method.
+ *                 required:
+ *                   - description
+ *                   - value
+ *                   - currency_code
+ *                   - max_quantity
+ *                   - type
+ *                   - target_type
+ *                   - apply_to_quantity
+ *                   - buy_rules_min_quantity
+ *                 properties:
+ *                   description:
+ *                     type: string
+ *                     title: description
+ *                     description: The application method's description.
+ *                   value:
+ *                     type: number
+ *                     title: value
+ *                     description: The application method's value.
+ *                   currency_code:
+ *                     type: string
+ *                     title: currency_code
+ *                     description: The application method's currency code.
+ *                   max_quantity:
+ *                     type: number
+ *                     title: max_quantity
+ *                     description: The application method's max quantity.
+ *                   type:
+ *                     type: string
+ *                     enum:
+ *                       - fixed
+ *                       - percentage
+ *                   target_type:
+ *                     type: string
+ *                     enum:
+ *                       - order
+ *                       - shipping_methods
+ *                       - items
+ *                   allocation:
+ *                     type: string
+ *                     enum:
+ *                       - each
+ *                       - across
+ *                   target_rules:
+ *                     type: array
+ *                     description: The application method's target rules.
+ *                     items:
+ *                       type: object
+ *                       description: The target rule's target rules.
+ *                       required:
+ *                         - operator
+ *                         - description
+ *                         - attribute
+ *                         - values
+ *                       properties:
+ *                         operator:
+ *                           type: string
+ *                           enum:
+ *                             - gte
+ *                             - lte
+ *                             - gt
+ *                             - lt
+ *                             - eq
+ *                             - ne
+ *                             - in
+ *                         description:
+ *                           type: string
+ *                           title: description
+ *                           description: The target rule's description.
+ *                         attribute:
+ *                           type: string
+ *                           title: attribute
+ *                           description: The target rule's attribute.
+ *                         values:
+ *                           oneOf:
+ *                             - type: string
+ *                               title: values
+ *                               description: The target rule's values.
+ *                             - type: array
+ *                               description: The target rule's values.
+ *                               items:
+ *                                 type: string
+ *                                 title: values
+ *                                 description: The value's values.
+ *                   buy_rules:
+ *                     type: array
+ *                     description: The application method's buy rules.
+ *                     items:
+ *                       type: object
+ *                       description: The buy rule's buy rules.
+ *                       required:
+ *                         - operator
+ *                         - description
+ *                         - attribute
+ *                         - values
+ *                       properties:
+ *                         operator:
+ *                           type: string
+ *                           enum:
+ *                             - gte
+ *                             - lte
+ *                             - gt
+ *                             - lt
+ *                             - eq
+ *                             - ne
+ *                             - in
+ *                         description:
+ *                           type: string
+ *                           title: description
+ *                           description: The buy rule's description.
+ *                         attribute:
+ *                           type: string
+ *                           title: attribute
+ *                           description: The buy rule's attribute.
+ *                         values:
+ *                           oneOf:
+ *                             - type: string
+ *                               title: values
+ *                               description: The buy rule's values.
+ *                             - type: array
+ *                               description: The buy rule's values.
+ *                               items:
+ *                                 type: string
+ *                                 title: values
+ *                                 description: The value's values.
+ *                   apply_to_quantity:
+ *                     type: number
+ *                     title: apply_to_quantity
+ *                     description: The application method's apply to quantity.
+ *                   buy_rules_min_quantity:
+ *                     type: number
+ *                     title: buy_rules_min_quantity
+ *                     description: The application method's buy rules min quantity.
+ *               rules:
+ *                 type: array
+ *                 description: The promotion's rules.
+ *                 items:
+ *                   type: object
+ *                   description: The rule's rules.
+ *                   required:
+ *                     - operator
+ *                     - description
+ *                     - attribute
+ *                     - values
+ *                   properties:
+ *                     operator:
+ *                       type: string
+ *                       enum:
+ *                         - gte
+ *                         - lte
+ *                         - gt
+ *                         - lt
+ *                         - eq
+ *                         - ne
+ *                         - in
+ *                     description:
+ *                       type: string
+ *                       title: description
+ *                       description: The rule's description.
+ *                     attribute:
+ *                       type: string
+ *                       title: attribute
+ *                       description: The rule's attribute.
+ *                     values:
+ *                       oneOf:
+ *                         - type: string
+ *                           title: values
+ *                           description: The rule's values.
+ *                         - type: array
+ *                           description: The rule's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -359,6 +369,12 @@
  * tags:
  *   - Promotions
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: "#/components/schemas/AdminPromotionResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

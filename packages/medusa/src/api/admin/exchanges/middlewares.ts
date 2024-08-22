@@ -7,11 +7,11 @@ import {
   AdminGetOrdersParams,
   AdminPostCancelExchangeReqSchema,
   AdminPostExchangesAddItemsReqSchema,
+  AdminPostExchangesItemsActionReqSchema,
   AdminPostExchangesRequestItemsReturnActionReqSchema,
   AdminPostExchangesReturnRequestItemsReqSchema,
   AdminPostExchangesShippingActionReqSchema,
   AdminPostExchangesShippingReqSchema,
-  AdminPostExhangesItemsActionReqSchema,
   AdminPostOrderExchangesReqSchema,
 } from "./validators"
 
@@ -129,7 +129,7 @@ export const adminExchangeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/exchanges/:id/outbound/items/:action_id",
     middlewares: [
-      validateAndTransformBody(AdminPostExhangesItemsActionReqSchema),
+      validateAndTransformBody(AdminPostExchangesItemsActionReqSchema),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

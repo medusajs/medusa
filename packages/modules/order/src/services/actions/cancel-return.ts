@@ -2,6 +2,7 @@ import {
   Context,
   CreateOrderChangeActionDTO,
   OrderTypes,
+  ReturnDTO,
 } from "@medusajs/types"
 import { ChangeActionType, promiseAll } from "@medusajs/utils"
 
@@ -33,7 +34,7 @@ export async function cancelReturn(
   data: OrderTypes.CancelOrderReturnDTO,
   sharedContext?: Context
 ) {
-  const returnOrder = await this.retrieveReturn(
+  const returnOrder = (await this.retrieveReturn(
     data.return_id,
     {
       select: [
@@ -46,7 +47,7 @@ export async function cancelReturn(
       relations: ["items", "shipping_methods"],
     },
     sharedContext
-  )
+  )) as ReturnDTO
 
   const actions: CreateOrderChangeActionDTO[] = []
 
@@ -71,7 +72,7 @@ export async function cancelReturn(
       return_id: returnOrder.id,
       reference: "return",
       reference_id: shipping.id,
-      amount: shipping.price,
+      amount: shipping.raw_amount ?? shipping.amount,
     })
   })
 

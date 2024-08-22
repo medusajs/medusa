@@ -1,47 +1,39 @@
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  DistributedTransactionType,
   DistributedTransactionEvents,
+  DistributedTransactionType,
   LocalWorkflow,
   TransactionStepError,
 } from "@medusajs/orchestration"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
-export type FlowRunOptions<TData = unknown> = {
+type BaseFlowRunOptions = {
+  context?: Context
+  resultFrom?: string | string[] | Symbol
+  throwOnError?: boolean
+  logOnError?: boolean
+  events?: DistributedTransactionEvents
+  container?: LoadedModule[] | MedusaContainer
+}
+
+export type FlowRunOptions<TData = unknown> = BaseFlowRunOptions & {
   input?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-  container?: LoadedModule[] | MedusaContainer
 }
 
-export type FlowRegisterStepSuccessOptions<TData = unknown> = {
-  idempotencyKey: string
-  response?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-  container?: LoadedModule[] | MedusaContainer
-}
+export type FlowRegisterStepSuccessOptions<TData = unknown> =
+  BaseFlowRunOptions & {
+    idempotencyKey: string
+    response?: TData
+  }
 
-export type FlowRegisterStepFailureOptions<TData = unknown> = {
-  idempotencyKey: string
-  response?: TData
-  context?: Context
-  resultFrom?: string | string[] | Symbol
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-  container?: LoadedModule[] | MedusaContainer
-}
+export type FlowRegisterStepFailureOptions<TData = unknown> =
+  BaseFlowRunOptions & {
+    idempotencyKey: string
+    response?: TData
+  }
 
-export type FlowCancelOptions = {
+export type FlowCancelOptions = BaseFlowRunOptions & {
   transaction?: DistributedTransactionType
   transactionId?: string
-  context?: Context
-  throwOnError?: boolean
-  events?: DistributedTransactionEvents
-  container?: LoadedModule[] | MedusaContainer
 }
 
 /**

@@ -93,6 +93,9 @@ export async function mikroOrmCreateConnection(
     schemaGenerator: {
       disableForeignKeys: false,
     },
-    pool: database.pool as any,
+    pool: {
+      min: 2,
+      ...database.pool,
+    },
   })
 }

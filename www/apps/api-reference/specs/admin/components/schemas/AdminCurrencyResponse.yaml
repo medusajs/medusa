@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminCurrencyResponse
+required:
+  - currency
+properties:
+  currency:
+    $ref: ./AdminCurrency.yaml

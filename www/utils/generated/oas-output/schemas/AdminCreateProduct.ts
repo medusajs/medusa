@@ -81,15 +81,13 @@
  *     items:
  *       type: object
  *       description: The tag's tags.
+ *       required:
+ *         - id
  *       properties:
  *         id:
  *           type: string
  *           title: id
  *           description: The tag's ID.
- *         value:
- *           type: string
- *           title: value
- *           description: The tag's value.
  *   options:
  *     type: array
  *     description: The create's options.

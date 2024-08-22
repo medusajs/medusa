@@ -69,7 +69,17 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminCreateProductVariant"
+ *         allOf:
+ *           - $ref: "#/components/schemas/AdminCreateProductVariant"
+ *           - type: object
+ *             description: SUMMARY
+ *             properties:
+ *               additional_data:
+ *                 type: object
+ *                 description: Pass additional custom data to the API route. This data is passed
+ *                   to the underlying workflow under the `additional_data`
+ *                   parameter.
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

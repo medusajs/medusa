@@ -1,5 +1,10 @@
-import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import {
+  BigNumberInput,
+  OrderChangeDTO,
+  OrderDTO,
+  OrderPreviewDTO,
+} from "@medusajs/types"
+import { ChangeActionType, MathBN, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -15,6 +20,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
@@ -45,7 +51,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
   confirmOrderEditRequestWorkflowId,
   function (
     input: ConfirmOrderEditRequestWorkflowInput
-  ): WorkflowResponse<OrderDTO> {
+  ): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -102,51 +108,68 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
         "version",
         "canceled_at",
         "sales_channel_id",
-        "items.quantity",
-        "items.raw_quantity",
-        "items.item.id",
-        "items.item.variant.manage_inventory",
-        "items.item.variant.allow_backorder",
-        "items.item.variant.inventory_items.inventory_item_id",
-        "items.item.variant.inventory_items.required_quantity",
-        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
-        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
-        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
-        "items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
+        "items.*",
+        "items.variant.manage_inventory",
+        "items.variant.allow_backorder",
+        "items.variant.inventory_items.inventory_item_id",
+        "items.variant.inventory_items.required_quantity",
+        "items.variant.inventory_items.inventory.location_levels.stock_locations.id",
+        "items.variant.inventory_items.inventory.location_levels.stock_locations.name",
+        "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+        "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
       ],
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,
-    }).config({ name: "order-query" })
+    }).config({ name: "order-items-query" })
 
-    const { variants, items } = transform({ orderItems }, ({ orderItems }) => {
-      const allItems: any[] = []
-      const allVariants: any[] = []
-      orderItems.items.forEach((ordItem) => {
-        const itemAction = orderPreview.items?.find(
-          (item) =>
-            item.id === ordItem.id &&
-            item.actions?.find((a) => a.action === ChangeActionType.ITEM_ADD)
-        )
+    const { variants, items } = transform(
+      { orderItems, orderPreview },
+      ({ orderItems, orderPreview }) => {
+        const allItems: any[] = []
+        const allVariants: any[] = []
+        orderItems.items.forEach((ordItem) => {
+          const itemAction = orderPreview.items?.find(
+            (item) =>
+              item.id === ordItem.id &&
+              item.actions?.find(
+                (a) =>
+                  a.action === ChangeActionType.ITEM_ADD ||
+                  a.action === ChangeActionType.ITEM_UPDATE
+              )
+          )
 
-        if (!itemAction) {
-          return
-        }
+          if (!itemAction) {
+            return
+          }
 
-        const item = ordItem.item
-        allItems.push({
-          id: item.id,
-          variant_id: item.variant_id,
-          quantity: itemAction.raw_quantity ?? itemAction.quantity,
+          let quantity: BigNumberInput =
+            itemAction.raw_quantity ?? itemAction.quantity
+
+          const updateAction = itemAction.actions!.find(
+            (a) => a.action === ChangeActionType.ITEM_UPDATE
+          )
+          if (updateAction) {
+            quantity = MathBN.sub(quantity, ordItem.raw_quantity)
+            if (MathBN.lte(quantity, 0)) {
+              return
+            }
+          }
+
+          allItems.push({
+            id: ordItem.id,
+            variant_id: ordItem.variant_id,
+            quantity,
+          })
+          allVariants.push(ordItem.variant)
         })
-        allVariants.push(item.variant)
-      })
 
-      return {
-        variants: allVariants,
-        items: allItems,
+        return {
+          variants: allVariants,
+          items: allItems,
+        }
       }
-    })
+    )
 
     const formatedInventoryItems = transform(
       {
@@ -160,6 +183,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
     )
 
     reserveInventoryStep(formatedInventoryItems)
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
+    })
 
     return new WorkflowResponse(orderPreview)
   }

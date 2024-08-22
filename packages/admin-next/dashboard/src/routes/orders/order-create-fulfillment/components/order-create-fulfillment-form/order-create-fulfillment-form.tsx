@@ -7,12 +7,12 @@ import { AdminOrder } from "@medusajs/types"
 import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
+import { OrderLineItemDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
@@ -32,20 +32,19 @@ export function OrderCreateFulfillmentForm({
   const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
     useCreateOrderFulfillment(order.id)
 
-  const { fulfillment_providers } = useFulfillmentProviders({
-    region_id: order.region_id,
-  })
-
   const [fulfillableItems, setFulfillableItems] = useState(() =>
-    order.items.filter((item) => getFulfillableQuantity(item) > 0)
+    (order.items || []).filter((item) => getFulfillableQuantity(item) > 0)
   )
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce((acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item)
-        return acc
-      }, {} as Record<string, number>),
+      quantity: fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item)
+          return acc
+        },
+        {} as Record<string, number>
+      ),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
@@ -85,7 +84,9 @@ export function OrderCreateFulfillmentForm({
   }
 
   const resetItems = () => {
-    const items = order.items.filter((item) => getFulfillableQuantity(item) > 0)
+    const items = (order.items || []).filter(
+      (item) => getFulfillableQuantity(item) > 0
+    )
     setFulfillableItems(items)
 
     items.forEach((i) =>
@@ -99,14 +100,35 @@ export function OrderCreateFulfillmentForm({
     control: form.control,
   })
 
+  const fulfilledQuantityArray = (order.items || []).map(
+    (item) => item.detail.fulfilled_quantity
+  )
+
   useEffect(() => {
-    if (!fulfillableItems.length) {
+    const itemsToFulfill =
+      order?.items?.filter((item) => getFulfillableQuantity(item) > 0) || []
+
+    setFulfillableItems(itemsToFulfill)
+
+    if (itemsToFulfill.length) {
+      form.clearErrors("root")
+    } else {
       form.setError("root", {
         type: "manual",
         message: t("orders.fulfillment.error.noItems"),
       })
     }
-  }, [fulfillableItems.length])
+
+    const quantityMap = itemsToFulfill.reduce(
+      (acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
+        return acc
+      },
+      {} as Record<string, number>
+    )
+
+    form.setValue("quantity", quantityMap)
+  }, [...fulfilledQuantityArray])
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -126,6 +148,7 @@ export function OrderCreateFulfillmentForm({
             </Button>
           </div>
         </RouteFocusModal.Header>
+
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
           <div className="flex size-full flex-col items-center overflow-auto p-16">
             <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
@@ -173,16 +196,18 @@ export function OrderCreateFulfillmentForm({
                     </Form.Hint>
 
                     <div className="flex flex-col gap-y-1">
-                      {fulfillableItems.map((item) => (
-                        <OrderCreateFulfillmentItem
-                          key={item.id}
-                          form={form}
-                          item={item}
-                          onItemRemove={onItemRemove}
-                          locationId={selectedLocationId}
-                          currencyCode={order.currency_code}
-                        />
-                      ))}
+                      {fulfillableItems.map((item) => {
+                        return (
+                          <OrderCreateFulfillmentItem
+                            key={item.id}
+                            form={form}
+                            item={item}
+                            onItemRemove={onItemRemove}
+                            locationId={selectedLocationId}
+                            currencyCode={order.currency_code}
+                          />
+                        )
+                      })}
                     </div>
                   </Form.Item>
                   {form.formState.errors.root && (
