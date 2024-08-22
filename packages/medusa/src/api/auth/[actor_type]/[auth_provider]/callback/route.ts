@@ -2,7 +2,6 @@ import {
   AuthenticationInput,
   ConfigModule,
   IAuthModuleService,
-  ICacheService
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -12,7 +11,6 @@ import {
 } from "@medusajs/utils"
 import crypto from "node:crypto"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { convertJwtExpiration } from "../../../../utils/convert-jwt-expiration"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
@@ -32,11 +30,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     }
   }
 
-  const authService: IAuthModuleService = req.scope.resolve(
+  const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH
-  )
-  const cacheService: ICacheService = req.scope.resolve(
-    ModuleRegistrationName.CACHE
   )
 
   const authData = {
@@ -48,7 +43,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   } as AuthenticationInput
 
   const { success, error, authIdentity, successRedirectUrl } =
-    await authService.validateCallback(auth_provider, authData)
+    await service.validateCallback(auth_provider, authData)
 
   const entityIdKey = `${actor_type}_id`
   const entityId = authIdentity?.app_metadata?.[entityIdKey] as
@@ -80,7 +75,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const csrfToken = crypto.randomBytes(32).toString("hex")
 
     res.cookie(csrfTokenStorageKey as string, csrfToken)
-    await cacheService.set(authToken, csrfToken, convertJwtExpiration(jwtExpiresIn as string))
+
+    // TODO: save the csrf Token in cache
 
     if (successRedirectUrl) {
       res.cookie(jwtTokenStorageKey as string, authToken, {
