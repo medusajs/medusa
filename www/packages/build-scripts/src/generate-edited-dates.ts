@@ -39,10 +39,15 @@ const getGitEditDatesOfPaths = async (
 // date doesn't accurately represent the publish date of the file.
 const getOsLastEditDates = async (
   paths: string[]
-): Promise<Record<string, string>> => {
-  const editDates: Record<string, string> = {}
+): Promise<Record<string, string | undefined>> => {
+  const editDates: Record<string, string | undefined> = {}
   await Promise.all(
     paths.map(async (filePath) => {
+      if (!existsSync(filePath)) {
+        // indicates that file was deleted
+        editDates[filePath] = undefined
+        return
+      }
       const fileStat = await stat(filePath)
 
       editDates[filePath] = fileStat.mtime.toISOString()
@@ -117,7 +122,7 @@ export const generateEditedDates = async () => {
   const type = generatedFileExists ? "git" : "all"
 
   let files: string[] = []
-  let editDates: Record<string, string> = {}
+  let editDates: Record<string, string | undefined> = {}
 
   if (type === "all") {
     // get all files in a project
@@ -144,6 +149,11 @@ export const generateEditedDates = async () => {
     )
 
     editDates = Object.assign(existingEditDates, editDates)
+
+    // delete items that don't exist anymore (their value is undefined)
+    Object.keys(editDates)
+      .filter((key) => editDates[key] === undefined)
+      .forEach((key) => delete editDates[key])
   }
 
   await writeFile(
