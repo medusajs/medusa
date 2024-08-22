@@ -262,7 +262,6 @@ export const CodeBlock = ({
       source,
       canShowApiTesting,
       setShowTesting,
-      blockStyle,
       noReport,
       noCopy,
       collapsibleType,

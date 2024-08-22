@@ -156,6 +156,7 @@ medusaIntegrationTestRunner({
             shipped_at: null,
             delivered_at: null,
             canceled_at: null,
+            created_by: expect.any(String),
             provider_id: "manual_test-provider",
             delivery_address: expect.objectContaining({
               address_1: expect.any(String),
@@ -240,6 +241,7 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: fulfillment.id,
             shipped_at: expect.any(String),
+            marked_shipped_by: expect.any(String),
             labels: [
               expect.objectContaining({
                 id: expect.any(String),

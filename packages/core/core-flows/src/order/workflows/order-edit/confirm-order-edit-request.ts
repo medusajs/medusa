@@ -1,5 +1,10 @@
-import { OrderChangeDTO, OrderDTO, OrderPreviewDTO } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import {
+  BigNumberInput,
+  OrderChangeDTO,
+  OrderDTO,
+  OrderPreviewDTO,
+} from "@medusajs/types"
+import { ChangeActionType, MathBN, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -7,8 +12,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
+import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -127,17 +132,34 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
           const itemAction = orderPreview.items?.find(
             (item) =>
               item.id === ordItem.id &&
-              item.actions?.find((a) => a.action === ChangeActionType.ITEM_ADD)
+              item.actions?.find(
+                (a) =>
+                  a.action === ChangeActionType.ITEM_ADD ||
+                  a.action === ChangeActionType.ITEM_UPDATE
+              )
           )
 
           if (!itemAction) {
             return
           }
 
+          let quantity: BigNumberInput =
+            itemAction.raw_quantity ?? itemAction.quantity
+
+          const updateAction = itemAction.actions!.find(
+            (a) => a.action === ChangeActionType.ITEM_UPDATE
+          )
+          if (updateAction) {
+            quantity = MathBN.sub(quantity, ordItem.raw_quantity)
+            if (MathBN.lte(quantity, 0)) {
+              return
+            }
+          }
+
           allItems.push({
             id: ordItem.id,
             variant_id: ordItem.variant_id,
-            quantity: itemAction.raw_quantity ?? itemAction.quantity,
+            quantity,
           })
           allVariants.push(ordItem.variant)
         })
