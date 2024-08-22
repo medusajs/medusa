@@ -18,6 +18,7 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
     <TabsTrigger value="aws">AWS S3</TabsTrigger>
     <TabsTrigger value="minio">MinIO</TabsTrigger>
     <TabsTrigger value="spaces">DigitalOcean Spaces</TabsTrigger>
+    <TabsTrigger value="suapbase">Supabase S3 Storage</TabsTrigger>
   </TabsList>
   <TabsContentWrapper>
     <TabsContent value="aws">
@@ -81,6 +82,24 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
     - Create [DigitalOcean account](https://cloud.digitalocean.com/registrations/new).
     - Create [DigitalOcean Spaces bucket](https://docs.digitalocean.com/products/spaces/how-to/create/).
     - Create [DigitalOcean Spaces access and secret access keys](https://docs.digitalocean.com/products/spaces/how-to/manage-access/#access-keys).
+
+    </TabsContent>
+<TabsContent value="supabase">
+
+    - [Supabase account](https://supabase.com/dashboard/sign-in?returnTo=%2Fprojects).
+    - Create [New Project]
+    - Create [New Public S3 bucket](https://supabase.com/docs/guides/storage/buckets/creating-buckets?queryGroups=language&language=dashboard).
+    - Create [New S3 Access Keys](https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language&language=javascript#s3-access-keys).
+    - Create [Storage Policy](https://supabase.com/docs/guides/storage/security/access-control).
+      1. On your bucket's dashboard, under configuration, click polocies.
+      2. Click on New Policy under Other policies under storage.objects.
+      3. Click get started quickly and enable insert access for authenticated users only.
+      4. Click ALL instead of INSERT, then review and save policy.
+      5. Click settings under configuration.
+      6. Click New access key.
+      7. Name new access key, and save id and secret key. 
+      8. S3_FILE_URL= ``https://{uniqueID}/supabase.co/storage/v1/object/public``
+      9. Copy settings for ``S3_ENDPOINT``, ``S3_REGION``, ``S3_BUCKET``, ``S3_ACCESS_KEY``, ``S3_SECRET_KEY``
 
     </TabsContent>
   </TabsContentWrapper>
@@ -161,6 +180,7 @@ module.exports = {
       - For AWS S3, the endpoint is of the format `https://{bucket}.s3.{region}.amazonaws.com`
       - For MinIO, it's the URL to the MinIO server with the bucket's name. For example, `https://{server-domain}/{bucket}`.
       - For DigitalOcean Spaces, it's either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.
+      - for Supabase, it's `https://{uniqueID}.supabase.co/storage/v1/object/public/{bucket}`.
       
       </Table.Cell>
       <Table.Cell>
@@ -252,6 +272,7 @@ module.exports = {
       - For AWS S3, the endpoint is of the format `https://s3.{region}.amazonaws.com`
       - For MinIO, it's the URL to the MinIO server.
       - For DigitalOcean Spaces, it's the Spaces Origin Endpoint.
+      - For Supabase, it's the Endpoint url
       
       </Table.Cell>
       <Table.Cell>
