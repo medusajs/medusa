@@ -9,7 +9,6 @@ import { ClaimReason } from "./mutations"
  * The change action's type.
  */
 export type ChangeActionType =
-  | "CANCEL"
   | "CANCEL_RETURN_ITEM"
   | "FULFILL_ITEM"
   | "CANCEL_ITEM_FULFILLMENT"
