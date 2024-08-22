@@ -72,14 +72,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     )
 
     if (successRedirectUrl) {
-      const url = new URL(successRedirectUrl!)
-      url.searchParams.append("access_token", authToken)
-
-      return res.redirect(url.toString())
-    }
-
-    if (successRedirectUrl) {
-      res.cookie(jwtTokenStorageKey, authToken, {
+      res.cookie(jwtTokenStorageKey as string, authToken, {
           httpOnly: true,
           secure: true,
       })
