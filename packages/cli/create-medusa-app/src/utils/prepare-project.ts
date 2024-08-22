@@ -159,7 +159,6 @@ export default async ({
             )
             errorOccurred = migrations.rowCount == 0
           } catch (e) {
-            console.log(e)
             // avoid error thrown if the migrations table
             // doesn't exist
             errorOccurred = true
