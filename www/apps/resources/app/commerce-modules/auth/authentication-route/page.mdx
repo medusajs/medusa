@@ -30,7 +30,19 @@ For example, the EmailPass provider requires an `email` and `password` fields in
 
 ### Response Fields
 
-If the authentication is successful, you'll receive a `token` field in the response body.
+If the authentication is successful, you'll receive a `token` field in the response body object:
+
+```json
+{
+  "token": "..."
+}
+```
+
+<Note title="Example">
+
+[How to register Customers using the authentication route](../../../storefront-development/customers/register/page.mdx).
+
+</Note>
 
 ---
 
@@ -55,10 +67,16 @@ For example, the EmailPass provider requires an `email` and `password` fields in
 
 ### Response Fields
 
-If the authentication is successful, you'll receive a `token` field in the response body.
+If the authentication is successful, you'll receive a `token` field in the response body object:
+
+```json
+{
+  "token": "..."
+}
+```
 
 <Note title="Example">
 
-[How to register Customers using the authentication route](../../../storefront-development/customers/register/page.mdx).
+[How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).
 
 </Note>
