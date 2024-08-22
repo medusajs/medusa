@@ -16,6 +16,7 @@ const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
 type PrepareOptions = {
   directory: string
+  dbName?: string
   dbConnectionString: string
   seed?: boolean
   spinner: Ora
@@ -31,6 +32,7 @@ type PrepareOptions = {
 
 export default async ({
   directory,
+  dbName,
   dbConnectionString,
   seed,
   spinner,
@@ -73,6 +75,10 @@ export default async ({
   let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret`
 
   if (!skipDb) {
+    if (dbName) {
+      env += `${EOL}DB_NAME=${dbName}`
+      dbConnectionString = dbConnectionString.replace(dbName, "${DB_NAME}")
+    }
     env += `${EOL}DATABASE_URL=${dbConnectionString}`
   }
 
@@ -151,8 +157,10 @@ export default async ({
             const migrations = await client.query(
               `SELECT * FROM "mikro_orm_migrations"`
             )
+            console.log(migrations)
             errorOccurred = migrations.rowCount == 0
           } catch (e) {
+            console.log(e)
             // avoid error thrown if the migrations table
             // doesn't exist
             errorOccurred = true

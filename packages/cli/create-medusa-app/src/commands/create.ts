@@ -73,7 +73,6 @@ export default async ({
     title: "",
     verbose,
   }
-  const dbName = !skipDb && !dbUrl ? `medusa-${nanoid(4)}` : ""
   let isProjectCreated = false
   let isDbInitialized = false
   let printedMessage = false
@@ -101,13 +100,18 @@ export default async ({
   const projectPath = getProjectPath(projectName, directoryPath)
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
-  let { client, dbConnectionString } = !skipDb
+  let dbName = !skipDb && !dbUrl ? `medusa-${slugify(projectName)}` : ""
+
+  let { client, dbConnectionString, ...rest } = !skipDb
     ? await getDbClientAndCredentials({
         dbName,
         dbUrl,
         verbose,
       })
     : { client: null, dbConnectionString: "" }
+  if ("dbName" in rest) {
+    dbName = rest.dbName as string
+  }
   isDbInitialized = true
 
   track("CMA_OPTIONS", {
@@ -178,6 +182,7 @@ export default async ({
   try {
     inviteToken = await prepareProject({
       directory: projectPath,
+      dbName,
       dbConnectionString,
       seed,
       spinner,
