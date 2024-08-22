@@ -20,9 +20,9 @@ import {
   transform,
   when,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
+import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -36,6 +36,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -238,7 +239,11 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
     const [createExchangeItems, createdReturnItems] = parallelize(
       createOrderExchangeItemsFromActionsStep(exchangeItems),
       createReturnItemsFromActionsStep(returnItems),
-      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+      confirmOrderChanges({
+        changes: [orderChange],
+        orderId: order.id,
+        confirmed_by: input.confirmed_by,
+      })
     )
 
     const returnId = transform(

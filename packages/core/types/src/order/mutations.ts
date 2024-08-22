@@ -1894,6 +1894,7 @@ export interface UpdateOrderExchangeWithSelectorDTO {
 }
 export interface CancelOrderReturnDTO extends BaseOrderBundledActionsDTO {
   return_id: string
+  canceled_by?: string
 }
 
 /**
@@ -1981,6 +1982,7 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
 
 export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
   claim_id: string
+  canceled_by?: string
 }
 
 /**
@@ -2031,6 +2033,7 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
 
 export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   exchange_id: string
+  canceled_by?: string
 }
 
 /**

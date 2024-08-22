@@ -90,6 +90,7 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
       cancelOrderExchangeStep({
         exchange_id: orderExchange.id,
         order_id: orderExchange.order_id,
+        canceled_by: input.canceled_by,
       }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )

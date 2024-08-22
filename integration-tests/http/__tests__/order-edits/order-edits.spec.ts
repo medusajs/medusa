@@ -397,6 +397,17 @@ medusaIntegrationTestRunner({
 
         expect(result.total).toEqual(34)
         expect(result.items.length).toEqual(1)
+
+        result = (
+          await api.get(
+            `/admin/orders/${orderId}/changes?change_type=edit`,
+            adminHeaders
+          )
+        ).data.order_changes
+
+        expect(result[0].actions).toHaveLength(3)
+        expect(result[0].status).toEqual("confirmed")
+        expect(result[0].confirmed_by).toEqual(expect.stringContaining("user_"))
       })
     })
   },

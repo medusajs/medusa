@@ -91,3 +91,13 @@ export const OrderCancelFulfillment = z.object({
 export const AdminOrderCancelFulfillment = WithAdditionalData(
   OrderCancelFulfillment
 )
+
+export const AdminOrderChanges = z.object({
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  status: z.union([z.string(), z.array(z.string())]).optional(),
+  change_type: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+export type AdminOrderChangesType = z.infer<typeof AdminOrderChanges>
