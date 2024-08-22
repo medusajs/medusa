@@ -1,0 +1,10 @@
+If you've installed a preview version of a package, such as `@medusajs/file-s3`, make sure its version in `package.json` is set to `preview`:
+
+```json title="package.json"
+"dependencies": {
+  // ...
+  "@medusajs/file-s3": "preview"
+}
+```
+
+Otherwise, unexpected errors may occur when running the Medusa application due to outdated version installed.

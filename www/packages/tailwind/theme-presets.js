@@ -37,6 +37,7 @@ const light = {
   "--docs-border-danger": "rgba(190, 18, 60, 1)",
   "--docs-border-transparent": "rgba(255, 255, 255, 0)",
   "--docs-border-menu-top": "rgba(228, 228, 231, 1)",
+  "--docs-border-menu-bot": "rgba(255, 255, 255, 1)",
 
   "--docs-button-inverted": "rgba(39, 39, 42, 1)",
   "--docs-button-inverted-hover": "rgba(63, 63, 70, 1)",
@@ -140,6 +141,7 @@ const dark = {
   "--docs-border-danger": "rgba(190, 18, 60, 1)",
   "--docs-border-transparent": "rgba(255, 255, 255, 0)",
   "--docs-border-menu-top": "rgba(255, 255, 255, 0.08)",
+  "--docs-border-menu-bot": "rgba(255, 255, 255, 0.08)",
 
   "--docs-button-inverted": "rgba(82, 82, 91, 1)",
   "--docs-button-inverted-hover": "rgba(113, 113, 122, 1)",

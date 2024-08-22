@@ -23,6 +23,16 @@ export interface UpdateFulfillmentWorkflowInput {
   shipped_at?: Date | null
 
   /**
+   * The id of the user that marked fulfillment as shipped
+   */
+  marked_shipped_by?: string | null
+
+  /**
+   * The id of the user that created the fulfillment
+   */
+  created_by?: string | null
+
+  /**
    * The date the fulfillment was delivered.
    */
   delivered_at?: Date | null

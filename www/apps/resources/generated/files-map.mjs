@@ -988,6 +988,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/database-errors"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/deployment/page.mdx",
+    "pathname": "/troubleshooting/deployment"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/eaddrinuse/page.mdx",
     "pathname": "/troubleshooting/eaddrinuse"
   },

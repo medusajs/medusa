@@ -148,7 +148,6 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
         "canceled_at",
         "items.*",
         "items.item.variant_id",
-        "items.item.variant.id",
         "items.item.variant.manage_inventory",
         "items.item.variant.inventory_items.inventory_item_id",
         "items.item.variant.inventory_items.required_quantity",

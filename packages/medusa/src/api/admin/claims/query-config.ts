@@ -6,6 +6,7 @@ export const defaultAdminClaimFields = [
   "display_id",
   "order_version",
   "refund_amount",
+  "created_by",
   "created_at",
   "updated_at",
   "canceled_at",

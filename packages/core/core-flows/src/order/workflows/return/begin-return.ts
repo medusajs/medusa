@@ -44,6 +44,7 @@ export const beginReturnOrderWorkflow = createWorkflow(
         order_id: input.order_id,
         location_id: input.location_id,
         metadata: input.metadata,
+        created_by: input.created_by,
       },
     ])
 

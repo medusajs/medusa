@@ -118,7 +118,12 @@ export const SidebarItemLink = ({
           shallow={!item.isPathHref}
           {...item.linkProps}
         >
-          <span className={clsx(isTitleOneWord && "truncate")}>
+          <span
+            className={clsx(
+              isTitleOneWord && "truncate",
+              nested && "inline-block pl-docs_1.5"
+            )}
+          >
             {item.title}
           </span>
           {item.additionalElms}
@@ -129,7 +134,6 @@ export const SidebarItemLink = ({
           className={clsx(
             "ease-ease overflow-hidden",
             "flex flex-col gap-docs_0.125",
-            !item.childrenSameLevel && "pl-docs_1.5",
             "pt-docs_0.125 pb-docs_0.5"
           )}
         >
