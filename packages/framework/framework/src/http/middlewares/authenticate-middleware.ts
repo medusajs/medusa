@@ -73,11 +73,6 @@ export const authenticate = (
       )
 
       const authToken = req.cookies[http.jwtTokenStorageKey!]
-      const csrfToken = req.headers["x-csrf-token"]
-
-      console.log(csrfToken)
-
-      // TODO: verify the CSRF Token here, if it is not verifyable, throw for missing authentication
 
       if (authToken) {
           req.headers['authorization'] = `Bearer ${authToken}`

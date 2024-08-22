@@ -528,23 +528,6 @@ export type ProjectConfigOptions = {
      */
     jwtTokenStorageKey?: string
     /**
-     * The storage Key for the CSRF token. If not provided, the default value is `medusa_csrf_token`.
-     *
-     * @example
-     * ```js title="medusa-config.js"
-     * module.exports = defineConfig({
-     *   projectConfig: {
-     *     http: {
-     *       csrfTokenStorageKey: "csrf_token"
-     *     }
-     *     // ...
-     *   },
-     *   // ...
-     * })
-     * ```
-     */
-    csrfTokenStorageKey?: string
-    /**
      * A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
      *
      * In a development environment, if this option is not set, the default secret is `supersecret`. However, in production, if this configuration is not set, an error is thrown and

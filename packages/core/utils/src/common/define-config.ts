@@ -3,7 +3,6 @@ import { Modules } from "../modules-sdk/definition"
 
 const DEFAULT_SECRET = "supersecret"
 const DEFAULT_STORAGE_KEY = "medusa_auth_token"
-const DEFAULT_CSRF_STORAGE_KEY = "medusa_csrf_token"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
@@ -33,7 +32,6 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
       authCors: process.env.AUTH_CORS || DEFAULT_ADMIN_CORS,
       jwtSecret: process.env.JWT_SECRET || DEFAULT_SECRET,
       jwtTokenStorageKey: process.env.JWT_TOKEN_STORAGE_KEY || DEFAULT_STORAGE_KEY,
-      csrfTokenStorageKey: process.env.CSRF_TOKEN_STORAGE_KEY || DEFAULT_CSRF_STORAGE_KEY,
       cookieSecret: process.env.COOKIE_SECRET || DEFAULT_SECRET,
       ...http,
     },

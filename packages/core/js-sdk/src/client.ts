@@ -132,19 +132,11 @@ export class Client {
     this.setToken_(token)
   }
 
-  setCsrfToken(token: string) {
-    this.setCsrfToken_(token)
-  }
-
   clearToken() {
     this.clearToken_()
   }
 
-  clearCsrfToken() {
-    this.clearCsrfToken_()
-  }
-
-  protected async clearToken_() {
+  protected clearToken_() {
     const { storageMethod, storageKey } = this.getTokenStorageInfo_()
     switch (storageMethod) {
       case "local": {
@@ -156,8 +148,8 @@ export class Client {
         break
       }
       case "cookie": {
-        await this.fetch(
-          `/auth/cookie?storageKey=${storageKey}`,
+        this.fetch(
+          `/auth/cookie`,
           {
             method: "DELETE"
           }
@@ -258,7 +250,7 @@ export class Client {
     return token ? { Authorization: `Bearer ${token}` } : {}
   }
 
-  protected setToken_ = async (token: string) => {
+  protected setToken_ = (token: string) => {
     const { storageMethod, storageKey } = this.getTokenStorageInfo_()
     switch (storageMethod) {
       case "local": {
@@ -270,13 +262,12 @@ export class Client {
         break
       }
       case "cookie": {
-        await this.fetch(
+        this.fetch(
           `/auth/cookie`,
           {
             method: "POST",
             body: {
-              storageKey: storageKey,
-              storageValue: token
+              authToken: token
             }
           }
         )
@@ -338,31 +329,5 @@ export class Client {
       storageMethod,
       storageKey,
     }
-  }
-
-  protected setCsrfToken_ = async (token: string) => {
-    await this.fetch(
-      `/auth/cookie`,
-      {
-        method: "POST",
-        body: {
-          storageKey: this.config.auth?.csrfTokenStorageKey,
-          storageValue: token
-        }
-      }
-    )
-  }
-
-  protected clearCsrfToken_ = async () => {
-    await this.fetch(
-      `/auth/cookie?storageKey=${this.config.auth?.csrfTokenStorageKey}`,
-      {
-        method: "DELETE",
-      }
-    )
-  }
-
-  protected getCSRFToken_ = () => {
-    return ""
   }
 }

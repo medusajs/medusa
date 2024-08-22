@@ -29,27 +29,19 @@ export class Auth {
       return response.location
     }
 
-    // IMPORTANT: The below code is NOT executed if the the authentication method
-    // is provided a successRedirectUrl in the medusa-config options
-
-    const { authToken } = response
+    const { token } = response as { token: string }
 
     // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
     if (this.config?.auth?.type === "session") {
       await this.client.fetch("/auth/session", {
         method: "POST",
-        headers: { Authorization: `Bearer ${authToken}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
-
-      // This will delete the csrf-Token as it is not need with session based Authentication
-      this.client.clearCsrfToken()
     } else {
-      this.client.setToken(authToken)
-
-      // No need to set the csrf-Token here, as it is done in the callback route
+      this.client.setToken(token)
     }
 
-    return authToken
+    return token
   }
 
   logout = async () => {
@@ -60,7 +52,6 @@ export class Auth {
     }
 
     this.client.clearToken()
-    this.client.clearCsrfToken()
   }
 
   create = async (

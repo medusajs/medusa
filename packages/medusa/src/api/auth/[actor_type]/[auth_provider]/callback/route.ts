@@ -9,7 +9,6 @@ import {
   ModuleRegistrationName,
   generateJwtToken,
 } from "@medusajs/utils"
-import crypto from "node:crypto"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -54,8 +53,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    const { jwtSecret, jwtExpiresIn, jwtTokenStorageKey, csrfTokenStorageKey } = http
-    const authToken = generateJwtToken(
+    const { jwtSecret, jwtExpiresIn } = http
+    const token = generateJwtToken(
       {
         actor_id: entityId ?? "",
         actor_type,
@@ -72,22 +71,14 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       }
     )
 
-    const csrfToken = crypto.randomBytes(32).toString("hex")
-
-    res.cookie(csrfTokenStorageKey as string, csrfToken)
-
-    // TODO: save the csrf Token in cache
-
     if (successRedirectUrl) {
-      res.cookie(jwtTokenStorageKey as string, authToken, {
-          httpOnly: true,
-          secure: true,
-      })
+      const url = new URL(successRedirectUrl!)
+      url.searchParams.append("access_token", token)
 
-      return res.redirect(successRedirectUrl)
+      return res.redirect(url.toString())
     }
 
-    return res.json({ authToken, csrfToken })
+    return res.json({ token })
   }
 
   throw new MedusaError(

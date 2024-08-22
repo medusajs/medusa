@@ -8,41 +8,35 @@ export const POST = async (
     req: MedusaRequest,
     res: MedusaResponse
 ) => {
-    const { storageKey, storageValue } = req.body  as { storageKey: string; storageValue: string }
+    const { jwtTokenStorageKey } = req.scope.resolve("configModule").projectConfig.http
+    const { authToken } = req.body as { authToken: string }
 
-    if (!storageKey || !storageValue) {
+    if (!authToken) {
         throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            "Missing storageKey or storageValue in the request body."
+            "Missing authToken from Body."
         )
     }
 
-    res.cookie(storageKey, storageValue, {
+    res.cookie(jwtTokenStorageKey as string, authToken, {
         httpOnly: true,
         secure: true,
     })
   
-    res.status(200).json({ message: `Saved ${storageKey}-Cookie successfully.` })
+    res.status(200).json({ message: 'Saved Token to Browser Cookies.' })
 }
   
 export const DELETE = async (
     req: MedusaRequest,
     res: MedusaResponse
 ) => {
-    const { storageKey } = req.query
+    const { jwtTokenStorageKey } = req.scope.resolve("configModule").projectConfig.http
 
-    if (!storageKey) {
-        throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Missing storageKey in the request parameters."
-        )
-    }
-
-    res.cookie(storageKey as string, "", {
+    res.cookie(jwtTokenStorageKey as string, "", {
         httpOnly: true,
         secure: true,
         expires: new Date(0)
     })
 
-    res.status(200).json({ message: `Removed the ${storageKey}-Cookie successfully.` });
+    res.status(200).json({ message: 'Logged out successfully' });
 }
