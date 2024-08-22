@@ -51,7 +51,7 @@ export const OrderDetail = () => {
       })}
       <div className="flex flex-col gap-x-4 lg:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
-          <OrderActiveEditSection orderId={order.id} />
+          <OrderActiveEditSection order={order} />
           <OrderGeneralSection order={order} />
           <OrderSummarySection order={order} />
           <OrderPaymentSection order={order} />

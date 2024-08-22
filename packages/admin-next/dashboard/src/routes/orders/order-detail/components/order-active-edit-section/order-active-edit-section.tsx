@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Copy,
-  Heading,
-  StatusBadge,
-  Text,
-  toast,
-} from "@medusajs/ui"
+import { Button, Container, Copy, Heading, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ExclamationCircleSolid } from "@medusajs/icons"
 
@@ -20,15 +12,22 @@ import { HttpTypes } from "@medusajs/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 
 type OrderActiveEditSectionProps = {
-  orderId: string
+  order: HttpTypes.AdminOrder
+  quantity: number
 }
 
-function EditItem({ item }: { item: HttpTypes.AdminOrderLineItem }) {
+function EditItem({
+  item,
+  quantity,
+}: {
+  item: HttpTypes.AdminOrderLineItem
+  quantity: number
+}) {
   return (
     <div key={item.id} className="text-ui-fg-subtle items-center gap-x-2">
       <div className="flex items-center gap-x-2">
         <div className="w-fit min-w-[27px]">
-          <span className="txt-small tabular-nums">{item.quantity}</span>x
+          <span className="txt-small tabular-nums">{quantity}</span>x
         </div>
 
         <Thumbnail src={item.thumbnail} />
@@ -49,19 +48,45 @@ function EditItem({ item }: { item: HttpTypes.AdminOrderLineItem }) {
 }
 
 export const OrderActiveEditSection = ({
-  orderId,
+  order,
 }: OrderActiveEditSectionProps) => {
   const { t } = useTranslation()
 
-  const { order: orderPreview } = useOrderPreview(orderId)
+  const { order: orderPreview } = useOrderPreview(order.id)
 
-  const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(orderId)
-  const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(orderId)
+  const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(order.id)
+  const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(order.id)
 
-  const addedItems = useMemo(() => {
-    return (orderPreview?.items || []).filter(
-      (i) => !!i.actions?.find((a) => a.action === "ITEM_ADD")
-    )
+  const [addedItems, removedItems] = useMemo(() => {
+    const added = []
+    const removed = []
+
+    const orderLookupMap = new Map(order.items!.map((i) => [i.id, i]))
+
+    ;(orderPreview?.items || []).forEach((currentItem) => {
+      const originalItem = orderLookupMap.get(currentItem.id)
+
+      if (!originalItem) {
+        added.push({ item: currentItem, quantity: currentItem.quantity })
+        return
+      }
+
+      if (originalItem.quantity > currentItem.quantity) {
+        removed.push({
+          item: currentItem,
+          quantity: originalItem.quantity - currentItem.quantity,
+        })
+      }
+
+      if (originalItem.quantity < currentItem.quantity) {
+        added.push({
+          item: currentItem,
+          quantity: currentItem.quantity - originalItem.quantity,
+        })
+      }
+    })
+
+    return [added, removed]
   }, [orderPreview])
 
   const onConfirmOrderEdit = async () => {
@@ -104,21 +129,30 @@ export const OrderActiveEditSection = ({
           </div>
 
           {/*ADDED ITEMS*/}
-          <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
-            <span className="flex-1 font-medium">{t("labels.added")}</span>
+          {!!addedItems.length && (
+            <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
+              <span className="flex-1 font-medium">{t("labels.added")}</span>
 
-            <div className="flex flex-1 flex-col gap-y-2">
-              {addedItems.map((item) => (
-                <EditItem key={item.id} item={item} />
-              ))}
+              <div className="flex flex-1 flex-col gap-y-2">
+                {addedItems.map(({ item, quantity }) => (
+                  <EditItem key={item.id} item={item} quantity={quantity} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/*REMOVED ITEMS*/}
-          <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
-            <span className="flex-1 font-medium">{t("labels.removed")}</span>
-            <div className="flex-1">TODO</div>
-          </div>
+          {!!removedItems.length && (
+            <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
+              <span className="flex-1 font-medium">{t("labels.removed")}</span>
+
+              <div className="flex flex-1 flex-col gap-y-2">
+                {removedItems.map(({ item, quantity }) => (
+                  <EditItem key={item.id} item={item} quantity={quantity} />
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
             <Button
