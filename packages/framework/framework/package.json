@@ -55,7 +55,6 @@
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
-    "awilix": "^8.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",
@@ -66,5 +65,8 @@
     "medusa-telemetry": "^0.0.17",
     "morgan": "^1.9.1",
     "zod": "3.22.4"
+  },
+  "peerDependencies": {
+    "awilix": "*"
   }
 }

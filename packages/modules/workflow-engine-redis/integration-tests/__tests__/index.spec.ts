@@ -18,9 +18,9 @@ import {
   createMedusaContainer,
 } from "@medusajs/utils"
 import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
+import { knex } from "@mikro-orm/knex"
 import { asFunction, asValue } from "awilix"
 import Redis from "ioredis"
-import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"

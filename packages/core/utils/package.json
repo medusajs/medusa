@@ -39,9 +39,7 @@
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
-    "json-2-csv": "^5.5.4",
     "jsonwebtoken": "^9.0.2",
-    "knex": "2.4.2",
     "pluralize": "^8.0.0",
     "ulid": "^2.3.0"
   },

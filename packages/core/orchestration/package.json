@@ -28,8 +28,10 @@
   },
   "dependencies": {
     "@medusajs/utils": "^1.11.9",
-    "awilix": "^8.0.0",
     "graphql": "^16.6.0"
+  },
+  "peerDependencies": {
+    "awilix": "*"
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",

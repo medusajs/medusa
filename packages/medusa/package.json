@@ -42,7 +42,8 @@
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "peerDependencies": {
-    "@medusajs/medusa-cli": "*"
+    "@medusajs/medusa-cli": "*",
+    "awilix": "*"
   },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
@@ -54,7 +55,6 @@
     "@medusajs/workflows-sdk": "^0.1.6",
     "@swc/core": "1.5.7",
     "@swc/helpers": "^0.5.11",
-    "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",
     "chalk": "^4.0.0",
@@ -63,7 +63,6 @@
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "fs-exists-cached": "^1.0.0",
