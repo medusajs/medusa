@@ -1048,6 +1048,8 @@ medusaIntegrationTestRunner({
           )
         ).data.claim
 
+        expect(baseClaim.created_by).toEqual(expect.any(String))
+
         await api.post(
           `/admin/claims/${baseClaim.id}/inbound/items`,
           {

@@ -4,7 +4,7 @@ import {
   createWorkflow,
   parallelize,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { useRemoteQueryStep } from "../../common"
 import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
