@@ -46,9 +46,9 @@ export const MainNavHelpButton = () => {
     <div className="relative" ref={ref}>
       <Tooltip
         tooltipChildren={
-          <span className="flex gap-[6px]">
+          <span className="flex gap-[6px] items-center">
             <span>Need help?</span>
-            <Kbd>?</Kbd>
+            <Kbd className="w-docs_1 h-docs_1">?</Kbd>
           </span>
         }
         place="bottom"
@@ -56,7 +56,7 @@ export const MainNavHelpButton = () => {
       >
         <Button
           variant="transparent-clear"
-          className="text-medusa-fg-muted"
+          className="text-medusa-fg-muted !px-[6.5px] !py-[6.5px]"
           onClick={() => setShowMenu((prev) => !prev)}
         >
           <QuestionMark />

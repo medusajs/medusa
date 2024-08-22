@@ -25,17 +25,17 @@ import {
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
-import { getTotalCaptured } from "../../../../../lib/payment"
+import { getTotalCaptured, getTotalPending } from "../../../../../lib/payment"
 
 type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
 }
 
-const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
+export const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
   return order.payment_collections
     .map((collection: HttpTypes.AdminPaymentCollection) => collection.payments)
     .flat(1)
-    .filter(Boolean)
+    .filter(Boolean) as HttpTypes.AdminPayment[]
 }
 
 export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
@@ -142,7 +142,7 @@ const Payment = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useCapturePayment(payment.id)
+  const { mutateAsync } = useCapturePayment(order.id, payment.id)
 
   const handleCapture = async () => {
     const res = await prompt({
@@ -222,7 +222,7 @@ const Payment = ({
                 {
                   label: t("orders.payment.refund"),
                   icon: <XCircle />,
-                  to: `/orders/${order.id}/payments/${payment.id}/refund`,
+                  to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
                   disabled: !payment.captured_at,
                 },
               ],
@@ -321,15 +321,34 @@ const Total = ({
   currencyCode: string
 }) => {
   const { t } = useTranslation()
+  const totalPending = getTotalPending(paymentCollections)
 
   return (
-    <div className="flex items-center justify-between px-6 py-4">
-      <Text size="small" weight="plus" leading="compact">
-        {t("orders.payment.totalPaidByCustomer")}
-      </Text>
-      <Text size="small" weight="plus" leading="compact">
-        {getStylizedAmount(getTotalCaptured(paymentCollections), currencyCode)}
-      </Text>
+    <div>
+      <div className="flex items-center justify-between px-6 py-4">
+        <Text size="small" weight="plus" leading="compact">
+          {t("orders.payment.totalPaidByCustomer")}
+        </Text>
+
+        <Text size="small" weight="plus" leading="compact">
+          {getStylizedAmount(
+            getTotalCaptured(paymentCollections),
+            currencyCode
+          )}
+        </Text>
+      </div>
+
+      {totalPending > 0 && (
+        <div className="flex items-center justify-between px-6 py-4">
+          <Text size="small" weight="plus" leading="compact">
+            Total pending
+          </Text>
+
+          <Text size="small" weight="plus" leading="compact">
+            {getStylizedAmount(totalPending, currencyCode)}
+          </Text>
+        </div>
+      )}
     </div>
   )
 }

@@ -28,7 +28,8 @@ export function getComputedActionsForShippingMethods(
   for (const shippingMethodContext of shippingMethodApplicationContext) {
     const isPromotionApplicableToItem = areRulesValidForContext(
       promotion.application_method?.target_rules!,
-      shippingMethodContext
+      shippingMethodContext,
+      ApplicationMethodTargetType.SHIPPING_METHODS
     )
 
     if (!isPromotionApplicableToItem) {
@@ -125,11 +126,9 @@ export function applyPromotionToShippingMethods(
       const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
+      const div = MathBN.eq(totalApplicableValue, 0) ? 1 : totalApplicableValue
       let applicablePromotionValue = MathBN.sub(
-        MathBN.mult(
-          MathBN.div(applicableTotal, totalApplicableValue),
-          promotionValue
-        ),
+        MathBN.mult(MathBN.div(applicableTotal, div), promotionValue),
         appliedPromoValue
       )
 

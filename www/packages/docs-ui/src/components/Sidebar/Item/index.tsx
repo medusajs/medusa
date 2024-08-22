@@ -5,7 +5,7 @@ import { SidebarItem as SidebarItemType } from "types"
 import { SidebarItemCategory } from "./Category"
 import { SidebarItemLink } from "./Link"
 import { SidebarItemSubCategory } from "./SubCategory"
-import { SidebarSeparator } from "../Separator"
+import { DottedSeparator } from "../.."
 
 export type SidebarItemProps = {
   item: SidebarItemType
@@ -24,7 +24,7 @@ export const SidebarItem = ({
       return (
         <>
           <SidebarItemCategory item={item} {...props} />
-          {hasNextItems && <SidebarSeparator />}
+          {hasNextItems && <DottedSeparator />}
         </>
       )
     case "sub-category":
@@ -32,6 +32,6 @@ export const SidebarItem = ({
     case "link":
       return <SidebarItemLink item={item} {...props} />
     case "separator":
-      return <SidebarSeparator />
+      return <DottedSeparator />
   }
 }

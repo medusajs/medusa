@@ -13429,6 +13429,11 @@ components:
           description: The order's payment collections.
           items:
             $ref: '#/components/schemas/AdminPaymentCollection'
+        fulfillments:
+          type: array
+          description: The order's fulfillments.
+          items:
+            $ref: '#/components/schemas/BaseOrderFulfillment'
         id:
           type: string
           title: id
@@ -13489,11 +13494,6 @@ components:
             - partially_refunded
             - refunded
             - requires_action
-        fulfillments:
-          type: array
-          description: The order's fulfillments.
-          items:
-            $ref: '#/components/schemas/BaseOrderFulfillment'
         fulfillment_status:
           type: string
           enum:
@@ -13622,6 +13622,15 @@ components:
       properties:
         order_preview:
           $ref: '#/components/schemas/OrderPreview'
+    AdminOrderEditResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminOrderEditResponse
+      required:
+        - order_change
+      properties:
+        order_change:
+          $ref: '#/components/schemas/OrderChange'
     AdminOrderPreview:
       type: object
       description: The return's order preview.
@@ -15026,6 +15035,21 @@ components:
         metadata:
           type: object
           description: The order edit's metadata.
+    AdminPostOrderEditsUpdateItemQuantityReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsUpdateItemQuantityReqSchema
+      required:
+        - quantity
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The order edit's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: SUMMARY
@@ -21837,7 +21861,7 @@ components:
       x-schemaName: OrderLineItemTaxLine
     OrderPreview:
       type: object
-      description: The exchange's order preview.
+      description: The order edit's order preview.
       x-schemaName: OrderPreview
       required:
         - order_change

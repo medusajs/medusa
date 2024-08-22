@@ -6,6 +6,7 @@ import {
   AdminPostOrderEditsReqSchema,
   AdminPostOrderEditsShippingActionReqSchema,
   AdminPostOrderEditsShippingReqSchema,
+  AdminPostOrderEditsUpdateItemQuantityReqSchema,
 } from "./validators"
 
 export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
@@ -35,6 +36,13 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/order-edits/:id/items/item/:item_id",
+    middlewares: [
+      validateAndTransformBody(AdminPostOrderEditsUpdateItemQuantityReqSchema),
+    ],
+  },
+  {
     method: ["DELETE"],
     matcher: "/admin/order-edits/:id/items/:action_id",
     middlewares: [],
@@ -61,6 +69,11 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/order-edits/:id/confirm",
+    middlewares: [],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/order-edits/:id/request",
     middlewares: [],
   },
   {

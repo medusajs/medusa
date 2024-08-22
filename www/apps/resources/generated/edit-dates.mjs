@@ -255,5 +255,17 @@ export const generatedEditDates = {
   "app/admin-widget-injection-zones/page.mdx": "2024-05-29T13:50:19+03:00",
   "app/architectural-modules/notification/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/architectural-modules/event/create/page.mdx": "2024-07-04T17:26:03+03:00",
-  "app/troubleshooting/deployment/page.mdx": "2024-08-19T07:19:40.924Z"
+  "app/troubleshooting/deployment/page.mdx": "2024-08-19T07:19:40.924Z",
+  "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:58.913Z",
+  "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow/page.mdx": "2024-08-20T00:10:58.949Z",
+  "references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:59.121Z",
+  "references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityWorkflow/page.mdx": "2024-08-20T00:10:59.157Z",
+  "references/core_flows/Order/variables/core_flows.Order.orderEditUpdateItemQuantityWorkflowId/page.mdx": "2024-08-20T00:10:58.913Z",
+  "references/core_flows/Order/variables/core_flows.Order.updateOrderEditItemQuantityWorkflowId/page.mdx": "2024-08-20T00:10:59.121Z",
+  "references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditResponse/page.mdx": "2024-08-20T00:10:43.389Z",
+  "references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemValidationStep/page.mdx": "2024-08-20T00:10:59.065Z",
+  "references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow/page.mdx": "2024-08-20T00:10:59.105Z",
+  "references/core_flows/core_flows.Order/page.mdx": "2024-08-20T00:10:56.437Z",
+  "references/modules/core_flows/page.mdx": "2024-08-20T00:10:49.141Z",
+  "references/types/types.HttpTypes/page.mdx": "2024-08-20T00:10:43.061Z"
 }

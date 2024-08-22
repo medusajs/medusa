@@ -27,23 +27,30 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   Tooltip,
+  usePrompt,
 } from "@medusajs/ui"
 
+import { AdminPaymentCollection } from "../../../../../../../../core/types/dist/http/payment/admin/entities"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims.tsx"
 import { useExchanges } from "../../../../../hooks/api/exchanges.tsx"
 import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
+import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment-collections.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import { formatCurrency } from "../../../../../lib/format-currency.ts"
 import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
 import { getTotalCaptured } from "../../../../../lib/payment.ts"
+import { getReturnableQuantity } from "../../../../../lib/rma.ts"
+import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -52,10 +59,14 @@ type OrderSummarySectionProps = {
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
 
-  const { reservations } = useReservationItems({
-    line_item_id: order.items.map((i) => i.id),
-  })
+  const { reservations } = useReservationItems(
+    {
+      line_item_id: order?.items?.map((i) => i.id),
+    },
+    { enabled: Array.isArray(order?.items) }
+  )
 
   const { order: orderPreview } = useOrderPreview(order.id!)
 
@@ -95,6 +106,59 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     return false
   }, [reservations])
 
+  const unpaidPaymentCollection = order.payment_collections.find(
+    (pc) => pc.status === "not_paid"
+  )
+
+  const { mutateAsync: markAsPaid } = useMarkPaymentCollectionAsPaid(
+    order.id,
+    unpaidPaymentCollection?.id!
+  )
+
+  const showPayment =
+    unpaidPaymentCollection && (order?.summary?.pending_difference || 0) > 0
+  const showRefund = (order?.summary?.pending_difference || 0) < 0
+
+  const handleMarkAsPaid = async (
+    paymentCollection: AdminPaymentCollection
+  ) => {
+    const res = await prompt({
+      title: t("orders.payment.markAsPaid"),
+      description: t("orders.payment.markAsPaidPayment", {
+        amount: formatCurrency(
+          paymentCollection.amount as number,
+          order.currency_code
+        ),
+      }),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (!res) {
+      return
+    }
+
+    await markAsPaid(
+      { order_id: order.id },
+      {
+        onSuccess: () => {
+          toast.success(
+            t("orders.payment.markAsPaidPaymentSuccess", {
+              amount: formatCurrency(
+                paymentCollection.amount as number,
+                order.currency_code
+              ),
+            })
+          )
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+  }
+
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} orderPreview={orderPreview} />
@@ -102,38 +166,70 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {showAllocateButton ||
-        (showReturns && (
-          <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
-            {showReturns && (
-              <ButtonMenu
-                groups={[
-                  {
-                    actions: returns.map((r) => ({
-                      label: t("orders.returns.receive.receive", {
-                        label: `#${r.id.slice(-7)}`,
-                      }),
-                      icon: <ArrowLongRight />,
-                      to: `/orders/${order.id}/returns/${r.id}/receive`,
-                    })),
-                  },
-                ]}
-              >
-                <Button variant="secondary" size="small">
-                  {t("orders.returns.receive.action")}
-                </Button>
-              </ButtonMenu>
-            )}
-            {showAllocateButton && (
-              <Button
-                onClick={() => navigate(`./allocate-items`)}
-                variant="secondary"
-              >
-                {t("orders.allocateItems.action")}
+      {(showAllocateButton || showReturns || showPayment) && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
+          {showReturns && (
+            <ButtonMenu
+              groups={[
+                {
+                  actions: returns.map((r) => ({
+                    label: t("orders.returns.receive.receive", {
+                      label: `#${r.id.slice(-7)}`,
+                    }),
+                    icon: <ArrowLongRight />,
+                    to: `/orders/${order.id}/returns/${r.id}/receive`,
+                  })),
+                },
+              ]}
+            >
+              <Button variant="secondary" size="small">
+                {t("orders.returns.receive.action")}
               </Button>
-            )}
-          </div>
-        ))}
+            </ButtonMenu>
+          )}
+
+          {showAllocateButton && (
+            <Button
+              onClick={() => navigate(`./allocate-items`)}
+              variant="secondary"
+            >
+              {t("orders.allocateItems.action")}
+            </Button>
+          )}
+
+          {showPayment && (
+            <CopyPaymentLink
+              paymentCollection={unpaidPaymentCollection}
+              order={order}
+            />
+          )}
+
+          {showPayment && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
+            >
+              {t("orders.payment.markAsPaid")}
+            </Button>
+          )}
+
+          {showRefund && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => navigate(`/orders/${order.id}/refund`)}
+            >
+              {t("orders.payment.refundAmount", {
+                amount: getStylizedAmount(
+                  (order?.summary?.pending_difference || 0) * -1,
+                  order?.currency_code
+                ),
+              })}
+            </Button>
+          )}
+        </div>
+      )}
     </Container>
   )
 }
@@ -146,6 +242,11 @@ const Header = ({
   orderPreview?: AdminOrderPreview
 }) => {
   const { t } = useTranslation()
+
+  // is ture if there is no shipped items ATM
+  const shouldDisableReturn = order.items.every(
+    (i) => !(getReturnableQuantity(i) > 0)
+  )
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
@@ -169,6 +270,7 @@ const Header = ({
                 to: `/orders/${order.id}/returns`,
                 icon: <ArrowUturnLeft />,
                 disabled:
+                  shouldDisableReturn ||
                   !!orderPreview?.order_change?.exchange_id ||
                   !!orderPreview?.order_change?.claim_id,
               },
@@ -181,6 +283,7 @@ const Header = ({
                 to: `/orders/${order.id}/exchanges`,
                 icon: <ArrowPath />,
                 disabled:
+                  shouldDisableReturn ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.exchange_id) ||
                   !!orderPreview?.order_change?.claim_id,
@@ -194,6 +297,7 @@ const Header = ({
                 to: `/orders/${order.id}/claims`,
                 icon: <ExclamationCircle />,
                 disabled:
+                  shouldDisableReturn ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.claim_id) ||
                   !!orderPreview?.order_change?.exchange_id,
@@ -431,7 +535,7 @@ const ReturnBreakdown = ({
     item && (
       <div
         key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -449,7 +553,7 @@ const ReturnBreakdown = ({
 
           {item?.note && (
             <Tooltip content={item.note}>
-              <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
             </Tooltip>
           )}
 
@@ -493,7 +597,7 @@ const ClaimBreakdown = ({
     !!items.length && (
       <div
         key={claim.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -532,7 +636,7 @@ const ExchangeBreakdown = ({
     !!items.length && (
       <div
         key={exchange.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle border-dotted border-t-2 border-b-2 flex flex-row justify-between gap-y-2 px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />

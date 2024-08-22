@@ -234,9 +234,9 @@ module.exports = {
           "0px -1px 0px 0px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(82, 82, 91, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
 
         "elevation-code-block":
-          "0px 0px 0px 1px rgba(24, 24, 27, 1) inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.2) inset",
+          "0px 0px 0px 1px #18181B, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.20)",
         "elevation-code-block-dark":
-          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px #27272A, 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
         active: "0px 0px 0px 3px #E1F0FF",
         "active-dark": "0px 0px 0px 3px #2C2250",
         "border-base":
@@ -309,136 +309,179 @@ module.exports = {
         "inner-content-xxl": "640px",
         "inner-content-xxxl": "640px",
         // wide layout
-        "wide-content": "1112px",
+        "xl-wide-content": "1112px",
+        "lg-wide-content": "800px",
       },
       minWidth: {
         xl: "1419px",
       },
       fontSize: {
         h1: [
-          "2rem",
+          "24px",
           {
-            lineHeight: "2.75rem",
+            lineHeight: "36px",
             fontWeight: "500",
           },
         ],
         h2: [
-          "1.5rem",
+          "18px",
           {
-            lineHeight: "2rem",
+            lineHeight: "28px",
             fontWeight: "500",
           },
         ],
         h3: [
-          "1.125rem",
+          "16px",
           {
-            lineHeight: "1.75rem",
+            lineHeight: "24px",
             fontWeight: "500",
           },
         ],
         h4: [
           "1rem",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
-        "compact-large-plus": [
-          "1rem",
+        "compact-x-large-plus": [
+          "18px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
+        "compact-x-large": [
+          "18px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "compact-large-plus": [
+          "16px",
+          {
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-large": [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-medium-plus": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-medium": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-small-plus": [
-          "0.8125rem",
+          "13px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-small": [
-          "0.8125rem",
+          "13px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "compact-x-small-plus": [
-          "0.75rem",
+          "12px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "500",
           },
         ],
         "compact-x-small": [
-          "0.75rem",
+          "12px",
           {
-            lineHeight: "1.25rem",
+            lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "x-large-plus": [
-          "1.125rem",
+          "18px",
           {
-            lineHeight: "1.6875rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         "x-large": [
-          "1.125rem",
+          "18px",
           {
-            lineHeight: "1.6875rem",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
         "large-plus": [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.5rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         large: [
-          "1rem",
+          "16px",
           {
-            lineHeight: "1.5rem",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
         "medium-plus": [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.3125rem",
+            lineHeight: "150%",
             fontWeight: "500",
           },
         ],
         medium: [
-          "0.875rem",
+          "14px",
           {
-            lineHeight: "1.3125rem",
+            lineHeight: "150%",
             fontWeight: "400",
+          },
+        ],
+        small: [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "small-plus": [
+          "13px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
+          },
+        ],
+        "x-small": [
+          "12px",
+          {
+            lineHeight: "150%",
+            fontWeight: "400",
+          },
+        ],
+        "x-small-plus": [
+          "12px",
+          {
+            lineHeight: "150%",
+            fontWeight: "500",
           },
         ],
         "code-label": [
@@ -451,7 +494,7 @@ module.exports = {
         "code-body": [
           "12px",
           {
-            lineHeight: "18px",
+            lineHeight: "150%",
             fontWeight: "400",
           },
         ],
@@ -768,9 +811,10 @@ module.exports = {
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
           },
-          ".code-block-highlight-dark": {
+          ".code-block-highlight": {
             "*::selection": {
-              "background-color": "var(--docs-contrast-bg-highlight)",
+              "background-color": "var(--docs-contrast-fg-secondary)",
+              color: "var(--docs-contrast-bg-base)",
             },
           },
           ".code-block-highlight-light": {

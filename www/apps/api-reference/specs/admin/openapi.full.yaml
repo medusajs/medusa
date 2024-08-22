@@ -11902,7 +11902,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdminOrderResponse'
+                $ref: '#/components/schemas/AdminOrderEditResponse'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -12199,6 +12199,106 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: orderEditAddNewItemWorkflow
+  /admin/order-edits/{id}/items/item/{item_id}:
+    post:
+      operationId: PostOrderEditsIdItemsItemItem_id
+      summary: Add Items to Order Edit
+      description: Add a list of items to a order edit.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order edit's ID.
+          required: true
+          schema:
+            type: string
+        - name: item_id
+          in: path
+          description: The order edit's item id.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrderEditsUpdateItemQuantityReqSchema'
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/order-edits/{id}/items/item/{item_id}' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "quantity": 7564330046324736
+            }'
+      tags:
+        - Order Edits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderEditPreviewResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: orderEditUpdateItemQuantityWorkflow
   /admin/order-edits/{id}/items/{action_id}:
     post:
       operationId: PostOrderEditsIdItemsAction_id
@@ -13752,6 +13852,224 @@ paths:
             description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
+          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: SUMMARY
+              required:
+                - order_id
+                - amount
+              properties:
+                order_id:
+                  type: string
+                  title: order_id
+                  description: The payment collection's order id.
+                amount:
+                  type: number
+                  title: amount
+                  description: The payment collection's amount.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/payment-collections' \
+            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "order_id": "{value}"
+            }'
+      tags:
+        - Payment Collections
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPaymentCollectionResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: createOrderPaymentCollectionWorkflow
+  /admin/payment-collections/{id}:
+    delete:
+      operationId: DeletePaymentCollectionsId
+      summary: Delete a Payment Collection
+      description: Delete a payment collection.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The payment collection's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
+          description: |-
+            Comma-separated fields that should be included in the returned data.
+             * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+             * without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: |-
+              Comma-separated fields that should be included in the returned data.
+               * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+               * without prefix it will replace the entire default fields.
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/payment-collections/{id}' \
+            -H 'x-medusa-access-token: {api_token}'
+      tags:
+        - Payment Collections
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: SUMMARY
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The payment collection's ID.
+                  object:
+                    type: string
+                    title: object
+                    description: The payment collection's object.
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: The payment collection's deleted.
+                  parent:
+                    type: object
+                    description: The payment collection's parent.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /admin/payment-collections/{id}/mark-as-paid:
+    post:
+      operationId: PostPaymentCollectionsIdMarkAsPaid
+      summary: Add Mark As Paids to Payment Collection
+      description: Add a list of mark as paids to a payment collection.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The payment collection's ID.
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: Comma-separated relations that should be expanded in the returned data.
+          required: false
+          schema:
+            type: string
+            title: expand
+            description: Comma-separated relations that should be expanded in the returned data.
+        - name: fields
+          in: query
           description: |-
             Comma-separated fields that should be included in the returned data.
              * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
@@ -13805,15 +14123,11 @@ paths:
                   type: string
                   title: order_id
                   description: The payment collection's order id.
-                amount:
-                  type: number
-                  title: amount
-                  description: The payment collection's amount.
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: |-
-            curl -X POST '{backend_url}/admin/payment-collections' \
+            curl -X POST '{backend_url}/admin/payment-collections/{id}/mark-as-paid' \
             -H 'x-medusa-access-token: {api_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
@@ -13840,7 +14154,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      x-workflow: createOrderPaymentCollectionWorkflow
   /admin/payments:
     get:
       operationId: GetPayments
@@ -46706,6 +47019,11 @@ components:
           description: The order's payment collections.
           items:
             $ref: '#/components/schemas/AdminPaymentCollection'
+        fulfillments:
+          type: array
+          description: The order's fulfillments.
+          items:
+            $ref: '#/components/schemas/BaseOrderFulfillment'
         id:
           type: string
           title: id
@@ -46766,11 +47084,6 @@ components:
             - partially_refunded
             - refunded
             - requires_action
-        fulfillments:
-          type: array
-          description: The order's fulfillments.
-          items:
-            $ref: '#/components/schemas/BaseOrderFulfillment'
         fulfillment_status:
           type: string
           enum:
@@ -46899,6 +47212,15 @@ components:
       properties:
         order_preview:
           $ref: '#/components/schemas/OrderPreview'
+    AdminOrderEditResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminOrderEditResponse
+      required:
+        - order_change
+      properties:
+        order_change:
+          $ref: '#/components/schemas/OrderChange'
     AdminOrderPreview:
       type: object
       description: The return's order preview.
@@ -48303,6 +48625,21 @@ components:
         metadata:
           type: object
           description: The order edit's metadata.
+    AdminPostOrderEditsUpdateItemQuantityReqSchema:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminPostOrderEditsUpdateItemQuantityReqSchema
+      required:
+        - quantity
+      properties:
+        quantity:
+          type: number
+          title: quantity
+          description: The order edit's quantity.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order edit's internal note.
     AdminPostOrderExchangesReqSchema:
       type: object
       description: SUMMARY
@@ -55114,7 +55451,7 @@ components:
       x-schemaName: OrderLineItemTaxLine
     OrderPreview:
       type: object
-      description: The exchange's order preview.
+      description: The order edit's order preview.
       x-schemaName: OrderPreview
       required:
         - order_change

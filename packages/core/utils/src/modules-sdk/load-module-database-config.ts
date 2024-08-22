@@ -57,7 +57,7 @@ function getDatabaseUrl(
 
 /**
  * Load the config for the database connection. The options can be retrieved
- * e.g through PRODUCT_* (e.g PRODUCT_POSTGRES_URL) or * (e.g POSTGRES_URL) environment variables or the options object.
+ * e.g through PRODUCT_* (e.g PRODUCT_DATABASE_URL) or * (e.g DATABASE_URL) environment variables or the options object.
  * @param options
  * @param moduleName
  */
@@ -70,13 +70,13 @@ export function loadDatabaseConfig(
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
   const clientUrl =
-    options?.database?.clientUrl ?? getEnv("POSTGRES_URL", moduleName)
+    options?.database?.clientUrl ?? getEnv("DATABASE_URL", moduleName)
 
   const database = {
     clientUrl,
-    schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
+    schema: getEnv("DATABASE_SCHEMA", moduleName) ?? "public",
     driverOptions: JSON.parse(
-      getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
+      getEnv("DATABASE_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
     debug: false,
@@ -98,7 +98,7 @@ export function loadDatabaseConfig(
   if (!database.clientUrl && !silent && !database.connection) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
-      "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_POSTGRES_URL, MEDUSA_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
+      "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_DATABASE_URL, MEDUSA_DATABASE_URL or DATABASE_URL environment variable or the options object in the initialize function."
     )
   }
 

@@ -10,7 +10,6 @@ export type NoteProps = {
   type?: "default" | "warning" | "success" | "error" | "check" | "soon"
   title?: string
   children?: React.ReactNode
-  icon?: React.ReactNode
 }
 
 export const Note = ({ type = "default", ...props }: NoteProps) => {
@@ -21,6 +20,7 @@ export const Note = ({ type = "default", ...props }: NoteProps) => {
       return <SuccessNote type={type} {...props} />
     case "error":
       return <ErrorNote type={type} {...props} />
+    // TODO remove both once we've removed all notes using them
     case "check":
       return <CheckNote type={type} {...props} />
     case "soon":

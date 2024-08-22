@@ -56,7 +56,7 @@ export function getSmallestUnit(
     numeric = Math.ceil(numeric / 10) * 10
   }
 
-  return numeric
+  return parseInt(numeric.toString().split(".").shift()!, 10)
 }
 
 /**

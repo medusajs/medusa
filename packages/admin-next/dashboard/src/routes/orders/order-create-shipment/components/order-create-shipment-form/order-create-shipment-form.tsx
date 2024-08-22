@@ -11,8 +11,8 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { CreateShipmentSchema } from "./constants"
 import { useCreateOrderShipment } from "../../../../../hooks/api"
+import { CreateShipmentSchema } from "./constants"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -27,7 +27,7 @@ export function OrderCreateShipmentForm({
   const { handleSuccess } = useRouteModal()
 
   const { mutateAsync: createShipment, isPending: isMutating } =
-    useCreateOrderShipment(order.id, fulfillment.id)
+    useCreateOrderShipment(order.id, fulfillment?.id)
 
   const form = useForm<zod.infer<typeof CreateShipmentSchema>>({
     defaultValues: {
@@ -44,7 +44,7 @@ export function OrderCreateShipmentForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     await createShipment(
       {
-        items: fulfillment.items.map((i) => ({
+        items: fulfillment?.items?.map((i) => ({
           id: i.line_item_id,
           quantity: i.quantity,
         })),

@@ -56,7 +56,6 @@ module.exports = defineConfig({
     workerMode: process.env.MEDUSA_WORKER_MODE,
   },
 })
-
 ```
 
 Later, you’ll set different values of the `MEDUSA_WORKER_MODE` environment variable for each Medusa application deployment.
@@ -83,7 +82,6 @@ module.exports = defineConfig({
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
   },
 })
-
 ```
 
 Later, you’ll set different values of the `DISABLE_MEDUSA_ADMIN` environment variable.
@@ -99,7 +97,6 @@ module.exports = defineConfig({
     redisUrl: process.env.REDIS_URL,
   },
 })
-
 ```
 
 ---
@@ -153,13 +150,13 @@ module.exports = defineConfig({
     // ...
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-redis",
-      options: { 
+      options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
     [Modules.EVENT_BUS]: {
       resolve: "@medusajs/event-bus-redis",
-      options: { 
+      options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
@@ -243,7 +240,6 @@ DISABLE_MEDUSA_ADMIN=true
 MEDUSA_WORKER_MODE=worker
 PORT=9000
 DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
-POSTGRES_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 REDIS_URL=${{Redis.REDIS_PUBLIC_URL}}
 ```
 
@@ -282,7 +278,7 @@ You can either generate a random domain name or set a custom one. To do that:
 2. Choose the Settings tab.
 3. Scroll down to the Networking section.
 4. Under Public Networking, click on Generate domain to generate a domain name or Custom domain to add your custom domain.
-    1. Choose the `9000` port.
+   1. Choose the `9000` port.
 5. Save the changes.
 
 ### Additional Configuration if Deploying with Admin
@@ -352,7 +348,6 @@ DISABLE_MEDUSA_ADMIN=false
 MEDUSA_WORKER_MODE=worker
 PORT=9000
 DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
-POSTGRES_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 REDIS_URL=${{Redis.REDIS_PUBLIC_URL}}
 ```
 

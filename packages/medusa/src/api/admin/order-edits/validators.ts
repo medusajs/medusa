@@ -48,6 +48,7 @@ export const AdminPostOrderEditsAddItemsReqSchema = z.object({
 export type AdminPostOrderEditsAddItemsReqSchemaType = z.infer<
   typeof AdminPostOrderEditsAddItemsReqSchema
 >
+
 export const AdminPostOrderEditsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
   internal_note: z.string().nullish().optional(),
@@ -55,4 +56,13 @@ export const AdminPostOrderEditsItemsActionReqSchema = z.object({
 
 export type AdminPostOrderEditsItemsActionReqSchemaType = z.infer<
   typeof AdminPostOrderEditsItemsActionReqSchema
+>
+
+export const AdminPostOrderEditsUpdateItemQuantityReqSchema = z.object({
+  quantity: z.number(),
+  internal_note: z.string().nullish().optional(),
+})
+
+export type AdminPostOrderEditsUpdateItemQuantityReqSchemaType = z.infer<
+  typeof AdminPostOrderEditsUpdateItemQuantityReqSchema
 >

@@ -3664,6 +3664,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.orderEditAddNewItemWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow/page.mdx",
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.orderExchangeAddNewItemWorkflow"
   },
@@ -3850,6 +3858,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow/page.mdx",
     "pathname": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityValidationStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Order/functions/core_flows.Order.updateOrderEditItemQuantityWorkflow"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/functions/core_flows.Order.updateOrderEditShippingMethodValidationStep/page.mdx",
@@ -4184,6 +4200,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Order/variables/core_flows.Order.orderEditAddNewItemWorkflowId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.orderEditUpdateItemQuantityWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Order/variables/core_flows.Order.orderEditUpdateItemQuantityWorkflowId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.orderExchangeAddNewItemWorkflowId/page.mdx",
     "pathname": "/references/core_flows/Order/variables/core_flows.Order.orderExchangeAddNewItemWorkflowId"
   },
@@ -4290,6 +4310,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.updateOrderEditAddItemWorkflowId/page.mdx",
     "pathname": "/references/core_flows/Order/variables/core_flows.Order.updateOrderEditAddItemWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.updateOrderEditItemQuantityWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Order/variables/core_flows.Order.updateOrderEditItemQuantityWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Order/variables/core_flows.Order.updateOrderEditShippingMethodWorkflowId/page.mdx",
@@ -14518,6 +14542,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditPreviewResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditPreviewResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderEditResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminOrderReturnResponse/page.mdx",

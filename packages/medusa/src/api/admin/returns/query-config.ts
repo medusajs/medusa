@@ -10,6 +10,7 @@ export const defaultAdminReturnFields = [
   "metadata",
   "no_notification",
   "refund_amount",
+  "created_by",
   "created_at",
   "updated_at",
   "canceled_at",

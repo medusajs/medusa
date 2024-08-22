@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { UseFormReturn } from "react-hook-form"
 
-import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
+import { DataGrid } from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"
@@ -48,7 +48,7 @@ export const CreateShippingOptionsPricesForm = ({
     pricePreferences,
   })
 
-  const initializing = isStoreLoading || !store || isRegionsLoading || !regions
+  const isLoading = isStoreLoading || !store || isRegionsLoading || !regions
 
   const data = useMemo(
     () => [[...(currencies || []), ...(regions || [])]],
@@ -65,7 +65,8 @@ export const CreateShippingOptionsPricesForm = ({
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGridRoot
+      <DataGrid
+        isLoading={isLoading}
         data={data}
         columns={columns}
         state={form}

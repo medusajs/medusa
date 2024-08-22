@@ -83,7 +83,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminOrderResponse"
+ *           $ref: "#/components/schemas/AdminOrderEditResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
