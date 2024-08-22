@@ -33,7 +33,7 @@ export const OrderEditItemsSection = ({
   /*
    * MUTATIONS
    */
-  const { mutateAsync: addItems } = useAddOrderEditItems(order.id)
+  const { mutateAsync: addItems, isPending } = useAddOrderEditItems(order.id)
 
   /**
    * CALLBACKS
@@ -106,6 +106,7 @@ export const OrderEditItemsSection = ({
                       variant="primary"
                       size="small"
                       role="button"
+                      disabled={isPending}
                       onClick={async () => await onItemsSelected()}
                     >
                       {t("actions.save")}

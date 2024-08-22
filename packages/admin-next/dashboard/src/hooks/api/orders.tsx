@@ -45,7 +45,7 @@ export const useOrder = (
 
 export const useOrderPreview = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminOrderFilters,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminOrderPreviewResponse,
