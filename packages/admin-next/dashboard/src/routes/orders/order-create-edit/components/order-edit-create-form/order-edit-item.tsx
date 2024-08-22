@@ -169,7 +169,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         <div className="flex flex-1 justify-between">
           <div className="flex flex-grow items-center gap-2">
             <Input
-              className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
+              className="bg-ui-bg-base txt-small w-[67px] rounded-lg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
               disabled={item.detail.fulfilled_quantity === item.quantity}
               min={item.detail.fulfilled_quantity}
