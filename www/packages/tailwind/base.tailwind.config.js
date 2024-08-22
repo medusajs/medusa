@@ -282,10 +282,11 @@ module.exports = {
       },
       width: {
         toc: "221px",
+        "sidebar-xs": "calc(100% - 20px)",
       },
       maxWidth: {
         // sidebar
-        "sidebar-xs": "300px",
+        "sidebar-xs": "calc(100% - 20px)",
         "sidebar-sm": "300px",
         "sidebar-md": "300px",
         "sidebar-lg": "221px",
@@ -301,9 +302,9 @@ module.exports = {
         "main-content-xxl": "1263px",
         "main-content-xxxl": "3567px",
         // inner content
-        "inner-content-xs": "272px",
-        "inner-content-sm": "592px",
-        "inner-content-md": "640px",
+        "inner-content-xs": "100%",
+        "inner-content-sm": "100%",
+        "inner-content-md": "100%",
         "inner-content-lg": "640px",
         "inner-content-xl": "640px",
         "inner-content-xxl": "640px",
