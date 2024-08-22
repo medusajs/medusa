@@ -25,16 +25,6 @@ export function getCoreFlowNamespaces(): NamespaceGenerateDetails[] {
         return
       }
 
-      if (directory.name === "definition") {
-        loopDirectories(
-          readdirSync(path.join(rootFlowsPath, directory.name), {
-            withFileTypes: true,
-          }),
-          [...parentDirs, directory.name]
-        )
-        return
-      }
-
       const namespaceName = kebabToTitle(directory.name)
       const pathPatternPrefix = `**/packages/core/core-flows/src/${
         parentDirs.length ? `${parentDirs.join("/")}/` : ""
