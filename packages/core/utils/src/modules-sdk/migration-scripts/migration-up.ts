@@ -1,5 +1,5 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { doesDbExists, mikroOrmCreateConnection } from "../../dal"
+import { dbExists, mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
 
@@ -35,7 +35,7 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
     const dbData = loadDatabaseConfig(moduleName, options)!
     const orm = await mikroOrmCreateConnection(dbData, [], pathToMigrations)
 
-    if (!(await doesDbExists(orm))) {
+    if (!(await dbExists(orm))) {
       const dbName = orm.config.get("dbName")
       logger.error(`Cannot run migrations. Database ${dbName} does not exist`)
       logger.info(`Run "npx medusa db create" to create the database`)

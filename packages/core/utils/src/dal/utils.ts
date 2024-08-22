@@ -93,7 +93,7 @@ export function getSoftDeletedCascadedEntitiesIdsMappedBy({
  * An exception with "3D000" when unable to connect to the db because
  * of missing database
  */
-export async function doesDbExists(orm: MikroORM): Promise<boolean> {
+export async function dbExists(orm: MikroORM): Promise<boolean> {
   try {
     await orm.em.getDriver().execute("SELECT 1 + 1;")
     return true
