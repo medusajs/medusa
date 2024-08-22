@@ -1,3 +1,4 @@
+import { MikroORM } from "@mikro-orm/postgresql"
 import { isObject } from "../common"
 
 export async function transactionWrapper<TManager = unknown>(
@@ -82,4 +83,24 @@ export function getSoftDeletedCascadedEntitiesIdsMappedBy({
   }
 
   return Object.fromEntries(deletedEntitiesMap)
+}
+
+/**
+ * A helper to check if the database exists or not. Since the PG driver
+ * fails when the database is missing, it does not matter what query
+ * do we run.
+ *
+ * An exception with "3D000" when unable to connect to the db because
+ * of missing database
+ */
+export async function doesDbExists(orm: MikroORM): Promise<boolean> {
+  try {
+    await orm.em.getDriver().execute("SELECT 1 + 1;")
+    return true
+  } catch (error) {
+    if (error.code === "3D000") {
+      return false
+    }
+    throw error
+  }
 }
