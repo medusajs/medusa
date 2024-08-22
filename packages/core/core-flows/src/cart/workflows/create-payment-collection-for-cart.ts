@@ -9,8 +9,8 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep } from "../../../common/steps/create-remote-links"
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
+import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { createPaymentCollectionsStep } from "../steps/create-payment-collection"
 
 /**
