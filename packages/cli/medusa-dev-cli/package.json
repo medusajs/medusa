@@ -43,6 +43,7 @@
     "directory": "packages/medusa-dev-cli"
   },
   "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "test": "jest --passWithNoTests -- src",
     "build": "tsc",
     "watch": "tsc --watch"

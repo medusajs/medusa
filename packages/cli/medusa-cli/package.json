@@ -24,7 +24,8 @@
   "scripts": {
     "test": "jest --passWithNoTests src",
     "build": "rimraf dist && tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",

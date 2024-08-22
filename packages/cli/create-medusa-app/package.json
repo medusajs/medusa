@@ -10,7 +10,8 @@
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "dependencies": {
     "@medusajs/utils": "^1.11.9",

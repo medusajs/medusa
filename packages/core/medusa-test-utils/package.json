@@ -12,6 +12,7 @@
     "node": ">=16"
   },
   "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
