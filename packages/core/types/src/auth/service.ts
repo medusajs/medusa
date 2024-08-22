@@ -1,14 +1,18 @@
+import { FindConfig } from "../common"
+import { IModuleService } from "../modules-sdk"
+import { Context } from "../shared-context"
 import {
   AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
   CreateAuthIdentityDTO,
+  CreateProviderIdentityDTO,
   FilterableAuthIdentityProps,
+  FilterableProviderIdentityProps,
+  ProviderIdentityDTO,
   UpdateAuthIdentityDTO,
+  UpdateProviderIdentityDTO,
 } from "./common"
-import { Context } from "../shared-context"
-import { FindConfig } from "../common"
-import { IModuleService } from "../modules-sdk"
 
 /**
  * The main service interface for the Auth Module.
@@ -274,4 +278,156 @@ export interface IAuthModuleService extends IModuleService {
    * await authModuleService.deleteAuthIdentities(["authusr_123", "authusr_321"])
    */
   deleteAuthIdentities(ids: string[], sharedContext?: Context): Promise<void>
+
+  /**
+   * This method retrieves a provider identity by its ID.
+   *
+   * @param {string} id - The ID of the provider identity.
+   * @param {FindConfig<ProviderIdentityDTO>} config - The configurations determining how the provider identity is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a provider identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO>} The retrieved provider identity.
+   *
+   * @example
+   * const providerIdentity = await authModuleService.retrieveProviderIdentity("provider_123")
+   */
+  retrieveProviderIdentity(
+    id: string,
+    config?: FindConfig<ProviderIdentityDTO>,
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO>
+
+  /**
+   * This method retrieves a paginated list of provider identities based on optional filters and configuration.
+   *
+   * @param {FilterableProviderIdentityProps} filters - The filters to apply on the retrieved provider identities.
+   * @param {FindConfig<ProviderIdentityDTO>} config - The configurations determining how the provider identity is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a provider identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO[]>} The list of provider identities.
+   *
+   * @example
+   * To retrieve a list of provider identities using their IDs:
+   *
+   * ```ts
+   * const providerIdentities = await authModuleService.listProviderIdentities({
+   *   id: ["provider_123", "provider_234"],
+   * })
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const providerIdentities = await authModuleService.listProviderIdentities(
+   *   {
+   *     id: ["provider_123", "provider_234"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   */
+  listProviderIdentities(
+    filters?: FilterableProviderIdentityProps,
+    config?: FindConfig<ProviderIdentityDTO>,
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO[]>
+
+  /**
+   * This method creates provider identities.
+   *
+   * @param {CreateProviderIdentityDTO[]} data - The provider identities to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO[]>} The created provider identities.
+   *
+   * @example
+   * const providerIdentities = await authModuleService.createProviderIdentities([
+   *   {
+   *      provider: "emailpass",
+   *      entity_id: "user@example.com",
+   *      auth_identity_id: "uid_1"
+   *   },
+   *   {
+   *      provider: "github",
+   *      entity_id: "github_handle",
+   *      auth_identity_id: "uid_1"
+   *   },
+   * ])
+   */
+  createProviderIdentities(
+    data: CreateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO[]>
+
+  /**
+   * This method creates a provider identity.
+   *
+   * @param {CreateProviderIdentityDTO} data - The provider identity to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO>} The created provider identity.
+   *
+   * @example
+   * const providerIdentity = await authModuleService.createProviderIdentities({
+   *     provider: "github",
+   *     entity_id: "github_handle",
+   *     auth_identity_id: "uid_1"
+   * })
+   */
+  createProviderIdentities(
+    data: CreateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO>
+
+  /**
+   * This method updates existing provider identities.
+   *
+   * @param {UpdateProviderIdentityDTO[]} data - The attributes to update in the provider identities.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO[]>} The updated provider identities.
+   *
+   * @example
+   * const providerIdentities = await authModuleService.updateProviderIdentities([
+   *   {
+   *     id: "provider_123",
+   *   },
+   * ])
+   */
+  updateProviderIdentites(
+    data: UpdateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO[]>
+
+  /**
+   * This method updates an existing provider identity.
+   *
+   * @param {UpdateProviderIdentityDTO} data - The attributes to update in the provider identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProviderIdentityDTO>} The updated provider identity.
+   *
+   * @example
+   * const providerIdentity = await authModuleService.updateProviderIdentites({
+   *   id: "provider_123",
+   * })
+   */
+  updateProviderIdentites(
+    data: UpdateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<ProviderIdentityDTO>
+
+  /**
+   * This method deletes a provider identity by its ID.
+   *
+   * @param {string[]} ids - The IDs of the provider identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when {summary}
+   *
+   * @example
+   * await authModuleService.deleteProviderIdentities(["provider_123", "provider_234"])
+   */
+  deleteProviderIdentities(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
 }

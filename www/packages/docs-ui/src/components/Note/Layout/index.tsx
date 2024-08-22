@@ -1,60 +1,111 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { NoteProps } from ".."
 import clsx from "clsx"
+import { MarkdownContent } from "../../.."
 
-type NoteLayoutProps = NoteProps & {
-  icon: React.ReactNode
+type StringInfo = {
+  allStringChildren: boolean
+  stringChildren: string[]
 }
 
-export const NoteLayout = ({
-  type,
-  title,
-  children,
-  icon,
-}: NoteLayoutProps) => {
-  const isDefaultStyle =
-    type === "default" ||
-    type === "success" ||
-    type === "error" ||
-    type === "check"
-  const isWarningStyle = type === "warning"
-  const isSoonStyle = type === "soon"
+type NoteLayoutProps = NoteProps
+
+export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
+  const getStringInfoFromChildren = (nodes: React.ReactNode): StringInfo => {
+    let allStringChildren = true
+    const stringChildren: string[] = []
+
+    React.Children.forEach(nodes, (child) => {
+      if (!allStringChildren) {
+        return
+      } else if (["string", "number"].includes(typeof child)) {
+        stringChildren.push(`${child}`)
+      } else if (Array.isArray(child)) {
+        const childInfo = getStringInfoFromChildren(child)
+        allStringChildren = childInfo.allStringChildren
+        stringChildren.push(...childInfo.stringChildren)
+      } else if (
+        React.isValidElement(child) &&
+        typeof child.props === "object" &&
+        child.props &&
+        "children" in child.props &&
+        child.props.children
+      ) {
+        const typeStr = child.type.toString()
+        if (typeStr.includes(`"li"`)) {
+          allStringChildren = false
+          return
+        } else if (
+          "href" in child.props &&
+          typeof child.props.children === "string"
+        ) {
+          stringChildren.push(`[${child.props.children}](${child.props.href})`)
+          return
+        } else if (
+          typeStr.includes("InlineCode") &&
+          typeof child.props.children === "string"
+        ) {
+          stringChildren.push(`\`${child.props.children}\``)
+          return
+        }
+
+        const childInfo = getStringInfoFromChildren(
+          child.props.children as React.ReactNode
+        )
+        allStringChildren = childInfo.allStringChildren
+        stringChildren.push(...childInfo.stringChildren)
+      }
+    })
+
+    return {
+      allStringChildren,
+      stringChildren,
+    }
+  }
+  const { allStringChildren, stringChildren } = useMemo(() => {
+    const { allStringChildren, stringChildren } =
+      getStringInfoFromChildren(children)
+
+    return {
+      allStringChildren,
+      stringChildren: stringChildren.join(" "),
+    }
+  }, [children])
 
   return (
     <div
       className={clsx(
-        "p-docs_0.75 border border-solid rounded shadow-none",
-        isDefaultStyle && "bg-medusa-bg-component border-medusa-border-base",
-        isWarningStyle && "bg-medusa-tag-red-bg border-medusa-tag-red-border",
-        isSoonStyle && "bg-medusa-tag-blue-bg border-medusa-tag-blue-border",
-        "[&_a]:no-underline [&_a]:text-medusa-fg-interactive hover:[&_a]:text-medusa-fg-interactive-hover",
-        "mb-docs_2"
+        "py-[10px] px-docs_0.75 my-docs_0.5",
+        "flex gap-docs_0.75 rounded-docs_DEFAULT items-stretch",
+        "bg-medusa-bg-component border border-medusa-border-base"
       )}
     >
-      <div className={clsx("flex gap-docs_0.5")}>
-        {icon}
-        <div
-          className={clsx(
-            isDefaultStyle && "text-medusa-fg-subtle",
-            isWarningStyle && "text-medusa-tag-red-text",
-            isSoonStyle && "text-medusa-tag-blue-text",
-            "text-medium flex-1 [&>*:last-child]:mb-0",
-            "[&>p>code]:px-docs_0.5 [&>p>code]:text-code-label"
-          )}
-        >
-          {title && (
-            <span
-              className={clsx(
-                "text-compact-medium-plus block mb-docs_0.125",
-                isDefaultStyle && "text-medusa-fg-base",
-                isWarningStyle && "text-medusa-tag-red-text",
-                isSoonStyle && "text-medusa-tag-blue-text"
-              )}
+      <span
+        className={clsx(
+          "rounded-full w-docs_0.25",
+          // TODO remove once we use the new prerequisites component across docs
+          (type === "default" || type === "check") &&
+            "bg-medusa-tag-neutral-icon",
+          (type === "error" || type === "warning") && "bg-medusa-tag-red-icon",
+          type === "success" && "bg-medusa-tag-green-icon",
+          // TODO remove once all soon components are removed
+          type === "soon" && "bg-medusa-tag-blue-icon"
+        )}
+      ></span>
+      <div className="flex-1">
+        <div className="text-small text-medusa-fg-subtle [&_ol]:!mb-0 [&_ul]:!mb-0">
+          <span className={clsx("text-small-plus text-medusa-fg-base")}>
+            {title}:&nbsp;
+          </span>
+          {allStringChildren && (
+            <MarkdownContent
+              allowedElements={["a", "code"]}
+              unwrapDisallowed={true}
             >
-              {title}
-            </span>
+              {stringChildren}
+            </MarkdownContent>
           )}
-          {children}
+          {!allStringChildren && children}
         </div>
       </div>
     </div>

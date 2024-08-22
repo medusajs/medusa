@@ -126,11 +126,9 @@ export function applyPromotionToShippingMethods(
       const applicableTotal = method.subtotal
       const appliedPromoValue = methodIdPromoValueMap.get(method.id) ?? 0
 
+      const div = MathBN.eq(totalApplicableValue, 0) ? 1 : totalApplicableValue
       let applicablePromotionValue = MathBN.sub(
-        MathBN.mult(
-          MathBN.div(applicableTotal, totalApplicableValue),
-          promotionValue
-        ),
+        MathBN.mult(MathBN.div(applicableTotal, div), promotionValue),
         appliedPromoValue
       )
 

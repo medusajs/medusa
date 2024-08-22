@@ -47,7 +47,7 @@ export const SidebarItemCategory = ({
     if (isActive && !open) {
       setOpen(true)
     }
-  }, [isChildrenActive])
+  }, [isChildrenActive, item.children])
 
   useEffect(() => {
     if (!persistState) {
@@ -69,7 +69,9 @@ export const SidebarItemCategory = ({
   )
 
   return (
-    <div className={clsx("my-docs_0.75 w-full relative", className)}>
+    <div
+      className={clsx("my-docs_0.75 first:!mt-0 w-full relative", className)}
+    >
       <div className="px-docs_0.75">
         <div
           className={clsx(

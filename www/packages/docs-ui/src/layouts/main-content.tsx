@@ -48,7 +48,7 @@ export const MainContentLayout = ({
           "flex-col items-center",
           "h-full w-full",
           "overflow-y-scroll overflow-x-hidden",
-          "md:rounded shadow-elevation-card-rest",
+          "md:rounded-t-docs_DEFAULT shadow-elevation-card-rest",
           mainWrapperClasses
         )}
         id="main"

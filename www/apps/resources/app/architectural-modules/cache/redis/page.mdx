@@ -24,6 +24,12 @@ To install Redis Cache Module, run the following command in the directory of you
 npm install @medusajs/cache-redis@preview
 ```
 
+<Note>
+
+Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
+
+</Note>
+
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 export const highlights = [
@@ -158,8 +164,6 @@ CACHE_REDIS_URL=<YOUR_REDIS_URL>
     </Table.Row>
   </Table.Body>
 </Table>
-
----
 
 ## Test the Module
 

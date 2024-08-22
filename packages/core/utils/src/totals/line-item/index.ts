@@ -182,7 +182,9 @@ function getLineItemTotals(
     totals.original_total = new BigNumber(originalTotal)
   }
 
-  const totalPerUnit = MathBN.div(totals.total, item.quantity)
+  const div = MathBN.eq(item.quantity, 0) ? 1 : item.quantity
+  const totalPerUnit = MathBN.div(totals.total, div)
+
   const optionalFields = {
     ...(context.extraQuantityFields ?? {}),
   }

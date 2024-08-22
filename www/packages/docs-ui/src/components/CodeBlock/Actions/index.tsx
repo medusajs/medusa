@@ -1,10 +1,9 @@
 "use client"
 
 import clsx from "clsx"
-import React, { useMemo } from "react"
-import { CodeBlockStyle, Link, Tooltip } from "@/components"
+import React from "react"
+import { Link, Tooltip } from "@/components"
 import { ExclamationCircle, PlaySolid } from "@medusajs/icons"
-import { useColorMode } from "@/providers"
 import { GITHUB_ISSUES_PREFIX } from "@/constants"
 import { CodeBlockCopyAction } from "./Copy"
 
@@ -16,7 +15,6 @@ export type CodeBlockActionsProps = {
   inInnerCode?: boolean
   isCollapsed: boolean
   canShowApiTesting?: boolean
-  blockStyle: CodeBlockStyle
   onApiTesting: React.Dispatch<React.SetStateAction<boolean>>
   noReport?: boolean
   noCopy?: boolean
@@ -30,23 +28,15 @@ export const CodeBlockActions = ({
   isCollapsed,
   isSingleLine = false,
   canShowApiTesting = false,
-  blockStyle,
   onApiTesting,
   noReport = false,
   noCopy = false,
 }: CodeBlockActionsProps) => {
-  const { colorMode } = useColorMode()
-  const iconColor = useMemo(
-    () =>
-      clsx(
-        blockStyle === "loud" && "text-medusa-contrast-fg-secondary",
-        blockStyle === "subtle" && [
-          colorMode === "light" && "text-medusa-fg-muted",
-          colorMode === "dark" && "text-medusa-fg-secondary",
-        ]
-      ),
-    [blockStyle, colorMode]
-  )
+  const iconClassName = [
+    "text-medusa-contrast-fg-secondary",
+    "group-hover:text-medusa-contrast-fg-primary",
+    "group-focus:text-medusa-contrast-fg-primary",
+  ]
 
   return (
     <div
@@ -88,29 +78,35 @@ export const CodeBlockActions = ({
           <Tooltip
             text="Test API"
             tooltipClassName="font-base"
-            className={clsx(
-              "h-fit",
-              !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]"
+            className={clsx("group")}
+            innerClassName={clsx(
+              inHeader && "flex",
+              "h-fit rounded-docs_sm",
+              "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
-            innerClassName={clsx(inHeader && "flex")}
           >
-            <PlaySolid
-              className={clsx("cursor-pointer", iconColor)}
+            <span
+              className={clsx(
+                !inHeader && "p-[6px]",
+                inHeader && "p-[4.5px]",
+                "cursor-pointer"
+              )}
               onClick={() => onApiTesting(true)}
-            />
+            >
+              <PlaySolid className={clsx(iconClassName)} />
+            </span>
           </Tooltip>
         )}
         {!noReport && (
           <Tooltip
             text="Report Issue"
             tooltipClassName="font-base"
-            className={clsx(
-              "h-fit",
-              !inHeader && "p-[6px]",
-              inHeader && "p-[4.5px]"
+            className={clsx("group")}
+            innerClassName={clsx(
+              inHeader && "flex",
+              "h-fit rounded-docs_sm",
+              "group-hover:bg-medusa-contrast-bg-base-hover group-focus:bg-medusa-contrast-bg-base-hover"
             )}
-            innerClassName={clsx(inHeader && "flex")}
           >
             <Link
               href={`${GITHUB_ISSUES_PREFIX}&title=${encodeURIComponent(
@@ -120,21 +116,17 @@ export const CodeBlockActions = ({
               className={clsx(
                 "bg-transparent border-none cursor-pointer rounded",
                 "[&:not(:first-child)]:ml-docs_0.5",
-                "inline-flex justify-center items-center invisible xs:visible"
+                "inline-flex justify-center items-center invisible xs:visible",
+                !inHeader && "p-[6px]",
+                inHeader && "p-[4.5px]"
               )}
               rel="noreferrer"
             >
-              <ExclamationCircle className={clsx(iconColor)} />
+              <ExclamationCircle className={clsx(iconClassName)} />
             </Link>
           </Tooltip>
         )}
-        {!noCopy && (
-          <CodeBlockCopyAction
-            source={source}
-            inHeader={inHeader}
-            iconColor={iconColor}
-          />
-        )}
+        {!noCopy && <CodeBlockCopyAction source={source} inHeader={inHeader} />}
       </div>
     </div>
   )

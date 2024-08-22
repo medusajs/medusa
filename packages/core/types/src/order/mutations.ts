@@ -890,7 +890,7 @@ export interface CreateOrderChangeDTO {
   /**
    * The user that created the order change.
    */
-  created_by?: string
+  created_by?: string | null
 
   /**
    * Holds custom data in key-value pairs.
@@ -1537,6 +1537,11 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
    * The associated exchange's ID.
    */
   exchange_id?: string
+
+  /**
+   * The id of the user that creates the fulfillment
+   */
+  created_by?: string | null
 }
 
 /**
@@ -1967,6 +1972,11 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
    * on the claim.
    */
   no_notification?: boolean
+
+  /**
+   * The id of the user that creates the order claim
+   */
+  created_by?: string | null
 }
 
 export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
@@ -2012,6 +2022,11 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
    * updates on the exchange.
    */
   no_notification?: boolean
+
+  /**
+   * The id of the user that creates the order exchange
+   */
+  created_by?: string | null
 }
 
 export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {

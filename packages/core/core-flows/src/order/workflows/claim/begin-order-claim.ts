@@ -45,6 +45,7 @@ export const beginClaimOrderWorkflow = createWorkflow(
         type: input.type,
         order_id: input.order_id,
         metadata: input.metadata,
+        created_by: input.created_by,
       },
     ])
 

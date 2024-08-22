@@ -21,8 +21,8 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
+import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -32,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
@@ -379,6 +380,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "exchange-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

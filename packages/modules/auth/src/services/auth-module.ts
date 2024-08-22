@@ -121,6 +121,63 @@ export default class AuthModuleService
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  // @ts-expect-error
+  createProviderIdentities(
+    data: AuthTypes.CreateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO[]>
+
+  createProviderIdentities(
+    data: AuthTypes.CreateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO>
+
+  @InjectManager("baseRepository_")
+  async createProviderIdentities(
+    data:
+      | AuthTypes.CreateProviderIdentityDTO[]
+      | AuthTypes.CreateProviderIdentityDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]> {
+    const providerIdentities = await this.providerIdentityService_.create(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]
+    >(providerIdentities)
+  }
+
+  updateProviderIdentites(
+    data: AuthTypes.UpdateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO[]>
+
+  updateProviderIdentites(
+    data: AuthTypes.UpdateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO>
+
+  @InjectManager("baseRepository_")
+  async updateProviderIdentites(
+    data:
+      | AuthTypes.UpdateProviderIdentityDTO
+      | AuthTypes.UpdateProviderIdentityDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]> {
+    const updatedProviders = await this.providerIdentityService_.update(
+      data,
+      sharedContext
+    )
+
+    const serializedProviders = await this.baseRepository_.serialize<
+      AuthTypes.ProviderIdentityDTO[]
+    >(updatedProviders)
+
+    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
+  }
+
   async authenticate(
     provider: string,
     authenticationData: AuthenticationInput

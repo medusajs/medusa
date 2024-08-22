@@ -44,6 +44,7 @@ export const beginExchangeOrderWorkflow = createWorkflow(
       {
         order_id: input.order_id,
         metadata: input.metadata,
+        created_by: input.created_by,
       },
     ])
 

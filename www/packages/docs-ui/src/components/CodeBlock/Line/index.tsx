@@ -221,7 +221,7 @@ export const CodeBlockLine = ({
             key={tokenKey}
             className={clsx(
               tokenClassName,
-              (isTerminal || isTokenHighlighted || isLineHighlighted) &&
+              (isTokenHighlighted || isLineHighlighted) &&
                 "!text-medusa-contrast-fg-primary"
             )}
             {...rest}

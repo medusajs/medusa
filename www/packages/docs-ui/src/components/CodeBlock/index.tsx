@@ -14,6 +14,7 @@ import { HighlightProps as CollapsibleHighlightProps } from "@/hooks"
 import { CodeBlockActions, CodeBlockActionsProps } from "./Actions"
 import { CodeBlockCollapsibleButton } from "./Collapsible/Button"
 import { CodeBlockCollapsibleFade } from "./Collapsible/Fade"
+import { CodeBlockInline } from "./Inline"
 
 export type Highlight = {
   line: number
@@ -41,7 +42,7 @@ export type CodeBlockMetaFields = {
   isTerminal?: boolean
 } & CodeBlockHeaderMeta
 
-export type CodeBlockStyle = "loud" | "subtle"
+export type CodeBlockStyle = "loud" | "subtle" | "inline"
 
 export type CodeBlockProps = {
   source: string
@@ -74,6 +75,9 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   if (!source && typeof children === "string") {
     source = children
+  }
+  if (blockStyle === "inline") {
+    return <CodeBlockInline source={source} />
   }
 
   const { colorMode } = useColorMode()
@@ -258,7 +262,6 @@ export const CodeBlock = ({
       source,
       canShowApiTesting,
       setShowTesting,
-      blockStyle,
       noReport,
       noCopy,
       collapsibleType,
@@ -267,6 +270,24 @@ export const CodeBlock = ({
       scrollable,
     ]
   )
+
+  const codeTheme = useMemo(() => {
+    const prismTheme =
+      blockStyle === "loud" || colorMode === "dark"
+        ? themes.vsDark
+        : themes.vsLight
+
+    return {
+      ...prismTheme,
+      plain: {
+        ...prismTheme,
+        color:
+          colorMode === "light"
+            ? "rgba(255, 255, 255, 0.88)"
+            : "rgba(250, 250, 250, 1)",
+      },
+    }
+  }, [blockStyle, colorMode])
 
   if (!source.length) {
     return <></>
@@ -310,11 +331,7 @@ export const CodeBlock = ({
           )}
         >
           <Highlight
-            theme={
-              blockStyle === "loud" || colorMode === "dark"
-                ? themes.vsDark
-                : themes.vsLight
-            }
+            theme={codeTheme}
             code={source.trim()}
             language={language}
             {...rest}
