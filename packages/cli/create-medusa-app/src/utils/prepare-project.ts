@@ -77,7 +77,7 @@ export default async ({
   if (!skipDb) {
     if (dbName) {
       env += `${EOL}DB_NAME=${dbName}`
-      dbConnectionString = dbConnectionString.replace(dbName, "${DB_NAME}")
+      dbConnectionString = dbConnectionString.replace(dbName, "$DB_NAME")
     }
     env += `${EOL}DATABASE_URL=${dbConnectionString}`
   }
