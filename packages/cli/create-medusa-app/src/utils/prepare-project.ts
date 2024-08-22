@@ -157,7 +157,6 @@ export default async ({
             const migrations = await client.query(
               `SELECT * FROM "mikro_orm_migrations"`
             )
-            console.log(migrations)
             errorOccurred = migrations.rowCount == 0
           } catch (e) {
             console.log(e)
