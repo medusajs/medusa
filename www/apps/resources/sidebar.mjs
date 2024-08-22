@@ -2194,6 +2194,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
             ],
           },
+          {
+            type: "link",
+            path: "/troubleshooting/deployment",
+            title: "Deployment",
+          },
         ],
       },
     ],

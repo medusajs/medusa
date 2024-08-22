@@ -6,7 +6,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"

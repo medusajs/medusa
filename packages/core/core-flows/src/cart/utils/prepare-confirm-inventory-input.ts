@@ -90,6 +90,7 @@ export const prepareConfirmInventoryInput = (data: {
         allVariants.set(variants.id, {
           id: variants.id,
           manage_inventory: variants.manage_inventory,
+          allow_backorder: variants.allow_backorder,
         })
       }
     }

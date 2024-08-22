@@ -5,7 +5,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"

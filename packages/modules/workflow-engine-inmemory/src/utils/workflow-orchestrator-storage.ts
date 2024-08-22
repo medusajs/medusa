@@ -165,6 +165,7 @@ export class InMemoryDistributedTransactionStorage
     const inter = setTimeout(async () => {
       await this.workflowOrchestratorService_.run(workflowId, {
         transactionId,
+        logOnError: true,
         throwOnError: false,
       })
     }, interval * 1e3)
@@ -322,6 +323,7 @@ export class InMemoryDistributedTransactionStorage
     try {
       // With running the job after setting a new timer we basically allow for concurrent runs, unless we add idempotency keys once they are supported.
       await this.workflowOrchestratorService_.run(jobId, {
+        logOnError: true,
         throwOnError: false,
       })
     } catch (e) {
