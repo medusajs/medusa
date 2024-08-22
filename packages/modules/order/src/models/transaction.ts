@@ -24,55 +24,57 @@ import Return from "./return"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
+const tableName = "order_transaction"
+
 const ReferenceIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "reference_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "order_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ReturnIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "return_id",
   where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const ExchangeIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["exchange_id"],
   where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["claim_id"],
   where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const CurrencyCodeIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "currency_code",
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_transaction",
+  tableName,
   columns: ["order_id", "version"],
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_transaction" })
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 @OrderIdVersionIndex.MikroORMIndex()
 export default class Transaction {

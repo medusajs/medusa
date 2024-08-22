@@ -46,7 +46,7 @@ export const SidebarTopMedusaMenu = () => {
         <span className="text-compact-small-plus text-medusa-fg-base flex-1">
           Medusa Docs
         </span>
-        <EllipsisHorizontal className="text-medusa-fg-subtle" />
+        <EllipsisHorizontal className="text-medusa-fg-muted" />
       </div>
       <div
         className={clsx(

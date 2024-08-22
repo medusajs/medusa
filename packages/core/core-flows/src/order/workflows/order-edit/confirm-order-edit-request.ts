@@ -12,8 +12,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
-import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
+import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {

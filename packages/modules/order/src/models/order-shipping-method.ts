@@ -21,49 +21,50 @@ import ShippingMethod from "./shipping-method"
 
 type OptionalShippingMethodProps = DAL.ModelDateColumns
 
+const tableName = "order_shipping"
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const ReturnIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: "return_id",
   where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const ExchangeIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["exchange_id"],
   where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["claim_id"],
   where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["version"],
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_shipping",
+  tableName,
   columns: ["shipping_method_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_shipping" })
+@Entity({ tableName })
 export default class OrderShippingMethod {
   [OptionalProps]?: OptionalShippingMethodProps
 

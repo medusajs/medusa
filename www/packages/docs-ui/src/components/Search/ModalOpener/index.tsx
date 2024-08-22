@@ -3,7 +3,7 @@
 import React, { MouseEvent, useMemo } from "react"
 import clsx from "clsx"
 import { useMobile, useSearch } from "@/providers"
-import { Button } from "@/components"
+import { Button, Tooltip } from "@/components"
 import { MagnifyingGlass } from "@medusajs/icons"
 import { useKeyboardShortcut } from "@/hooks"
 
@@ -53,19 +53,21 @@ export const SearchModalOpener = ({
         </Button>
       )}
       {!isMobile && (
-        <Button
-          className={clsx(
-            "relative hover:cursor-pointer group",
-            "flex gap-[6px] !py-docs_0.25 !px-docs_0.5",
-            "justify-between items-center text-medusa-fg-muted",
-            className
-          )}
-          variant="transparent-clear"
-          onClick={handleOpen}
-        >
-          <MagnifyingGlass />
-          <span>{isApple ? "⌘" : "Ctrl"}K</span>
-        </Button>
+        <Tooltip place="bottom" tooltipChildren="Ask or search">
+          <Button
+            className={clsx(
+              "relative hover:cursor-pointer group",
+              "flex gap-[6px] !py-docs_0.25 !px-docs_0.5",
+              "justify-between items-center text-medusa-fg-muted",
+              className
+            )}
+            variant="transparent-clear"
+            onClick={handleOpen}
+          >
+            <MagnifyingGlass />
+            <span>{isApple ? "⌘" : "Ctrl"}K</span>
+          </Button>
+        </Tooltip>
       )}
     </>
   )

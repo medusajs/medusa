@@ -1,4 +1,5 @@
 import dotenv from "dotenv"
+import { expand } from "dotenv-expand"
 import { join } from "path"
 const KNOWN_ENVIRONMENTS = ["staging", "production", "test"]
 
@@ -19,6 +20,6 @@ export function loadEnv(environment: string, envDir: string) {
     ? `.env.${environment}`
     : ".env"
   try {
-    dotenv.config({ path: join(envDir, fileToLoad) })
+    expand(dotenv.config({ path: join(envDir, fileToLoad) }))
   } catch {}
 }

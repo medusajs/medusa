@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useMemo } from "react"
-import { CurrentItemsState, useSidebar } from "../../.."
+import { Button, CurrentItemsState, useSidebar } from "../../.."
 import clsx from "clsx"
 import Link from "next/link"
 import { SidebarItemLink } from "types"
@@ -61,22 +61,19 @@ export const MainNavBreadcrumbs = () => {
   return (
     <div
       className={clsx(
-        "flex items-center",
+        "flex items-center gap-docs_0.25",
         "text-medusa-fg-muted text-compact-small"
       )}
     >
       {Array.from(breadcrumbItems).map(([link, title]) => (
         <React.Fragment key={link}>
           <span>/</span>
-          <Link
-            href={link}
-            className={clsx(
-              "hover:text-medusa-fg-base transition-colors",
-              "px-docs_0.5 py-docs_0.25"
-            )}
+          <Button
+            variant="transparent-clear"
+            className="px-docs_0.5 py-docs_0.25"
           >
-            {title}
-          </Link>
+            <Link href={link}>{title}</Link>
+          </Button>
         </React.Fragment>
       ))}
     </div>

@@ -20,31 +20,32 @@ import Order from "./order"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
+const tableName = "order_item"
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["version"],
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
+  tableName,
   columns: ["item_id"],
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_item" })
+@Entity({ tableName })
 export default class OrderItem {
   [OptionalProps]?: OptionalLineItemProps
 
