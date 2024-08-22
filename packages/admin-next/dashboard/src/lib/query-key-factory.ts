@@ -1,6 +1,6 @@
 import { QueryKey, UseQueryOptions } from "@tanstack/react-query"
 
-type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
+export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   all: readonly [TKey]
   lists: () => readonly [...TQueryKey<TKey>["all"], "list"]
   list: (

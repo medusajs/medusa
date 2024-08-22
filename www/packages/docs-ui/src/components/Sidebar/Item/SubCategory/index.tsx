@@ -116,7 +116,12 @@ export const SidebarItemSubCategory = ({
             className
           )}
         >
-          <span className={clsx(isTitleOneWord && "truncate")}>
+          <span
+            className={clsx(
+              isTitleOneWord && "truncate",
+              nested && "pl-docs_1.5"
+            )}
+          >
             {item.title}
           </span>
           {item.additionalElms}
@@ -127,7 +132,6 @@ export const SidebarItemSubCategory = ({
           className={clsx(
             "ease-ease overflow-hidden",
             "flex flex-col gap-docs_0.125",
-            !item.childrenSameLevel && "pl-docs_1.5",
             "pb-docs_0.5 pt-docs_0.125"
           )}
         >

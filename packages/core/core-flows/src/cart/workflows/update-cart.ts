@@ -8,7 +8,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { useRemoteQueryStep } from "../../common"
 import {
   findOneOrAnyRegionStep,
   findOrCreateCustomerStep,

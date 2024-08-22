@@ -37,6 +37,7 @@ export const getOrdersListWorkflow = createWorkflow(
         "id",
         "status",
         "version",
+        "items.*",
         "payment_collections.status",
         "payment_collections.amount",
         "payment_collections.captured_amount",

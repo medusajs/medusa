@@ -751,7 +751,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/payment/relation-to-other-modules",
+                path: "/commerce-modules/payment/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
@@ -2193,6 +2193,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "S3 Module Provider Errors",
               },
             ],
+          },
+          {
+            type: "link",
+            path: "/troubleshooting/deployment",
+            title: "Deployment",
           },
         ],
       },

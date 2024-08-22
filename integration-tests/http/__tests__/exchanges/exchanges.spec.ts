@@ -392,6 +392,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.exchange.created_by).toEqual(expect.any(String))
+
         const exchangeId = result.data.exchange.id
 
         let r2 = await api.post(

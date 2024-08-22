@@ -11,9 +11,9 @@ import {
   createRemoteLinkStep,
   emitEventStep,
   useRemoteQueryStep,
-} from "../../../common"
-import { createOrdersStep } from "../../../order/steps/create-orders"
-import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
+} from "../../common"
+import { createOrdersStep } from "../../order/steps/create-orders"
+import { authorizePaymentSessionStep } from "../../payment/steps/authorize-payment-session"
 import { validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { completeCartFields } from "../utils/fields"

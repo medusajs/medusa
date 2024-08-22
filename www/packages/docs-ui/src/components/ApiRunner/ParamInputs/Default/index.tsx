@@ -97,6 +97,7 @@ export const ApiRunnerParamInput = ({
           ? (paramValue as number)
           : `${paramValue}`
       }
+      className="w-full"
     />
   )
 }
