@@ -4904,7 +4904,6 @@ __metadata:
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
-    "@medusajs/medusa-cli": "*"
     awilix: "*"
   languageName: unknown
   linkType: soft
