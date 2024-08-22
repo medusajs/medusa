@@ -1,8 +1,15 @@
-import { CellContext } from "@tanstack/react-table"
+import { CellContext, ColumnDef, ColumnMeta, Row } from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
-import { FieldErrors, FieldValues, Path, PathValue } from "react-hook-form"
+import {
+  FieldError,
+  FieldErrors,
+  FieldPath,
+  FieldValues,
+  Path,
+  PathValue,
+} from "react-hook-form"
 
-export type CellType = "text" | "number" | "select" | "boolean"
+export type ColumnType = "text" | "number" | "boolean"
 
 export type CellCoords = {
   row: number
@@ -15,7 +22,6 @@ export type GetCellHandlerProps = {
 }
 
 export interface DataGridCellProps<TData = unknown, TValue = any> {
-  field: string
   context: CellContext<TData, TValue>
 }
 
@@ -31,9 +37,22 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
   rowIndex: number
 }
 
+export type DataGridErrorRenderProps<TFieldValues extends FieldValues> = {
+  errors: FieldErrors<TFieldValues>
+  cellError: FieldError | undefined
+  rowErrors: FieldErrors<TFieldValues> | undefined
+}
+
 export interface DataGridCellRenderProps {
   container: DataGridCellContainerProps
   input: InputProps
+}
+
+type InputAttributes = {
+  "data-row": number
+  "data-col": number
+  "data-cell-id": string
+  "data-field": string
 }
 
 export interface InputProps {
@@ -45,6 +64,10 @@ export interface InputProps {
   "data-col": number
   "data-cell-id": string
   "data-field": string
+}
+
+type InnerAttributes = {
+  "data-container-id": string
 }
 
 interface InnerProps {
@@ -62,10 +85,8 @@ interface OverlayProps {
 
 export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
   field: string
-  errors: FieldErrors
   innerProps: InnerProps
   overlayProps: OverlayProps
-  isFirstColumn: boolean
   isAnchor: boolean
   isSelected: boolean
   isDragSelected: boolean
@@ -78,4 +99,47 @@ export type DataGridColumnType = "string" | "number" | "boolean"
 export type CellSnapshot<TFieldValues extends FieldValues = FieldValues> = {
   field: string
   value: PathValue<TFieldValues, Path<TFieldValues>>
+}
+
+export type FieldContext<TData> = {
+  row: Row<TData>
+  column: ColumnDef<TData>
+}
+
+export type FieldFunction<TData, TFieldValues extends FieldValues> = (
+  context: FieldContext<TData>
+) => FieldPath<TFieldValues> | null
+
+export type InternalColumnMeta<TData, TFieldValues extends FieldValues> = {
+  name: string
+  field?: FieldFunction<TData, TFieldValues>
+} & (
+  | {
+      field: FieldFunction<TData, TFieldValues>
+      type: ColumnType
+    }
+  | { field?: null | undefined; type?: never }
+) &
+  ColumnMeta<TData, any>
+
+export type GridCell<TFieldValues extends FieldValues> = {
+  field: FieldPath<TFieldValues>
+  type: ColumnType
+  enabled: boolean
+}
+
+export type Grid<TFieldValues extends FieldValues> =
+  (GridCell<TFieldValues> | null)[][]
+
+export type CellMetadata = {
+  id: string
+  field: string
+  type: ColumnType
+  inputAttributes: InputAttributes
+  innerAttributes: InnerAttributes
+}
+
+export type CellErrorMetadata = {
+  field: string | null
+  accessor: string | null
 }

@@ -6,15 +6,14 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form"
-import { CellCoords, CellType } from "./types"
+import { CellCoords, CellErrorMetadata, CellMetadata } from "./types"
 
-type DataGridContextType<TForm extends FieldValues> = {
+type DataGridContextType<TFieldValues extends FieldValues> = {
   // Grid state
   anchor: CellCoords | null
   trapActive: boolean
-  errors: FieldErrors<TForm>
+  errors: FieldErrors<TFieldValues>
   // Cell handlers
-  registerCell: (coords: CellCoords, field: string, type: CellType) => void
   getIsCellSelected: (coords: CellCoords) => boolean
   getIsCellDragSelected: (coords: CellCoords) => boolean
   // Grid handlers
@@ -23,9 +22,11 @@ type DataGridContextType<TForm extends FieldValues> = {
   setRangeEnd: (coords: CellCoords) => void
   setSingleRange: (coords: CellCoords) => void
   // Form state and handlers
-  register: UseFormRegister<TForm>
-  control: Control<TForm>
-  getInputChangeHandler: (field: Path<TForm>) => (next: any, prev: any) => void
+  register: UseFormRegister<TFieldValues>
+  control: Control<TFieldValues>
+  getInputChangeHandler: (
+    field: Path<TFieldValues>
+  ) => (next: any, prev: any) => void
   // Wrapper handlers
   getWrapperFocusHandler: (
     coordinates: CellCoords
@@ -33,6 +34,9 @@ type DataGridContextType<TForm extends FieldValues> = {
   getWrapperMouseOverHandler: (
     coordinates: CellCoords
   ) => ((e: MouseEvent<HTMLElement>) => void) | undefined
+  getCellMetadata: (coords: CellCoords) => CellMetadata
+  getCellErrorMetadata: (coords: CellCoords) => CellErrorMetadata
+  handleGoToField: (field: string) => void
 }
 
 export const DataGridContext = createContext<DataGridContextType<any> | null>(

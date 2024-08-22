@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { HttpTypes } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
@@ -43,7 +44,11 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-export function InventoryCreateForm() {
+type InventoryCreateFormProps = {
+  locations: HttpTypes.AdminStockLocation[]
+}
+
+export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
@@ -63,8 +68,13 @@ export function InventoryCreateForm() {
       description: "",
       requires_shipping: true,
       thumbnail: "",
+      locations: Object.fromEntries(
+        locations.map((location) => [location.id, ""])
+      ),
     },
     resolver: zodResolver(CreateInventoryItemSchema),
+    mode: "onTouched",
+    reValidateMode: "onChange",
   })
 
   const {
@@ -220,13 +230,13 @@ export function InventoryCreateForm() {
 
           <RouteFocusModal.Body
             className={clx(
-              "flex h-full w-full flex-col items-center divide-y overflow-hidden px-3",
+              "flex h-full w-full flex-col items-center divide-y overflow-hidden",
               { "mx-auto": tab === Tab.DETAILS }
             )}
           >
             <ProgressTabs.Content
               value={Tab.DETAILS}
-              className="h-full w-full overflow-auto"
+              className="h-full w-full overflow-auto px-3"
             >
               <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-px py-16">
                 <div className="flex flex-col gap-y-8">
@@ -470,7 +480,7 @@ export function InventoryCreateForm() {
               value={Tab.AVAILABILITY}
               className="size-full"
             >
-              <InventoryAvailabilityForm form={form} />
+              <InventoryAvailabilityForm form={form} locations={locations} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
           <RouteFocusModal.Footer>

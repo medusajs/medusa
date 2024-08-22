@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+import { FieldError, FieldErrors, get } from "react-hook-form"
 import { DataGridContext } from "./context"
 import { GridQueryTool } from "./models"
 import {
@@ -15,7 +16,7 @@ import {
   DataGridCellContext,
   DataGridCellRenderProps,
 } from "./types"
-import { generateCellId, isCellMatch } from "./utils"
+import { isCellMatch, isFieldError } from "./utils"
 
 const useDataGridContext = () => {
   const context = useContext(DataGridContext)
@@ -29,20 +30,97 @@ const useDataGridContext = () => {
   return context
 }
 
-type UseDataGridCellProps<TData, TValue> = {
-  field: string
+type UseDataGridHookProps<TData, TValue> = {
   context: CellContext<TData, TValue>
-  type: "text" | "number" | "select" | "boolean"
+}
+
+export const useDataGridErrors = <TextData, TValue>({
+  context,
+}: UseDataGridHookProps<TextData, TValue>) => {
+  const { errors, getCellErrorMetadata, handleGoToField } = useDataGridContext()
+
+  const { rowIndex, columnIndex } = context as DataGridCellContext<
+    TextData,
+    TValue
+  >
+
+  const { accessor, field } = useMemo(() => {
+    return getCellErrorMetadata({ row: rowIndex, col: columnIndex })
+  }, [rowIndex, columnIndex, getCellErrorMetadata])
+
+  const rowErrorsObject: FieldErrors | undefined =
+    accessor && columnIndex === 0 ? get(errors, accessor) : undefined
+
+  const rowErrors: { message: string; to: () => void }[] = []
+
+  function collectErrors(
+    errorObject: FieldErrors | FieldError | undefined,
+    baseAccessor: string
+  ) {
+    if (!errorObject) {
+      return
+    }
+
+    if (isFieldError(errorObject)) {
+      // Handle a single FieldError directly
+      const message = errorObject.message
+
+      const to = () => handleGoToField(baseAccessor)
+
+      if (message) {
+        rowErrors.push({ message, to })
+      }
+    } else {
+      // Traverse nested objects
+      Object.keys(errorObject).forEach((key) => {
+        const nestedError = errorObject[key]
+        const fieldAccessor = `${baseAccessor}.${key}`
+
+        if (nestedError && typeof nestedError === "object") {
+          collectErrors(nestedError, fieldAccessor)
+        }
+      })
+    }
+  }
+
+  if (rowErrorsObject && accessor) {
+    collectErrors(rowErrorsObject, accessor)
+  }
+
+  const cellError: FieldError | undefined = field
+    ? get(errors, field)
+    : undefined
+
+  return {
+    errors,
+    rowErrors,
+    cellError,
+    handleGoToField,
+  }
 }
 
 const textCharacterRegex = /^.$/u
 const numberCharacterRegex = /^[0-9]$/u
 
 export const useDataGridCell = <TData, TValue>({
-  field,
   context,
-  type,
-}: UseDataGridCellProps<TData, TValue>) => {
+}: UseDataGridHookProps<TData, TValue>) => {
+  const {
+    register,
+    control,
+    anchor,
+    setIsEditing,
+    setSingleRange,
+    setIsSelecting,
+    setRangeEnd,
+    getWrapperFocusHandler,
+    getWrapperMouseOverHandler,
+    getInputChangeHandler,
+    getIsCellSelected,
+    getIsCellDragSelected,
+    getCellMetadata,
+  } = useDataGridContext()
+
   const { rowIndex, columnIndex } = context as DataGridCellContext<
     TData,
     TValue
@@ -53,30 +131,9 @@ export const useDataGridCell = <TData, TValue>({
     [rowIndex, columnIndex]
   )
 
-  const isFirstColumn = useMemo(() => columnIndex === 0, [columnIndex])
-
-  const id = generateCellId(coords)
-
-  const {
-    register,
-    control,
-    anchor,
-    errors,
-    setIsEditing,
-    setSingleRange,
-    setIsSelecting,
-    setRangeEnd,
-    getWrapperFocusHandler,
-    getWrapperMouseOverHandler,
-    getInputChangeHandler,
-    getIsCellSelected,
-    getIsCellDragSelected,
-    registerCell,
-  } = useDataGridContext()
-
-  useEffect(() => {
-    registerCell(coords, field, type)
-  }, [coords, field, type, registerCell])
+  const { id, field, type, innerAttributes, inputAttributes } = useMemo(() => {
+    return getCellMetadata(coords)
+  }, [coords, getCellMetadata])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -207,7 +264,7 @@ export const useDataGridCell = <TData, TValue>({
   }, [anchor, coords])
 
   const fieldWithoutOverlay = useMemo(() => {
-    return type === "boolean" || type === "select"
+    return type === "boolean"
   }, [type])
 
   useEffect(() => {
@@ -219,8 +276,6 @@ export const useDataGridCell = <TData, TValue>({
   const renderProps: DataGridCellRenderProps = {
     container: {
       field,
-      errors,
-      isFirstColumn,
       isAnchor,
       isSelected: getIsCellSelected(coords),
       isDragSelected: getIsCellDragSelected(coords),
@@ -232,7 +287,7 @@ export const useDataGridCell = <TData, TValue>({
           type === "boolean" ? handleBooleanInnerMouseDown : undefined,
         onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
-        "data-container-id": id,
+        ...innerAttributes,
       },
       overlayProps: {
         onMouseDown: handleOverlayMouseDown,
@@ -243,15 +298,13 @@ export const useDataGridCell = <TData, TValue>({
       onBlur: handleInputBlur,
       onFocus: handleInputFocus,
       onChange: getInputChangeHandler(field),
-      "data-row": coords.row,
-      "data-col": coords.col,
-      "data-cell-id": id,
-      "data-field": field,
+      ...inputAttributes,
     },
   }
 
   return {
     id,
+    field,
     register,
     control,
     renderProps,

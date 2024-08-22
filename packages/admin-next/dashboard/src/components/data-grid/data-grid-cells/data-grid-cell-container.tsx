@@ -1,29 +1,28 @@
 import { ErrorMessage } from "@hookform/error-message"
-import { Tooltip, clx } from "@medusajs/ui"
+import { Badge, Tooltip, clx } from "@medusajs/ui"
 import { PropsWithChildren } from "react"
 
 import { ExclamationCircle } from "@medusajs/icons"
 import { get } from "react-hook-form"
-import { DataGridCellContainerProps } from "../types"
+import { DataGridCellContainerProps, DataGridErrorRenderProps } from "../types"
+import { countFieldErrors } from "../utils"
 
 export const DataGridCellContainer = ({
   isAnchor,
   isSelected,
   isDragSelected,
-  isFirstColumn,
-  errors,
   field,
   showOverlay,
   placeholder,
   innerProps,
   overlayProps,
   children,
-}: DataGridCellContainerProps) => {
+  errors,
+  cellError,
+  rowErrors,
+}: DataGridCellContainerProps & DataGridErrorRenderProps<any>) => {
   const error = get(errors, field)
-
-  // To get number of errors in a row, we properly need some way to figure out what segment of the error object to look at
-  // e.g. errors.locations.[:id] is a row, error.locations.[:id].[:id] is a cell.
-  // in this case we would then need to Object.keys(errors.locations.[:id]) to get the number of errors in a row.
+  const rowErrorCount = rowErrors ? countFieldErrors(rowErrors) : 0
 
   const hasError = !!error
 
@@ -33,7 +32,8 @@ export const DataGridCellContainer = ({
       className={clx(
         "bg-ui-bg-base group/cell relative flex size-full items-center outline-none",
         {
-          "ring-ui-fg-error ring-2 ring-inset": hasError,
+          "bg-ui-tag-red-bg text-ui-tag-red-text":
+            hasError && !isAnchor && !isSelected && !isDragSelected,
           "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
           "bg-ui-bg-highlight [&:has([data-field]:focus)]:bg-ui-bg-base":
             isSelected || isAnchor,
@@ -49,8 +49,8 @@ export const DataGridCellContainer = ({
         render={({ message }) => {
           return (
             <div className="flex items-center justify-center pl-4 pr-2">
-              <Tooltip content={message}>
-                <ExclamationCircle className="text-ui-fg-error z-[3]" />
+              <Tooltip content={message} delayDuration={0}>
+                <ExclamationCircle className="text-ui-tag-red-icon z-[3]" />
               </Tooltip>
             </div>
           )
@@ -61,6 +61,7 @@ export const DataGridCellContainer = ({
           {children}
         </RenderChildren>
       </div>
+      {rowErrorCount > 0 && <Badge>{rowErrorCount}</Badge>}
       {showOverlay && (
         <div
           {...overlayProps}

@@ -2,12 +2,11 @@ import { clx } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { useDataGridCell } from "../hooks"
+import { useDataGridCell, useDataGridErrors } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export const DataGridNumberCell = <TData, TValue = any>({
-  field,
   context,
   ...rest
 }: DataGridCellProps<TData, TValue> & {
@@ -15,11 +14,10 @@ export const DataGridNumberCell = <TData, TValue = any>({
   max?: number
   placeholder?: string
 }) => {
-  const { control, renderProps } = useDataGridCell({
-    field,
+  const { field, control, renderProps } = useDataGridCell({
     context,
-    type: "number",
   })
+  const errorProps = useDataGridErrors({ context })
 
   const { container, input } = renderProps
 
@@ -29,7 +27,7 @@ export const DataGridNumberCell = <TData, TValue = any>({
       name={field}
       render={({ field }) => {
         return (
-          <DataGridCellContainer {...container}>
+          <DataGridCellContainer {...container} {...errorProps}>
             <Inner field={field} inputProps={input} {...rest} />
           </DataGridCellContainer>
         )

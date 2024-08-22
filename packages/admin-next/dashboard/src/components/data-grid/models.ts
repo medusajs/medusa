@@ -1,12 +1,37 @@
+import { ColumnDef, Row } from "@tanstack/react-table"
+import { FieldValues } from "react-hook-form"
 import { Command } from "../../hooks/use-command-history"
-import { CellCoords, CellType } from "./types"
+import {
+  CellCoords,
+  ColumnType,
+  Grid,
+  GridCell,
+  InternalColumnMeta,
+} from "./types"
 import { generateCellId } from "./utils"
 
-export class Matrix {
-  private cells: ({ field: string; type: CellType } | null)[][]
+export class Matrix<TData, TFieldValues extends FieldValues> {
+  private cells: Grid<TFieldValues>
+  private rowAccessors: (string | null)[] = []
+  private columnAccessors: (string | null)[] = []
 
-  constructor(rows: number, cols: number) {
-    this.cells = Array.from({ length: rows }, () => Array(cols).fill(null))
+  constructor(data: Row<TData>[], columns: ColumnDef<TData>[]) {
+    this.cells = this._populateCells(data, columns)
+
+    this.rowAccessors = this._computeRowAccessors()
+    this.columnAccessors = this._computeColumnAccessors()
+  }
+
+  private _computeRowAccessors(): (string | null)[] {
+    return this.cells.map((_, rowIndex) => this.getRowAccessor(rowIndex))
+  }
+
+  private _computeColumnAccessors(): (string | null)[] {
+    if (this.cells.length === 0) {
+      return []
+    }
+
+    return this.cells[0].map((_, colIndex) => this.getColumnAccessor(colIndex))
   }
 
   getFirstNavigableCell(): CellCoords | null {
@@ -21,14 +46,20 @@ export class Matrix {
     return null
   }
 
-  // Register a navigable cell with a unique key
-  registerField(row: number, col: number, field: string, type: CellType) {
-    if (this._isValidPosition(row, col)) {
-      this.cells[row][col] = {
-        field,
-        type,
-      }
+  getFieldsInRow(row: number): string[] {
+    const keys: string[] = []
+
+    if (row < 0 || row >= this.cells.length) {
+      return keys
     }
+
+    this.cells[row].forEach((cell) => {
+      if (cell !== null) {
+        keys.push(cell.field)
+      }
+    })
+
+    return keys
   }
 
   getFieldsInSelection(
@@ -66,7 +97,7 @@ export class Matrix {
     return null
   }
 
-  getCellType(cell: CellCoords): CellType | null {
+  getCellType(cell: CellCoords): ColumnType | null {
     if (this._isValidPosition(cell.row, cell.col)) {
       return this.cells[cell.row][cell.col]?.type || null
     }
@@ -92,6 +123,150 @@ export class Matrix {
     const col = start.col
 
     return cell.col === col && cell.row >= startRow && cell.row <= endRow
+  }
+
+  toggleColumn(col: number, enabled: boolean) {
+    if (col < 0 || col >= this.cells[0].length) {
+      return
+    }
+
+    this.cells.forEach((row, index) => {
+      const cell = row[col]
+
+      if (cell) {
+        this.cells[index][col] = {
+          ...cell,
+          enabled,
+        }
+      }
+    })
+  }
+
+  toggleRow(row: number, enabled: boolean) {
+    if (row < 0 || row >= this.cells.length) {
+      return
+    }
+
+    this.cells[row].forEach((cell, index) => {
+      if (cell) {
+        this.cells[row][index] = {
+          ...cell,
+          enabled,
+        }
+      }
+    })
+  }
+
+  getCoordinatesByField(field: string): CellCoords | null {
+    if (this.rowAccessors.length === 1) {
+      const col = this.columnAccessors.indexOf(field)
+
+      if (col === -1) {
+        return null
+      }
+
+      return { row: 0, col }
+    }
+
+    for (let row = 0; row < this.rowAccessors.length; row++) {
+      const rowAccessor = this.rowAccessors[row]
+
+      if (rowAccessor === null) {
+        continue
+      }
+
+      if (!field.startsWith(rowAccessor)) {
+        continue
+      }
+
+      for (let column = 0; column < this.columnAccessors.length; column++) {
+        const columnAccessor = this.columnAccessors[column]
+
+        if (columnAccessor === null) {
+          continue
+        }
+
+        const fullFieldPath = `${rowAccessor}.${columnAccessor}`
+
+        if (fullFieldPath === field) {
+          return { row, col: column }
+        }
+      }
+    }
+
+    return null
+  }
+
+  getRowAccessor(row: number): string | null {
+    if (row < 0 || row >= this.cells.length) {
+      return null
+    }
+
+    const cells = this.cells[row]
+
+    const nonNullFields = cells
+      .filter((cell): cell is GridCell<TFieldValues> => cell !== null)
+      .map((cell) => cell.field.split("."))
+
+    if (nonNullFields.length === 0) {
+      return null
+    }
+
+    let commonParts = nonNullFields[0]
+
+    for (const segments of nonNullFields) {
+      commonParts = commonParts.filter(
+        (part, index) => segments[index] === part
+      )
+
+      if (commonParts.length === 0) {
+        break
+      }
+    }
+
+    const accessor = commonParts.join(".")
+
+    if (!accessor) {
+      return null
+    }
+
+    return accessor
+  }
+
+  public getColumnAccessor(column: number): string | null {
+    if (column < 0 || column >= this.cells[0].length) {
+      return null
+    }
+
+    // Extract the unique part of the field name for each row in the specified column
+    const uniqueParts = this.cells
+      .map((row, rowIndex) => {
+        const cell = row[column]
+        if (!cell) {
+          return null
+        }
+
+        // Get the row accessor for the current row
+        const rowAccessor = this.getRowAccessor(rowIndex)
+
+        // Remove the row accessor part from the field name
+        if (rowAccessor && cell.field.startsWith(rowAccessor + ".")) {
+          return cell.field.slice(rowAccessor.length + 1) // Extract the part after the row accessor
+        }
+
+        return null
+      })
+      .filter((part) => part !== null) // Filter out null values
+
+    if (uniqueParts.length === 0) {
+      return null
+    }
+
+    // Ensure all unique parts are the same (this should be true for well-formed data)
+    const firstPart = uniqueParts[0]
+    const isConsistent = uniqueParts.every((part) => part === firstPart)
+
+    return isConsistent ? firstPart : null
   }
 
   getValidMovement(
@@ -140,13 +315,16 @@ export class Matrix {
     }
   }
 
-  private _isValidPosition(row: number, col: number): boolean {
-    return (
-      row >= 0 &&
-      row < this.cells.length &&
-      col >= 0 &&
-      col < this.cells[0].length
-    )
+  private _isValidPosition(
+    row: number,
+    col: number,
+    cells?: Grid<TFieldValues>
+  ): boolean {
+    if (!cells) {
+      cells = this.cells
+    }
+
+    return row >= 0 && row < cells.length && col >= 0 && col < cells[0].length
   }
 
   private _getDirectionDeltas(direction: string): [number, number] {
@@ -189,6 +367,49 @@ export class Matrix {
       col: lastValidCol,
     }
   }
+
+  private _populateCells(rows: Row<TData>[], columns: ColumnDef<TData>[]) {
+    const cells = Array.from({ length: rows.length }, () =>
+      Array(columns.length).fill(null)
+    ) as Grid<TFieldValues>
+
+    rows.forEach((row, rowIndex) => {
+      columns.forEach((column, colIndex) => {
+        if (!this._isValidPosition(rowIndex, colIndex, cells)) {
+          return
+        }
+
+        const {
+          name: _,
+          field,
+          type,
+          ...rest
+        } = column.meta as InternalColumnMeta<TData, TFieldValues>
+
+        const context = {
+          row,
+          column: {
+            ...column,
+            meta: rest,
+          },
+        }
+
+        const fieldValue = field ? field(context) : null
+
+        if (!fieldValue || !type) {
+          return
+        }
+
+        cells[rowIndex][colIndex] = {
+          field: fieldValue,
+          type,
+          enabled: true,
+        }
+      })
+    })
+
+    return cells
+  }
 }
 
 export class GridQueryTool {
@@ -208,6 +429,40 @@ export class GridQueryTool {
     }
 
     return input as HTMLElement
+  }
+
+  getInputByField(field: string) {
+    const input = this.container?.querySelector(`[data-field="${field}"]`)
+
+    if (!input) {
+      return null
+    }
+
+    return input as HTMLElement
+  }
+
+  getCoordinatesByField(field: string): CellCoords | null {
+    const cell = this.container?.querySelector(
+      `[data-field="${field}"][data-cell-id]`
+    )
+
+    if (!cell) {
+      return null
+    }
+
+    const cellId = cell.getAttribute("data-cell-id")
+
+    if (!cellId) {
+      return null
+    }
+
+    const [row, col] = cellId.split(":").map((n) => parseInt(n, 10))
+
+    if (isNaN(row) || isNaN(col)) {
+      return null
+    }
+
+    return { row, col }
   }
 
   getContainer(cell: CellCoords) {

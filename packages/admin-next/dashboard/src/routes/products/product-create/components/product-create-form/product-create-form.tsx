@@ -156,11 +156,11 @@ export const ProductCreateForm = ({
   })
 
   const onNext = async (currentTab: Tab) => {
-    const valid = await form.trigger()
+    // const valid = await form.trigger()
 
-    if (!valid) {
-      return
-    }
+    // if (!valid) {
+    //   return
+    // }
 
     if (currentTab === Tab.DETAILS) {
       setTab(Tab.ORGANIZE)

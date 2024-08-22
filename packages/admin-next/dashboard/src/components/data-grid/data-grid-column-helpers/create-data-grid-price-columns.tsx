@@ -1,27 +1,43 @@
 import { HttpTypes } from "@medusajs/types"
-import { CellContext, ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table"
 import { TFunction } from "i18next"
+import { FieldPath, FieldValues } from "react-hook-form"
 import { IncludesTaxTooltip } from "../../common/tax-badge/tax-badge"
 import { DataGridCurrencyCell } from "../data-grid-cells/data-grid-currency-cell"
 import { DataGridReadonlyCell } from "../data-grid-cells/data-grid-readonly-cell"
+import { FieldContext } from "../types"
 import { createDataGridHelper } from "../utils"
 
-export const createDataGridPriceColumns = <TData,>({
+type CreateDataGridPriceColumnsProps<
+  TData,
+  TFieldValues extends FieldValues
+> = {
+  currencies?: string[]
+  regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
+  isReadyOnly?: (context: FieldContext<TData>) => boolean
+  getFieldName: (
+    context: FieldContext<TData>,
+    value: string
+  ) => FieldPath<TFieldValues>
+  t: TFunction
+}
+
+export const createDataGridPriceColumns = <
+  TData,
+  TFieldValues extends FieldValues
+>({
   currencies,
   regions,
   pricePreferences,
   isReadyOnly,
   getFieldName,
   t,
-}: {
-  currencies?: string[]
-  regions?: HttpTypes.AdminRegion[]
-  pricePreferences?: HttpTypes.AdminPricePreference[]
-  isReadyOnly?: (context: CellContext<TData, unknown>) => boolean
-  getFieldName: (context: CellContext<TData, unknown>, value: string) => string
-  t: TFunction
-}): ColumnDef<TData, unknown>[] => {
-  const columnHelper = createDataGridHelper<TData>()
+}: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
+  TData,
+  unknown
+>[] => {
+  const columnHelper = createDataGridHelper<TData, TFieldValues>()
 
   return [
     ...(currencies?.map((currency) => {
@@ -34,6 +50,16 @@ export const createDataGridPriceColumns = <TData,>({
         name: t("fields.priceTemplate", {
           regionOrCurrency: currency.toUpperCase(),
         }),
+        field: (context) => {
+          const isReadyOnlyValue = isReadyOnly?.(context)
+
+          if (isReadyOnlyValue) {
+            return null
+          }
+
+          return getFieldName(context, currency)
+        },
+        type: "number",
         header: () => (
           <div className="flex w-full items-center justify-between gap-3">
             {t("fields.priceTemplate", {
@@ -44,16 +70,10 @@ export const createDataGridPriceColumns = <TData,>({
         ),
         cell: (context) => {
           if (isReadyOnly?.(context)) {
-            return <DataGridReadonlyCell />
+            return <DataGridReadonlyCell context={context} />
           }
 
-          return (
-            <DataGridCurrencyCell
-              code={currency}
-              context={context}
-              field={getFieldName(context, currency)}
-            />
-          )
+          return <DataGridCurrencyCell code={currency} context={context} />
         },
       })
     }) ?? []),
@@ -67,6 +87,16 @@ export const createDataGridPriceColumns = <TData,>({
         name: t("fields.priceTemplate", {
           regionOrCurrency: region.name,
         }),
+        field: (context) => {
+          const isReadyOnlyValue = isReadyOnly?.(context)
+
+          if (isReadyOnlyValue) {
+            return null
+          }
+
+          return getFieldName(context, region.id)
+        },
+        type: "number",
         header: () => (
           <div className="flex w-full items-center justify-between gap-3">
             {t("fields.priceTemplate", {
@@ -77,7 +107,7 @@ export const createDataGridPriceColumns = <TData,>({
         ),
         cell: (context) => {
           if (isReadyOnly?.(context)) {
-            return <DataGridReadonlyCell />
+            return <DataGridReadonlyCell context={context} />
           }
 
           const currency = currencies?.find((c) => c === region.currency_code)
@@ -89,7 +119,6 @@ export const createDataGridPriceColumns = <TData,>({
             <DataGridCurrencyCell
               code={region.currency_code}
               context={context}
-              field={getFieldName(context, region.id)}
             />
           )
         },

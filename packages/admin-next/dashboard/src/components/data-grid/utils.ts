@@ -5,7 +5,8 @@ import {
   HeaderContext,
   createColumnHelper,
 } from "@tanstack/react-table"
-import { CellCoords, CellType, DataGridColumnType } from "./types"
+import { FieldError, FieldErrors, FieldValues } from "react-hook-form"
+import { CellCoords, ColumnType, FieldFunction } from "./types"
 
 export function generateCellId(coords: CellCoords) {
   return `${coords.row}:${coords.col}`
@@ -96,6 +97,59 @@ export function getFieldsInRange(
   return fields
 }
 
+export function isFieldError(
+  errors: FieldErrors | FieldError
+): errors is FieldError {
+  return typeof errors === "object" && "message" in errors && "type" in errors
+}
+
+export function countFieldErrors(
+  errors: FieldErrors | FieldError,
+  path?: string
+): number {
+  // If errors is a FieldError directly, count it as 1
+  if (typeof errors === "object" && "message" in errors) {
+    if (!path) {
+      return 1
+    }
+    // If path is specified but we're directly on an error, return 1
+    if (path === "") {
+      return 1
+    }
+  }
+
+  if (path) {
+    const pathSegments = path.split(".")
+    let current: any = errors
+
+    for (const segment of pathSegments) {
+      if (current && typeof current === "object") {
+        current = current[segment]
+      } else {
+        return 0 // Return 0 if the path doesn't exist in errors
+      }
+    }
+
+    // If the final object has a message, it is a single error.
+    if (current && typeof current === "object" && "message" in current) {
+      return 1
+    }
+
+    // Otherwise, count errors within the final object
+    return countFieldErrors(current)
+  }
+
+  // If no path is provided, count all errors in the object
+  return Object.values(errors).reduce((acc, error) => {
+    if (error && typeof error === "object" && "message" in error) {
+      return acc + 1
+    } else if (error && typeof error === "object") {
+      return acc + countFieldErrors(error)
+    }
+    return acc
+  }, 0)
+}
+
 function convertToNumber(value: string | number): number {
   if (typeof value === "number") {
     return value
@@ -128,25 +182,22 @@ function convertToBoolean(value: string | boolean): boolean {
   throw new Error(`String "${value}" cannot be converted to boolean.`)
 }
 
-function convertToString(value: string): string {
-  return String(value)
-}
-
-export function convertArrayToPrimitive(values: any[], type: CellType): any[] {
+export function convertArrayToPrimitive(
+  values: any[],
+  type: ColumnType
+): any[] {
   switch (type) {
     case "number":
       return values.map(convertToNumber)
     case "boolean":
       return values.map(convertToBoolean)
     case "text":
-    case "select":
-      return values.map(convertToString)
     default:
       throw new Error(`Unsupported target type "${type}".`)
   }
 }
 
-type DataGridHelperColumnsProps<TData> = {
+type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
   /**
    * The id of the column.
    */
@@ -164,14 +215,28 @@ type DataGridHelperColumnsProps<TData> = {
    */
   cell: ColumnDefTemplate<CellContext<TData, unknown>> | undefined
   /**
+   * Callback to set the field path for each cell in the column.
+   * If a callback is not provided, or returns null, the cell will not be editable.
+   */
+  field?: FieldFunction<TData, TFieldValues>
+  /**
    * Whether the column cannot be hidden by the user.
    *
    * @default false
    */
   disableHiding?: boolean
-}
+} & (
+  | {
+      field: FieldFunction<TData, TFieldValues>
+      type: ColumnType
+    }
+  | { field?: null | undefined; type?: never }
+)
 
-export function createDataGridHelper<TData>() {
+export function createDataGridHelper<
+  TData,
+  TFieldValues extends FieldValues
+>() {
   const columnHelper = createColumnHelper<TData>()
 
   return {
@@ -181,7 +246,9 @@ export function createDataGridHelper<TData>() {
       header,
       cell,
       disableHiding = false,
-    }: DataGridHelperColumnsProps<TData>) =>
+      field,
+      type,
+    }: DataGridHelperColumnsProps<TData, TFieldValues>) =>
       columnHelper.display({
         id,
         header,
@@ -189,6 +256,8 @@ export function createDataGridHelper<TData>() {
         enableHiding: !disableHiding,
         meta: {
           name,
+          field,
+          type,
         },
       }),
   }
@@ -211,19 +280,4 @@ export function getColumnName(column: Column<any, any>): string {
   }
 
   return meta?.name || id
-}
-
-export function getColumnType(
-  cell: CellCoords,
-  columns: Column<any, any>[]
-): DataGridColumnType {
-  const { col } = cell
-
-  const column = columns[col]
-
-  const meta = column?.columnDef.meta as
-    | { type?: DataGridColumnType }
-    | undefined
-
-  return meta?.type || "string"
 }

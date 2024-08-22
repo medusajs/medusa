@@ -20,7 +20,12 @@ const _DataGrid = <TData, TFieldValues extends FieldValues = FieldValues>({
   ...props
 }: DataGridProps<TData, TFieldValues>) => {
   return isLoading ? (
-    <DataGridSkeleton columns={props.columns} />
+    <DataGridSkeleton
+      columns={props.columns}
+      rows={
+        props.data?.length && props.data.length > 0 ? props.data.length : 10
+      }
+    />
   ) : (
     <DataGridRoot {...props} />
   )

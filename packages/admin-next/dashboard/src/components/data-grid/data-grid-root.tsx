@@ -1,4 +1,4 @@
-import { Adjustments } from "@medusajs/icons"
+import { Adjustments, ExclamationCircle } from "@medusajs/icons"
 import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
   Cell,
@@ -27,15 +27,28 @@ import {
   useRef,
   useState,
 } from "react"
-import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../hooks/use-command-history"
+import { ConditionalTooltip } from "../common/conditional-tooltip"
 import { DataGridContext } from "./context"
 import { useGridQueryTool } from "./hooks"
 import { BulkUpdateCommand, Matrix, UpdateCommand } from "./models"
-import { CellCoords, CellSnapshot, CellType } from "./types"
+import {
+  CellCoords,
+  CellErrorMetadata,
+  CellMetadata,
+  CellSnapshot,
+} from "./types"
 import {
   convertArrayToPrimitive,
+  countFieldErrors,
   generateCellId,
   getColumnName,
   isCellMatch,
@@ -59,11 +72,9 @@ const ROW_HEIGHT = 40
 
 /**
  * TODO:
- * - [Important] Show field errors in the grid, and in topbar.
  * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
  * - [Minor] Add shortcuts overview modal.
  * - [Stretch] Add support for only showing rows with errors.
- * - [Stretch] Calculate all viable cells without having to render them first.
  */
 
 export const DataGridRoot = <
@@ -118,6 +129,12 @@ export const DataGridRoot = <
   })
 
   const { flatRows } = grid.getRowModel()
+
+  const matrix = useMemo(
+    () => new Matrix(flatRows, columns),
+    [flatRows, columns]
+  )
+  const queryTool = useGridQueryTool(containerRef)
 
   const rowVirtualizer = useVirtualizer({
     count: flatRows.length,
@@ -223,13 +240,6 @@ export const DataGridRoot = <
     [anchor, columnVirtualizer, flatRows, rowVirtualizer, visibleColumns]
   )
 
-  const matrix = useMemo(
-    () => new Matrix(flatRows.length, visibleColumns.length),
-    [flatRows, visibleColumns]
-  )
-
-  const queryTool = useGridQueryTool(containerRef)
-
   const createCellSnapshot =
     useCallback((): CellSnapshot<TFieldValues> | null => {
       if (!anchor) {
@@ -275,13 +285,6 @@ export const DataGridRoot = <
       setIsEditing(value)
     },
     [createCellSnapshot, onEditingChange]
-  )
-
-  const registerCell = useCallback(
-    (coords: CellCoords, field: string, type: CellType) => {
-      matrix.registerField(coords.row, coords.col, field, type)
-    },
-    [matrix]
   )
 
   const setSingleRange = useCallback((coordinates: CellCoords | null) => {
@@ -519,7 +522,6 @@ export const DataGridRoot = <
         case "boolean":
           handleSpaceKeyBoolean(anchor)
           break
-        case "select":
         case "number":
         case "text":
           handleSpaceKeyTextOrNumber(anchor)
@@ -1020,7 +1022,11 @@ export const DataGridRoot = <
           next,
           prev,
           setter: (value) => {
-            setValue(field, value)
+            setValue(field, value, {
+              shouldDirty: true,
+              shouldTouch: true,
+              shouldValidate: true,
+            })
           },
         })
 
@@ -1028,6 +1034,75 @@ export const DataGridRoot = <
       }
     },
     [setValue, execute]
+  )
+
+  const getCellMetadata = useCallback(
+    (coords: CellCoords): CellMetadata => {
+      const { row, col } = coords
+
+      const id = generateCellId(coords)
+      const field = matrix.getCellField(coords)
+      const type = matrix.getCellType(coords)
+
+      if (!field || !type) {
+        throw new Error(`'field' or 'type' is null for cell ${id}`)
+      }
+
+      const inputAttributes = {
+        "data-row": row,
+        "data-col": col,
+        "data-cell-id": id,
+        "data-field": field,
+      }
+
+      const innerAttributes = {
+        "data-container-id": id,
+      }
+
+      return {
+        id,
+        field,
+        type,
+        inputAttributes,
+        innerAttributes,
+      }
+    },
+    [matrix]
+  )
+
+  const getCellErrorMetadata = useCallback(
+    (coords: CellCoords): CellErrorMetadata => {
+      const accessor = matrix.getRowAccessor(coords.row)
+      const field = matrix.getCellField(coords)
+
+      return {
+        accessor,
+        field,
+      }
+    },
+    [matrix]
+  )
+
+  const handleGoToField = useCallback(
+    (field: string) => {
+      const coords = matrix.getCoordinatesByField(field)
+
+      if (!coords) {
+        return
+      }
+
+      scrollToCell(coords, "both")
+      setSingleRange(coords)
+
+      requestAnimationFrame(() => {
+        const input = queryTool?.getInput(coords)
+
+        if (input) {
+          input.focus()
+        }
+      })
+    },
+    [matrix, queryTool, scrollToCell, setSingleRange]
   )
 
   const onDragToFillStart = useCallback((_e: MouseEvent<HTMLElement>) => {
@@ -1052,10 +1127,9 @@ export const DataGridRoot = <
     setRangeEnd(anchor)
   }, [anchor, rangeEnd])
 
-  // Maybe we can do something like this to check which cells to add to the matrix or not, without having to render them first.
-  // or maybe we render them all in an offscreen div and then add them to the matrix.
-  // columns[0].meta.registerToMatrix(data[0])
-
+  /**
+   * Ensure that we set a anchor on first render.
+   */
   useEffect(() => {
     if (!anchor && matrix) {
       const coords = matrix.getFirstNavigableCell()
@@ -1081,9 +1155,11 @@ export const DataGridRoot = <
       getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
       register,
-      registerCell,
       getIsCellSelected,
       getIsCellDragSelected,
+      getCellMetadata,
+      getCellErrorMetadata,
+      handleGoToField,
     }),
     [
       anchor,
@@ -1099,16 +1175,18 @@ export const DataGridRoot = <
       getOverlayMouseDownHandler,
       getWrapperMouseOverHandler,
       register,
-      registerCell,
       getIsCellSelected,
       getIsCellDragSelected,
+      getCellMetadata,
+      getCellErrorMetadata,
+      handleGoToField,
     ]
   )
 
   return (
     <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col">
-        <DataGridHeader grid={grid} />
+        <DataGridHeader grid={grid} errors={errors} />
         <FocusTrap
           active={trapActive}
           focusTrapOptions={{
@@ -1285,20 +1363,34 @@ export const DataGridRoot = <
 
 type DataGridHeaderProps<TData> = {
   grid: Table<TData>
+  errors: FieldErrors
 }
 
-const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
+const DataGridHeader = <TData,>({
+  grid,
+  errors,
+}: DataGridHeaderProps<TData>) => {
   const { t } = useTranslation()
+
+  const optionCount = grid.getAllLeafColumns().filter((c) => c.getCanHide())
+  const disabled = optionCount.length === 0
+
+  const errorCount = countFieldErrors(errors)
 
   return (
     <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
       <DropdownMenu>
-        <DropdownMenu.Trigger asChild>
-          <Button size="small" variant="secondary">
-            <Adjustments />
-            {t("dataGrid.editColumns")}
-          </Button>
-        </DropdownMenu.Trigger>
+        <ConditionalTooltip
+          showTooltip={disabled}
+          content={"No columns can be hidden"}
+        >
+          <DropdownMenu.Trigger asChild disabled={disabled}>
+            <Button size="small" variant="secondary">
+              <Adjustments />
+              {t("dataGrid.editColumns")}
+            </Button>
+          </DropdownMenu.Trigger>
+        </ConditionalTooltip>
         <DropdownMenu.Content>
           {grid.getAllLeafColumns().map((column) => {
             const checked = column.getIsVisible()
@@ -1321,6 +1413,16 @@ const DataGridHeader = <TData,>({ grid }: DataGridHeaderProps<TData>) => {
           })}
         </DropdownMenu.Content>
       </DropdownMenu>
+      {errorCount > 0 && (
+        <Button size="small" variant="secondary" type="button">
+          <ExclamationCircle className="text-ui-fg-subtle" />
+          <span>
+            {t("dataGrid.errorCount", {
+              count: errorCount,
+            })}
+          </span>
+        </Button>
+      )}
     </div>
   )
 }
