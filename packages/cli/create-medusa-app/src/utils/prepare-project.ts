@@ -70,7 +70,7 @@ export default async ({
   let inviteToken: string | undefined = undefined
 
   // add environment variables
-  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}JWT_TOKEN_STORAGE_KEY=medusa_auth_token${EOL}CSRF_TOKEN_STORAGE_KEY=medusa_csrf_token${EOL}COOKIE_SECRET=supersecret`
+  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}JWT_TOKEN_STORAGE_KEY=medusa_auth_token${EOL}COOKIE_SECRET=supersecret`
 
   if (!skipDb) {
     env += `${EOL}DATABASE_URL=${dbConnectionString}`
