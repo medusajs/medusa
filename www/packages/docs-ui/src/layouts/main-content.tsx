@@ -33,7 +33,7 @@ export const MainContentLayout = ({
   return (
     <div
       className={clsx(
-        "relative",
+        "relative max-w-full",
         "h-full flex-1",
         "flex flex-col",
         "gap-docs_0.5 lg:pt-docs_0.25 lg:mr-docs_0.25",
