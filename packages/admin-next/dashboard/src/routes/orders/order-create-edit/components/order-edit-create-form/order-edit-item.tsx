@@ -1,4 +1,4 @@
-import { DocumentSeries, XCircle } from "@medusajs/icons"
+import { ArrowUturnLeft, DocumentSeries, XCircle } from "@medusajs/icons"
 import { AdminOrderLineItem } from "@medusajs/types"
 import { Badge, Input, Text, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -27,17 +27,23 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
   const { mutateAsync: updateAddedItem } = useUpdateOrderEditAddedItem(orderId)
   const { mutateAsync: updateOriginalItem } =
     useUpdateOrderEditOriginalItem(orderId)
-  const { mutateAsync: removeItem } = useRemoveOrderEditItem(orderId)
+  const { mutateAsync: undoAction } = useRemoveOrderEditItem(orderId)
 
   const isAddedItem = useMemo(
     () => !!item.actions?.find((a) => a.action === "ITEM_ADD"),
     [item]
   )
 
-  const ITEM_UPDATE = useMemo(
+  const isItemUpdated = useMemo(
     () => !!item.actions?.find((a) => a.action === "ITEM_UPDATE"),
     [item]
   )
+
+  const isItemRemoved = useMemo(() => {
+    // To be removed item needs to have updated quantity
+    const updateAction = item.actions?.find((a) => a.action === "ITEM_UPDATE")
+    return !!updateAction && item.quantity === item.detail.fulfilled_quantity
+  }, [item])
 
   /**
    * HANDLERS
@@ -71,12 +77,26 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
 
     try {
       if (addItemAction) {
-        await removeItem(addItemAction.id)
+        await undoAction(addItemAction.id)
       } else {
         await updateOriginalItem({
           quantity: item.detail.fulfilled_quantity, //
           itemId: item.id,
         })
+      }
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
+
+  const onRemoveUndo = async () => {
+    const updateItemAction = item.actions?.find(
+      (a) => a.action === "ITEM_UPDATE"
+    )
+
+    try {
+      if (updateItemAction) {
+        await undoAction(updateItemAction.id) // Remove action that updated items quantity to fulfilled quantity which makes it "removed"
       }
     } catch (e) {
       toast.error(e.message)
@@ -128,15 +148,21 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             </Badge>
           )}
 
-          {ITEM_UPDATE && (
-            <Badge
-              size="2xsmall"
-              rounded="full"
-              color="orange"
-              className="mr-1"
-            >
-              {t("general.modified")}
+          {isItemRemoved ? (
+            <Badge size="2xsmall" rounded="full" color="red" className="mr-1">
+              {t("general.removed")}
             </Badge>
+          ) : (
+            isItemUpdated && (
+              <Badge
+                size="2xsmall"
+                rounded="full"
+                color="orange"
+                className="mr-1"
+              >
+                {t("general.modified")}
+              </Badge>
+            )
           )}
         </div>
 
@@ -179,12 +205,19 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
               },
               {
                 actions: [
-                  {
-                    label: t("actions.remove"),
-                    onClick: onRemove,
-                    icon: <XCircle />,
-                    disabled: item.detail.fulfilled_quantity === item.quantity,
-                  },
+                  !isItemRemoved
+                    ? {
+                        label: t("actions.remove"),
+                        onClick: onRemove,
+                        icon: <XCircle />,
+                        disabled:
+                          item.detail.fulfilled_quantity === item.quantity,
+                      }
+                    : {
+                        label: t("actions.undo"),
+                        onClick: onRemoveUndo,
+                        icon: <ArrowUturnLeft />,
+                      },
                 ].filter(Boolean),
               },
             ]}
