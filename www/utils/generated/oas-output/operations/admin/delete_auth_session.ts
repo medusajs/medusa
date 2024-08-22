@@ -13,6 +13,20 @@
  * tags:
  *   - Auth
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - success
+ *           properties:
+ *             success:
+ *               type: boolean
+ *               title: success
+ *               description: Whether the session was deleted successfully.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

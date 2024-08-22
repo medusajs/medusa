@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 tags:
+  - name: Auth
+    description: |
+      Auth API routes allow you to manage an admin user's authentication.
   - name: Api Keys
   - name: Campaigns
   - name: Claims
@@ -44091,6 +44094,196 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/session:
+    post:
+      operationId: PostSession
+      summary: Set Authentication Session
+      description: Set the cookie session ID of an admin user. The admin must be previously authenticated with the `/auth/user/{provider}` API route first, as the JWT token is required in the header of the request.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/auth/session' \
+            -H 'Authorization: Bearer {jwt_token}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthAdminSessionResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteSession
+      summary: Delete Authentication Session
+      description: Deletes the cookie session ID previously set for authentication.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/auth/session' \
+            -H 'Cookie: connect.sid={sid}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                description: SUMMARY
+                required:
+                  - success
+                properties:
+                  success:
+                    type: boolean
+                    title: success
+                    description: Whether the session was deleted successfully.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth/user/{auth_provider}:
+    post:
+      operationId: PostActor_typeAuth_provider
+      summary: Authenticate User
+      description: Authenticate an admin user and receive the JWT token to be used in the header of subsequent requests.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The provider used for authentication.
+          required: true
+          schema:
+            type: string
+            example: emailpass
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: curl -X POST '{backend_url}/auth/user/{auth_provider}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth/user/{auth_provider}/callback:
+    post:
+      operationId: PostActor_typeAuth_providerCallback
+      summary: Validate Authentication Callback
+      description: Third-party authentication providers, such as Google, require an API route to call once authentication with the third-party provider is finished. This API route validates callback for admin users logged-in with third-party providers.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The provider used for authentication.
+          required: true
+          schema:
+            type: string
+            example: google
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: curl -X POST '{backend_url}/auth/user/{auth_provider}/callback'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth/user/{auth_provider}/register:
+    post:
+      operationId: PostActor_typeAuth_provider_register
+      summary: Retrieve Registration JWT Token
+      description: A registration JWT token is used in the header of requests that create a user, such as the accept invitation request. This API route retrieves the JWT token of a user that hasn't been registered yet.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The provider used for authentication.
+          required: true
+          schema:
+            type: string
+            example: emailpass
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: curl -X POST '{backend_url}/auth/user/{auth_provider}/register'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
 components:
   schemas:
     AdminApiKeyResponse:
@@ -52476,6 +52669,39 @@ components:
           title: revoked_at
           description: The api key's revoked at.
           format: date-time
+    AuthAdminSessionResponse:
+      type: object
+      description: The authenticated user's details.
+      x-schemaName: AuthAdminSessionResponse
+      required:
+        - user
+      properties:
+        user:
+          title: user
+          description: The logged-in user.
+          $ref: '#/components/schemas/AdminUser'
+    AuthResponse:
+      type: object
+      description: The authentication's details.
+      x-schemaName: AuthResponse
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          title: token
+          description: The JWT token used for registration or authentication.
+    AuthStoreSessionResponse:
+      type: object
+      description: The authenticated customer's details.
+      x-schemaName: AuthStoreSessionResponse
+      required:
+        - user
+      properties:
+        user:
+          title: user
+          description: The logged-in customer.
+          $ref: '#/components/schemas/StoreCustomer'
     BaseApplicationMethod:
       type: object
       description: The promotion's application method.
