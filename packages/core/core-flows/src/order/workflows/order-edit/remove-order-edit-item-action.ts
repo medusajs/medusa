@@ -47,8 +47,14 @@ export const removeOrderEditItemActionValidationStep = createStep(
       throw new Error(
         `No item found for order ${input.order_id} in order change ${orderChange.id}`
       )
-    } else if (associatedAction.action !== ChangeActionType.ITEM_ADD) {
-      throw new Error(`Action ${associatedAction.id} is not adding an item`)
+    } else if (
+      ![ChangeActionType.ITEM_ADD, ChangeActionType.ITEM_UPDATE].includes(
+        associatedAction.action as ChangeActionType
+      )
+    ) {
+      throw new Error(
+        `Action ${associatedAction.id} is not adding or updating an item`
+      )
     }
   }
 )

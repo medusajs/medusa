@@ -37,45 +37,54 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
       continue
     }
 
-    const namespaceBasePath = path.join(basePath, directory.name, "functions")
-
-    if (!existsSync(namespaceBasePath)) {
-      continue
-    }
-
-    const childDirs = readdirSync(namespaceBasePath, {
-      withFileTypes: true,
-    })
-
     const workflowItems: ItemsToAdd[] = []
     const stepItems: ItemsToAdd[] = []
 
-    for (const childDir of childDirs) {
-      if (!childDir.isDirectory()) {
-        continue
+    const readItemsFromChildDirs = async (type: "Steps" | "Workflows") => {
+      const childNamespaceBasePath = path.join(
+        basePath,
+        directory.name,
+        `${type}_${directory.name}`,
+        "functions"
+      )
+
+      if (!existsSync(childNamespaceBasePath)) {
+        return
       }
-
-      const childDirPath = path.join(namespaceBasePath, childDir.name)
-      const childFile = readdirSync(childDirPath)
-
-      if (!childFile.length) {
-        continue
-      }
-
-      const sidebarItem = await getSidebarItemLink({
-        filePath: path.join(childDirPath, childFile[0]),
-        basePath: projPath,
-        fileBasename: childFile[0],
+      const childDirs = readdirSync(childNamespaceBasePath, {
+        withFileTypes: true,
       })
 
-      if (sidebarItem) {
-        if (childDir.name.endsWith("Workflow")) {
-          workflowItems.push(sidebarItem)
-        } else {
-          stepItems.push(sidebarItem)
+      for (const childDir of childDirs) {
+        if (!childDir.isDirectory()) {
+          continue
+        }
+
+        const childDirPath = path.join(childNamespaceBasePath, childDir.name)
+        const childFile = readdirSync(childDirPath)
+
+        if (!childFile.length) {
+          continue
+        }
+
+        const sidebarItem = await getSidebarItemLink({
+          filePath: path.join(childDirPath, childFile[0]),
+          basePath: projPath,
+          fileBasename: childFile[0],
+        })
+
+        if (sidebarItem) {
+          if (childDir.name.endsWith("Workflow")) {
+            workflowItems.push(sidebarItem)
+          } else {
+            stepItems.push(sidebarItem)
+          }
         }
       }
     }
+
+    await readItemsFromChildDirs("Steps")
+    await readItemsFromChildDirs("Workflows")
 
     if (workflowItems.length || stepItems.length) {
       const item: ItemsToAdd = {
