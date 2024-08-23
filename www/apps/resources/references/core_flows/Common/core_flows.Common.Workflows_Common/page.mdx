@@ -1,3 +1,78 @@
 import { TypeList, WorkflowDiagram } from "docs-ui"
 
 # Workflows\_Common
+
+- [batchLinksWorkflow](../../../modules/core_flows/page.mdx#batchlinksworkflow)
+- [createLinksWorkflow](../../../modules/core_flows/page.mdx#createlinksworkflow)
+- [dismissLinksWorkflow](../../../modules/core_flows/page.mdx#dismisslinksworkflow)
+- [updateLinksWorkflow](../../../modules/core_flows/page.mdx#updatelinksworkflow)
+
+## batchLinksWorkflow
+
+This workflow manages one or more links to create, update, or dismiss them.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"batchLinksWorkflow","steps":[{"type":"step","name":"createRemoteLinkStep","description":"This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).\n\n","link":"../../Steps_Common/functions/core_flows.Steps_Common.createRemoteLinkStep/page.mdx","depth":1},{"type":"step","name":"updateRemoteLinksStep","description":"","link":"../../Steps_Common/functions/core_flows.Steps_Common.updateRemoteLinksStep/page.mdx","depth":1},{"type":"step","name":"dismissRemoteLinkStep","description":"This step removes remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#dismiss-link).\n\n","link":"../../Steps_Common/functions/core_flows.Steps_Common.dismissRemoteLinkStep/page.mdx","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"BatchWorkflowInput","type":"[BatchWorkflowInput](../../../types/CommonTypes/types/types.CommonTypes.BatchWorkflowInput/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx), [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx), [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchLinksWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"created","type":"([LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx) \\| [WorkflowData](../../../workflows/types/workflows.WorkflowData/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)&#62;)[] & [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[] & [WorkflowDataProperties](../../../workflows/types/workflows.WorkflowDataProperties/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62; & `object` & StepFunctionReturnConfig&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"__step__","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated","type":"([LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx) \\| [WorkflowData](../../../workflows/types/workflows.WorkflowData/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)&#62;)[] & [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[] & [WorkflowDataProperties](../../../workflows/types/workflows.WorkflowDataProperties/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62; & `object` & StepFunctionReturnConfig&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"__step__","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted","type":"([LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx) \\| [WorkflowData](../../../workflows/types/workflows.WorkflowData/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)&#62;)[] & [LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[] & [WorkflowDataProperties](../../../workflows/types/workflows.WorkflowDataProperties/page.mdx)&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62; & `object` & StepFunctionReturnConfig&#60;[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"__step__","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="batchLinksWorkflow"/>
+
+___
+
+## createLinksWorkflow
+
+This workflow creates one or more links between records.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"createLinksWorkflow","steps":[{"type":"step","name":"createRemoteLinkStep","description":"This step creates remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).\n\n","link":"../../Steps_Common/functions/core_flows.Steps_Common.createRemoteLinkStep/page.mdx","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createLinksWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createLinksWorkflow"/>
+
+___
+
+## dismissLinksWorkflow
+
+This workflow dismisses one or more links between records.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"dismissLinksWorkflow","steps":[{"type":"step","name":"dismissRemoteLinkStep","description":"This step removes remote links between two records of linked data models.\n\nLearn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#dismiss-link).\n\n","link":"../../Steps_Common/functions/core_flows.Steps_Common.dismissRemoteLinkStep/page.mdx","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="dismissLinksWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="dismissLinksWorkflow"/>
+
+___
+
+## updateLinksWorkflow
+
+This workflow updates one or more links between records.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"updateLinksWorkflow","steps":[{"type":"step","name":"updateRemoteLinksStep","description":"","link":"../../Steps_Common/functions/core_flows.Steps_Common.updateRemoteLinksStep/page.mdx","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateLinksWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateLinksWorkflow"/>

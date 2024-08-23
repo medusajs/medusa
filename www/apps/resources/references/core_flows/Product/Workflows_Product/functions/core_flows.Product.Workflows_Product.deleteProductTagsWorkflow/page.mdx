@@ -1,0 +1,42 @@
+---
+slug: /references/medusa-workflows/deleteProductTagsWorkflow
+sidebar_label: deleteProductTagsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteProductTagsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `deleteProductTagsWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow deletes one or more product tags.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteProductTagsWorkflow","steps":[{"type":"step","name":"deleteProductTagsStep","description":"This step deletes one or more product tags.","link":"../../../../Steps_Product/functions/core_flows.Steps_Product.deleteProductTagsStep/page.mdx","depth":1},{"type":"hook","name":"productTagsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsDeleted","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteProductTagsWorkflowInput","type":"[DeleteProductTagsWorkflowInput](../../../../types/core_flows.DeleteProductTagsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteProductTagsWorkflow"/>
+
+## Hooks
+
+### productTagsDeleted
+
+#### Example
+
+```ts
+import { deleteProductTagsWorkflow } from "@medusajs/core-flows"
+
+deleteProductTagsWorkflow.hooks.productTagsDeleted(
+	async (({ ids }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="productTagsDeleted"/>

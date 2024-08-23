@@ -1,0 +1,17 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateLinksWorkflow
+
+This workflow updates one or more links between records.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updateLinksWorkflow","steps":[{"type":"step","name":"updateRemoteLinksStep","description":"","link":"../../../Steps_Common/functions/core_flows.Steps_Common.updateRemoteLinksStep/page.mdx","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateLinksWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"LinkDefinition[]","type":"[LinkDefinition](../../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LinkDefinition","type":"[LinkDefinition](../../../../modules_sdk/types/modules_sdk.LinkDefinition/page.mdx)","optional":false,"defaultValue":"","description":"A link for two records of linked data models.\n\nThe keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateLinksWorkflow"/>

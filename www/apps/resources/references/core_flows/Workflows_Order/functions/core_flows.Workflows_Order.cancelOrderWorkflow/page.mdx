@@ -1,0 +1,39 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelOrderWorkflow
+
+This workflow cancels an order.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelOrderWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Steps_Common/functions/core_flows.Steps_Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"cancelValidateOrder","description":"This step validates that an order can be canceled.","link":"../core_flows.Workflows_Order.cancelValidateOrder/page.mdx","depth":2},{"type":"step","name":"deleteReservationsByLineItemsStep","description":"This step deletes reservations by their associated line items.","link":"../../../Steps_Reservation/functions/core_flows.Steps_Reservation.deleteReservationsByLineItemsStep/page.mdx","depth":3},{"type":"step","name":"cancelPaymentStep","description":"This step cancels one or more payments.","link":"../../../Steps_Payment/functions/core_flows.Steps_Payment.cancelPaymentStep/page.mdx","depth":3},{"type":"step","name":"cancelOrdersStep","description":"This step cancels one or more orders.","link":"../../../Steps_Order/functions/core_flows.Steps_Order.cancelOrdersStep/page.mdx","depth":3},{"type":"hook","name":"orderCanceled","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#orderCanceled","depth":4}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelOrderWorkflowInput","type":"`CancelOrderWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelOrderWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"undefined","type":"`undefined`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"undefined","type":"`undefined`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelOrderWorkflow"/>
+
+## Hooks
+
+### orderCanceled
+
+#### Example
+
+```ts
+import { cancelOrderWorkflow } from "@medusajs/core-flows"
+
+cancelOrderWorkflow.hooks.orderCanceled(
+	async (({ order }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fulfillments","type":"[FulfillmentDTO](../../../../fulfillment/interfaces/fulfillment.FulfillmentDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="orderCanceled"/>

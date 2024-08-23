@@ -1,0 +1,39 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateProductTypesWorkflow
+
+This workflow updates product types matching the specified filters.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updateProductTypesWorkflow","steps":[{"type":"step","name":"updateProductTypesStep","description":"This step updates product types matching the specified filters.","link":"../../../Steps_Product/functions/core_flows.Steps_Product.updateProductTypesStep/page.mdx","depth":1},{"type":"hook","name":"productTypesUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesUpdated","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdateProductTypesWorkflowInput","type":"`UpdateProductTypesWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateProductTypesWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"ProductTypeDTO[]","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductTypeDTO","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)","optional":false,"defaultValue":"","description":"A product type's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateProductTypesWorkflow"/>
+
+## Hooks
+
+### productTypesUpdated
+
+#### Example
+
+```ts
+import { updateProductTypesWorkflow } from "@medusajs/core-flows"
+
+updateProductTypesWorkflow.hooks.productTypesUpdated(
+	async (({ product_types, additional_data }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"product_types","type":"[ProductTypeDTO](../../../../product/interfaces/product.ProductTypeDTO/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[MetadataType](../../../../product/types/product.MetadataType/page.mdx)","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_data","type":"`Record<string, unknown> | undefined`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="productTypesUpdated"/>
