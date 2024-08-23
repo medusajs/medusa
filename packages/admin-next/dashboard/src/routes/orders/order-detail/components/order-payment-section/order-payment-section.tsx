@@ -31,11 +31,11 @@ type OrderPaymentSectionProps = {
   order: HttpTypes.AdminOrder
 }
 
-const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
+export const getPaymentsFromOrder = (order: HttpTypes.AdminOrder) => {
   return order.payment_collections
     .map((collection: HttpTypes.AdminPaymentCollection) => collection.payments)
     .flat(1)
-    .filter(Boolean)
+    .filter(Boolean) as HttpTypes.AdminPayment[]
 }
 
 export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
@@ -142,7 +142,7 @@ const Payment = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useCapturePayment(payment.id)
+  const { mutateAsync } = useCapturePayment(order.id, payment.id)
 
   const handleCapture = async () => {
     const res = await prompt({
@@ -222,7 +222,7 @@ const Payment = ({
                 {
                   label: t("orders.payment.refund"),
                   icon: <XCircle />,
-                  to: `/orders/${order.id}/payments/${payment.id}/refund`,
+                  to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
                   disabled: !payment.captured_at,
                 },
               ],

@@ -24,6 +24,7 @@ export async function getVariantInventoryItems({
     fields: [
       "variant_id",
       "variant.manage_inventory",
+      "variant.allow_backorder",
       "required_quantity",
       "inventory.*",
       "inventory.location_levels.*",

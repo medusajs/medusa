@@ -18,6 +18,7 @@ export async function getViteConfig(
   const root = path.resolve(__dirname, "./")
 
   const backendUrl = options.backendUrl ?? ""
+  const storefrontUrl = options.storefrontUrl ?? ""
 
   const baseConfig: InlineConfig = {
     root,
@@ -33,6 +34,7 @@ export async function getViteConfig(
     define: {
       __BASE__: JSON.stringify(options.path),
       __BACKEND_URL__: JSON.stringify(backendUrl),
+      __STOREFRONT_URL__: JSON.stringify(storefrontUrl),
     },
     server: {
       fs: {

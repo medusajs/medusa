@@ -1,11 +1,11 @@
 import { createFulfillmentWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchFulfillment } from "./helpers"
 import { AdminCreateFulfillmentType } from "./validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateFulfillmentType>,
@@ -14,7 +14,10 @@ export const POST = async (
   const { result: fullfillment } = await createFulfillmentWorkflow(
     req.scope
   ).run({
-    input: req.validatedBody,
+    input: {
+      ...req.validatedBody,
+      created_by: req.auth_context.actor_id,
+    },
   })
 
   const fulfillment = await refetchFulfillment(

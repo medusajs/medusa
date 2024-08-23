@@ -9,7 +9,6 @@ import { ClaimReason } from "./mutations"
  * The change action's type.
  */
 export type ChangeActionType =
-  | "CANCEL"
   | "CANCEL_RETURN_ITEM"
   | "FULFILL_ITEM"
   | "CANCEL_ITEM_FULFILLMENT"
@@ -1584,6 +1583,11 @@ export interface OrderClaimDTO
    * The refund amount of the claim.
    */
   refund_amount?: BigNumberValue
+
+  /**
+   * The id of the user that creates the order claim
+   */
+  created_by?: string | null
 }
 
 /**
@@ -1630,6 +1634,11 @@ export interface OrderExchangeDTO
    * The associated return's ID.
    */
   return_id?: string
+
+  /**
+   * The id of the user that creates the order exchange
+   */
+  created_by?: string | null
 }
 
 /**

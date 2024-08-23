@@ -21,8 +21,8 @@ import {
   when,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
+import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { createOrderClaimItemsFromActionsStep } from "../../steps/claim/create-claim-items-from-actions"
@@ -32,6 +32,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
@@ -383,6 +384,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "claim-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

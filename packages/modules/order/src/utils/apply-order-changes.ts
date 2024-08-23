@@ -1,6 +1,7 @@
 import { OrderChangeActionDTO } from "@medusajs/types"
 import {
   ChangeActionType,
+  MathBN,
   createRawPropertiesFromBigNumber,
   isDefined,
 } from "@medusajs/utils"
@@ -42,6 +43,10 @@ export function applyChangesToOrder(
     const version = actionsMap[order.id]?.[0]?.version ?? order.version
 
     for (const item of calculated.order.items) {
+      if (MathBN.lte(item.quantity, 0)) {
+        continue
+      }
+
       const isExistingItem = item.id === item.detail?.item_id
       const orderItem = isExistingItem ? (item.detail as any) : item
       const itemId = isExistingItem ? orderItem.item_id : item.id

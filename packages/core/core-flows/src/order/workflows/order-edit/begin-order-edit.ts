@@ -13,7 +13,7 @@ import { throwIfOrderIsCancelled } from "../../utils/order-validation"
 /**
  * This step validates that an order-edit can be requested for an order.
  */
-export const beginorderEditValidationStep = createStep(
+export const beginOrderEditValidationStep = createStep(
   "begin-order-edit-validation",
   async function ({ order }: { order: OrderDTO }) {
     throwIfOrderIsCancelled({ order })
@@ -37,7 +37,7 @@ export const beginOrderEditOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    beginorderEditValidationStep({ order })
+    beginOrderEditValidationStep({ order })
 
     const orderChangeInput = transform({ input }, ({ input }) => {
       return {

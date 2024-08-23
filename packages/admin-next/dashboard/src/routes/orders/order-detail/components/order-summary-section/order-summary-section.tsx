@@ -9,6 +9,7 @@ import {
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
+  PencilSquare,
 } from "@medusajs/icons"
 import {
   AdminClaim,
@@ -27,18 +28,23 @@ import {
   Heading,
   StatusBadge,
   Text,
+  toast,
   Tooltip,
+  usePrompt,
 } from "@medusajs/ui"
 
+import { AdminPaymentCollection } from "../../../../../../../../core/types/dist/http/payment/admin/entities"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims.tsx"
 import { useExchanges } from "../../../../../hooks/api/exchanges.tsx"
 import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
+import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment-collections.tsx"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import { formatCurrency } from "../../../../../lib/format-currency.ts"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -54,6 +60,7 @@ type OrderSummarySectionProps = {
 export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
 
   const { reservations } = useReservationItems(
     {
@@ -100,19 +107,58 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     return false
   }, [reservations])
 
-  // TODO: We need a way to link payment collections to a change order to
-  // accurately differentiate order payments and order change payments
-  // This fix should be temporary.
-  const authorizedPaymentCollection = order.payment_collections.find(
-    (pc) =>
-      pc.status === "authorized" &&
-      pc.amount === order.summary?.pending_difference
+  const unpaidPaymentCollection = order.payment_collections.find(
+    (pc) => pc.status === "not_paid"
+  )
+
+  const { mutateAsync: markAsPaid } = useMarkPaymentCollectionAsPaid(
+    order.id,
+    unpaidPaymentCollection?.id!
   )
 
   const showPayment =
-    typeof authorizedPaymentCollection === "undefined" &&
-    (order?.summary?.pending_difference || 0) > 0
+    unpaidPaymentCollection && (order?.summary?.pending_difference || 0) > 0
   const showRefund = (order?.summary?.pending_difference || 0) < 0
+
+  const handleMarkAsPaid = async (
+    paymentCollection: AdminPaymentCollection
+  ) => {
+    const res = await prompt({
+      title: t("orders.payment.markAsPaid"),
+      description: t("orders.payment.markAsPaidPayment", {
+        amount: formatCurrency(
+          paymentCollection.amount as number,
+          order.currency_code
+        ),
+      }),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (!res) {
+      return
+    }
+
+    await markAsPaid(
+      { order_id: order.id },
+      {
+        onSuccess: () => {
+          toast.success(
+            t("orders.payment.markAsPaidPaymentSuccess", {
+              amount: formatCurrency(
+                paymentCollection.amount as number,
+                order.currency_code
+              ),
+            })
+          )
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
+  }
 
   return (
     <Container className="divide-y divide-dashed p-0">
@@ -121,7 +167,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {(showAllocateButton || showReturns || showPayment) && (
+      {(showAllocateButton || showReturns || showPayment || showRefund) && (
         <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
           {showReturns && (
             <ButtonMenu
@@ -152,7 +198,37 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
             </Button>
           )}
 
-          {showPayment && <CopyPaymentLink order={order} />}
+          {showPayment && (
+            <CopyPaymentLink
+              paymentCollection={unpaidPaymentCollection}
+              order={order}
+            />
+          )}
+
+          {showPayment && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
+            >
+              {t("orders.payment.markAsPaid")}
+            </Button>
+          )}
+
+          {showRefund && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => navigate(`/orders/${order.id}/refund`)}
+            >
+              {t("orders.payment.refundAmount", {
+                amount: getStylizedAmount(
+                  (order?.summary?.pending_difference || 0) * -1,
+                  order?.currency_code
+                ),
+              })}
+            </Button>
+          )}
         </div>
       )}
     </Container>
@@ -180,11 +256,20 @@ const Header = ({
         groups={[
           {
             actions: [
-              // {
-              //   label: t("orders.summary.editItems"),
-              //   to: `/orders/${order.id}/edit`,
-              //   icon: <PencilSquare />,
-              // },
+              {
+                label: t("orders.summary.editOrder"),
+                to: `/orders/${order.id}/edits`,
+                icon: <PencilSquare />,
+                disabled:
+                  (orderPreview?.order_change &&
+                    orderPreview?.order_change?.change_type !== "edit") ||
+                  (orderPreview?.order_change?.change_type === "edit" &&
+                    orderPreview?.order_change?.status === "requested"),
+              },
+            ],
+          },
+          {
+            actions: [
               // {
               //   label: t("orders.summary.allocateItems"),
               //   to: "#", // TODO: Open modal to allocate items

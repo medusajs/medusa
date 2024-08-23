@@ -1,4 +1,5 @@
 import { beginExchangeOrderWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -10,7 +11,6 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { AdminPostOrderExchangesReqSchemaType } from "./validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -43,7 +43,11 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostOrderExchangesReqSchemaType>,
   res: MedusaResponse<HttpTypes.AdminExchangeOrderResponse>
 ) => {
-  const input = req.validatedBody as AdminPostOrderExchangesReqSchemaType
+  const input = {
+    ...req.validatedBody,
+    created_by: req.auth_context.actor_id,
+  }
+
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 

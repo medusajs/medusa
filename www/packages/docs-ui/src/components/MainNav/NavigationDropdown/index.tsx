@@ -34,6 +34,7 @@ export const MainNavigationDropdown = () => {
         <MainNavigationDropdownSelected
           item={selectedItem}
           onClick={() => setMenuOpen((prev) => !prev)}
+          isActive={menuOpen}
         />
       )}
       <MainNavigationDropdownMenu

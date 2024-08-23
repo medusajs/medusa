@@ -145,10 +145,37 @@ export default class AuthModuleService
     )
 
     return await this.baseRepository_.serialize<
+      AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]
+    >(providerIdentities)
+  }
+
+  updateProviderIdentites(
+    data: AuthTypes.UpdateProviderIdentityDTO[],
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO[]>
+
+  updateProviderIdentites(
+    data: AuthTypes.UpdateProviderIdentityDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.ProviderIdentityDTO>
+
+  @InjectManager("baseRepository_")
+  async updateProviderIdentites(
+    data:
+      | AuthTypes.UpdateProviderIdentityDTO
+      | AuthTypes.UpdateProviderIdentityDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ProviderIdentityDTO | AuthTypes.ProviderIdentityDTO[]> {
+    const updatedProviders = await this.providerIdentityService_.update(
+      data,
+      sharedContext
+    )
+
+    const serializedProviders = await this.baseRepository_.serialize<
       AuthTypes.ProviderIdentityDTO[]
-    >(providerIdentities, {
-      populate: true,
-    })
+    >(updatedProviders)
+
+    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
   }
 
   async authenticate(
