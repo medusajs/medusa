@@ -4787,6 +4787,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
+    "@medusajs/medusa": ^1.20.5
     "@medusajs/utils": ^1.11.9
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
@@ -4818,7 +4819,6 @@ __metadata:
     winston: ^3.8.2
     yargs: ^15.3.1
   peerDependencies:
-    "@medusajs/medusa": "*"
     dotenv: "*"
     ulid: "*"
   bin:
@@ -4855,7 +4855,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@^1.20.5, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4904,7 +4904,6 @@ __metadata:
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
-    "@medusajs/medusa-cli": "*"
     awilix: "*"
   languageName: unknown
   linkType: soft
