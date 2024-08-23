@@ -4327,7 +4327,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4352,7 +4352,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.3
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
@@ -4406,7 +4406,6 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -4525,7 +4524,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
@@ -4612,10 +4611,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/framework/framework"
   dependencies:
+    "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
     "@types/express": ^4.17.17
     "@types/jsonwebtoken": ^8.5.9
@@ -4760,7 +4758,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:packages/modules/link-modules":
+"@medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
@@ -4783,11 +4781,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@workspace:packages/cli/medusa-cli":
+"@medusajs/medusa-cli@^1.3.22, @medusajs/medusa-cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
-    "@medusajs/medusa": ^1.20.5
     "@medusajs/utils": ^1.11.9
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
@@ -4811,7 +4808,6 @@ __metadata:
     pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
-    resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
@@ -4855,7 +4851,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@^1.20.5, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4863,7 +4859,6 @@ __metadata:
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/framework": ^0.0.1
-    "@medusajs/link-modules": ^0.2.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -4908,7 +4903,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -4917,7 +4912,6 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/core": 5.9.7
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^29.7.0
@@ -4925,6 +4919,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
+    "@mikro-orm/core": "*"
     awilix: "*"
   languageName: unknown
   linkType: soft
@@ -5232,7 +5227,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -22687,17 +22682,17 @@ __metadata:
     "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^29.7.0
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    "@medusajs/medusa": ">1.19"
-    "@medusajs/modules-sdk": ^1.12.10
-    "@mikro-orm/core": 5.9.7
+    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": "*"
+    "@mikro-orm/core": "*"
+    "@mikro-orm/migrations": "*"
+    "@mikro-orm/postgresql": "*"
     axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0

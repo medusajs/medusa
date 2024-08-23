@@ -4,6 +4,7 @@ import path from "path"
 
 import { didYouMean } from "./did-you-mean"
 
+import { toCamelCase } from "@medusajs/utils"
 import { newStarter } from "./commands/new"
 import reporter from "./reporter"
 
@@ -40,7 +41,8 @@ function buildLocalCommands(cli, isLocalProject) {
 
     try {
       const { Commands } = require("@medusajs/medusa")
-      return Commands[command]
+      const cmdName = toCamelCase(command)
+      return Commands[cmdName]
     } catch (err) {
       if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")

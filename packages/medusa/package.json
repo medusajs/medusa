@@ -49,7 +49,6 @@
     "@medusajs/admin-sdk": "0.0.1",
     "@medusajs/core-flows": "^0.0.9",
     "@medusajs/framework": "^0.0.1",
-    "@medusajs/link-modules": "^0.2.11",
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
     "@swc/core": "1.5.7",

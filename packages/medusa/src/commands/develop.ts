@@ -5,7 +5,7 @@ import { Store } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 
-import { logger } from "@medusajs/framework"
+import { logger, MEDUSA_CLI_PATH } from "@medusajs/framework"
 
 const defaultConfig = {
   padding: 5,
@@ -21,16 +21,16 @@ export default async function ({ port, directory }) {
       ? process.argv.slice(process.argv.indexOf("--") + 1)
       : []
 
-  args.shift() // node JS
-  const MEDUSA_CLI_PATH = args.shift() // path of file being executed
-  args.shift() // command
+  args.shift()
+  args.shift()
+  args.shift()
 
   /**
    * Re-constructing the path to Medusa CLI to execute the
    * start command.
    */
 
-  const cliPath = MEDUSA_CLI_PATH!
+  const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
 
   const devServer = {
     childProcess: null as ChildProcess | null,

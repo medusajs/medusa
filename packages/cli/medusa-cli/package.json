@@ -39,7 +39,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.20.5",
     "@medusajs/utils": "^1.11.9",
     "axios": "^0.21.4",
     "chalk": "^4.0.0",
@@ -58,7 +57,6 @@
     "pg": "^8.11.3",
     "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
-    "resolve-cwd": "^3.0.0",
     "semver": "^7.3.8",
     "stack-trace": "^0.0.10",
     "winston": "^3.8.2",
