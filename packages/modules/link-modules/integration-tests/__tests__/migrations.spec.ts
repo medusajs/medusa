@@ -1,5 +1,8 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
+import { defineLink, isObject, Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { MigrationsExecutionPlanner } from "../../src"
-import { MedusaModule, ModuleJoinerConfig } from "@medusajs/modules-sdk"
 import {
   Car,
   carJoinerConfig,
@@ -8,9 +11,6 @@ import {
   userJoinerConfig,
   UserModule,
 } from "../__fixtures__/migrations"
-import { defineLink, isObject, Modules } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { ILinkModule } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
