@@ -36,7 +36,6 @@
   },
   "scripts": {
     "watch": "tsc --build --watch",
-    "prepublishOnly": "tsc --build",
     "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
