@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { PencilSquare } from "@medusajs/icons"
+import { AdminOrder, InventoryLevelDTO, ReturnDTO } from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -10,10 +11,9 @@ import {
   Text,
   toast,
 } from "@medusajs/ui"
+import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { AdminOrder, InventoryLevelDTO, ReturnDTO } from "@medusajs/types"
-import { PencilSquare } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -22,14 +22,8 @@ import {
   useStackedModal,
 } from "../../../../../components/modals"
 
-import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
-import { AddReturnItemsTable } from "../add-return-items-table"
 import { Form } from "../../../../../components/common/form"
-import { ReturnItem } from "./return-item"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
-import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import {
   useAddReturnItem,
   useAddReturnShipping,
@@ -41,8 +35,14 @@ import {
   useUpdateReturnItem,
   useUpdateReturnShipping,
 } from "../../../../../hooks/api/returns"
-import { currencies } from "../../../../../lib/data/currencies"
+import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { sdk } from "../../../../../lib/client"
+import { currencies } from "../../../../../lib/data/currencies"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { AddReturnItemsTable } from "../add-return-items-table"
+import { ReturnItem } from "./return-item"
+import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -455,12 +455,26 @@ export const ReturnCreateForm = ({
                     }
                   }}
                   onUpdate={(payload) => {
-                    const actionId = previewItems
+                    const action = previewItems
                       .find((i) => i.id === item.item_id)
-                      ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+                      ?.actions?.find((a) => a.action === "RETURN_ITEM")
 
-                    if (actionId) {
-                      updateReturnItem({ ...payload, actionId })
+                    if (action) {
+                      updateReturnItem(
+                        { ...payload, actionId: action.id },
+                        {
+                          onError: (error) => {
+                            if (action.details?.quantity && payload.quantity) {
+                              form.setValue(
+                                `items.${index}.quantity`,
+                                action.details?.quantity as number
+                              )
+                            }
+
+                            toast.error(error.message)
+                          },
+                        }
+                      )
                     }
                   }}
                   index={index}

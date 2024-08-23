@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import {
@@ -172,7 +173,10 @@ export const ExchangeInboundSection = ({
           })
         }
       } else {
-        append({ item_id: i.id, quantity: i.detail.return_requested_quantity })
+        append(
+          { item_id: i.id, quantity: i.detail.return_requested_quantity },
+          { shouldFocus: false }
+        )
       }
     })
 
@@ -409,16 +413,23 @@ export const ExchangeInboundSection = ({
                   })
                 }
               }}
-              onUpdate={(payload) => {
-                const actionId = previewInboundItems
+              onUpdate={(payload: HttpTypes.AdminUpdateReturnItems) => {
+                const action = previewInboundItems
                   .find((i) => i.id === item.item_id)
-                  ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+                  ?.actions?.find((a) => a.action === "RETURN_ITEM")
 
-                if (actionId) {
+                if (action) {
                   updateInboundItem(
-                    { ...payload, actionId },
+                    { ...payload, actionId: action.id },
                     {
                       onError: (error) => {
+                        if (action.details?.quantity && payload.quantity) {
+                          form.setValue(
+                            `inbound_items.${index}.quantity`,
+                            action.details?.quantity as number
+                          )
+                        }
+
                         toast.error(error.message)
                       },
                     }
