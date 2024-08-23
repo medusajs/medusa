@@ -304,15 +304,19 @@ export const ClaimCreateForm = ({
   const shippingOptionId = form.watch("inbound_option_id")
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      await confirmClaimRequest({ no_notification: !data.send_notification })
+    await confirmClaimRequest(
+      { no_notification: !data.send_notification },
+      {
+        onSuccess: () => {
+          toast.success(t("orders.claims.toast.confirmedSuccessfully"))
 
-      handleSuccess()
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-      })
-    }
+          handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   const onItemsSelected = async () => {

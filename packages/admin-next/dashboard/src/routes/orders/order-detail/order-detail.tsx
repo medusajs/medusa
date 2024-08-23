@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useOrder } from "../../../hooks/api/orders"
+import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
 import { OrderActivitySection } from "./components/order-activity-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
@@ -15,6 +15,9 @@ import after from "virtual:medusa/widgets/order/details/after"
 import before from "virtual:medusa/widgets/order/details/before"
 import sideAfter from "virtual:medusa/widgets/order/details/side/after"
 import sideBefore from "virtual:medusa/widgets/order/details/side/before"
+import { ActiveOrderClaimSection } from "./components/active-order-claim-section"
+import { ActiveOrderExchangeSection } from "./components/active-order-exchange-section"
+import { ActiveOrderReturnSection } from "./components/active-order-return-section"
 import { OrderActiveEditSection } from "./components/order-active-edit-section"
 
 export const OrderDetail = () => {
@@ -31,8 +34,11 @@ export const OrderDetail = () => {
       initialData,
     }
   )
+  const { order: orderPreview, isLoading: isPreviewLoading } = useOrderPreview(
+    id!
+  )
 
-  if (isLoading || !order) {
+  if (isLoading || !order || isPreviewLoading) {
     return <div>Loading...</div>
   }
 
@@ -52,6 +58,9 @@ export const OrderDetail = () => {
       <div className="flex flex-col gap-x-4 lg:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
           <OrderActiveEditSection order={order} />
+          <ActiveOrderClaimSection orderPreview={orderPreview!} />
+          <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+          <ActiveOrderReturnSection orderPreview={orderPreview!} />
           <OrderGeneralSection order={order} />
           <OrderSummarySection order={order} />
           <OrderPaymentSection order={order} />
