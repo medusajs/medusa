@@ -1,4 +1,6 @@
 import S3BucketAcl from "../../../troubleshooting/_sections/s3/aws-bucket-acl.mdx"
+import S3AddReq from "../../../troubleshooting/_sections/s3/minio-supabase-req.mdx"
+
 import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger, DetailsList } from "docs-ui"
 
 export const metadata = {
@@ -355,6 +357,11 @@ module.exports = {
     {
       title: "AWS: The bucket does not allow ACLs (Enabling public access to bucket)",
       content: <S3BucketAcl />
+    },
+    {
+      title: "Additional REQUIRED Configuration for MinIO and Supabase",
+      content: <S3AddReq />
     }
+  
   ]}
 />
