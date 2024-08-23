@@ -48,7 +48,7 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string or regular expression indicating the API route path to apply the middleware on.
+- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
 - `middlewares`: An array of middleware functions.
 
 In the example above, you define a middleware that logs the message `Received a request!` whenever a request is sent to an API route path starting with `/store`.
