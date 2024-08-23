@@ -9,6 +9,7 @@ import {
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
+  PencilSquare,
 } from "@medusajs/icons"
 import {
   AdminClaim,
@@ -166,7 +167,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <CostBreakdown order={order} />
       <Total order={order} />
 
-      {(showAllocateButton || showReturns || showPayment) && (
+      {(showAllocateButton || showReturns || showPayment || showRefund) && (
         <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
           {showReturns && (
             <ButtonMenu
@@ -255,11 +256,20 @@ const Header = ({
         groups={[
           {
             actions: [
-              // {
-              //   label: t("orders.summary.editItems"),
-              //   to: `/orders/${order.id}/edit`,
-              //   icon: <PencilSquare />,
-              // },
+              {
+                label: t("orders.summary.editOrder"),
+                to: `/orders/${order.id}/edits`,
+                icon: <PencilSquare />,
+                disabled:
+                  (orderPreview?.order_change &&
+                    orderPreview?.order_change?.change_type !== "edit") ||
+                  (orderPreview?.order_change?.change_type === "edit" &&
+                    orderPreview?.order_change?.status === "requested"),
+              },
+            ],
+          },
+          {
+            actions: [
               // {
               //   label: t("orders.summary.allocateItems"),
               //   to: "#", // TODO: Open modal to allocate items

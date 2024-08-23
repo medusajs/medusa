@@ -2,6 +2,9 @@
 sidebar_label: "Railway"
 ---
 
+import { Prerequisites, DetailsList } from "docs-ui"
+import OutdatedPreviewContent from "../../../troubleshooting/_sections/common-installation-errors/outdated-preview.mdx"
+
 export const metadata = {
   title: `Deploy Medusa Application to Railway`,
 }
@@ -32,11 +35,12 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 ---
 
-<Note type="check">
-
-- [Medusa application](!docs!) hosted in a GitHub repository.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Medusa application’s codebase hosted on GitHub repository.",
+    link: "!docs!"
+  },
+]} />
 
 ## 1. Configure Medusa Application
 
@@ -413,3 +417,12 @@ To check issues or errors in your deployed Medusa application:
 1. Click on the card of the Medusa application in server mode.
 2. Click on the Deployments tab.
 3. Click on the View Logs button.
+
+<DetailsList
+  sections={[
+    {
+      title: "Dependencies Using Outdated Preview Version",
+      content: <OutdatedPreviewContent />
+    }
+  ]}
+/>

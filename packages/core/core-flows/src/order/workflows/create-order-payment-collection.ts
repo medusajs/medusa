@@ -6,7 +6,7 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
-import { createPaymentCollectionsStep } from "../../definition"
+import { createPaymentCollectionsStep } from "../../cart"
 
 export const createOrderPaymentCollectionWorkflowId =
   "create-order-payment-collection"

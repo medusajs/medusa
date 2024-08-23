@@ -16,7 +16,7 @@ export type AdminOptions = {
   /**
    * Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,
    * in both development and production environments. The default value is `false`.
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
@@ -37,7 +37,7 @@ export type AdminOptions = {
    * - `/store`
    * - `/auth`
    * - `/`
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
@@ -52,7 +52,7 @@ export type AdminOptions = {
   /**
    * The directory where the admin build is outputted when you run the `build` command.
    * The default value is `./build`.
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
@@ -66,7 +66,7 @@ export type AdminOptions = {
   outDir?: string
   /**
    * The URL of your Medusa application. This is useful to set when you deploy the Medusa application.
-   * 
+   *
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
@@ -79,6 +79,22 @@ export type AdminOptions = {
    * ```
    */
   backendUrl?: string
+  /**
+   * The URL of your Medusa storefront application. This will help generate links from the admin
+   * to provide to customers to complete any processes
+   *
+   * @example
+   * ```js title="medusa-config.js"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     storefrontUrl: process.env.MEDUSA_STOREFRONT_URL ||
+   *       "http://localhost:9000"
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  storefrontUrl?: string
   /**
    * Configure the Vite configuration for the admin dashboard. This function receives the default Vite configuration
    * and returns the modified configuration. The default value is `undefined`.
@@ -264,11 +280,11 @@ export type ProjectConfigOptions = {
    *
    * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
    * During development, it’s recommended not to pass this option.
-   * 
+   *
    * :::note
-   * 
+   *
    * Make sure to add to the end of the database URL `?ssl_mode=disable` as well when disabling `rejectUnauthorized`.
-   * 
+   *
    * :::
    *
    * @example
@@ -410,9 +426,9 @@ export type ProjectConfigOptions = {
    *   // ...
    * })
    * ```
-   * 
+   *
    * @ignore
-   * 
+   *
    * @privateRemarks
    * Couldn't find any use for this option.
    */
@@ -493,7 +509,7 @@ export type ProjectConfigOptions = {
     jwtSecret?: string
     /**
      * The expiration time for the JWT token. Its format is based off the [ms package](https://github.com/vercel/ms).
-     * 
+     *
      * If not provided, the default value is `24h`.
      *
      * @example
@@ -754,7 +770,7 @@ export type ProjectConfigOptions = {
  * The configurations for your Medusa application are in `medusa-config.js` located in the root of your Medusa project. The configurations include configurations for database, modules, and more.
  *
  * `medusa-config.js` exports the value returned by the `defineConfig` utility function imported from `@medusajs/utils`.
- * 
+ *
  * `defineConfig` accepts as a parameter an object with the following properties:
  *
  * - {@link ConfigModule.projectConfig | projectConfig} (required): An object that holds general configurations related to the Medusa application, such as database or CORS configurations.
@@ -860,12 +876,12 @@ export type ConfigModule = {
 
   /**
    * This property holds all custom modules installed in your Medusa application.
-   * 
+   *
    * :::note
-   * 
+   *
    * Medusa's commerce modules are configured by default, so only
    * add them to this property if you're changing their configurations or adding providers to a module.
-   * 
+   *
    * :::
    *
    * The keys of the `modules` configuration object refer to the module's registration name. Its value can be one of the following:
