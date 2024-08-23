@@ -15,6 +15,7 @@ import after from "virtual:medusa/widgets/order/details/after"
 import before from "virtual:medusa/widgets/order/details/before"
 import sideAfter from "virtual:medusa/widgets/order/details/side/after"
 import sideBefore from "virtual:medusa/widgets/order/details/side/before"
+import { OrderActiveEditSection } from "./components/order-active-edit-section"
 
 export const OrderDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof orderLoader>>
@@ -50,6 +51,7 @@ export const OrderDetail = () => {
       })}
       <div className="flex flex-col gap-x-4 lg:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
+          <OrderActiveEditSection order={order} />
           <OrderGeneralSection order={order} />
           <OrderSummarySection order={order} />
           <OrderPaymentSection order={order} />
