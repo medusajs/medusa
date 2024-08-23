@@ -11,10 +11,9 @@ import {
   SearchHitGroupName,
   Tooltip,
   Link,
-  AiAssistantIcon,
 } from "@/components"
 import { useAiAssistant, useSearch } from "@/providers"
-import { ArrowUturnLeft, XMarkMini } from "@medusajs/icons"
+import { ArrowUturnLeft } from "@medusajs/icons"
 import clsx from "clsx"
 import { useSearchNavigation } from "@/hooks"
 import { AiAssistantThreadItem } from "./ThreadItem"
@@ -77,26 +76,50 @@ export const AiAssistant = () => {
   const [answer, setAnswer] = useState("")
   const [identifiers, setIdentifiers] = useState<IdentifierType | null>(null)
   const [loading, setLoading] = useState(false)
-  const { getAnswer } = useAiAssistant()
+  const { getAnswer, version } = useAiAssistant()
   const { setCommand } = useSearch()
   const inputRef = useRef<HTMLInputElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const suggestions: SearchSuggestionType[] = [
-    {
-      title: "FAQ",
-      items: [
-        "What is Medusa?",
-        "How can I create an ecommerce store with Medusa?",
-        "How can I build a marketplace with Medusa?",
-        "How can I build subscription-based purchases with Medusa?",
-        "How can I build digital products with Medusa?",
-        "What can I build with Medusa?",
-        "What is Medusa Admin?",
-        "How do I configure the database in Medusa?",
-      ],
-    },
-  ]
+  const suggestions: SearchSuggestionType[] = useMemo(() => {
+    return version === "v2"
+      ? [
+          {
+            title: "FAQ",
+            items: [
+              "What is Medusa?",
+              "How can I create a module?",
+              "How can I create a data model?",
+              "How do I create a workflow?",
+              "How can I extend a data model in the Product Module?",
+            ],
+          },
+          {
+            title: "Recipes",
+            items: [
+              "How do I build a marketplace with Medusa?",
+              "How do I build digital products with Medusa?",
+              "How do I build subscription-based purchases with Medusa?",
+              "What other recipes are available in the Medusa documentation?",
+            ],
+          },
+        ]
+      : [
+          {
+            title: "FAQ",
+            items: [
+              "What is Medusa?",
+              "How can I create an ecommerce store with Medusa?",
+              "How can I build a marketplace with Medusa?",
+              "How can I build subscription-based purchases with Medusa?",
+              "How can I build digital products with Medusa?",
+              "What can I build with Medusa?",
+              "What is Medusa Admin?",
+              "How do I configure the database in Medusa?",
+            ],
+          },
+        ]
+  }, [version])
 
   const handleSubmit = (selectedQuestion?: string) => {
     if (!selectedQuestion?.length && !question.length) {
@@ -292,6 +315,22 @@ export const AiAssistant = () => {
 
   return (
     <div className="h-full">
+      <div className={clsx("px-docs_1 pt-docs_1")}>
+        <Tooltip
+          tooltipChildren={
+            <>
+              This site is protected by reCAPTCHA and the{" "}
+              <Link href="https://policies.google.com/privacy">
+                Google Privacy Policy
+              </Link>{" "}
+              and <Link href="https://policies.google.com/terms">ToS</Link>{" "}
+              apply
+            </>
+          }
+        >
+          <Badge variant="neutral">AI Assistant</Badge>
+        </Tooltip>
+      </div>
       <div
         className={clsx(
           "flex gap-docs_1 px-docs_1 py-docs_0.75",
@@ -302,7 +341,7 @@ export const AiAssistant = () => {
         <Button
           variant="transparent"
           onClick={() => setCommand(null)}
-          className="text-medusa-fg-subtle p-[5px]"
+          className="text-medusa-fg-muted p-[6.5px]"
         >
           <ArrowUturnLeft />
         </Button>
@@ -311,7 +350,7 @@ export const AiAssistant = () => {
           onChange={(e) => setQuestion(e.target.value)}
           className={clsx(
             "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
-            "shadow-none flex-1 text-medusa-fg-base",
+            "!shadow-none flex-1 text-medusa-fg-base",
             "disabled:!bg-transparent disabled:cursor-not-allowed"
           )}
           placeholder="Ask me a question about Medusa..."
@@ -319,23 +358,22 @@ export const AiAssistant = () => {
           passedRef={inputRef}
           disabled={loading}
         />
-        <Button
-          variant="transparent"
+        <span
           onClick={() => {
             setQuestion("")
             inputRef.current?.focus()
           }}
           className={clsx(
-            "text-medusa-fg-subtle p-[5px]",
+            "text-medusa-fg-muted hover:text-medusa-fg-subtle",
             "absolute top-docs_0.75 right-docs_1",
-            "hover:bg-medusa-bg-base-hover rounded-docs_sm",
+            "cursor-pointer",
             question.length === 0 && "hidden"
           )}
         >
-          <XMarkMini />
-        </Button>
+          Clear
+        </span>
       </div>
-      <div className="h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)] overflow-auto">
+      <div className="h-[calc(100%-95px)] lg:max-h-[calc(100%-140px)] lg:min-h-[calc(100%-140px)] overflow-auto">
         <div ref={contentRef}>
           {!thread.length && (
             <div className="mx-docs_0.5">
@@ -372,35 +410,12 @@ export const AiAssistant = () => {
       </div>
       <div
         className={clsx(
-          "py-docs_0.75 flex items-center justify-between px-docs_1",
-          "border-0 border-solid",
+          "py-docs_0.75 hidden md:flex items-center justify-end px-docs_1",
           "border-medusa-border-base border-t",
-          "bg-medusa-bg-base h-[57px]"
+          "bg-medusa-bg-field-component"
         )}
       >
-        <Tooltip
-          tooltipChildren={
-            <>
-              This site is protected by reCAPTCHA and the{" "}
-              <Link href="https://policies.google.com/privacy">
-                Google Privacy Policy
-              </Link>{" "}
-              and <Link href="https://policies.google.com/terms">ToS</Link>{" "}
-              apply
-            </>
-          }
-        >
-          <div
-            className={clsx(
-              "flex items-center gap-docs_0.75 text-compact-small-plus"
-            )}
-          >
-            <AiAssistantIcon />
-            <span className="text-medusa-fg-subtle">Medusa AI Assistant</span>
-            <Badge variant="purple">Beta</Badge>
-          </div>
-        </Tooltip>
-        <div className="hidden items-center gap-docs_1 md:flex">
+        <div className="flex items-center gap-docs_0.75">
           <div className="flex items-center gap-docs_0.5">
             {thread.length === 0 && (
               <>
@@ -412,9 +427,23 @@ export const AiAssistant = () => {
                 >
                   Navigate FAQ
                 </span>
-                <span className="gap-docs_0.25 flex">
-                  <Kbd>↑</Kbd>
-                  <Kbd>↓</Kbd>
+                <span className="gap-[5px] flex">
+                  <Kbd
+                    className={clsx(
+                      "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                      "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+                    )}
+                  >
+                    ↑
+                  </Kbd>
+                  <Kbd
+                    className={clsx(
+                      "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                      "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+                    )}
+                  >
+                    ↓
+                  </Kbd>
                 </span>
               </>
             )}
@@ -426,13 +455,23 @@ export const AiAssistant = () => {
               </span>
             )}
           </div>
+          <div
+            className={clsx("h-docs_0.75 w-px bg-medusa-border-strong")}
+          ></div>
           <div className="flex items-center gap-docs_0.5">
             <span
               className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
             >
               Ask Question
             </span>
-            <Kbd>↵</Kbd>
+            <Kbd
+              className={clsx(
+                "!bg-medusa-bg-field-component !border-medusa-border-strong",
+                "!text-medusa-fg-subtle h-[18px] w-[18px] p-0"
+              )}
+            >
+              ↵
+            </Kbd>
           </div>
         </div>
       </div>

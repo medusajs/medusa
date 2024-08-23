@@ -66,7 +66,7 @@ export const Sidebar = ({
         <div
           className={clsx(
             "lg:hidden bg-medusa-bg-overlay opacity-70",
-            "fixed top-0 left-0 w-full h-full z-10"
+            "fixed top-0 left-0 w-full h-full z-[45]"
           )}
         ></div>
       )}
@@ -76,6 +76,7 @@ export const Sidebar = ({
           "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:h-auto",
           "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
           "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
+          "w-sidebar-xs sm:w-auto",
           mobileSidebarOpen && [
             "!left-docs_0.5 !top-docs_0.5 z-50 shadow-elevation-modal dark:shadow-elevation-modal-dark",
             "rounded",

@@ -4,6 +4,7 @@ import React, { useCallback, useRef, useState } from "react"
 import { useSelect } from "@/hooks"
 import clsx from "clsx"
 import { SelectDropdown, SelectProps } from ".."
+import { TriangleDownMini } from "@medusajs/icons"
 
 export const SelectBadge = ({
   value,
@@ -20,16 +21,21 @@ export const SelectBadge = ({
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const { isValueSelected, isAllSelected, handleChange, handleSelectAll } =
-    useSelect({
-      value,
-      options,
-      multiple,
-      setSelected,
-      removeSelected,
-      addSelected,
-      handleAddAll,
-    })
+  const {
+    isValueSelected,
+    isAllSelected,
+    handleChange,
+    handleSelectAll,
+    setSelectedValues,
+  } = useSelect({
+    value,
+    options,
+    multiple,
+    setSelected,
+    removeSelected,
+    addSelected,
+    handleAddAll,
+  })
 
   const getSelectedText = useCallback(() => {
     let str = ""
@@ -38,7 +44,7 @@ export const SelectBadge = ({
     )
 
     if (isAllSelected) {
-      str = "All Areas"
+      str = "All areas"
     } else {
       if (
         (!Array.isArray(value) && !value) ||
@@ -54,37 +60,28 @@ export const SelectBadge = ({
       <>
         <span
           className={clsx(
-            "text-medusa-fg-base",
-            "text-compact-x-small-plus",
-            "inline-block max-w-[60px] overflow-hidden text-ellipsis"
+            "text-compact-x-small-plus text-medusa-tag-neutral-text"
           )}
         >
           {str}
+          {!isAllSelected && selectedOptions.length > 1 && (
+            <> + {selectedOptions.length - 1}</>
+          )}
         </span>
-        {!isAllSelected && selectedOptions.length > 1 && (
-          <span
-            className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
-          >
-            {" "}
-            + {selectedOptions.length}
-          </span>
-        )}
       </>
     )
   }, [isAllSelected, options, value])
 
   return (
-    <div className={clsx("relative", className)}>
+    <div className={clsx("relative w-fit", className)}>
       <div
         className={clsx(
-          "border-medusa-border-base rounded-docs_sm border border-solid",
-          "hover:bg-medusa-bg-subtle-hover",
-          "py-docs_0.25 h-fit cursor-pointer px-docs_0.5",
-          "flex items-center gap-[6px] whitespace-nowrap",
+          "border-medusa-tag-neutral-border rounded-docs_sm border border-solid",
+          "h-fit cursor-pointer pl-docs_0.25 pr-[3px] text-medusa-tag-neutral-text",
+          "bg-medusa-tag-neutral-bg",
+          "flex items-center gap-[3px] whitespace-nowrap",
           "text-medusa-fg-subtle",
-          !open && "bg-medusa-bg-subtle",
-          open && "bg-medusa-bg-subtle-hover",
-          className
+          open && "bg-medusa-tag-neutral-bg-hover"
         )}
         ref={ref}
         onClick={(e) => {
@@ -93,10 +90,8 @@ export const SelectBadge = ({
           }
         }}
       >
-        <span className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}>
-          Show results from:{" "}
-        </span>
         {getSelectedText()}
+        <TriangleDownMini className="text-medusa-tag-neutral-icon" />
       </div>
       <input
         type="hidden"
@@ -115,10 +110,7 @@ export const SelectBadge = ({
         handleChange={handleChange}
         parentRef={ref}
         passedRef={dropdownRef}
-        className={clsx(
-          "!top-[unset] !bottom-full",
-          open && "!-translate-y-docs_0.5"
-        )}
+        setSelectedValues={setSelectedValues}
       />
     </div>
   )
