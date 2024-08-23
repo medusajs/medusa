@@ -1,11 +1,6 @@
 import { CamelCase, Prettify } from "../common"
 
 /**
- * Symbol to identify a DML entity from an object
- */
-export const IsDmlEntity = Symbol.for("isDmlEntity")
-
-/**
  * Representation of DML schema. It must be a key-value pair
  * with string based keys and properties/relationships
  * as the value.
@@ -33,7 +28,6 @@ export interface IDmlEntity<
   Schema extends DMLSchema,
   Config extends IDmlEntityConfig
 > {
-  [IsDmlEntity]: true
   name: InferDmlEntityNameFromConfig<Config>
   schema: Schema
 }

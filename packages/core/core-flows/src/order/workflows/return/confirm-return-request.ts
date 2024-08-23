@@ -3,10 +3,12 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderPreviewDTO,
+  OrderReturnItemDTO,
   ReturnDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
+  MedusaError,
   Modules,
   OrderChangeStatus,
   ReturnStatus,
@@ -52,6 +54,23 @@ export const confirmReturnRequestValidationStep = createStep(
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
+  }
+)
+
+/**
+ * This step confirms that a requested return has atleast one item
+ */
+const confirmIfReturnItemsArePresent = createStep(
+  "confirm-if-return-items-are-present",
+  async function ({ returnItems }: { returnItems: OrderReturnItemDTO[] }) {
+    if (returnItems.length > 0) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order return request should have atleast 1 item`
+    )
   }
 )
 
@@ -203,6 +222,8 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       returnId: orderReturn.id,
       changes: returnItemActions,
     })
+
+    confirmIfReturnItemsArePresent({ returnItems: createdReturnItems })
 
     const returnShippingOptionId = transform(
       { orderPreview, orderReturn },

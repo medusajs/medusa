@@ -1,7 +1,7 @@
 import { DAL, FindConfig } from "@medusajs/types"
 import { deduplicate, isDefined, isObject } from "../common"
 
-import { SoftDeletableFilterKey } from "../dal"
+import { SoftDeletableFilterKey } from "../dal/mikro-orm/mikro-orm-soft-deletable-filter"
 
 // Following convention here is fine, we can make it configurable if needed.
 const DELETED_AT_FIELD_NAME = "deleted_at"

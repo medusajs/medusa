@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Redis Event Bus Module`,
@@ -16,11 +16,12 @@ In production, it's recommended to use this module.
 
 ## Install the Redis Events Bus Module
 
-<Note type="check">
-
-- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Redis installed and Redis server running",
+    link: "https://redis.io/docs/getting-started/installation/"
+  }
+]} />
 
 To install Redis Event Bus Module, run the following command in the directory of your Medusa application:
 

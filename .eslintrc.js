@@ -88,7 +88,6 @@ module.exports = {
 
           "./packages/cli/create-medusa-app/tsconfig.json",
           "./packages/cli/medusa-cli/tsconfig.spec.json",
-          "./packages/cli/medusa-dev-cli/tsconfig.spec.json",
           "./packages/cli/oas/medusa-oas-cli/tsconfig.spec.json",
 
           "./packages/core/orchestration/tsconfig.json",

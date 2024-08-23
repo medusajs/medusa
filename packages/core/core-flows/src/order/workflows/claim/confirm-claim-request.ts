@@ -3,11 +3,14 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderClaimDTO,
+  OrderClaimItemDTO,
   OrderDTO,
   OrderPreviewDTO,
+  OrderReturnItemDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
+  MedusaError,
   Modules,
   OrderChangeStatus,
   ReturnStatus,
@@ -56,6 +59,29 @@ export const confirmClaimRequestValidationStep = createStep(
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderClaim, "Claim")
     throwIfOrderChangeIsNotActive({ orderChange })
+  }
+)
+
+/**
+ * This step confirms that a requested claim has atleast one item to return or send
+ */
+const confirmIfClaimItemsArePresent = createStep(
+  "confirm-if-items-are-present",
+  async function ({
+    claimItems,
+    returnItems,
+  }: {
+    claimItems: OrderClaimItemDTO[]
+    returnItems?: OrderReturnItemDTO[]
+  }) {
+    if (claimItems.length > 0 || (returnItems && returnItems.length > 0)) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order claim request should have atleast 1 item`
+    )
   }
 )
 
@@ -189,7 +215,13 @@ export const confirmClaimRequestWorkflow = createWorkflow(
   ): WorkflowResponse<OrderPreviewDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
-      fields: ["id", "status", "order_id", "canceled_at"],
+      fields: [
+        "id",
+        "status",
+        "order_id",
+        "canceled_at",
+        "additional_items.id",
+      ],
       variables: { id: input.claim_id },
       list: false,
       throw_if_key_not_found: true,
@@ -242,15 +274,15 @@ export const confirmClaimRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    const [createClaimItems, createdReturnItems] = parallelize(
+    const [createdClaimItems, createdReturnItems] = parallelize(
       createOrderClaimItemsFromActionsStep(claimItems),
-      createReturnItemsFromActionsStep(returnItems),
-      confirmOrderChanges({
-        changes: [orderChange],
-        orderId: order.id,
-        confirmed_by: input.confirmed_by,
-      })
+      createReturnItemsFromActionsStep(returnItems)
     )
+
+    confirmIfClaimItemsArePresent({
+      claimItems: createdClaimItems,
+      returnItems: createdReturnItems,
+    })
 
     const returnId = transform(
       { createdReturnItems },
@@ -258,6 +290,8 @@ export const confirmClaimRequestWorkflow = createWorkflow(
         return createdReturnItems?.[0]?.return_id
       }
     )
+
+    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
 
     when({ returnId }, ({ returnId }) => {
       return !!returnId
@@ -271,9 +305,12 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       ])
     })
 
-    const claimId = transform({ createClaimItems }, ({ createClaimItems }) => {
-      return createClaimItems?.[0]?.claim_id
-    })
+    const claimId = transform(
+      { createdClaimItems },
+      ({ createdClaimItems }) => {
+        return createdClaimItems?.[0]?.claim_id
+      }
+    )
 
     const { returnShippingMethod, claimShippingMethod } = transform(
       { orderPreview, orderClaim, returnId },

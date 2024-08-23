@@ -1,16 +1,13 @@
 import {
-  MedusaError,
-  ModuleRegistrationName,
-  convertCsvToJson,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { normalizeForImport } from "../helpers/normalize-for-import"
-import {
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
+import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { normalizeForImport } from "../helpers/normalize-for-import"
 import { normalizeV1Products } from "../helpers/normalize-v1-import"
+import { convertCsvToJson } from "../utlils"
 
 export const parseProductCsvStepId = "parse-product-csv"
 /**

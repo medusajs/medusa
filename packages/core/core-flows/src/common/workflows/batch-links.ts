@@ -1,5 +1,4 @@
-import { LinkDefinition } from "@medusajs/modules-sdk"
-import { BatchWorkflowInput } from "@medusajs/types"
+import { BatchWorkflowInput, LinkDefinition } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,

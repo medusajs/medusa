@@ -1,4 +1,4 @@
-import { DetailsList } from "docs-ui"
+import { DetailsList, BetaBadge, Prerequisites } from "docs-ui"
 import CmaOptionTroubleshooting from "../troubleshooting/_sections/nextjs/cma-option.mdx"
 import CorsErrorTroubleshooting from "../troubleshooting/_sections/other/cors-errors.mdx"
 import ModuleXErrorTroubleshooting from "../troubleshooting/_sections/common-installation-errors/module-x-error.mdx"
@@ -7,22 +7,19 @@ export const metadata = {
   title: `Next.js Starter`,
 }
 
-# {metadata.title}
-
-<Note type="soon">
-
-Next.js starter is currently in development and doesn't fully support Medusa v2 yet.
-
-</Note>
+# {metadata.title} <BetaBadge text="Beta" tooltipText="Next.js starter is currently in development and doesn't fully support Medusa v2 yet." />
 
 The Next.js Starter storefront provides rich commerce features and a sleek design. Developers and businesses can use it as-is or as a starting point to build a storefront for their Medusa application.
 
-<Note type="check">
-
-- [Node.js v18+](https://nodejs.org/en/download)
-- At least one region in the Medusa application.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "At least one region in the Medusa application.",
+  },
+]} />
 
 ## Installation
 
@@ -95,11 +92,12 @@ The Next.js Starter storefront is compatible with Medusa's Stripe and PayPal plu
 
 ### Stripe Integration
 
-<Note type="check">
-
-- [Stripe module provider](../commerce-modules/payment/payment-provider/stripe/page.mdx) installed in the Medusa application.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Stripe module provider installed in the Medusa application.",
+    link: "../commerce-modules/payment/payment-provider/stripe/page.mdx"
+  },
+]} />
 
 In your Next.js Starter project, set the following environment variables for the Stripe integration:
 

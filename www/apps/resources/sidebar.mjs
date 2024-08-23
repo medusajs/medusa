@@ -281,7 +281,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "category",
-        title: "Currency",
+        title: "Currency Module",
         initialOpen: false,
         children: [
           {
@@ -348,7 +348,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "category",
-        title: "Customer",
+        title: "Customer Module",
         initialOpen: false,
         children: [
           {

@@ -1,13 +1,13 @@
-import { EventEmitter } from "events"
+import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
 import {
   MigrateOptions,
   MigrationResult,
   UmzugMigration,
 } from "@mikro-orm/migrations"
-import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import { dirname } from "path"
+import { EventEmitter } from "events"
 import { access, mkdir, writeFile } from "fs/promises"
+import { dirname } from "path"
 
 /**
  * Events emitted by the migrations class

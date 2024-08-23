@@ -9,6 +9,7 @@ import {
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
+  PencilSquare,
 } from "@medusajs/icons"
 import {
   AdminClaim,
@@ -255,11 +256,20 @@ const Header = ({
         groups={[
           {
             actions: [
-              // {
-              //   label: t("orders.summary.editItems"),
-              //   to: `/orders/${order.id}/edit`,
-              //   icon: <PencilSquare />,
-              // },
+              {
+                label: t("orders.summary.editOrder"),
+                to: `/orders/${order.id}/edits`,
+                icon: <PencilSquare />,
+                disabled:
+                  (orderPreview?.order_change &&
+                    orderPreview?.order_change?.change_type !== "edit") ||
+                  (orderPreview?.order_change?.change_type === "edit" &&
+                    orderPreview?.order_change?.status === "requested"),
+              },
+            ],
+          },
+          {
+            actions: [
               // {
               //   label: t("orders.summary.allocateItems"),
               //   to: "#", // TODO: Open modal to allocate items
