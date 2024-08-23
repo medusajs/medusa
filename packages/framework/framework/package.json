@@ -33,7 +33,7 @@
   "scripts": {
     "watch": "tsc --watch -p ./tsconfig.build.json",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "prepublishOnly": "tsc --build ./tsconfig.build.json",
     "build": "rimraf dist && tsc --build",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
