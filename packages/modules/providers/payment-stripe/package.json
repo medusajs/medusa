@@ -31,7 +31,6 @@
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0",
     "awilix": "*"
   },
   "dependencies": {
