@@ -3,9 +3,9 @@ import {
   ModulesSdkUtils,
   toMikroOrmEntities,
 } from "@medusajs/utils"
-import { MockEventBusService } from "."
-import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
-import { initModules, InitModulesOptions } from "./init-modules"
+import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
+import { InitModulesOptions, initModules } from "./init-modules"
+import { default as MockEventBusService } from "./mock-event-bus-service"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase

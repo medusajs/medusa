@@ -165,6 +165,20 @@ export type LinkModulesExtraFields = Record<
   }
 >
 
+/**
+ * A link for two records of linked data models.
+ *
+ * The keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.
+ */
+export type LinkDefinition = {
+  [moduleName: string]: {
+    // TODO: changing this to any temporarily as the "data" attribute is not being picked up correctly
+    [fieldName: string]: any
+  }
+} & {
+  data?: Record<string, unknown>
+}
+
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"

@@ -2,12 +2,13 @@ import { isDefined } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { IDistributedTransactionStorage } from "./datastore/abstract-storage"
 import { BaseInMemoryDistributedTransactionStorage } from "./datastore/base-in-memory-storage"
+import { TransactionOrchestrator } from "./transaction-orchestrator"
+import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   TransactionFlow,
-  TransactionOrchestrator,
-} from "./transaction-orchestrator"
-import { TransactionStep, TransactionStepHandler } from "./transaction-step"
-import { TransactionHandlerType, TransactionState } from "./types"
+  TransactionHandlerType,
+  TransactionState,
+} from "./types"
 
 /**
  * @typedef TransactionMetadata

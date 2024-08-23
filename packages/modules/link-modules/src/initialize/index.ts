@@ -1,5 +1,4 @@
 import {
-  InternalModuleDeclaration,
   MedusaModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
@@ -7,6 +6,7 @@ import {
 import {
   ExternalModuleDeclaration,
   ILinkModule,
+  InternalModuleDeclaration,
   LinkModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,

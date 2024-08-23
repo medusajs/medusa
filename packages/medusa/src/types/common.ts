@@ -1,5 +1,3 @@
-import "reflect-metadata"
-
 export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
   skip?: number

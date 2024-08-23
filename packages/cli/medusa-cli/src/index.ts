@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import "core-js/stable"
-import "regenerator-runtime/runtime"
 import os from "os"
 import util from "util"
 import createCli from "./create-cli"

@@ -32,10 +32,11 @@
     "@graphql-tools/schema": "^10.0.0",
     "@medusajs/orchestration": "^0.5.7",
     "@medusajs/utils": "^1.11.9",
-    "awilix": "^8.0.0",
     "graphql": "^16.6.0",
-    "knex": "2.4.2",
     "resolve-cwd": "^3.0.0"
+  },
+  "peerDependencies": {
+    "awilix": "*"
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",

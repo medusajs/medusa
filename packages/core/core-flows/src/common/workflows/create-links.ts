@@ -1,4 +1,4 @@
-import { LinkDefinition } from "@medusajs/modules-sdk"
+import { LinkDefinition } from "@medusajs/types"
 import {
   WorkflowData,
   WorkflowResponse,

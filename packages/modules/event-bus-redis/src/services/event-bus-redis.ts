@@ -1,5 +1,9 @@
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { Event, Logger, Message } from "@medusajs/types"
+import {
+  Event,
+  InternalModuleDeclaration,
+  Logger,
+  Message,
+} from "@medusajs/types"
 import {
   AbstractEventBusModuleService,
   isPresent,

@@ -36,7 +36,7 @@ import { AddClaimItemsTable } from "../add-claim-items-table"
 import { ClaimInboundItem } from "./claim-inbound-item.tsx"
 import { ClaimCreateSchema, CreateClaimSchemaType } from "./schema"
 
-import { AdminReturn } from "@medusajs/types"
+import { AdminReturn, HttpTypes } from "@medusajs/types"
 import {
   useAddClaimInboundItems,
   useAddClaimInboundShipping,
@@ -275,7 +275,10 @@ export const ClaimCreateForm = ({
           })
         }
       } else {
-        append({ item_id: i.id, quantity: i.detail.return_requested_quantity })
+        append(
+          { item_id: i.id, quantity: i.detail.return_requested_quantity },
+          { shouldFocus: false }
+        )
       }
     })
 
@@ -555,16 +558,26 @@ export const ClaimCreateForm = ({
                         })
                       }
                     }}
-                    onUpdate={(payload) => {
-                      const actionId = previewItems
+                    onUpdate={(payload: HttpTypes.AdminUpdateReturnItems) => {
+                      const action = previewItems
                         .find((i) => i.id === item.item_id)
-                        ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+                        ?.actions?.find((a) => a.action === "RETURN_ITEM")
 
-                      if (actionId) {
+                      if (action) {
                         updateInboundItem(
-                          { ...payload, actionId },
+                          { ...payload, actionId: action.id },
                           {
                             onError: (error) => {
+                              if (
+                                action.details?.quantity &&
+                                payload.quantity
+                              ) {
+                                form.setValue(
+                                  `inbound_items.${index}.quantity`,
+                                  action.details?.quantity as number
+                                )
+                              }
+
                               toast.error(error.message)
                             },
                           }
