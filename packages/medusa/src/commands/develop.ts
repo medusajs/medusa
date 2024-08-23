@@ -15,22 +15,22 @@ const defaultConfig = {
 
 export default async function ({ port, directory }) {
   const args = process.argv
+
   const argv =
     process.argv.indexOf("--") !== -1
       ? process.argv.slice(process.argv.indexOf("--") + 1)
       : []
-  args.shift()
-  args.shift()
-  args.shift()
+
+  args.shift() // node JS
+  const MEDUSA_CLI_PATH = args.shift() // path of file being executed
+  args.shift() // command
 
   /**
    * Re-constructing the path to Medusa CLI to execute the
    * start command.
    */
-  // Meudsa CLI is a peer dependency of this package
-  const MEDUSA_CLI_PATH = require.resolve("@medusajs/medusa-cli")
 
-  const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
+  const cliPath = MEDUSA_CLI_PATH!
 
   const devServer = {
     childProcess: null as ChildProcess | null,

@@ -224,6 +224,7 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
+
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
