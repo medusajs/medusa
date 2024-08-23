@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelBeginOrderEditWorkflow
+
+This workflow cancels a requested order edit.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelBeginOrderEditWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Steps_Common/functions/core_flows.Steps_Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Steps_Common/functions/core_flows.Steps_Common.useRemoteQueryStep/page.mdx","depth":2},{"type":"step","name":"cancelBeginOrderEditValidationStep","description":"This step validates that a requested order edit can be canceled.","link":"../core_flows.Workflows_Order.cancelBeginOrderEditValidationStep/page.mdx","depth":3},{"type":"step","name":"deleteOrderChangesStep","description":"This step deletes order changes.","link":"../../../Steps_Order/functions/core_flows.Steps_Order.deleteOrderChangesStep/page.mdx","depth":4},{"type":"step","name":"deleteOrderShippingMethods","description":"This step deletes order shipping methods.","link":"../../../Steps_Order/functions/core_flows.Steps_Order.deleteOrderShippingMethods/page.mdx","depth":4}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelBeginOrderEditWorkflowInput","type":"[CancelBeginOrderEditWorkflowInput](../../../types/core_flows.CancelBeginOrderEditWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelBeginOrderEditWorkflow"/>
