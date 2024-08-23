@@ -1,5 +1,4 @@
 import S3BucketAcl from "../../../troubleshooting/_sections/s3/aws-bucket-acl.mdx"
-import S3AddReq from "../../../troubleshooting/_sections/s3/minio-supabase-req.mdx"
 
 import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger, DetailsList } from "docs-ui"
 
@@ -110,12 +109,6 @@ To install the S3 File Module Provider, run the following command in the directo
 ```bash npm2yarn
 npm install @medusajs/file-s3@preview
 ```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
 
 Next, add the module into the `providers` array of the File Module:
 
@@ -356,6 +349,37 @@ module.exports = {
   </Table.Body>
 </Table>
 
+## Additional Configuration for MinIO and Supabase
+
+If you're using MinIO or Supabase, set `forcePathStyle` to `true` in the `additional_client_config` object.
+
+For example:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-s3",
+            id: "s3",
+            options: {
+              // ...
+              additional_client_config: {
+                forcePathStyle: true,
+              },
+            },
+          },
+        ],
+      },
+    },
+  }
+})
+```
+
 ## Troubleshooting
 
 <DetailsList
@@ -363,11 +387,6 @@ module.exports = {
     {
       title: "AWS: The bucket does not allow ACLs (Enabling public access to bucket)",
       content: <S3BucketAcl />
-    },
-    {
-      title: "Additional REQUIRED Configuration for MinIO and Supabase",
-      content: <S3AddReq />
     }
-  
   ]}
 />
