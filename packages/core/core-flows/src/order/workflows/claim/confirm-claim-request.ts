@@ -55,7 +55,6 @@ export const confirmClaimRequestValidationStep = createStep(
     orderClaim: OrderClaimDTO
     orderChange: OrderChangeDTO
   }) {
-    console.log("orderChange -- ", orderChange)
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderClaim, "Claim")
     throwIfOrderChangeIsNotActive({ orderChange })
