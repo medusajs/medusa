@@ -1,4 +1,5 @@
 import { Github, PlaySolid } from "@medusajs/icons"
+import { Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Marketplace Recipe: Vendors Example`,
@@ -40,11 +41,12 @@ By following this example, you’ll have a marketplace with the following featur
 
 ---
 
-<Note type="check">
-
-- [A new Medusa application installed.](!docs!#get-started)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "A new Medusa application installed.",
+    link: "!docs!#get-started"
+  },
+]} />
 
 ## Step 1: Create Marketplace Module
 

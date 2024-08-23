@@ -2,10 +2,10 @@ import mdx from "@next/mdx"
 import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
+  prerequisitesLinkFixerPlugin,
   typeListLinkFixerPlugin,
   workflowDiagramLinkFixerPlugin,
 } from "remark-rehype-plugins"
-import { slugChanges } from "./generated/slug-changes.mjs"
 import mdxPluginOptions from "./mdx-options.mjs"
 
 const withMDX = mdx({
@@ -16,7 +16,18 @@ const withMDX = mdx({
       [brokenLinkCheckerPlugin],
       [localLinksRehypePlugin],
       [typeListLinkFixerPlugin],
-      [workflowDiagramLinkFixerPlugin],
+      [
+        workflowDiagramLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
+      [
+        prerequisitesLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
     ],
     remarkPlugins: mdxPluginOptions.options.remarkPlugins,
     jsx: true,
