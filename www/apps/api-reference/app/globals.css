@@ -43,10 +43,6 @@
     @apply bg-medusa-bg-highlight;
   }
 
-  pre *::selection {
-    @apply !bg-medusa-contrast-bg-highlight;
-  }
-
   body[data-modal="opened"] {
     @apply !overflow-hidden;
   }

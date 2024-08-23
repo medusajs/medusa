@@ -162,7 +162,7 @@ export const Feedback = ({
                     onClick={handleFeedback}
                     className={clsx(
                       "positive gap-[6px] !justify-start md:!justify-center",
-                      "!px-docs_0.5 !py-docs_0.25"
+                      "!px-docs_0.5 !py-docs_0.25 text-left md:text-center"
                     )}
                     variant="transparent-clear"
                   >
@@ -175,7 +175,7 @@ export const Feedback = ({
                     onClick={handleFeedback}
                     className={clsx(
                       "gap-[6px] !justify-start md:!justify-center",
-                      "!px-docs_0.5 !py-docs_0.25"
+                      "!px-docs_0.5 !py-docs_0.25 text-left md:text-center"
                     )}
                     variant="transparent-clear"
                   >
@@ -190,7 +190,8 @@ export const Feedback = ({
                       className={clsx(
                         "gap-[6px] relative",
                         "!px-docs_0.5 !py-docs_0.25",
-                        "!justify-start md:!justify-center"
+                        "!justify-start md:!justify-center",
+                        "text-left md:text-center"
                       )}
                     >
                       <ChatBubbleLeftRight className="text-medusa-fg-subtle" />

@@ -33,6 +33,7 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
+import { OrderEdit } from "./order-edit"
 
 export class Admin {
   public invite: Invite
@@ -56,6 +57,7 @@ export class Admin {
   public inventoryItem: InventoryItem
   public notification: Notification
   public order: Order
+  public orderEdit: OrderEdit
   public return: Return
   public claim: Claim
   public exchange: Exchange
@@ -92,6 +94,7 @@ export class Admin {
     this.inventoryItem = new InventoryItem(client)
     this.notification = new Notification(client)
     this.order = new Order(client)
+    this.orderEdit = new OrderEdit(client)
     this.return = new Return(client)
     this.claim = new Claim(client)
     this.taxRate = new TaxRate(client)

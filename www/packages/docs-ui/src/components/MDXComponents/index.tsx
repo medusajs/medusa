@@ -150,7 +150,13 @@ export const MDXComponents: MDXComponentsType = {
     ...props
   }: React.HTMLAttributes<HTMLElement>) => {
     return (
-      <li className={clsx("text-medusa-fg-subtle", className)} {...props}>
+      <li
+        className={clsx(
+          "text-medusa-fg-subtle [&:not(:last-child)]:mb-docs_0.5",
+          className
+        )}
+        {...props}
+      >
         <Text as="span">{children}</Text>
       </li>
     )

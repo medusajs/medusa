@@ -11,27 +11,38 @@ export const AiAssistantIcon = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g filter="url(#filter0_diii_7480_20594)">
+      <g filter="url(#filter0_diii_10448_46450)">
         <circle
-          cx="9.5"
-          cy="9.00002"
+          cx="9.50002"
+          cy="8.99989"
           r="7.11"
-          fill="url(#paint0_linear_7480_20594)"
+          fill="url(#paint0_linear_10448_46450)"
         />
         <circle
-          cx="9.5"
-          cy="9.00002"
+          cx="9.50002"
+          cy="8.99989"
           r="7.11"
-          fill="url(#paint1_linear_7480_20594)"
+          fill="url(#paint1_linear_10448_46450)"
         />
       </g>
-      <g filter="url(#filter1_f_7480_20594)">
-        <circle cx="9.5" cy="6.5" r="4" fill="url(#paint2_linear_7480_20594)" />
+      <g
+        style={{
+          mixBlendMode: "plus-lighter",
+        }}
+        opacity="0.8"
+        filter="url(#filter1_f_10448_46450)"
+      >
+        <circle
+          cx="9.5"
+          cy="6.5"
+          r="4"
+          fill="url(#paint2_linear_10448_46450)"
+        />
         <circle
           cx="9.5"
           cy="6.5"
           r="3.9"
-          stroke="url(#paint3_linear_7480_20594)"
+          stroke="url(#paint3_linear_10448_46450)"
           strokeWidth="0.2"
         />
       </g>
@@ -39,14 +50,15 @@ export const AiAssistantIcon = (props: IconProps) => {
         style={{
           mixBlendMode: "plus-lighter",
         }}
-        filter="url(#filter2_f_7480_20594)"
+        opacity="0.8"
+        filter="url(#filter2_f_10448_46450)"
       >
-        <circle cx="12" cy="10" r="4" fill="url(#paint4_linear_7480_20594)" />
+        <circle cx="12" cy="10" r="4" fill="url(#paint4_linear_10448_46450)" />
         <circle
           cx="12"
           cy="10"
           r="3.9"
-          stroke="url(#paint5_linear_7480_20594)"
+          stroke="url(#paint5_linear_10448_46450)"
           strokeWidth="0.2"
         />
       </g>
@@ -54,21 +66,22 @@ export const AiAssistantIcon = (props: IconProps) => {
         style={{
           mixBlendMode: "plus-lighter",
         }}
-        filter="url(#filter3_f_7480_20594)"
+        opacity="0.8"
+        filter="url(#filter3_f_10448_46450)"
       >
         <circle
           cx="4"
           cy="4"
           r="4"
           transform="matrix(-1 0 0 1 11 4)"
-          fill="url(#paint6_linear_7480_20594)"
+          fill="url(#paint6_linear_10448_46450)"
         />
         <circle
           cx="4"
           cy="4"
           r="3.9"
           transform="matrix(-1 0 0 1 11 4)"
-          stroke="url(#paint7_linear_7480_20594)"
+          stroke="url(#paint7_linear_10448_46450)"
           strokeWidth="0.2"
         />
       </g>
@@ -76,46 +89,53 @@ export const AiAssistantIcon = (props: IconProps) => {
         style={{
           mixBlendMode: "plus-lighter",
         }}
-        filter="url(#filter4_f_7480_20594)"
+        opacity="0.8"
+        filter="url(#filter4_f_10448_46450)"
       >
         <circle
           cx="4"
           cy="4"
           r="4"
           transform="matrix(0 -1 -1 0 13.5 13)"
-          fill="url(#paint8_linear_7480_20594)"
+          fill="url(#paint8_linear_10448_46450)"
         />
         <circle
           cx="4"
           cy="4"
           r="3.9"
           transform="matrix(0 -1 -1 0 13.5 13)"
-          stroke="url(#paint9_linear_7480_20594)"
+          stroke="url(#paint9_linear_10448_46450)"
           strokeWidth="0.2"
         />
       </g>
-      <g filter="url(#filter5_f_7480_20594)">
+      <g
+        style={{
+          mixBlendMode: "plus-lighter",
+        }}
+        opacity="0.8"
+        filter="url(#filter5_f_10448_46450)"
+      >
         <circle
           cx="4"
           cy="4"
           r="4"
           transform="matrix(-1 0 0 1 13.5 7.5)"
-          fill="url(#paint10_linear_7480_20594)"
+          fill="url(#paint10_linear_10448_46450)"
         />
         <circle
           cx="4"
           cy="4"
           r="3.9"
           transform="matrix(-1 0 0 1 13.5 7.5)"
-          stroke="url(#paint11_linear_7480_20594)"
+          stroke="url(#paint11_linear_10448_46450)"
           strokeWidth="0.2"
         />
       </g>
       <defs>
         <filter
-          id="filter0_diii_7480_20594"
-          x="0.389999"
-          y="0.890015"
+          id="filter0_diii_10448_46450"
+          x="0.390015"
+          y="0.889893"
           width="18.22"
           height="18.22"
           filterUnits="userSpaceOnUse"
@@ -138,12 +158,12 @@ export const AiAssistantIcon = (props: IconProps) => {
           <feBlend
             mode="normal"
             in2="BackgroundImageFix"
-            result="effect1_dropShadow_7480_20594"
+            result="effect1_dropShadow_10448_46450"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect1_dropShadow_7480_20594"
+            in2="effect1_dropShadow_10448_46450"
             result="shape"
           />
           <feColorMatrix
@@ -161,7 +181,7 @@ export const AiAssistantIcon = (props: IconProps) => {
           <feBlend
             mode="normal"
             in2="shape"
-            result="effect2_innerShadow_7480_20594"
+            result="effect2_innerShadow_10448_46450"
           />
           <feColorMatrix
             in="SourceAlpha"
@@ -173,12 +193,12 @@ export const AiAssistantIcon = (props: IconProps) => {
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0"
           />
           <feBlend
             mode="normal"
-            in2="effect2_innerShadow_7480_20594"
-            result="effect3_innerShadow_7480_20594"
+            in2="effect2_innerShadow_10448_46450"
+            result="effect3_innerShadow_10448_46450"
           />
           <feColorMatrix
             in="SourceAlpha"
@@ -195,12 +215,12 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feBlend
             mode="normal"
-            in2="effect3_innerShadow_7480_20594"
-            result="effect4_innerShadow_7480_20594"
+            in2="effect3_innerShadow_10448_46450"
+            result="effect4_innerShadow_10448_46450"
           />
         </filter>
         <filter
-          id="filter1_f_7480_20594"
+          id="filter1_f_10448_46450"
           x="5"
           y="2"
           width="9"
@@ -217,11 +237,11 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feGaussianBlur
             stdDeviation="0.25"
-            result="effect1_foregroundBlur_7480_20594"
+            result="effect1_foregroundBlur_10448_46450"
           />
         </filter>
         <filter
-          id="filter2_f_7480_20594"
+          id="filter2_f_10448_46450"
           x="7.5"
           y="5.5"
           width="9"
@@ -238,11 +258,11 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feGaussianBlur
             stdDeviation="0.25"
-            result="effect1_foregroundBlur_7480_20594"
+            result="effect1_foregroundBlur_10448_46450"
           />
         </filter>
         <filter
-          id="filter3_f_7480_20594"
+          id="filter3_f_10448_46450"
           x="2.5"
           y="3.5"
           width="9"
@@ -259,11 +279,11 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feGaussianBlur
             stdDeviation="0.25"
-            result="effect1_foregroundBlur_7480_20594"
+            result="effect1_foregroundBlur_10448_46450"
           />
         </filter>
         <filter
-          id="filter4_f_7480_20594"
+          id="filter4_f_10448_46450"
           x="5"
           y="4.5"
           width="9"
@@ -280,11 +300,11 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feGaussianBlur
             stdDeviation="0.25"
-            result="effect1_foregroundBlur_7480_20594"
+            result="effect1_foregroundBlur_10448_46450"
           />
         </filter>
         <filter
-          id="filter5_f_7480_20594"
+          id="filter5_f_10448_46450"
           x="5"
           y="7"
           width="9"
@@ -301,44 +321,44 @@ export const AiAssistantIcon = (props: IconProps) => {
           />
           <feGaussianBlur
             stdDeviation="0.25"
-            result="effect1_foregroundBlur_7480_20594"
+            result="effect1_foregroundBlur_10448_46450"
           />
         </filter>
         <linearGradient
-          id="paint0_linear_7480_20594"
-          x1="9.5"
-          y1="1.89002"
-          x2="9.5"
-          y2="16.11"
+          id="paint0_linear_10448_46450"
+          x1="9.50001"
+          y1="1.88989"
+          x2="9.50001"
+          y2="16.1099"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.2" stopColor="#8952FD" />
-          <stop offset="0.8" stopColor="#48EAEB" />
+          <stop offset="0.2" stopColor="#C686FF" />
+          <stop offset="0.8" stopColor="#8D99FF" />
         </linearGradient>
         <linearGradient
-          id="paint1_linear_7480_20594"
-          x1="5.11519"
-          y1="8.96784"
+          id="paint1_linear_10448_46450"
+          x1="5.1152"
+          y1="8.96772"
           x2="13.4627"
-          y2="12.0584"
+          y2="12.0583"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.8" />
+          <stop stopColor="#FF6778" stopOpacity="0.8" />
           <stop offset="1" stopColor="white" stopOpacity="0.1" />
         </linearGradient>
         <linearGradient
-          id="paint2_linear_7480_20594"
+          id="paint2_linear_10448_46450"
           x1="9.5"
           y1="6.5"
           x2="13.5"
           y2="6.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.1" />
+          <stop stopColor="#8D99FF" stopOpacity="0.1" />
           <stop offset="1" stopColor="white" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
-          id="paint3_linear_7480_20594"
+          id="paint3_linear_10448_46450"
           x1="13.5"
           y1="6.5"
           x2="9.5"
@@ -349,84 +369,84 @@ export const AiAssistantIcon = (props: IconProps) => {
           <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
-          id="paint4_linear_7480_20594"
+          id="paint4_linear_10448_46450"
           x1="12"
           y1="10"
           x2="16"
           y2="10"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.1" />
+          <stop stopColor="#8D99FF" stopOpacity="0.1" />
           <stop offset="1" stopColor="white" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
-          id="paint5_linear_7480_20594"
+          id="paint5_linear_10448_46450"
           x1="16"
           y1="10"
           x2="12"
           y2="10"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#3B82F6" />
-          <stop offset="1" stopColor="#3B82F6" stopOpacity="0" />
+          <stop stopColor="#8D99FF" />
+          <stop offset="1" stopColor="#8D99FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
-          id="paint6_linear_7480_20594"
+          id="paint6_linear_10448_46450"
           x1="4"
           y1="4"
           x2="8"
           y2="4"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.1" />
+          <stop stopColor="#8D99FF" stopOpacity="0.1" />
           <stop offset="1" stopColor="white" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
-          id="paint7_linear_7480_20594"
+          id="paint7_linear_10448_46450"
           x1="8"
           y1="4"
           x2="4"
           y2="4"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#48EAEB" />
-          <stop offset="1" stopColor="#48EAEB" stopOpacity="0" />
+          <stop stopColor="#8D99FF" />
+          <stop offset="1" stopColor="#8D99FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
-          id="paint8_linear_7480_20594"
+          id="paint8_linear_10448_46450"
           x1="4"
           y1="4"
           x2="8"
           y2="4"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.1" />
+          <stop stopColor="#8D99FF" stopOpacity="0.1" />
           <stop offset="1" stopColor="white" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
-          id="paint9_linear_7480_20594"
+          id="paint9_linear_10448_46450"
           x1="8"
           y1="4"
           x2="4"
           y2="4"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#3B82F6" />
-          <stop offset="1" stopColor="#3B82F6" stopOpacity="0" />
+          <stop stopColor="#8D99FF" />
+          <stop offset="1" stopColor="#8D99FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
-          id="paint10_linear_7480_20594"
+          id="paint10_linear_10448_46450"
           x1="4"
           y1="4"
           x2="8"
           y2="4"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#5B53FF" stopOpacity="0.1" />
+          <stop stopColor="#8D99FF" stopOpacity="0.1" />
           <stop offset="1" stopColor="white" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
-          id="paint11_linear_7480_20594"
+          id="paint11_linear_10448_46450"
           x1="8"
           y1="4"
           x2="4"

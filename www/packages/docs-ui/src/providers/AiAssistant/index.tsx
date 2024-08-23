@@ -13,6 +13,7 @@ export type AiAssistantContextType = {
     questionId: string,
     reaction: AiAssistantFeedbackType
   ) => Promise<Response>
+  version: "v1" | "v2"
 }
 
 const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
@@ -22,12 +23,14 @@ export type AiAssistantProviderProps = {
   apiUrl: string
   recaptchaSiteKey: string
   websiteId: string
+  version?: "v1" | "v2"
 }
 
 export const AiAssistantProvider = ({
   apiUrl,
   recaptchaSiteKey,
   websiteId,
+  version = "v2",
   children,
 }: AiAssistantProviderProps) => {
   const { analytics } = useAnalytics()
@@ -90,6 +93,7 @@ export const AiAssistantProvider = ({
       value={{
         getAnswer,
         sendFeedback,
+        version,
       }}
     >
       {children}

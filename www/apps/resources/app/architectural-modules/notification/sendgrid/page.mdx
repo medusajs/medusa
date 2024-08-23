@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `SendGrid Notification Module Provider`,
@@ -12,13 +12,20 @@ The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid
 
 ## Install the SendGrid Notification Module
 
-<Note type="check">
-
-- [SendGrid account](https://signup.sendgrid.com)
-- [Setup SendGrid single sender](https://docs.sendgrid.com/ui/sending-email/sender-verification)
-- [SendGrid API Key](https://docs.sendgrid.com/ui/account-and-settings/api-keys)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "SendGrid account",
+    link: "https://signup.sendgrid.com"
+  },
+  {
+    text: "Setup SendGrid single sender",
+    link: "https://docs.sendgrid.com/ui/sending-email/sender-verification"
+  },
+  {
+    text: "SendGrid API Key",
+    link: "https://docs.sendgrid.com/ui/account-and-settings/api-keys"
+  }
+]} />
 
 To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
 

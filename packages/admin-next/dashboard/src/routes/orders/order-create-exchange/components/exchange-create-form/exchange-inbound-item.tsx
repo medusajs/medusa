@@ -41,7 +41,7 @@ function ExchangeInboundItem({
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
-      <div className="flex flex-col items-center gap-x-2 gap-y-2 border-b p-3 text-sm md:flex-row">
+      <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
 

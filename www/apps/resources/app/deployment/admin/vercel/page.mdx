@@ -2,6 +2,8 @@
 sidebar_label: "Vercel"
 ---
 
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `Deploy Medusa Admin to Vercel`,
 }
@@ -18,12 +20,16 @@ As Medusa v2 is still in active development, it's highly recommended not to depl
 
 ---
 
-<Note type="check">
-
-- [Medusa application](!docs!)’s codebase hosted on GitHub repository.
-- [Deployed Medusa application](../../page.mdx#medusa-application).
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Medusa application’s codebase hosted on GitHub repository.",
+    link: "!docs!"
+  },
+  {
+    text: "Deployed Medusa application.",
+    link: "../../page.mdx#medusa-application"
+  },
+]} />
 
 ## 1. Configure Admin in Medusa
 

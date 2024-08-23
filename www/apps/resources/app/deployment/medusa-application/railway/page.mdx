@@ -2,7 +2,7 @@
 sidebar_label: "Railway"
 ---
 
-import { DetailsList } from "docs-ui"
+import { Prerequisites, DetailsList } from "docs-ui"
 import OutdatedPreviewContent from "../../../troubleshooting/_sections/common-installation-errors/outdated-preview.mdx"
 
 export const metadata = {
@@ -35,11 +35,12 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 ---
 
-<Note type="check">
-
-- [Medusa application](!docs!) hosted in a GitHub repository.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Medusa application’s codebase hosted on GitHub repository.",
+    link: "!docs!"
+  },
+]} />
 
 ## 1. Configure Medusa Application
 
