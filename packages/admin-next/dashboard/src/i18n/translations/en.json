@@ -914,7 +914,7 @@
         }
       },
       "toast": {
-        "canceledSuccessfully": "Return cancelled successfully",
+        "canceledSuccessfully": "Return canceled successfully",
         "confirmedSuccessfully": "Return confirmed successfully"
       },
       "panel": {
@@ -941,7 +941,7 @@
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       },
       "toast": {
-        "canceledSuccessfully": "Claim cancelled successfully",
+        "canceledSuccessfully": "Claim canceled successfully",
         "confirmedSuccessfully": "Claim confirmed successfully"
       },
       "panel": {
@@ -968,7 +968,7 @@
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
       },
       "toast": {
-        "canceledSuccessfully": "Exchange cancelled successfully",
+        "canceledSuccessfully": "Exchange canceled successfully",
         "confirmedSuccessfully": "Exchange confirmed successfully"
       },
       "panel": {
