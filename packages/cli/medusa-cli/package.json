@@ -64,6 +64,7 @@
     "yargs": "^15.3.1"
   },
   "peerDependencies": {
+    "@medusajs/medusa": "*",
     "dotenv": "*",
     "ulid": "*"
   },

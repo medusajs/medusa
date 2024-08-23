@@ -1,11 +1,11 @@
 import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"
-import Store from "medusa-telemetry/dist/store"
+import { Store } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 
-import { logger, MEDUSA_CLI_PATH } from "@medusajs/framework"
+import { logger } from "@medusajs/framework"
 
 const defaultConfig = {
   padding: 5,
@@ -27,6 +27,9 @@ export default async function ({ port, directory }) {
    * Re-constructing the path to Medusa CLI to execute the
    * start command.
    */
+  // Meudsa CLI is a peer dependency of this package
+  const MEDUSA_CLI_PATH = require.resolve("@medusajs/medusa-cli")
+
   const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
 
   const devServer = {

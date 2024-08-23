@@ -1,7 +1,6 @@
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
-import resolveCwd from "resolve-cwd"
 
 import { didYouMean } from "./did-you-mean"
 
@@ -40,10 +39,8 @@ function buildLocalCommands(cli, isLocalProject) {
     }
 
     try {
-      const cmdPath = resolveCwd.silent(
-        `@medusajs/medusa/dist/commands/${command}`
-      )!
-      return require(cmdPath).default
+      const { Commands } = require("@medusajs/medusa")
+      return Commands[command]
     } catch (err) {
       if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
