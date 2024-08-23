@@ -131,14 +131,9 @@ export const SearchProvider = ({
       <Modal
         contentClassName={clsx(
           "!p-0 overflow-hidden relative h-full",
-          "rounded-none md:rounded-docs_lg flex flex-col justify-between"
+          "flex flex-col justify-between"
         )}
-        modalContainerClassName={clsx(
-          "!rounded-none md:!rounded-docs_lg",
-          "md:!h-[480px] h-screen",
-          "md:!w-[640px] w-screen",
-          "bg-medusa-bg-base"
-        )}
+        modalContainerClassName="sm:h-[480px] sm:max-h-[480px]"
         open={isOpen}
         onClose={() => setIsOpen(false)}
         passedRef={modalRef}
@@ -156,7 +151,7 @@ export const SearchProvider = ({
                   ? "animate-fadeOutLeft animate-fast"
                   : "animate-fadeOutRight animate-fast",
             }}
-            timeout={300}
+            timeout={250}
             key={command?.name || "search"}
           >
             <>
