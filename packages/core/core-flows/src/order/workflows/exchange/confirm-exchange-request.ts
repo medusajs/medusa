@@ -73,7 +73,7 @@ const confirmIfExchangeItemsArePresent = createStep(
     exchangeItems: OrderExchangeItemDTO[]
     returnItems?: OrderReturnItemDTO[]
   }) {
-    if (exchangeItems.length > 0 || (returnItems || []).length > 0) {
+    if (exchangeItems.length > 0 && (returnItems || []).length > 0) {
       return
     }
 
