@@ -46,6 +46,18 @@
     "@medusajs/medusa": {
       "optional": true
     },
+    "@medusajs/modules-sdk": {
+      "optional": true
+    },
+    "@medusajs/core": {
+      "optional": true
+    },
+    "@medusajs/migrations": {
+      "optional": true
+    },
+    "@medusajs/postgresql": {
+      "optional": true
+    },
     "axios": {
       "optional": true
     },
