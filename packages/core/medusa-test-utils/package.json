@@ -43,16 +43,16 @@
     "pg-god": "^1.0.12"
   },
   "peerDependenciesMeta": {
-    "@medusajs/medusa": {
-      "optional": true
-    },
-    "@medusajs/modules-sdk": {
-      "optional": true
-    },
     "@medusajs/core": {
       "optional": true
     },
+    "@medusajs/medusa": {
+      "optional": true
+    },
     "@medusajs/migrations": {
+      "optional": true
+    },
+    "@medusajs/modules-sdk": {
       "optional": true
     },
     "@medusajs/postgresql": {

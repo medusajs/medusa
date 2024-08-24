@@ -22712,7 +22712,15 @@ __metadata:
     get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
+    "@medusajs/core":
+      optional: true
     "@medusajs/medusa":
+      optional: true
+    "@medusajs/migrations":
+      optional: true
+    "@medusajs/modules-sdk":
+      optional: true
+    "@medusajs/postgresql":
       optional: true
     axios:
       optional: true
