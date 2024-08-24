@@ -5413,7 +5413,7 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     "@types/express": ^4.17.17
-    awilix: ^10.0.2
+    awilix: ^8.0.1
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
     dotenv: ^16.4.5
@@ -13621,16 +13621,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"awilix@npm:^10.0.2":
-  version: 10.0.2
-  resolution: "awilix@npm:10.0.2"
-  dependencies:
-    camel-case: ^4.1.2
-    fast-glob: ^3.3.2
-  checksum: e9da1951ea0fe8e0c938ca0c6424dff4a13eed347138156a121bc363ffb7eb6f8e294aa2b73657796be17655dedf79745bbf284dfb5c3ada58a36ffdcd8c0044
-  languageName: node
-  linkType: hard
-
 "awilix@npm:^8.0.0, awilix@npm:^8.0.1":
   version: 8.0.1
   resolution: "awilix@npm:8.0.1"
@@ -18059,7 +18049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
