@@ -1,0 +1,35 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteProductTypesWorkflow
+
+This workflow deletes one or more product types.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"deleteProductTypesWorkflow","steps":[{"type":"step","name":"deleteProductTypesStep","description":"This step deletes one or more product types.","link":"../../../Steps_Product/functions/core_flows.Steps_Product.deleteProductTypesStep/page.mdx","depth":1},{"type":"hook","name":"productTypesDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesDeleted","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"DeleteProductTypesWorkflowInput","type":"[DeleteProductTypesWorkflowInput](../../../types/core_flows.DeleteProductTypesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteProductTypesWorkflow"/>
+
+## Hooks
+
+### productTypesDeleted
+
+#### Example
+
+```ts
+import { deleteProductTypesWorkflow } from "@medusajs/core-flows"
+
+deleteProductTypesWorkflow.hooks.productTypesDeleted(
+	async (({ ids }, { container }) => {
+		//TODO
+	})
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="productTypesDeleted"/>
