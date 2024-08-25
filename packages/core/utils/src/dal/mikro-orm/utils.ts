@@ -1,6 +1,6 @@
 import { EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { buildQuery } from "../../modules-sdk"
+import { buildQuery } from "../../modules-sdk/build-query"
 
 function detectCircularDependency(
   manager: SqlEntityManager,

@@ -4,9 +4,14 @@ import clsx from "clsx"
 import React from "react"
 import { MainNavigationDropdown } from "./NavigationDropdown"
 import { MainNavBreadcrumbs } from "./Breadcrumb"
-import { Button, SearchModalOpener, useMainNav, useSidebar } from "../.."
+import {
+  Button,
+  LinkButton,
+  SearchModalOpener,
+  useMainNav,
+  useSidebar,
+} from "../.."
 import { MainNavColorMode } from "./ColorMode"
-import Link from "next/link"
 import { MainNavDivider } from "./Divider"
 import { MainNavSidebarOpener } from "./SidebarOpener"
 import { MainNavHelpButton } from "./HelpButton"
@@ -39,7 +44,9 @@ export const MainNav = () => {
       <div className="flex items-center gap-docs_0.75">
         <div className="flex items-center gap-[6px] text-medusa-fg-muted">
           {editDate && <MainNavEditDate date={editDate} />}
-          <Link href={reportIssueLink}>Report Issue</Link>
+          <LinkButton href={reportIssueLink} variant="muted" target="_blank">
+            Report Issue
+          </LinkButton>
         </div>
         <MainNavDivider />
         <div className="flex items-center gap-docs_0.25">

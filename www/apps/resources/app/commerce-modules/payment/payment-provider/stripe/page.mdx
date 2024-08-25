@@ -2,7 +2,7 @@
 sidebar_label: "Stripe"
 ---
 
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Stripe Module Provider`,
@@ -22,19 +22,32 @@ These features are also available in a safe test environment, allowing for a con
 
 ## Install the Stripe Module Provider
 
-<Note type="check">
-
-- [Stripe account](https://stripe.com/).
-- [Stripe Secret API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
-- For deployed Medusa applications, a [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). When creating the Webhook, set the endpoint URL to `{medusa_url}/hooks/payment/stripe`, where `{medusa_url}` with the URL to your deployed Medusa application.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Stripe account",
+    link: "https://stripe.com/"
+  },
+  {
+    text: "Stripe Secret API Key",
+    link: "https://support.stripe.com/questions/locate-api-keys-in-the-dashboard"
+  },
+  {
+    text: "For deployed Medusa applications, a Stripe webhook secret. When creating the Webhook, set the endpoint URL to {medusa_url}/hooks/payment/stripe, where {medusa_url} with the URL to your deployed Medusa application.",
+    link: "https://docs.stripe.com/webhooks#add-a-webhook-endpoint"
+  }
+]} />
 
 To install the Stripe Module Provider, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
 npm install @medusajs/payment-stripe@preview
 ```
+
+<Note>
+
+Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
+
+</Note>
 
 Next, add the module to the array of providers passed to the Payment Module:
 

@@ -1,4 +1,5 @@
 import S3BucketAcl from "../../../troubleshooting/_sections/s3/aws-bucket-acl.mdx"
+
 import { Table, Tabs, TabsList, TabsContent, TabsContentWrapper, TabsTrigger, DetailsList } from "docs-ui"
 
 export const metadata = {
@@ -18,6 +19,7 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
     <TabsTrigger value="aws">AWS S3</TabsTrigger>
     <TabsTrigger value="minio">MinIO</TabsTrigger>
     <TabsTrigger value="spaces">DigitalOcean Spaces</TabsTrigger>
+    <TabsTrigger value="supabase">Supabase S3 Storage</TabsTrigger>
   </TabsList>
   <TabsContentWrapper>
     <TabsContent value="aws">
@@ -81,6 +83,18 @@ The S3 File Module Provider integrates Amazon S3 and services following a compat
     - Create [DigitalOcean account](https://cloud.digitalocean.com/registrations/new).
     - Create [DigitalOcean Spaces bucket](https://docs.digitalocean.com/products/spaces/how-to/create/).
     - Create [DigitalOcean Spaces access and secret access keys](https://docs.digitalocean.com/products/spaces/how-to/manage-access/#access-keys).
+
+    </TabsContent>
+    <TabsContent value="supabase">
+
+    - [Supabase account](https://supabase.com/dashboard/sign-in) with a project.
+    - Create [New Public S3 bucket](https://supabase.com/docs/guides/storage/buckets/creating-buckets?queryGroups=language&language=dashboard).
+    - Create [New S3 Access Keys](https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language&language=javascript#s3-access-keys).
+    - Create [Storage Policy](https://supabase.com/docs/guides/storage/security/access-control).
+      1. On your bucket's dashboard, click on Policies under the Configuration sidebar.
+      2. Click on New Policy under "Other policies under storage.objects".
+      3. Click get started quickly, choose "insert access for authenticated users only", and click the "Use this template" button.
+      4. Click ALL for "Allowed Operations", click the "Review" button, then the "Save policy" button.
 
     </TabsContent>
   </TabsContentWrapper>
@@ -161,6 +175,7 @@ module.exports = {
       - For AWS S3, the endpoint is of the format `https://{bucket}.s3.{region}.amazonaws.com`
       - For MinIO, it's the URL to the MinIO server with the bucket's name. For example, `https://{server-domain}/{bucket}`.
       - For DigitalOcean Spaces, it's either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.
+      - for Supabase, it's `https://{uniqueID}.supabase.co/storage/v1/object/public/{bucket}`. You can retrieve the `uniqueID` from [Storage Settings](https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language&language=javascript#s3-access-keys) page in the Endpoint URL.
       
       </Table.Cell>
       <Table.Cell>
@@ -252,6 +267,7 @@ module.exports = {
       - For AWS S3, the endpoint is of the format `https://s3.{region}.amazonaws.com`
       - For MinIO, it's the URL to the MinIO server.
       - For DigitalOcean Spaces, it's the Spaces Origin Endpoint.
+      - For Supabase, it's the Endpoint URL in the [Storage Settings](https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language&language=javascript#s3-access-keys).
       
       </Table.Cell>
       <Table.Cell>
@@ -332,6 +348,39 @@ module.exports = {
     </Table.Row>
   </Table.Body>
 </Table>
+
+## Additional Configuration for MinIO and Supabase
+
+If you're using MinIO or Supabase, set `forcePathStyle` to `true` in the `additional_client_config` object.
+
+For example:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-s3",
+            id: "s3",
+            options: {
+              // ...
+              additional_client_config: {
+                forcePathStyle: true,
+              },
+            },
+          },
+        ],
+      },
+    },
+  }
+})
+```
+---
+
 
 ## Troubleshooting
 

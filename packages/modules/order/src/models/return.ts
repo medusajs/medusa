@@ -150,6 +150,9 @@ export default class Return {
   })
   transactions = new Collection<Transaction>(this)
 
+  @Property({ columnType: "text", nullable: true })
+  created_by: string | null = null
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 

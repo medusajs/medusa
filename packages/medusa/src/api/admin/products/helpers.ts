@@ -1,7 +1,7 @@
-import { LinkDefinition } from "@medusajs/modules-sdk"
 import {
   BatchMethodResponse,
   HttpTypes,
+  LinkDefinition,
   MedusaContainer,
   PriceDTO,
   ProductDTO,

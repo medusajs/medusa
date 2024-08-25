@@ -11,7 +11,37 @@ const coreFlowsOptions: FormattingOptionsType = {
     workflowDiagramComponent: "WorkflowDiagram",
     mdxImports: [`import { TypeList, WorkflowDiagram } from "docs-ui"`],
   },
-  "^core_flows/.*/functions/.*Workflow/page\\.mdx": {
+  "^core_flows/.*/.*Steps_.*/page\\.mdx": {
+    reflectionGroups: {
+      Namespaces: false,
+      Enumerations: false,
+      Classes: false,
+      Interfaces: false,
+      "Type Aliases": false,
+      Variables: false,
+      "Enumeration Members": false,
+      Properties: false,
+      "Type Literals": false,
+      Functions: true,
+    },
+    hideTocHeaders: true,
+  },
+  "^core_flows/.*/.*Workflows_.*/page\\.mdx": {
+    reflectionGroups: {
+      Namespaces: false,
+      Enumerations: false,
+      Classes: false,
+      Interfaces: false,
+      "Type Aliases": false,
+      Variables: false,
+      "Enumeration Members": false,
+      Properties: false,
+      "Type Literals": false,
+      Functions: true,
+    },
+    hideTocHeaders: true,
+  },
+  "^core_flows/.*/Workflows_.*/functions/.*/page\\.mdx": {
     reflectionDescription:
       "This documentation provides a reference to the `{{alias}}`. It belongs to the `@medusajs/core-flows` package.",
     frontmatterData: {
@@ -24,7 +54,7 @@ const coreFlowsOptions: FormattingOptionsType = {
       suffix: "- Medusa Workflows API Reference",
     },
   },
-  "^core_flows/.*/functions/.*Step/page\\.mdx": {
+  "^core_flows/.*/Steps_.*/functions/.*/page\\.mdx": {
     reflectionDescription:
       "This documentation provides a reference to the `{{alias}}`. It belongs to the `@medusajs/core-flows` package.",
     frontmatterData: {

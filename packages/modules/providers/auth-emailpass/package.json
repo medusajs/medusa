@@ -29,7 +29,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.7",
+    "@medusajs/utils": "^1.11.9",
     "scrypt-kdf": "^2.0.1"
   },
   "keywords": [

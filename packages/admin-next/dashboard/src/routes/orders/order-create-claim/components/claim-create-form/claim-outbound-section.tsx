@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import {
@@ -134,11 +135,14 @@ export const ClaimOutboundSection = ({
           })
         }
       } else {
-        append({
-          item_id: i.id,
-          quantity: i.detail.quantity,
-          variant_id: i.variant_id,
-        })
+        append(
+          {
+            item_id: i.id,
+            quantity: i.detail.quantity,
+            variant_id: i.variant_id,
+          },
+          { shouldFocus: false }
+        )
       }
     })
 
@@ -349,7 +353,7 @@ export const ClaimOutboundSection = ({
                   })
                 }
               }}
-              onUpdate={(payload) => {
+              onUpdate={(payload: HttpTypes.AdminUpdateReturnItems) => {
                 const actionId = previewOutboundItems
                   .find((i) => i.id === item.item_id)
                   ?.actions?.find((a) => a.action === "ITEM_ADD")?.id

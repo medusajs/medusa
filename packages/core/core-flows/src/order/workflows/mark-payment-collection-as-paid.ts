@@ -7,11 +7,11 @@ import {
   createWorkflow,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { createPaymentSessionsWorkflow } from "../../definition"
 import {
   authorizePaymentSessionStep,
   capturePaymentWorkflow,
 } from "../../payment"
+import { createPaymentSessionsWorkflow } from "../../payment-collection"
 
 /**
  * This step validates that the payment collection is not_paid

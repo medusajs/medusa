@@ -392,6 +392,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.exchange.created_by).toEqual(expect.any(String))
+
         const exchangeId = result.data.exchange.id
 
         let r2 = await api.post(
@@ -425,6 +427,30 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
+        const { response } = await api
+          .post(`/admin/exchanges/${exchangeId2}/request`, {}, adminHeaders)
+          .catch((e) => e)
+
+        expect(response.data).toEqual({
+          type: "invalid_data",
+          message:
+            "Order exchange request should have atleast 1 item inbound and 1 item outbound",
+        })
+
+        await api.post(
+          `/admin/exchanges/${exchangeId2}/outbound/items`,
+          {
+            items: [
+              {
+                variant_id: productExtra.variants[0].id,
+                quantity: 2,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
         await api.post(
           `/admin/exchanges/${exchangeId2}/request`,
           {},

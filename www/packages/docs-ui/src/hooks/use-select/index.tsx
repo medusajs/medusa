@@ -79,6 +79,10 @@ export const useSelect = ({
     }
   }
 
+  const setSelectedValues = (values: string[]) => {
+    setSelected?.(values)
+  }
+
   return {
     isValueSelected,
     hasSelectedValue,
@@ -87,5 +91,6 @@ export const useSelect = ({
     isAllSelected,
     handleChange,
     handleSelectAll,
+    setSelectedValues,
   }
 }

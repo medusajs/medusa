@@ -8,6 +8,7 @@ import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   DistributedTransactionEvent,
   StepFeatures,
+  TransactionFlow,
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionOptions,
@@ -26,29 +27,6 @@ import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "./errors"
-
-export type TransactionFlow = {
-  modelId: string
-  options?: TransactionModelOptions
-  definition: TransactionStepsDefinition
-  transactionId: string
-  metadata?: {
-    eventGroupId?: string
-    [key: string]: unknown
-  }
-  hasAsyncSteps: boolean
-  hasFailedSteps: boolean
-  hasSkippedOnFailureSteps: boolean
-  hasWaitingSteps: boolean
-  hasSkippedSteps: boolean
-  hasRevertedSteps: boolean
-  timedOutAt: number | null
-  startedAt?: number
-  state: TransactionState
-  steps: {
-    [key: string]: TransactionStep
-  }
-}
 
 /**
  * @class TransactionOrchestrator is responsible for managing and executing distributed transactions.

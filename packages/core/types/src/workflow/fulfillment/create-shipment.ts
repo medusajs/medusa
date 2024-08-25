@@ -13,4 +13,9 @@ export interface CreateShipmentWorkflowInput {
    * The labels associated with the fulfillment.
    */
   labels: CreateFulfillmentLabelWorkflowDTO[]
+
+  /**
+   * The id of the user that marked fulfillment as shipped
+   */
+  marked_shipped_by?: string | null
 }

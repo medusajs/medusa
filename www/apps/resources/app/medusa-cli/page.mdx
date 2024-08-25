@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Medusa CLI Tool`,
@@ -8,12 +8,20 @@ export const metadata = {
 
 The Medusa CLI tool provides commands that facilitate your development.
 
-<Note type="check">
-
-- [Node.js v20+](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Node.js v20+",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
 
 ## Usage
 

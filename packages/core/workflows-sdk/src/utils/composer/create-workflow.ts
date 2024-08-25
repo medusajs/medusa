@@ -4,19 +4,19 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { exportWorkflow } from "../../helper"
 import { createStep } from "./create-step"
-import { StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
+import { StepResponse } from "./helpers/step-response"
+import { WorkflowResponse } from "./helpers/workflow-response"
 import {
   CreateWorkflowComposerContext,
+  HookHandler,
   ReturnWorkflow,
   StepFunction,
   WorkflowData,
-  HookHandler,
 } from "./type"
-import { WorkflowResponse } from "./helpers/workflow-response"
 
 global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 

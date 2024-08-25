@@ -4,6 +4,8 @@ import {
   usePageLoading,
   SearchProvider as UiSearchProvider,
   searchFiltersV2,
+  AiAssistantIcon,
+  AiAssistantProvider,
 } from "docs-ui"
 import { config } from "../config"
 import basePathUrl from "../utils/base-path-url"
@@ -33,15 +35,14 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             items: [
               "Install Medusa with create-medusa-app",
               "What is an API route?",
-              "What is a Module?",
               "What is a Workflow?",
             ],
           },
           {
             title: "Developing with Medusa",
             items: [
-              "How to create a Module",
               "How to create an API route",
+              "How to create a module",
               "How to create a data model",
               "How to create an admin widget",
             ],
@@ -52,6 +53,28 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         ),
         filterOptions: searchFiltersV2,
       }}
+      commands={[
+        {
+          name: "ai-assistant",
+          icon: <AiAssistantIcon />,
+          component: (
+            <AiAssistantProvider
+              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
+              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
+              recaptchaSiteKey={
+                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
+                "temp"
+              }
+            />
+          ),
+          title: "AI Assistant",
+          badge: {
+            variant: "blue",
+            badgeType: "shaded",
+            children: "Beta",
+          },
+        },
+      ]}
     >
       {children}
     </UiSearchProvider>

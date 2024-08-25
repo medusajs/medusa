@@ -8,7 +8,7 @@ export async function createAuthIdentities(
       id: "test-id",
       provider_identities: [
         {
-          entity_id: "test-id",
+          entity_id: "provider-test-id",
           provider: "manual",
         },
       ],
@@ -20,7 +20,7 @@ export async function createAuthIdentities(
       id: "test-id-1",
       provider_identities: [
         {
-          entity_id: "test-id-1",
+          entity_id: "provider-test-id-1",
           provider: "manual",
         },
       ],
@@ -28,7 +28,7 @@ export async function createAuthIdentities(
     {
       provider_identities: [
         {
-          entity_id: "test-id-2",
+          entity_id: "provider-test-id-2",
           provider: "store",
         },
       ],

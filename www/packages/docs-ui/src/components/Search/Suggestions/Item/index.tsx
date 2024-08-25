@@ -14,7 +14,7 @@ export const SearchSuggestionItem = ({
   return (
     <div
       className={clsx(
-        "flex items-center",
+        "flex items-center justify-between gap-docs_0.75",
         "cursor-pointer rounded-docs_sm p-docs_0.5",
         "hover:bg-medusa-bg-base-hover",
         "focus:bg-medusa-bg-base-hover",

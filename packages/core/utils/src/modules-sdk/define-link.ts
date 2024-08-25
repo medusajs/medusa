@@ -1,6 +1,6 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
 import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
-import { composeLinkName } from "../link"
+import { composeLinkName } from "../link/compose-link-name"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
 
