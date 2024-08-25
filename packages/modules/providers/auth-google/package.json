@@ -19,7 +19,7 @@
   "scripts": {
     "test": "jest --passWithNoTests src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.spec.ts",
-    "build": "rimraf dist && tsc -p ./tsconfig.json",
+    "build": "rimraf dist && tsc --build ./tsconfig.json",
     "watch": "tsc --watch"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --passWithNoTests src",
-    "build": "rimraf dist && tsc -p ./tsconfig.json",
+    "build": "rimraf dist && tsc --build ./tsconfig.json",
     "watch": "tsc --watch"
   },
   "devDependencies": {
