@@ -39,12 +39,10 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.2",
+    "@medusajs/utils": "^1.11.9",
     "axios": "^0.21.4",
     "chalk": "^4.0.0",
     "configstore": "5.0.1",
-    "core-js": "^3.6.5",
-    "dotenv": "^16.4.5",
     "execa": "^5.1.1",
     "fs-exists-cached": "^1.0.0",
     "fs-extra": "^10.0.0",
@@ -59,13 +57,15 @@
     "pg": "^8.11.3",
     "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
-    "regenerator-runtime": "^0.13.11",
     "resolve-cwd": "^3.0.0",
     "semver": "^7.3.8",
     "stack-trace": "^0.0.10",
-    "ulid": "^2.3.0",
     "winston": "^3.8.2",
     "yargs": "^15.3.1"
+  },
+  "peerDependencies": {
+    "dotenv": "*",
+    "ulid": "*"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }

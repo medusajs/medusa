@@ -6,6 +6,7 @@ import {
   typeListLinkFixerPlugin,
   localLinksRehypePlugin,
   workflowDiagramLinkFixerPlugin,
+  prerequisitesLinkFixerPlugin,
 } from "remark-rehype-plugins"
 import MDXComponents from "@/components/MDXComponents"
 import mdxOptions from "../../../mdx-options.mjs"
@@ -57,6 +58,13 @@ export default async function ReferencesPage({ params }: PageProps) {
             ],
             [
               workflowDiagramLinkFixerPlugin,
+              {
+                ...pluginOptions,
+                checkLinksType: "value",
+              },
+            ],
+            [
+              prerequisitesLinkFixerPlugin,
               {
                 ...pluginOptions,
                 checkLinksType: "value",

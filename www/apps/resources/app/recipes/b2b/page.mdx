@@ -1,18 +1,13 @@
 import { AcademicCapSolid, UsersSolid } from "@medusajs/icons"
+import { BetaBadge } from "docs-ui"
 
 export const metadata = {
   title: `B2B Recipe`,
 }
 
-# {metadata.title}
+# {metadata.title} <BetaBadge text="Soon" tooltipText="This recipe is a work in progress, as some features are not ready yet in Medusa V2." />
 
 This recipe provides the general steps to implement a B2B store with Medusa.
-
-<Note type="soon" title="In Development">
-
-This recipe is a work in progress, as some features are not ready yet in Medusa V2.
-
-</Note>
 
 ## Overview
 
@@ -175,12 +170,6 @@ Use customer groups to organize your customers into different groups. Then, you 
 This is useful in B2B sales, as you often negotiate special prices with each customer or company.
 
 You can create a B2B module that adds necessary data models to represent a B2B company. Then, you link that company to a customer group. Any customer belonging to that group also belongs to the company, meaning they're a B2B customer.
-
-<Note type="soon">
-
-Module Relationships is coming soon.
-
-</Note>
 
 <CardList items={[
   {

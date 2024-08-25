@@ -9,6 +9,7 @@ import {
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
+  PencilSquare,
 } from "@medusajs/icons"
 import {
   AdminClaim,
@@ -248,6 +249,8 @@ const Header = ({
     (i) => !(getReturnableQuantity(i) > 0)
   )
 
+  const isOrderEditActive = orderPreview?.order_change?.change_type === "edit"
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.summary")}</Heading>
@@ -255,11 +258,20 @@ const Header = ({
         groups={[
           {
             actions: [
-              // {
-              //   label: t("orders.summary.editItems"),
-              //   to: `/orders/${order.id}/edit`,
-              //   icon: <PencilSquare />,
-              // },
+              {
+                label: t("orders.summary.editOrder"),
+                to: `/orders/${order.id}/edits`,
+                icon: <PencilSquare />,
+                disabled:
+                  (orderPreview?.order_change &&
+                    orderPreview?.order_change?.change_type !== "edit") ||
+                  (orderPreview?.order_change?.change_type === "edit" &&
+                    orderPreview?.order_change?.status === "requested"),
+              },
+            ],
+          },
+          {
+            actions: [
               // {
               //   label: t("orders.summary.allocateItems"),
               //   to: "#", // TODO: Open modal to allocate items
@@ -271,6 +283,7 @@ const Header = ({
                 icon: <ArrowUturnLeft />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   !!orderPreview?.order_change?.exchange_id ||
                   !!orderPreview?.order_change?.claim_id,
               },
@@ -284,6 +297,7 @@ const Header = ({
                 icon: <ArrowPath />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.exchange_id) ||
                   !!orderPreview?.order_change?.claim_id,
@@ -298,6 +312,7 @@ const Header = ({
                 icon: <ExclamationCircle />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.claim_id) ||
                   !!orderPreview?.order_change?.exchange_id,

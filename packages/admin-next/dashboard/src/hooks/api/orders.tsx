@@ -45,6 +45,7 @@ export const useOrder = (
 
 export const useOrderPreview = (
   id: string,
+  query?: HttpTypes.AdminOrderFilters,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminOrderPreviewResponse,
@@ -56,7 +57,7 @@ export const useOrderPreview = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => sdk.admin.order.retrievePreview(id),
+    queryFn: async () => sdk.admin.order.retrievePreview(id, query),
     queryKey: ordersQueryKeys.preview(id),
     ...options,
   })

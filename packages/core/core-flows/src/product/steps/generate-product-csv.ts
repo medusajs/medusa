@@ -1,11 +1,12 @@
 import {
-  IFileModuleService,
   HttpTypes,
+  IFileModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName, convertJsonToCsv } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForExport } from "../helpers/normalize-for-export"
+import { convertJsonToCsv } from "../utlils"
 
 const prodColumnPositions = new Map([
   ["Product Id", 0],

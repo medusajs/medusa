@@ -16,7 +16,7 @@ import {
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
-import { resolveValue } from "../utils/composer"
+import { resolveValue } from "../utils/composer/helpers/resolve-value"
 import {
   ExportedWorkflow,
   FlowCancelOptions,
