@@ -156,7 +156,18 @@ export default async function productCreateHandler({
     to: "test@gmail.com",
     channel: "email",
     template: "product-created",
-    data,
+    data: {
+        // optional attachments
+        attachments: [
+          {
+            content: base64,
+            type: MIME type,
+            filename: filename.ext,
+            disposition: "attachment or inline attachment",
+            content_id: "id", // only needed for inline attachment
+          },
+        ]
+    }
   })
 }
 
@@ -172,6 +183,7 @@ In this subscriber:
 - By specifying the `email` channel, the SendGrid Notification Module Provider is used to send the notification.
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
+- The `data.attachments` optional property allows you to pass attachments to the template in SendGrid.
 
 Then, start the Medusa application:
 
