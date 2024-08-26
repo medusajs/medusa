@@ -112,6 +112,9 @@ class ProductCategory {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata?: Record<string, unknown> | null
+
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
 
