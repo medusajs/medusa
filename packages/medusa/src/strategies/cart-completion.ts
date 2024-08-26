@@ -90,6 +90,42 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .workStage(
                   idempotencyKey.idempotency_key,
                   async (manager) =>
+                    await this.handleConfirmAndReserveInventory(id, { manager })
+                )
+            })
+            .catch((e) => {
+              inProgress = false
+              err = e
+            })
+
+          if (
+            err &&
+            typeof err === "object" &&
+            (
+              ("code" in err &&
+                err.code &&
+                ((err.code as string).startsWith('40') || (err.code as string) === '25P02')) ||
+              (err instanceof Error && err.message === "QueryRunner already released. Cannot run queries anymore.")
+            )
+          ) {
+            return {
+              response_code: 409,
+              response_body: {
+                message: "The request conflicted with another request. Please retry with the provided Idempotency-Key.",
+                code: "code" in err ? err.code : err.message
+              },
+            }
+          }
+          break
+        }
+        case "inventory_confirmed_and_reserved": {
+          await this.activeManager_
+            .transaction(async (transactionManager) => {
+              idempotencyKey = await this.idempotencyKeyService_
+                .withTransaction(transactionManager)
+                .workStage(
+                  idempotencyKey.idempotency_key,
+                  async (manager) =>
                     await this.handleCreateTaxLines(id, { manager })
                 )
             })
@@ -119,7 +155,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             })
           break
         }
-
         case "payment_authorized": {
           await this.activeManager_
             .transaction(async (transactionManager) => {
@@ -159,17 +194,16 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     if (err) {
       if (idempotencyKey.recovery_point !== "started") {
-        await this.activeManager_.transaction(async (transactionManager) => {
-          try {
-            await this.orderService_
-              .withTransaction(transactionManager)
-              .retrieveByCartId(id)
-          } catch (error) {
+        try {
+          await this.orderService_.retrieveByCartId(id)
+        } catch (error) {
+          await this.activeManager_.transaction(async (transactionManager) => {
             await this.cartService_
               .withTransaction(transactionManager)
               .deleteTaxLines(id)
-          }
-        })
+            await this.releaseInventoryReservations(id, { manager: transactionManager })
+          })
+        }
       }
       throw err
     }
@@ -177,6 +211,113 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     return {
       response_body: idempotencyKey.response_body,
       response_code: idempotencyKey.response_code,
+    }
+  }
+
+  async releaseInventoryReservations(
+    id: string,
+    { manager }: { manager: EntityManager }
+  ) {
+    const productVariantInventoryService: ProductVariantInventoryService =
+      this.productVariantInventoryService_.withTransaction(manager)
+  
+    const cart = await this.cartService_.withTransaction(manager).retrieve(id, {
+      relations: ["items"],
+    })
+  
+    await Promise.all(
+      cart.items.map(async (item) => {
+        if (item.variant_id) {
+          await productVariantInventoryService.deleteReservationsByLineItem(
+            item.id,
+            item.variant_id,
+            item.quantity
+          )
+        }
+      })
+    )
+  }
+
+  protected async handleConfirmAndReserveInventory(
+    id: string,
+    { manager }: { manager: EntityManager }
+  ) {
+    const cartServiceTx = this.cartService_.withTransaction(manager)
+    const productVariantInventoryServiceTx = this.productVariantInventoryService_.withTransaction(manager)
+
+    const cart = await cartServiceTx.retrieveWithTotals(id, {
+      relations: ["items.variant", "region", "sales_channel"],
+    })
+
+    let reservations: [ReservationItemDTO[] | void | undefined, MedusaError | undefined][] = []
+
+    reservations = await promiseAll(
+      cart.items.map(async (item) => {
+        if (item.variant_id) {
+          try {
+            const inventoryConfirmed = await productVariantInventoryServiceTx.confirmInventory(
+              item.variant_id,
+              item.quantity,
+              { salesChannelId: cart.sales_channel_id }
+            )
+
+            if (!inventoryConfirmed) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_ALLOWED,
+                `Variant with id: ${item.variant_id} does not have the required inventory`,
+                MedusaError.Codes.INSUFFICIENT_INVENTORY
+              )
+            }
+
+            return [
+              await productVariantInventoryServiceTx.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
+                }
+              ),
+              undefined,
+            ]
+          } catch (error) {
+            return [undefined, error]
+          }
+        }
+        return [undefined, undefined]
+      })
+    )
+
+    if (reservations.some(([_, error]) => error)) {
+      const errors = reservations.reduce((acc, [_, error]) => {
+        if (error) {
+          acc.push(error)
+        }
+        return acc
+      }, [] as MedusaError[])
+
+      const error = errors[0]
+
+      if (errors.some((error) => error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY)) {
+        return {
+          response_code: 409,
+          response_body: {
+            errors: errors.map((error) => {
+              return {
+                message: error.message,
+                type: error.type,
+                code: error.code,
+              }
+            }),
+          },
+        }
+      } else {
+        throw error
+      }
+    }
+
+    return {
+      recovery_point: "inventory_confirmed_and_reserved",
     }
   }
 
@@ -313,140 +454,18 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       ],
     })
 
-    let allowBackorder = false
-
-    if (cart.type === "swap") {
-      const swap = await swapServiceTx.retrieveByCartId(id)
-      allowBackorder = swap.allow_backorder
-    }
-
-    let reservations: [
-      ReservationItemDTO[] | void | undefined,
-      MedusaError | undefined
-    ][] = []
-    if (!allowBackorder) {
-      const productVariantInventoryServiceTx =
-        this.productVariantInventoryService_.withTransaction(manager)
-
-      reservations = await promiseAll(
-        cart.items.map(async (item) => {
-          if (item.variant_id) {
-            try {
-              const inventoryConfirmed =
-                await productVariantInventoryServiceTx.confirmInventory(
-                  item.variant_id,
-                  item.quantity,
-                  { salesChannelId: cart.sales_channel_id }
-                )
-
-              if (!inventoryConfirmed) {
-                throw new MedusaError(
-                  MedusaError.Types.NOT_ALLOWED,
-                  `Variant with id: ${item.variant_id} does not have the required inventory`,
-                  MedusaError.Codes.INSUFFICIENT_INVENTORY
-                )
-              }
-
-              return [
-                await productVariantInventoryServiceTx.reserveQuantity(
-                  item.variant_id,
-                  item.quantity,
-                  {
-                    lineItemId: item.id,
-                    salesChannelId: cart.sales_channel_id,
-                  }
-                ),
-                undefined,
-              ]
-            } catch (error) {
-              return [undefined, error]
-            }
-          }
-          return [undefined, undefined]
-        })
-      )
-
-      if (reservations.some(([_, error]) => error)) {
-        await this.removeReservations(reservations)
-
-        const errors = reservations.reduce((acc, [_, error]) => {
-          if (error) {
-            acc.push(error)
-          }
-          return acc
-        }, [] as MedusaError[])
-
-        const error = errors[0]
-
-        if (
-          errors.some(
-            (error) => error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
-          )
-        ) {
-          if (cart.payment) {
-            await this.paymentProviderService_
-              .withTransaction(manager)
-              .cancelPayment(cart.payment)
-          }
-          await cartServiceTx.update(cart.id, {
-            payment_authorized_at: null,
-          })
-
-          return {
-            response_code: 409,
-            response_body: {
-              errors: errors.map((error) => {
-                return {
-                  message: error.message,
-                  type: error.type,
-                  code: error.code,
-                }
-              }),
-            },
-          }
-        } else {
-          throw error
-        }
-      } else if (this.inventoryService_) {
-        await this.eventBusService_.emit("reservation-items.bulk-created", {
-          ids: reservations
-            .filter(([reservation]) => !!reservation)
-            .flatMap(([reservationItemArr]) =>
-              reservationItemArr!.map((item) => item.id)
-            ),
-        })
-      }
-    }
-
     // If cart is part of swap, we register swap as complete
     if (cart.type === "swap") {
-      try {
-        const swapId = cart.metadata?.swap_id
-        let swap = await swapServiceTx.registerCartCompletion(swapId as string)
+      const swapId = cart.metadata?.swap_id
+      let swap = await swapServiceTx.registerCartCompletion(swapId as string)
 
-        swap = await swapServiceTx.retrieve(swap.id, {
-          relations: ["shipping_address"],
-        })
+      swap = await swapServiceTx.retrieve(swap.id, {
+        relations: ["shipping_address"],
+      })
 
-        return {
-          response_code: 200,
-          response_body: { data: swap, type: "swap" },
-        }
-      } catch (error) {
-        await this.removeReservations(reservations)
-
-        if (error && error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY) {
-          return {
-            response_code: 409,
-            response_body: {
-              message: error.message,
-              type: error.type,
-              code: error.code,
-            },
-          }
-        } else {
-          throw error
-        }
+      return {
+        response_code: 200,
+        response_body: { data: swap, type: "swap" },
       }
     }
 
@@ -461,8 +480,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     try {
       order = await orderServiceTx.createFromCart(cart)
     } catch (error) {
-      await this.removeReservations(reservations)
-
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
         order = await orderServiceTx.retrieveByCartIdWithTotals(id, {
           relations: ["shipping_address", "items", "payments"],
@@ -472,23 +489,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           response_code: 200,
           response_body: { data: order, type: "order" },
         }
-      } else if (
-        error &&
-        error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
-      ) {
-        return {
-          response_code: 409,
-          response_body: {
-            message: error.message,
-            type: error.type,
-            code: error.code,
-          },
-        }
-      } else {
-        throw error
       }
+      throw error
     }
-
     order = await orderServiceTx.retrieveWithTotals(order.id, {
       relations: ["shipping_address", "items", "payments"],
     })
