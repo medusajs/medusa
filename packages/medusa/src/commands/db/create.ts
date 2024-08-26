@@ -97,16 +97,21 @@ const main = async function ({ directory, interactive, db }) {
   }
 
   if (await dbExists(client, dbName)) {
+    logger.info(`Database "${dbName}" already exists`)
+
     envEditor.set("DB_NAME", dbName)
     await envEditor.save()
-    logger.info(`Database "${dbName}" already exists`)
+    logger.info(`Updated .env file with "DB_NAME=${dbName}"`)
+
     return
   }
 
   await createDb(client, dbName)
+  logger.info(`Created database "${dbName}"`)
+
   envEditor.set("DB_NAME", dbName)
   await envEditor.save()
-  logger.info(`Created database "${dbName}"`)
+  logger.info(`Updated .env file with "DB_NAME=${dbName}"`)
 }
 
 export default main
