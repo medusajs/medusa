@@ -52,6 +52,26 @@ export class EnvEditor {
   }
 
   /**
+   * Returns the value for an existing key from the
+   * ".env" file
+   */
+  get(key: string): string | null {
+    const envFile = this.#files.find((file) => file.filePath.endsWith(".env"))
+    if (!envFile) {
+      return null
+    }
+    const matchingLine = envFile.contents.find((line) =>
+      line.startsWith(`${key}=`)
+    )
+    if (!matchingLine) {
+      return null
+    }
+
+    const [_, ...rest] = matchingLine.split("=")
+    return rest.join("=")
+  }
+
+  /**
    * Set key-value pair to the dot-env files.
    *
    * If `withEmptyTemplateValue` is true then the key will be added with an empty value

@@ -126,6 +126,28 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(newStarter),
     })
     .command({
+      command: "db:create",
+      desc: "Create the database used by your application",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/create", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `telemetry`,
       describe: `Enable or disable collection of anonymous usage data.`,
       builder: (yargs) =>
