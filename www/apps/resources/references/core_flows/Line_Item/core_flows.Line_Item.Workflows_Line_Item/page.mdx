@@ -1,0 +1,17 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# Workflows\_Line Item
+
+- [deleteLineItemsWorkflow](../../../modules/core_flows/page.mdx#deletelineitemsworkflow)
+
+## deleteLineItemsWorkflow
+
+This workflow deletes line items from a cart.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"deleteLineItemsWorkflow","steps":[{"type":"step","name":"deleteLineItemsStep","description":"This step deletes line items.","link":"../../Steps_Line_Item/functions/core_flows.Steps_Line_Item.deleteLineItemsStep/page.mdx","depth":1},{"type":"workflow","name":"updateCartPromotionsWorkflow","description":"This workflow updates a cart's promotions.","link":"../../Workflows_Cart/functions/core_flows.Workflows_Cart.updateCartPromotionsWorkflow/page.mdx","depth":2}]}} />
+
+### Input
+
+<TypeList types={[{"name":"DeleteLineItemsWorkflowInput","type":"[DeleteLineItemsWorkflowInput](../../types/core_flows.DeleteLineItemsWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteLineItemsWorkflow"/>

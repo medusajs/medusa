@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelOrderClaimWorkflow
+
+This workflow cancels a confirmed order claim.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelOrderClaimWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../Steps_Common/functions/core_flows.Steps_Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"cancelClaimValidateOrderStep","description":"This step validates that a confirmed claim can be canceled.","link":"../core_flows.Workflows_Order.cancelClaimValidateOrderStep/page.mdx","depth":2},{"type":"step","name":"cancelOrderClaimStep","description":"This step cancels a claim.","link":"../../../Steps_Order/functions/core_flows.Steps_Order.cancelOrderClaimStep/page.mdx","depth":3},{"type":"step","name":"deleteReservationsByLineItemsStep","description":"This step deletes reservations by their associated line items.","link":"../../../Steps_Reservation/functions/core_flows.Steps_Reservation.deleteReservationsByLineItemsStep/page.mdx","depth":3},{"type":"when","condition":"{\n      return !!orderClaim.return_id\n    }","depth":"4","steps":[{"type":"workflow","name":"cancelReturnWorkflow","description":"This workflow cancels a return.","link":"../core_flows.Workflows_Order.cancelReturnWorkflow/page.mdx","depth":4}]}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelOrderClaimWorkflowInput","type":"`CancelOrderClaimWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelOrderClaimWorkflow"/>
