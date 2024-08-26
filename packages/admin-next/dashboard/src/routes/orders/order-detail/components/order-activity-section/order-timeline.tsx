@@ -515,17 +515,17 @@ const ReturnBody = ({
         })}
       </Text>
       {isCreated && (
-        <div className="mt-[2px] flex items-center leading-none">⋅</div>
-      )}
-      {isCreated && (
-        <Button
-          onClick={() => cancelReturnRequest()}
-          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
-          variant="transparent"
-          size="small"
-        >
-          {t("actions.cancel")}
-        </Button>
+        <>
+          <div className="mt-[2px] flex items-center leading-none">⋅</div>
+          <Button
+            onClick={() => cancelReturnRequest()}
+            className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+            variant="transparent"
+            size="small"
+          >
+            {t("actions.cancel")}
+          </Button>
+        </>
       )}
     </div>
   )
