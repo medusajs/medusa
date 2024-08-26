@@ -4865,7 +4865,7 @@ __metadata:
     winston: ^3.8.2
     yargs: ^15.3.1
   peerDependencies:
-    dotenv: "*"
+    dotenv: ^16.4.5
     ulid: ^2.3.0
   bin:
     medusa: cli.js
