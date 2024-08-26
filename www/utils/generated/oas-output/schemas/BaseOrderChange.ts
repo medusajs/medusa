@@ -126,6 +126,7 @@
  *       - exchange
  *       - claim
  *       - edit
+ *       - return_request
  *   return_id:
  *     type: string
  *     title: return_id

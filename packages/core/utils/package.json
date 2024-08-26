@@ -40,6 +40,8 @@
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "pg-connection-string": "^2.6.4",
     "pluralize": "^8.0.0",
     "ulid": "^2.3.0"
   },

@@ -32,4 +32,5 @@ export function trackInstallation(installation, type) {
   }
 }
 
+export { default as Store } from "./store"
 export { default as Telemeter } from "./telemeter"

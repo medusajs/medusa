@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
+    "@inquirer/input": "^2.2.9",
     "@medusajs/admin-sdk": "0.0.1",
     "@medusajs/core-flows": "^0.0.9",
     "@medusajs/framework": "^0.0.1",
@@ -70,6 +71,7 @@
     "node-schedule": "^2.1.1",
     "qs": "^6.11.2",
     "request-ip": "^3.3.0",
+    "slugify": "^1.6.6",
     "uuid": "^9.0.0",
     "zod": "3.22.4"
   },

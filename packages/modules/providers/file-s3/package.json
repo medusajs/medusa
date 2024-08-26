@@ -32,8 +32,10 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.556.0",
     "@aws-sdk/s3-request-presigner": "^3.556.0",
-    "@medusajs/utils": "^1.11.9",
-    "ulid": "^2.3.0"
+    "@medusajs/utils": "^1.11.9"
+  },
+  "peerDependencies": {
+    "ulid": "*"
   },
   "keywords": [
     "medusa-plugin",
