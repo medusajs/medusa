@@ -1096,6 +1096,7 @@
         },
         "return": {
           "created": "Return #{{returnId}} requested",
+          "canceled": "Return #{{returnId}} canceled",
           "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"

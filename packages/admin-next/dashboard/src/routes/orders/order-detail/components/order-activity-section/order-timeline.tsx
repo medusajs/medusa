@@ -16,13 +16,10 @@ import { useTranslation } from "react-i18next"
 
 import { useClaims } from "../../../../../hooks/api/claims"
 import { useExchanges } from "../../../../../hooks/api/exchanges"
-import {
-  useCancelReturnRequest,
-  useReturns,
-} from "../../../../../hooks/api/returns"
-import { useDate } from "../../../../../hooks/use-date"
+import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -227,8 +224,17 @@ const useActivityItems = (order: AdminOrder) => {
           returnId: ret.id.slice(-7),
         }),
         timestamp: ret.created_at,
-        children: <ReturnBody orderReturn={ret} isCreated />,
+        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
       })
+
+      if (ret.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.return.canceled", {
+            returnId: ret.id.slice(-7),
+          }),
+          timestamp: ret.canceled_at,
+        })
+      }
 
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
@@ -498,7 +504,7 @@ const ReturnBody = ({
 }) => {
   const { t } = useTranslation()
 
-  const { mutateAsync: cancelReturnRequest } = useCancelReturnRequest(
+  const { mutateAsync: cancelReturnRequest } = useCancelReturn(
     orderReturn.id,
     orderReturn.order_id
   )
