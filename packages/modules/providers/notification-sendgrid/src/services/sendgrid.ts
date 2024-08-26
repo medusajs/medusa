@@ -64,9 +64,15 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
         }))
       : undefined
 
-    const message = {
+    const data = notification.data || {}
+    const from =
+      typeof data.from === "string" && data.from.trim() !== ""
+        ? data.from
+        : this.config_.from
+
+    const message: sendgrid.MailDataRequired = {
       to: notification.to,
-      from: this.config_.from,
+      from: from,
       templateId: notification.template,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
