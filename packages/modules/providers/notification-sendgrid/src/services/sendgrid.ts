@@ -18,14 +18,6 @@ interface SendgridServiceConfig {
   from: string
 }
 
-interface Attachment {
-  content: string
-  filename: string
-  type?: string
-  disposition?: string
-  content_id?: string
-}
-
 export class SendgridNotificationService extends AbstractNotificationProviderService {
   protected config_: SendgridServiceConfig
   protected logger_: Logger
@@ -54,21 +46,17 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       )
     }
 
-    const attachments = Array.isArray(notification.data?.attachments)
-      ? (notification.data.attachments as Attachment[]).map((attachment) => ({
+    const attachments = Array.isArray(notification.attachments)
+      ? notification.attachments.map((attachment) => ({
           content: attachment.content, // Base64 encoded string of the file
           filename: attachment.filename,
-          type: attachment.type, // MIME type (e.g., 'application/pdf')
+          content_type: attachment.content_type, // MIME type (e.g., 'application/pdf')
           disposition: attachment.disposition ?? "attachment", // Default to 'attachment'
-          content_id: attachment.content_id ?? undefined, // Optional: unique identifier for inline attachments
+          id: attachment.id ?? undefined, // Optional: unique identifier for inline attachments
         }))
       : undefined
 
-    const data = notification.data || {}
-    const from =
-      typeof data.from === "string" && data.from.trim() !== ""
-        ? data.from
-        : this.config_.from
+    const from = notification.from?.trim() || this.config_.from
 
     const message: sendgrid.MailDataRequired = {
       to: notification.to,
