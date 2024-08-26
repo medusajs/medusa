@@ -1,4 +1,4 @@
-import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
+import { IconButton, Text, Tooltip, clx, usePrompt, Button } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
@@ -16,7 +16,10 @@ import { useTranslation } from "react-i18next"
 
 import { useClaims } from "../../../../../hooks/api/claims"
 import { useExchanges } from "../../../../../hooks/api/exchanges"
-import { useReturns } from "../../../../../hooks/api/returns"
+import {
+  useCancelReturnRequest,
+  useReturns,
+} from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
@@ -224,7 +227,7 @@ const useActivityItems = (order: AdminOrder) => {
           returnId: ret.id.slice(-7),
         }),
         timestamp: ret.created_at,
-        children: <ReturnBody orderReturn={ret} />,
+        children: <ReturnBody orderReturn={ret} isCreated />,
       })
 
       if (ret.status === "received" || ret.status === "partially_received") {
@@ -486,20 +489,44 @@ const FulfillmentCreatedBody = ({
   )
 }
 
-const ReturnBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBody = ({
+  orderReturn,
+  isCreated,
+}: {
+  orderReturn: AdminReturn
+  isCreated: boolean
+}) => {
   const { t } = useTranslation()
+
+  const { mutateAsync: cancelReturnRequest } = useCancelReturnRequest(
+    orderReturn.id,
+    orderReturn.order_id
+  )
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
 
   return (
-    <div>
+    <div className="flex items-start gap-1">
       <Text size="small" className="text-ui-fg-subtle">
         {t("orders.activity.events.return.items", {
           count: numberOfItems,
         })}
       </Text>
+      {isCreated && (
+        <div className="mt-[2px] flex items-center leading-none">⋅</div>
+      )}
+      {isCreated && (
+        <Button
+          onClick={() => cancelReturnRequest()}
+          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          variant="transparent"
+          size="small"
+        >
+          {t("actions.cancel")}
+        </Button>
+      )}
     </div>
   )
 }

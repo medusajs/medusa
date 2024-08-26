@@ -1095,7 +1095,7 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return #{{returnId}} created",
+          "created": "Return #{{returnId}} requested",
           "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"

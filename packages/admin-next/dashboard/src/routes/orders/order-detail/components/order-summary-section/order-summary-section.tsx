@@ -168,7 +168,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <Total order={order} />
 
       {(showAllocateButton || showReturns || showPayment || showRefund) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
+        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
           {showReturns && (
             <ButtonMenu
               groups={[
