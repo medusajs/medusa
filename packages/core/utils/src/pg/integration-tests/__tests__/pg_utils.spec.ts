@@ -25,7 +25,7 @@ describe("Pg | createClient", () => {
 
   test("create client connection from connectionString without db name", async () => {
     const client = createClient(
-      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}`
+      `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}`
     )
     await client.connect()
     await client.end()
@@ -33,7 +33,7 @@ describe("Pg | createClient", () => {
 
   test("create client connection from connectionString with db name", async () => {
     const client = createClient(
-      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
+      `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/foo`
     )
     await expect(() => client.connect()).rejects.toMatchInlineSnapshot(
       `[error: database "foo" does not exist]`
@@ -44,7 +44,7 @@ describe("Pg | createClient", () => {
 describe("Pg | parseConnectionString", () => {
   test("parse connection string without db name", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:`
+      `postgres://${DB_USERNAME}:@${DB_HOST}`
     )
     expect(options).toEqual({
       user: DB_USERNAME,
@@ -57,7 +57,7 @@ describe("Pg | parseConnectionString", () => {
 
   test("parse connection string with db name", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:/foo`
+      `postgres://${DB_USERNAME}:@${DB_HOST}/foo`
     )
     expect(options).toEqual({
       user: DB_USERNAME,
@@ -80,7 +80,7 @@ describe("Pg | dbExists", () => {
 
   test("return false when db does not exist", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
+      `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/foo`
     )
     const client = createClient({
       host: options.host!,
@@ -98,7 +98,7 @@ describe("Pg | dbExists", () => {
 
   test("return true when db exist", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
+      `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/foo`
     )
 
     const client = createClient({
