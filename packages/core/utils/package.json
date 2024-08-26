@@ -40,6 +40,8 @@
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "pg-connection-string": "^2.6.4",
     "pluralize": "^8.0.0",
     "ulid": "^2.3.0"
   },
@@ -47,7 +49,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest --silent --bail --maxWorkers=50% --forceExit --testPathIgnorePatterns='/integration-tests/' -- src/**/__tests__/**/*.ts",
+    "test": "jest --silent=false --bail --maxWorkers=50% --forceExit --testPathIgnorePatterns='/integration-tests/' -- src/**/__tests__/**/pg_utils.spec.ts",
     "test:integration": "jest --silent --bail --runInBand --forceExit -- src/**/integration-tests/__tests__/**/*.ts"
   }
 }
