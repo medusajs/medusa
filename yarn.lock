@@ -4843,6 +4843,7 @@ __metadata:
     chalk: ^4.0.0
     configstore: 5.0.1
     cross-env: ^5.2.1
+    dotenv: ^16.4.5
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
@@ -4866,7 +4867,6 @@ __metadata:
     winston: ^3.8.2
     yargs: ^15.3.1
   peerDependencies:
-    dotenv: ^16.4.5
     ulid: ^2.3.0
   bin:
     medusa: cli.js
