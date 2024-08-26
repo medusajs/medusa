@@ -2,10 +2,9 @@ import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
 
-import { didYouMean } from "./did-you-mean"
-
-import { toCamelCase } from "@medusajs/utils"
+import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
+import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
 
 const yargs = require(`yargs`)
@@ -40,9 +39,10 @@ function buildLocalCommands(cli, isLocalProject) {
     }
 
     try {
-      const { Commands } = require("@medusajs/medusa")
-      const cmdName = toCamelCase(command)
-      return Commands[cmdName]
+      const cmdPath = resolveCwd.silent(
+        `@medusajs/medusa/dist/commands/${command}`
+      )!
+      return require(cmdPath).default
     } catch (err) {
       if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")

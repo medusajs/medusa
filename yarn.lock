@@ -4858,6 +4858,7 @@ __metadata:
     pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
+    resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
