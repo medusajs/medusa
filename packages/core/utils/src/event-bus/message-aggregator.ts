@@ -71,14 +71,19 @@ export class MessageAggregator implements IMessageAggregator {
         if (!acc[key]) {
           acc[key] = []
         }
-        msg.options = msg.options ?? {}
-        msg.options.internal = format.internal
         acc[key].push(msg)
         return acc
       }, {})
 
       messages = groupedMessages
     }
+
+    Object.values(messages).forEach((group) => {
+      group.forEach((msg) => {
+        msg.options = msg.options ?? {}
+        msg.options.internal = format.internal
+      })
+    })
 
     return messages
   }
