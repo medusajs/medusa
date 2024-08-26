@@ -101,18 +101,17 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           if (
             err &&
             typeof err === "object" &&
-            (
-              ("code" in err &&
-                err.code &&
-                ((err.code as string).startsWith('40') || (err.code as string) === '25P02')) ||
-              (err instanceof Error && err.message === "QueryRunner already released. Cannot run queries anymore.")
-            )
+            "code" in err &&
+            err.code &&
+            ((err.code as string).startsWith("40") ||
+              (err.code as string) === "25P02")
           ) {
             return {
               response_code: 409,
               response_body: {
-                message: "The request conflicted with another request. Please retry with the provided Idempotency-Key.",
-                code: "code" in err ? err.code : err.message
+                message:
+                  "The request conflicted with another request. Please retry with the provided Idempotency-Key.",
+                code: err.code,
               },
             }
           }
@@ -201,7 +200,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             await this.cartService_
               .withTransaction(transactionManager)
               .deleteTaxLines(id)
-            await this.releaseInventoryReservations(id, { manager: transactionManager })
+            await this.releaseInventoryReservations(id, {
+              manager: transactionManager,
+            })
           })
         }
       }
@@ -220,11 +221,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   ) {
     const productVariantInventoryService: ProductVariantInventoryService =
       this.productVariantInventoryService_.withTransaction(manager)
-  
+
     const cart = await this.cartService_.withTransaction(manager).retrieve(id, {
       relations: ["items"],
     })
-  
+
     await Promise.all(
       cart.items.map(async (item) => {
         if (item.variant_id) {
@@ -243,23 +244,28 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     { manager }: { manager: EntityManager }
   ) {
     const cartServiceTx = this.cartService_.withTransaction(manager)
-    const productVariantInventoryServiceTx = this.productVariantInventoryService_.withTransaction(manager)
+    const productVariantInventoryServiceTx =
+      this.productVariantInventoryService_.withTransaction(manager)
 
     const cart = await cartServiceTx.retrieveWithTotals(id, {
       relations: ["items.variant", "region", "sales_channel"],
     })
 
-    let reservations: [ReservationItemDTO[] | void | undefined, MedusaError | undefined][] = []
+    let reservations: [
+      ReservationItemDTO[] | void | undefined,
+      MedusaError | undefined
+    ][] = []
 
     reservations = await promiseAll(
       cart.items.map(async (item) => {
         if (item.variant_id) {
           try {
-            const inventoryConfirmed = await productVariantInventoryServiceTx.confirmInventory(
-              item.variant_id,
-              item.quantity,
-              { salesChannelId: cart.sales_channel_id }
-            )
+            const inventoryConfirmed =
+              await productVariantInventoryServiceTx.confirmInventory(
+                item.variant_id,
+                item.quantity,
+                { salesChannelId: cart.sales_channel_id }
+              )
 
             if (!inventoryConfirmed) {
               throw new MedusaError(
@@ -298,7 +304,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
       const error = errors[0]
 
-      if (errors.some((error) => error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY)) {
+      if (
+        errors.some(
+          (error) => error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY
+        )
+      ) {
         return {
           response_code: 409,
           response_body: {
