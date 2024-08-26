@@ -36,8 +36,8 @@
     "json-2-csv": "^5.5.4"
   },
   "peerDependencies": {
-    "awilix": "*",
-    "ulid": "*"
+    "awilix": "^8.0.1",
+    "ulid": "^2.3.0"
   },
   "scripts": {
     "build": "rimraf dist && tsc --build",

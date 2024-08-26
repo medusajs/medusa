@@ -37,6 +37,6 @@
     "ioredis": "^5.4.1"
   },
   "peerDependencies": {
-    "awilix": "*"
+    "awilix": "^8.0.1"
   }
 }
