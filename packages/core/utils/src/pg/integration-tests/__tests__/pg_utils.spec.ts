@@ -4,7 +4,7 @@ import {
   parseConnectionString,
   dbExists,
   createDb,
-} from "../index"
+} from "../../index"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
