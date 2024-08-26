@@ -78,21 +78,15 @@ const main = async function ({ directory, interactive, db }) {
     password: connectionOptions.password,
   })
 
-  let hasEstablishedConnection = false
   try {
     await client.connect()
-    hasEstablishedConnection = true
-    logger.info("Connection established with the database")
+    logger.info(`Connection established with the database "${dbName}"`)
   } catch (error) {
     process.exitCode = 1
-    hasEstablishedConnection = false
     logger.error(
       "Unable to establish database connection because of the following error"
     )
     logger.error(error)
-  }
-
-  if (!hasEstablishedConnection) {
     return
   }
 

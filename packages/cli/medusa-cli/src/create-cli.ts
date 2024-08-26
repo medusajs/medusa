@@ -126,8 +126,8 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(newStarter),
     })
     .command({
-      command: `db:create`,
-      desc: `Manage migrations from the core and your own project`,
+      command: "db:create",
+      desc: "Create the database used by your application",
       builder: (builder) => {
         builder.option("db", {
           type: "string",
@@ -137,7 +137,7 @@ function buildLocalCommands(cli, isLocalProject) {
           type: "boolean",
           default: true,
           describe:
-            "Skip prompts and use the default value for the database name",
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
         })
       },
       handler: handlerP(
