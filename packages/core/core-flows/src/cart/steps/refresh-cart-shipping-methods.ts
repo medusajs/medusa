@@ -40,7 +40,7 @@ export const refreshCartShippingMethodsStep = createStep(
       await fulfillmentModule.listShippingOptionsForContext(
         {
           id: shippingOptionIds,
-          context: { ...cart },
+          context: { ...cart, is_return: "false", enabled_in_store: "true" },
           address: {
             country_code: cart.shipping_address?.country_code,
             province_code: cart.shipping_address?.province,
