@@ -912,6 +912,14 @@
           "errorNegativeValue": "Quantity cannot be a negative value.",
           "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
         }
+      },
+      "toast": {
+        "canceledSuccessfully": "Return canceled successfully",
+        "confirmedSuccessfully": "Return confirmed successfully"
+      },
+      "panel": {
+        "title": "Return initiated",
+        "description": "There is an open return request to be completed"
       }
     },
     "claims": {
@@ -931,6 +939,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Claim canceled successfully",
+        "confirmedSuccessfully": "Claim confirmed successfully"
+      },
+      "panel": {
+        "title": "Claim initiated",
+        "description": "There is an open claim request to be completed"
       }
     },
     "exchanges": {
@@ -950,6 +966,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Exchange canceled successfully",
+        "confirmedSuccessfully": "Exchange confirmed successfully"
+      },
+      "panel": {
+        "title": "Exchange initiated",
+        "description": "There is an open exchange request to be completed"
       }
     },
     "reservations": {
