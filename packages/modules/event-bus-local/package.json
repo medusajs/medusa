@@ -33,8 +33,10 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.8",
-    "@medusajs/utils": "^1.11.9",
-    "ulid": "^2.3.0"
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/utils": "^1.11.9"
+  },
+  "peerDependencies": {
+    "ulid": "*"
   }
 }

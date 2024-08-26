@@ -4325,7 +4325,6 @@ __metadata:
   dependencies:
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/cli": 5.9.7
     cross-env: ^5.2.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
@@ -4374,7 +4373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4399,7 +4398,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.3
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
@@ -4453,7 +4452,6 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -4572,14 +4570,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
-    ulid: ^2.3.0
+  peerDependencies:
+    ulid: "*"
   languageName: unknown
   linkType: soft
 
@@ -4626,7 +4625,8 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.3.3
-    ulid: ^2.3.0
+  peerDependencies:
+    ulid: "*"
   languageName: unknown
   linkType: soft
 
@@ -4858,7 +4858,6 @@ __metadata:
     pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
-    resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
@@ -4957,7 +4956,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -4966,7 +4965,6 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/core": 5.9.7
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^29.7.0
@@ -4974,6 +4972,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
+    "@mikro-orm/core": "*"
     awilix: "*"
   languageName: unknown
   linkType: soft
@@ -5281,7 +5280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -22747,23 +22746,31 @@ __metadata:
     "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^29.7.0
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    "@medusajs/medusa": ">1.19"
-    "@medusajs/modules-sdk": ^1.12.10
-    "@mikro-orm/core": 5.9.7
+    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": "*"
+    "@mikro-orm/core": "*"
+    "@mikro-orm/migrations": "*"
+    "@mikro-orm/postgresql": "*"
     axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
+    "@medusajs/core":
+      optional: true
     "@medusajs/medusa":
+      optional: true
+    "@medusajs/migrations":
+      optional: true
+    "@medusajs/modules-sdk":
+      optional: true
+    "@medusajs/postgresql":
       optional: true
     axios:
       optional: true
