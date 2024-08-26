@@ -35,8 +35,8 @@
     "resolve-cwd": "^3.0.0"
   },
   "peerDependencies": {
-    "@mikro-orm/core": "*",
-    "awilix": "*"
+    "@mikro-orm/core": "5.9.7",
+    "awilix": "^8.0.1"
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",

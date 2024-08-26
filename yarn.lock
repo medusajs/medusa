@@ -4333,10 +4333,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4387,10 +4387,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4421,7 +4421,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4440,10 +4440,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4463,8 +4463,8 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    awilix: "*"
-    ulid: "*"
+    awilix: ^8.0.1
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -4483,10 +4483,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4505,10 +4505,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4578,7 +4578,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    ulid: "*"
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -4597,7 +4597,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4626,7 +4626,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.3.3
   peerDependencies:
-    ulid: "*"
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -4648,10 +4648,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4684,7 +4684,7 @@ __metadata:
     vite: ^5.2.11
     zod: 3.22.4
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4719,10 +4719,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4775,10 +4775,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4824,10 +4824,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.5.0
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4866,7 +4866,7 @@ __metadata:
     yargs: ^15.3.1
   peerDependencies:
     dotenv: "*"
-    ulid: "*"
+    ulid: ^2.3.0
   bin:
     medusa: cli.js
   languageName: unknown
@@ -4952,7 +4952,7 @@ __metadata:
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -4972,8 +4972,8 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5020,10 +5020,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5048,7 +5048,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5067,10 +5067,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5089,7 +5089,7 @@ __metadata:
     stripe: latest
     typescript: ^5.3.3
   peerDependencies:
-    awilix: "*"
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5110,10 +5110,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
     bignumber.js: "*"
   languageName: unknown
   linkType: soft
@@ -5134,10 +5134,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5158,10 +5158,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5181,10 +5181,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5203,10 +5203,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5225,10 +5225,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5247,10 +5247,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5269,10 +5269,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5292,10 +5292,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5446,10 +5446,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5499,10 +5499,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5525,10 +5525,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   peerDependencies:
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
-    awilix: "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
@@ -5545,8 +5545,8 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
-    awilix: "*"
-    ulid: "*"
+    awilix: ^8.0.1
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -22754,9 +22754,9 @@ __metadata:
   peerDependencies:
     "@medusajs/medusa": "*"
     "@medusajs/modules-sdk": "*"
-    "@mikro-orm/core": "*"
-    "@mikro-orm/migrations": "*"
-    "@mikro-orm/postgresql": "*"
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0

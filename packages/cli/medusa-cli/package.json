@@ -64,7 +64,7 @@
   },
   "peerDependencies": {
     "dotenv": "*",
-    "ulid": "*"
+    "ulid": "^2.3.0"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }
