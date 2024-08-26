@@ -12,20 +12,22 @@ The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid
 
 ## Install the SendGrid Notification Module
 
-<Prerequisites items={[
-  {
-    text: "SendGrid account",
-    link: "https://signup.sendgrid.com"
-  },
-  {
-    text: "Setup SendGrid single sender",
-    link: "https://docs.sendgrid.com/ui/sending-email/sender-verification"
-  },
-  {
-    text: "SendGrid API Key",
-    link: "https://docs.sendgrid.com/ui/account-and-settings/api-keys"
-  }
-]} />
+<Prerequisites
+  items={[
+    {
+      text: "SendGrid account",
+      link: "https://signup.sendgrid.com",
+    },
+    {
+      text: "Setup SendGrid single sender",
+      link: "https://docs.sendgrid.com/ui/sending-email/sender-verification",
+    },
+    {
+      text: "SendGrid API Key",
+      link: "https://docs.sendgrid.com/ui/account-and-settings/api-keys",
+    },
+  ]}
+/>
 
 To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
 
@@ -157,7 +159,8 @@ export default async function productCreateHandler({
     channel: "email",
     template: "product-created",
     data: {
-        // optional attachments
+        // optional settings
+        from: "verified@sender.com",
         attachments: [
           {
             content: base64,
@@ -184,6 +187,7 @@ In this subscriber:
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
 - The `data.attachments` optional property allows you to pass attachments to the template in SendGrid.
+- The `from` optional property allows you to pass a single sender verified email, default is `SENDGRID_FROM` env variable.
 
 Then, start the Medusa application:
 
