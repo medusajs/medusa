@@ -24,7 +24,7 @@ export function EmitEvents(
           ? this.__container__.logger
           : console
         logger.warn(
-          `No emitEvents_ method found on ${target.constructor.name}. No events emitted. To be able to use the @EmitEvents() you need to have the emitEvents_ method implemented in the class.`
+          `No emitEvents_ method found on ${target.constructor.name}. No events emitted. To be able to use the @EmitEvents({ internal: true }) you need to have the emitEvents_ method implemented in the class.`
         )
       }
 

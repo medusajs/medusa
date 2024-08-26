@@ -11,7 +11,7 @@ import {
 } from "@medusajs/utils"
 import { BulkJobOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
-import { BullJob, EventBusRedisModuleOptions } from "../types"
+import { BullJob, EventBusRedisModuleOptions, Options } from "../types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -87,7 +87,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   private buildEvents<T>(
     eventsData: Message<T>[],
-    options: BulkJobOptions = {}
+    options: Options = {}
   ): IORedisEventType<T>[] {
     const opts = {
       // default options
@@ -127,7 +127,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    */
   async emit<T = unknown>(
     eventsData: Message<T> | Message<T>[],
-    options: BulkJobOptions & { groupedEventsTTL?: number } = {}
+    options: Options = {}
   ): Promise<void> {
     let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
 
@@ -169,7 +169,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       // This will be helpful in preventing stale data from staying in redis for too long
       // in the event the module fails to cleanup events. For long running workflows, setting a much higher
       // TTL or even skipping the TTL would be required
-      this.setExpire(groupId, groupedEventsTTL)
+      void this.setExpire(groupId, groupedEventsTTL)
 
       const eventsData = this.buildEvents(events, options)
 
@@ -229,7 +229,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * @return resolves to the results of the subscriber calls.
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
-    const { data, name } = job
+    const { data, name, opts } = job
     const eventSubscribers = this.eventToSubscribersMap.get(name) || []
     const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
 
@@ -315,7 +315,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       this.logger_.warn(errorMessage)
 
-      return Promise.reject(Error(errorMessage))
+      throw Error(errorMessage)
     }
 
     if (didSubscribersFail && !isFinalAttempt) {
@@ -325,6 +325,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       )
     }
 
-    return Promise.resolve(subscribersResult)
+    return subscribersResult
   }
 }

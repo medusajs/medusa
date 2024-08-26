@@ -66,7 +66,7 @@ export default class NotificationModuleService
   ): Promise<NotificationTypes.NotificationDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async createNotifications(
     data:
       | NotificationTypes.CreateNotificationDTO

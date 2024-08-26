@@ -50,7 +50,7 @@ export class MessageAggregator implements IMessageAggregator {
     this.save(composedMessages)
   }
 
-  getMessages(format?: MessageAggregatorFormat): {
+  getMessages(format: MessageAggregatorFormat = {}): {
     [group: string]: Message[]
   } {
     const { groupBy, sortBy } = format ?? {}
@@ -71,6 +71,8 @@ export class MessageAggregator implements IMessageAggregator {
         if (!acc[key]) {
           acc[key] = []
         }
+        msg.options = msg.options ?? {}
+        msg.options.internal = format.internal
         acc[key].push(msg)
         return acc
       }, {})

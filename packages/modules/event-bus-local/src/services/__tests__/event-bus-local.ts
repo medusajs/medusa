@@ -39,6 +39,31 @@ describe("LocalEventBusService", () => {
           data: { hi: "1234" },
           name: "eventName",
         })
+
+        expect(loggerMock.info).toHaveBeenCalledTimes(1)
+        expect(loggerMock.info).toHaveBeenCalledWith(
+          "Processing eventName which has undefined subscribers"
+        )
+      })
+
+      it("should emit an event but log anything if it is internal", async () => {
+        eventEmitter.emit = jest.fn((data) => data)
+
+        await eventBus.emit({
+          name: "eventName",
+          data: { hi: "1234" },
+          options: {
+            internal: true,
+          },
+        })
+
+        expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
+        expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
+          data: { hi: "1234" },
+          name: "eventName",
+        })
+
+        expect(loggerMock.info).toHaveBeenCalledTimes(0)
       })
 
       it("should emit multiple events", async () => {
@@ -87,7 +112,7 @@ describe("LocalEventBusService", () => {
         groupEventFn = jest.spyOn(eventBus, "groupEvent" as any)
         eventEmitter.emit = jest.fn((data) => data)
 
-        eventBus.emit([
+        await eventBus.emit([
           {
             name: "test-event",
             data: { test: "1234" },
@@ -201,12 +226,12 @@ describe("LocalEventBusService", () => {
         expect(getMap().get("group-1")).toHaveLength(1)
         expect(getMap().get("group-2")).toHaveLength(1)
 
-        eventBus.clearGroupedEvents("group-1")
+        await eventBus.clearGroupedEvents("group-1")
 
         expect(getMap().get("group-1")).not.toBeDefined()
         expect(getMap().get("group-2")).toHaveLength(1)
 
-        eventBus.clearGroupedEvents("group-2")
+        await eventBus.clearGroupedEvents("group-2")
 
         expect(getMap().get("group-2")).not.toBeDefined()
       })

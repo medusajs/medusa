@@ -100,7 +100,7 @@ export default class UserModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async refreshInviteTokens(
     inviteIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -175,7 +175,7 @@ export default class UserModuleService
   ): Promise<UserTypes.UserDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async createUsers(
     data: UserTypes.CreateUserDTO[] | UserTypes.CreateUserDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -215,7 +215,7 @@ export default class UserModuleService
   ): Promise<UserTypes.UserDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async updateUsers(
     data: UserTypes.UpdateUserDTO | UserTypes.UpdateUserDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -255,7 +255,7 @@ export default class UserModuleService
   ): Promise<UserTypes.InviteDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async createInvites(
     data: UserTypes.CreateInviteDTO[] | UserTypes.CreateInviteDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -334,7 +334,7 @@ export default class UserModuleService
   ): Promise<UserTypes.InviteDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents()
+  @EmitEvents({ internal: true })
   async updateInvites(
     data: UserTypes.UpdateInviteDTO | UserTypes.UpdateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
