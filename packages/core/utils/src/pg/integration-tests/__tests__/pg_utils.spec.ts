@@ -24,13 +24,17 @@ describe("Pg | createClient", () => {
   })
 
   test("create client connection from connectionString without db name", async () => {
-    const client = createClient(`postgres://${DB_USERNAME}@${DB_HOST}:`)
+    const client = createClient(
+      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}`
+    )
     await client.connect()
     await client.end()
   })
 
   test("create client connection from connectionString with db name", async () => {
-    const client = createClient(`postgres://${DB_USERNAME}@${DB_HOST}:/foo`)
+    const client = createClient(
+      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
+    )
     await expect(() => client.connect()).rejects.toMatchInlineSnapshot(
       `[error: database "foo" does not exist]`
     )
@@ -76,7 +80,7 @@ describe("Pg | dbExists", () => {
 
   test("return false when db does not exist", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:/foo`
+      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
     )
     const client = createClient({
       host: options.host!,
@@ -94,7 +98,7 @@ describe("Pg | dbExists", () => {
 
   test("return true when db exist", async () => {
     const options = parseConnectionString(
-      `postgres://${DB_USERNAME}@${DB_HOST}:/foo`
+      `postgres://${DB_USERNAME}@${DB_HOST}:${DB_PASSWORD}/foo`
     )
 
     const client = createClient({
