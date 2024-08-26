@@ -3669,6 +3669,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/core@npm:^9.0.10":
+  version: 9.0.10
+  resolution: "@inquirer/core@npm:9.0.10"
+  dependencies:
+    "@inquirer/figures": ^1.0.5
+    "@inquirer/type": ^1.5.2
+    "@types/mute-stream": ^0.0.4
+    "@types/node": ^22.1.0
+    "@types/wrap-ansi": ^3.0.0
+    ansi-escapes: ^4.3.2
+    cli-spinners: ^2.9.2
+    cli-width: ^4.1.0
+    mute-stream: ^1.0.0
+    signal-exit: ^4.1.0
+    strip-ansi: ^6.0.1
+    wrap-ansi: ^6.2.0
+    yoctocolors-cjs: ^2.1.2
+  checksum: 117f50a55b5ebee8bfc62ea6adec87035f28ee7ace1efea67895c3d32ab50bf569ecd3ca33c457d0c7ae4240b9fe4d7b698ab70946ac561ab579d0920ddc98bb
+  languageName: node
+  linkType: hard
+
 "@inquirer/core@npm:^9.0.3":
   version: 9.0.3
   resolution: "@inquirer/core@npm:9.0.3"
@@ -3704,6 +3725,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/figures@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@inquirer/figures@npm:1.0.5"
+  checksum: ec9ba23db42cb33fa18eb919abf2a18e750e739e64c1883ce4a98345cd5711c60cac12d1faf56a859f52d387deb221c8d3dfe60344ee07955a9a262f8b821fe3
+  languageName: node
+  linkType: hard
+
+"@inquirer/input@npm:^2.2.9":
+  version: 2.2.9
+  resolution: "@inquirer/input@npm:2.2.9"
+  dependencies:
+    "@inquirer/core": ^9.0.10
+    "@inquirer/type": ^1.5.2
+  checksum: 0fcdc5d9c17712f9a2c79f39d1e03ed4a58cfe1dd1095209b4c83621dba2cb94db03b7df0df34e22584bce9e53403a284c76721def66a452e4751666d945d99f
+  languageName: node
+  linkType: hard
+
 "@inquirer/type@npm:^1.3.1":
   version: 1.3.1
   resolution: "@inquirer/type@npm:1.3.1"
@@ -3717,6 +3755,15 @@ __metadata:
   dependencies:
     mute-stream: ^1.0.0
   checksum: 6a2379af9ca7227ae577f952c29f6736142b2925c2460d110504002633902f70c145e6df04783c32d22f475e464ad203465234f5e2ef33f85eb719bd573032fb
+  languageName: node
+  linkType: hard
+
+"@inquirer/type@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "@inquirer/type@npm:1.5.2"
+  dependencies:
+    mute-stream: ^1.0.0
+  checksum: e2c91562c07440620bd805a60438b78c188d2727d86f396a68c480e4357469a72cd80bd2c158faa6b987671911566bd4fc12976f4bdda1a3441594e318c40058
   languageName: node
   linkType: hard
 
@@ -4278,7 +4325,6 @@ __metadata:
   dependencies:
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/cli": 5.9.7
     cross-env: ^5.2.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
@@ -4327,7 +4373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4352,7 +4398,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.3
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
@@ -4406,7 +4452,6 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.11
-    "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -4525,14 +4570,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.8
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.12
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.1.6
-    ulid: ^2.3.0
+  peerDependencies:
+    ulid: "*"
   languageName: unknown
   linkType: soft
 
@@ -4579,7 +4625,8 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.3.3
-    ulid: ^2.3.0
+  peerDependencies:
+    ulid: "*"
   languageName: unknown
   linkType: soft
 
@@ -4811,7 +4858,6 @@ __metadata:
     pg: ^8.11.3
     pg-god: ^1.0.12
     prompts: ^2.4.2
-    resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
@@ -4860,6 +4906,7 @@ __metadata:
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@inquirer/checkbox": ^2.3.11
+    "@inquirer/input": ^2.2.9
     "@medusajs/admin-sdk": 0.0.1
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/framework": ^0.0.1
@@ -4899,6 +4946,7 @@ __metadata:
     qs: ^6.11.2
     request-ip: ^3.3.0
     rimraf: ^5.0.1
+    slugify: ^1.6.6
     supertest: ^4.0.2
     typescript: ^5.3.3
     uuid: ^9.0.0
@@ -4908,7 +4956,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.3, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@^1.12.9, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@^1.12.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -4917,7 +4965,6 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/core": 5.9.7
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^29.7.0
@@ -4925,6 +4972,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^5.1.6
   peerDependencies:
+    "@mikro-orm/core": "*"
     awilix: "*"
   languageName: unknown
   linkType: soft
@@ -5232,7 +5280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5423,6 +5471,8 @@ __metadata:
     express: ^4.18.2
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
+    pg: ^8.12.0
+    pg-connection-string: ^2.6.4
     pluralize: ^8.0.0
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
@@ -12157,6 +12207,15 @@ __metadata:
   dependencies:
     undici-types: ~5.26.4
   checksum: 5306becc0ff41d81b1e31524bd376e958d0741d1ce892dffd586b9ae0cb6553c62b0d62abd16da8bea6b9a2c17572d360450535d7c073794b0cef9cb4e39691e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.1.0":
+  version: 22.5.0
+  resolution: "@types/node@npm:22.5.0"
+  dependencies:
+    undici-types: ~6.19.2
+  checksum: 45aa75c5e71645fac42dced4eff7f197c3fdfff6e8a9fdacd0eb2e748ff21ee70ffb73982f068a58e8d73b2c088a63613142c125236cdcf3c072ea97eada1559
   languageName: node
   linkType: hard
 
@@ -22687,23 +22746,31 @@ __metadata:
     "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^29.7.0
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
   peerDependencies:
-    "@medusajs/medusa": ">1.19"
-    "@medusajs/modules-sdk": ^1.12.10
-    "@mikro-orm/core": 5.9.7
+    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": "*"
+    "@mikro-orm/core": "*"
+    "@mikro-orm/migrations": "*"
+    "@mikro-orm/postgresql": "*"
     axios: ^0.28.0
     express: ^4.18.3
     get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
+    "@medusajs/core":
+      optional: true
     "@medusajs/medusa":
+      optional: true
+    "@medusajs/migrations":
+      optional: true
+    "@medusajs/modules-sdk":
+      optional: true
+    "@medusajs/postgresql":
       optional: true
     axios:
       optional: true
@@ -24557,7 +24624,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.6.2":
+"pg-connection-string@npm:^2.6.2, pg-connection-string@npm:^2.6.4":
   version: 2.6.4
   resolution: "pg-connection-string@npm:2.6.4"
   checksum: 0d0b617df0fc6507bf6a94bdcd56c7a305788a1402d69bff9773350947c8f525d6d8136128065370749a3325e99658ae40fbdcce620fb8e60126181f0591a6a6
@@ -30178,6 +30245,13 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
   languageName: node
   linkType: hard
 

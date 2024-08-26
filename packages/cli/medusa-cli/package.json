@@ -57,7 +57,6 @@
     "pg": "^8.11.3",
     "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
-    "resolve-cwd": "^3.0.0",
     "semver": "^7.3.8",
     "stack-trace": "^0.0.10",
     "winston": "^3.8.2",

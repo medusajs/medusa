@@ -1,10 +1,10 @@
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
-import resolveCwd from "resolve-cwd"
 
 import { didYouMean } from "./did-you-mean"
 
+import { toCamelCase } from "@medusajs/utils"
 import { newStarter } from "./commands/new"
 import reporter from "./reporter"
 
@@ -40,10 +40,9 @@ function buildLocalCommands(cli, isLocalProject) {
     }
 
     try {
-      const cmdPath = resolveCwd.silent(
-        `@medusajs/medusa/dist/commands/${command}`
-      )!
-      return require(cmdPath).default
+      const { Commands } = require("@medusajs/medusa")
+      const cmdName = toCamelCase(command)
+      return Commands[cmdName]
     } catch (err) {
       if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
@@ -124,6 +123,28 @@ function buildLocalCommands(cli, isLocalProject) {
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
+    })
+    .command({
+      command: "db:create",
+      desc: "Create the database used by your application",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/create", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
     })
     .command({
       command: `telemetry`,
@@ -227,6 +248,7 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
+
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
