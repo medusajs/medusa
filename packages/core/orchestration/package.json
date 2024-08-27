@@ -34,7 +34,6 @@
     "awilix": "^8.0.1"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "jest --runInBand --bail --forceExit"
