@@ -1,0 +1,26 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "I18nProvider",
+  "composes": [
+    "Props"
+  ],
+  "props": {
+    "children": {
+      "description": "Contents that should have the locale applied.",
+      "required": true,
+      "tsType": {
+        "name": "ReactNode",
+        "elements": [],
+        "raw": "ReactNode"
+      }
+    },
+    "locale": {
+      "description": "The locale to apply to the children.",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    }
+  }
+}
