@@ -73,8 +73,6 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
       ),
     },
     resolver: zodResolver(CreateInventoryItemSchema),
-    mode: "onTouched",
-    reValidateMode: "onChange",
   })
 
   const {
