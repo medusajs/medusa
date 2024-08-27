@@ -185,7 +185,7 @@ In this subscriber:
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
 - The `attachments` optional property allows you to pass attachments to the template in SendGrid.
-- The `from` optional property allows you to pass a single sender verified email, default is `SENDGRID_FROM` env variable.
+- The `from` optional property allows you to pass a single sender-verified email. If not provided, the value of the `from` configuration of the module is used.
 
 Then, start the Medusa application:
 
