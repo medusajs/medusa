@@ -10,6 +10,7 @@ import {
   Switch,
   Text,
   toast,
+  usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -240,9 +241,22 @@ export const ReturnCreateForm = ({
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
   const shippingOptionId = form.watch("option_id")
+  const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      const res = await prompt({
+        title: t("general.areYouSure"),
+        description: t("orders.returns.confirmText"),
+        confirmText: t("actions.continue"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!res) {
+        return
+      }
+
       await confirmReturnRequest({ no_notification: !data.send_notification })
 
       handleSuccess()
@@ -702,6 +716,8 @@ export const ReturnCreateForm = ({
                 }}
               />
             </div>
+
+            <div className="p-8" />
           </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
@@ -709,7 +725,7 @@ export const ReturnCreateForm = ({
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
                 <Button type="button" variant="secondary" size="small">
-                  {t("actions.cancel")}
+                  {t("orders.returns.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
               <Button
@@ -719,7 +735,7 @@ export const ReturnCreateForm = ({
                 size="small"
                 isLoading={isRequestLoading}
               >
-                {t("actions.save")}
+                {t("orders.returns.confirm")}
               </Button>
             </div>
           </div>

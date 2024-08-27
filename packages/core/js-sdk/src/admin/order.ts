@@ -31,6 +31,7 @@ export class Order {
     return await this.client.fetch<HttpTypes.AdminOrderPreviewResponse>(
       `/admin/orders/${id}/preview`,
       {
+        query,
         headers,
       }
     )

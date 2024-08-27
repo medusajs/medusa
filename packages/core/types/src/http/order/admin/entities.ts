@@ -1,3 +1,4 @@
+import { BaseOrderLineItem } from "../../../../dist/http/order/common"
 import { AdminPaymentCollection } from "../../payment/admin"
 import {
   BaseOrder,
@@ -5,7 +6,6 @@ import {
   BaseOrderChange,
   BaseOrderChangeAction,
   BaseOrderFulfillment,
-  BaseOrderLineItem,
   BaseOrderShippingMethod,
 } from "../common"
 
@@ -13,6 +13,8 @@ export interface AdminOrder extends BaseOrder {
   payment_collections: AdminPaymentCollection[]
   fulfillments?: BaseOrderFulfillment[]
 }
+
+export interface AdminOrderLineItem extends BaseOrderLineItem {}
 
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
