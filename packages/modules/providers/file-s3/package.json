@@ -36,7 +36,7 @@
     "@medusajs/utils": "^1.11.9"
   },
   "peerDependencies": {
-    "ulid": "*"
+    "ulid": "^2.3.0"
   },
   "keywords": [
     "medusa-plugin",

@@ -31,7 +31,7 @@
     "graphql": "^16.6.0"
   },
   "peerDependencies": {
-    "awilix": "*"
+    "awilix": "^8.0.1"
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
