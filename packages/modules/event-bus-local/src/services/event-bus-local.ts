@@ -54,7 +54,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         eventData.name
       )
 
-      if (options.internal || !eventData.options?.internal) {
+      if (!options.internal && !eventData.options?.internal) {
         this.logger_?.info(
           `Processing ${eventData.name} which has ${eventListenersCount} subscribers`
         )

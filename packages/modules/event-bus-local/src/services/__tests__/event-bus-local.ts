@@ -46,7 +46,7 @@ describe("LocalEventBusService", () => {
         )
       })
 
-      it("should emit an event but log anything if it is internal", async () => {
+      it("should emit an event but not log anything if it is internal", async () => {
         eventEmitter.emit = jest.fn((data) => data)
 
         await eventBus.emit({
@@ -58,6 +58,24 @@ describe("LocalEventBusService", () => {
         })
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
+        expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
+          data: { hi: "1234" },
+          name: "eventName",
+        })
+
+        expect(loggerMock.info).toHaveBeenCalledTimes(0)
+
+        await eventBus.emit(
+          {
+            name: "eventName",
+            data: { hi: "1234" },
+          },
+          {
+            internal: true,
+          }
+        )
+
+        expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
         expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
           data: { hi: "1234" },
           name: "eventName",
