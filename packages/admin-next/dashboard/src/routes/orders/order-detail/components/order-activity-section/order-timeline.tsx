@@ -502,12 +502,28 @@ const ReturnBody = ({
   orderReturn: AdminReturn
   isCreated: boolean
 }) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
 
   const { mutateAsync: cancelReturnRequest } = useCancelReturn(
     orderReturn.id,
     orderReturn.order_id
   )
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.returns.cancel.title"),
+      description: t("orders.returns.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelReturnRequest()
+  }
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
     return acc + item.quantity
@@ -524,7 +540,7 @@ const ReturnBody = ({
         <>
           <div className="mt-[2px] flex items-center leading-none">⋅</div>
           <Button
-            onClick={() => cancelReturnRequest()}
+            onClick={onCancel}
             className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
             variant="transparent"
             size="small"
