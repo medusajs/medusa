@@ -1,4 +1,5 @@
 import { AdditionalData, PricingTypes, ProductTypes } from "@medusajs/types"
+import { ProductVariantWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,8 +7,9 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { updateProductVariantsStep } from "../steps"
+import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
+import { updateProductVariantsStep } from "../steps"
 import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 
 export type UpdateProductVariantsWorkflowInput =
@@ -29,7 +31,9 @@ export const updateProductVariantsWorkflowId = "update-product-variants"
  */
 export const updateProductVariantsWorkflow = createWorkflow(
   updateProductVariantsWorkflowId,
-  (input: WorkflowData<UpdateProductVariantsWorkflowInput & AdditionalData>) => {
+  (
+    input: WorkflowData<UpdateProductVariantsWorkflowInput & AdditionalData>
+  ) => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is updated.
     const updateWithoutPrices = transform({ input }, (data) => {
       if ("product_variants" in data.input) {
@@ -133,6 +137,17 @@ export const updateProductVariantsWorkflow = createWorkflow(
         })
       }
     )
+
+    const variantIdEvents = transform({ response }, ({ response }) => {
+      return response.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.UPDATED,
+      data: variantIdEvents,
+    })
 
     const productVariantsUpdated = createHook("productVariantsUpdated", {
       product_variants: response,

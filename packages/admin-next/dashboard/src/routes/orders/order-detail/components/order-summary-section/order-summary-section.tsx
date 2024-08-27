@@ -168,26 +168,39 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <Total order={order} />
 
       {(showAllocateButton || showReturns || showPayment || showRefund) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
-          {showReturns && (
-            <ButtonMenu
-              groups={[
-                {
-                  actions: returns.map((r) => ({
-                    label: t("orders.returns.receive.receive", {
-                      label: `#${r.id.slice(-7)}`,
-                    }),
-                    icon: <ArrowLongRight />,
-                    to: `/orders/${order.id}/returns/${r.id}/receive`,
-                  })),
-                },
-              ]}
-            >
-              <Button variant="secondary" size="small">
+        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+          {showReturns &&
+            (returns.length === 1 ? (
+              <Button
+                onClick={() =>
+                  navigate(
+                    `/orders/${order.id}/returns/${returns[0].id}/receive`
+                  )
+                }
+                variant="secondary"
+                size="small"
+              >
                 {t("orders.returns.receive.action")}
               </Button>
-            </ButtonMenu>
-          )}
+            ) : (
+              <ButtonMenu
+                groups={[
+                  {
+                    actions: returns.map((r) => ({
+                      label: t("orders.returns.receive.receive", {
+                        label: `#${r.id.slice(-7)}`,
+                      }),
+                      icon: <ArrowLongRight />,
+                      to: `/orders/${order.id}/returns/${r.id}/receive`,
+                    })),
+                  },
+                ]}
+              >
+                <Button variant="secondary" size="small">
+                  {t("orders.returns.receive.action")}
+                </Button>
+              </ButtonMenu>
+            ))}
 
           {showAllocateButton && (
             <Button
@@ -550,7 +563,7 @@ const ReturnBreakdown = ({
     item && (
       <div
         key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
