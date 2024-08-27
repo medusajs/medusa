@@ -5,7 +5,7 @@ import {
   PricingTypes,
   ProductTypes,
 } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Modules, ProductVariantWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -13,6 +13,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { createLinksWorkflow } from "../../common/workflows/create-links"
 import { validateInventoryItems } from "../../inventory/steps/validate-inventory-items"
 import { createInventoryItemsWorkflow } from "../../inventory/workflows/create-inventory-items"
@@ -233,6 +234,17 @@ export const createProductVariantsWorkflow = createWorkflow(
         }))
       }
     )
+
+    const variantIdEvents = transform({ response }, ({ response }) => {
+      return response.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.CREATED,
+      data: variantIdEvents,
+    })
 
     const productVariantsCreated = createHook("productVariantsCreated", {
       product_variants: response,

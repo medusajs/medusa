@@ -499,10 +499,10 @@ To test out the above API route:
 npm run dev
 ```
 
-2. Retrieve a JWT token from the `/auth/vendor/emailpass` API route:
+2. Retrieve a JWT token from the `/auth/vendor/emailpass/register` API route:
 
-```bash apiTesting testApiUrl="http://localhost:9000/auth/vendor/emailpass" testApiMethod="POST" testBodyParams={{ "email": "admin@medusa-test.com", "password": "supersecret" }}
-curl -X POST 'http://localhost:9000/auth/vendor/emailpass' \
+```bash apiTesting testApiUrl="http://localhost:9000/auth/vendor/emailpass/register" testApiMethod="POST" testBodyParams={{ "email": "admin@medusa-test.com", "password": "supersecret" }}
+curl -X POST 'http://localhost:9000/auth/vendor/emailpass/register' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "email": "admin@medusa-test.com",

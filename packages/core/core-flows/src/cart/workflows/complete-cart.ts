@@ -1,5 +1,5 @@
 import { OrderDTO } from "@medusajs/types"
-import { Modules, OrderEvents, OrderStatus } from "@medusajs/utils"
+import { Modules, OrderStatus, OrderWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -171,7 +171,10 @@ export const completeCartWorkflow = createWorkflow(
       },
     ])
 
-    emitEventStep({ eventName: OrderEvents.PLACED, data: { id: order.id } })
+    emitEventStep({
+      eventName: OrderWorkflowEvents.PLACED,
+      data: { id: order.id },
+    })
 
     return new WorkflowResponse(order)
   }

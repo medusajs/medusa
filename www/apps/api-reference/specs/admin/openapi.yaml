@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 tags:
+  - name: Auth
+    description: |
+      Auth API routes allow you to manage an admin user's authentication.
   - name: Api Keys
   - name: Campaigns
   - name: Claims
@@ -528,6 +531,14 @@ paths:
   /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe:
     $ref: >-
       paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
+  /auth/session:
+    $ref: paths/auth_session.yaml
+  /auth/user/{auth_provider}:
+    $ref: paths/auth_user_{auth_provider}.yaml
+  /auth/user/{auth_provider}/callback:
+    $ref: paths/auth_user_{auth_provider}_callback.yaml
+  /auth/user/{auth_provider}/register:
+    $ref: paths/auth_user_{auth_provider}_register.yaml
 components:
   securitySchemes:
     api_token:

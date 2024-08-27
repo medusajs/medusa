@@ -94,7 +94,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         children: [
           {
             type: "link",
-            path: "/commerce-modules/api-key",
+            path: "/commerce-modules/auth",
             title: "Overview",
           },
           {
@@ -129,14 +129,20 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
-                type: "link",
-                path: "/commerce-modules/auth/authentication-route",
-                title: "Authentication Route",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/auth/auth-flows",
+                type: "sub-category",
                 title: "Auth Flows",
+                children: [
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/authentication-route",
+                    title: "Using API Routes",
+                  },
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/auth-flows",
+                    title: "Using Module's Service",
+                  },
+                ],
               },
             ],
           },
@@ -2157,6 +2163,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
+              },
+            ],
+          },
+          {
+            type: "category",
+            title: "Admin Development",
+            children: [
+              {
+                type: "link",
+                path: "/troubleshooting/medusa-admin/no-widget-route",
+                title: "Widget or Route not Showing",
               },
             ],
           },

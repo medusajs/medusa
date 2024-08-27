@@ -267,5 +267,6 @@ export const generatedEditDates = {
   "references/core_flows/Order/functions/core_flows.Order.updateOrderEditAddItemWorkflow/page.mdx": "2024-08-20T00:10:59.105Z",
   "references/core_flows/core_flows.Order/page.mdx": "2024-08-20T00:10:56.437Z",
   "references/modules/core_flows/page.mdx": "2024-08-20T00:10:49.141Z",
-  "references/types/types.HttpTypes/page.mdx": "2024-08-20T00:10:43.061Z"
+  "references/types/types.HttpTypes/page.mdx": "2024-08-20T00:10:43.061Z",
+  "app/troubleshooting/medusa-admin/no-widget-route/page.mdx": "2024-08-23T11:31:26.346Z"
 }
