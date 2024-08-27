@@ -81,6 +81,99 @@ async function askForLinkActionsToPerform(
   })
 }
 
+/**
+ * Low-level utility to sync links. This utility is used
+ * by the migrate command as-well.
+ */
+export async function syncLinks(
+  medusaAppLoader: MedusaAppLoader,
+  {
+    executeAll,
+    executeSafe,
+  }: {
+    executeSafe: boolean
+    executeAll: boolean
+  }
+) {
+  const planner = await medusaAppLoader.getLinksExecutionPlanner()
+
+  logger.info("Syncing links...")
+
+  const actionPlan = await planner.createPlan()
+  const groupActionPlan = groupByActionPlan(actionPlan)
+
+  if (groupActionPlan.delete?.length) {
+    /**
+     * Do not delete anything when "--execute-safe" flag
+     * is used. And only prompt when "--execute-all"
+     * flag isn't used either
+     */
+    if (executeSafe) {
+      groupActionPlan.delete = []
+    } else if (!executeAll) {
+      groupActionPlan.delete = await askForLinkActionsToPerform(
+        `Select the tables to ${chalk.red(
+          "DELETE"
+        )}. The following links have been removed`,
+        groupActionPlan.delete
+      )
+    }
+  }
+
+  if (groupActionPlan.notify?.length) {
+    let answer = groupActionPlan.notify
+
+    /**
+     * Do not update anything when "--execute-safe" flag
+     * is used. And only prompt when "--execute-all"
+     * flag isn't used either.
+     */
+    if (executeSafe) {
+      answer = []
+    } else if (!executeAll) {
+      answer = await askForLinkActionsToPerform(
+        `Select the tables to ${chalk.red(
+          "UPDATE"
+        )}. The following links have been updated`,
+        groupActionPlan.notify
+      )
+    }
+
+    groupActionPlan.update ??= []
+    groupActionPlan.update.push(
+      ...answer.map((action) => {
+        return {
+          ...action,
+          action: "update",
+        } as LinkMigrationsPlannerAction
+      })
+    )
+  }
+
+  const toCreate = groupActionPlan.create ?? []
+  const toUpdate = groupActionPlan.update ?? []
+  const toDelete = groupActionPlan.delete ?? []
+  const actionsToExecute = [...toCreate, ...toUpdate, ...toDelete]
+
+  await planner.executePlan(actionsToExecute)
+
+  if (toCreate.length) {
+    logActions("Created following links tables", toCreate)
+  }
+  if (toUpdate.length) {
+    logActions("Updated following links tables", toUpdate)
+  }
+  if (toDelete.length) {
+    logActions("Deleted following links tables", toDelete)
+  }
+
+  if (actionsToExecute.length) {
+    logger.info("Links sync completed")
+  } else {
+    logger.info("Database already up-to-date")
+  }
+}
+
 const main = async function ({ directory, executeSafe, executeAll }) {
   try {
     const container = await initializeContainer(directory)
@@ -98,83 +191,7 @@ const main = async function ({ directory, executeSafe, executeAll }) {
     )
     await new LinkLoader(linksSourcePaths).load()
 
-    const planner = await medusaAppLoader.getLinksExecutionPlanner()
-
-    logger.info("Syncing links...")
-
-    const actionPlan = await planner.createPlan()
-    const groupActionPlan = groupByActionPlan(actionPlan)
-
-    if (groupActionPlan.delete?.length) {
-      /**
-       * Do not delete anything when "--execute-safe" flag
-       * is used. And only prompt when "--execute-all"
-       * flag isn't used either
-       */
-      if (executeSafe) {
-        groupActionPlan.delete = []
-      } else if (!executeAll) {
-        groupActionPlan.delete = await askForLinkActionsToPerform(
-          `Select the tables to ${chalk.red(
-            "DELETE"
-          )}. The following links have been removed`,
-          groupActionPlan.delete
-        )
-      }
-    }
-
-    if (groupActionPlan.notify?.length) {
-      let answer = groupActionPlan.notify
-
-      /**
-       * Do not update anything when "--execute-safe" flag
-       * is used. And only prompt when "--execute-all"
-       * flag isn't used either.
-       */
-      if (executeSafe) {
-        answer = []
-      } else if (!executeAll) {
-        answer = await askForLinkActionsToPerform(
-          `Select the tables to ${chalk.red(
-            "UPDATE"
-          )}. The following links have been updated`,
-          groupActionPlan.notify
-        )
-      }
-
-      groupActionPlan.update ??= []
-      groupActionPlan.update.push(
-        ...answer.map((action) => {
-          return {
-            ...action,
-            action: "update",
-          } as LinkMigrationsPlannerAction
-        })
-      )
-    }
-
-    const toCreate = groupActionPlan.create ?? []
-    const toUpdate = groupActionPlan.update ?? []
-    const toDelete = groupActionPlan.delete ?? []
-    const actionsToExecute = [...toCreate, ...toUpdate, ...toDelete]
-
-    await planner.executePlan(actionsToExecute)
-
-    if (toCreate.length) {
-      logActions("Created following links tables", toCreate)
-    }
-    if (toUpdate.length) {
-      logActions("Updated following links tables", toUpdate)
-    }
-    if (toDelete.length) {
-      logActions("Deleted following links tables", toDelete)
-    }
-
-    if (actionsToExecute.length) {
-      logger.info("Links sync completed")
-    } else {
-      logger.info("Database already up-to-date")
-    }
+    await syncLinks(medusaAppLoader, { executeAll, executeSafe })
     process.exit()
   } catch (e) {
     logger.error(e)

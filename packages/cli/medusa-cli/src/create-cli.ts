@@ -143,6 +143,64 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: "db:migrate",
+      desc: "Migrate the database by executing pending migrations",
+      builder: (builder) => {
+        builder.option("skip-links", {
+          type: "boolean",
+          describe: "Do not sync links",
+        })
+        builder.option("execute-all-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions from sync links",
+        })
+        builder.option("execute-safe-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions from sync links",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/migrate", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:rollback [modules...]",
+      desc: "Rollback last batch of executed migrations for a given module",
+      builder: {
+        modules: {
+          description: "Modules for which to rollback migrations",
+          demand: true,
+        },
+      },
+      handler: handlerP(
+        getCommandHandler("db/rollback", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:generate [modules...]",
+      desc: "Generate migrations for a given module",
+      builder: {
+        modules: {
+          description: "Modules for which to generate migration files",
+          demand: true,
+        },
+      },
+      handler: handlerP(
+        getCommandHandler("db/generate", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: "db:sync-links",
       desc: "Sync database schema with the links defined by your application and Medusa core",
       builder: (builder) => {
