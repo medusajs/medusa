@@ -51,6 +51,28 @@ medusaIntegrationTestRunner({
         )
       ).data.customer
 
+      const taxRegion = (
+        await api.post(
+          "/admin/tax-regions",
+          {
+            country_code: "US",
+          },
+          adminHeaders
+        )
+      ).data.tax_region
+
+      await api.post(
+        "/admin/tax-rates",
+        {
+          rate: 10,
+          code: "standard",
+          name: "Taxation is theft",
+          is_default: true,
+          tax_region_id: taxRegion.id,
+        },
+        adminHeaders
+      )
+
       const salesChannel = (
         await api.post(
           "/admin/sales-channels",
@@ -106,6 +128,14 @@ medusaIntegrationTestRunner({
       ).data.product
 
       const orderModule = container.resolve(ModuleRegistrationName.ORDER)
+
+      console.log(orderModule.__joinerConfig?.alias)
+      console.log(
+        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      )
+      console.log(
+        container.resolve(ModuleRegistrationName.CART).__joinerConfig?.alias
+      )
 
       order = await orderModule.createOrders({
         region_id: region.id,
