@@ -220,7 +220,8 @@
   "dataGrid": {
     "columns": {
       "view": "View",
-      "resetToDefault": "Reset to default"
+      "resetToDefault": "Reset to default",
+      "disabled": "Changing which columns are visible is disabled."
     },
     "shortcuts": {
       "label": "Shortcuts",

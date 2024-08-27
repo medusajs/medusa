@@ -746,7 +746,7 @@ const DataGridHeader = ({
         <DropdownMenu open={columnsOpen} onOpenChange={handleColumnsOpenChange}>
           <ConditionalTooltip
             showTooltip={isDisabled}
-            content={"No columns can be hidden"}
+            content={t("dataGrid.columns.disabled")}
           >
             <DropdownMenu.Trigger asChild disabled={isDisabled}>
               <Button size="small" variant="secondary">
