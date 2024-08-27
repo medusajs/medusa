@@ -1,3 +1,69 @@
 import { TypeList, WorkflowDiagram } from "docs-ui"
 
 # Workflows\_User
+
+## createUserAccountWorkflow
+
+This workflow creates an authentication identity for a user.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"createUserAccountWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users.","link":"../../core_flows.Steps_User/page.mdx#createusersstep","depth":1},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity.","link":"../../core_flows.Steps_Auth/page.mdx#setauthappmetadatastep","depth":2}]}} />
+
+### Input
+
+<TypeList types={[{"name":"CreateUserAccountWorkflowInput","type":"[CreateUserAccountWorkflowInput](../../types/core_flows.CreateUserAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"authIdentityId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"userData","type":"[CreateUserDTO](../../../user/interfaces/user.CreateUserDTO/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createUserAccountWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"UserDTO","type":"[UserDTO](../../../user/interfaces/user.UserDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createUserAccountWorkflow"/>
+
+___
+
+## createUsersWorkflow
+
+This workflow creates one or more users.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users.","link":"../../core_flows.Steps_User/page.mdx#createusersstep","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"CreateUsersWorkflowInputDTO","type":"`CreateUsersWorkflowInputDTO`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createUsersWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"UserDTO[]","type":"[UserDTO](../../../user/interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UserDTO","type":"[UserDTO](../../../user/interfaces/user.UserDTO/page.mdx)","optional":false,"defaultValue":"","description":"The user details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createUsersWorkflow"/>
+
+___
+
+## deleteUsersWorkflow
+
+This workflow deletes one or more users.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"deleteUsersWorkflow","steps":[{"type":"step","name":"deleteUsersStep","description":"This step deletes one or more stores.","link":"../../core_flows.Steps_User/page.mdx#deleteusersstep","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"DeleteUserWorkflowInput","type":"`DeleteUserWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteUsersWorkflow"/>
+
+___
+
+## updateUsersWorkflow
+
+This workflow updates one or more users.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"updateUsersWorkflow","steps":[{"type":"step","name":"updateUsersStep","description":"This step updates one or more stores.","link":"../../core_flows.Steps_User/page.mdx#updateusersstep","depth":1}]}} />
+
+### Input
+
+<TypeList types={[{"name":"UpdateUsersWorkflowInputDTO","type":"`UpdateUsersWorkflowInputDTO`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateUsersWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"UserDTO[]","type":"[UserDTO](../../../user/interfaces/user.UserDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UserDTO","type":"[UserDTO](../../../user/interfaces/user.UserDTO/page.mdx)","optional":false,"defaultValue":"","description":"The user details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"The first name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"The last name of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"The avatar URL of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The creation date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The updated date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The deletion date of the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateUsersWorkflow"/>

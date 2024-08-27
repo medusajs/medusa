@@ -1,4 +1,4 @@
-import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
+import { IconButton, Text, Tooltip, clx, usePrompt, Button } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
@@ -16,10 +16,10 @@ import { useTranslation } from "react-i18next"
 
 import { useClaims } from "../../../../../hooks/api/claims"
 import { useExchanges } from "../../../../../hooks/api/exchanges"
-import { useReturns } from "../../../../../hooks/api/returns"
-import { useDate } from "../../../../../hooks/use-date"
+import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -224,8 +224,17 @@ const useActivityItems = (order: AdminOrder) => {
           returnId: ret.id.slice(-7),
         }),
         timestamp: ret.created_at,
-        children: <ReturnBody orderReturn={ret} />,
+        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
       })
+
+      if (ret.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.return.canceled", {
+            returnId: ret.id.slice(-7),
+          }),
+          timestamp: ret.canceled_at,
+        })
+      }
 
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
@@ -488,24 +497,60 @@ const FulfillmentCreatedBody = ({
 
 const ReturnBody = ({
   orderReturn,
+  isCreated,
   isReceived,
 }: {
   orderReturn: AdminReturn
+  isCreated: boolean
   isReceived?: boolean
 }) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
+
+  const { mutateAsync: cancelReturnRequest } = useCancelReturn(
+    orderReturn.id,
+    orderReturn.order_id
+  )
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.returns.cancel.title"),
+      description: t("orders.returns.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelReturnRequest()
+  }
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
     return acc + (isReceived ? item.received_quantity : item.quantity) // TODO: revisit when we add dismissed quantity on ReturnItem
   }, 0)
 
   return (
-    <div>
+    <div className="flex items-start gap-1">
       <Text size="small" className="text-ui-fg-subtle">
         {t("orders.activity.events.return.items", {
           count: numberOfItems,
         })}
       </Text>
+      {isCreated && (
+        <>
+          <div className="mt-[2px] flex items-center leading-none">⋅</div>
+          <Button
+            onClick={onCancel}
+            className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+            variant="transparent"
+            size="small"
+          >
+            {t("actions.cancel")}
+          </Button>
+        </>
+      )}
     </div>
   )
 }
