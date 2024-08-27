@@ -366,44 +366,37 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             )!
 
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
-            expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.GEO_ZONE_DELETED,
-                action: "deleted",
-                object: "geo_zone",
-                data: { id: ukGeoZone.id },
-                options: {
-                  internal: true,
-                },
-              }),
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
-                action: "updated",
-                object: "service_zone",
-                data: { id: updatedServiceZone.id },
-                options: {
-                  internal: true,
-                },
-              }),
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
-                action: "created",
-                object: "geo_zone",
-                data: { id: chGeoZone.id },
-                options: {
-                  internal: true,
-                },
-              }),
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
-                action: "updated",
-                object: "geo_zone",
-                data: { id: usGeoZone.id },
-                options: {
-                  internal: true,
-                },
-              }),
-            ])
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_DELETED,
+                  action: "deleted",
+                  object: "geo_zone",
+                  data: { id: ukGeoZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
+                  action: "updated",
+                  object: "service_zone",
+                  data: { id: updatedServiceZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_CREATED,
+                  action: "created",
+                  object: "geo_zone",
+                  data: { id: chGeoZone.id },
+                }),
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
+                  action: "updated",
+                  object: "geo_zone",
+                  data: { id: usGeoZone.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should fail on duplicated service zone name", async function () {

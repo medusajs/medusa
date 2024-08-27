@@ -107,17 +107,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             )
 
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-            expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
-                action: "created",
-                object: "geo_zone",
-                data: { id: geoZone.id },
-                options: {
-                  internal: true
-                }
-              }),
-            ])
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_CREATED,
+                  action: "created",
+                  object: "geo_zone",
+                  data: { id: geoZone.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should create a collection of geo zones", async function () {
@@ -168,7 +170,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                     object: "geo_zone",
                     data: { id: geoZones[i].id },
                   }),
-                ])
+                ]),
+                {
+                  internal: true,
+                }
               )
 
               ++i
@@ -268,17 +273,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
-            expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
-                action: "updated",
-                object: "geo_zone",
-                data: { id: updatedGeoZone.id },
-                options: {
-                  internal: true
-                }
-              }),
-            ])
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
+                  action: "updated",
+                  object: "geo_zone",
+                  data: { id: updatedGeoZone.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should update a collection of geo zones", async function () {
@@ -343,7 +350,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                     object: "geo_zone",
                     data: { id: expectedGeoZone.id },
                   }),
-                ])
+                ]),
+                {
+                  internal: true,
+                }
               )
             }
           })

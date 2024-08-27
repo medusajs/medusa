@@ -94,17 +94,19 @@ moduleIntegrationTestRunner({
         const result = await service.createNotifications(notification)
 
         expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-        expect(eventBusEmitSpy).toHaveBeenCalledWith([
-          composeMessage(NotificationEvents.NOTIFICATION_CREATED, {
-            data: { id: result.id },
-            object: "notification",
-            source: Modules.NOTIFICATION,
-            action: CommonEvents.CREATED,
-            options: {
-              internal: true,
-            },
-          }),
-        ])
+        expect(eventBusEmitSpy).toHaveBeenCalledWith(
+          [
+            composeMessage(NotificationEvents.NOTIFICATION_CREATED, {
+              data: { id: result.id },
+              object: "notification",
+              source: Modules.NOTIFICATION,
+              action: CommonEvents.CREATED,
+            }),
+          ],
+          {
+            internal: true,
+          }
+        )
       })
 
       it("ensures the same notification is not sent twice", async () => {
