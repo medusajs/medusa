@@ -875,7 +875,10 @@ export default class ProductModuleService
       collections.map(({ id }) => ({
         name: ProductCollectionEvents.COLLECTION_CREATED,
         data: { id },
-      }))
+      })),
+      {
+        internal: true,
+      }
     )
 
     return Array.isArray(data) ? createdCollections : createdCollections[0]
@@ -948,7 +951,10 @@ export default class ProductModuleService
         created.map(({ id }) => ({
           name: ProductCollectionEvents.COLLECTION_CREATED,
           data: { id },
-        }))
+        })),
+        {
+          internal: true,
+        }
       )
     }
 
@@ -957,7 +963,10 @@ export default class ProductModuleService
         updated.map(({ id }) => ({
           name: ProductCollectionEvents.COLLECTION_UPDATED,
           data: { id },
-        }))
+        })),
+        {
+          internal: true,
+        }
       )
     }
 
@@ -1018,7 +1027,10 @@ export default class ProductModuleService
       updatedCollections.map(({ id }) => ({
         name: ProductCollectionEvents.COLLECTION_UPDATED,
         data: { id },
-      }))
+      })),
+      {
+        internal: true,
+      }
     )
 
     return isString(idOrSelector) ? updatedCollections[0] : updatedCollections
@@ -1281,7 +1293,10 @@ export default class ProductModuleService
       createdProducts.map(({ id }) => ({
         name: ProductEvents.PRODUCT_CREATED,
         data: { id },
-      }))
+      })),
+      {
+        internal: true,
+      }
     )
 
     return Array.isArray(data) ? createdProducts : createdProducts[0]
@@ -1329,7 +1344,10 @@ export default class ProductModuleService
         created.map(({ id }) => ({
           name: ProductEvents.PRODUCT_CREATED,
           data: { id },
-        }))
+        })),
+        {
+          internal: true,
+        }
       )
     }
 
@@ -1338,7 +1356,10 @@ export default class ProductModuleService
         updated.map(({ id }) => ({
           name: ProductEvents.PRODUCT_UPDATED,
           data: { id },
-        }))
+        })),
+        {
+          internal: true,
+        }
       )
     }
 
@@ -1392,7 +1413,10 @@ export default class ProductModuleService
       updatedProducts.map(({ id }) => ({
         name: ProductEvents.PRODUCT_UPDATED,
         data: { id },
-      }))
+      })),
+      {
+        internal: true,
+      }
     )
 
     return isString(idOrSelector) ? updatedProducts[0] : updatedProducts

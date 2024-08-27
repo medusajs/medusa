@@ -271,7 +271,10 @@ export function MedusaService<
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
               metadata: { source: "", action: "", object: "" },
-            }))
+            })),
+            {
+              internal: true,
+            }
           )
         }
 
@@ -302,7 +305,10 @@ export function MedusaService<
               name: `${kebabCase(modelName)}.deleted`,
               metadata: { source: "", action: "", object: "" },
               data: { id },
-            }))
+            })),
+            {
+              internal: true,
+            }
           )
 
           // Map internal table/column names to their respective external linkable keys
