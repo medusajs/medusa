@@ -73,8 +73,8 @@ Create the directory `src/modules/restaurant`.
 Create the file `src/modules/restaurant/models/restaurant.ts` with the following content:
 
 ```ts title="src/modules/restaurant/models/restaurant.ts"
-import { model } from "@medusajs/utils";
-import { RestaurantAdmin } from "./restaurant-admin";
+import { model } from "@medusajs/utils"
+import { RestaurantAdmin } from "./restaurant-admin"
 
 export const Restaurant = model.define("restaurant", {
   id: model
@@ -88,8 +88,8 @@ export const Restaurant = model.define("restaurant", {
   email: model.text(),
   address: model.text(),
   image_url: model.text().nullable(),
-  admins: model.hasMany(() => RestaurantAdmin)
-});
+  admins: model.hasMany(() => RestaurantAdmin),
+})
 ```
 
 This defines a `Restaurant` data model with properties like `is_open` to track whether a restaurant is open, and `address` to show the restaurant’s address.
@@ -99,8 +99,8 @@ It also has a relation to the `RestaurantAdmin` data model that you’ll define 
 Create the file `src/modules/restaurant/models/restaurant-admin.ts` with the following content:
 
 ```ts title="src/modules/restaurant/models/restaurant-admin.ts"
-import { model } from "@medusajs/utils";
-import { Restaurant } from "./restaurant";
+import { model } from "@medusajs/utils"
+import { Restaurant } from "./restaurant"
 
 export const RestaurantAdmin = model.define("restaurant_admin", {
   id: model
@@ -111,9 +111,9 @@ export const RestaurantAdmin = model.define("restaurant_admin", {
   email: model.text(),
   avatar_url: model.text().nullable(),
   restaurant: model.belongsTo(() => Restaurant, {
-    mappedBy: "admins"
+    mappedBy: "admins",
   }),
-});
+})
 ```
 
 This defines a `RestaurantAdmin` data model, which belongs to a restaurant. It represents an admin that can manage a restaurant and its data.
@@ -123,9 +123,9 @@ This defines a `RestaurantAdmin` data model, which belongs to a restaurant. It r
 Next, create the main service of the module at `src/modules/restaurant/service.ts` with the following content:
 
 ```ts title="src/modules/restaurant/service.ts"
-import { MedusaService } from "@medusajs/utils";
-import { Restaurant } from "./models/restaurant";
-import { RestaurantAdmin } from "./models/restaurant-admin";
+import { MedusaService } from "@medusajs/utils"
+import { Restaurant } from "./models/restaurant"
+import { RestaurantAdmin } from "./models/restaurant-admin"
 
 class RestaurantModuleService extends MedusaService({
   Restaurant,
@@ -139,17 +139,17 @@ The service extends the [service factory](!docs!/advanced-development/modules/se
 
 ### Create Restaurant Module Definition
 
-Then, create the file `src/modules/restaurant/index.ts` that holds the following module definition:
+Then, create the file `src/modules/restaurant/index.ts` that holds the module definition:
 
 ```ts title="src/modules/restaurant/index.ts"
-import Service from "./service";
-import { Module } from "@medusajs/utils";
+import Service from "./service"
+import { Module } from "@medusajs/utils"
 
-export const RESTAURANT_MODULE = "restaurantModuleService";
+export const RESTAURANT_MODULE = "restaurantModuleService"
 
 export default Module(RESTAURANT_MODULE, {
   service: Service,
-});
+})
 ```
 
 ### Add Restaurant Module to Medusa Configuration
@@ -163,7 +163,7 @@ module.exports = defineConfig({
     restaurantModuleService: {
       resolve: "./modules/restaurant",
     },
-  }
+  },
 })
 ```
 
@@ -210,8 +210,8 @@ This adds an enum that is used by the data models. It also adds a type for `deli
 Create the file `src/modules/delivery/models/driver.ts` with the following content:
 
 ```ts title="src/modules/delivery/models/driver.ts"
-import { model } from "@medusajs/utils";
-import { Delivery } from "./delivery";
+import { model } from "@medusajs/utils"
+import { Delivery } from "./delivery"
 
 export const Driver = model.define("driver", {
   id: model
@@ -223,9 +223,9 @@ export const Driver = model.define("driver", {
   phone: model.text(),
   avatar_url: model.text().nullable(),
   deliveries: model.hasMany(() => Delivery, {
-    mappedBy: "driver"
-  })
-});
+    mappedBy: "driver",
+  }),
+})
 
 ```
 
@@ -236,9 +236,9 @@ It has a relation to a `Delivery` data model that you’ll create next.
 Create the file `src/modules/delivery/models/delivery.ts` with the following content:
 
 ```ts title="src/modules/delivery/models/delivery.ts"
-import { model } from "@medusajs/utils";
-import { DeliveryStatus } from "../types/common";
-import { Driver } from "./driver";
+import { model } from "@medusajs/utils"
+import { DeliveryStatus } from "../types/common"
+import { Driver } from "./driver"
 
 export const Delivery = model.define("delivery", {
   id: model
@@ -249,9 +249,9 @@ export const Delivery = model.define("delivery", {
   eta: model.dateTime().nullable(),
   delivered_at: model.dateTime().nullable(),
   driver: model.belongsTo(() => Driver, {
-    mappedBy: "deliveries"
-  }).nullable()
-});
+    mappedBy: "deliveries",
+  }).nullable(),
+})
 
 ```
 
@@ -264,19 +264,19 @@ It also has a relation to the `Driver` data model, indicating the driver handlin
 
 ### Create Main Service for Delivery Module
 
-Then, create the main service of the delivery module at `src/modules/delivery/service.ts` with the following content:
+Then, create the main service of the Delivery Module at `src/modules/delivery/service.ts` with the following content:
 
 ```ts title="src/modules/delivery/service.ts"
-import { MedusaService } from "@medusajs/utils";
-import { Delivery } from "./models/delivery";
-import { Driver } from "./models/driver";
+import { MedusaService } from "@medusajs/utils"
+import { Delivery } from "./models/delivery"
+import { Driver } from "./models/driver"
 
 class DeliveryModuleService extends MedusaService({
   Delivery,
   Driver,
 }) {}
 
-export default DeliveryModuleService;
+export default DeliveryModuleService
 ```
 
 The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
@@ -286,14 +286,14 @@ The service extends the [service factory](!docs!/advanced-development/modules/se
 Next, create the file `src/modules/delivery/index.ts` holding the module’s definition:
 
 ```ts title="src/modules/delivery/index.ts"
-import Service from "./service";
-import { Module } from "@medusajs/utils";
+import Service from "./service"
+import { Module } from "@medusajs/utils"
 
-export const DELIVERY_MODULE = "deliveryModuleService";
+export const DELIVERY_MODULE = "deliveryModuleService"
 
 export default Module(DELIVERY_MODULE, {
   service: Service,
-});
+})
 ```
 
 ### Add Delivery Module to Medusa Configuration
@@ -305,10 +305,10 @@ module.exports = defineConfig({
   // ...
   modules: {
     deliveryModuleService: {
-      resolve: "./modules/delivery"
+      resolve: "./modules/delivery",
     },
     // ...
-  }
+  },
 })
 
 ```
@@ -324,9 +324,9 @@ In this step, you’ll define links between the Restaurant and Delivery modules,
 Create the file `src/links/restaurant-products.ts` with the following content:
 
 ```ts title="src/links/restaurant-products.ts"
-import RestaurantModule from "../modules/restaurant";
-import ProductModule from "@medusajs/product";
-import { defineLink } from "@medusajs/utils";
+import RestaurantModule from "../modules/restaurant"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   RestaurantModule.linkable.restaurant,
@@ -334,7 +334,7 @@ export default defineLink(
     linkable: ProductModule.linkable.product,
     isList: true,
   }
-);
+)
 ```
 
 This defines a link between the Restaurant Module’s `restaurant` data model and the Product Module’s `product` data model, indicating that a restaurant is associated with its products.
@@ -346,9 +346,9 @@ Since a restaurant has multiple products, `isList` is enabled on the product’s
 Create the file `src/links/restaurant-delivery.ts` with the following content:
 
 ```ts title="src/links/restaurant-delivery.ts"
-import RestaurantModule from "../modules/restaurant";
-import DeliveryModule from "../modules/delivery";
-import { defineLink } from "@medusajs/utils";
+import RestaurantModule from "../modules/restaurant"
+import DeliveryModule from "../modules/delivery"
+import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   RestaurantModule.linkable.restaurant, 
@@ -356,7 +356,7 @@ export default defineLink(
     linkable: DeliveryModule.linkable.delivery,
     isList: true,
   }
-);
+)
 
 ```
 
@@ -369,14 +369,14 @@ Since a restaurant has multiple deliveries, `isList` is enabled on the delivery�
 Create the file `src/links/delivery-cart.ts` with the following content:
 
 ```ts title="src/links/delivery-cart.ts"
-import DeliveryModule from "../modules/delivery";
-import CartModule from "@medusajs/cart";
-import { defineLink } from "@medusajs/utils";
+import DeliveryModule from "../modules/delivery"
+import CartModule from "@medusajs/cart"
+import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   DeliveryModule.linkable.delivery,
   CartModule.linkable.cart
-);
+)
 ```
 
 This defines a link between the Delivery Module’s `delivery` data model and the Cart Module’s `cart` data model, indicating that delivery is associated with the cart it’s created from.
@@ -386,14 +386,14 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 Create the file `src/links/delivery-order.ts` with the following content:
 
 ```ts title="src/links/delivery-order.ts"
-import DeliveryModule from "../modules/delivery";
-import OrderModule from "@medusajs/order";
-import { defineLink } from "@medusajs/utils";
+import DeliveryModule from "../modules/delivery"
+import OrderModule from "@medusajs/order"
+import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   DeliveryModule.linkable.delivery,
   OrderModule.linkable.order
-);
+)
 ```
 
 This defines a link between the Delivery Module’s `delivery` data model and the Order Module’s `order` data model, indicating that a delivery is associated with the order created by the customer.
@@ -440,7 +440,7 @@ Before implementing the functionalities, you’ll create type files in the Resta
 Create the file `src/modules/restaurant/types/index.ts` with the following content:
 
 ```ts title="src/modules/restaurant/types/index.ts"
-import RestaurantModuleService from "../service";
+import RestaurantModuleService from "../service"
 
 export interface CreateRestaurant {
   name: string;
@@ -475,31 +475,31 @@ export const createRestaurantHighlight = [
 ]
 
 ```ts title="src/workflows/restaurant/steps/create-restaurant.ts" highlights={createRestaurantHighlight} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { 
-  CreateRestaurantDTO
-} from "../../../modules/restaurant/types/mutations";
-import { RESTAURANT_MODULE } from "../../../modules/restaurant";
+  CreateRestaurantDTO,
+} from "../../../modules/restaurant/types/mutations"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
 
 export const createRestaurantStep = createStep(
   "create-restaurant-step",
   async function (data: CreateRestaurantDTO, { container }) {
     const restaurantModuleService = container.resolve(
       RESTAURANT_MODULE
-    );
+    )
 
-    const restaurant = await restaurantModuleService.createRestaurants(data);
+    const restaurant = await restaurantModuleService.createRestaurants(data)
 
-    return new StepResponse(restaurant, restaurant.id);
+    return new StepResponse(restaurant, restaurant.id)
   },
   function (id: string, { container }) {
     const restaurantModuleService = container.resolve(
       RESTAURANT_MODULE
-    );
+    )
 
-    return restaurantModuleService.deleteRestaurants(id);
+    return restaurantModuleService.deleteRestaurants(id)
   }
-);
+)
 ```
 
 This creates a step that creates a restaurant. The step’s compensation function, which executes if an error occurs, deletes the created restaurant.
@@ -510,9 +510,9 @@ Next, create the workflow at `src/workflows/restaurant/workflows/create-restaura
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
-import { createRestaurantStep } from "../steps/create-restaurant";
-import { CreateRestaurant } from "../../../modules/restaurant/types";
+} from "@medusajs/workflows-sdk"
+import { createRestaurantStep } from "../steps/create-restaurant"
+import { CreateRestaurant } from "../../../modules/restaurant/types"
 
 type WorkflowInput = {
   restaurant: CreateRestaurant;
@@ -521,11 +521,11 @@ type WorkflowInput = {
 export const createRestaurantWorkflow = createWorkflow(
   "create-restaurant-workflow",
   function (input: WorkflowInput) {
-    const restaurant = createRestaurantStep(input.restaurant);
+    const restaurant = createRestaurantStep(input.restaurant)
 
-    return new WorkflowResponse(restaurant);
+    return new WorkflowResponse(restaurant)
   }
-);
+)
 ```
 
 The workflow executes the step and returns the created restaurant.
@@ -537,7 +537,7 @@ You’ll now create the API route that executes the workflow.
 Start by creating the file `src/api/restaurants/validation-schemas.ts` that holds the schema to validate the request body:
 
 ```ts title="src/api/restaurants/validation-schemas.ts"
-import { z } from "zod";
+import { z } from "zod"
 
 export const restaurantSchema = z.object({
   name: z.string(),
@@ -546,7 +546,7 @@ export const restaurantSchema = z.object({
   phone: z.string(),
   email: z.string(),
   image_url: z.string().optional(),
-});
+})
 ```
 
 Then, create the file `src/api/restaurants/route.ts` with the following content:
@@ -556,21 +556,21 @@ export const createRestaurantRouteHighlights = [
 ]
 
 ```ts title="src/api/restaurants/route.ts" highlights={createRestaurantRouteHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
 import { 
-  CreateRestaurantDTO
-  } from "../../modules/restaurant/types/mutations";
+  CreateRestaurantDTO,
+  } from "../../modules/restaurant/types/mutations"
 import { 
-  createRestaurantWorkflow
-  } from "../../workflows/restaurant/workflows/create-restaurant";
-import { restaurantSchema } from "./validation-schemas";
+  createRestaurantWorkflow,
+  } from "../../workflows/restaurant/workflows/create-restaurant"
+import { restaurantSchema } from "./validation-schemas"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = restaurantSchema.parse(req.body) as CreateRestaurantDTO;
+  const validatedBody = restaurantSchema.parse(req.body) as CreateRestaurantDTO
 
   if (!validatedBody) {
-    return MedusaError.Types.INVALID_DATA;
+    return MedusaError.Types.INVALID_DATA
   }
 
   const { result: restaurant } = await createRestaurantWorkflow(req.scope)
@@ -578,9 +578,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 	    input: {
 	      restaurant: validatedBody,
 	    },
-	  });
+	  })
 
-  return res.status(200).json({ restaurant });
+  return res.status(200).json({ restaurant })
 }
 ```
 
@@ -632,15 +632,15 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 
 ```ts title="src/api/restaurants/route.ts"
 // other imports...
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
 
 // ...
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const { currency_code = "eur", ...queryFilters } = req.query;
+  const { currency_code = "eur", ...queryFilters } = req.query
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery = req.scope.resolve("remoteQuery")
 
   const restaurantsQuery = remoteQueryObjectFromString({
     entryPoint: "restaurants",
@@ -656,21 +656,21 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.*",
       "products.categories.*",
       "products.variants.*",
-      "products.variants.calculated_price.*"
+      "products.variants.calculated_price.*",
     ],
     variables: {
       filters: queryFilters,
       "products.variants.calculated_price": {
         context: {
-          currency_code
-        }
-      }
+          currency_code,
+        },
+      },
     },
-  });
+  })
 
-  const restaurants = await remoteQuery(restaurantsQuery);
+  const restaurants = await remoteQuery(restaurantsQuery)
 
-  return res.status(200).json({ restaurants });
+  return res.status(200).json({ restaurants })
 }
 ```
 
@@ -713,14 +713,14 @@ Start by implementing the functionality to create a user in a workflow. The work
 To implement the first step, create the file `src/workflows/user/steps/create-user.ts` with the following content:
 
 ```ts title="src/workflows/user/steps/create-user.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
-import { MedusaError } from "@medusajs/utils";
-import { createStep, StepResponse } from "@medusajs/workflows-sdk";
+import { MedusaError } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   CreateDriverInput,
   CreateRestaurantAdminInput,
-} from "../workflows/create-user";
-import { RESTAURANT_MODULE } from "../../../modules/restaurant";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
+} from "../workflows/create-user"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
 
 export type CreateRestaurantAdminInput = {
   restaurant_id: string;
@@ -753,12 +753,12 @@ export const createUserStep = createStep(
       // TODO create driver
     }
 
-    throw MedusaError.Types.INVALID_DATA;
+    throw MedusaError.Types.INVALID_DATA
   },
   function ({ id, actor_type }, { container }) {
     // TODO add compensation actions
   }
-);
+)
 ```
 
 This creates a step that accepts as input the data of the user to create and its type. If the type is `restaurant`, then a restaurant admin is created. If the type is a `driver`, then a driver is created. Otherwise, an error is thrown.
@@ -766,16 +766,16 @@ This creates a step that accepts as input the data of the user to create and its
 Replace the first `TODO` with the following to create a restaurant admin:
 
 ```ts title="src/workflows/user/steps/create-user.ts"
-const service = container.resolve(RESTAURANT_MODULE);
+const service = container.resolve(RESTAURANT_MODULE)
 
 const restaurantAdmin = await service.createRestaurantAdmins(
   data
-);
+)
 
 return new StepResponse(restaurantAdmin, {
   id: restaurantAdmin.id,
   actor_type: actor_type as string,
-});
+})
 ```
 
 This resolves the Restaurant Module’s main service, creates the restaurant admin, and returns it.
@@ -783,14 +783,14 @@ This resolves the Restaurant Module’s main service, creates the restaurant adm
 Then, replace the second `TODO` with the following to create a driver:
 
 ```ts title="src/workflows/user/steps/create-user.ts"
-const service = container.resolve(DELIVERY_MODULE);
+const service = container.resolve(DELIVERY_MODULE)
 
-const driver = await service.createDrivers(data);
+const driver = await service.createDrivers(data)
 
 return new StepResponse(driver, {
   id: driver.id,
   actor_type: actor_type as string,
-});
+})
 ```
 
 This resolves the Driver Module’s main service, creates the driver, and returns it.
@@ -799,13 +799,13 @@ Finally, replace the remaining `TODO` with the following compensation action:
 
 ```ts title="src/workflows/user/steps/create-user.ts"
 if (actor_type === "restaurant") {
-  const service = container.resolve(RESTAURANT_MODULE);
+  const service = container.resolve(RESTAURANT_MODULE)
 
-  return service.deleteRestaurantAdmins(id);
+  return service.deleteRestaurantAdmins(id)
 } else {
-  const service = container.resolve(DELIVERY_MODULE);
+  const service = container.resolve(DELIVERY_MODULE)
 
-  return service.deleteDrivers(id);
+  return service.deleteDrivers(id)
 }
 ```
 
@@ -814,17 +814,17 @@ In the compensation function, if the `actor_type` is a restaurant, you delete th
 Next, create the workflow in the file `src/workflows/user/workflows/create-user.ts`:
 
 ```ts title="src/workflows/user/workflows/create-user.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
-import { setAuthAppMetadataStep } from "@medusajs/core-flows";
+import { setAuthAppMetadataStep } from "@medusajs/core-flows"
 import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/workflows-sdk"
 import { 
   CreateDriverInput, 
   CreateRestaurantAdminInput, 
-  createUserStep
-} from "../steps/create-user";
+  createUserStep,
+} from "../steps/create-user"
 
 type WorkflowInput = {
   user: (CreateRestaurantAdminInput | CreateDriverInput) & {
@@ -845,7 +845,7 @@ export const createUserWorkflow = createWorkflow(
   function (input: CreateUserWorkflowInput) {
     // TODO create user
   }
-);
+)
 
 ```
 
@@ -861,7 +861,7 @@ export const createUserHighlights = [
 ]
 
 ```ts title="src/workflows/user/workflows/create-user.ts" highlights={createUserHighlights}
-let user = createUserStep(input.user);
+const user = createUserStep(input.user)
 
 const authUserInput = transform({ input, user }, (data) => ({
   authIdentityId: data.input.auth_identity_id,
@@ -871,11 +871,11 @@ const authUserInput = transform({ input, user }, (data) => ({
       ? "restaurant_id"
       : "driver_id",
   value: user.id,
-}));
+}))
 
-setAuthAppMetadataStep(authUserInput);
+setAuthAppMetadataStep(authUserInput)
 
-return new WorkflowResponse(user);
+return new WorkflowResponse(user)
 ```
 
 In the workflow, you:
@@ -892,7 +892,7 @@ You’ll now create the API route to create a new user.
 Start by creating the file `src/api/users/validation-schemas.ts` that holds the schema necessary to validate the request body:
 
 ```ts title="src/api/users/validation-schemas.ts"
-import { z } from "zod";
+import { z } from "zod"
 
 export const createUserSchema = z
   .object({
@@ -911,19 +911,19 @@ Then, create the file `src/api/users/route.ts` with the following content:
 ```ts title="src/api/users/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import {
   createUserWorkflow,
   CreateUserWorkflowInput,
-} from "../../workflows/user/workflows/create-user";
-import { createUserSchema } from "./validation-schemas";
+} from "../../workflows/user/workflows/create-user"
+import { createUserSchema } from "./validation-schemas"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { auth_identity_id } = req.auth_context;
+  const { auth_identity_id } = req.auth_context
 
   const validatedBody = createUserSchema.parse(req.body)
 
@@ -934,8 +934,8 @@ export const POST = async (
     } as CreateUserWorkflowInput,
   })
 
-  res.status(201).json({ user: result });
-};
+  res.status(201).json({ user: result })
+}
 
 ```
 
@@ -950,8 +950,8 @@ Create the file `src/api/middlewares.ts` with the following content:
 ```ts title="src/api/middlewares.ts"
 import { 
   authenticate, 
-  defineMiddlewares
-} from "@medusajs/medusa";
+  defineMiddlewares,
+} from "@medusajs/medusa"
 
 export default defineMiddlewares({
   routes: [
@@ -964,7 +964,7 @@ export default defineMiddlewares({
         }),
       ],
     },
-  ]
+  ],
 })
 ```
 
@@ -1064,16 +1064,16 @@ export const createProductHighlights = [
 ```ts title="src/workflows/restaurant/workflows/create-restaurant-products.ts" highlights={createProductHighlights} collapsibleLines="13" expandButtonLabel="Show Imports"
 import { 
   createProductsWorkflow,
-  createRemoteLinkStep
-} from "@medusajs/core-flows";
-import { CreateProductDTO } from "@medusajs/types";
+  createRemoteLinkStep,
+} from "@medusajs/core-flows"
+import { CreateProductDTO } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk";
-import { RESTAURANT_MODULE } from "../../../modules/restaurant";
+} from "@medusajs/workflows-sdk"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
 
 type WorkflowInput = {
   products: CreateProductDTO[];
@@ -1087,25 +1087,25 @@ export const createRestaurantProductsWorkflow = createWorkflow(
       input: {
         products: input.products,
       },
-    });
+    })
 
     const links = transform({
       products,
-      input
+      input,
     }, (data) => data.products.map((product) => ({
       [RESTAURANT_MODULE]: {
-        restaurant_id: data.input.restaurant_id
+        restaurant_id: data.input.restaurant_id,
       },
       [Modules.PRODUCT]: {
-        product_id: product.id
-      }
+        product_id: product.id,
+      },
     })))
 
     createRemoteLinkStep(links)
 
-    return new WorkflowResponse(products);
+    return new WorkflowResponse(products)
   }
-);
+)
 
 ```
 
@@ -1121,17 +1121,17 @@ In the workflow, you:
 Create the file `src/api/restaurants/[id]/products/route.ts` with the following content:
 
 ```ts title="src/api/restaurants/[id]/products/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/dist/api/admin/products/validators"
-import { z } from "zod";
+import { z } from "zod"
 import { 
-  createRestaurantProductsWorkflow
-} from "../../../../workflows/restaurant/workflows/create-restaurant-products";
+  createRestaurantProductsWorkflow,
+} from "../../../../workflows/restaurant/workflows/create-restaurant-products"
 
 const createSchema = z.object({
-  products: AdminCreateProduct().array()
+  products: AdminCreateProduct().array(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -1144,9 +1144,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       products: validatedBody.products as any[],
       restaurant_id: req.params.id,
     },
-  });
+  })
 
-  return res.status(200).json({ restaurant_products: restaurantProducts });
+  return res.status(200).json({ restaurant_products: restaurantProducts })
 }
 ```
 
@@ -1173,7 +1173,7 @@ export default defineMiddlewares({
 })
 ```
 
-This allows only restaurant admins and Medusa admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
+This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
 
 ### Test it Out
 
@@ -1233,7 +1233,7 @@ To create the first step, create the file `src/workflows/delivery/steps/validate
 
 ```ts title="src/workflows/delivery/steps/validate-restaurant.ts"
 import { 
-  createStep
+  createStep,
 } from "@medusajs/workflows-sdk"
 import { RESTAURANT_MODULE } from "../../../modules/restaurant"
 
@@ -1268,26 +1268,26 @@ export const createDeliveryStepHighlights = [
 ]
 
 ```ts title="src/workflows/delivery/steps/create-delivery.ts" highlights={createDeliveryStepHighlights}
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
 
 export const createDeliveryStep = createStep(
   "create-delivery-step",
   async function (_, { container }) {
-    const service = container.resolve(DELIVERY_MODULE);
+    const service = container.resolve(DELIVERY_MODULE)
 
     const delivery = await service.createDeliveries()
 
     return new StepResponse(delivery, {
       delivery_id: delivery.id,
-    });
+    })
   },
   async function ({ delivery_id }, { container }) {
-    const service = container.resolve(DELIVERY_MODULE);
+    const service = container.resolve(DELIVERY_MODULE)
 
-    service.softDeleteDeliveries(delivery_id);
+    service.softDeleteDeliveries(delivery_id)
   }
-);
+)
 ```
 
 This step creates a delivery and returns it. In the compensation function, it deletes the delivery.
@@ -1309,53 +1309,53 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/workflows-sdk"
 import { Modules } from "@medusajs/utils"
 import { createRemoteLinkStep } from "@medusajs/core-flows"
-import { DELIVERY_MODULE } from "../../../modules/delivery";
-import { RESTAURANT_MODULE } from "../../../modules/restaurant";
-import { validateRestaurantStep } from "../steps/validate-restaurant";
-import { createDeliveryStep } from "../steps/create-delivery";
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { validateRestaurantStep } from "../steps/validate-restaurant"
+import { createDeliveryStep } from "../steps/create-delivery"
 
 type WorkflowInput = {
   cart_id: string;
   restaurant_id: string;
 };
 
-export const createDeliveryWorkflowId = "create-delivery-workflow";
+export const createDeliveryWorkflowId = "create-delivery-workflow"
 export const createDeliveryWorkflow = createWorkflow(
   createDeliveryWorkflowId,
   function (input: WorkflowInput) {
     validateRestaurantStep({
-      restaurant_id: input.restaurant_id
+      restaurant_id: input.restaurant_id,
     })
-    const delivery = createDeliveryStep();
+    const delivery = createDeliveryStep()
 
     const links = transform({
       input,
-      delivery
+      delivery,
     }, (data) => ([
       {
         [DELIVERY_MODULE]: {
-          delivery_id: data.delivery.id
+          delivery_id: data.delivery.id,
         },
         [Modules.CART]: {
-          cart_id: data.input.cart_id
-        }
+          cart_id: data.input.cart_id,
+        },
       },
       {
         [RESTAURANT_MODULE]: {
-          restaurant_id: data.input.restaurant_id
+          restaurant_id: data.input.restaurant_id,
         },
         [DELIVERY_MODULE]: {
-          delivery_id: data.delivery.id
-        }
-      }
+          delivery_id: data.delivery.id,
+        },
+      },
     ]))
 
     createRemoteLinkStep(links)
 
-    return new WorkflowResponse(delivery);
+    return new WorkflowResponse(delivery)
   }
 )
 ```
@@ -1471,30 +1471,30 @@ export const setTransactionIdStepHighlights = [
 ]
 
 ```ts title="src/workflows/delivery/steps/set-transaction-id.ts" highlights={setTransactionIdStepHighlights}
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
 
 export const setTransactionIdStep = createStep(
   "create-delivery-step",
   async function (deliveryId: string, { container, context }) {
-    const service = container.resolve(DELIVERY_MODULE);
+    const service = container.resolve(DELIVERY_MODULE)
 
     const delivery = await service.updateDeliveries({
       id: deliveryId,
       transaction_id: context.transactionId,
-    });
+    })
 
-    return new StepResponse(delivery, delivery.id);
+    return new StepResponse(delivery, delivery.id)
   },
   async function (delivery_id: string, { container }) {
-    const service = container.resolve(DELIVERY_MODULE);
+    const service = container.resolve(DELIVERY_MODULE)
 
     await service.updateDeliveries({
       id: delivery_id,
       transaction_id: null,
-    });
+    })
   }
-);
+)
 
 ```
 
@@ -1516,10 +1516,10 @@ export const notifyRestaurantStepHighlights = [
 import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
-} from "@medusajs/utils";
-import { createStep } from "@medusajs/workflows-sdk";
+} from "@medusajs/utils"
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const notifyRestaurantStepId = "notify-restaurant-step";
+export const notifyRestaurantStepId = "notify-restaurant-step"
 export const notifyRestaurantStep = createStep(
   {
     name: notifyRestaurantStepId,
@@ -1528,7 +1528,7 @@ export const notifyRestaurantStep = createStep(
     maxRetries: 2,
   },
   async function (deliveryId: string, { container }) {
-    const remoteQuery = container.resolve("remoteQuery");
+    const remoteQuery = container.resolve("remoteQuery")
 
     const deliveryQuery = remoteQueryObjectFromString({
       entryPoint: "deliveries",
@@ -1538,11 +1538,11 @@ export const notifyRestaurantStep = createStep(
         },
       },
       fields: ["id", "restaurant.id"],
-    });
+    })
 
-    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
 
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
+    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
 
     await eventBus.emit({
       name: "notify.restaurant",
@@ -1550,9 +1550,9 @@ export const notifyRestaurantStep = createStep(
         restaurant_id: delivery.restaurant.id,
         delivery_id: delivery.id,
       },
-    });
+    })
   }
-);
+)
 
 ```
 
@@ -1574,21 +1574,21 @@ A step is async if the `async` option is specified in the first object parameter
 Create the file `src/workflows/delivery/steps/await-driver-claim.ts` with the following content:
 
 ```ts title="src/workflows/delivery/steps/await-driver-claim.ts"
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const awaitDriverClaimStepId = "await-driver-claim-step";
+export const awaitDriverClaimStepId = "await-driver-claim-step"
 export const awaitDriverClaimStep = createStep(
   { 
     name: awaitDriverClaimStepId, 
     async: true, 
     timeout: 60 * 15, 
-    maxRetries: 2
+    maxRetries: 2,
   },
   async function (_, { container }) {
-    const logger = container.resolve("logger");
-    logger.info("Awaiting driver to claim...");
+    const logger = container.resolve("logger")
+    logger.info("Awaiting driver to claim...")
   }
-);
+)
 ```
 
 This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the driver claims the delivery.
@@ -1602,19 +1602,19 @@ export const createOrderStepHighlights1 = [
 ]
 
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights1} collapsibleLines="1-9" expandButtonLabel="Show Imports"
-import { CreateOrderShippingMethodDTO } from "@medusajs/types";
+import { CreateOrderShippingMethodDTO } from "@medusajs/types"
 import {
   ModuleRegistrationName,
   Modules,
   remoteQueryObjectFromString,
-} from "@medusajs/utils";
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
 
 export const createOrderStep = createStep(
   "create-order-step",
   async function (deliveryId: string, { container }) {
-    const remoteQuery = container.resolve("remoteQuery");
+    const remoteQuery = container.resolve("remoteQuery")
 
     const deliveryQuery = remoteQueryObjectFromString({
       entryPoint: "deliveries",
@@ -1629,18 +1629,18 @@ export const createOrderStep = createStep(
         "cart.shipping_address.*",
         "cart.billing_address.*",
         "cart.items.*",
-        "cart.shipping_methods.*"
+        "cart.shipping_methods.*",
       ],
-    });
+    })
 
-    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
 
     // TODO create order
   },
   async ({ orderId }, { container }) => {
     // TODO add compensation
   }
-);
+)
 
 ```
 
@@ -1656,7 +1656,7 @@ export const createOrderStepHighlights2 = [
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights2}
 const { cart } = delivery
 
-const orderModuleService = container.resolve(ModuleRegistrationName.ORDER);
+const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
 
 const order = await orderModuleService.createOrders({
   currency_code: cart.currency_code,
@@ -1669,7 +1669,7 @@ const order = await orderModuleService.createOrders({
   sales_channel_id: cart.sales_channel_id,
   shipping_methods:
     cart.shipping_methods as unknown as CreateOrderShippingMethodDTO[],
-});
+})
 
 const linkDef = [{
   [DELIVERY_MODULE]: {
@@ -1682,10 +1682,10 @@ const linkDef = [{
 
 return new StepResponse({ 
   order,
-  linkDef
+  linkDef,
 }, {
   orderId: order.id,
-});
+})
 ```
 
 You create the order using the Order Module’s main service. Then, you create an object holding the links to return. The `createRemoteLinkStep` is used later to create those links.
@@ -1693,9 +1693,9 @@ You create the order using the Order Module’s main service. Then, you create a
 Then, replace the `TODO` in the compensation function with the following:
 
 ```ts title="src/workflows/delivery/steps/create-order.ts"
-const orderService = container.resolve(ModuleRegistrationName.ORDER);
+const orderService = container.resolve(ModuleRegistrationName.ORDER)
 
-await orderService.softDeleteOrders([orderId]);
+await orderService.softDeleteOrders([orderId])
 ```
 
 You delete the order in the compensation function.
@@ -1705,16 +1705,16 @@ You delete the order in the compensation function.
 Create the file `src/workflows/delivery/steps/await-start-preparation.ts` with the following content:
 
 ```ts title="src/workflows/delivery/steps/await-start-preparation.ts"
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const awaitStartPreparationStepId = "await-start-preparation-step";
+export const awaitStartPreparationStepId = "await-start-preparation-step"
 export const awaitStartPreparationStep = createStep(
   { name: awaitStartPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger");
-    logger.info("Awaiting start of preparation...");
+    const logger = container.resolve("logger")
+    logger.info("Awaiting start of preparation...")
   }
-);
+)
 ```
 
 This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the restaurant sets the delivery’s status as `restaurant_preparing`.
@@ -1724,16 +1724,16 @@ This step is async and its only purpose is to wait until it’s marked as succes
 Create the file `src/workflows/delivery/steps/await-preparation.ts` with the following content:
 
 ```ts title="src/workflows/delivery/steps/await-preparation.ts"
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const awaitPreparationStepId = "await-preparation-step";
+export const awaitPreparationStepId = "await-preparation-step"
 export const awaitPreparationStep = createStep(
   { name: awaitPreparationStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger");
-    logger.info("Awaiting preparation...");
+    const logger = container.resolve("logger")
+    logger.info("Awaiting preparation...")
   }
-);
+)
 ```
 
 This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the restaurant sets the delivery’s status as `ready_for_pickup`.
@@ -1748,16 +1748,16 @@ export const createFulfillmentStepHighlights = [
 ]
 
 ```ts title="src/workflows/delivery/steps/create-fulfillment.ts" highlights={createFulfillmentStepHighlights}
-import { OrderDTO } from "@medusajs/types";
-import { ModuleRegistrationName } from "@medusajs/utils";
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
+import { OrderDTO } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createFulfillmentStep = createStep(
   "create-fulfillment-step",
   async function (order: OrderDTO, { container }) {
     const fulfillmentModuleService = container.resolve(
       ModuleRegistrationName.FULFILLMENT
-    );
+    )
 
     const items = order.items?.map((lineItem) => ({
       title: lineItem.title,
@@ -1765,7 +1765,7 @@ export const createFulfillmentStep = createStep(
       quantity: lineItem.quantity,
       barcode: lineItem.variant_barcode || "",
       line_item_id: lineItem.id,
-    }));
+    }))
 
     const fulfillment = await fulfillmentModuleService.createFulfillment({
       provider_id: "manual_manual",
@@ -1774,18 +1774,18 @@ export const createFulfillmentStep = createStep(
       items: items || [],
       labels: [],
       order,
-    });
+    })
 
-    return new StepResponse(fulfillment, fulfillment.id);
+    return new StepResponse(fulfillment, fulfillment.id)
   },
   function (id: string, { container }) {
     const fulfillmentModuleService = container.resolve(
       ModuleRegistrationName.FULFILLMENT
-    );
+    )
 
-    return fulfillmentModuleService.cancelFulfillment(id);
+    return fulfillmentModuleService.cancelFulfillment(id)
   }
-);
+)
 ```
 
 In this step, you retrieve the order’s items as required to create the fulfillment, then create the fulfillment and return it.
@@ -1797,16 +1797,16 @@ In the compensation function, you cancel the fulfillment.
 Create the file `src/workflows/delivery/steps/await-pick-up.ts` with the following content:
 
 ```ts title="src/workflows/delivery/steps/await-pick-up.ts"
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const awaitPickUpStepId = "await-pick-up-step";
+export const awaitPickUpStepId = "await-pick-up-step"
 export const awaitPickUpStep = createStep(
   { name: awaitPickUpStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger");
-    logger.info("Awaiting pick up by driver...");
+    const logger = container.resolve("logger")
+    logger.info("Awaiting pick up by driver...")
   }
-);
+)
 
 ```
 
@@ -1817,16 +1817,16 @@ This step is async and its only purpose is to wait until it’s marked as succes
 Create the file `src/workflows/delivery/steps/await-delivery.ts` with the following content:
 
 ```ts title="src/workflows/delivery/steps/await-delivery.ts"
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const awaitDeliveryStepId = "await-delivery-step";
+export const awaitDeliveryStepId = "await-delivery-step"
 export const awaitDeliveryStep = createStep(
   { name: awaitDeliveryStepId, async: true, timeout: 60 * 15 },
   async function (_, { container }) {
-    const logger = container.resolve("logger");
-    logger.info("Awaiting delivery by driver...");
+    const logger = container.resolve("logger")
+    logger.info("Awaiting delivery by driver...")
   }
-);
+)
 ```
 
 This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the driver sets the delivery’s status as `delivered`.
@@ -1844,24 +1844,24 @@ export const handleDeliveryWorkflowHighlights = [
 import {
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk";
+} from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep } from "@medusajs/core-flows"
-import { setTransactionIdStep } from "../steps/set-transaction-id";
-import { notifyRestaurantStep } from "../steps/notify-restaurant";
-import { awaitDriverClaimStep } from "../steps/await-driver-claim";
-import { createOrderStep } from "../steps/create-order";
-import { awaitStartPreparationStep } from "../steps/await-start-preparation";
-import { awaitPreparationStep } from "../steps/await-preparation";
-import { createFulfillmentStep } from "../steps/create-fulfillment";
-import { awaitPickUpStep } from "../steps/await-pick-up";
-import { awaitDeliveryStep } from "../steps/await-delivery";
+import { setTransactionIdStep } from "../steps/set-transaction-id"
+import { notifyRestaurantStep } from "../steps/notify-restaurant"
+import { awaitDriverClaimStep } from "../steps/await-driver-claim"
+import { createOrderStep } from "../steps/create-order"
+import { awaitStartPreparationStep } from "../steps/await-start-preparation"
+import { awaitPreparationStep } from "../steps/await-preparation"
+import { createFulfillmentStep } from "../steps/create-fulfillment"
+import { awaitPickUpStep } from "../steps/await-pick-up"
+import { awaitDeliveryStep } from "../steps/await-delivery"
 
 type WorkflowInput = {
   delivery_id: string;
 };
 
-const TWO_HOURS = 60 * 60 * 2;
-export const handleDeliveryWorkflowId = "handle-delivery-workflow";
+const TWO_HOURS = 60 * 60 * 2
+export const handleDeliveryWorkflowId = "handle-delivery-workflow"
 export const handleDeliveryWorkflow = createWorkflow(
   {
     name: handleDeliveryWorkflowId,
@@ -1869,32 +1869,32 @@ export const handleDeliveryWorkflow = createWorkflow(
     retentionTime: TWO_HOURS,
   },
   function (input: WorkflowInput) {
-    setTransactionIdStep(input.delivery_id);
+    setTransactionIdStep(input.delivery_id)
 
-    notifyRestaurantStep(input.delivery_id);
+    notifyRestaurantStep(input.delivery_id)
 
-    awaitDriverClaimStep();
+    awaitDriverClaimStep()
 
     const { 
       order,
-      linkDef
-    } = createOrderStep(input.delivery_id);
+      linkDef,
+    } = createOrderStep(input.delivery_id)
 
     createRemoteLinkStep(linkDef)
 
-    awaitStartPreparationStep();
+    awaitStartPreparationStep()
 
-    awaitPreparationStep();
+    awaitPreparationStep()
 
-    createFulfillmentStep(order);
+    createFulfillmentStep(order)
 
-    awaitPickUpStep();
+    awaitPickUpStep()
 
-    awaitDeliveryStep();
+    awaitDeliveryStep()
 
-    return new WorkflowResponse("Delivery completed");
+    return new WorkflowResponse("Delivery completed")
   }
-);
+)
 
 ```
 
@@ -1923,37 +1923,37 @@ export const createDeliveryRouteHighlights = [
 ]
 
 ```ts title="src/api/store/deliveries/route.ts" highlights={createDeliveryRouteHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
-import zod from "zod";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
-import { createDeliveryWorkflow } from "../../../workflows/delivery/workflows/create-delivery";
-import { handleDeliveryWorkflow } from "../../../workflows/delivery/workflows/handle-delivery";
+import zod from "zod"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { createDeliveryWorkflow } from "../../../workflows/delivery/workflows/create-delivery"
+import { handleDeliveryWorkflow } from "../../../workflows/delivery/workflows/handle-delivery"
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
   restaurant_id: zod.string().startsWith("res_"),
-});
+})
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body);
+  const validatedBody = schema.parse(req.body)
 
   const { result: delivery } = await createDeliveryWorkflow(req.scope).run({
     input: {
       cart_id: validatedBody.cart_id,
       restaurant_id: validatedBody.restaurant_id,
     },
-  });
+  })
 
   await handleDeliveryWorkflow(req.scope).run({
     input: {
       delivery_id: delivery.id,
     },
-  });
+  })
 
   return res
     .status(200)
-    .json({ delivery });
+    .json({ delivery })
 }
 ```
 
@@ -2102,7 +2102,7 @@ import {
   OrderLineItemDTO,
   CartDTO,
   OrderDTO,
-} from "@medusajs/types";
+} from "@medusajs/types"
 
 // ...
 
@@ -2150,9 +2150,9 @@ export const updateDeliveryStepHighlights = [
 ]
 
 ```ts title="src/workflows/delivery/steps/update-delivery.ts" highlights={updateDeliveryStepHighlights}
-import { createStep, StepResponse } from "@medusajs/workflows-sdk";
-import { DELIVERY_MODULE } from "../../../modules/delivery";
-import { UpdateDelivery } from "../../../modules/delivery/types";
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { UpdateDelivery } from "../../../modules/delivery/types"
 
 type UpdateDeliveryStepInput = {
   data: UpdateDelivery;
@@ -2161,24 +2161,24 @@ type UpdateDeliveryStepInput = {
 export const updateDeliveryStep = createStep(
   "update-delivery-step",
   async function ({ data }: UpdateDeliveryStepInput, { container }) {
-    const deliveryService = container.resolve(DELIVERY_MODULE);
+    const deliveryService = container.resolve(DELIVERY_MODULE)
 
     const prevDeliveryData = await deliveryService.retrieveDelivery(data.id)
 
     const delivery = await deliveryService
       .updateDeliveries([data])
-      .then((res) => res[0]);
+      .then((res) => res[0])
 
     return new StepResponse(delivery, {
-      prevDeliveryData
-    });
+      prevDeliveryData,
+    })
   },
   async ({ prevDeliveryData }, { container }) => {
-    const deliveryService = container.resolve(DELIVERY_MODULE);
+    const deliveryService = container.resolve(DELIVERY_MODULE)
 
     await deliveryService.updateDeliveries(prevDeliveryData)
   }
-);
+)
 ```
 
 This step updates a delivery using the provided data. In the compensation function, it reverts the data to its previous state.
@@ -2193,10 +2193,10 @@ export const setStepSuccessStepHighlights = [
 import {
   ModuleRegistrationName,
   TransactionHandlerType,
-} from "@medusajs/utils";
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { Delivery } from "../../../modules/delivery/types";
-import { handleDeliveryWorkflowId } from "../workflows/handle-delivery";
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Delivery } from "../../../modules/delivery/types"
+import { handleDeliveryWorkflowId } from "../workflows/handle-delivery"
 
 type SetStepSuccessStepInput = {
   stepId: string;
@@ -2211,7 +2211,7 @@ export const setStepSuccessStep = createStep(
   ) {
     const engineService = container.resolve(
       ModuleRegistrationName.WORKFLOW_ENGINE
-    );
+    )
 
     await engineService.setStepSuccess({
       idempotencyKey: {
@@ -2224,9 +2224,9 @@ export const setStepSuccessStep = createStep(
       options: {
         container,
       },
-    });
+    })
   }
-);
+)
 
 ```
 
@@ -2244,10 +2244,10 @@ export const setStepFailedStepHighlights = [
 import {
   ModuleRegistrationName,
   TransactionHandlerType,
-} from "@medusajs/utils";
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { Delivery } from "../../../modules/delivery/types";
-import { handleDeliveryWorkflowId } from "../../delivery/workflows/handle-delivery";
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Delivery } from "../../../modules/delivery/types"
+import { handleDeliveryWorkflowId } from "../../delivery/workflows/handle-delivery"
 
 type SetStepFailedtepInput = {
   stepId: string;
@@ -2262,7 +2262,7 @@ export const setStepFailedStep = createStep(
   ) {
     const engineService = container.resolve(
       ModuleRegistrationName.WORKFLOW_ENGINE
-    );
+    )
 
     await engineService.setStepFailure({
       idempotencyKey: {
@@ -2275,9 +2275,9 @@ export const setStepFailedStep = createStep(
       options: {
         container,
       },
-    });
+    })
   }
-);
+)
 ```
 
 This step is similar to the last one, except it uses the `setStepFailure` method of the Workflow Engine Module’s service to set the status of the step as failed.
@@ -2296,12 +2296,12 @@ export const updateDeliveryWorkflowHighlights = [
 import {
   createWorkflow,
   WorkflowResponse,
-  when
-} from "@medusajs/workflows-sdk";
-import { setStepSuccessStep } from "../steps/set-step-success";
-import { setStepFailedStep } from "../steps/set-step-failed";
-import { updateDeliveryStep } from "../steps/update-delivery";
-import { UpdateDelivery } from "../../../modules/delivery/types";
+  when,
+} from "@medusajs/workflows-sdk"
+import { setStepSuccessStep } from "../steps/set-step-success"
+import { setStepFailedStep } from "../steps/set-step-failed"
+import { updateDeliveryStep } from "../steps/update-delivery"
+import { UpdateDelivery } from "../../../modules/delivery/types"
 
 export type WorkflowInput = {
   data: UpdateDelivery;
@@ -2315,7 +2315,7 @@ export const updateDeliveryWorkflow = createWorkflow(
     // Update the delivery with the provided data
     const updatedDelivery = updateDeliveryStep({
       data: input.data,
-    });
+    })
 
     // If a stepIdToSucceed is provided, we will set that step as successful
     when(input, ({ stepIdToSucceed }) => stepIdToSucceed !== undefined)
@@ -2323,7 +2323,7 @@ export const updateDeliveryWorkflow = createWorkflow(
         setStepSuccessStep({
           stepId: input.stepIdToSucceed,
           updatedDelivery,
-        });
+        })
       })
 
     // If a stepIdToFail is provided, we will set that step as failed
@@ -2332,13 +2332,13 @@ export const updateDeliveryWorkflow = createWorkflow(
         setStepFailedStep({
           stepId: input.stepIdToFail,
           updatedDelivery,
-        });
+        })
       })
 
     // Return the updated delivery
-    return new WorkflowResponse(updatedDelivery);
+    return new WorkflowResponse(updatedDelivery)
   }
-);
+)
 ```
 
 In this workflow, you:
@@ -2359,24 +2359,24 @@ export const acceptRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/accept/route.ts" highlights={acceptRouteHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../modules/delivery/types";
-import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps/notify-restaurant";
-import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows/update-delivery";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps/notify-restaurant"
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows/update-delivery"
 
-const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000; // 30 minutes
+const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000 // 30 minutes
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { id } = req.params;
+  const { id } = req.params
 
-  const eta = new Date(new Date().getTime() + DEFAULT_PROCESSING_TIME);
+  const eta = new Date(new Date().getTime() + DEFAULT_PROCESSING_TIME)
 
   const data = {
     id,
     delivery_status: DeliveryStatus.RESTAURANT_ACCEPTED,
     eta,
-  };
+  }
 
   const updatedDeliveryResult = await updateDeliveryWorkflow(req.scope)
     .run({
@@ -2386,15 +2386,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
-      console.log(error);
-      return MedusaError.Types.UNEXPECTED_STATE;
-    });
+      console.log(error)
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
 
   if (typeof updatedDeliveryResult === "string") {
     throw new MedusaError(updatedDeliveryResult, "An error occurred")
   }
 
-  return res.status(200).json({ delivery: updatedDeliveryResult.result });
+  return res.status(200).json({ delivery: updatedDeliveryResult.result })
 }
 
 ```
@@ -2423,12 +2423,12 @@ export const isDeliveryRestaurantHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaNextFunction, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { RESTAURANT_MODULE } from "../../modules/restaurant";
+import { RESTAURANT_MODULE } from "../../modules/restaurant"
 
 export const isDeliveryRestaurant = async (
   req: AuthenticatedMedusaRequest,
@@ -2443,27 +2443,27 @@ export const isDeliveryRestaurant = async (
   const restaurantAdmin = await restaurantModuleService.retrieveRestaurantAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["restaurant"]
+      relations: ["restaurant"],
     }
   )
 
   const query = remoteQueryObjectFromString({
     entryPoint: "delivery",
     fields: [
-      "restaurant.*"
+      "restaurant.*",
     ],
     variables: {
       filters: {
-        id: req.params.id
-      }
-    }
+        id: req.params.id,
+      },
+    },
   })
 
   const result = await remoteQuery(query)
 
   if (result[0].restaurant.id !== restaurantAdmin.restaurant.id) {
     return res.status(403).json({
-      message: "unauthorized"
+      message: "unauthorized",
     })
   }
 
@@ -2481,8 +2481,8 @@ Then, create the file `src/api/deliveries/[id]/middlewares.ts` with the followin
 import { 
   authenticate, 
   defineMiddlewares, 
-} from "@medusajs/medusa";
-import { isDeliveryRestaurant } from "../../utils/is-delivery-restaurant";
+} from "@medusajs/medusa"
+import { isDeliveryRestaurant } from "../../utils/is-delivery-restaurant"
 
 export default defineMiddlewares({
   routes: [
@@ -2490,10 +2490,10 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/accept",
       middlewares: [
         authenticate("restaurant", "bearer"),
-        isDeliveryRestaurant
-      ]
+        isDeliveryRestaurant,
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -2511,7 +2511,7 @@ import deliveriesMiddlewares from "./deliveries/[id]/middlewares"
 export default defineMiddlewares({
   routes: [
     // ...
-	  ...deliveriesMiddlewares.routes
+	  ...deliveriesMiddlewares.routes,
   ],
 })
 ```
@@ -2563,11 +2563,11 @@ export const claimDeliveryWorkflowHighlights = [
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk";
-import { DeliveryStatus } from "../../../modules/delivery/types";
-import { awaitDriverClaimStepId } from "../steps/await-driver-claim";
-import { setStepSuccessStep } from "../steps/set-step-success";
-import { updateDeliveryStep } from "../steps/update-delivery";
+} from "@medusajs/workflows-sdk"
+import { DeliveryStatus } from "../../../modules/delivery/types"
+import { awaitDriverClaimStepId } from "../steps/await-driver-claim"
+import { setStepSuccessStep } from "../steps/set-step-success"
+import { updateDeliveryStep } from "../steps/update-delivery"
 
 export type ClaimWorkflowInput = {
   driver_id: string;
@@ -2584,18 +2584,18 @@ export const claimDeliveryWorkflow = createWorkflow(
         driver_id: input.driver_id,
         delivery_status: DeliveryStatus.PICKUP_CLAIMED,
       },
-    });
+    })
 
     // Set the step success for the find driver step
     setStepSuccessStep({
       stepId: awaitDriverClaimStepId,
       updatedDelivery: claimedDelivery,
-    });
+    })
 
     // Return the updated delivery
-    return new WorkflowResponse(claimedDelivery);
+    return new WorkflowResponse(claimedDelivery)
   }
-);
+)
 ```
 
 In the workflow, you execute the steps as mentioned above and return the updated delivery.
@@ -2608,23 +2608,23 @@ To create the API route to claim the delivery, create the file `src/api/deliveri
 import { 
   AuthenticatedMedusaRequest, 
   MedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { 
-  claimDeliveryWorkflow
-} from "../../../../workflows/delivery/workflows/claim-delivery";
+  claimDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/claim-delivery"
 
 export async function POST(req: AuthenticatedMedusaRequest, res: MedusaResponse) {
-  const deliveryId = req.params.id;
+  const deliveryId = req.params.id
 
   const claimedDelivery = await claimDeliveryWorkflow(req.scope).run({
     input: {
       driver_id: req.auth_context.actor_id,
       delivery_id: deliveryId,
     },
-  });
+  })
 
-  return res.status(200).json({ delivery: claimedDelivery });
+  return res.status(200).json({ delivery: claimedDelivery })
 }
 ```
 
@@ -2642,9 +2642,9 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/claim",
       middlewares: [
         authenticate("driver", "bearer"),
-      ]
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -2697,23 +2697,23 @@ export const prepareRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/prepare/route.ts" highlights={prepareRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../modules/delivery/types";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
-  updateDeliveryWorkflow
-} from "../../../../workflows/delivery/workflows/update-delivery";
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
 import { 
-  awaitStartPreparationStepId
-} from "../../../../workflows/delivery/steps/await-start-preparation";
+  awaitStartPreparationStepId,
+} from "../../../../workflows/delivery/steps/await-start-preparation"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { id } = req.params;
+  const { id } = req.params
 
   const data = {
     id,
     delivery_status: DeliveryStatus.RESTAURANT_PREPARING,
-  };
+  }
 
   const updatedDelivery = await updateDeliveryWorkflow(req.scope)
     .run({
@@ -2723,10 +2723,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
-      return MedusaError.Types.UNEXPECTED_STATE;
-    });
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
 
-  return res.status(200).json({ delivery: updatedDelivery });
+  return res.status(200).json({ delivery: updatedDelivery })
 }
 ```
 
@@ -2744,10 +2744,10 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/prepare",
       middlewares: [
         authenticate("restaurant", "bearer"),
-        isDeliveryRestaurant
-      ]
+        isDeliveryRestaurant,
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -2787,23 +2787,23 @@ export const readyRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/ready/route.ts" highlights={readyRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../modules/delivery/types";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
-  updateDeliveryWorkflow
-} from "../../../../workflows/delivery/workflows/update-delivery";
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
 import { 
-  awaitPreparationStepId
-} from "../../../../workflows/delivery/steps/await-preparation";
+  awaitPreparationStepId,
+} from "../../../../workflows/delivery/steps/await-preparation"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { id } = req.params;
+  const { id } = req.params
 
   const data = {
     id,
     delivery_status: DeliveryStatus.READY_FOR_PICKUP,
-  };
+  }
 
   const updatedDelivery = await updateDeliveryWorkflow(req.scope)
     .run({
@@ -2814,10 +2814,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     })
     .catch((error) => {
       console.log(error)
-      return MedusaError.Types.UNEXPECTED_STATE;
-    });
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
 
-  return res.status(200).json({ delivery: updatedDelivery });
+  return res.status(200).json({ delivery: updatedDelivery })
 }
 
 ```
@@ -2836,10 +2836,10 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/ready",
       middlewares: [
         authenticate("restaurant", "bearer"),
-        isDeliveryRestaurant
-      ]
+        isDeliveryRestaurant,
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -2879,23 +2879,23 @@ export const pickUpRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/pick-up/route.ts" highlights={pickUpRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../modules/delivery/types";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
-  updateDeliveryWorkflow
-} from "../../../../workflows/delivery/workflows/update-delivery";
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
 import { 
-  awaitPickUpStepId
-} from "../../../../workflows/delivery/steps/await-pick-up";
+  awaitPickUpStepId,
+} from "../../../../workflows/delivery/steps/await-pick-up"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { id } = req.params;
+  const { id } = req.params
 
   const data = {
     id,
     delivery_status: DeliveryStatus.IN_TRANSIT,
-  };
+  }
 
   const updatedDelivery = await updateDeliveryWorkflow(req.scope)
     .run({
@@ -2905,10 +2905,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
-      return MedusaError.Types.UNEXPECTED_STATE;
-    });
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
 
-  return res.status(200).json({ delivery: updatedDelivery });
+  return res.status(200).json({ delivery: updatedDelivery })
 }
 ```
 
@@ -2929,9 +2929,9 @@ export const isDeliveryDriverHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaNextFunction, 
-  MedusaResponse
-} from "@medusajs/medusa";
-import { DELIVERY_MODULE } from "../../modules/delivery";
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { DELIVERY_MODULE } from "../../modules/delivery"
 
 export const isDeliveryDriver = async (
   req: AuthenticatedMedusaRequest,
@@ -2945,13 +2945,13 @@ export const isDeliveryDriver = async (
   const delivery = await deliveryModuleService.retrieveDelivery(
     req.params.id,
     {
-      relations: ["driver"]
+      relations: ["driver"],
     }
   )
 
   if (delivery.driver.id !== req.auth_context.actor_id) {
     return res.status(403).json({
-      message: "unauthorized"
+      message: "unauthorized",
     })
   }
 
@@ -2965,7 +2965,7 @@ Then, import and use the middleware function in `src/api/deliveries/[id]/middlew
 
 ```ts title="src/api/deliveries/[id]/middlewares.ts"
 // other imports...
-import { isDeliveryDriver } from "../../utils/is-delivery-driver";
+import { isDeliveryDriver } from "../../utils/is-delivery-driver"
 
 export default defineMiddlewares({
   routes: [
@@ -2974,10 +2974,10 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/pick-up",
       middlewares: [
         authenticate("driver", "bearer"),
-        isDeliveryDriver
-      ]
+        isDeliveryDriver,
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -3019,24 +3019,24 @@ export const completeRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/complete/route.ts" highlights={completeRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../modules/delivery/types";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
-  updateDeliveryWorkflow
-} from "../../../../workflows/delivery/workflows/update-delivery";
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
 import { 
-  awaitDeliveryStepId
-} from "../../../../workflows/delivery/steps/await-delivery";
+  awaitDeliveryStepId,
+} from "../../../../workflows/delivery/steps/await-delivery"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { id } = req.params;
+  const { id } = req.params
 
   const data = {
     id,
     delivery_status: DeliveryStatus.DELIVERED,
     delivered_at: new Date(),
-  };
+  }
 
   const updatedDelivery = await updateDeliveryWorkflow(req.scope)
     .run({
@@ -3046,10 +3046,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
-      return MedusaError.Types.UNEXPECTED_STATE;
-    });
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
 
-  return res.status(200).json({ delivery: updatedDelivery });
+  return res.status(200).json({ delivery: updatedDelivery })
 }
 
 ```
@@ -3070,10 +3070,10 @@ export default defineMiddlewares({
       matcher: "/deliveries/:id/complete",
       middlewares: [
         authenticate("driver", "bearer"),
-        isDeliveryDriver
-      ]
+        isDeliveryDriver,
+      ],
     },
-  ]
+  ],
 })
 ```
 
@@ -3111,15 +3111,15 @@ So, create the file `src/api/store/deliveries/subscribe/route.ts` with the follo
 ```ts title="src/api/store/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import {
   ModuleRegistrationName,
-} from "@medusajs/utils";
+} from "@medusajs/utils"
 import { 
-  handleDeliveryWorkflowId
-} from "../../../../../workflows/delivery/workflows/handle-delivery";
-import { DELIVERY_MODULE } from "../../../../../modules/delivery";
+  handleDeliveryWorkflowId,
+} from "../../../../../workflows/delivery/workflows/handle-delivery"
+import { DELIVERY_MODULE } from "../../../../../modules/delivery"
 
 export const GET = async (
   req: MedusaRequest,
@@ -3134,7 +3134,7 @@ export const GET = async (
   const delivery = await deliveryModuleService.retrieveDelivery(id)
 
   // TODO stream changes
-};
+}
 ```
 
 This creates a `GET` API route at `/store/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
@@ -3146,9 +3146,9 @@ const headers = {
   "Content-Type": "text/event-stream",
   Connection: "keep-alive",
   "Cache-Control": "no-cache",
-};
+}
 
-res.writeHead(200, headers);
+res.writeHead(200, headers)
 
 // TODO listen to workflow changes
 
@@ -3159,7 +3159,7 @@ res.write(
       transactionId: delivery.transaction_id,
     }) +
     "\n\n"
-);
+)
 ```
 
 In the above snippet, you set the response to a stream and write an initial message saying that the client is now subscribed to the workflow.
@@ -3169,20 +3169,20 @@ To listen to the workflow changes, replace the new `TODO` with the following:
 ```ts title="src/api/store/deliveries/subscribe/route.ts"
 const workflowEngine = req.scope.resolve(
   ModuleRegistrationName.WORKFLOW_ENGINE
-);
+)
 
 const workflowSubHandler = (data: any) => {
-  res.write("data: " + JSON.stringify(data) + "\n\n");
-};
+  res.write("data: " + JSON.stringify(data) + "\n\n")
+}
 
 await workflowEngine.subscribe({
   workflowId: handleDeliveryWorkflowId,
   transactionId: delivery.transaction_id,
   subscriber: workflowSubHandler,
-});
+})
 ```
 
-In this snippet, you resolve the Workflow Engine Module’s main service. Then, you use the `subscribe` method of the service to subscribe the the `handleDeliveryWorkflow` ’s execution. You indicate the execution using the transaction ID stored in the delivery.
+In this snippet, you resolve the Workflow Engine Module’s main service. Then, you use the `subscribe` method of the service to subscribe to the `handleDeliveryWorkflow` ’s execution. You indicate the execution using the transaction ID stored in the delivery.
 
 ### Retrieve Delivery API Route
 
@@ -3202,7 +3202,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   )
 
   res.json({
-    delivery
+    delivery,
   })
 }
 ```
@@ -3214,8 +3214,8 @@ To implement real-time tracking in a Next.js-based storefront, create the follow
 ```tsx title="Storefront Page"
 "use client"
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation"
+import { useEffect, useState, useTransition } from "react"
 
 type Props = {
   params: { id: string }
@@ -3226,7 +3226,7 @@ export default function Delivery({ params: { id } }: Props) {
     Record<string, string> | undefined
   >()
   const router = useRouter()
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
     // TODO retrieve the delivery
@@ -3254,7 +3254,7 @@ To retrieve the delivery from the Medusa application, replace the first `TODO` w
 ```tsx title="Storefront Page"
 // retrieve the delivery
 fetch(`http://localhost:9000/store/deliveries/${id}`, {
-  credentials: "include"
+  credentials: "include",
 })
 .then((res) => res.json())
 .then((data) => {
