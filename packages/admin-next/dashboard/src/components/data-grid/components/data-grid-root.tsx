@@ -1,4 +1,8 @@
-import { Adjustments, ExclamationCircle } from "@medusajs/icons"
+import {
+  Adjustments,
+  AdjustmentsDone,
+  ExclamationCircle,
+} from "@medusajs/icons"
 import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
   Cell,
@@ -45,6 +49,7 @@ import {
 import { DataGridMatrix } from "../models"
 import { DataGridCoordinates, GridColumnOption } from "../types"
 import { generateCellId, isCellMatch } from "../utils"
+import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
 
 export interface DataGridRootProps<
   TData,
@@ -87,8 +92,8 @@ const getCommonPinningStyles = <TData,>(
 
 /**
  * TODO:
- * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
  * - [Minor] Add shortcuts overview modal.
+ * - [Minor] Extend the commands to also support modifying the anchor and rangeEnd, to restore the previous focus after undo/redo.
  */
 
 export const DataGridRoot = <
@@ -253,6 +258,7 @@ export const DataGridRoot = <
   const {
     columnOptions,
     handleToggleColumn,
+    handleResetColumns,
     isDisabled: isColumsDisabled,
   } = useDataGridColumnVisibility(grid, matrix)
 
@@ -427,6 +433,14 @@ export const DataGridRoot = <
     handlePasteEvent,
   ])
 
+  const [isHeaderInteractionActive, setIsHeaderInteractionActive] =
+    useState(false)
+
+  const handleHeaderInteractionChange = useCallback((isActive: boolean) => {
+    setIsHeaderInteractionActive(isActive)
+    setTrapActive(!isActive)
+  }, [])
+
   /**
    * Auto corrective effect for ensuring we always
    * have a range end.
@@ -508,10 +522,12 @@ export const DataGridRoot = <
           onToggleColumn={handleToggleColumnVisibility}
           errorCount={errorCount}
           onToggleErrorHighlighting={handleToggleErrorHighlighting}
+          onResetColumns={handleResetColumns}
           isHighlighted={isHighlighted}
+          onHeaderInteractionChange={handleHeaderInteractionChange}
         />
         <FocusTrap
-          active={trapActive}
+          active={trapActive && !isHeaderInteractionActive}
           focusTrapOptions={{
             initialFocus: () => {
               if (!anchor) {
@@ -691,74 +707,111 @@ type DataGridHeaderProps = {
   columnOptions: GridColumnOption[]
   isDisabled: boolean
   onToggleColumn: (index: number) => (value: boolean) => void
+  onResetColumns: () => void
   isHighlighted: boolean
   errorCount: number
   onToggleErrorHighlighting: () => void
+  onHeaderInteractionChange: (isActive: boolean) => void
 }
 
 const DataGridHeader = ({
   columnOptions,
   isDisabled,
   onToggleColumn,
+  onResetColumns,
   isHighlighted,
   errorCount,
   onToggleErrorHighlighting,
+  onHeaderInteractionChange,
 }: DataGridHeaderProps) => {
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const [columnsOpen, setColumnsOpen] = useState(false)
   const { t } = useTranslation()
 
+  // Since all columns are checked by default, we can check if any column is unchecked
+  const hasChanged = columnOptions.some((column) => !column.checked)
+
+  const handleShortcutsOpenChange = (value: boolean) => {
+    onHeaderInteractionChange(value)
+    setShortcutsOpen(value)
+  }
+
+  const handleColumnsOpenChange = (value: boolean) => {
+    onHeaderInteractionChange(value)
+    setColumnsOpen(value)
+  }
   return (
     <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
-      <DropdownMenu>
-        <ConditionalTooltip
-          showTooltip={isDisabled}
-          content={"No columns can be hidden"}
-        >
-          <DropdownMenu.Trigger asChild disabled={isDisabled}>
-            <Button size="small" variant="secondary">
-              <Adjustments />
-              {t("dataGrid.editColumns")}
-            </Button>
-          </DropdownMenu.Trigger>
-        </ConditionalTooltip>
-        <DropdownMenu.Content>
-          {columnOptions.map((column, index) => {
-            const { checked, disabled, id, name } = column
+      <div className="flex items-center gap-x-2">
+        <DropdownMenu open={columnsOpen} onOpenChange={handleColumnsOpenChange}>
+          <ConditionalTooltip
+            showTooltip={isDisabled}
+            content={"No columns can be hidden"}
+          >
+            <DropdownMenu.Trigger asChild disabled={isDisabled}>
+              <Button size="small" variant="secondary">
+                {hasChanged ? <AdjustmentsDone /> : <Adjustments />}
+                {t("dataGrid.columns.view")}
+              </Button>
+            </DropdownMenu.Trigger>
+          </ConditionalTooltip>
+          <DropdownMenu.Content>
+            {columnOptions.map((column, index) => {
+              const { checked, disabled, id, name } = column
 
-            if (disabled) {
-              return null
-            }
+              if (disabled) {
+                return null
+              }
 
-            return (
-              <DropdownMenu.CheckboxItem
-                key={id}
-                checked={checked}
-                onCheckedChange={onToggleColumn(index)}
-                onSelect={(e) => e.preventDefault()}
-              >
-                {name}
-              </DropdownMenu.CheckboxItem>
-            )
-          })}
-        </DropdownMenu.Content>
-      </DropdownMenu>
-      {errorCount > 0 && (
-        <Button
-          size="small"
-          variant="secondary"
-          type="button"
-          onClick={onToggleErrorHighlighting}
-          className={clx({
-            "bg-ui-button-neutral-pressed": isHighlighted,
-          })}
-        >
-          <ExclamationCircle className="text-ui-fg-subtle" />
-          <span>
-            {t("dataGrid.errorCount", {
-              count: errorCount,
+              return (
+                <DropdownMenu.CheckboxItem
+                  key={id}
+                  checked={checked}
+                  onCheckedChange={onToggleColumn(index)}
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  {name}
+                </DropdownMenu.CheckboxItem>
+              )
             })}
-          </span>
-        </Button>
-      )}
+          </DropdownMenu.Content>
+        </DropdownMenu>
+        {hasChanged && (
+          <Button
+            size="small"
+            variant="transparent"
+            type="button"
+            onClick={onResetColumns}
+            className="text-ui-fg-muted hover:text-ui-fg-subtle"
+          >
+            {t("dataGrid.columns.resetToDefault")}
+          </Button>
+        )}
+      </div>
+      <div className="flex items-center gap-x-2">
+        {errorCount > 0 && (
+          <Button
+            size="small"
+            variant="secondary"
+            type="button"
+            onClick={onToggleErrorHighlighting}
+            className={clx({
+              "bg-ui-button-neutral-pressed": isHighlighted,
+            })}
+          >
+            <ExclamationCircle className="text-ui-fg-subtle" />
+            <span>
+              {t("dataGrid.errorCount", {
+                count: errorCount,
+              })}
+            </span>
+          </Button>
+        )}
+        <DataGridKeyboardShortcutModal
+          open={shortcutsOpen}
+          onOpenChange={handleShortcutsOpenChange}
+        />
+      </div>
     </div>
   )
 }

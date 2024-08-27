@@ -218,14 +218,36 @@
     }
   },
   "dataGrid": {
-    "editColumns": "Edit columns",
+    "columns": {
+      "view": "View",
+      "resetToDefault": "Reset to default"
+    },
     "shortcuts": {
       "label": "Shortcuts",
       "commands": {
         "undo": "Undo",
         "redo": "Redo",
-        "edit": "Edit the current cell"
+        "copy": "Copy",
+        "paste": "Paste",
+        "edit": "Edit",
+        "delete": "Delete",
+        "clear": "Clear",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "moveLeft": "Move left",
+        "moveRight": "Move right",
+        "moveTop": "Move to top",
+        "moveBottom": "Move to bottom",
+        "selectDown": "Select down",
+        "selectUp": "Select up",
+        "selectColumnDown": "Select column down",
+        "selectColumnUp": "Select column up"
       }
+    },
+    "errors": {
+      "fixError": "Fix error",
+      "count_one": "{{count}} error",
+      "count_other": "{{count}} errors"
     },
     "errorCount_one": "{{count}} error",
     "errorCount_other": "{{count}} errors"

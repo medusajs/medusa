@@ -1,5 +1,5 @@
 import type { Column, Table } from "@tanstack/react-table"
-import { useCallback, useMemo } from "react"
+import { useCallback } from "react"
 import type { FieldValues } from "react-hook-form"
 
 import { DataGridMatrix } from "../models"
@@ -9,18 +9,18 @@ export function useDataGridColumnVisibility<
   TData,
   TFieldValues extends FieldValues
 >(grid: Table<TData>, matrix: DataGridMatrix<TData, TFieldValues>) {
-  const columnOptions: GridColumnOption[] = useMemo(() => {
-    return grid.getAllLeafColumns().map((column) => ({
-      id: column.id,
-      name: getColumnName(column),
-      checked: column.getIsVisible(),
-      disabled: !column.getCanHide(),
-    }))
-  }, [grid])
+  const columns = grid.getAllLeafColumns()
+
+  const columnOptions: GridColumnOption[] = columns.map((column) => ({
+    id: column.id,
+    name: getColumnName(column),
+    checked: column.getIsVisible(),
+    disabled: !column.getCanHide(),
+  }))
 
   const handleToggleColumn = useCallback(
     (index: number) => (value: boolean) => {
-      const column = grid.getAllLeafColumns()[index]
+      const column = columns[index]
 
       if (!column.getCanHide()) {
         return
@@ -29,8 +29,12 @@ export function useDataGridColumnVisibility<
       matrix.toggleColumn(index, value)
       column.toggleVisibility(value)
     },
-    [grid, matrix]
+    [columns, matrix]
   )
+
+  const handleResetColumns = useCallback(() => {
+    grid.setColumnVisibility({})
+  }, [grid])
 
   const optionCount = columnOptions.filter((c) => !c.disabled).length
   const isDisabled = optionCount === 0
@@ -38,6 +42,7 @@ export function useDataGridColumnVisibility<
   return {
     columnOptions,
     handleToggleColumn,
+    handleResetColumns,
     isDisabled,
   }
 }

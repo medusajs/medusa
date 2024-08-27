@@ -36,7 +36,7 @@ export const DataGridCellContainer = ({
           "bg-ui-bg-subtle": isDragSelected && !isAnchor,
         }
       )}
-      tabIndex={0}
+      tabIndex={-1}
       {...innerProps}
     >
       <ErrorMessage

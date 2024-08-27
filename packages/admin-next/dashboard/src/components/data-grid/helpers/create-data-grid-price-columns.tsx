@@ -19,7 +19,7 @@ type CreateDataGridPriceColumnsProps<
   getFieldName: (
     context: FieldContext<TData>,
     value: string
-  ) => FieldPath<TFieldValues>
+  ) => FieldPath<TFieldValues> | null
   t: TFunction
 }
 
