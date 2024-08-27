@@ -41,7 +41,7 @@ export default async function ({
     } else {
       const user = await userService.createUsers({ email })
 
-      const { authIdentity, error } = await authService.authenticate(provider, {
+      const { authIdentity, error } = await authService.register(provider, {
         body: {
           email,
           password,
