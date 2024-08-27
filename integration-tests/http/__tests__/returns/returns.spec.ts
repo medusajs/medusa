@@ -973,6 +973,7 @@ medusaIntegrationTestRunner({
               items: [
                 expect.objectContaining({
                   received_quantity: 2,
+                  damaged_quantity: 1,
                 }),
               ],
             })
