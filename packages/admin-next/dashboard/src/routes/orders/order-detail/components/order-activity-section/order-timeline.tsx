@@ -496,7 +496,7 @@ const ReturnBody = ({
   const { t } = useTranslation()
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
-    return acc + (isReceived ? item.received_quantity : item.quantity) // TODO: revisit when we add dismissed quantitiy on ReturnItem
+    return acc + (isReceived ? item.received_quantity : item.quantity) // TODO: revisit when we add dismissed quantity on ReturnItem
   }, 0)
 
   return (
