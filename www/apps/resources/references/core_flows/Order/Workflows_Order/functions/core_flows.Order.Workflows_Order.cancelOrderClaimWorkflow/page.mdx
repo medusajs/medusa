@@ -1,0 +1,20 @@
+---
+slug: /references/medusa-workflows/cancelOrderClaimWorkflow
+sidebar_label: cancelOrderClaimWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# cancelOrderClaimWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `cancelOrderClaimWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow cancels a confirmed order claim.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"cancelOrderClaimWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#useremotequerystep","depth":1},{"type":"step","name":"cancelClaimValidateOrderStep","description":"This step validates that a confirmed claim can be canceled.","link":"../../../../core_flows.Workflows_Order/page.mdx#cancelclaimvalidateorderstep","depth":2},{"type":"step","name":"cancelOrderClaimStep","description":"This step cancels a claim.","link":"../../../../core_flows.Steps_Order/page.mdx#cancelorderclaimstep","depth":3},{"type":"step","name":"deleteReservationsByLineItemsStep","description":"This step deletes reservations by their associated line items.","link":"../../../../core_flows.Steps_Reservation/page.mdx#deletereservationsbylineitemsstep","depth":3},{"type":"when","condition":"{\n      return !!orderClaim.return_id\n    }","depth":"4","steps":[{"type":"workflow","name":"cancelReturnWorkflow","description":"This workflow cancels a return.","link":"../../../../core_flows.Workflows_Order/page.mdx#cancelreturnworkflow","depth":4}]}]}} />
+
+## Input
+
+<TypeList types={[{"name":"CancelOrderClaimWorkflowInput","type":"`CancelOrderClaimWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cancelOrderClaimWorkflow"/>

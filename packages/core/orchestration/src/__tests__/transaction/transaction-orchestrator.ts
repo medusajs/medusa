@@ -6,8 +6,8 @@ import {
   TransactionOrchestrator,
   TransactionPayload,
   TransactionState,
-  TransactionStepTimeoutError,
   TransactionStepsDefinition,
+  TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "../../transaction"
 
@@ -55,7 +55,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -134,7 +137,10 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -185,7 +191,10 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -262,7 +271,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -354,7 +366,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -418,7 +433,10 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -488,7 +506,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -552,7 +573,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -607,7 +631,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -665,7 +692,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -748,7 +778,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -872,7 +905,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -941,7 +977,10 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", flow)
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
@@ -975,9 +1014,12 @@ describe("Transaction Orchestrator", () => {
       transactionInHandler = transaction
     }
 
-    const strategy = new TransactionOrchestrator("transaction-name", {
-      next: {
-        action: "firstMethod",
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: {
+        next: {
+          action: "firstMethod",
+        },
       },
     })
 
@@ -1069,8 +1111,12 @@ describe("Transaction Orchestrator", () => {
         },
       }
 
-      const strategy = new TransactionOrchestrator("transaction-name", flow, {
-        timeout: 0.1, // 100ms
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name",
+        definition: flow,
+        options: {
+          timeout: 0.1, // 100ms
+        },
       })
 
       const transaction = await strategy.beginTransaction(
@@ -1177,7 +1223,10 @@ describe("Transaction Orchestrator", () => {
         },
       }
 
-      const strategy = new TransactionOrchestrator("transaction-name", flow)
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name",
+        definition: flow,
+      })
 
       const transaction = await strategy.beginTransaction(
         "transaction_id_123",
@@ -1294,7 +1343,10 @@ describe("Transaction Orchestrator", () => {
         },
       }
 
-      const strategy = new TransactionOrchestrator("transaction-name", flow)
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name",
+        definition: flow,
+      })
 
       const transaction = await strategy.beginTransaction(
         "transaction_id_123",
@@ -1401,8 +1453,12 @@ describe("Transaction Orchestrator", () => {
         },
       }
 
-      const strategy = new TransactionOrchestrator("transaction-name", flow, {
-        timeout: 0.1, // 100ms
+      const strategy = new TransactionOrchestrator({
+        id: "transaction-name",
+        definition: flow,
+        options: {
+          timeout: 0.1, // 100ms
+        },
       })
 
       const transaction = await strategy.beginTransaction(
