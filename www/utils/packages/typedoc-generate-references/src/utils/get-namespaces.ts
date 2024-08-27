@@ -74,10 +74,6 @@ export function getNamespaceNames(
 
   namespaces.forEach((namespace) => {
     names.push(namespace.name)
-
-    if (namespace.children) {
-      names.push(...getNamespaceNames(namespace.children))
-    }
   })
 
   return names
