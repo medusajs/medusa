@@ -2362,6 +2362,7 @@ describe("Entity builder", () => {
           setter: false,
           type: "string",
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -3243,6 +3244,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -3423,6 +3425,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -4027,6 +4030,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -4215,6 +4219,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
