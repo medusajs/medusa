@@ -1,4 +1,5 @@
 import { Badge, Tooltip } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 import { DataGridRowError } from "../types"
 
 type DataGridRowErrorIndicatorProps = {
@@ -37,6 +38,8 @@ const DataGridRowErrorLine = ({
 }: {
   error: { message: string; to: () => void }
 }) => {
+  const { t } = useTranslation()
+
   return (
     <li className="txt-compact-small flex flex-col items-start">
       {error.message}
@@ -45,7 +48,7 @@ const DataGridRowErrorLine = ({
         onClick={error.to}
         className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
       >
-        Fix error
+        {t("dataGrid.errors.fixError")}
       </button>
     </li>
   )

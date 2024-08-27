@@ -801,7 +801,7 @@ const DataGridHeader = ({
           >
             <ExclamationCircle className="text-ui-fg-subtle" />
             <span>
-              {t("dataGrid.errorCount", {
+              {t("dataGrid.errors.count", {
                 count: errorCount,
               })}
             </span>

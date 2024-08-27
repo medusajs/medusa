@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { i18n } from "../../../components/utilities/i18n/i18n.tsx"
 import { optionalInt } from "../../../lib/validation.ts"
 import { decorateVariantsWithDefaultValues } from "./utils.ts"
 
@@ -104,7 +105,7 @@ export const ProductCreateSchema = z
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: [`variants.${index}.sku`],
-            message: "duplicate_sku",
+            message: i18n.t("products.create.errors.uniqueSku"),
           })
         }
 
