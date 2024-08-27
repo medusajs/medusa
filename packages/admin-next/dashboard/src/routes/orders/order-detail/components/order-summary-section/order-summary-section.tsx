@@ -529,11 +529,17 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
             : "-"
         }
       />
-      <Cost
-        label={t("fields.shipping")}
-        secondaryValue={order.shipping_methods.map((sm) => sm.name).join(", ")}
-        value={getLocaleAmount(order.shipping_total, order.currency_code)}
-      />
+      {(order.shipping_methods || [])
+        .sort((m1, m2) =>
+          (m1.created_at as string).localeCompare(m2.created_at as string)
+        )
+        .map((sm, i) => (
+          <Cost
+            label={t("fields.shipping") + (i ? ` ${i + 1}` : "")}
+            secondaryValue={sm.name}
+            value={getLocaleAmount(sm.total, order.currency_code)}
+          />
+        ))}
     </div>
   )
 }
