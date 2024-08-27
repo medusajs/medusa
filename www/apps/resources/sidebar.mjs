@@ -2162,6 +2162,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "category",
+            title: "Admin Development",
+            children: [
+              {
+                type: "link",
+                path: "/troubleshooting/medusa-admin/no-widget-route",
+                title: "Widget or Route not Showing",
+              },
+            ],
+          },
+          {
+            type: "category",
             title: "Upgrade",
             children: [
               {

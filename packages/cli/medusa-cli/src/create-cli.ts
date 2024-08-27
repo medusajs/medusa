@@ -2,10 +2,9 @@ import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
 
-import { didYouMean } from "./did-you-mean"
-
-import { toCamelCase } from "@medusajs/utils"
+import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
+import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
 
 const yargs = require(`yargs`)
@@ -36,20 +35,17 @@ function buildLocalCommands(cli, isLocalProject) {
 
   function resolveLocalCommand(command) {
     if (!isLocalProject) {
-      cli.showHelp()
+      cli.showHelp((s: string) => console.log(s))
     }
 
     try {
-      const { Commands } = require("@medusajs/medusa")
-      const cmdName = toCamelCase(command)
-      return Commands[cmdName]
+      const cmdPath = resolveCwd.silent(
+        `@medusajs/medusa/dist/commands/${command}`
+      )!
+      return require(cmdPath).default
     } catch (err) {
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
-      }
-      cli.showHelp()
+      console.error(err)
+      cli.showHelp((s: string) => console.error(s))
     }
   }
 
@@ -141,6 +137,26 @@ function buildLocalCommands(cli, isLocalProject) {
       },
       handler: handlerP(
         getCommandHandler("db/create", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:sync-links",
+      desc: "Sync database schema with the links defined by your application and Medusa core",
+      builder: (builder) => {
+        builder.option("execute-all", {
+          type: "boolean",
+          describe: "Skip prompts and execute all (including unsafe) actions",
+        })
+        builder.option("execute-safe", {
+          type: "boolean",
+          describe: "Skip prompts and execute only safe actions",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/sync-links", (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           return cmd(args)
         })
@@ -484,15 +500,23 @@ export default (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
+      if (msg) {
+        reporter.error(msg)
+        console.log()
+      }
+      if (suggestion) {
+        reporter.info(suggestion)
+        console.log()
       }
 
-      cli.showHelp()
-      reporter.info(suggestion)
-      reporter.info(msg)
+      if (err) {
+        console.error("--------------- ERROR ---------------------")
+        console.error(err)
+        console.error("-------------------------------------------")
+      }
+
+      cli.showHelp((s: string) => console.error(s))
+      process.exit(1)
     })
     .parse(argv.slice(2))
 }

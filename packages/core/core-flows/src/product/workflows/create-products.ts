@@ -4,7 +4,7 @@ import {
   PricingTypes,
   ProductTypes,
 } from "@medusajs/types"
-import { isPresent } from "@medusajs/utils"
+import { ProductWorkflowEvents, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -12,6 +12,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 import { createProductsStep } from "../steps/create-products"
 import { createProductVariantsWorkflow } from "./create-product-variants"
@@ -100,6 +101,17 @@ export const createProductsWorkflow = createWorkflow(
         return data.createdProducts
       }
     )
+
+    const productIdEvents = transform({ response }, ({ response }) => {
+      return response.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductWorkflowEvents.CREATED,
+      data: productIdEvents,
+    })
 
     const productsCreated = createHook("productsCreated", {
       products: response,
