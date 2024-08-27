@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { useDataGridCell, useDataGridErrors } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
@@ -13,7 +13,7 @@ export const DataGridTextCell = <TData, TValue = any>({
   const { field, control, renderProps } = useDataGridCell({
     context,
   })
-  const errorProps = useDataGridErrors({ context })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -53,7 +53,7 @@ const Inner = ({
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent px-4 py-2.5 outline-none",
+        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
         "focus:cursor-text"
       )}
       autoComplete="off"

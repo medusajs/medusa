@@ -7,7 +7,7 @@ import { Controller, ControllerRenderProps } from "react-hook-form"
 import { useCallback, useEffect, useState } from "react"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { CurrencyInfo, currencies } from "../../../lib/data/currencies"
-import { useDataGridCell, useDataGridErrors } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
@@ -23,7 +23,7 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
   const { field, control, renderProps } = useDataGridCell({
     context,
   })
-  const errorProps = useDataGridErrors({ context })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -110,7 +110,7 @@ const Inner = ({
   return (
     <div className="relative flex size-full items-center">
       <span
-        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-4 w-fit min-w-4"
+        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-0 w-fit min-w-4"
         aria-hidden
       >
         {currencyInfo.symbol_native}
@@ -119,7 +119,7 @@ const Inner = ({
         {...rest}
         {...attributes}
         ref={combinedRed}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-none"
         value={localValue || undefined}
         onValueChange={handleValueChange}
         formatValueOnBlur

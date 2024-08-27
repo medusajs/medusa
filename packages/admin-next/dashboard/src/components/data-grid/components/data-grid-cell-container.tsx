@@ -1,11 +1,11 @@
 import { ErrorMessage } from "@hookform/error-message"
-import { Badge, Tooltip, clx } from "@medusajs/ui"
-import { PropsWithChildren } from "react"
-
 import { ExclamationCircle } from "@medusajs/icons"
+import { Tooltip, clx } from "@medusajs/ui"
+import { PropsWithChildren } from "react"
 import { get } from "react-hook-form"
+
 import { DataGridCellContainerProps, DataGridErrorRenderProps } from "../types"
-import { countFieldErrors } from "../utils"
+import { DataGridRowErrorIndicator } from "./data-grid-row-error-indicator"
 
 export const DataGridCellContainer = ({
   isAnchor,
@@ -18,19 +18,15 @@ export const DataGridCellContainer = ({
   overlayProps,
   children,
   errors,
-  cellError,
   rowErrors,
 }: DataGridCellContainerProps & DataGridErrorRenderProps<any>) => {
   const error = get(errors, field)
-  const rowErrorCount = rowErrors ? countFieldErrors(rowErrors) : 0
-
   const hasError = !!error
 
   return (
     <div
-      data-has-error={hasError}
       className={clx(
-        "bg-ui-bg-base group/cell relative flex size-full items-center outline-none",
+        "bg-ui-bg-base group/cell relative flex size-full items-center gap-x-2 px-4 py-2.5 outline-none",
         {
           "bg-ui-tag-red-bg text-ui-tag-red-text":
             hasError && !isAnchor && !isSelected && !isDragSelected,
@@ -48,7 +44,7 @@ export const DataGridCellContainer = ({
         errors={errors}
         render={({ message }) => {
           return (
-            <div className="flex items-center justify-center pl-4 pr-2">
+            <div className="flex items-center justify-center">
               <Tooltip content={message} delayDuration={0}>
                 <ExclamationCircle className="text-ui-tag-red-icon z-[3]" />
               </Tooltip>
@@ -61,7 +57,7 @@ export const DataGridCellContainer = ({
           {children}
         </RenderChildren>
       </div>
-      {rowErrorCount > 0 && <Badge>{rowErrorCount}</Badge>}
+      <DataGridRowErrorIndicator rowErrors={rowErrors} />
       {showOverlay && (
         <div
           {...overlayProps}

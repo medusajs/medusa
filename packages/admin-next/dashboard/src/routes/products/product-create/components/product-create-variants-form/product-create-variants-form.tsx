@@ -3,9 +3,11 @@ import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { DataGrid } from "../../../../../components/data-grid"
-import { createDataGridPriceColumns } from "../../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
-import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+import {
+  createDataGridHelper,
+  createDataGridPriceColumns,
+  DataGrid,
+} from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"

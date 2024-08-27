@@ -5,10 +5,11 @@ import {
   DataGridCurrencyCell,
   DataGridNumberCell,
   DataGridReadOnlyCell,
+  DataGridRoot,
+  DataGridSkeleton,
   DataGridTextCell,
-} from "./data-grid-cells"
-import { DataGridRoot, DataGridRootProps } from "./data-grid-root"
-import { DataGridSkeleton } from "./data-grid-skeleton"
+  type DataGridRootProps,
+} from "./components"
 
 interface DataGridProps<TData, TFieldValues extends FieldValues = FieldValues>
   extends DataGridRootProps<TData, TFieldValues> {

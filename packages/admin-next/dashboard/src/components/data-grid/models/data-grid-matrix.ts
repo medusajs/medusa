@@ -1,19 +1,11 @@
 import { ColumnDef, Row } from "@tanstack/react-table"
 import { FieldValues } from "react-hook-form"
-import { Command } from "../../hooks/use-command-history"
-import {
-  CellCoords,
-  ColumnType,
-  Grid,
-  GridCell,
-  InternalColumnMeta,
-} from "./types"
-import { generateCellId } from "./utils"
+import { DataGridColumnType, DataGridCoordinates, Grid, GridCell, InternalColumnMeta } from "../types"
 
-export class Matrix<TData, TFieldValues extends FieldValues> {
+export class DataGridMatrix<TData, TFieldValues extends FieldValues> {
   private cells: Grid<TFieldValues>
-  private rowAccessors: (string | null)[] = []
-  private columnAccessors: (string | null)[] = []
+  public rowAccessors: (string | null)[] = []
+  public columnAccessors: (string | null)[] = []
 
   constructor(data: Row<TData>[], columns: ColumnDef<TData>[]) {
     this.cells = this._populateCells(data, columns)
@@ -34,7 +26,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     return this.cells[0].map((_, colIndex) => this.getColumnAccessor(colIndex))
   }
 
-  getFirstNavigableCell(): CellCoords | null {
+  getFirstNavigableCell(): DataGridCoordinates | null {
     for (let row = 0; row < this.cells.length; row++) {
       for (let col = 0; col < this.cells[0].length; col++) {
         if (this.cells[row][col] !== null) {
@@ -63,8 +55,8 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
   }
 
   getFieldsInSelection(
-    start: CellCoords | null,
-    end: CellCoords | null
+    start: DataGridCoordinates | null,
+    end: DataGridCoordinates | null
   ): string[] {
     const keys: string[] = []
 
@@ -89,7 +81,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     return keys
   }
 
-  getCellField(cell: CellCoords): string | null {
+  getCellField(cell: DataGridCoordinates): string | null {
     if (this._isValidPosition(cell.row, cell.col)) {
       return this.cells[cell.row][cell.col]?.field || null
     }
@@ -97,7 +89,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     return null
   }
 
-  getCellType(cell: CellCoords): ColumnType | null {
+  getCellType(cell: DataGridCoordinates): DataGridColumnType | null {
     if (this._isValidPosition(cell.row, cell.col)) {
       return this.cells[cell.row][cell.col]?.type || null
     }
@@ -106,9 +98,9 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
   }
 
   getIsCellSelected(
-    cell: CellCoords | null,
-    start: CellCoords | null,
-    end: CellCoords | null
+    cell: DataGridCoordinates | null,
+    start: DataGridCoordinates | null,
+    end: DataGridCoordinates | null
   ): boolean {
     if (!cell || !start || !end) {
       return false
@@ -157,7 +149,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     })
   }
 
-  getCoordinatesByField(field: string): CellCoords | null {
+  getCoordinatesByField(field: string): DataGridCoordinates | null {
     if (this.rowAccessors.length === 1) {
       const col = this.columnAccessors.indexOf(field)
 
@@ -274,7 +266,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     col: number,
     direction: string,
     metaKey: boolean = false
-  ): CellCoords {
+  ): DataGridCoordinates {
     const [dRow, dCol] = this._getDirectionDeltas(direction)
 
     if (metaKey) {
@@ -283,35 +275,18 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
       let newRow = row + dRow
       let newCol = col + dCol
 
-      if (
-        newRow < 0 ||
-        newRow >= this.cells.length ||
-        newCol < 0 ||
-        newCol >= this.cells[0].length
-      ) {
-        return { row, col }
-      }
-
-      while (
-        this._isValidPosition(newRow, newCol) &&
-        this.cells[newRow][newCol] === null
-      ) {
+      while (this._isValidPosition(newRow, newCol)) {
+        if (
+          this.cells[newRow][newCol] !== null &&
+          this.cells[newRow][newCol]?.enabled !== false
+        ) {
+          return { row: newRow, col: newCol }
+        }
         newRow += dRow
         newCol += dCol
-
-        if (
-          newRow < 0 ||
-          newRow >= this.cells.length ||
-          newCol < 0 ||
-          newCol >= this.cells[0].length
-        ) {
-          return { row, col }
-        }
       }
 
-      return this._isValidPosition(newRow, newCol)
-        ? { row: newRow, col: newCol }
-        : { row, col }
+      return { row, col }
     }
   }
 
@@ -347,7 +322,7 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     col: number,
     dRow: number,
     dCol: number
-  ): CellCoords {
+  ): DataGridCoordinates {
     let newRow = row
     let newCol = col
     let lastValidRow = row
@@ -409,142 +384,5 @@ export class Matrix<TData, TFieldValues extends FieldValues> {
     })
 
     return cells
-  }
-}
-
-export class GridQueryTool {
-  private container: HTMLElement | null
-
-  constructor(container: HTMLElement | null) {
-    this.container = container
-  }
-
-  getInput(cell: CellCoords) {
-    const id = this._getCellId(cell)
-
-    const input = this.container?.querySelector(`[data-cell-id="${id}"]`)
-
-    if (!input) {
-      return null
-    }
-
-    return input as HTMLElement
-  }
-
-  getInputByField(field: string) {
-    const input = this.container?.querySelector(`[data-field="${field}"]`)
-
-    if (!input) {
-      return null
-    }
-
-    return input as HTMLElement
-  }
-
-  getCoordinatesByField(field: string): CellCoords | null {
-    const cell = this.container?.querySelector(
-      `[data-field="${field}"][data-cell-id]`
-    )
-
-    if (!cell) {
-      return null
-    }
-
-    const cellId = cell.getAttribute("data-cell-id")
-
-    if (!cellId) {
-      return null
-    }
-
-    const [row, col] = cellId.split(":").map((n) => parseInt(n, 10))
-
-    if (isNaN(row) || isNaN(col)) {
-      return null
-    }
-
-    return { row, col }
-  }
-
-  getContainer(cell: CellCoords) {
-    const id = this._getCellId(cell)
-
-    const container = this.container?.querySelector(
-      `[data-container-id="${id}"]`
-    )
-
-    if (!container) {
-      return null
-    }
-
-    return container as HTMLElement
-  }
-
-  private _getCellId(cell: CellCoords): string {
-    return generateCellId(cell)
-  }
-}
-
-export type BulkUpdateCommandArgs = {
-  fields: string[]
-  next: any[]
-  prev: any[]
-  setter: (fields: string[], values: any[]) => void
-}
-
-export class BulkUpdateCommand implements Command {
-  private _fields: string[]
-
-  private _prev: any[]
-  private _next: any[]
-
-  private _setter: (fields: string[], any: string[]) => void
-
-  constructor({ fields, prev, next, setter }: BulkUpdateCommandArgs) {
-    this._fields = fields
-    this._prev = prev
-    this._next = next
-    this._setter = setter
-  }
-
-  execute(): void {
-    this._setter(this._fields, this._next)
-  }
-  undo(): void {
-    this._setter(this._fields, this._prev)
-  }
-  redo(): void {
-    this.execute()
-  }
-}
-
-export type UpdateCommandArgs = {
-  prev: any
-  next: any
-  setter: (value: any) => void
-}
-
-export class UpdateCommand implements Command {
-  private _prev: any
-  private _next: any
-
-  private _setter: (value: any) => void
-
-  constructor({ prev, next, setter }: UpdateCommandArgs) {
-    this._prev = prev
-    this._next = next
-
-    this._setter = setter
-  }
-
-  execute(): void {
-    this._setter(this._next)
-  }
-
-  undo(): void {
-    this._setter(this._prev)
-  }
-
-  redo(): void {
-    this.execute()
   }
 }

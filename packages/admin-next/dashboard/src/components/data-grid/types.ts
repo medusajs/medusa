@@ -1,7 +1,12 @@
-import { CellContext, ColumnDef, ColumnMeta, Row } from "@tanstack/react-table"
+import {
+  CellContext,
+  ColumnDef,
+  ColumnMeta,
+  Row,
+  VisibilityState,
+} from "@tanstack/react-table"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 import {
-  FieldError,
   FieldErrors,
   FieldPath,
   FieldValues,
@@ -9,16 +14,11 @@ import {
   PathValue,
 } from "react-hook-form"
 
-export type ColumnType = "text" | "number" | "boolean"
+export type DataGridColumnType = "text" | "number" | "boolean"
 
-export type CellCoords = {
+export type DataGridCoordinates = {
   row: number
   col: number
-}
-
-export type GetCellHandlerProps = {
-  coords: CellCoords
-  readonly: boolean
 }
 
 export interface DataGridCellProps<TData = unknown, TValue = any> {
@@ -37,10 +37,14 @@ export interface DataGridCellContext<TData = unknown, TValue = any>
   rowIndex: number
 }
 
+export type DataGridRowError = {
+  message: string
+  to: () => void
+}
+
 export type DataGridErrorRenderProps<TFieldValues extends FieldValues> = {
   errors: FieldErrors<TFieldValues>
-  cellError: FieldError | undefined
-  rowErrors: FieldErrors<TFieldValues> | undefined
+  rowErrors: DataGridRowError[]
 }
 
 export interface DataGridCellRenderProps {
@@ -94,9 +98,9 @@ export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
   showOverlay: boolean
 }
 
-export type DataGridColumnType = "string" | "number" | "boolean"
-
-export type CellSnapshot<TFieldValues extends FieldValues = FieldValues> = {
+export type DataGridCellSnapshot<
+  TFieldValues extends FieldValues = FieldValues
+> = {
   field: string
   value: PathValue<TFieldValues, Path<TFieldValues>>
 }
@@ -116,7 +120,7 @@ export type InternalColumnMeta<TData, TFieldValues extends FieldValues> = {
 } & (
   | {
       field: FieldFunction<TData, TFieldValues>
-      type: ColumnType
+      type: DataGridColumnType
     }
   | { field?: null | undefined; type?: never }
 ) &
@@ -124,7 +128,7 @@ export type InternalColumnMeta<TData, TFieldValues extends FieldValues> = {
 
 export type GridCell<TFieldValues extends FieldValues> = {
   field: FieldPath<TFieldValues>
-  type: ColumnType
+  type: DataGridColumnType
   enabled: boolean
 }
 
@@ -134,7 +138,7 @@ export type Grid<TFieldValues extends FieldValues> =
 export type CellMetadata = {
   id: string
   field: string
-  type: ColumnType
+  type: DataGridColumnType
   inputAttributes: InputAttributes
   innerAttributes: InnerAttributes
 }
@@ -142,4 +146,16 @@ export type CellMetadata = {
 export type CellErrorMetadata = {
   field: string | null
   accessor: string | null
+}
+
+export type VisibilitySnapshot = {
+  rows: VisibilityState
+  columns: VisibilityState
+}
+
+export type GridColumnOption = {
+  id: string
+  name: string
+  checked: boolean
+  disabled: boolean
 }

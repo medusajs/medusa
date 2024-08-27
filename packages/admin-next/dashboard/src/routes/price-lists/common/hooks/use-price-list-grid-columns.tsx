@@ -4,9 +4,8 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Thumbnail } from "../../../../components/common/thumbnail"
-import { DataGrid } from "../../../../components/data-grid"
-import { createDataGridPriceColumns } from "../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
-import { createDataGridHelper } from "../../../../components/data-grid/utils"
+import { createDataGridHelper, DataGrid } from "../../../../components/data-grid"
+import { createDataGridPriceColumns } from "../../../../components/data-grid/helpers/create-data-grid-price-columns"
 import { isProductRow } from "../utils"
 
 const columnHelper = createDataGridHelper<

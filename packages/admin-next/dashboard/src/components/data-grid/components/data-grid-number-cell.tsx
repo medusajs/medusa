@@ -2,7 +2,7 @@ import { clx } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { useDataGridCell, useDataGridErrors } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
@@ -17,7 +17,7 @@ export const DataGridNumberCell = <TData, TValue = any>({
   const { field, control, renderProps } = useDataGridCell({
     context,
   })
-  const errorProps = useDataGridErrors({ context })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -81,9 +81,8 @@ const Inner = ({
         type="number"
         inputMode="decimal"
         className={clx(
-          "txt-compact-small size-full bg-transparent px-4 py-2.5 outline-none",
-          "placeholder:text-ui-fg-muted",
-          "group-data-[has-error=true]/cell:pl-0"
+          "txt-compact-small size-full bg-transparent outline-none",
+          "placeholder:text-ui-fg-muted"
         )}
         tabIndex={-1}
         {...props}
