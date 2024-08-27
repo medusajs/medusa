@@ -6,17 +6,22 @@ import {
   ProductTypes,
   UpdateProductVariantWorkflowInputDTO,
 } from "@medusajs/types"
-import { arrayDifference, Modules } from "@medusajs/utils"
 import {
+  Modules,
+  ProductWorkflowEvents,
+  arrayDifference,
+} from "@medusajs/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-  WorkflowData,
-  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createRemoteLinkStep,
   dismissRemoteLinkStep,
+  emitEventStep,
   useRemoteQueryStep,
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
@@ -36,7 +41,7 @@ export type UpdateProductsWorkflowInputProducts = {
   })[]
 } & AdditionalData
 
-export type UpdateProductWorkflowInput = 
+export type UpdateProductWorkflowInput =
   | UpdateProductsWorkflowInputSelector
   | UpdateProductsWorkflowInputProducts
 
@@ -278,6 +283,20 @@ export const updateProductsWorkflow = createWorkflow(
 
     dismissRemoteLinkStep(toDeleteSalesChannelLinks)
     createRemoteLinkStep(salesChannelLinks)
+
+    const productIdEvents = transform(
+      { updatedProductIds },
+      ({ updatedProductIds }) => {
+        return updatedProductIds.map((id) => {
+          return { id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: ProductWorkflowEvents.UPDATED,
+      data: productIdEvents,
+    })
 
     const productsUpdated = createHook("productsUpdated", {
       products: updatedProducts,
