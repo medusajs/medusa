@@ -1565,6 +1565,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/recipes/marketplace/examples/vendors",
             title: "Example: Vendors",
           },
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/restaurant-delivery",
+            title: "Example: Restaurant-Delivery",
+          },
         ],
       },
       {
