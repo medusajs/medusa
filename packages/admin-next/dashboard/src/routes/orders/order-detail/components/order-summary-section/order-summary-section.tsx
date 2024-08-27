@@ -9,6 +9,7 @@ import {
   ArrowUturnLeft,
   DocumentText,
   ExclamationCircle,
+  PencilSquare,
 } from "@medusajs/icons"
 import {
   AdminClaim,
@@ -167,26 +168,39 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       <Total order={order} />
 
       {(showAllocateButton || showReturns || showPayment || showRefund) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
-          {showReturns && (
-            <ButtonMenu
-              groups={[
-                {
-                  actions: returns.map((r) => ({
-                    label: t("orders.returns.receive.receive", {
-                      label: `#${r.id.slice(-7)}`,
-                    }),
-                    icon: <ArrowLongRight />,
-                    to: `/orders/${order.id}/returns/${r.id}/receive`,
-                  })),
-                },
-              ]}
-            >
-              <Button variant="secondary" size="small">
+        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+          {showReturns &&
+            (returns.length === 1 ? (
+              <Button
+                onClick={() =>
+                  navigate(
+                    `/orders/${order.id}/returns/${returns[0].id}/receive`
+                  )
+                }
+                variant="secondary"
+                size="small"
+              >
                 {t("orders.returns.receive.action")}
               </Button>
-            </ButtonMenu>
-          )}
+            ) : (
+              <ButtonMenu
+                groups={[
+                  {
+                    actions: returns.map((r) => ({
+                      label: t("orders.returns.receive.receive", {
+                        label: `#${r.id.slice(-7)}`,
+                      }),
+                      icon: <ArrowLongRight />,
+                      to: `/orders/${order.id}/returns/${r.id}/receive`,
+                    })),
+                  },
+                ]}
+              >
+                <Button variant="secondary" size="small">
+                  {t("orders.returns.receive.action")}
+                </Button>
+              </ButtonMenu>
+            ))}
 
           {showAllocateButton && (
             <Button
@@ -248,6 +262,8 @@ const Header = ({
     (i) => !(getReturnableQuantity(i) > 0)
   )
 
+  const isOrderEditActive = orderPreview?.order_change?.change_type === "edit"
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.summary")}</Heading>
@@ -255,11 +271,20 @@ const Header = ({
         groups={[
           {
             actions: [
-              // {
-              //   label: t("orders.summary.editItems"),
-              //   to: `/orders/${order.id}/edit`,
-              //   icon: <PencilSquare />,
-              // },
+              {
+                label: t("orders.summary.editOrder"),
+                to: `/orders/${order.id}/edits`,
+                icon: <PencilSquare />,
+                disabled:
+                  (orderPreview?.order_change &&
+                    orderPreview?.order_change?.change_type !== "edit") ||
+                  (orderPreview?.order_change?.change_type === "edit" &&
+                    orderPreview?.order_change?.status === "requested"),
+              },
+            ],
+          },
+          {
+            actions: [
               // {
               //   label: t("orders.summary.allocateItems"),
               //   to: "#", // TODO: Open modal to allocate items
@@ -271,6 +296,7 @@ const Header = ({
                 icon: <ArrowUturnLeft />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   !!orderPreview?.order_change?.exchange_id ||
                   !!orderPreview?.order_change?.claim_id,
               },
@@ -284,6 +310,7 @@ const Header = ({
                 icon: <ArrowPath />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.exchange_id) ||
                   !!orderPreview?.order_change?.claim_id,
@@ -298,6 +325,7 @@ const Header = ({
                 icon: <ExclamationCircle />,
                 disabled:
                   shouldDisableReturn ||
+                  isOrderEditActive ||
                   (!!orderPreview?.order_change?.return_id &&
                     !!!orderPreview?.order_change?.claim_id) ||
                   !!orderPreview?.order_change?.exchange_id,
@@ -535,7 +563,7 @@ const ReturnBreakdown = ({
     item && (
       <div
         key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />

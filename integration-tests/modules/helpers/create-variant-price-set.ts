@@ -1,7 +1,7 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
+  MedusaContainer,
   PriceSetDTO,
 } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"

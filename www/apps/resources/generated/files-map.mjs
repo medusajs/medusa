@@ -1008,6 +1008,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/general-errors"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/medusa-admin/no-widget-route/page.mdx",
+    "pathname": "/troubleshooting/medusa-admin/no-widget-route"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/page.mdx",
     "pathname": "/troubleshooting"
   },

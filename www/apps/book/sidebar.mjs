@@ -251,7 +251,7 @@ export const sidebar = numberSidebarItems(
             {
               type: "link",
               path: "/advanced-development/workflows/constructor-constraints",
-              title: "Workflow Constraints",
+              title: "Constraints",
             },
             {
               type: "link",
@@ -329,6 +329,11 @@ export const sidebar = numberSidebarItems(
               type: "link",
               path: "/advanced-development/admin/ui-routes",
               title: "Admin UI Routes",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/admin/constraints",
+              title: "Constraints",
             },
             {
               type: "link",

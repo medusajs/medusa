@@ -1,11 +1,11 @@
 import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"
-import Store from "medusa-telemetry/dist/store"
+import { Store } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 
-import { logger } from "@medusajs/framework"
+import { logger, MEDUSA_CLI_PATH } from "@medusajs/framework"
 
 const defaultConfig = {
   padding: 5,
@@ -15,10 +15,12 @@ const defaultConfig = {
 
 export default async function ({ port, directory }) {
   const args = process.argv
+
   const argv =
     process.argv.indexOf("--") !== -1
       ? process.argv.slice(process.argv.indexOf("--") + 1)
       : []
+
   args.shift()
   args.shift()
   args.shift()
@@ -27,12 +29,8 @@ export default async function ({ port, directory }) {
    * Re-constructing the path to Medusa CLI to execute the
    * start command.
    */
-  const cliPath = path.resolve(
-    require.resolve("@medusajs/medusa-cli"),
-    "..",
-    "..",
-    "cli.js"
-  )
+
+  const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
 
   const devServer = {
     childProcess: null as ChildProcess | null,

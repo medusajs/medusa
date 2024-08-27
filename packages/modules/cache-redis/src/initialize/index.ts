@@ -1,11 +1,11 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
+  ICacheService,
   InternalModuleDeclaration,
-  MedusaModule,
-} from "@medusajs/modules-sdk"
-import { ICacheService } from "@medusajs/types"
-import { RedisCacheModuleOptions } from "../types"
+} from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
+import { RedisCacheModuleOptions } from "../types"
 
 export const initialize = async (
   options?: RedisCacheModuleOptions | ExternalModuleDeclaration

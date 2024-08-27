@@ -21,7 +21,7 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
   const { commands, setCommand } = useSearch()
 
   return (
-    <div className="h-full overflow-auto">
+    <div className="h-full overflow-auto px-docs_0.5">
       {commands.length > 0 && (
         <>
           <SearchHitGroupName name={"Commands"} />
@@ -30,12 +30,9 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
               onClick={() => setCommand(command)}
               key={index}
               tabIndex={index}
-              className="justify-between"
             >
-              <span className="flex gap-docs_0.75">
-                {command.icon}
-                <span>{command.title}</span>
-              </span>
+              {command.icon}
+              <span className="flex-1">{command.title}</span>
               {command.badge && <Badge {...command.badge} />}
             </SearchSuggestionItem>
           ))}

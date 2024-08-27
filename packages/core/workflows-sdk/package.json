@@ -30,12 +30,13 @@
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/orchestration": "^0.5.7",
-    "@medusajs/utils": "^1.11.9",
+    "@medusajs/utils": "^1.11.9"
+  },
+  "peerDependencies": {
     "awilix": "^8.0.1",
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "jest --runInBand --bail --forceExit",

@@ -1,4 +1,4 @@
-import { ModuleExports } from "@medusajs/modules-sdk"
+import { ModuleExports } from "@medusajs/types"
 import Loader from "./loaders"
 import RedisEventBusService from "./services/event-bus-redis"
 

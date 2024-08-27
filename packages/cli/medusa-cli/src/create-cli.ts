@@ -1,11 +1,10 @@
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
 import path from "path"
+
 import resolveCwd from "resolve-cwd"
-
-import { didYouMean } from "./did-you-mean"
-
 import { newStarter } from "./commands/new"
+import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
 
 const yargs = require(`yargs`)
@@ -36,7 +35,7 @@ function buildLocalCommands(cli, isLocalProject) {
 
   function resolveLocalCommand(command) {
     if (!isLocalProject) {
-      cli.showHelp()
+      cli.showHelp((s: string) => console.log(s))
     }
 
     try {
@@ -45,12 +44,8 @@ function buildLocalCommands(cli, isLocalProject) {
       )!
       return require(cmdPath).default
     } catch (err) {
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
-      }
-      cli.showHelp()
+      console.error(err)
+      cli.showHelp((s: string) => console.error(s))
     }
   }
 
@@ -124,6 +119,48 @@ function buildLocalCommands(cli, isLocalProject) {
           }),
       desc: `Create a new Medusa project.`,
       handler: handlerP(newStarter),
+    })
+    .command({
+      command: "db:create",
+      desc: "Create the database used by your application",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/create", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:sync-links",
+      desc: "Sync database schema with the links defined by your application and Medusa core",
+      builder: (builder) => {
+        builder.option("execute-all", {
+          type: "boolean",
+          describe: "Skip prompts and execute all (including unsafe) actions",
+        })
+        builder.option("execute-safe", {
+          type: "boolean",
+          describe: "Skip prompts and execute only safe actions",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/sync-links", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
     })
     .command({
       command: `telemetry`,
@@ -227,6 +264,7 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
+
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
@@ -462,15 +500,23 @@ export default (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
+      if (msg) {
+        reporter.error(msg)
+        console.log()
+      }
+      if (suggestion) {
+        reporter.info(suggestion)
+        console.log()
       }
 
-      cli.showHelp()
-      reporter.info(suggestion)
-      reporter.info(msg)
+      if (err) {
+        console.error("--------------- ERROR ---------------------")
+        console.error(err)
+        console.error("-------------------------------------------")
+      }
+
+      cli.showHelp((s: string) => console.error(s))
+      process.exit(1)
     })
     .parse(argv.slice(2))
 }

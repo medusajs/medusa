@@ -49,6 +49,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
                 process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
                 "temp"
               }
+              version="v1"
             />
           ),
           title: "AI Assistant",

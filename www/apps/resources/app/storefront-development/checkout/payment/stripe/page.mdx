@@ -1,4 +1,4 @@
-import { CodeTabs, CodeTab } from "docs-ui"
+import { CodeTabs, CodeTab, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Payment with Stripe in React Storefront`,
@@ -14,12 +14,16 @@ For other types of storefronts, the steps are similar. However, refer to [Stripe
 
 </Note>
 
-<Note type="check">
-
-- [Stripe Module Provider](../../../../commerce-modules/payment/payment-provider/stripe/page.mdx) installed and configured in your Medusa application.
-- [Stripe publishable API key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Stripe Module Provider installed and configured in your Medusa application.",
+    link: "../../../../commerce-modules/payment/payment-provider/stripe/page.mdx"
+  },
+  {
+    text: "Stripe publishable API key.",
+    link: "https://support.stripe.com/questions/locate-api-keys-in-the-dashboard"
+  },
+]} />
 
 ## 1. Install Stripe SDK
 

@@ -11,16 +11,18 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
+import { DmlEntity } from "../dml"
 import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
+import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
 import {
   BaseMethods,
   ExtractKeysFromConfig,
@@ -29,8 +31,6 @@ import {
   ModelEntries,
   ModelsConfigTemplate,
 } from "./types/medusa-service"
-import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
-import { DmlEntity } from "../dml"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -55,12 +55,12 @@ function buildMethodNamesFromModel(
 
     if (method === "retrieve") {
       normalizedModelName =
-        "singular" in model && model.singular
+        model && "singular" in model && model.singular
           ? model.singular
           : defaultMethodName
     } else {
       normalizedModelName =
-        "plural" in model && model.plural
+        model && "plural" in model && model.plural
           ? model.plural
           : pluralize(defaultMethodName)
     }

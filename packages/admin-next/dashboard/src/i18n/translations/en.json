@@ -29,6 +29,9 @@
     "expired": "Expired",
     "active": "Active",
     "revoked": "Revoked",
+    "new": "New",
+    "modified": "Modified",
+    "removed": "Removed",
     "admin": "Admin",
     "store": "Store",
     "details": "Details",
@@ -94,14 +97,17 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "duplicate": "Duplicate",
     "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "forceConfirm": "Force confirm",
     "enable": "Enable",
     "disable": "Disable",
+    "undo": "Undo",
     "complete": "Complete",
     "viewDetails": "View details",
     "back": "Back",
@@ -808,7 +814,7 @@
     "summary": {
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
-      "editItems": "Edit items"
+      "editOrder": "Edit order"
     },
     "payment": {
       "title": "Payments",
@@ -842,7 +848,6 @@
       "paymentLink": "Copy payment link for {{ amount }}",
       "selectPaymentToRefund": "Select payment to refund"
     },
-
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -851,7 +856,23 @@
       "addItems": "Add items",
       "amountPaid": "Amount paid",
       "newTotal": "New total",
-      "differenceDue": "Difference due"
+      "differenceDue": "Difference due",
+      "create": "Edit Order",
+      "currentTotal": "Current total",
+      "noteHint": "Add an internal note for the edit",
+      "cancelSuccessToast": "Order edit canceled",
+      "createSuccessToast": "Order edit request created",
+      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
+      "panel": {
+        "title": "Order edit requested"
+      },
+      "toast": {
+        "canceledSuccessfully": "Order edit cancelled",
+        "confirmedSuccessfully": "Order edit confirmed"
+      },
+      "validation": {
+        "quantityLowerThanFulfillment": "Cannot set quantity to be less then or equal to fulfilled quantity"
+      }
     },
     "returns": {
       "create": "Create Return",
@@ -893,6 +914,14 @@
           "errorNegativeValue": "Quantity cannot be a negative value.",
           "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
         }
+      },
+      "toast": {
+        "canceledSuccessfully": "Return canceled successfully",
+        "confirmedSuccessfully": "Return confirmed successfully"
+      },
+      "panel": {
+        "title": "Return initiated",
+        "description": "There is an open return request to be completed"
       }
     },
     "claims": {
@@ -912,6 +941,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Claim canceled successfully",
+        "confirmedSuccessfully": "Claim confirmed successfully"
+      },
+      "panel": {
+        "title": "Claim initiated",
+        "description": "There is an open claim request to be completed"
       }
     },
     "exchanges": {
@@ -931,6 +968,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Exchange canceled successfully",
+        "confirmedSuccessfully": "Exchange confirmed successfully"
+      },
+      "panel": {
+        "title": "Exchange initiated",
+        "description": "There is an open exchange request to be completed"
       }
     },
     "reservations": {
@@ -2328,7 +2373,9 @@
     "productVariant": "Product Variant",
     "prices": "Prices",
     "available": "Available",
-    "inStock": "In stock"
+    "inStock": "In stock",
+    "added": "Added",
+    "removed": "Removed"
   },
   "fields": {
     "amount": "Amount",
@@ -2344,7 +2391,6 @@
     "inventoryItems": "Inventory items",
     "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
-    "qty": "Qty",
     "description": "Description",
     "email": "Email",
     "password": "Password",
@@ -2367,6 +2413,7 @@
     "reason": "Reason",
     "none": "none",
     "all": "all",
+    "search": "Search",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "customer_groups": "Customer Groups",

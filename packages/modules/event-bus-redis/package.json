@@ -29,15 +29,16 @@
   },
   "scripts": {
     "watch": "tsc --build --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/utils": "^1.11.9",
-    "awilix": "^8.0.0",
     "bullmq": "5.12.0",
     "ioredis": "^5.4.1"
+  },
+  "peerDependencies": {
+    "awilix": "^8.0.1"
   }
 }

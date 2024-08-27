@@ -1,4 +1,4 @@
-import {
+import type {
   IDistributedSchedulerStorage,
   SchedulerOptions,
 } from "@medusajs/orchestration"

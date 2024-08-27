@@ -134,11 +134,14 @@ export const ExchangeOutboundSection = ({
           })
         }
       } else {
-        append({
-          item_id: i.id,
-          quantity: i.detail.quantity,
-          variant_id: i.variant_id,
-        })
+        append(
+          {
+            item_id: i.id,
+            quantity: i.detail.quantity,
+            variant_id: i.variant_id,
+          },
+          { shouldFocus: false }
+        )
       }
     })
 
