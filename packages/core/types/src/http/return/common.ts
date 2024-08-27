@@ -23,4 +23,5 @@ export interface BaseReturn {
   items: BaseReturnItem[]
   received_at: string
   created_at: string
+  canceled_at: string
 }

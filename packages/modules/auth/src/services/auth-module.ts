@@ -121,6 +121,20 @@ export default class AuthModuleService
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  async register(
+    provider: string,
+    authenticationData: AuthenticationInput
+  ): Promise<AuthenticationResponse> {
+    try {
+      return await this.authProviderService_.register(
+        provider,
+        authenticationData,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
   // @ts-expect-error
   createProviderIdentities(
     data: AuthTypes.CreateProviderIdentityDTO[],
