@@ -147,6 +147,26 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
+      command: "db:sync-links",
+      desc: "Sync database schema with the links defined by your application and Medusa core",
+      builder: (builder) => {
+        builder.option("execute-all", {
+          type: "boolean",
+          describe: "Skip prompts and execute all (including unsafe) actions",
+        })
+        builder.option("execute-safe", {
+          type: "boolean",
+          describe: "Skip prompts and execute only safe actions",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/sync-links", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: `telemetry`,
       describe: `Enable or disable collection of anonymous usage data.`,
       builder: (yargs) =>
