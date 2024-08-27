@@ -8,7 +8,7 @@ import * as z from "zod"
 import { Divider } from "../../components/common/divider"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { useEmailPassLogin } from "../../hooks/api/auth"
+import { useSignInWithEmailPassword } from "../../hooks/api/auth"
 import { isAxiosError } from "../../lib/is-axios-error"
 
 import after from "virtual:medusa/widgets/login/after"
@@ -34,8 +34,7 @@ export const Login = () => {
     },
   })
 
-  //  TODO: Update when more than emailpass is supported
-  const { mutateAsync, isPending } = useEmailPassLogin()
+  const { mutateAsync, isPending } = useSignInWithEmailPassword()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     try {

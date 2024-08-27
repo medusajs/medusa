@@ -1,9 +1,9 @@
 import {
-  Logger,
-  GoogleAuthProviderOptions,
-  AuthenticationResponse,
   AuthenticationInput,
+  AuthenticationResponse,
   AuthIdentityProviderService,
+  GoogleAuthProviderOptions,
+  Logger,
 } from "@medusajs/types"
 import { AbstractAuthModuleProvider, MedusaError } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
@@ -27,6 +27,13 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     this.validateConfig(options)
     this.config_ = options
     this.logger_ = logger
+  }
+
+  async register(_): Promise<AuthenticationResponse> {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Google does not support registration. Use method `authenticate` instead."
+    )
   }
 
   async authenticate(

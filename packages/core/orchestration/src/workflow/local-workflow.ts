@@ -1,18 +1,18 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
+  createMedusaContainer,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaContextType,
   MedusaError,
   MedusaModuleType,
-  createMedusaContainer,
-  isDefined,
-  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
-  DistributedTransactionType,
   DistributedTransactionEvent,
   DistributedTransactionEvents,
+  DistributedTransactionType,
   TransactionFlow,
   TransactionModelOptions,
   TransactionOrchestrator,
@@ -59,10 +59,15 @@ export class LocalWorkflow {
       )
     }
 
-    this.flow = new OrchestratorBuilder(globalWorkflow.flow_)
+    const workflow = {
+      ...globalWorkflow,
+      orchestrator: TransactionOrchestrator.clone(globalWorkflow.orchestrator),
+    }
+
+    this.flow = new OrchestratorBuilder(workflow.flow_)
     this.workflowId = workflowId
-    this.workflow = globalWorkflow
-    this.handlers = new Map(globalWorkflow.handlers_)
+    this.workflow = workflow
+    this.handlers = new Map(workflow.handlers_)
 
     this.resolveContainer(modulesLoaded)
   }
@@ -141,11 +146,11 @@ export class LocalWorkflow {
     this.workflow = {
       id: this.workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(
-        this.workflowId,
-        finalFlow,
-        customOptions
-      ),
+      orchestrator: new TransactionOrchestrator({
+        id: this.workflowId,
+        definition: finalFlow,
+        options: customOptions,
+      }),
       options: customOptions,
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,

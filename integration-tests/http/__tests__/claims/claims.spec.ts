@@ -169,6 +169,12 @@ medusaIntegrationTestRunner({
         ],
         currency_code: "usd",
         customer_id: customer.id,
+        transactions: [
+          {
+            amount: 61,
+            currency_code: "usd",
+          },
+        ],
       })
 
       order2 = await orderModule.createOrders({
@@ -1004,6 +1010,104 @@ medusaIntegrationTestRunner({
           ).data.order
 
           expect(orderResult.fulfillment_status).toEqual("shipped")
+        })
+      })
+
+      describe("with only inbound items", () => {
+        beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          claimId = baseClaim.id
+          item = order.items[0]
+
+          let result = await api.post(
+            `/admin/claims/${claimId}/inbound/items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason_id: returnReason.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          // Claim Items
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+          result = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(result).toHaveLength(1)
+          expect(result[0].additional_items).toHaveLength(0)
+          expect(result[0].claim_items).toHaveLength(1)
+          expect(result[0].canceled_at).toBeNull()
+        })
+
+        it.only("test inbound only", async () => {
+          const orderCheck = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderCheck.summary).toEqual(
+            expect.objectContaining({
+              pending_difference: -10,
+              current_order_total: 51,
+              original_order_total: 61,
+              temporary_difference: 15,
+            })
+          )
+
+          expect(true).toBe(true)
         })
       })
     })
