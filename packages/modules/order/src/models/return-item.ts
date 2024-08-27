@@ -77,6 +77,12 @@ export default class ReturnItem {
   @Property({ columnType: "jsonb" })
   raw_received_quantity: BigNumberRawValue
 
+  @MikroOrmBigNumberProperty()
+  damaged_quantity: Number | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_damaged_quantity: BigNumberRawValue
+
   @ManyToOne(() => Return, {
     columnType: "text",
     fieldName: "return_id",

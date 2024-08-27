@@ -122,11 +122,11 @@ class WorkflowManager {
     const workflow = {
       id: workflowId,
       flow_: finalFlow!,
-      orchestrator: new TransactionOrchestrator(
-        workflowId,
-        finalFlow ?? {},
-        options
-      ),
+      orchestrator: new TransactionOrchestrator({
+        id: workflowId,
+        definition: finalFlow ?? {},
+        options,
+      }),
       handler: WorkflowManager.buildHandlers(handlers),
       handlers_: handlers,
       options,
@@ -167,11 +167,11 @@ class WorkflowManager {
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(
-        workflowId,
-        finalFlow,
-        updatedOptions
-      ),
+      orchestrator: new TransactionOrchestrator({
+        id: workflowId,
+        definition: finalFlow,
+        options,
+      }),
       handler: WorkflowManager.buildHandlers(workflow.handlers_),
       handlers_: workflow.handlers_,
       options: updatedOptions,

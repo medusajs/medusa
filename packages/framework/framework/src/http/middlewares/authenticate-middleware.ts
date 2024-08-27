@@ -5,13 +5,13 @@ import {
 } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import { JwtPayload, verify } from "jsonwebtoken"
+import { ConfigModule } from "../../config"
 import {
   AuthContext,
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
 } from "../types"
-import { ConfigModule } from "../../config"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
