@@ -9,9 +9,9 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  isPresent,
   MedusaContextType,
   ModuleRegistrationName,
-  isPresent,
 } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
@@ -518,12 +518,12 @@ function attachOnFinishReleaseEvents(
       const TERMINAL_SIZE = process.stdout?.columns ?? 60
       const separator = new Array(TERMINAL_SIZE).join("-")
 
-      const worflowName = transaction.getFlow().modelId
+      const workflowName = transaction.getFlow().modelId
       const allWorkflowErrors = transaction
         .getErrors()
         .map(
           (err) =>
-            `${worflowName}:${err?.action}:${err?.handlerType} - ${err?.error?.message}${EOL}${err?.error?.stack}`
+            `${workflowName}:${err?.action}:${err?.handlerType} - ${err?.error?.message}${EOL}${err?.error?.stack}`
         )
         .join(EOL + separator + EOL)
 

@@ -1,0 +1,24 @@
+---
+slug: /references/medusa-workflows/updateShippingOptionsWorkflow
+sidebar_label: updateShippingOptionsWorkflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateShippingOptionsWorkflow - Medusa Workflows API Reference
+
+This documentation provides a reference to the `updateShippingOptionsWorkflow`. It belongs to the `@medusajs/core-flows` package.
+
+This workflow updates one or more shipping options.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updateShippingOptionsWorkflow","steps":[{"type":"step","name":"upsertShippingOptionsStep","description":"This step creates or updates shipping options.","link":"../../../../core_flows.Steps_Fulfillment/page.mdx#upsertshippingoptionsstep","depth":1},{"type":"step","name":"setShippingOptionsPricesStep","description":"This step sets the prices of one or more shipping options.","link":"../../../../core_flows.Steps_Fulfillment/page.mdx#setshippingoptionspricesstep","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpdateShippingOptionsWorkflowInput[]","type":"`UpdateShippingOptionsWorkflowInput`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateShippingOptionsWorkflowInput","type":"`UpdateShippingOptionsWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateShippingOptionsWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"UpdateShippingOptionsWorkflowOutput","type":"`UpdateShippingOptionsWorkflowOutput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateShippingOptionsWorkflow"/>
