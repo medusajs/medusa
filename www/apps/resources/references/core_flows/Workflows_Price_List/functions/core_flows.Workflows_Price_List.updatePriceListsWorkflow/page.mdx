@@ -1,0 +1,13 @@
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updatePriceListsWorkflow
+
+This workflow updates one or more price lists.
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"updatePriceListsWorkflow","steps":[{"type":"step","name":"validatePriceListsStep","description":"This step validates that the specified price lists exist.","link":"../../../Steps_Price_List/functions/core_flows.Steps_Price_List.validatePriceListsStep/page.mdx","depth":1},{"type":"step","name":"updatePriceListsStep","description":"This step updates one or more price lists.","link":"../../../Steps_Price_List/functions/core_flows.Steps_Price_List.updatePriceListsStep/page.mdx","depth":2}]}} />
+
+## Input
+
+<TypeList types={[{"name":"price_lists_data","type":"`UpdatePriceListWorkflowInputDTO`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updatePriceListsWorkflow"/>
