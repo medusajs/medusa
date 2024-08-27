@@ -8375,6 +8375,22 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "category",
+            "title": "Admin Development",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/troubleshooting/medusa-admin/no-widget-route",
+                "title": "Widget or Route not Showing",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
             "title": "Upgrade",
             "children": [
               {
