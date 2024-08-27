@@ -35,7 +35,7 @@ function buildLocalCommands(cli, isLocalProject) {
 
   function resolveLocalCommand(command) {
     if (!isLocalProject) {
-      cli.showHelp()
+      cli.showHelp((s: string) => console.log(s))
     }
 
     try {
@@ -44,12 +44,8 @@ function buildLocalCommands(cli, isLocalProject) {
       )!
       return require(cmdPath).default
     } catch (err) {
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
-      }
-      cli.showHelp()
+      console.error(err)
+      cli.showHelp((s: string) => console.error(s))
     }
   }
 
@@ -504,15 +500,23 @@ export default (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (!process.env.NODE_ENV?.startsWith("prod")) {
-        console.log("--------------- ERROR ---------------------")
-        console.log(err)
-        console.log("-------------------------------------------")
+      if (msg) {
+        reporter.error(msg)
+        console.log()
+      }
+      if (suggestion) {
+        reporter.info(suggestion)
+        console.log()
       }
 
-      cli.showHelp()
-      reporter.info(suggestion)
-      reporter.info(msg)
+      if (err) {
+        console.error("--------------- ERROR ---------------------")
+        console.error(err)
+        console.error("-------------------------------------------")
+      }
+
+      cli.showHelp((s: string) => console.error(s))
+      process.exit(1)
     })
     .parse(argv.slice(2))
 }
