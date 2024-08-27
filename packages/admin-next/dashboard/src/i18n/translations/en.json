@@ -897,6 +897,10 @@
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
       "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
       "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
+      "cancel": {
+        "title": "Cancel Return",
+        "description": "Are you sure you want to cancel the return request?"
+      },
       "receive": {
         "action": "Receive items",
         "receive": "Return {{label}}",
@@ -1095,7 +1099,8 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return #{{returnId}} created",
+          "created": "Return #{{returnId}} requested",
+          "canceled": "Return #{{returnId}} canceled",
           "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"

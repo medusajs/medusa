@@ -45,6 +45,21 @@ export class Return {
     )
   }
 
+  async cancel(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminReturnResponse>(
+      `/admin/returns/${id}/cancel`,
+      {
+        method: "POST",
+        headers,
+        query,
+      }
+    )
+  }
+
   async cancelRequest(
     id: string,
     query?: HttpTypes.SelectParams,
