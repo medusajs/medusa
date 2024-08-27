@@ -404,7 +404,11 @@ export function MedusaService<
 
       const promises: Promise<void>[] = []
       for (const group of Object.keys(groupedEvents)) {
-        promises.push(this.eventBusModuleService_.emit(groupedEvents[group]))
+        promises.push(
+          this.eventBusModuleService_.emit(groupedEvents[group], {
+            internal: true,
+          })
+        )
       }
 
       await Promise.all(promises)

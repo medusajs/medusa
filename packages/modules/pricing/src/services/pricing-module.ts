@@ -396,7 +396,7 @@ export default class PricingModuleService
   ): Promise<PriceSetDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createPriceSets(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -620,7 +620,7 @@ export default class PricingModuleService
   ): Promise<PricingTypes.PriceSetDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -643,7 +643,7 @@ export default class PricingModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   // @ts-ignore
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
@@ -688,7 +688,7 @@ export default class PricingModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async addPriceListPrices(
     data: PricingTypes.AddPriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -733,7 +733,7 @@ export default class PricingModuleService
   ): Promise<PricePreferenceDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createPricePreferences(
     data:
       | PricingTypes.CreatePricePreferenceDTO

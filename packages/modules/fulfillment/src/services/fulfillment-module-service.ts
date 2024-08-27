@@ -258,7 +258,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createFulfillmentSets(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
@@ -328,7 +328,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ServiceZoneDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createServiceZones(
     data:
       | FulfillmentTypes.CreateServiceZoneDTO[]
@@ -392,7 +392,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createShippingOptions(
     data:
       | FulfillmentTypes.CreateShippingOptionDTO[]
@@ -453,7 +453,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingProfileDTO>
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createShippingProfiles(
     data:
       | FulfillmentTypes.CreateShippingProfileDTO[]
@@ -507,7 +507,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createGeoZones(
     data:
       | FulfillmentTypes.CreateGeoZoneDTO
@@ -544,7 +544,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createShippingOptionRules(
     data:
       | FulfillmentTypes.CreateShippingOptionRuleDTO[]
@@ -598,7 +598,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -650,7 +650,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createReturnFulfillment(
     data: FulfillmentTypes.CreateFulfillmentDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -702,7 +702,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -938,7 +938,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateServiceZones(
     idOrSelector: string | FulfillmentTypes.FilterableServiceZoneProps,
     data: FulfillmentTypes.UpdateServiceZoneDTO,
@@ -1155,7 +1155,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ServiceZoneDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async upsertServiceZones(
     data:
       | FulfillmentTypes.UpsertServiceZoneDTO
@@ -1238,7 +1238,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingOptionDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateShippingOptions(
     idOrSelector: string | FulfillmentTypes.FilterableShippingOptionProps,
     data: FulfillmentTypes.UpdateShippingOptionDTO,
@@ -1476,7 +1476,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingOptionDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async upsertShippingOptions(
     data:
       | FulfillmentTypes.UpsertShippingOptionDTO[]
@@ -1658,7 +1658,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.GeoZoneDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateGeoZones(
     data:
       | FulfillmentTypes.UpdateGeoZoneDTO
@@ -1701,7 +1701,7 @@ export default class FulfillmentModuleService
   ): Promise<FulfillmentTypes.ShippingOptionRuleDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateShippingOptionRules(
     data:
       | FulfillmentTypes.UpdateShippingOptionRuleDTO[]
@@ -1751,7 +1751,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateFulfillment(
     id: string,
     data: FulfillmentTypes.UpdateFulfillmentDTO,
@@ -1873,7 +1873,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async cancelFulfillment(
     id: string,
     @MedusaContext() sharedContext: Context = {}

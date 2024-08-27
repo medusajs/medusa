@@ -225,7 +225,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.ReservationItemDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createReservationItems(
     input:
       | InventoryTypes.CreateReservationItemInput[]
@@ -325,7 +325,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryItemDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createInventoryItems(
     input:
       | InventoryTypes.CreateInventoryItemInput
@@ -378,7 +378,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createInventoryLevels(
     input:
       | InventoryTypes.CreateInventoryLevelInput[]
@@ -432,7 +432,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryItemDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateInventoryItems(
     input:
       | InventoryTypes.UpdateInventoryItemInput
@@ -478,7 +478,7 @@ export default class InventoryModuleService
   }
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
     @MedusaContext() context: Context = {}
@@ -547,7 +547,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryLevelDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateInventoryLevels(
     updates:
       | InventoryTypes.BulkUpdateInventoryLevelInput[]
@@ -634,7 +634,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.ReservationItemDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateReservationItems(
     input:
       | InventoryTypes.UpdateReservationItemInput
@@ -830,7 +830,7 @@ export default class InventoryModuleService
   }
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async deleteReservationItemByLocationId(
     locationId: string | string[],
     @MedusaContext() context: Context = {}
@@ -867,7 +867,7 @@ export default class InventoryModuleService
    */
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
@@ -904,7 +904,7 @@ export default class InventoryModuleService
    */
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async restoreReservationItemsByLineItem(
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
@@ -960,7 +960,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async adjustInventory(
     inventoryItemIdOrData: string | any,
     locationId?: string | Context,

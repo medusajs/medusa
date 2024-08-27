@@ -162,7 +162,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createProductVariants(
     data:
       | ProductTypes.CreateProductVariantDTO[]
@@ -231,7 +231,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductVariantDTO>
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async upsertProductVariants(
     data:
       | ProductTypes.UpsertProductVariantDTO[]
@@ -279,7 +279,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductVariantDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateProductVariants(
     idOrSelector: string | ProductTypes.FilterableProductVariantProps,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -392,7 +392,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createProductTags(
     data: ProductTypes.CreateProductTagDTO[] | ProductTypes.CreateProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -423,7 +423,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductTagDTO>
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async upsertProductTags(
     data: ProductTypes.UpsertProductTagDTO[] | ProductTypes.UpsertProductTagDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -473,7 +473,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductTagDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateProductTags(
     idOrSelector: string | ProductTypes.FilterableProductTagProps,
     data: ProductTypes.UpdateProductTagDTO,
@@ -1102,7 +1102,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCategoryDTO>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async createProductCategories(
     data:
       | ProductTypes.CreateProductCategoryDTO[]
@@ -1140,7 +1140,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCategoryDTO>
 
   @InjectTransactionManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async upsertProductCategories(
     data:
       | ProductTypes.UpsertProductCategoryDTO[]
@@ -1208,7 +1208,7 @@ export default class ProductModuleService
   ): Promise<ProductTypes.ProductCategoryDTO[]>
 
   @InjectManager("baseRepository_")
-  @EmitEvents({ internal: true })
+  @EmitEvents()
   async updateProductCategories(
     idOrSelector: string | ProductTypes.FilterableProductTypeProps,
     data: ProductTypes.UpdateProductCategoryDTO,
