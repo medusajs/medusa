@@ -113,6 +113,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "geo_zone",
                 data: { id: geoZone.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -271,6 +274,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "updated",
                 object: "geo_zone",
                 data: { id: updatedGeoZone.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })

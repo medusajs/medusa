@@ -372,24 +372,36 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "deleted",
                 object: "geo_zone",
                 data: { id: ukGeoZone.id },
+                options: {
+                  internal: true,
+                },
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
                 action: "updated",
                 object: "service_zone",
                 data: { id: updatedServiceZone.id },
+                options: {
+                  internal: true,
+                },
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: chGeoZone.id },
+                options: {
+                  internal: true,
+                },
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
                 action: "updated",
                 object: "geo_zone",
                 data: { id: usGeoZone.id },
+                options: {
+                  internal: true,
+                },
               }),
             ])
           })

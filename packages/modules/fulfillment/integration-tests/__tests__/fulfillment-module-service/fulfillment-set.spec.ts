@@ -173,6 +173,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -251,12 +254,18 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                 action: "created",
                 object: "service_zone",
                 data: { id: fulfillmentSet.service_zones[0].id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -379,18 +388,27 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                 action: "created",
                 object: "service_zone",
                 data: { id: fulfillmentSet.service_zones[0].id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -639,6 +657,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "updated",
                 object: "fulfillment_set",
                 data: { id: updatedFulfillmentSets.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })

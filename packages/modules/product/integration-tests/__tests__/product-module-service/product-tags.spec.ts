@@ -284,6 +284,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })
@@ -326,6 +329,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })
@@ -380,12 +386,18 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
+              options: {
+                internal: true
+              }
             }),
             composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
               data: { id: updatedTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })

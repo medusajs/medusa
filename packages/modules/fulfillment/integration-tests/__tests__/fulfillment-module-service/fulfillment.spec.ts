@@ -159,24 +159,36 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment",
                 data: { id: fulfillment.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_ADDRESS_CREATED,
                 action: "created",
                 object: "fulfillment_address",
                 data: { id: fulfillment.delivery_address.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_ITEM_CREATED,
                 action: "created",
                 object: "fulfillment_item",
                 data: { id: fulfillment.items[0].id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: fulfillment.labels[0].id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -246,24 +258,36 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "fulfillment",
                 data: { id: fulfillment.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_ADDRESS_CREATED,
                 action: "created",
                 object: "fulfillment_address",
                 data: { id: fulfillment.delivery_address.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_ITEM_CREATED,
                 action: "created",
                 object: "fulfillment_item",
                 data: { id: fulfillment.items[0].id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: fulfillment.labels[0].id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -380,24 +404,36 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "updated",
                 object: "fulfillment",
                 data: { id: updatedFulfillment.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_LABEL_DELETED,
                 action: "deleted",
                 object: "fulfillment_label",
                 data: { id: label3.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_LABEL_UPDATED,
                 action: "updated",
                 object: "fulfillment_label",
                 data: { id: label2.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: label4.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })

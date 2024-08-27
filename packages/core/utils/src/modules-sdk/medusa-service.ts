@@ -392,6 +392,11 @@ export function MedusaService<
         )
     }
 
+    /**
+     * @internal this method is not meant to be used except by the internal team for now
+     * @param groupedEvents
+     * @protected
+     */
     protected async emitEvents_(groupedEvents) {
       if (!this.eventBusModuleService_ || !groupedEvents) {
         return

@@ -1,10 +1,10 @@
 import { INotificationModuleService } from "@medusajs/types"
 import {
   CommonEvents,
+  composeMessage,
   Module,
   Modules,
   NotificationEvents,
-  composeMessage,
 } from "@medusajs/utils"
 import {
   MockEventBusService,
@@ -100,6 +100,9 @@ moduleIntegrationTestRunner({
             object: "notification",
             source: Modules.NOTIFICATION,
             action: CommonEvents.CREATED,
+            options: {
+              internal: true,
+            },
           }),
         ])
       })

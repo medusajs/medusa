@@ -523,18 +523,27 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "shipping_option",
                 data: { id: createdShippingOption.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
                 action: "created",
                 object: "shipping_option_type",
                 data: { id: createdShippingOption.type.id },
+                options: {
+                  internal: true
+                }
               }),
               buildExpectedEventMessageShape({
                 eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
                 action: "created",
                 object: "shipping_option_rule",
                 data: { id: createdShippingOption.rules[0].id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })
@@ -1253,6 +1262,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "shipping_option_rule",
                 data: { id: rule.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
 
@@ -1330,6 +1342,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "updated",
                 object: "shipping_option_rule",
                 data: { id: updatedRule.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })

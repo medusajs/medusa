@@ -218,6 +218,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_variant",
               source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })
@@ -251,6 +254,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_variant",
               source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })
@@ -325,6 +331,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               object: "product_variant",
               source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
+              options: {
+                internal: true
+              }
             }),
           ])
         })

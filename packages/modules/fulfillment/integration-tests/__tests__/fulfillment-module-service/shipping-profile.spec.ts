@@ -51,6 +51,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 action: "created",
                 object: "shipping_profile",
                 data: { id: createdShippingProfile.id },
+                options: {
+                  internal: true
+                }
               }),
             ])
           })

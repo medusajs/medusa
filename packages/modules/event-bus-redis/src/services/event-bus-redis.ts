@@ -250,18 +250,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const isFinalAttempt = currentAttempt === configuredAttempts
 
-    if (isRetry) {
-      if (isFinalAttempt) {
-        this.logger_.info(`Final retry attempt for ${name}`)
-      }
+    if (!opts.internal) {
+      if (isRetry) {
+        if (isFinalAttempt) {
+          this.logger_.info(`Final retry attempt for ${name}`)
+        }
 
-      this.logger_.info(
-        `Retrying ${name} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
-      )
-    } else {
-      this.logger_.info(
-        `Processing ${name} which has ${eventSubscribers.length} subscribers`
-      )
+        this.logger_.info(
+          `Retrying ${name} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+        )
+      } else {
+        this.logger_.info(
+          `Processing ${name} which has ${eventSubscribers.length} subscribers`
+        )
+      }
     }
 
     const completedSubscribersInCurrentAttempt: string[] = []
