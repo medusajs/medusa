@@ -104,18 +104,13 @@ export const AddProductsToSalesChannelForm = ({
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(
-      {
-        product_ids: values.product_ids,
+    await mutateAsync(values.product_ids, {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.update"))
+        handleSuccess()
       },
-      {
-        onSuccess: () => {
-          toast.success(t("salesChannels.toast.update"))
-          handleSuccess()
-        },
-        onError: (error) => toast.error(error.message),
-      }
-    )
+      onError: (error) => toast.error(error.message),
+    })
   })
 
   if (isError) {
