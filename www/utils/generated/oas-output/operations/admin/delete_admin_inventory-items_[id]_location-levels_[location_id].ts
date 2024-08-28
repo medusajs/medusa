@@ -6,6 +6,7 @@
  * description: >
  *   Remove the inventory level of an inventory item.
  * 
+ * 
  *   If the inventory level has reserved quantity greater than `0`, an error is thrown.
  * x-authenticated: true
  * parameters:

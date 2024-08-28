@@ -6,6 +6,7 @@
  * description: >
  *   Remove an outbound (or new) item from an exchange using the `ID` of the item's `ITEM_ADD` action.
  * 
+ * 
  *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
  *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
