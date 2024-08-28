@@ -15,7 +15,7 @@ export const CreateInventoryItemSchema = z.object({
   material: z.string().optional(),
   requires_shipping: z.boolean().optional(),
   thumbnail: z.string().optional(),
-  locations: z.record(z.string(), z.number().optional()).optional(),
+  locations: z.record(z.string(), optionalInt).optional(),
 })
 
 export type CreateInventoryItemSchema = z.infer<

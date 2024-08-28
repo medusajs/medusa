@@ -1,59 +1,24 @@
 import { CellContext } from "@tanstack/react-table"
-import React, {
-  MouseEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import { DataGridContext } from "./context"
-import { GridQueryTool } from "./models"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
+import { useDataGridContext } from "../context"
 import {
-  CellCoords,
   DataGridCellContext,
   DataGridCellRenderProps,
-} from "./types"
-import { generateCellId, isCellMatch } from "./utils"
+  DataGridCoordinates,
+} from "../types"
+import { isCellMatch } from "../utils"
 
-const useDataGridContext = () => {
-  const context = useContext(DataGridContext)
-
-  if (!context) {
-    throw new Error(
-      "useDataGridContext must be used within a DataGridContextProvider"
-    )
-  }
-
-  return context
-}
-
-type UseDataGridCellProps<TData, TValue> = {
-  field: string
+type UseDataGridCellOptions<TData, TValue> = {
   context: CellContext<TData, TValue>
-  type: "text" | "number" | "select" | "boolean"
 }
 
 const textCharacterRegex = /^.$/u
 const numberCharacterRegex = /^[0-9]$/u
 
 export const useDataGridCell = <TData, TValue>({
-  field,
   context,
-  type,
-}: UseDataGridCellProps<TData, TValue>) => {
-  const { rowIndex, columnIndex } = context as DataGridCellContext<
-    TData,
-    TValue
-  >
-
-  const coords: CellCoords = useMemo(
-    () => ({ row: rowIndex, col: columnIndex }),
-    [rowIndex, columnIndex]
-  )
-  const id = generateCellId(coords)
-
+}: UseDataGridCellOptions<TData, TValue>) => {
   const {
     register,
     control,
@@ -67,12 +32,22 @@ export const useDataGridCell = <TData, TValue>({
     getInputChangeHandler,
     getIsCellSelected,
     getIsCellDragSelected,
-    registerCell,
+    getCellMetadata,
   } = useDataGridContext()
 
-  useEffect(() => {
-    registerCell(coords, field, type)
-  }, [coords, field, type, registerCell])
+  const { rowIndex, columnIndex } = context as DataGridCellContext<
+    TData,
+    TValue
+  >
+
+  const coords: DataGridCoordinates = useMemo(
+    () => ({ row: rowIndex, col: columnIndex }),
+    [rowIndex, columnIndex]
+  )
+
+  const { id, field, type, innerAttributes, inputAttributes } = useMemo(() => {
+    return getCellMetadata(coords)
+  }, [coords, getCellMetadata])
 
   const [showOverlay, setShowOverlay] = useState(true)
 
@@ -80,7 +55,7 @@ export const useDataGridCell = <TData, TValue>({
   const inputRef = useRef<HTMLElement>(null)
 
   const handleOverlayMouseDown = useCallback(
-    (e: MouseEvent) => {
+    (e: React.MouseEvent) => {
       e.preventDefault()
       e.stopPropagation()
 
@@ -183,6 +158,10 @@ export const useDataGridCell = <TData, TValue>({
         return
       }
 
+      if (e.key === "Enter") {
+        return
+      }
+
       const event = new KeyboardEvent(e.type, e.nativeEvent)
 
       inputRef.current.focus()
@@ -203,7 +182,7 @@ export const useDataGridCell = <TData, TValue>({
   }, [anchor, coords])
 
   const fieldWithoutOverlay = useMemo(() => {
-    return type === "boolean" || type === "select"
+    return type === "boolean"
   }, [type])
 
   useEffect(() => {
@@ -214,6 +193,7 @@ export const useDataGridCell = <TData, TValue>({
 
   const renderProps: DataGridCellRenderProps = {
     container: {
+      field,
       isAnchor,
       isSelected: getIsCellSelected(coords),
       isDragSelected: getIsCellDragSelected(coords),
@@ -225,7 +205,7 @@ export const useDataGridCell = <TData, TValue>({
           type === "boolean" ? handleBooleanInnerMouseDown : undefined,
         onKeyDown: handleContainerKeyDown,
         onFocus: getWrapperFocusHandler(coords),
-        "data-container-id": id,
+        ...innerAttributes,
       },
       overlayProps: {
         onMouseDown: handleOverlayMouseDown,
@@ -236,31 +216,15 @@ export const useDataGridCell = <TData, TValue>({
       onBlur: handleInputBlur,
       onFocus: handleInputFocus,
       onChange: getInputChangeHandler(field),
-      "data-row": coords.row,
-      "data-col": coords.col,
-      "data-cell-id": id,
-      "data-field": field,
+      ...inputAttributes,
     },
   }
 
   return {
     id,
+    field,
     register,
     control,
     renderProps,
   }
-}
-
-export const useGridQueryTool = (
-  containerRef: React.RefObject<HTMLElement>
-) => {
-  const queryToolRef = useRef<GridQueryTool | null>(null)
-
-  useEffect(() => {
-    if (containerRef.current) {
-      queryToolRef.current = new GridQueryTool(containerRef.current)
-    }
-  }, [containerRef])
-
-  return queryToolRef.current
 }

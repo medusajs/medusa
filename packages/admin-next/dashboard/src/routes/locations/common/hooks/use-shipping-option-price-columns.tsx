@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { createDataGridPriceColumns } from "../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
+import { createDataGridPriceColumns } from "../../../../components/data-grid/helpers/create-data-grid-price-columns"
 
 export const useShippingOptionPriceColumns = ({
   currencies = [],

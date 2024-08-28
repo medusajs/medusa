@@ -7,7 +7,7 @@ import { Controller, ControllerRenderProps } from "react-hook-form"
 import { useCallback, useEffect, useState } from "react"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
 import { CurrencyInfo, currencies } from "../../../lib/data/currencies"
-import { useDataGridCell } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
@@ -17,15 +17,13 @@ interface DataGridCurrencyCellProps<TData, TValue = any>
 }
 
 export const DataGridCurrencyCell = <TData, TValue = any>({
-  field,
   context,
   code,
 }: DataGridCurrencyCellProps<TData, TValue>) => {
-  const { control, renderProps } = useDataGridCell({
-    field,
+  const { field, control, renderProps } = useDataGridCell({
     context,
-    type: "number",
   })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -37,7 +35,7 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
       name={field}
       render={({ field }) => {
         return (
-          <DataGridCellContainer {...container}>
+          <DataGridCellContainer {...container} {...errorProps}>
             <Inner field={field} inputProps={input} currencyInfo={currency} />
           </DataGridCellContainer>
         )
@@ -112,7 +110,7 @@ const Inner = ({
   return (
     <div className="relative flex size-full items-center">
       <span
-        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-4 w-fit min-w-4"
+        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-0 w-fit min-w-4"
         aria-hidden
       >
         {currencyInfo.symbol_native}
@@ -121,7 +119,7 @@ const Inner = ({
         {...rest}
         {...attributes}
         ref={combinedRed}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent py-2.5 pl-12 pr-4 text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-none"
         value={localValue || undefined}
         onValueChange={handleValueChange}
         formatValueOnBlur
