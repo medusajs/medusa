@@ -79,7 +79,9 @@ export const ClaimCreateForm = ({
    */
   const { setIsOpen } = useStackedModal()
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState(0)
+  const [customShippingAmount, setCustomShippingAmount] = useState<
+    number | string
+  >(0)
   const [inventoryMap, setInventoryMap] = useState<
     Record<string, InventoryLevelDTO[]>
   >({})
@@ -168,13 +170,13 @@ export const ClaimCreateForm = ({
       const inboundShippingMethod = preview.shipping_methods.find((s) => {
         const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-        return !!action?.return?.id
+        return !!action?.return_id
       })
 
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
         const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-        return action && !!!action?.return?.id
+        return !action?.return_id
       })
 
       return Promise.resolve({
@@ -236,7 +238,7 @@ export const ClaimCreateForm = ({
   const outboundShipping = preview.shipping_methods.find((s) => {
     const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-    return action && !!!action?.return?.id
+    return !action?.return?.id
   })
 
   const {
@@ -775,21 +777,23 @@ export const ClaimCreateForm = ({
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
                             for (let a of s.actions) {
-                              if (a.action === "SHIPPING_ADD") {
+                              if (a.action === "SHIPPING_ADD" && a.return_id) {
                                 actionId = a.id
                               }
                             }
                           }
                         })
 
+                        const customPrice =
+                          customShippingAmount === ""
+                            ? null
+                            : parseInt(customShippingAmount)
+
                         if (actionId) {
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price:
-                                typeof customShippingAmount === "string"
-                                  ? null
-                                  : customShippingAmount,
+                              custom_price: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -805,9 +809,7 @@ export const ClaimCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value) =>
-                        value && setCustomShippingAmount(parseInt(value))
-                      }
+                      onValueChange={setCustomShippingAmount}
                       value={customShippingAmount}
                       disabled={showInboundItemsPlaceholder}
                     />
