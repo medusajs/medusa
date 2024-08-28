@@ -21,9 +21,9 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { OrderExchangeItem, Transaction } from "@models"
+import { OrderExchangeItem, OrderTransaction } from "@models"
 import Order from "./order"
-import OrderShippingMethod from "./order-shipping-method"
+import OrderShipping from "./order-shipping-method"
 import Return from "./return"
 
 type OptionalOrderExchangeProps = DAL.ModelDateColumns
@@ -115,19 +115,15 @@ export default class OrderExchange {
   })
   additional_items = new Collection<Rel<OrderExchangeItem>>(this)
 
-  @OneToMany(
-    () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.exchange,
-    {
-      cascade: [Cascade.PERSIST],
-    }
-  )
-  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
-
-  @OneToMany(() => Transaction, (transaction) => transaction.exchange, {
+  @OneToMany(() => OrderShipping, (shippingMethod) => shippingMethod.exchange, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Transaction>(this)
+  shipping_methods = new Collection<Rel<OrderShipping>>(this)
+
+  @OneToMany(() => OrderTransaction, (transaction) => transaction.exchange, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<OrderTransaction>(this)
 
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null

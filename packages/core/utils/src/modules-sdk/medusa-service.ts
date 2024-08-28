@@ -11,11 +11,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -271,7 +271,10 @@ export function MedusaService<
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
               metadata: { source: "", action: "", object: "" },
-            }))
+            })),
+            {
+              internal: true,
+            }
           )
         }
 
@@ -302,7 +305,10 @@ export function MedusaService<
               name: `${kebabCase(modelName)}.deleted`,
               metadata: { source: "", action: "", object: "" },
               data: { id },
-            }))
+            })),
+            {
+              internal: true,
+            }
           )
 
           // Map internal table/column names to their respective external linkable keys
@@ -392,6 +398,11 @@ export function MedusaService<
         )
     }
 
+    /**
+     * @internal this method is not meant to be used except by the internal team for now
+     * @param groupedEvents
+     * @protected
+     */
     protected async emitEvents_(groupedEvents) {
       if (!this.eventBusModuleService_ || !groupedEvents) {
         return
@@ -399,7 +410,11 @@ export function MedusaService<
 
       const promises: Promise<void>[] = []
       for (const group of Object.keys(groupedEvents)) {
-        promises.push(this.eventBusModuleService_.emit(groupedEvents[group]))
+        promises.push(
+          this.eventBusModuleService_.emit(groupedEvents[group], {
+            internal: true,
+          })
+        )
       }
 
       await Promise.all(promises)

@@ -48,12 +48,12 @@ export const ActiveOrderExchangeSection = ({
         background:
           "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
       }}
-      className="-m-4 mb-1 border-b p-4"
+      className="z-10 -m-4 mb-1 border-x border-b p-4"
     >
       <Container className="flex items-center justify-between p-0">
-        <div className="flex w-full flex-row divide-y divide-dashed justify-between">
+        <div className="flex w-full flex-row justify-between">
           <div>
-            <div className="flex items-center gap-2 px-6 pt-4 mb-2">
+            <div className="mb-2 flex items-center gap-2 px-6 pt-4">
               <ArrowPath className="text-ui-fg-subtle" />
               <Heading level="h2">{t("orders.exchanges.panel.title")}</Heading>
             </div>
@@ -65,7 +65,7 @@ export const ActiveOrderExchangeSection = ({
 
           <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
             <Button size="small" variant="secondary" onClick={onCancelExchange}>
-              {t("actions.cancel")}
+              {t("orders.exchanges.cancel")}
             </Button>
 
             <Button

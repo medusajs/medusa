@@ -278,17 +278,22 @@ moduleIntegrationTestRunner<IProductModuleService>({
           await service.deleteProductCollections([collectionId])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
-            {
-              name: "product-collection.deleted",
-              data: { id: collectionId },
-              metadata: {
-                action: "",
-                object: "",
-                source: "",
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                name: "product-collection.deleted",
+                data: { id: collectionId },
+                metadata: {
+                  action: "",
+                  object: "",
+                  source: "",
+                },
               },
-            },
-          ])
+            ],
+            {
+              internal: true,
+            }
+          )
         })
       })
 
@@ -306,12 +311,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
           ])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                data: { id: collectionId },
+                name: "product-collection.updated",
+              },
+            ],
             {
-              data: { id: collectionId },
-              name: "product-collection.updated",
-            },
-          ])
+              internal: true,
+            }
+          )
         })
 
         it("should update the value of the collection successfully", async () => {
@@ -502,12 +512,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
           ])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                data: { id: collections[0].id },
+                name: "product-collection.created",
+              },
+            ],
             {
-              data: { id: collections[0].id },
-              name: "product-collection.created",
-            },
-          ])
+              internal: true,
+            }
+          )
         })
       })
     })

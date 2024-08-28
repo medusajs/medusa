@@ -1,8 +1,8 @@
+import { FilterableProductProps } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
 import { z } from "zod"
 import { createOperatorMap } from "../../validators"
-import { OptionalBooleanValidator } from "../common"
-import { FilterableProductProps } from "@medusajs/types"
+import { booleanString } from "../common"
 
 export const ProductStatusEnum = z.nativeEnum(ProductStatus)
 
@@ -11,7 +11,7 @@ export const GetProductsParams = z.object({
   id: z.union([z.string(), z.array(z.string())]).optional(),
   title: z.string().optional(),
   handle: z.string().optional(),
-  is_giftcard: OptionalBooleanValidator,
+  is_giftcard: booleanString().optional(),
   category_id: z.union([z.string(), z.array(z.string())]).optional(),
   sales_channel_id: z.union([z.string(), z.array(z.string())]).optional(),
   collection_id: z.union([z.string(), z.array(z.string())]).optional(),

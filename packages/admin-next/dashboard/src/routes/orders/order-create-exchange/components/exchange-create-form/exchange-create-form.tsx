@@ -8,6 +8,7 @@ import {
   IconButton,
   Switch,
   toast,
+  usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -150,9 +151,22 @@ export const ExchangeCreateForm = ({
   })
 
   const shippingOptionId = form.watch("inbound_option_id")
+  const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      const res = await prompt({
+        title: t("general.areYouSure"),
+        description: t("orders.exchanges.confirmText"),
+        confirmText: t("actions.continue"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!res) {
+        return
+      }
+
       await confirmExchangeRequest({ no_notification: !data.send_notification })
 
       handleSuccess()
@@ -392,6 +406,8 @@ export const ExchangeCreateForm = ({
                 }}
               />
             </div>
+
+            <div className="p-8" />
           </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
@@ -404,9 +420,10 @@ export const ExchangeCreateForm = ({
                   variant="secondary"
                   size="small"
                 >
-                  {t("actions.cancel")}
+                  {t("orders.exchanges.cancel")}
                 </Button>
               </RouteFocusModal.Close>
+
               <Button
                 key="submit-button"
                 type="submit"
@@ -414,7 +431,7 @@ export const ExchangeCreateForm = ({
                 size="small"
                 isLoading={isRequestLoading}
               >
-                {t("actions.save")}
+                {t("orders.exchanges.confirm")}
               </Button>
             </div>
           </div>

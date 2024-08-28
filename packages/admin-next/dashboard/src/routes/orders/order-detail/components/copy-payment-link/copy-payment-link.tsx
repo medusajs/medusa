@@ -46,7 +46,7 @@ const CopyPaymentLink = React.forwardRef<any, CopyPaymentLinkProps>(
       }
 
       setTimeout(() => {
-        setText("CopyPaymentLink")
+        setText("Copy")
       }, 500)
     }, [done])
 

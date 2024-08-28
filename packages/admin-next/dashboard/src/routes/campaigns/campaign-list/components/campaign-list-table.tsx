@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { CampaignResponse } from "@medusajs/types"
+import { AdminCampaign } from "@medusajs/types"
 import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -74,7 +74,7 @@ export const CampaignListTable = () => {
   )
 }
 
-const CampaignActions = ({ campaign }: { campaign: CampaignResponse }) => {
+const CampaignActions = ({ campaign }: { campaign: AdminCampaign }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteCampaign(campaign.id)
@@ -131,7 +131,7 @@ const CampaignActions = ({ campaign }: { campaign: CampaignResponse }) => {
   )
 }
 
-const columnHelper = createColumnHelper<CampaignResponse>()
+const columnHelper = createColumnHelper<AdminCampaign>()
 
 const useColumns = () => {
   const base = useCampaignTableColumns()
