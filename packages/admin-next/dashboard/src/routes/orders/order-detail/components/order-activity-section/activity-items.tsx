@@ -53,24 +53,21 @@ function ActivityItems(props: ActivityItemsProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component p-0"
+        className="bg-ui-bg-component p-0 max-w-[200px]"
       >
         <div className="flex flex-col">
           {!!itemsToSend?.length && (
             <div className="p-3">
-              <div className="txt-compact-small-plus">
+              <div className="txt-compact-small-plus mb-1">
                 {t("orders.activity.events.common.toSend")}
               </div>
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col w-fit max-w-full">
                 {itemsToSend?.map((item) => {
                   const originalItem = itemsMap?.get(item.item_id)!
 
                   return (
-                    <div
-                      className="flex flex-1 items-center gap-x-3"
-                      key={item.id}
-                    >
+                    <div className="flex items-center gap-x-3" key={item.id}>
                       <Text size="small" className="text-ui-fg-subtle">
                         {item.quantity}x
                       </Text>
@@ -78,11 +75,10 @@ function ActivityItems(props: ActivityItemsProps) {
                       <Thumbnail
                         src={originalItem?.variant?.product?.thumbnail}
                       />
-                      <div className="">
-                        <Text className="txt-compact-small text-ui-fg-subtle">
-                          {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
-                        </Text>
-                      </div>
+
+                      <Text className="txt-compact-small text-ui-fg-subtle truncate">
+                        {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
+                      </Text>
                     </div>
                   )
                 })}
@@ -94,19 +90,16 @@ function ActivityItems(props: ActivityItemsProps) {
 
           {!!itemsToReturn?.length && (
             <div className="border-t-2 border-dotted p-3">
-              <div className="txt-compact-small-plus">
+              <div className="txt-compact-small-plus mb-1">
                 {t("orders.activity.events.common.toReturn")}
               </div>
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col">
                 {itemsToReturn?.map((item) => {
                   const originalItem = itemsMap?.get(item.item_id)!
 
                   return (
-                    <div
-                      className="flex flex-1 items-center gap-x-3"
-                      key={item.id}
-                    >
+                    <div className="flex items-center gap-x-3" key={item.id}>
                       <Text size="small" className="text-ui-fg-subtle">
                         {item.quantity}x
                       </Text>
@@ -114,11 +107,10 @@ function ActivityItems(props: ActivityItemsProps) {
                       <Thumbnail
                         src={originalItem?.variant?.product?.thumbnail}
                       />
-                      <div className="">
-                        <Text className="txt-compact-small text-ui-fg-subtle">
-                          {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
-                        </Text>
-                      </div>
+
+                      <Text className="txt-compact-small text-ui-fg-subtle truncate">
+                        {`${originalItem?.variant?.title} · ${originalItem?.variant?.product?.title}`}
+                      </Text>
                     </div>
                   )
                 })}
