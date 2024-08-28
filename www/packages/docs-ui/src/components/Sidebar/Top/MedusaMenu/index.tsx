@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react"
 import {
   BorderedIcon,
   getOsShortcut,
+  useAnalytics,
   useClickOutside,
   useSidebar,
 } from "../../../.."
@@ -20,9 +21,17 @@ import { Menu } from "../../../Menu"
 export const SidebarTopMedusaMenu = () => {
   const [openMenu, setOpenMenu] = useState(false)
   const { setDesktopSidebarOpen } = useSidebar()
+  const { track } = useAnalytics()
   const ref = useRef<HTMLDivElement>(null)
 
-  const toggleOpen = () => setOpenMenu((prev) => !prev)
+  const toggleOpen = () => {
+    setOpenMenu((prev) => !prev)
+    if (!openMenu) {
+      track("nav_sidebar_open", {
+        url: window.location.href,
+      })
+    }
+  }
 
   useClickOutside({
     elmRef: ref,

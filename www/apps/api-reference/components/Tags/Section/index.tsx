@@ -128,12 +128,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
               </Section>
             )}
             {tag.externalDocs && (
-              <>
-                Related guide:{" "}
+              <p className="mt-1">
+                <span className="text-medium-plus">Related guide:</span>{" "}
                 <Link href={tag.externalDocs.url} target="_blank">
                   {tag.externalDocs.description || "Read More"}
                 </Link>
-              </>
+              </p>
             )}
             <Feedback
               event="survey_api-ref"
@@ -144,6 +144,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
               pathName={pathname}
               reportLink={formatReportLink(area, tag.name)}
               vertical
+              question="Was this section helpful?"
             />
           </SectionContainer>
         }
