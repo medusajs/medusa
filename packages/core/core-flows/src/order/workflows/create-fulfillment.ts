@@ -136,6 +136,7 @@ function prepareFulfillmentData({
       items: fulfillmentItems,
       labels: input.labels ?? [],
       delivery_address: shippingAddress as any,
+      packed_at: new Date(),
     },
   }
 }
@@ -224,6 +225,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "currency_code",
         "items.*",
         "items.variant.manage_inventory",
+        "items.variant.allow_backorder",
         "shipping_address.*",
         "shipping_methods.shipping_option_id",
         "shipping_methods.data",

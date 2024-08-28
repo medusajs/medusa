@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 tags:
+  - name: Auth
+    description: |
+      Auth API routes allow you to manage an admin user's authentication.
   - name: Api Keys
   - name: Campaigns
   - name: Claims
@@ -297,8 +300,12 @@ paths:
     $ref: paths/admin_order-edits_{id}_confirm.yaml
   /admin/order-edits/{id}/items:
     $ref: paths/admin_order-edits_{id}_items.yaml
+  /admin/order-edits/{id}/items/item/{item_id}:
+    $ref: paths/admin_order-edits_{id}_items_item_{item_id}.yaml
   /admin/order-edits/{id}/items/{action_id}:
     $ref: paths/admin_order-edits_{id}_items_{action_id}.yaml
+  /admin/order-edits/{id}/request:
+    $ref: paths/admin_order-edits_{id}_request.yaml
   /admin/order-edits/{id}/shipping-method:
     $ref: paths/admin_order-edits_{id}_shipping-method.yaml
   /admin/order-edits/{id}/shipping-method/{action_id}:
@@ -323,6 +330,10 @@ paths:
     $ref: paths/admin_orders_{id}_preview.yaml
   /admin/payment-collections:
     $ref: paths/admin_payment-collections.yaml
+  /admin/payment-collections/{id}:
+    $ref: paths/admin_payment-collections_{id}.yaml
+  /admin/payment-collections/{id}/mark-as-paid:
+    $ref: paths/admin_payment-collections_{id}_mark-as-paid.yaml
   /admin/payments:
     $ref: paths/admin_payments.yaml
   /admin/payments/payment-providers:
@@ -520,6 +531,14 @@ paths:
   /admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe:
     $ref: >-
       paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
+  /auth/session:
+    $ref: paths/auth_session.yaml
+  /auth/user/{auth_provider}:
+    $ref: paths/auth_user_{auth_provider}.yaml
+  /auth/user/{auth_provider}/callback:
+    $ref: paths/auth_user_{auth_provider}_callback.yaml
+  /auth/user/{auth_provider}/register:
+    $ref: paths/auth_user_{auth_provider}_register.yaml
 components:
   securitySchemes:
     api_token:

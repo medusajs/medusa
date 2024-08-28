@@ -3,10 +3,12 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderPreviewDTO,
+  OrderReturnItemDTO,
   ReturnDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
+  MedusaError,
   Modules,
   OrderChangeStatus,
   ReturnStatus,
@@ -28,6 +30,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
@@ -50,6 +53,23 @@ export const confirmReturnRequestValidationStep = createStep(
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderReturn, "Return")
     throwIfOrderChangeIsNotActive({ orderChange })
+  }
+)
+
+/**
+ * This step confirms that a requested return has atleast one item
+ */
+const confirmIfReturnItemsArePresent = createStep(
+  "confirm-if-return-items-are-present",
+  async function ({ returnItems }: { returnItems: OrderReturnItemDTO[] }) {
+    if (returnItems.length > 0) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order return request should have atleast 1 item`
+    )
   }
 )
 
@@ -202,6 +222,8 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       changes: returnItemActions,
     })
 
+    confirmIfReturnItemsArePresent({ returnItems: createdReturnItems })
+
     const returnShippingOptionId = transform(
       { orderPreview, orderReturn },
       extractReturnShippingOptionId
@@ -258,6 +280,12 @@ export const confirmReturnRequestWorkflow = createWorkflow(
       ]),
       confirmOrderChanges({ changes: [orderChange], orderId: order.id })
     )
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
+    })
 
     return new WorkflowResponse(orderPreview)
   }

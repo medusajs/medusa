@@ -8,6 +8,7 @@ import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   DistributedTransactionEvent,
   StepFeatures,
+  TransactionFlow,
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionOptions,
@@ -27,38 +28,19 @@ import {
   TransactionTimeoutError,
 } from "./errors"
 
-export type TransactionFlow = {
-  modelId: string
-  options?: TransactionModelOptions
-  definition: TransactionStepsDefinition
-  transactionId: string
-  metadata?: {
-    eventGroupId?: string
-    [key: string]: unknown
-  }
-  hasAsyncSteps: boolean
-  hasFailedSteps: boolean
-  hasSkippedOnFailureSteps: boolean
-  hasWaitingSteps: boolean
-  hasSkippedSteps: boolean
-  hasRevertedSteps: boolean
-  timedOutAt: number | null
-  startedAt?: number
-  state: TransactionState
-  steps: {
-    [key: string]: TransactionStep
-  }
-}
-
 /**
  * @class TransactionOrchestrator is responsible for managing and executing distributed transactions.
  * It is based on a single transaction definition, which is used to execute all the transaction steps
  */
 export class TransactionOrchestrator extends EventEmitter {
+  id: string
+
   private static ROOT_STEP = "_root"
   public static DEFAULT_TTL = 30
   private invokeSteps: string[] = []
   private compensateSteps: string[] = []
+  private definition: TransactionStepsDefinition
+  private options?: TransactionModelOptions
 
   public static DEFAULT_RETRIES = 0
 
@@ -70,13 +52,35 @@ export class TransactionOrchestrator extends EventEmitter {
     return this.workflowOptions[modelId]
   }
 
-  constructor(
-    public id: string,
-    private definition: TransactionStepsDefinition,
-    private options?: TransactionModelOptions
-  ) {
+  constructor({
+    id,
+    definition,
+    options,
+    isClone,
+  }: {
+    id: string
+    definition: TransactionStepsDefinition
+    options?: TransactionModelOptions
+    isClone?: boolean
+  }) {
     super()
-    this.parseFlowOptions()
+
+    this.id = id
+    this.definition = definition
+    this.options = options
+
+    if (!isClone) {
+      this.parseFlowOptions()
+    }
+  }
+
+  static clone(orchestrator: TransactionOrchestrator): TransactionOrchestrator {
+    return new TransactionOrchestrator({
+      id: orchestrator.id,
+      definition: orchestrator.definition,
+      options: orchestrator.options,
+      isClone: true,
+    })
   }
 
   private static SEPARATOR = ":"

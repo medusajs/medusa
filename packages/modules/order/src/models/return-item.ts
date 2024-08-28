@@ -19,31 +19,32 @@ import ReturnReason from "./return-reason"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
+const tableName = "return_item"
 const ReturnIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return_item",
+  tableName,
   columns: "return_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ReturnReasonIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return_item",
+  tableName,
   columns: "reason_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return_item",
+  tableName,
   columns: "item_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item_image",
+  tableName,
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "return_item" })
+@Entity({ tableName })
 export default class ReturnItem {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -75,6 +76,12 @@ export default class ReturnItem {
 
   @Property({ columnType: "jsonb" })
   raw_received_quantity: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty()
+  damaged_quantity: Number | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_damaged_quantity: BigNumberRawValue
 
   @ManyToOne(() => Return, {
     columnType: "text",

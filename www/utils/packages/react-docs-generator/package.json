@@ -6,8 +6,7 @@
     "start": "node dist/index.js",
     "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/src/specs --clean",
     "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+    "watch": "tsc --watch"
   },
   "publishConfig": {
     "access": "public"

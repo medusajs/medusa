@@ -24,6 +24,8 @@ All API Routes are prefixed with `/admin`. So, during development, the API Route
   }}
   reportLink={formatReportLink("admin", "Introduction")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -32,15 +34,13 @@ All API Routes are prefixed with `/admin`. So, during development, the API Route
 
 ## Authentication
 
-There are three ways to send authenticated requests to the Medusa server: Using an admin user's API token, using a JWT token in a bearer authorization header, or using a cookie session ID.
+There are three ways to send authenticated requests to the Medusa server: Using a JWT token in a bearer authorization header, using an admin user's API token, or using a cookie session ID.
 
 ### Bearer Authorization with JWT Tokens
 
 Use a JWT token in a request's bearer authorization header to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
 
 #### How to Obtain the JWT Token
-
-{/* TODO add correct link to auth route */}
 
 JWT tokens are obtained by sending a request to the authentication route passing it the user's email and password in the request body.
 
@@ -56,6 +56,8 @@ curl -X POST '{backend_url}/auth/user/emailpass' \
 ```
 
 If authenticated successfully, an object is returned in the response with the property `token` being the JWT token.
+
+Learn more about the authentication route [here](#auth_postactor_typeauth_provider)
 
 #### How to Use the JWT Token
 
@@ -166,6 +168,8 @@ fetch(`<BACKEND_URL>/admin/products`, {
   }}
   reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -190,6 +194,8 @@ x-no-compression: true
   }}
   reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -394,6 +400,8 @@ curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17&created
   }}
   reportLink={formatReportLink("admin", "Query Parameter Types")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>
@@ -472,6 +480,8 @@ This sorts the products by their `created_at` field in the descending order.
   }}
   reportLink={formatReportLink("admin", "Pagination")}
   pathName="/api/admin"
+  question="Was this section helpful?"
+  vertical={true}
 />
 
 </SectionContainer>

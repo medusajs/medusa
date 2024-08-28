@@ -169,6 +169,12 @@ medusaIntegrationTestRunner({
         ],
         currency_code: "usd",
         customer_id: customer.id,
+        transactions: [
+          {
+            amount: 61,
+            currency_code: "usd",
+          },
+        ],
       })
 
       order2 = await orderModule.createOrders({
@@ -557,7 +563,11 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          await api.post(`/admin/claims/${claimId2}/request`, {}, adminHeaders)
+          const testRes = await api.post(
+            `/admin/claims/${claimId2}/request`,
+            {},
+            adminHeaders
+          )
 
           claimId = baseClaim.id
           item = order.items[0]
@@ -682,6 +692,17 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
+          const paymentCollections = fulfillOrder.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: 171.5,
+              currency_code: "usd",
+            })
+          )
+
           const fulfillableItem = fulfillOrder.items.find(
             (item) => item.detail.fulfilled_quantity === 0
           )
@@ -720,38 +741,70 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a payment collection successfully and throw on multiple", async () => {
-          const paymentDelta = 110.5
+        it("should create a payment collection successfully & mark as paid", async () => {
+          const paymentDelta = 171.5
+          const orderForPayment = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
 
-          const paymentCollection = (
+          const paymentCollections = orderForPayment.payment_collections
+
+          expect(paymentCollections).toHaveLength(1)
+          expect(paymentCollections[0]).toEqual(
+            expect.objectContaining({
+              status: "not_paid",
+              amount: paymentDelta,
+              currency_code: "usd",
+            })
+          )
+
+          const createdPaymentCollection = (
             await api.post(
               `/admin/payment-collections`,
+              { order_id: order.id, amount: 100 },
+              adminHeaders
+            )
+          ).data.payment_collection
+
+          expect(createdPaymentCollection).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 100,
+              status: "not_paid",
+            })
+          )
+
+          const deleted = (
+            await api.delete(
+              `/admin/payment-collections/${createdPaymentCollection.id}`,
+              adminHeaders
+            )
+          ).data
+
+          expect(deleted).toEqual({
+            id: createdPaymentCollection.id,
+            object: "payment-collection",
+            deleted: true,
+          })
+
+          const finalPaymentCollection = (
+            await api.post(
+              `/admin/payment-collections/${paymentCollections[0].id}/mark-as-paid`,
               { order_id: order.id },
               adminHeaders
             )
           ).data.payment_collection
 
-          expect(paymentCollection).toEqual(
+          expect(finalPaymentCollection).toEqual(
             expect.objectContaining({
               currency_code: "usd",
               amount: paymentDelta,
-              payment_sessions: [],
+              status: "authorized",
+              authorized_amount: paymentDelta,
+              captured_amount: paymentDelta,
+              refunded_amount: 0,
             })
           )
-
-          const { response } = await api
-            .post(
-              `/admin/payment-collections`,
-              { order_id: order.id },
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.data).toEqual({
-            type: "not_allowed",
-            message:
-              "Active payment collections were found. Complete existing ones or delete them before proceeding.",
-          })
         })
       })
 
@@ -830,7 +883,7 @@ medusaIntegrationTestRunner({
               items: [
                 {
                   variant_id: productExtra.variants[0].id,
-                  quantity: 2,
+                  quantity: 3,
                 },
               ],
             },
@@ -870,7 +923,7 @@ medusaIntegrationTestRunner({
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
 
-          const fulfillableItem = fulfillOrder.items.find(
+          const fulfillableItem = fulfillOrder.items.filter(
             (item) => item.detail.fulfilled_quantity === 0
           )
 
@@ -878,10 +931,183 @@ medusaIntegrationTestRunner({
             `/admin/orders/${order.id}/fulfillments`,
             {
               location_id: location.id,
-              items: [{ id: fulfillableItem.id, quantity: 1 }],
+              items: [{ id: fulfillableItem[0].id, quantity: 1 }],
             },
             adminHeaders
           )
+
+          let orderResult = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_fulfilled")
+
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              location_id: location.id,
+              items: [{ id: fulfillableItem[0].id, quantity: 2 }],
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("fulfilled")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[0].id}/shipments`,
+            {
+              items: orderResult.fulfillments[0]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments,*fulfillments.items`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("partially_shipped")
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[1].id}/shipments`,
+            {
+              items: orderResult.fulfillments[1]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `admin/orders/${order.id}/fulfillments/${orderResult.fulfillments[2].id}/shipments`,
+            {
+              items: orderResult.fulfillments[2]?.items?.map((i) => ({
+                id: i.line_item_id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+
+          orderResult = (
+            await api.get(
+              `/admin/orders/${order.id}?fields=*fulfillments`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(orderResult.fulfillment_status).toEqual("shipped")
+        })
+      })
+
+      describe("with only inbound items", () => {
+        beforeEach(async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          baseClaim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Base claim",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          claimId = baseClaim.id
+          item = order.items[0]
+
+          let result = await api.post(
+            `/admin/claims/${claimId}/inbound/items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason_id: returnReason.id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claimId}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          // Claim Items
+          await api.post(
+            `/admin/claims/${claimId}/claim-items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
+
+          result = (
+            await api.get(
+              `/admin/claims?fields=*claim_items,*additional_items`,
+              adminHeaders
+            )
+          ).data.claims
+
+          expect(result).toHaveLength(1)
+          expect(result[0].additional_items).toHaveLength(0)
+          expect(result[0].claim_items).toHaveLength(1)
+          expect(result[0].canceled_at).toBeNull()
+        })
+
+        it.only("test inbound only", async () => {
+          const orderCheck = (
+            await api.get(`/admin/orders/${order.id}`, adminHeaders)
+          ).data.order
+
+          expect(orderCheck.summary).toEqual(
+            expect.objectContaining({
+              pending_difference: -10,
+              current_order_total: 51,
+              original_order_total: 61,
+              temporary_difference: 15,
+            })
+          )
+
+          expect(true).toBe(true)
         })
       })
     })
@@ -926,6 +1152,8 @@ medusaIntegrationTestRunner({
           )
         ).data.claim
 
+        expect(baseClaim.created_by).toEqual(expect.any(String))
+
         await api.post(
           `/admin/claims/${baseClaim.id}/inbound/items`,
           {
@@ -960,7 +1188,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
-        await api.post(
+
+        const { response } = await api.post(
           `/admin/claims/${baseClaim.id}/request`,
           {},
           adminHeaders

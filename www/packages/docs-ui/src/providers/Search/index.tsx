@@ -10,7 +10,10 @@ import React, {
 } from "react"
 import { BadgeProps, Modal, Search, SearchProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
-import algoliasearch, { SearchClient } from "algoliasearch/lite"
+import {
+  liteClient as algoliasearch,
+  LiteClient as SearchClient,
+} from "algoliasearch/lite"
 import clsx from "clsx"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 
@@ -72,8 +75,15 @@ export const SearchProvider = ({
     const algoliaClient = algoliasearch(algolia.appId, algolia.apiKey)
     return {
       ...algoliaClient,
-      async search(requests) {
-        if (requests.every(({ params }) => !params?.query)) {
+      async search(searchParams) {
+        const requests =
+          "requests" in searchParams ? searchParams.requests : searchParams
+        const noQueries = requests.every(
+          (item) =>
+            ("facetQuery" in item && !item.facetQuery) ||
+            ("query" in item && !item.query)
+        )
+        if (noQueries) {
           return Promise.resolve({
             results: requests.map(() => ({
               hits: [],
@@ -89,7 +99,7 @@ export const SearchProvider = ({
           })
         }
 
-        return algoliaClient.search(requests)
+        return algoliaClient.search(searchParams)
       },
     }
   }, [algolia.appId, algolia.apiKey])
@@ -121,14 +131,9 @@ export const SearchProvider = ({
       <Modal
         contentClassName={clsx(
           "!p-0 overflow-hidden relative h-full",
-          "rounded-none md:rounded-docs_lg flex flex-col justify-between"
+          "flex flex-col justify-between"
         )}
-        modalContainerClassName={clsx(
-          "!rounded-none md:!rounded-docs_lg",
-          "md:!h-[480px] h-screen",
-          "md:!w-[640px] w-screen",
-          "bg-medusa-bg-base"
-        )}
+        modalContainerClassName="sm:h-[480px] sm:max-h-[480px]"
         open={isOpen}
         onClose={() => setIsOpen(false)}
         passedRef={modalRef}
@@ -146,7 +151,7 @@ export const SearchProvider = ({
                   ? "animate-fadeOutLeft animate-fast"
                   : "animate-fadeOutRight animate-fast",
             }}
-            timeout={300}
+            timeout={250}
             key={command?.name || "search"}
           >
             <>

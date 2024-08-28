@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 tags:
+  - name: Auth
+    description: |
+      Auth API routes allow you to manage a customer's authentication.
   - name: Carts
     description: >
       A cart is a virtual shopping bag that customers can use to add items they
@@ -71,6 +74,14 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/StoreShippingOption.yaml
 paths:
+  /auth/customer/{auth_provider}:
+    $ref: paths/auth_customer_{auth_provider}.yaml
+  /auth/customer/{auth_provider}/callback:
+    $ref: paths/auth_customer_{auth_provider}_callback.yaml
+  /auth/customer/{auth_provider}/register:
+    $ref: paths/auth_customer_{auth_provider}_register.yaml
+  /auth/session:
+    $ref: paths/auth_session.yaml
   /store/carts:
     $ref: paths/store_carts.yaml
   /store/carts/{id}:

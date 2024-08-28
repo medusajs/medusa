@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const signup = await api.post("/auth/user/emailpass", {
+        const signup = await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
 
       it("should fail to accept an invite given an invalid token", async () => {
         expect.assertions(2)
-        const signup = await api.post("/auth/user/emailpass", {
+        const signup = await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
@@ -119,7 +119,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to accept an already accepted invite ", async () => {
-        const signup = await api.post("/auth/user/emailpass", {
+        const signup = await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
@@ -135,7 +135,7 @@ medusaIntegrationTestRunner({
           }
         )
 
-        const signupAgain = await api.post("/auth/user/emailpass", {
+        const signupAgain = await api.post("/auth/user/emailpass/register", {
           email: "another-test@medusa-commerce.com",
           password: "secret_password",
         })

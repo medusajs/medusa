@@ -20,10 +20,6 @@ interface TestDatabase {
 
 export const TestDatabase: TestDatabase = {
   clearTables: async (knex) => {
-    await knex.raw(`
-      TRUNCATE TABLE workflow_execution CASCADE;
-    `)
-
     await cleanRedis()
   },
 }

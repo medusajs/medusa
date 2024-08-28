@@ -1,12 +1,9 @@
-import "core-js/stable"
-import "regenerator-runtime/runtime"
-
 import express from "express"
 import { track } from "medusa-telemetry"
 
+import { logger } from "@medusajs/framework"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import loaders from "../loaders"
-import { logger } from "@medusajs/framework"
 
 export default async function ({
   directory,
@@ -44,7 +41,7 @@ export default async function ({
     } else {
       const user = await userService.createUsers({ email })
 
-      const { authIdentity, error } = await authService.authenticate(provider, {
+      const { authIdentity, error } = await authService.register(provider, {
         body: {
           email,
           password,

@@ -20,17 +20,17 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
-  isObject,
-  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
+  createMedusaContainer,
+  isObject,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
+import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
-import type { Knex } from "knex"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -39,8 +39,8 @@ import {
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
-import { cleanGraphQLSchema } from "./utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
+import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 

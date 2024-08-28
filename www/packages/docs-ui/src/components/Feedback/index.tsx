@@ -5,7 +5,16 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { Solutions } from "./Solutions"
 import { ExtraData, useAnalytics } from "@/providers/Analytics"
 import clsx from "clsx"
-import { Button, TextArea, Label, Details, InputText } from "@/components"
+import {
+  Button,
+  TextArea,
+  Label,
+  Details,
+  InputText,
+  DottedSeparator,
+} from "@/components"
+import { ChatBubbleLeftRight, ThumbDown, ThumbUp } from "@medusajs/icons"
+import Link from "next/link"
 
 export type FeedbackProps = {
   event: string
@@ -29,9 +38,9 @@ export const Feedback = ({
   event,
   pathName,
   reportLink,
-  question = "Was this section helpful?",
-  positiveBtn = "Yes",
-  negativeBtn = "No",
+  question = "Was this page helpful?",
+  positiveBtn = "It was helpful",
+  negativeBtn = "It wasn't helpful",
   positiveQuestion = "What was most helpful?",
   negativeQuestion = "What can we improve?",
   submitBtn = "Submit",
@@ -111,7 +120,8 @@ export const Feedback = ({
   }
 
   return (
-    <div className={clsx("mt-docs_3", className)}>
+    <div className={clsx(className)}>
+      <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={
@@ -135,33 +145,63 @@ export const Feedback = ({
             {!showForm && !submittedFeedback && (
               <div
                 className={clsx(
-                  "flex",
-                  !vertical && "flex-row items-center",
-                  vertical && "flex-col justify-center gap-docs_1"
+                  "flex gap-docs_0.5",
+                  !vertical && "flex-col md:flex-row md:items-center",
+                  vertical && "flex-col justify-center"
                 )}
                 ref={inlineFeedbackRef}
               >
-                <Label className="mr-docs_1.5">{question}</Label>
+                <Label>{question}</Label>
                 <div
-                  className={clsx("flex flex-row items-center gap-docs_0.5")}
+                  className={clsx(
+                    "flex gap-docs_0.5",
+                    "flex-col md:flex-row md:items-center"
+                  )}
                 >
                   <Button
                     onClick={handleFeedback}
-                    className="positive w-fit"
-                    variant="secondary"
+                    className={clsx(
+                      "positive gap-[6px] !justify-start md:!justify-center",
+                      "!px-docs_0.5 !py-docs_0.25 text-left md:text-center"
+                    )}
+                    variant="transparent-clear"
                   >
-                    {positiveBtn}
+                    <ThumbUp className="text-medusa-fg-subtle" />
+                    <span className="text-medusa-fg-base text-compact-small-plus flex-1">
+                      {positiveBtn}
+                    </span>
                   </Button>
                   <Button
                     onClick={handleFeedback}
-                    className="w-fit"
-                    variant="secondary"
+                    className={clsx(
+                      "gap-[6px] !justify-start md:!justify-center",
+                      "!px-docs_0.5 !py-docs_0.25 text-left md:text-center"
+                    )}
+                    variant="transparent-clear"
                   >
-                    {negativeBtn}
+                    <ThumbDown className="text-medusa-fg-subtle" />
+                    <span className="text-medusa-fg-base text-compact-small-plus flex-1">
+                      {negativeBtn}
+                    </span>
                   </Button>
                   {reportLink && (
-                    <Button variant="secondary">
-                      <a href={reportLink}>Report Issue</a>
+                    <Button
+                      variant="transparent-clear"
+                      className={clsx(
+                        "gap-[6px] relative",
+                        "!px-docs_0.5 !py-docs_0.25",
+                        "!justify-start md:!justify-center",
+                        "text-left md:text-center"
+                      )}
+                    >
+                      <ChatBubbleLeftRight className="text-medusa-fg-subtle" />
+                      <span className="text-medusa-fg-base text-compact-small-plus flex-1">
+                        Report Issue
+                      </span>
+                      <Link
+                        href={reportLink}
+                        className="absolute left-0 top-0 w-full h-full"
+                      ></Link>
                     </Button>
                   )}
                 </div>
@@ -259,6 +299,7 @@ export const Feedback = ({
           </>
         </CSSTransition>
       </SwitchTransition>
+      <DottedSeparator wrapperClassName="!px-0 !my-docs_2" />
     </div>
   )
 }

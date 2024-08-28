@@ -453,6 +453,125 @@ medusaIntegrationTestRunner({
           ])
         })
 
+        it("should pass if variants are out of stock but allow_backorder is true", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              variants: [
+                {
+                  title: "Test variant",
+                  allow_backorder: true,
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              {
+                sku: "inv-1234",
+                location_levels: [
+                  {
+                    location_id: location.id,
+                    stocked_quantity: 2,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          await api.post(
+            `/admin/reservations`,
+            {
+              line_item_id: "line-item-id-1",
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              description: "test description",
+              quantity: 2,
+            },
+            adminHeaders
+          )
+
+          const region = await regionModuleService.createRegions({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          const { errors, result } = await createCartWorkflow(appContainer).run(
+            {
+              input: {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 1,
+                  },
+                ],
+              },
+              throwOnError: false,
+            }
+          )
+          expect(errors).toEqual([])
+
+          const cart = await cartModuleService.retrieveCart(result.id, {
+            relations: ["items"],
+          })
+
+          expect(cart.items).toEqual([
+            expect.objectContaining({
+              quantity: 1,
+              variant_id: product.variants[0].id,
+            }),
+          ])
+        })
+
         it("should throw if sales channel is disabled", async () => {
           const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",

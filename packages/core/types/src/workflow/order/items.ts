@@ -5,14 +5,14 @@ interface NewItem {
   variant_id: string
   quantity: BigNumberInput
   unit_price?: BigNumberInput
-  internal_note?: string
+  internal_note?: string | null
   metadata?: Record<string, any> | null
 }
 
 interface ExistingItem {
   id: string
   quantity: BigNumberInput
-  internal_note?: string
+  internal_note?: string | null
 }
 
 export interface OrderExchangeAddNewItemWorkflowInput {
@@ -33,6 +33,11 @@ export interface OrderExchangeAddNewItemWorkflowInput {
 export interface OrderEditAddNewItemWorkflowInput {
   order_id: string
   items: NewItem[]
+}
+
+export interface OrderEditUpdateItemQuantityWorkflowInput {
+  order_id: string
+  items: ExistingItem[]
 }
 
 export interface OrderAddLineItemWorkflowInput {
@@ -57,6 +62,9 @@ export interface UpdateOrderEditAddNewItemWorkflowInput {
     internal_note?: string | null
   }
 }
+
+export interface UpdateOrderEditItemQuantityWorkflowInput
+  extends UpdateOrderEditAddNewItemWorkflowInput {}
 
 export interface UpdateClaimAddNewItemWorkflowInput {
   claim_id: string

@@ -85,7 +85,11 @@ export default async function () {
 
       // decode oasPrefix
       const matchOasPrefix = OAS_PREFIX_REGEX.exec(oasPrefix)
-      if (!matchOasPrefix?.groups?.method || !matchOasPrefix.groups.path) {
+      if (
+        !matchOasPrefix?.groups?.method ||
+        !matchOasPrefix.groups.path ||
+        matchOasPrefix.groups.path.startsWith("/auth/")
+      ) {
         return
       }
       const splitPath = matchOasPrefix.groups.path.substring(1).split("/")

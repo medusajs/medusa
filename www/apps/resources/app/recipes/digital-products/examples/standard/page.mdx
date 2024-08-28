@@ -1,4 +1,5 @@
 import { Github, PlaySolid } from "@medusajs/icons"
+import { Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Digital Products Recipe Example`,
@@ -29,25 +30,24 @@ By following this example, you’ll have a commerce application with the followi
     href: "https://github.com/medusajs/examples/tree/main/digital-product",
     title: "Digital Products Example Repository",
     text: "Find the full code for this recipe example in this repository.",
-    startIcon: <Github />,
-    showLinkIcon: false
+    icon: Github,
   },
   {
     href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1721654620/OpenApi/Digital_Products_Postman_vjr3jg.yml",
     title: "OpenApi Specs for Postman",
     text: "Imported this OpenApi Specs file into tools like Postman.",
-    startIcon: <PlaySolid />,
-    showLinkIcon: false
+    icon: PlaySolid,
   },
 ]} />
 
 ---
 
-<Note type="check">
-
-- [A new Medusa application installed.](!docs!#get-started)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "A new Medusa application installed.",
+    link: "!docs!#get-started"
+  },
+]} />
 
 ## Step 1: Create the Digital Product Module
 

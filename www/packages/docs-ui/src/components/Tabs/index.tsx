@@ -1,9 +1,11 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import { Tabs as UiTabs } from "@medusajs/ui"
 import { ComponentProps } from "react"
 import clsx from "clsx"
+import { EllipseMiniSolid } from "@medusajs/icons"
+import { useMobile } from "../.."
 
 type TabsProps = ComponentProps<typeof UiTabs> & {
   layoutType?: "horizontal" | "vertical"
@@ -13,19 +15,28 @@ export const Tabs = ({
   layoutType = "horizontal",
   className,
   ...props
-}: TabsProps) => (
-  <UiTabs
-    {...props}
-    className={clsx(
-      className,
-      layoutType === "vertical" && [
-        "flex gap-docs_1",
-        "[&_[role=tablist]]:flex-col [&_[role=tablist]]:items-start",
-        "[&_[role=tablist]+*]:flex-1 [&_[role=tablist]+*]:!mt-0",
-      ]
-    )}
-  />
-)
+}: TabsProps) => {
+  const { isMobile } = useMobile()
+
+  const layout = useMemo(() => {
+    return isMobile ? "horizontal" : layoutType
+  }, [layoutType, isMobile])
+
+  return (
+    <UiTabs
+      {...props}
+      className={clsx(
+        className,
+        layout === "vertical" && [
+          "flex gap-docs_1",
+          "[&_[role=tablist]]:flex-col [&_[role=tablist]]:items-start",
+          "[&_[role=tablist]+*]:flex-1 [&_[role=tablist]+*]:!mt-0",
+          "[&_[role=tablist]+*]:w-3/4 [&_[role=tablist]]:w-1/4",
+        ]
+      )}
+    />
+  )
+}
 
 export const TabsList = ({
   className,
@@ -47,6 +58,37 @@ export const TabsTrigger = ({
     )}
   />
 )
+
+export const TabsTriggerVertical = ({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof UiTabs.Trigger>) => {
+  const { isMobile } = useMobile()
+
+  if (isMobile) {
+    return (
+      <TabsTrigger className={className} {...props}>
+        {children}
+      </TabsTrigger>
+    )
+  }
+
+  return (
+    <UiTabs.Trigger
+      {...props}
+      className={clsx(
+        className,
+        "px-docs_0.5 py-docs_0.25 !text-medusa-fg-base text-compact-small data-[state=active]:!text-compact-small-plus",
+        "[&[data-state=active]_svg]:!visible hover:!bg-medusa-bg-base-hover rounded-docs_DEFAULT",
+        "!shadow-none"
+      )}
+    >
+      <EllipseMiniSolid className="invisible" />
+      {children}
+    </UiTabs.Trigger>
+  )
+}
 
 type TabsContentWrapperProps = {
   className?: string

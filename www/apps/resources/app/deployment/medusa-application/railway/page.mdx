@@ -2,6 +2,9 @@
 sidebar_label: "Railway"
 ---
 
+import { Prerequisites, DetailsList } from "docs-ui"
+import OutdatedPreviewContent from "../../../troubleshooting/_sections/common-installation-errors/outdated-preview.mdx"
+
 export const metadata = {
   title: `Deploy Medusa Application to Railway`,
 }
@@ -32,11 +35,12 @@ The same Medusa project is used to deploy the server and worker modes. Learn mor
 
 ---
 
-<Note type="check">
-
-- [Medusa application](!docs!) hosted in a GitHub repository.
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "Medusa application’s codebase hosted on GitHub repository.",
+    link: "!docs!"
+  },
+]} />
 
 ## 1. Configure Medusa Application
 
@@ -53,7 +57,6 @@ module.exports = defineConfig({
     workerMode: process.env.MEDUSA_WORKER_MODE,
   },
 })
-
 ```
 
 Later, you’ll set different values of the `MEDUSA_WORKER_MODE` environment variable for each Medusa application deployment.
@@ -80,7 +83,6 @@ module.exports = defineConfig({
     disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
   },
 })
-
 ```
 
 Later, you’ll set different values of the `DISABLE_MEDUSA_ADMIN` environment variable.
@@ -96,7 +98,6 @@ module.exports = defineConfig({
     redisUrl: process.env.REDIS_URL,
   },
 })
-
 ```
 
 ---
@@ -150,13 +151,13 @@ module.exports = defineConfig({
     // ...
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-redis",
-      options: { 
+      options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
     [Modules.EVENT_BUS]: {
       resolve: "@medusajs/event-bus-redis",
-      options: { 
+      options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
@@ -240,7 +241,6 @@ DISABLE_MEDUSA_ADMIN=true
 MEDUSA_WORKER_MODE=worker
 PORT=9000
 DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
-POSTGRES_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 REDIS_URL=${{Redis.REDIS_PUBLIC_URL}}
 ```
 
@@ -279,7 +279,7 @@ You can either generate a random domain name or set a custom one. To do that:
 2. Choose the Settings tab.
 3. Scroll down to the Networking section.
 4. Under Public Networking, click on Generate domain to generate a domain name or Custom domain to add your custom domain.
-    1. Choose the `9000` port.
+   1. Choose the `9000` port.
 5. Save the changes.
 
 ### Additional Configuration if Deploying with Admin
@@ -349,7 +349,6 @@ DISABLE_MEDUSA_ADMIN=false
 MEDUSA_WORKER_MODE=worker
 PORT=9000
 DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
-POSTGRES_URL=${{Postgres.DATABASE_PUBLIC_URL}}
 REDIS_URL=${{Redis.REDIS_PUBLIC_URL}}
 ```
 
@@ -418,3 +417,12 @@ To check issues or errors in your deployed Medusa application:
 1. Click on the card of the Medusa application in server mode.
 2. Click on the Deployments tab.
 3. Click on the View Logs button.
+
+<DetailsList
+  sections={[
+    {
+      title: "Dependencies Using Outdated Preview Version",
+      content: <OutdatedPreviewContent />
+    }
+  ]}
+/>

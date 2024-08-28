@@ -29,6 +29,9 @@
     "expired": "Expired",
     "active": "Active",
     "revoked": "Revoked",
+    "new": "New",
+    "modified": "Modified",
+    "removed": "Removed",
     "admin": "Admin",
     "store": "Store",
     "details": "Details",
@@ -94,14 +97,17 @@
   "actions": {
     "save": "Save",
     "saveAsDraft": "Save as draft",
+    "duplicate": "Duplicate",
     "publish": "Publish",
     "create": "Create",
     "delete": "Delete",
     "remove": "Remove",
     "revoke": "Revoke",
     "cancel": "Cancel",
+    "forceConfirm": "Force confirm",
     "enable": "Enable",
     "disable": "Disable",
+    "undo": "Undo",
     "complete": "Complete",
     "viewDetails": "View details",
     "back": "Back",
@@ -245,14 +251,16 @@
     "addFilter": "Add filter"
   },
   "errorBoundary": {
-    "badRequestTitle": "Bad request",
-    "badRequestMessage": "The request was invalid.",
-    "notFoundTitle": "Not found",
-    "notFoundMessage": "The page you are looking for does not exist.",
-    "internalServerErrorTitle": "Internal server error",
-    "internalServerErrorMessage": "An error occurred on the server.",
+    "badRequestTitle": "400 - Bad request",
+    "badRequestMessage": "The request could not be understood by the server due to malformed syntax.",
+    "notFoundTitle": "404 - There is no page at this address",
+    "notFoundMessage": "Check the URL and try again, or use the search bar to find what you are looking for.",
+    "internalServerErrorTitle": "500 - Internal server error",
+    "internalServerErrorMessage": "An unexpected error occurred on the server. Please try again later.",
     "defaultTitle": "An error occurred",
-    "defaultMessage": "An error occurred while rendering this page."
+    "defaultMessage": "An unexpected error occurred while rendering this page.",
+    "noMatchMessage": "The page you are looking for does not exist.",
+    "backToDashboard": "Back to dashboard"
   },
   "addresses": {
     "shippingAddress": {
@@ -804,7 +812,7 @@
     "summary": {
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
-      "editItems": "Edit items"
+      "editOrder": "Edit order"
     },
     "payment": {
       "title": "Payments",
@@ -812,6 +820,7 @@
       "totalPaidByCustomer": "Total paid by customer",
       "capture": "Capture payment",
       "refund": "Refund",
+      "markAsPaid": "Mark as paid",
       "statusLabel": "Payment status",
       "statusTitle": "Payment Status",
       "status": {
@@ -828,11 +837,15 @@
       },
       "capturePayment": "Payment of {{amount}} will be captured.",
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
+      "markAsPaidPayment": "Payment of {{amount}} will be marked as paid.",
+      "markAsPaidPaymentSuccess": "Payment of {{amount}} successfully marked as paid",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
-      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}"
+      "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
+      "refundAmount": "Refund {{ amount }}",
+      "paymentLink": "Copy payment link for {{ amount }}",
+      "selectPaymentToRefund": "Select payment to refund"
     },
-
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -841,7 +854,23 @@
       "addItems": "Add items",
       "amountPaid": "Amount paid",
       "newTotal": "New total",
-      "differenceDue": "Difference due"
+      "differenceDue": "Difference due",
+      "create": "Edit Order",
+      "currentTotal": "Current total",
+      "noteHint": "Add an internal note for the edit",
+      "cancelSuccessToast": "Order edit canceled",
+      "createSuccessToast": "Order edit request created",
+      "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
+      "panel": {
+        "title": "Order edit requested"
+      },
+      "toast": {
+        "canceledSuccessfully": "Order edit cancelled",
+        "confirmedSuccessfully": "Order edit confirmed"
+      },
+      "validation": {
+        "quantityLowerThanFulfillment": "Cannot set quantity to be less then or equal to fulfilled quantity"
+      }
     },
     "returns": {
       "create": "Create Return",
@@ -868,6 +897,10 @@
       "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
       "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
       "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
+      "cancel": {
+        "title": "Cancel Return",
+        "description": "Are you sure you want to cancel the return request?"
+      },
       "receive": {
         "action": "Receive items",
         "receive": "Return {{label}}",
@@ -883,6 +916,14 @@
           "errorNegativeValue": "Quantity cannot be a negative value.",
           "errorLargeDamagedValue": "Damaged items quantity + non damaged received quantity exceeds total item quantity on the return. Please decrease quantity of non damaged items."
         }
+      },
+      "toast": {
+        "canceledSuccessfully": "Return canceled successfully",
+        "confirmedSuccessfully": "Return confirmed successfully"
+      },
+      "panel": {
+        "title": "Return initiated",
+        "description": "There is an open return request to be completed"
       }
     },
     "claims": {
@@ -902,6 +943,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Claim canceled successfully",
+        "confirmedSuccessfully": "Claim confirmed successfully"
+      },
+      "panel": {
+        "title": "Claim initiated",
+        "description": "There is an open claim request to be completed"
       }
     },
     "exchanges": {
@@ -921,6 +970,14 @@
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+      },
+      "toast": {
+        "canceledSuccessfully": "Exchange canceled successfully",
+        "confirmedSuccessfully": "Exchange confirmed successfully"
+      },
+      "panel": {
+        "title": "Exchange initiated",
+        "description": "There is an open exchange request to be completed"
       }
     },
     "reservations": {
@@ -1031,7 +1088,8 @@
         "payment": {
           "awaiting": "Awaiting payment",
           "captured": "Payment captured",
-          "canceled": "Payment canceled"
+          "canceled": "Payment canceled",
+          "refunded": "Payment refunded"
         },
         "fulfillment": {
           "created": "Items fulfilled",
@@ -1041,7 +1099,8 @@
           "items_other": "{{count}} items"
         },
         "return": {
-          "created": "Return #{{returnId}} created",
+          "created": "Return #{{returnId}} requested",
+          "canceled": "Return #{{returnId}} canceled",
           "received": "Return #{{returnId}} received",
           "items_one": "{{count}} item returned",
           "items_other": "{{count}} items returned"
@@ -1049,6 +1108,16 @@
         "note": {
           "comment": "Comment",
           "byLine": "by {{author}}"
+        },
+        "claim": {
+          "created": "Claim #{{claimId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
+        },
+        "exchange": {
+          "created": "Exchange #{{exchangeId}} requested",
+          "itemsInbound": "{{count}} item to return",
+          "itemsOutbound": "{{count}} item to send"
         }
       }
     }
@@ -2307,7 +2376,9 @@
     "productVariant": "Product Variant",
     "prices": "Prices",
     "available": "Available",
-    "inStock": "In stock"
+    "inStock": "In stock",
+    "added": "Added",
+    "removed": "Removed"
   },
   "fields": {
     "amount": "Amount",
@@ -2323,7 +2394,6 @@
     "inventoryItems": "Inventory items",
     "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
-    "qty": "Qty",
     "description": "Description",
     "email": "Email",
     "password": "Password",
@@ -2346,6 +2416,7 @@
     "reason": "Reason",
     "none": "none",
     "all": "all",
+    "search": "Search",
     "percentage": "Percentage",
     "sales_channels": "Sales Channels",
     "customer_groups": "Customer Groups",

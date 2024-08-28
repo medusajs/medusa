@@ -1,4 +1,4 @@
-import { Modules } from "../modules-sdk"
+import { Modules } from "../modules-sdk/definition"
 import { composeLinkName } from "./compose-link-name"
 
 export const LINKS = {

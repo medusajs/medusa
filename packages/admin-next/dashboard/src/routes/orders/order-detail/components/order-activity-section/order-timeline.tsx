@@ -1,16 +1,25 @@
-import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
+import { IconButton, Text, Tooltip, clx, usePrompt, Button } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { XMarkMini } from "@medusajs/icons"
-import { AdminFulfillment, AdminOrder, AdminReturn } from "@medusajs/types"
+import {
+  AdminClaim,
+  AdminExchange,
+  AdminFulfillment,
+  AdminOrder,
+  AdminReturn,
+} from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
-import { useDate } from "../../../../../hooks/use-date"
+import { useClaims } from "../../../../../hooks/api/claims"
+import { useExchanges } from "../../../../../hooks/api/exchanges"
+import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { useReturns } from "../../../../../hooks/api/returns"
+import { getPaymentsFromOrder } from "../order-payment-section"
+import { useDate } from "../../../../../hooks/use-date"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -86,6 +95,18 @@ const useActivityItems = (order: AdminOrder) => {
     fields: "+received_at,*items",
   })
 
+  const { claims = [] } = useClaims({
+    order_id: order.id,
+    fields: "*additional_items",
+  })
+
+  const { exchanges = [] } = useExchanges({
+    order_id: order.id,
+    fields: "*additional_items",
+  })
+
+  const payments = getPaymentsFromOrder(order)
+
   const notes = []
   const isLoading = false
   // const { notes, isLoading, isError, error } = useNotes(
@@ -110,43 +131,60 @@ const useActivityItems = (order: AdminOrder) => {
 
     const items: Activity[] = []
 
-    // for (const payment of order.payments) {
-    //   items.push({
-    //     title: t("orders.activity.events.payment.awaiting"),
-    //     timestamp: payment.created_at,
-    //     children: (
-    //       <Text size="small" className="text-ui-fg-subtle">
-    //         {getStylizedAmount(payment.amount, payment.currency_code)}
-    //       </Text>
-    //     ),
-    //   })
-    //
-    //   if (payment.canceled_at) {
-    //     items.push({
-    //       title: t("orders.activity.events.payment.canceled"),
-    //       timestamp: payment.canceled_at,
-    //       children: (
-    //         <Text size="small" className="text-ui-fg-subtle">
-    //           {getStylizedAmount(payment.amount, payment.currency_code)}
-    //         </Text>
-    //       ),
-    //     })
-    //   }
-    //
-    //   if (payment.captured_at) {
-    //     items.push({
-    //       title: t("orders.activity.events.payment.captured"),
-    //       timestamp: payment.captured_at,
-    //       children: (
-    //         <Text size="small" className="text-ui-fg-subtle">
-    //           {getStylizedAmount(payment.amount, payment.currency_code)}
-    //         </Text>
-    //       ),
-    //     })
-    //   }
-    // }
+    for (const payment of payments) {
+      const amount = payment.amount as number
 
-    for (const fulfillment of order.fulfillments) {
+      items.push({
+        title: t("orders.activity.events.payment.awaiting"),
+        timestamp: payment.created_at!,
+        children: (
+          <Text size="small" className="text-ui-fg-subtle">
+            {getStylizedAmount(amount, payment.currency_code)}
+          </Text>
+        ),
+      })
+
+      if (payment.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.payment.canceled"),
+          timestamp: payment.canceled_at,
+          children: (
+            <Text size="small" className="text-ui-fg-subtle">
+              {getStylizedAmount(amount, payment.currency_code)}
+            </Text>
+          ),
+        })
+      }
+
+      if (payment.captured_at) {
+        items.push({
+          title: t("orders.activity.events.payment.captured"),
+          timestamp: payment.captured_at,
+          children: (
+            <Text size="small" className="text-ui-fg-subtle">
+              {getStylizedAmount(amount, payment.currency_code)}
+            </Text>
+          ),
+        })
+      }
+
+      for (const refund of payment.refunds || []) {
+        items.push({
+          title: t("orders.activity.events.payment.refunded"),
+          timestamp: refund.created_at,
+          children: (
+            <Text size="small" className="text-ui-fg-subtle">
+              {getStylizedAmount(
+                refund.amount as number,
+                payment.currency_code
+              )}
+            </Text>
+          ),
+        })
+      }
+    }
+
+    for (const fulfillment of order.fulfillments || []) {
       items.push({
         title: t("orders.activity.events.fulfillment.created"),
         timestamp: fulfillment.created_at,
@@ -171,15 +209,32 @@ const useActivityItems = (order: AdminOrder) => {
       }
     }
 
+    const returnMap = new Map<string, AdminReturn>()
+
     for (const ret of returns) {
+      returnMap.set(ret.id, ret)
+
+      if (ret.claim_id || ret.exchange_id) {
+        continue
+      }
+
       // Always display created action
       items.push({
         title: t("orders.activity.events.return.created", {
           returnId: ret.id.slice(-7),
         }),
         timestamp: ret.created_at,
-        children: <ReturnBody orderReturn={ret} />,
+        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
       })
+
+      if (ret.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.return.canceled", {
+            returnId: ret.id.slice(-7),
+          }),
+          timestamp: ret.canceled_at,
+        })
+      }
 
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
@@ -190,6 +245,32 @@ const useActivityItems = (order: AdminOrder) => {
           children: <ReturnBody orderReturn={ret} />,
         })
       }
+    }
+
+    for (const claim of claims) {
+      const claimReturn = returnMap.get(claim.return_id!)
+
+      items.push({
+        title: t("orders.activity.events.claim.created", {
+          claimId: claim.id.slice(-7),
+        }),
+        timestamp: claim.created_at,
+        children: <ClaimBody claim={claim} claimReturn={claimReturn} />,
+      })
+    }
+
+    for (const exchange of exchanges) {
+      const exchangeReturn = returnMap.get(exchange.return_id!)
+
+      items.push({
+        title: t("orders.activity.events.exchange.created", {
+          exchangeId: exchange.id.slice(-7),
+        }),
+        timestamp: exchange.created_at,
+        children: (
+          <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
+        ),
+      })
     }
 
     // for (const note of notes || []) {
@@ -414,20 +495,140 @@ const FulfillmentCreatedBody = ({
   )
 }
 
-const ReturnBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBody = ({
+  orderReturn,
+  isCreated,
+}: {
+  orderReturn: AdminReturn
+  isCreated: boolean
+}) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
+
+  const { mutateAsync: cancelReturnRequest } = useCancelReturn(
+    orderReturn.id,
+    orderReturn.order_id
+  )
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.returns.cancel.title"),
+      description: t("orders.returns.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelReturnRequest()
+  }
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
 
   return (
-    <div>
+    <div className="flex items-start gap-1">
       <Text size="small" className="text-ui-fg-subtle">
         {t("orders.activity.events.return.items", {
           count: numberOfItems,
         })}
       </Text>
+      {isCreated && (
+        <>
+          <div className="mt-[2px] flex items-center leading-none">⋅</div>
+          <Button
+            onClick={onCancel}
+            className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+            variant="transparent"
+            size="small"
+          >
+            {t("actions.cancel")}
+          </Button>
+        </>
+      )}
+    </div>
+  )
+}
+
+const ClaimBody = ({
+  claim,
+  claimReturn,
+}: {
+  claim: AdminClaim
+  claimReturn?: AdminReturn
+}) => {
+  const { t } = useTranslation()
+
+  const outboundItems = (claim.additional_items || []).reduce(
+    (acc, item) => (acc + item.quantity) as number,
+    0
+  )
+
+  const inboundItems = (claimReturn?.items || []).reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  )
+
+  return (
+    <div>
+      {outboundItems > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.claim.itemsInbound", {
+            count: outboundItems,
+          })}
+        </Text>
+      )}
+
+      {inboundItems > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.claim.itemsOutbound", {
+            count: inboundItems,
+          })}
+        </Text>
+      )}
+    </div>
+  )
+}
+
+const ExchangeBody = ({
+  exchange,
+  exchangeReturn,
+}: {
+  exchange: AdminExchange
+  exchangeReturn?: AdminReturn
+}) => {
+  const { t } = useTranslation()
+
+  const outboundItems = (exchange.additional_items || []).reduce(
+    (acc, item) => (acc + item.quantity) as number,
+    0
+  )
+
+  const inboundItems = (exchangeReturn?.items || []).reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  )
+
+  return (
+    <div>
+      {outboundItems > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.exchange.itemsInbound", {
+            count: outboundItems,
+          })}
+        </Text>
+      )}
+
+      {inboundItems > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.exchange.itemsOutbound", {
+            count: inboundItems,
+          })}
+        </Text>
+      )}
     </div>
   )
 }

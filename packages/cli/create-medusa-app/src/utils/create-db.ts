@@ -16,6 +16,12 @@ export default async function createDb({ client, db }: CreateDbOptions) {
   await client.query(`CREATE DATABASE "${db}"`)
 }
 
+async function doesDbExist (client: pg.Client, dbName: string): Promise<boolean> {
+  const result = await client.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname='${dbName}';`)
+
+  return !!result.rowCount
+}
+
 export async function runCreateDb({
   client,
   dbName,
@@ -61,6 +67,7 @@ async function getForDbName({
 }): Promise<{
   client: pg.Client
   dbConnectionString: string
+  dbName: string
 }> {
   let client!: pg.Client
   let postgresUsername = "postgres"
@@ -132,6 +139,23 @@ async function getForDbName({
     }
   }
 
+  // check if database exists
+  if (await doesDbExist(client, dbName)) {
+    const { newDbName } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "newDbName",
+        message: `A database already exists with the name ${dbName}, please enter a name for the database:`,
+        default: dbName,
+        validate: (input) => {
+          return typeof input === "string" && input.length > 0 && input !== dbName
+        },
+      },
+    ])
+
+    dbName = newDbName
+  }
+
   // format connection string
   const dbConnectionString = formatConnectionString({
     user: postgresUsername,
@@ -143,6 +167,7 @@ async function getForDbName({
   return {
     client,
     dbConnectionString,
+    dbName
   }
 }
 

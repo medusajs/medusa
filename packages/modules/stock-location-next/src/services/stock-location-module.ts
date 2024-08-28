@@ -1,4 +1,3 @@
-import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
   CreateStockLocationInput,
@@ -6,6 +5,7 @@ import {
   FilterableStockLocationProps,
   IEventBusService,
   IStockLocationService,
+  InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   StockLocationAddressInput,
@@ -16,9 +16,9 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   MedusaService,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"

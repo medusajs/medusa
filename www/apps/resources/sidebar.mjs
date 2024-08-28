@@ -16,6 +16,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "API Key Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -89,10 +90,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Auth Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
-            path: "/commerce-modules/api-key",
+            path: "/commerce-modules/auth",
             title: "Overview",
           },
           {
@@ -127,14 +129,20 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
-                type: "link",
-                path: "/commerce-modules/auth/authentication-route",
-                title: "Authentication Route",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/auth/auth-flows",
+                type: "sub-category",
                 title: "Auth Flows",
+                children: [
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/authentication-route",
+                    title: "Using API Routes",
+                  },
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/auth-flows",
+                    title: "Using Module's Service",
+                  },
+                ],
               },
             ],
           },
@@ -198,6 +206,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Cart Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -278,7 +287,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "category",
-        title: "Currency",
+        title: "Currency Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -344,7 +354,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
       {
         type: "category",
-        title: "Customer",
+        title: "Customer Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -416,6 +427,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Fulfillment Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -509,6 +521,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Inventory Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -586,6 +599,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Order Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -688,6 +702,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Payment Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -742,7 +757,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/commerce-modules/payment/relation-to-other-modules",
+                path: "/commerce-modules/payment/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },
             ],
@@ -807,6 +822,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Pricing Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -894,6 +910,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Product Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -966,6 +983,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Promotion Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1054,6 +1072,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Region Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1120,6 +1139,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Sales Channel Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1193,6 +1213,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Stock Location Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1267,6 +1288,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Store Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1333,6 +1355,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "Tax Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -1419,6 +1442,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "category",
         title: "User Module",
+        initialOpen: false,
         children: [
           {
             type: "link",
@@ -2144,6 +2168,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "category",
+            title: "Admin Development",
+            children: [
+              {
+                type: "link",
+                path: "/troubleshooting/medusa-admin/no-widget-route",
+                title: "Widget or Route not Showing",
+              },
+            ],
+          },
+          {
+            type: "category",
             title: "Upgrade",
             children: [
               {
@@ -2175,6 +2210,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "S3 Module Provider Errors",
               },
             ],
+          },
+          {
+            type: "link",
+            path: "/troubleshooting/deployment",
+            title: "Deployment",
           },
         ],
       },

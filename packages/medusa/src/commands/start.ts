@@ -1,13 +1,10 @@
-import "core-js/stable"
-import "regenerator-runtime/runtime"
-
 import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import loaders from "../loaders"
 import { logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
+import loaders from "../loaders"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR

@@ -311,6 +311,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
+        expect(result.data.return.created_by).toEqual(expect.any(String))
+
         let r2 = await api.post(
           "/admin/returns",
           {
@@ -971,6 +973,7 @@ medusaIntegrationTestRunner({
               items: [
                 expect.objectContaining({
                   received_quantity: 2,
+                  damaged_quantity: 1,
                 }),
               ],
             })

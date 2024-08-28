@@ -23,7 +23,7 @@ npm install @medusajs/product
 2\. Add Database URL to your environment variables
 
 ```bash
-POSTGRES_URL=<DATABASE_URL>
+DATABASE_URL=<URL_GOES_HERE>
 ```
 
 3\. Apply database migrations

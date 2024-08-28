@@ -21,7 +21,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "awilix": "^8.0.0",
+    "awilix": "^8.0.1",
     "bignumber.js": "^9.1.2",
     "cross-env": "^5.2.1",
     "ioredis": "^5.4.1",
@@ -31,7 +31,6 @@
     "winston": "^3.8.2"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "exit 0"

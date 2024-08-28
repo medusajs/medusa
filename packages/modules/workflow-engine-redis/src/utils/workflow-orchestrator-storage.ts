@@ -125,6 +125,7 @@ export class RedisDistributedTransactionStorage
   private async executeTransaction(workflowId: string, transactionId: string) {
     return await this.workflowOrchestratorService_.run(workflowId, {
       transactionId,
+      logOnError: true,
       throwOnError: false,
     })
   }
@@ -137,6 +138,7 @@ export class RedisDistributedTransactionStorage
       // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
       // of the transaction to ensure that the transaction is only executed once.
       return await this.workflowOrchestratorService_.run(jobId, {
+        logOnError: true,
         throwOnError: false,
       })
     } catch (e) {

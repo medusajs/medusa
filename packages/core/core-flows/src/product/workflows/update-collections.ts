@@ -1,10 +1,13 @@
 import { AdditionalData, ProductTypes } from "@medusajs/types"
+import { ProductCollectionWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { updateCollectionsStep } from "../steps"
 
 export type UpdateCollectionsWorkflowInput = {
@@ -20,6 +23,21 @@ export const updateCollectionsWorkflow = createWorkflow(
   updateCollectionsWorkflowId,
   (input: WorkflowData<UpdateCollectionsWorkflowInput>) => {
     const updatedCollections = updateCollectionsStep(input)
+
+    const collectionIdEvents = transform(
+      { updatedCollections },
+      ({ updatedCollections }) => {
+        return updatedCollections.map((v) => {
+          return { id: v.id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: ProductCollectionWorkflowEvents.UPDATED,
+      data: collectionIdEvents,
+    })
+
     const collectionsUpdated = createHook("collectionsUpdated", {
       additional_data: input.additional_data,
       collections: updatedCollections,

@@ -9,6 +9,8 @@ import {
 import { useMemo } from "react"
 import { config } from "../config"
 import { basePathUrl } from "../utils/base-path-url"
+import { usePathname } from "next/navigation"
+import { generatedEditDates } from "../generated/edit-dates.mjs"
 
 type MainNavProviderProps = {
   children?: React.ReactNode
@@ -16,6 +18,7 @@ type MainNavProviderProps = {
 
 export const MainNavProvider = ({ children }: MainNavProviderProps) => {
   const isBrowser = useIsBrowser()
+  const pathname = usePathname()
   const navigationDropdownItems = useMemo(
     () =>
       getNavDropdownItems({
@@ -35,10 +38,19 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
     [isBrowser]
   )
 
+  const editDate = useMemo(
+    () =>
+      (generatedEditDates as Record<string, string>)[
+        `app${pathname.replace(/\/$/, "")}/page.mdx`
+      ],
+    [pathname]
+  )
+
   return (
     <UiMainNavProvider
       navItems={navigationDropdownItems}
       reportIssueLink={reportLink}
+      editDate={editDate}
     >
       {children}
     </UiMainNavProvider>

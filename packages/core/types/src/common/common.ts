@@ -339,14 +339,21 @@ export interface NumericalComparisonOperator {
 /**
  * @ignore
  */
-export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
+export type Pluralize<Singular extends string> = Singular extends `${infer R}ss`
+  ? `${Singular}es`
+  : Singular extends `${infer R}sis`
+  ? `${R}ses`
+  : Singular extends `${infer R}is`
+  ? `${R}ises`
+  : Singular extends `${infer R}s`
+  ? `${Singular}`
+  : Singular extends `${infer R}ey`
   ? `${R}eys`
   : Singular extends `${infer R}y`
   ? `${R}ies`
   : Singular extends `${infer R}es`
   ? `${Singular}`
   : Singular extends
-      | `${infer R}ss`
       | `${infer R}sh`
       | `${infer R}ch`
       | `${infer R}x`
@@ -361,10 +368,6 @@ export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
   ? `${R}eaux`
   : Singular extends `${infer R}ieu`
   ? `${R}ieux`
-  : Singular extends `${infer R}sis`
-  ? `${R}ses`
-  : Singular extends `${infer R}is`
-  ? `${R}ises`
   : `${Singular}s`
 
 export type SnakeCase<S extends string> =

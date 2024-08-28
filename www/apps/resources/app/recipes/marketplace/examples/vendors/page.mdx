@@ -1,4 +1,5 @@
 import { Github, PlaySolid } from "@medusajs/icons"
+import { Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Marketplace Recipe: Vendors Example`,
@@ -28,25 +29,24 @@ By following this example, you’ll have a marketplace with the following featur
     href: "https://github.com/medusajs/examples/tree/main/marketplace",
     title: "Marketplace Example Repository",
     text: "Find the full code for this recipe example in this repository.",
-    startIcon: <Github />,
-    showLinkIcon: false
+    icon: Github,
   },
   {
     href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1720603521/OpenApi/Marketplace_OpenApi_n458oh.yml",
     title: "OpenApi Specs for Postman",
     text: "Imported this OpenApi Specs file into tools like Postman.",
-    startIcon: <PlaySolid />,
-    showLinkIcon: false
+    icon: PlaySolid,
   },
 ]} />
 
 ---
 
-<Note type="check">
-
-- [A new Medusa application installed.](!docs!#get-started)
-
-</Note>
+<Prerequisites items={[
+  {
+    text: "A new Medusa application installed.",
+    link: "!docs!#get-started"
+  },
+]} />
 
 ## Step 1: Create Marketplace Module
 
@@ -499,10 +499,10 @@ To test out the above API route:
 npm run dev
 ```
 
-2. Retrieve a JWT token from the `/auth/vendor/emailpass` API route:
+2. Retrieve a JWT token from the `/auth/vendor/emailpass/register` API route:
 
-```bash apiTesting testApiUrl="http://localhost:9000/auth/vendor/emailpass" testApiMethod="POST" testBodyParams={{ "email": "admin@medusa-test.com", "password": "supersecret" }}
-curl -X POST 'http://localhost:9000/auth/vendor/emailpass' \
+```bash apiTesting testApiUrl="http://localhost:9000/auth/vendor/emailpass/register" testApiMethod="POST" testBodyParams={{ "email": "admin@medusa-test.com", "password": "supersecret" }}
+curl -X POST 'http://localhost:9000/auth/vendor/emailpass/register' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "email": "admin@medusa-test.com",

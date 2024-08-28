@@ -4,10 +4,13 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderExchangeDTO,
+  OrderExchangeItemDTO,
   OrderPreviewDTO,
+  OrderReturnItemDTO,
 } from "@medusajs/types"
 import {
   ChangeActionType,
+  MedusaError,
   Modules,
   OrderChangeStatus,
   ReturnStatus,
@@ -20,9 +23,9 @@ import {
   transform,
   when,
 } from "@medusajs/workflows-sdk"
+import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
+import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
-import { reserveInventoryStep } from "../../../definition/cart/steps/reserve-inventory"
-import { prepareConfirmInventoryInput } from "../../../definition/cart/utils/prepare-confirm-inventory-input"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment/workflows/create-return-fulfillment"
 import { previewOrderChangeStep, updateReturnsStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
@@ -32,6 +35,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
@@ -54,6 +58,29 @@ export const confirmExchangeRequestValidationStep = createStep(
     throwIfIsCancelled(order, "Order")
     throwIfIsCancelled(orderExchange, "Exchange")
     throwIfOrderChangeIsNotActive({ orderChange })
+  }
+)
+
+/**
+ * This step confirms that a requested exchange has atleast one item to return or send
+ */
+const confirmIfExchangeItemsArePresent = createStep(
+  "confirm-if-exchange-items-are-present",
+  async function ({
+    exchangeItems,
+    returnItems,
+  }: {
+    exchangeItems: OrderExchangeItemDTO[]
+    returnItems?: OrderReturnItemDTO[]
+  }) {
+    if (exchangeItems.length > 0 && (returnItems || []).length > 0) {
+      return
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Order exchange request should have atleast 1 item inbound and 1 item outbound`
+    )
   }
 )
 
@@ -234,11 +261,17 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    const [createExchangeItems, createdReturnItems] = parallelize(
+    const [createdExchangeItems, createdReturnItems] = parallelize(
       createOrderExchangeItemsFromActionsStep(exchangeItems),
-      createReturnItemsFromActionsStep(returnItems),
-      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+      createReturnItemsFromActionsStep(returnItems)
     )
+
+    confirmIfExchangeItemsArePresent({
+      exchangeItems: createdExchangeItems,
+      returnItems: createdReturnItems,
+    })
+
+    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
 
     const returnId = transform(
       { createdReturnItems },
@@ -260,9 +293,9 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
     })
 
     const exchangeId = transform(
-      { createExchangeItems },
-      ({ createExchangeItems }) => {
-        return createExchangeItems?.[0]?.exchange_id
+      { createdExchangeItems },
+      ({ createdExchangeItems }) => {
+        return createdExchangeItems?.[0]?.exchange_id
       }
     )
 
@@ -379,6 +412,12 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
       createRemoteLinkStep(returnLink).config({
         name: "exchange-return-shipping-fulfillment-link",
       })
+    })
+
+    createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+      },
     })
 
     return new WorkflowResponse(orderPreview)

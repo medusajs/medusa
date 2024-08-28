@@ -1,15 +1,16 @@
-import { LinkDefinition, RemoteLink } from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
+import { LinkDefinition } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createLinksStepId = "create-remote-links"
 /**
  * This step creates remote links between two records of linked data models.
- * 
+ *
  * Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/advanced-development/modules/remote-link#create-link).
- * 
+ *
  * @example
- * import { 
+ * import {
  *   createWorkflow
  * } from "@medusajs/workflows-sdk"
  * import {
@@ -18,7 +19,7 @@ export const createLinksStepId = "create-remote-links"
  * import {
  *   Modules
  * } from "@medusajs/utils"
- * 
+ *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
  *   () => {

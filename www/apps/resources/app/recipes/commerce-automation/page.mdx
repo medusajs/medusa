@@ -1,19 +1,13 @@
 import { AcademicCapSolid, BoltSolid } from "@medusajs/icons"
-import { LearningPath } from "docs-ui"
+import { LearningPath, BetaBadge } from "docs-ui"
 
 export const metadata = {
   title: `Commerce Automation Recipe`,
 }
 
-# {metadata.title}
+# {metadata.title} <BetaBadge text="Soon" tooltipText="This recipe is a work in progress, as some features are not ready yet in Medusa V2." />
 
 This recipe provides the general steps to implement a B2B store with Medusa.
-
-<Note type="soon" title="In Development">
-
-This recipe is a work in progress, as some features are not ready yet in Medusa V2.
-
-</Note>
 
 ## Overview
 
@@ -45,15 +39,13 @@ The `inventory-item.updated` event is currently not emitted.
     href: "!docs!/basics/modules-and-services",
     title: "Create a Module",
     text: "Learn how to create a module in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/data-models",
     title: "Create a Data Model",
     text: "Learn how to create a data model.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} />
 
@@ -62,15 +54,13 @@ The `inventory-item.updated` event is currently not emitted.
     href: "!docs!/basics/api-routes",
     title: "Create an API Route",
     text: "Learn how to create an API route in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} className="mt-1" />
 
@@ -419,15 +409,13 @@ Medusa also provides Notification Module Providers that integrate with third-par
     href: "/architectural-modules/notification",
     title: "Notification Module",
     text: "Learn about the Notification Module.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/events-and-subscribers",
     title: "Create Subscriber",
     text: "Learn how to create a subscriber to handle events.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} />
 
@@ -446,8 +434,7 @@ To implement that:
   href="!docs!/basics/scheduled-jobs"
   title="Create a Scheduled Job"
   text="Learn how to create a scheduled job in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
+  icon={AcademicCapSolid}
 />
 
 <Details summaryContent="Example: Synchronizing products with a third-party service">
@@ -673,8 +660,7 @@ The `order.placed` event is currently not emitted.
   href="!docs!/basics/events-and-subscribers"
   title="Create a Subscriber"
   text="Learn how to create a subscriber in Medusa."
-  startIcon={<AcademicCapSolid />}
-  showLinkIcon={false}
+  icon={AcademicCapSolid}
 />
 
 {/* <CardList items={[
@@ -682,15 +668,13 @@ The `order.placed` event is currently not emitted.
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "/events-reference",
     title: "Events Reference",
     text: "Check out triggered events by each commerce module.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} /> */}
 
@@ -711,15 +695,13 @@ Medusa's commerce features are geared towards automating RMA flows and ensuring 
     href: "/commerce-modules/orders",
     title: "Order Module",
     text: "Learn about the Order Module and its features.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} />
 
@@ -750,22 +732,19 @@ The `order.placed` event is currently not emitted.
     href: "/commerce-modules/customer",
     title: "Customer Module",
     text: "Learn about the Customer Module and its features.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "/commerce-modules/pricing",
     title: "Pricing Module",
     text: "Learn about the Pricing Module and its features.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} />
 
@@ -867,15 +846,13 @@ You can also create a scheduled job that checks whether the number of new produc
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
   {
     href: "!docs!/basics/scheduled-jobs",
     title: "Scheduled Jobs",
     text: "Learn how to create a scheduled job in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
+    icon: AcademicCapSolid,
   },
 ]} />
 

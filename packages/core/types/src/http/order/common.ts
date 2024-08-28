@@ -321,7 +321,7 @@ export interface BaseOrderChange {
   /**
    * The type of the order change
    */
-  change_type?: "return" | "exchange" | "claim" | "edit"
+  change_type?: "return" | "exchange" | "claim" | "edit" | "return_request"
 
   /**
    * The ID of the associated order

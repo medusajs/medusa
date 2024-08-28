@@ -1,7 +1,7 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { createAuthIdentities } from "../../__fixtures__/auth-identity"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createAuthIdentities } from "../../__fixtures__/auth-identity"
 
 jest.setTimeout(30000)
 
@@ -64,6 +64,20 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
             expect.objectContaining({
               id: "test-id-1",
+            }),
+          ])
+        })
+
+        it("should list authIdentities by meta data", async () => {
+          const authIdentities = await service.listAuthIdentities({
+            app_metadata: {
+              user_id: "user-1",
+            },
+          })
+
+          expect(authIdentities).toEqual([
+            expect.objectContaining({
+              id: "test-id",
             }),
           ])
         })
@@ -226,7 +240,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           const [authIdentity] = await service.listAuthIdentities({ id: [id] })
           expect(authIdentity).toEqual(
             expect.objectContaining({
-              app_metadata: { email: "test@email.com" },
+              app_metadata: expect.objectContaining({
+                email: "test@email.com",
+              }),
             })
           )
         })
@@ -255,6 +271,133 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           expect(authIdentity[0]).toEqual(
             expect.objectContaining({
               id: "test",
+            })
+          )
+        })
+      })
+
+      describe("createProviderIdentity", () => {
+        it("should create a providerIdentity successfully", async () => {
+          let authIdentity = await service.retrieveAuthIdentity("test-id", {
+            relations: ["provider_identities"],
+          })
+
+          expect(authIdentity).toEqual(
+            expect.not.objectContaining({
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+                expect.objectContaining({ provider: "github" }),
+              ],
+            })
+          )
+
+          await service.createProviderIdentities({
+            id: "test",
+            entity_id: "christian@medusajs.com",
+            provider: "github",
+            auth_identity_id: authIdentity.id,
+          })
+
+          authIdentity = await service.retrieveAuthIdentity("test-id", {
+            relations: ["provider_identities"],
+          })
+
+          expect(authIdentity).toEqual(
+            expect.objectContaining({
+              provider_identities: [
+                expect.objectContaining({ provider: "manual" }),
+                expect.objectContaining({ provider: "github" }),
+              ],
+            })
+          )
+        })
+
+        it("should list authIdentities by newly created provider", async () => {
+          await service.createProviderIdentities([
+            {
+              id: "test",
+              entity_id: "christian@medusajs.com",
+              provider: "github",
+              auth_identity_id: "test-id",
+            },
+          ])
+
+          const authIdentities = await service.listAuthIdentities({
+            provider_identities: {
+              provider: "github",
+            },
+          })
+
+          expect(authIdentities).toEqual([
+            expect.objectContaining({
+              id: "test-id",
+            }),
+          ])
+        })
+      })
+
+      describe("deleteProviderIdentity", () => {
+        const entity_id = "provider-test-id"
+
+        it("should delete the providerIdentities given an id successfully", async () => {
+          let providerIdentities = await service.listProviderIdentities({
+            entity_id,
+          })
+
+          expect(providerIdentities).toHaveLength(1)
+          const providerIdentityId = providerIdentities[0].id
+
+          await service.deleteProviderIdentities([providerIdentityId])
+
+          providerIdentities = await service.listProviderIdentities({
+            entity_id,
+          })
+
+          expect(providerIdentities).toHaveLength(0)
+        })
+      })
+
+      describe("updateProviderIdentity", () => {
+        const entity_id = "provider-test-id"
+
+        it("should throw an error when a id does not exist", async () => {
+          let error
+
+          try {
+            await service.updateProviderIdentites([
+              {
+                id: "does-not-exist",
+              },
+            ])
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            'ProviderIdentity with id "does-not-exist" not found'
+          )
+        })
+
+        it("should update providerIdentity", async () => {
+          let [providerIdentity] = await service.listProviderIdentities({
+            entity_id,
+          })
+          await service.updateProviderIdentites([
+            {
+              id: providerIdentity.id,
+              provider_metadata: { email: "test@email.com" },
+            },
+          ])
+
+          const providerIdentites = await service.listProviderIdentities({
+            id: [providerIdentity.id],
+          })
+
+          expect(providerIdentites[0]).toEqual(
+            expect.objectContaining({
+              provider_metadata: expect.objectContaining({
+                email: "test@email.com",
+              }),
             })
           )
         })

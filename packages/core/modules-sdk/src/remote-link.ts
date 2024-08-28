@@ -1,5 +1,6 @@
 import {
   ILinkModule,
+  LinkDefinition,
   LoadedModule,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
@@ -12,27 +13,13 @@ import { linkingErrorMessage } from "./utils/linking-error"
 /**
  * The details of a data model's record whose linked records should be deleted. Usually used after the
  * data model's record is deleted.
- * 
+ *
  * The key is the data model's name. Its value is an object that has the ID of the data model's record.
  */
 export type DeleteEntityInput = {
   [moduleName: string | Modules]: Record<string, string | string[]>
 }
 export type RestoreEntityInput = DeleteEntityInput
-
-/**
- * A link for two records of linked data models.
- * 
- * The keys are the names of each module, and their value is an object that holds the ID of the linked data model's record.
- */
-export type LinkDefinition = {
-  [moduleName: string]: {
-    // TODO: changing this to any temporarily as the "data" attribute is not being picked up correctly
-    [fieldName: string]: any
-  }
-} & {
-  data?: Record<string, unknown>
-}
 
 type RemoteRelationship = ModuleJoinerRelationship & {
   isPrimary: boolean

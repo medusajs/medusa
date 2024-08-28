@@ -31,7 +31,6 @@
     "qs": "^6.12.1"
   },
   "scripts": {
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "test": "jest --passWithNoTests --runInBand --bail --forceExit",
     "watch": "tsc --build --watch"
