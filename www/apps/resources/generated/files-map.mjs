@@ -676,6 +676,38 @@ export const filesMap = [
     "pathname": "/integrations"
   },
   {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/db/page.mdx",
+    "pathname": "/medusa-cli/commands/db"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/develop/page.mdx",
+    "pathname": "/medusa-cli/commands/develop"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/exec/page.mdx",
+    "pathname": "/medusa-cli/commands/exec"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/new/page.mdx",
+    "pathname": "/medusa-cli/commands/new"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/start/page.mdx",
+    "pathname": "/medusa-cli/commands/start"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/start-cluster/page.mdx",
+    "pathname": "/medusa-cli/commands/start-cluster"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/telemtry/page.mdx",
+    "pathname": "/medusa-cli/commands/telemtry"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/user/page.mdx",
+    "pathname": "/medusa-cli/commands/user"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-cli/page.mdx",
     "pathname": "/medusa-cli"
   },
