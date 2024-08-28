@@ -13,12 +13,12 @@ import {
 } from "@medusajs/types"
 import {
   AbstractPaymentProvider,
-  MedusaError,
-  PaymentActions,
-  PaymentSessionStatus,
   isDefined,
   isPaymentProviderError,
   isPresent,
+  MedusaError,
+  PaymentActions,
+  PaymentSessionStatus,
 } from "@medusajs/utils"
 import {
   ErrorCodes,
@@ -36,6 +36,12 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected stripe_: Stripe
   protected container_: MedusaContainer
 
+  static validateOptions(options: StripeOptions): void {
+    if (!isDefined(options.apiKey)) {
+      throw new Error("Required option `apiKey` is missing in Stripe plugin")
+    }
+  }
+
   protected constructor(container: MedusaContainer, options: StripeOptions) {
     // @ts-ignore
     super(...arguments)
@@ -43,22 +49,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     this.container_ = container
     this.options_ = options
 
-    this.stripe_ = this.init()
-  }
-
-  protected init() {
-    this.validateOptions(this.config)
-
-    return new Stripe(this.config.apiKey)
+    this.stripe_ = new Stripe(options.apiKey)
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
-
-  private validateOptions(options: StripeOptions): void {
-    if (!isDefined(options.apiKey)) {
-      throw new Error("Required option `apiKey` is missing in Stripe plugin")
-    }
-  }
 
   get options(): StripeOptions {
     return this.options_
@@ -370,7 +364,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return this.stripe_.webhooks.constructEvent(
       data.rawData as string | Buffer,
       signature,
-      this.config.webhookSecret
+      this.options_.webhookSecret
     )
   }
   protected buildError(

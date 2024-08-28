@@ -7,13 +7,18 @@ import {
   PaymentSessionStatus,
   ProviderWebhookPayload,
   UpdatePaymentProviderSession,
-  WebhookActionResult
+  WebhookActionResult,
 } from "@medusajs/types"
-
 
 export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   implements IPaymentProvider
 {
+  /**
+   * Override this static method in order for the loader to validate the options provided to the module provider.
+   * @param options
+   */
+  static validateOptions(options: Record<any, any>): void | never {}
+
   /**
    * You can use the `constructor` of the provider's service to access resources in your module's container.
    *
@@ -27,45 +32,45 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *
    * @example
    * ```ts
-   * import { 
+   * import {
    *   AbstractPaymentProvider
    * } from "@medusajs/utils"
    * import { Logger } from "@medusajs/types"
-   * 
+   *
    * type InjectedDependencies = {
    *   logger: Logger
    * }
-   * 
+   *
    * type Options = {
    *   apiKey: string
    * }
-   * 
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
    *   protected logger_: Logger
    *   protected options_: Options
-   *   // Assuming you're using a client to integrate 
+   *   // Assuming you're using a client to integrate
    *   // with a third-party service
    *   protected client
-   * 
+   *
    *   constructor(
    *     { logger }: InjectedDependencies,
    *     options: Options
    *   ) {
    *     // @ts-ignore
    *     super(...arguments)
-   * 
+   *
    *     this.logger_ = logger
    *     this.options_ = options
-   * 
+   *
    *     // Assuming you're initializing a client
    *     this.client = new Client(options)
    *   }
-   * 
+   *
    *   // ...
    * }
-   * 
+   *
    * export default MyPaymentProviderService
    * ```
    */
@@ -88,7 +93,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * Each payment provider has a unique identifier defined in its class.
-   * 
+   *
    * @example
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
@@ -123,18 +128,18 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * - A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events).
    *
    * In this method, use the third-party provider to capture the payment.
-   * 
+   *
    * @param paymentData - The `data` property of the payment. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @returns The new data to store in the payment's `data` property, or an error object.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -142,10 +147,10 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *     paymentData: Record<string, unknown>
    *   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
    *     const externalId = paymentData.id
-   *     
+   *
    *     try {
    *       const newData = await this.client.capturePayment(externalId)
-   *     
+   *
    *       return {
    *         ...newData,
    *         id: externalId
@@ -158,7 +163,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -169,45 +174,45 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   /**
    * This method authorizes a payment session. When authorized successfully, a payment is created by the Payment
    * Module which can be later captured using the {@link capturePayment} method.
-   * 
+   *
    * Refer to [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-flow#3-authorize-payment-session)
    * to learn more about how this fits into the payment flow and how to handle required actions.
-   * 
+   *
    * To automatically capture the payment after authorization, return the status `captured`.
-   * 
+   *
    * @param paymentSessionData - The `data` property of the payment session. Make sure to store in it
    * any helpful identification for your third-party integration.
-   * @param context - The context in which the payment is being authorized. For example, in checkout, 
+   * @param context - The context in which the payment is being authorized. For example, in checkout,
    * the context has a `cart_id` property indicating the ID of the associated cart.
-   * @returns Either an object of the new data to store in the created payment's `data` property and the 
+   * @returns Either an object of the new data to store in the created payment's `data` property and the
    * payment's status, or an error object. Make sure to set in `data` anything useful to later retrieve the session.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    *   PaymentSessionStatus
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
    *   async authorizePayment(
-   *     paymentSessionData: Record<string, unknown>, 
+   *     paymentSessionData: Record<string, unknown>,
    *     context: Record<string, unknown>
    *   ): Promise<
-   *     PaymentProviderError | { 
+   *     PaymentProviderError | {
    *       status: PaymentSessionStatus
    *       data: PaymentProviderSessionResponse["data"]
    *     }
    *   > {
    *     const externalId = paymentSessionData.id
-   *     
+   *
    *     try {
    *       const paymentData = await this.client.authorizePayment(externalId)
-   *   
+   *
    *       return {
    *         data: {
    *           ...paymentData,
@@ -223,7 +228,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -246,19 +251,19 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * This method cancels a payment.
-   * 
+   *
    * @param paymentData - The `data` property of the payment. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @returns An error object if an error occurs, or the data received from the integration.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -266,7 +271,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *     paymentData: Record<string, unknown>
    *   ): Promise<PaymentProviderError | PaymentProviderSessionResponse["data"]> {
    *     const externalId = paymentData.id
-   *   
+   *
    *     try {
    *       const paymentData = await this.client.cancelPayment(externalId)
    *     } catch (e) {
@@ -277,7 +282,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -288,36 +293,36 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   /**
    * This method is used when a payment session is created. It can be used to initiate the payment
    * in the third-party session, before authorizing or capturing the payment later.
-   * 
+   *
    * @param context - The details of the payment session and its context.
    * @returns An object whose `data` property is set in the created payment session, or an error
    * object. Make sure to set in `data` anything useful to later retrieve the session.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
    *   async initiatePayment(
    *     context: CreatePaymentProviderSession
    *   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-   *     const { 
-   *       amount, 
-   *       currency_code, 
+   *     const {
+   *       amount,
+   *       currency_code,
    *       context: customerDetails
    *     } = context
-   *   
+   *
    *     try {
    *       const response = await this.client.init(
    *         amount, currency_code, customerDetails
    *       )
-   *   
+   *
    *       return {
    *         ...response,
    *         data: {
@@ -332,7 +337,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -342,21 +347,21 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * This method is used when a payment session is deleted, which can only happen if it isn't authorized, yet.
-   * 
+   *
    * Use this to delete or cancel the payment in the third-party service.
-   * 
+   *
    * @param paymentSessionData - The `data` property of the payment session. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @returns An error object or the response from the third-party service.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -366,7 +371,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *     PaymentProviderError | PaymentProviderSessionResponse["data"]
    *   > {
    *     const externalId = paymentSessionData.id
-   *   
+   *
    *     try {
    *       await this.client.cancelPayment(externalId)
    *     } catch (e) {
@@ -377,7 +382,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -387,18 +392,18 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * This method gets the status of a payment session based on the status in the third-party integration.
-   * 
+   *
    * @param paymentSessionData - The `data` property of the payment session. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @returns The payment session's status.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
+   * import {
    *   PaymentSessionStatus
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -406,10 +411,10 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *     paymentSessionData: Record<string, unknown>
    *   ): Promise<PaymentSessionStatus> {
    *     const externalId = paymentSessionData.id
-   *   
+   *
    *     try {
    *       const status = await this.client.getStatus(externalId)
-   *   
+   *
    *       switch (status) {
    *         case "requires_capture":
    *           return "authorized"
@@ -424,7 +429,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       return "error"
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -434,37 +439,37 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * This method refunds an amount of a payment previously captured.
-   * 
+   *
    * @param paymentData - The `data` property of the payment. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @param refundAmount The amount to refund.
    * @returns The new data to store in the payment's `data` property, or an error object.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
    *   async refundPayment(
-   *     paymentData: Record<string, unknown>, 
+   *     paymentData: Record<string, unknown>,
    *     refundAmount: number
    *   ): Promise<
    *     PaymentProviderError | PaymentProviderSessionResponse["data"]
    *   > {
    *     const externalId = paymentData.id
-   *   
+   *
    *     try {
    *       const newData = await this.client.refund(
    *         externalId,
    *         refundAmount
    *       )
-   *   
+   *
    *       return {
    *         ...newData,
    *         id: externalId
@@ -477,7 +482,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -488,19 +493,19 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * Retrieves the payment's data from the third-party service.
-   * 
+   *
    * @param paymentSessionData - The `data` property of the payment. Make sure to store in it
    * any helpful identification for your third-party integration.
    * @returns An object to be stored in the payment's `data` property, or an error object.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   * import {
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -510,7 +515,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *     PaymentProviderError | PaymentProviderSessionResponse["data"]
    *   > {
    *     const externalId = paymentSessionData.id
-   *   
+   *
    *     try {
    *       return await this.client.retrieve(externalId)
    *     } catch (e) {
@@ -521,7 +526,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -531,34 +536,34 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
 
   /**
    * Update a payment in the third-party service that was previously initiated with the {@link initiatePayment} method.
-   * 
+   *
    * @param context - The details of the payment session and its context.
    * @returns An object whose `data` property is set in the updated payment session, or an error
    * object. Make sure to set in `data` anything useful to later retrieve the session.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
+   * import {
    *   UpdatePaymentProviderSession,
-   *   PaymentProviderError, 
-   *   PaymentProviderSessionResponse, 
+   *   PaymentProviderError,
+   *   PaymentProviderSessionResponse,
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
    *   async updatePayment(
    *     context: UpdatePaymentProviderSession
    *   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-   *     const { 
-   *       amount, 
-   *       currency_code, 
+   *     const {
+   *       amount,
+   *       currency_code,
    *       context: customerDetails,
    *       data
    *     } = context
    *     const externalId = data.id
-   *   
+   *
    *     try {
    *       const response = await this.client.update(
    *         externalId,
@@ -568,7 +573,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *           customerDetails
    *         }
    *       )
-   *   
+   *
    *       return {
    *         ...response,
    *         data: {
@@ -583,7 +588,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
@@ -594,24 +599,24 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   /**
    * This method is executed when a webhook event is received from the third-party payment provider. Use it
    * to process the action of the payment provider.
-   * 
+   *
    * Learn more in [this documentation](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events)
-   * 
+   *
    * @param data - The webhook event's data
    * @returns The webhook result. If the `action`'s value is `captured`, the payment is captured within Medusa as well.
    * If the `action`'s value is `authorized`, the associated payment session is authorized within Medusa.
-   * 
+   *
    * @example
    * // other imports...
-   * import { 
+   * import {
    *   BigNumber
    * } from "@medusajs/utils"
-   * import { 
+   * import {
    *   ProviderWebhookPayload,
    *   WebhookActionResult
    * } from "@medusajs/types"
-   * 
-   * 
+   *
+   *
    * class MyPaymentProviderService extends AbstractPaymentProvider<
    *   Options
    * > {
@@ -623,7 +628,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       rawData,
    *       headers
    *     } = payload
-   *   
+   *
    *     try {
    *       switch(data.event_type) {
    *         case "authorized_amount":
@@ -657,7 +662,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       }
    *     }
    *   }
-   * 
+   *
    *   // ...
    * }
    */
