@@ -242,7 +242,7 @@ const useActivityItems = (order: AdminOrder) => {
             returnId: ret.id.slice(-7),
           }),
           timestamp: ret.received_at,
-          children: <ReturnBody orderReturn={ret} />,
+          children: <ReturnBody orderReturn={ret} isReceived />,
         })
       }
     }
@@ -498,9 +498,11 @@ const FulfillmentCreatedBody = ({
 const ReturnBody = ({
   orderReturn,
   isCreated,
+  isReceived,
 }: {
   orderReturn: AdminReturn
   isCreated: boolean
+  isReceived?: boolean
 }) => {
   const prompt = usePrompt()
   const { t } = useTranslation()
@@ -526,7 +528,7 @@ const ReturnBody = ({
   }
 
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
-    return acc + item.quantity
+    return acc + (isReceived ? item.received_quantity : item.quantity) // TODO: revisit when we add dismissed quantity on ReturnItem
   }, 0)
 
   return (
