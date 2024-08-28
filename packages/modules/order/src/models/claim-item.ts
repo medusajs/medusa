@@ -21,7 +21,7 @@ import {
 } from "@mikro-orm/core"
 import Claim from "./claim"
 import OrderClaimItemImage from "./claim-item-image"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
@@ -80,7 +80,7 @@ export default class OrderClaimItem {
   claim: Rel<Claim>
 
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     fieldName: "item_id",
     mapToPk: true,
     columnType: "text",
@@ -88,10 +88,10 @@ export default class OrderClaimItem {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne(() => LineItem, {
+  @ManyToOne(() => OrderLineItem, {
     persist: false,
   })
-  item: Rel<LineItem>
+  item: Rel<OrderLineItem>
 
   @Property({ columnType: "boolean", default: false })
   is_additional_item: boolean = false

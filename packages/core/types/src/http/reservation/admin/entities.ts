@@ -1,4 +1,4 @@
-export interface ReservationResponse {
+export interface AdminReservation {
   id: string
   line_item_id: string | null
   location_id: string

@@ -21,6 +21,11 @@ export type SharedContext = {
 export interface MessageAggregatorFormat {
   groupBy?: string[]
   sortBy?: { [key: string]: string[] | string | number }
+  /**
+   * @internal
+   * will prevent the info log to be displayed about those events
+   */
+  internal?: boolean
 }
 
 export interface IMessageAggregator {

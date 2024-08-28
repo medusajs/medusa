@@ -14,18 +14,18 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  EmitEvents,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   arrayDifference,
   deepEqualObj,
+  EmitEvents,
   getSetDifference,
+  InjectManager,
+  InjectTransactionManager,
   isDefined,
   isPresent,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import {

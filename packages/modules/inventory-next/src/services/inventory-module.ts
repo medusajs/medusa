@@ -12,19 +12,19 @@ import {
 } from "@medusajs/types"
 import { IInventoryService } from "@medusajs/types/dist/inventory"
 import {
+  arrayDifference,
   BigNumber,
   CommonEvents,
   EmitEvents,
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   MedusaService,
-  arrayDifference,
-  isDefined,
-  isString,
   partitionArray,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
