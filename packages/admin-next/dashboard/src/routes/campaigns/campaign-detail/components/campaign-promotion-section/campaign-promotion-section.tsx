@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { CampaignResponse, PromotionReponse } from "@medusajs/types"
+import { AdminCampaign, AdminPromotion } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -16,7 +16,7 @@ import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-
 import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type CampaignPromotionSectionProps = {
-  campaign: CampaignResponse
+  campaign: AdminCampaign
 }
 
 const PAGE_SIZE = 10
@@ -127,7 +127,7 @@ const PromotionActions = ({
   promotion,
   campaignId,
 }: {
-  promotion: PromotionReponse
+  promotion: AdminPromotion
   campaignId: string
 }) => {
   const { t } = useTranslation()
@@ -182,7 +182,7 @@ const PromotionActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<PromotionReponse>()
+const columnHelper = createColumnHelper<AdminPromotion>()
 
 const useColumns = () => {
   const columns = usePromotionTableColumns()
