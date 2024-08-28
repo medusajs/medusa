@@ -13,6 +13,7 @@ import {
   OneToOne,
   OnInit,
   Property,
+  rel,
 } from "@mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"
 import { ForeignKey } from "../../../dal/mikro-orm/decorators/foreign-key"
@@ -116,6 +117,23 @@ export function defineBelongsToRelationship(
      * Hook to handle foreign key assignation
      */
     MikroORMEntity.prototype[hookName] = function () {
+      /**
+       * In case of has one relation, in order to be able to have both ways
+       * to associate a relation (through the relation or the foreign key) we need to handle it
+       * specifically
+       */
+      if (HasOne.isHasOne(otherSideRelation)) {
+        const relationMeta = this.__meta.relations.find(
+          (relation) => relation.name === relationship.name
+        ).targetMeta
+        this[relationship.name] ??= rel(
+          relationMeta.class,
+          this[foreignKeyName]
+        )
+        this[relationship.name] ??= this[relationship.name]?.id
+        return
+      }
+
       this[relationship.name] ??= this[foreignKeyName]
       this[foreignKeyName] ??= this[relationship.name]?.id
     }
@@ -179,19 +197,18 @@ export function defineBelongsToRelationship(
       onDelete: shouldCascade ? "cascade" : undefined,
     })(MikroORMEntity.prototype, relationship.name)
 
-    if (relationship.nullable) {
-      Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
-        value: null,
-        configurable: true,
-        enumerable: true,
-        writable: true,
-      })
-    }
+    Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
+      value: null,
+      configurable: true,
+      enumerable: true,
+      writable: true,
+    })
 
     Property({
       type: "string",
       columnType: "text",
       nullable: relationship.nullable,
+      persist: false,
     })(MikroORMEntity.prototype, foreignKeyName)
     ForeignKey()(MikroORMEntity.prototype, foreignKeyName)
 
