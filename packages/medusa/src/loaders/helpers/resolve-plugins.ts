@@ -113,8 +113,7 @@ function resolvePlugin(pluginName: string): {
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
     )
 
-    const extensionDirectoryPath = getExtensionDirectoryPath()
-    const computedResolvedPath = path.join(resolvedPath, extensionDirectoryPath)
+    const computedResolvedPath = path.join(resolvedPath, "dist")
 
     return {
       resolve: computedResolvedPath,
