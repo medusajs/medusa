@@ -3,7 +3,7 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { deleteFilesWorkflow } from "@medusajs/core-flows"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 
@@ -33,7 +33,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"file">>
+  res: MedusaResponse<HttpTypes.AdminFileDeleteResponse>
 ) => {
   const id = req.params.id
 

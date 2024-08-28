@@ -1,5 +1,4 @@
 import {
-  DeleteResponse,
   FindParams,
   HttpTypes,
   PaginatedResponse,
@@ -70,7 +69,7 @@ export class Region {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<DeleteResponse<"region">>(
+    return await this.client.fetch<HttpTypes.AdminRegionDeleteResponse>(
       `/admin/regions/${id}`,
       {
         method: "DELETE",

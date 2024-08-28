@@ -1,5 +1,5 @@
 import { cancelBeginOrderEditWorkflow } from "@medusajs/core-flows"
-import { DeleteResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -7,7 +7,7 @@ import {
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"order-edit">>
+  res: MedusaResponse<HttpTypes.AdminOrderEditDeleteResponse>
 ) => {
   const { id } = req.params
 

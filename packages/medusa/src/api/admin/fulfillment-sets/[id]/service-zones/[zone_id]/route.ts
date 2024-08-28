@@ -5,7 +5,7 @@ import {
 import {
   AdminFulfillmentSetResponse,
   AdminServiceZoneResponse,
-  DeleteResponse,
+  HttpTypes,
   IFulfillmentModuleService,
 } from "@medusajs/types"
 import {
@@ -94,7 +94,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"service_zone">>
+  res: MedusaResponse<HttpTypes.AdminServiceZoneDeleteResponse>
 ) => {
   const { id, zone_id } = req.params
 
@@ -106,7 +106,7 @@ export const DELETE = async (
   const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
     id,
     {
-      relations: ["service_zones"],
+      relations: ["service_zones", "location"],
     }
   )
 
@@ -125,6 +125,6 @@ export const DELETE = async (
     id: zone_id,
     object: "service_zone",
     deleted: true,
-    parent: fulfillmentSet,
+    parent: fulfillmentSet as unknown as HttpTypes.AdminFulfillmentSet,
   })
 }

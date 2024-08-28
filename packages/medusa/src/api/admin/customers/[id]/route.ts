@@ -2,7 +2,7 @@ import {
   deleteCustomersWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -55,7 +55,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"customer">>
+  res: MedusaResponse<HttpTypes.AdminCustomerDeleteResponse>
 ) => {
   const id = req.params.id
   const deleteCustomers = deleteCustomersWorkflow(req.scope)

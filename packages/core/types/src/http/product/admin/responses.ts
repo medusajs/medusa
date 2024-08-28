@@ -1,5 +1,5 @@
 import { BatchMethodResponse } from "../../../common"
-import { DeleteResponse, PaginatedResponse } from "../../common"
+import { DeleteResponse, DeleteResponseWithParent, PaginatedResponse } from "../../common"
 import {
   AdminProduct,
   AdminProductOption,
@@ -30,7 +30,7 @@ export type AdminProductVariantListResponse = PaginatedResponse<{
 }>
 
 export interface AdminProductVariantDeleteResponse
-  extends DeleteResponse<"variant", AdminProduct> {}
+  extends DeleteResponseWithParent<"variant", AdminProduct> {}
 
 export interface AdminExportProductResponse {
   transaction_id: string
@@ -59,7 +59,7 @@ export type AdminProductOptionListResponse = PaginatedResponse<{
 }>
 
 export interface AdminProductOptionDeleteResponse
-  extends DeleteResponse<"product_option", AdminProduct> {}
+  extends DeleteResponseWithParent<"product_option", AdminProduct> {}
 
 export type AdminProductVariantInventoryResponse = AdminProductVariantInventoryLink | AdminProductVariantInventoryLink[]
 

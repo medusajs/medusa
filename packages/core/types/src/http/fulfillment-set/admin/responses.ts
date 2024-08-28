@@ -1,4 +1,4 @@
-import { DeleteResponse } from "../../common"
+import { DeleteResponse, DeleteResponseWithParent } from "../../common"
 import { AdminFulfillmentSet, AdminServiceZone } from "./entities"
 
 export interface AdminServiceZoneResponse {
@@ -6,7 +6,7 @@ export interface AdminServiceZoneResponse {
 }
 
 export interface AdminServiceZoneDeleteResponse
-  extends DeleteResponse<"service_zone", AdminFulfillmentSet> {}
+  extends DeleteResponseWithParent<"service_zone", AdminFulfillmentSet> {}
 
 export interface AdminFulfillmentSetResponse {
   fulfillment_set: AdminFulfillmentSet

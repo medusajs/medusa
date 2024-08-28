@@ -11,7 +11,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../returns/query-config"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -63,7 +63,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"exchange">>
+  res: MedusaResponse<HttpTypes.AdminExchangeDeleteResponse>
 ) => {
   const { id } = req.params
 
