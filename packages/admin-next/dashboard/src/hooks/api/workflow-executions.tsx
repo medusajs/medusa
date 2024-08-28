@@ -2,6 +2,7 @@ import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { HttpTypes } from "@medusajs/types"
+import { FetchError } from "@medusajs/js-sdk"
 
 const WORKFLOW_EXECUTIONS_QUERY_KEY = "workflow_executions" as const
 export const workflowExecutionsQueryKeys = queryKeysFactory(
@@ -13,7 +14,7 @@ export const useWorkflowExecutions = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminGetWorkflowExecutionsParams,
-      Error,
+      FetchError,
       HttpTypes.AdminWorkflowExecutionListResponse,
       QueryKey
     >,
@@ -34,7 +35,7 @@ export const useWorkflowExecution = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminWorkflowExecutionResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminWorkflowExecutionResponse,
       QueryKey
     >,

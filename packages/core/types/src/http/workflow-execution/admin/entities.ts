@@ -52,24 +52,26 @@ export interface WorkflowExecutionContext {
   errors: StepError[]
 }
 
+export interface WorkflowExecutionDefinition {
+  async?: boolean
+  compensateAsync?: boolean
+  noCompensation?: boolean
+  continueOnPermanentFailure?: boolean
+  maxRetries?: number
+  noWait?: boolean
+  retryInterval?: number
+  retryIntervalAwaiting?: number
+  saveResponse?: boolean
+  timeout?: number
+}
+
 export interface AdminWorkflowExecutionStep {
   id: string
   invoke: {
     state: TransactionStepState
     status: TransactionStepStatus
   }
-  definition: {
-    async?: boolean
-    compensateAsync?: boolean
-    noCompensation?: boolean
-    continueOnPermanentFailure?: boolean
-    maxRetries?: number
-    noWait?: boolean
-    retryInterval?: number
-    retryIntervalAwaiting?: number
-    saveResponse?: boolean
-    timeout?: number
-  }
+  definition: WorkflowExecutionDefinition
   compensate: {
     state: TransactionStepState
     status: TransactionStepStatus
