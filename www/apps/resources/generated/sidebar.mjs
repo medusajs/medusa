@@ -348,8 +348,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/createProviderIdentities",
+                        "title": "createProviderIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/deleteAuthIdentities",
                         "title": "deleteAuthIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/deleteProviderIdentities",
+                        "title": "deleteProviderIdentities",
                         "children": []
                       },
                       {
@@ -372,6 +388,22 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/listProviderIdentities",
+                        "title": "listProviderIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/register",
+                        "title": "register",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/retrieveAuthIdentity",
                         "title": "retrieveAuthIdentity",
                         "children": []
@@ -380,8 +412,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/retrieveProviderIdentity",
+                        "title": "retrieveProviderIdentity",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/updateAuthIdentites",
                         "title": "updateAuthIdentites",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/updateProviderIdentites",
+                        "title": "updateProviderIdentites",
                         "children": []
                       },
                       {
@@ -4270,6 +4318,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/payment/restorePaymentCollections",
+                        "title": "restorePaymentCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/payment/restoreRefundReasons",
                         "title": "restoreRefundReasons",
                         "children": []
@@ -4288,6 +4344,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/payment/retrievePaymentSession",
                         "title": "retrievePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/payment/softDeletePaymentCollections",
+                        "title": "softDeletePaymentCollections",
                         "children": []
                       },
                       {
