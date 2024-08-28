@@ -3685,6 +3685,25 @@
           "nullable": false,
           "mappedType": "json"
         },
+        "damaged_quantity": {
+          "name": "damaged_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "raw_damaged_quantity": {
+          "name": "raw_damaged_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "return_id": {
           "name": "return_id",
           "type": "text",
