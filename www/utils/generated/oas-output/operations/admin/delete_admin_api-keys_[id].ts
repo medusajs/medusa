@@ -1,13 +1,14 @@
 /**
  * @oas [delete] /admin/api-keys/{id}
  * operationId: DeleteApiKeysId
- * summary: Delete a Api Key
- * description: Delete a api key.
+ * summary: Delete an Api Key
+ * description: >
+ *   Delete a publishable or secret API key.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The api key's ID.
+ *     description: The API key's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -89,18 +90,19 @@
  *             id:
  *               type: string
  *               title: id
- *               description: The api key's ID.
+ *               description: The API key's ID.
  *             object:
  *               type: string
  *               title: object
- *               description: The api key's object.
+ *               description: The name of the object that was deleted.
+ *               default: "api_key"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The api key's deleted.
+ *               description: Whether the API key was deleted.
  *             parent:
  *               type: object
- *               description: The api key's parent.
+ *               description: The API key's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

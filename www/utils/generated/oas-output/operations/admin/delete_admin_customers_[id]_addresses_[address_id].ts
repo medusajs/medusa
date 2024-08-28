@@ -1,9 +1,8 @@
 /**
  * @oas [delete] /admin/customers/{id}/addresses/{address_id}
  * operationId: DeleteCustomersIdAddressesAddress_id
- * summary: Remove Addresses from Customer
- * description: Remove a list of addresses from a customer. This doesn't delete the
- *   Address, only the association between the Address and the customer.
+ * summary: Remove an Address from Customer
+ * description: Remove a customer's address.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +13,7 @@
  *       type: string
  *   - name: address_id
  *     in: path
- *     description: The customer's address id.
+ *     description: The customer address's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -76,9 +75,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE '{backend_url}/admin/customers/{id}/addresses/{address_id}'
- *       \
- * 
+ *       curl -X DELETE '{backend_url}/admin/customers/{id}/addresses/{address_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Customers

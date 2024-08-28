@@ -1,8 +1,8 @@
 /**
  * @oas [delete] /admin/invites/{id}
  * operationId: DeleteInvitesId
- * summary: Delete a Invite
- * description: Delete a invite.
+ * summary: Delete Invite
+ * description: Delete an invite.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -87,11 +87,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The invite's object.
+ *               description: The name of the deleted object.
+ *               default: "invite"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The invite's deleted.
+ *               description: Whether the invite was deleted.
  *             parent:
  *               type: object
  *               description: The invite's parent.

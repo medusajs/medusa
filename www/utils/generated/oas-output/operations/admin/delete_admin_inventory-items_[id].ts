@@ -1,8 +1,8 @@
 /**
  * @oas [delete] /admin/inventory-items/{id}
  * operationId: DeleteInventoryItemsId
- * summary: Delete a Inventory Item
- * description: Delete a inventory item.
+ * summary: Delete Inventory Item
+ * description: Delete an inventory item.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -93,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The inventory item's object.
+ *               description: The name of the deleted object.
+ *               default: "inventory_item"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The inventory item's deleted.
+ *               description: Whether the inventory item was deleted.
  *             parent:
  *               type: object
  *               description: The inventory item's parent.

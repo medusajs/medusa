@@ -1,10 +1,13 @@
 /**
  * @oas [delete] /admin/claims/{id}/inbound/shipping-method/{action_id}
  * operationId: DeleteClaimsIdInboundShippingMethodAction_id
- * summary: Remove Shipping Methods from Claim
- * description: Remove a list of shipping methods from a claim. This doesn't delete
- *   the Shipping Method, only the association between the Shipping Method and the
- *   claim.
+ * summary: Remove Inbound Shipping Method from Claim
+ * x-sidebar-summary: Remove Inbound Shipping Method
+ * description: >
+ *   Remove the shipping method for returning items in the claim using the `ID` of the method's `SHIPPING_ADD` action.
+ * 
+ *   Every shipping method has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,7 +18,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The claim's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string
@@ -77,9 +80,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}' \
- * 
+ *       curl -X DELETE '{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Claims

@@ -1,10 +1,9 @@
 /**
  * @oas [delete] /admin/fulfillment-sets/{id}/service-zones/{zone_id}
  * operationId: DeleteFulfillmentSetsIdServiceZonesZone_id
- * summary: Remove Service Zones from Fulfillment Set
- * description: Remove a list of service zones from a fulfillment set. This doesn't
- *   delete the Service Zone, only the association between the Service Zone and the
- *   fulfillment set.
+ * summary: Remove a Service Zone from Fulfillment Set
+ * x-sidebar-summary: Remove Service Zone
+ * description: Remove a service zone that belongs to a fulfillment set.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,7 +14,7 @@
  *       type: string
  *   - name: zone_id
  *     in: path
- *     description: The fulfillment set's zone id.
+ *     description: The service zone's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -77,9 +76,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
- * 
+ *       curl -X DELETE '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Fulfillment Sets
@@ -99,18 +96,19 @@
  *             id:
  *               type: string
  *               title: id
- *               description: The fulfillment set's ID.
+ *               description: The service zone's ID.
  *             object:
  *               type: string
  *               title: object
- *               description: The fulfillment set's object.
+ *               description: The name of the deleted object.
+ *               default: service_zone
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The fulfillment set's deleted.
+ *               description: Whether the service zone was deleted.
  *             parent:
  *               type: object
- *               description: The fulfillment set's parent.
+ *               description: The fulfillment set that the service zone belongs to.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

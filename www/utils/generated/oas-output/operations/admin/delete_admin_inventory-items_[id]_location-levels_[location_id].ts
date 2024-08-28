@@ -1,10 +1,12 @@
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
- * summary: Remove Location Levels from Inventory Item
- * description: Remove a list of location levels from a inventory item. This
- *   doesn't delete the Location Level, only the association between the Location
- *   Level and the inventory item.
+ * summary: Remove Inventory Level of Inventory Item
+ * x-sidebar-summary: Remove Inventory Level
+ * description: >
+ *   Remove the inventory level of an inventory item.
+ * 
+ *   If the inventory level has reserved quantity greater than `0`, an error is thrown.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -77,9 +79,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
- * 
+ *       curl -X DELETE '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Inventory Items
@@ -99,18 +99,19 @@
  *             id:
  *               type: string
  *               title: id
- *               description: The inventory item's ID.
+ *               description: The inventory level's ID.
  *             object:
  *               type: string
  *               title: object
- *               description: The inventory item's object.
+ *               description: The name of the deleted object.
+ *               default: inventory-level
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The inventory item's deleted.
+ *               description: Whether the inventory level was deleted.
  *             parent:
  *               type: object
- *               description: The inventory item's parent.
+ *               description: The inventory item of the level.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

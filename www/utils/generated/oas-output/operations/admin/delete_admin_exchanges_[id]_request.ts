@@ -1,9 +1,8 @@
 /**
  * @oas [delete] /admin/exchanges/{id}/request
  * operationId: DeleteExchangesIdRequest
- * summary: Remove Requests from Exchange
- * description: Remove a list of requests from a exchange. This doesn't delete the
- *   Request, only the association between the Request and the exchange.
+ * summary: Cancel Exchange Request
+ * description: Cancel a requested exchange.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -94,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The exchange's object.
+ *               description: The name of the deleted object.
+ *               default: "exchange"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The exchange's deleted.
+ *               description: Whether the exchange was deleted.
  *             parent:
  *               type: object
  *               description: The exchange's parent.

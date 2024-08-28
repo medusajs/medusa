@@ -2,7 +2,8 @@
  * @oas [delete] /admin/customer-groups/{id}
  * operationId: DeleteCustomerGroupsId
  * summary: Delete a Customer Group
- * description: Delete a customer group.
+ * description: >
+ *   Delete a customer group. Customers in the group aren't deleted.
  * x-authenticated: true
  * parameters:
  *   - name: id
