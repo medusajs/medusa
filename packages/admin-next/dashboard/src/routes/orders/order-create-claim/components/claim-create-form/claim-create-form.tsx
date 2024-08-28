@@ -15,6 +15,7 @@ import {
   Switch,
   Text,
   toast,
+  usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -305,8 +306,21 @@ export const ClaimCreateForm = ({
 
   const showInboundItemsPlaceholder = !inboundItems.length
   const shippingOptionId = form.watch("inbound_option_id")
+  const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("orders.claims.confirmText"),
+      confirmText: t("actions.continue"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (!res) {
+      return
+    }
+
     await confirmClaimRequest(
       { no_notification: !data.send_notification },
       {
@@ -518,6 +532,7 @@ export const ClaimCreateForm = ({
                             {t("actions.cancel")}
                           </Button>
                         </RouteFocusModal.Close>
+
                         <Button
                           key="submit-button"
                           type="submit"
@@ -859,6 +874,8 @@ export const ClaimCreateForm = ({
                 }}
               />
             </div>
+
+            <div className="p-8" />
           </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
@@ -871,7 +888,7 @@ export const ClaimCreateForm = ({
                   variant="secondary"
                   size="small"
                 >
-                  {t("actions.cancel")}
+                  {t("orders.claims.cancel")}
                 </Button>
               </RouteFocusModal.Close>
               <Button
@@ -881,7 +898,7 @@ export const ClaimCreateForm = ({
                 size="small"
                 isLoading={isRequestLoading}
               >
-                {t("actions.save")}
+                {t("orders.claims.confirm")}
               </Button>
             </div>
           </div>

@@ -65,7 +65,7 @@ export const ActiveOrderExchangeSection = ({
 
           <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
             <Button size="small" variant="secondary" onClick={onCancelExchange}>
-              {t("actions.cancel")}
+              {t("orders.exchanges.cancel")}
             </Button>
 
             <Button
