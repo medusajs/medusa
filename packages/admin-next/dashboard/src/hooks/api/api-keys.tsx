@@ -41,7 +41,7 @@ export const useApiKeys = (
   query?: HttpTypes.AdminGetApiKeysParams,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.AdminApiKeyListResponse,
+      HttpTypes.AdminGetApiKeysParams,
       FetchError,
       HttpTypes.AdminApiKeyListResponse,
       QueryKey

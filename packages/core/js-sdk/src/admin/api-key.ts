@@ -20,13 +20,18 @@ export class ApiKey {
     })
   }
 
-  async create(body: HttpTypes.AdminCreateApiKey, headers?: ClientHeaders) {
+  async create(
+    body: HttpTypes.AdminCreateApiKey,
+    query?: HttpTypes.AdminGetApiKeysParams,
+    headers?: ClientHeaders
+  ) {
     return await this.client.fetch<HttpTypes.AdminApiKeyResponse>(
       `/admin/api-keys`,
       {
         method: "POST",
         headers,
         body,
+        query,
       }
     )
   }
@@ -53,6 +58,7 @@ export class ApiKey {
   async update(
     id: string,
     body: HttpTypes.AdminUpdateApiKey,
+    query?: HttpTypes.AdminGetApiKeysParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminApiKeyResponse>(
@@ -61,6 +67,7 @@ export class ApiKey {
         method: "POST",
         headers,
         body,
+        query,
       }
     )
   }
