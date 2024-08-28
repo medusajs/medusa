@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -23,7 +23,7 @@ export const AdminGetSalesChannelsParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
     description: z.string().optional(),
-    is_disabled: OptionalBooleanValidator,
+    is_disabled: booleanString().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
