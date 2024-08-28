@@ -103,8 +103,6 @@ export function OrderReceiveReturnForm({
           (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
         )
 
-        console.log(receivedAction, dismissedAction)
-
         form.setValue(
           `items.${index}.quantity`,
           receivedAction?.details.quantity,
