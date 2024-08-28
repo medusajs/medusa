@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs"
+import { readFileSync, stat, writeFileSync } from "fs"
 import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
 import ts, { SyntaxKind } from "typescript"
@@ -26,6 +26,7 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import getSymbol from "../../utils/get-symbol.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
@@ -1916,6 +1917,11 @@ class OasKindGenerator extends FunctionKindGenerator {
         awaitExpression = statement.declarationList.declarations[0].initializer
       } else if (ts.isAwaitExpression(statement)) {
         awaitExpression = statement
+      } else if (
+        ts.isExpressionStatement(statement) &&
+        ts.isAwaitExpression(statement.expression)
+      ) {
+        awaitExpression = statement.expression
       }
 
       if (
