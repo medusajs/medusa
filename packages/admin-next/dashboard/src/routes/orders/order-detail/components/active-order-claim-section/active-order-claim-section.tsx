@@ -51,7 +51,7 @@ export const ActiveOrderClaimSection = ({
       className="z-10 -m-4 mb-1 border-x border-b p-4"
     >
       <Container className="flex items-center justify-between p-0">
-        <div className="flex w-full flex-row justify-between divide-y divide-dashed">
+        <div className="flex w-full flex-row justify-between">
           <div>
             <div className="mb-2 flex items-center gap-2 px-6 pt-4">
               <ExclamationCircle className="text-ui-fg-subtle" />
