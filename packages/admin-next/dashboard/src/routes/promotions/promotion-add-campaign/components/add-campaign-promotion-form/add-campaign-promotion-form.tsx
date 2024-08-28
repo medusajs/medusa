@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CampaignResponse, PromotionDTO } from "@medusajs/types"
+import { AdminCampaign, AdminPromotion } from "@medusajs/types"
 import { Button, RadioGroup, Select, Text } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -12,8 +12,8 @@ import { CreateCampaignFormFields } from "../../../../campaigns/common/component
 import { CampaignDetails } from "./campaign-details"
 
 type EditPromotionFormProps = {
-  promotion: PromotionDTO
-  campaigns: CampaignResponse[]
+  promotion: AdminPromotion
+  campaigns: AdminCampaign[]
 }
 
 const EditPromotionSchema = zod.object({
@@ -27,7 +27,7 @@ export const AddCampaignPromotionFields = ({
   withNewCampaign = true,
 }: {
   form: any
-  campaigns: CampaignResponse[]
+  campaigns: AdminCampaign[]
   withNewCampaign?: boolean
 }) => {
   const { t } = useTranslation()

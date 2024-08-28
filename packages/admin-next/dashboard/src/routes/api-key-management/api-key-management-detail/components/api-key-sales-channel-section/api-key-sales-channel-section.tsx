@@ -76,24 +76,19 @@ export const ApiKeySalesChannelSection = ({
       return
     }
 
-    await mutateAsync(
-      {
-        sales_channel_ids: keys,
+    await mutateAsync(keys, {
+      onSuccess: () => {
+        toast.success(
+          t("apiKeyManagement.removeSalesChannel.successToastBatch", {
+            count: keys.length,
+          })
+        )
+        setRowSelection({})
       },
-      {
-        onSuccess: () => {
-          toast.success(
-            t("apiKeyManagement.removeSalesChannel.successToastBatch", {
-              count: keys.length,
-            })
-          )
-          setRowSelection({})
-        },
-        onError: (err) => {
-          toast.error(err.message)
-        },
-      }
-    )
+      onError: (err) => {
+        toast.error(err.message)
+      },
+    })
   }
 
   return (
@@ -167,23 +162,18 @@ const SalesChannelActions = ({
       return
     }
 
-    await mutateAsync(
-      {
-        sales_channel_ids: [salesChannel.id],
+    await mutateAsync([salesChannel.id], {
+      onSuccess: () => {
+        toast.success(
+          t("apiKeyManagement.removeSalesChannel.successToast", {
+            count: 1,
+          })
+        )
       },
-      {
-        onSuccess: () => {
-          toast.success(
-            t("apiKeyManagement.removeSalesChannel.successToast", {
-              count: 1,
-            })
-          )
-        },
-        onError: (err) => {
-          toast.error(err.message)
-        },
-      }
-    )
+      onError: (err) => {
+        toast.error(err.message)
+      },
+    })
   }
 
   return (

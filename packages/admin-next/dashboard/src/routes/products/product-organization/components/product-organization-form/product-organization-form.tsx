@@ -41,7 +41,7 @@ export const ProductOrganizationForm = ({
 
   const types = useComboboxData({
     queryKey: ["product_types"],
-    queryFn: client.productTypes.list,
+    queryFn: sdk.admin.productType.list,
     getOptions: (data) =>
       data.product_types.map((type) => ({
         label: type.value,
@@ -51,7 +51,7 @@ export const ProductOrganizationForm = ({
 
   const tags = useComboboxData({
     queryKey: ["product_tags"],
-    queryFn: client.productTags.list,
+    queryFn: sdk.admin.productTag.list,
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
         label: tag.value,

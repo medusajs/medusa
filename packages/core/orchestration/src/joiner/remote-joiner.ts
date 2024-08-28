@@ -204,8 +204,8 @@ export class RemoteJoiner {
 
         // self-reference
         for (const alias of service_.alias) {
-          if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
-            const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
+          if (this.serviceConfigCache.has(`alias_${alias.name}`)) {
+            const defined = this.serviceConfigCache.get(`alias_${alias.name}`)
 
             if (service_.serviceName === defined?.serviceName) {
               continue

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CampaignResponse, PromotionDTO } from "@medusajs/types"
+import { AdminCampaign, PromotionDTO } from "@medusajs/types"
 import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
@@ -21,7 +21,7 @@ import { usePromotionTableQuery } from "../../../../hooks/table/query-v2/use-pro
 import { useDataTable } from "../../../../hooks/use-data-table"
 
 type AddCampaignPromotionsFormProps = {
-  campaign: CampaignResponse
+  campaign: AdminCampaign
 }
 
 const AddCampaignPromotionsSchema = zod.object({

@@ -1,10 +1,10 @@
 import { INotificationModuleService } from "@medusajs/types"
 import {
   CommonEvents,
+  composeMessage,
   Module,
   Modules,
   NotificationEvents,
-  composeMessage,
 } from "@medusajs/utils"
 import {
   MockEventBusService,
@@ -94,14 +94,19 @@ moduleIntegrationTestRunner({
         const result = await service.createNotifications(notification)
 
         expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-        expect(eventBusEmitSpy).toHaveBeenCalledWith([
-          composeMessage(NotificationEvents.NOTIFICATION_CREATED, {
-            data: { id: result.id },
-            object: "notification",
-            source: Modules.NOTIFICATION,
-            action: CommonEvents.CREATED,
-          }),
-        ])
+        expect(eventBusEmitSpy).toHaveBeenCalledWith(
+          [
+            composeMessage(NotificationEvents.NOTIFICATION_CREATED, {
+              data: { id: result.id },
+              object: "notification",
+              source: Modules.NOTIFICATION,
+              action: CommonEvents.CREATED,
+            }),
+          ],
+          {
+            internal: true,
+          }
+        )
       })
 
       it("ensures the same notification is not sent twice", async () => {

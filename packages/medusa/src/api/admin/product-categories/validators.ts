@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -11,8 +11,8 @@ export type AdminProductCategoryParamsType = z.infer<
 >
 export const AdminProductCategoryParams = createSelectParams().merge(
   z.object({
-    include_ancestors_tree: OptionalBooleanValidator,
-    include_descendants_tree: OptionalBooleanValidator,
+    include_ancestors_tree: booleanString().optional(),
+    include_descendants_tree: booleanString().optional(),
   })
 )
 
@@ -29,10 +29,10 @@ export const AdminProductCategoriesParams = createFindParams({
     description: z.union([z.string(), z.array(z.string())]).optional(),
     handle: z.union([z.string(), z.array(z.string())]).optional(),
     parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
-    include_ancestors_tree: OptionalBooleanValidator,
-    include_descendants_tree: OptionalBooleanValidator,
-    is_internal: OptionalBooleanValidator,
-    is_active: OptionalBooleanValidator,
+    include_ancestors_tree: booleanString().optional(),
+    include_descendants_tree: booleanString().optional(),
+    is_internal: booleanString().optional(),
+    is_active: booleanString().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),

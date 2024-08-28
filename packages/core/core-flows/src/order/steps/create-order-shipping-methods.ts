@@ -3,7 +3,7 @@ import {
   IOrderModuleService,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface CreateOrderShippingMethodsStepInput {
   shipping_methods: CreateOrderShippingMethodDTO[]
@@ -19,7 +19,9 @@ export const createOrderShippingMethods = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const created = await service.createShippingMethods(input.shipping_methods)
+    const created = await service.createOrderShippingMethods(
+      input.shipping_methods
+    )
 
     return new StepResponse(
       created,
@@ -35,6 +37,6 @@ export const createOrderShippingMethods = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.deleteShippingMethods(createdMethodIds)
+    await service.deleteOrderShippingMethods(createdMethodIds)
   }
 )
