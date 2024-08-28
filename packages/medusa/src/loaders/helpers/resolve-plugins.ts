@@ -2,7 +2,7 @@ import { ConfigModule, PluginDetails } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
-import path from "path"
+import path, { isAbsolute } from "path"
 
 export const MEDUSA_PROJECT_NAME = "project-plugin"
 function createPluginId(name: string): string {
@@ -11,6 +11,56 @@ function createPluginId(name: string): string {
 
 function createFileContentHash(path, files): string {
   return path + files
+}
+
+function getExtensionDirectoryPath() {
+  /**
+   * Grab directory for loading resources inside a starter kit from
+   * the medusa-config file.
+   *
+   * When using ts-node we will read resources from "src" directory
+   * otherwise from "dist" directory.
+   */
+  return process[Symbol.for("ts-node.register.instance")] ? "src" : "dist"
+}
+
+/**
+ * Load plugin details from a path. Return undefined if does not contains a package.json
+ * @param pluginName
+ * @param path
+ * @param includeExtensionDirectoryPath should include src | dist for the resolved details
+ */
+function loadPluginDetails({
+  pluginName,
+  resolvedPath,
+  includeExtensionDirectoryPath,
+}: {
+  pluginName: string
+  resolvedPath: string
+  includeExtensionDirectoryPath?: boolean
+}) {
+  if (existsSync(`${resolvedPath}/package.json`)) {
+    const packageJSON = JSON.parse(
+      fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
+    )
+    const name = packageJSON.name || pluginName
+
+    const extensionDirectoryPath = getExtensionDirectoryPath()
+    const resolve = includeExtensionDirectoryPath
+      ? path.join(resolvedPath, extensionDirectoryPath)
+      : resolvedPath
+
+    return {
+      resolve,
+      name,
+      id: createPluginId(name),
+      options: {},
+      version: packageJSON.version || createFileContentHash(path, `**`),
+    }
+  }
+
+  // Make package.json a requirement for local plugins too
+  throw new Error(`Plugin ${pluginName} requires a package.json file`)
 }
 
 /**
@@ -28,38 +78,32 @@ function resolvePlugin(pluginName: string): {
   options: Record<string, unknown>
   version: string
 } {
-  // Only find plugins when we're not given an absolute path
-  if (!existsSync(pluginName)) {
-    // Find the plugin in the local plugins folder
-    const resolvedPath = path.resolve(`./plugins/${pluginName}`)
+  if (!isAbsolute(pluginName)) {
+    let resolvedPath = path.resolve(`./plugins/${pluginName}`)
+    const doesExistsInPlugin = existsSync(resolvedPath)
 
-    if (existsSync(resolvedPath)) {
-      if (existsSync(`${resolvedPath}/package.json`)) {
-        const packageJSON = JSON.parse(
-          fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
-        )
-        const name = packageJSON.name || pluginName
-        // warnOnIncompatiblePeerDependency(name, packageJSON)
-
-        return {
-          resolve: resolvedPath,
-          name,
-          id: createPluginId(name),
-          options: {},
-          version:
-            packageJSON.version || createFileContentHash(resolvedPath, `**`),
-        }
-      } else {
-        // Make package.json a requirement for local plugins too
-        throw new Error(`Plugin ${pluginName} requires a package.json file`)
-      }
+    if (doesExistsInPlugin) {
+      return loadPluginDetails({
+        pluginName,
+        resolvedPath,
+      })
     }
+
+    // Find the plugin in the file system
+    resolvedPath = path.resolve(pluginName)
+    const doesExistsInFileSystem = existsSync(resolvedPath)
+
+    if (doesExistsInFileSystem) {
+      return loadPluginDetails({
+        pluginName,
+        resolvedPath,
+        includeExtensionDirectoryPath: true,
+      })
+    }
+
+    throw new Error(`Unable to find the plugin "${pluginName}".`)
   }
 
-  /**
-   *  Here we have an absolute path to an internal plugin, or a name of a module
-   *  which should be located in node_modules.
-   */
   try {
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
@@ -68,20 +112,11 @@ function resolvePlugin(pluginName: string): {
     const packageJSON = JSON.parse(
       fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
     )
-    // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
-    const computedResolvedPath =
-      resolvedPath + (process.env.DEV_MODE ? "/src" : "")
-
-    // Add support for a plugin to output the build into a dist directory
-    const resolvedPathToDist = resolvedPath + "/dist"
-    const isDistExist =
-      resolvedPathToDist &&
-      !process.env.DEV_MODE &&
-      existsSync(resolvedPath + "/dist")
+    const computedResolvedPath = path.join(resolvedPath, "dist")
 
     return {
-      resolve: isDistExist ? resolvedPathToDist : computedResolvedPath,
+      resolve: computedResolvedPath,
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},
@@ -99,34 +134,7 @@ export function getResolvedPlugins(
   configModule: ConfigModule,
   isMedusaProject = false
 ): undefined | PluginDetails[] {
-  if (isMedusaProject) {
-    /**
-     * Grab directory for loading resources inside a starter kit from
-     * the medusa-config file.
-     *
-     * When using ts-node we will read resources from "src" directory
-     * otherwise from "dist" directory.
-     */
-    const extensionDirectoryPath = process[
-      Symbol.for("ts-node.register.instance")
-    ]
-      ? "src"
-      : "dist"
-
-    const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
-    return [
-      {
-        resolve: extensionDirectory,
-        name: MEDUSA_PROJECT_NAME,
-        id: createPluginId(MEDUSA_PROJECT_NAME),
-        options: configModule,
-        version: createFileContentHash(process.cwd(), `**`),
-      },
-    ]
-  }
-
-  const extensionDirectoryPath = "dist"
-  const resolved = configModule?.plugins.map((plugin) => {
+  const resolved = configModule?.plugins?.map((plugin) => {
     if (isString(plugin)) {
       return resolvePlugin(plugin)
     }
@@ -137,15 +145,17 @@ export function getResolvedPlugins(
     return details
   })
 
-  const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
-  // Resolve user's project as a plugin for loading purposes
-  resolved.push({
-    resolve: extensionDirectory,
-    name: MEDUSA_PROJECT_NAME,
-    id: createPluginId(MEDUSA_PROJECT_NAME),
-    options: configModule,
-    version: createFileContentHash(process.cwd(), `**`),
-  })
+  if (isMedusaProject) {
+    const extensionDirectoryPath = getExtensionDirectoryPath()
+    const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
+    resolved.push({
+      resolve: extensionDirectory,
+      name: MEDUSA_PROJECT_NAME,
+      id: createPluginId(MEDUSA_PROJECT_NAME),
+      options: configModule,
+      version: createFileContentHash(process.cwd(), `**`),
+    })
+  }
 
   return resolved
 }

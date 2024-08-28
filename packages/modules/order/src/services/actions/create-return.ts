@@ -64,7 +64,7 @@ async function processShippingMethod(
   }
 
   if (!isString(data.shipping_method)) {
-    const methods = await service.createShippingMethods(
+    const methods = await service.createOrderShippingMethods(
       [
         {
           ...data.shipping_method,
@@ -79,7 +79,7 @@ async function processShippingMethod(
     shippingMethodId = data.shipping_method
   }
 
-  const method = await service.retrieveShippingMethod(
+  const method = await service.retrieveOrderShippingMethod(
     shippingMethodId,
     { relations: ["tax_lines", "adjustments"] },
     sharedContext

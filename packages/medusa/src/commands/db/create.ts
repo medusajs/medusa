@@ -10,7 +10,19 @@ import {
   parseConnectionString,
 } from "@medusajs/utils"
 
-const main = async function ({ directory, interactive, db }) {
+/**
+ * A low-level utility to create the database. This util should
+ * never exit the process implicitly.
+ */
+export async function dbCreate({
+  db,
+  directory,
+  interactive,
+}: {
+  db: string | undefined
+  directory: string
+  interactive: boolean
+}): Promise<boolean> {
   let dbName = db
 
   /**
@@ -33,8 +45,7 @@ const main = async function ({ directory, interactive, db }) {
     logger.error(
       `Missing "DATABASE_URL" inside the .env file. The value is required to connect to the PostgreSQL server`
     )
-    process.exitCode = 1
-    return
+    return false
   }
 
   /**
@@ -45,18 +56,11 @@ const main = async function ({ directory, interactive, db }) {
     const defaultValue =
       envEditor.get("DB_NAME") ?? `medusa-${slugify(basename(directory))}`
     if (interactive) {
-      try {
-        dbName = await input({
-          message: "Enter the database name",
-          default: defaultValue,
-          required: true,
-        })
-      } catch (error) {
-        if (error.name === "ExitPromptError") {
-          process.exit()
-        }
-        throw error
-      }
+      dbName = await input({
+        message: "Enter the database name",
+        default: defaultValue,
+        required: true,
+      })
     } else {
       dbName = defaultValue
     }
@@ -82,12 +86,11 @@ const main = async function ({ directory, interactive, db }) {
     await client.connect()
     logger.info(`Connection established with the database "${dbName}"`)
   } catch (error) {
-    process.exitCode = 1
     logger.error(
       "Unable to establish database connection because of the following error"
     )
     logger.error(error)
-    return
+    return false
   }
 
   if (await dbExists(client, dbName)) {
@@ -97,7 +100,7 @@ const main = async function ({ directory, interactive, db }) {
     await envEditor.save()
     logger.info(`Updated .env file with "DB_NAME=${dbName}"`)
 
-    return
+    return true
   }
 
   await createDb(client, dbName)
@@ -106,6 +109,20 @@ const main = async function ({ directory, interactive, db }) {
   envEditor.set("DB_NAME", dbName)
   await envEditor.save()
   logger.info(`Updated .env file with "DB_NAME=${dbName}"`)
+  return true
+}
+
+const main = async function ({ directory, interactive, db }) {
+  try {
+    const created = await dbCreate({ directory, interactive, db })
+    process.exit(created ? 0 : 1)
+  } catch (error) {
+    if (error.name === "ExitPromptError") {
+      process.exit()
+    }
+    logger.error(error)
+    process.exit(1)
+  }
 }
 
 export default main

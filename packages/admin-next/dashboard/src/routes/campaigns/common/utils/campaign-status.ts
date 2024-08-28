@@ -1,7 +1,7 @@
-import { CampaignResponse } from "@medusajs/types"
+import { AdminCampaign } from "@medusajs/types"
 import { isAfter, isBefore } from "date-fns"
 
-export function campaignStatus(campaign: CampaignResponse) {
+export function campaignStatus(campaign: AdminCampaign) {
   if (campaign.ends_at) {
     if (isBefore(new Date(campaign.ends_at), new Date())) {
       return "expired"

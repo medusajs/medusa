@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { booleanString } from "../../utils/common-validators"
 import { createFindParams } from "../../utils/validators"
 
 export type StoreGetPaymentProvidersParamsType = z.infer<
@@ -11,7 +12,7 @@ export const StoreGetPaymentProvidersParams = createFindParams({
   z.object({
     region_id: z.string(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    is_enabled: z.boolean().optional(),
+    is_enabled: booleanString().optional(),
     $and: z.lazy(() => StoreGetPaymentProvidersParams.array()).optional(),
     $or: z.lazy(() => StoreGetPaymentProvidersParams.array()).optional(),
   })

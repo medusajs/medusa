@@ -14,6 +14,7 @@ export interface BaseProductCategory {
   parent_category: BaseProductCategory | null
   category_children: BaseProductCategory[]
   products?: BaseProduct[]
+  metadata?: Record<string, unknown> | null
   created_at: string
   updated_at: string
   deleted_at: string | null
@@ -21,7 +22,7 @@ export interface BaseProductCategory {
 
 export interface BaseProductCategoryListParams
   extends FindParams,
-    BaseFilterable<BaseProductCategoryListParams> {
+  BaseFilterable<BaseProductCategoryListParams> {
   q?: string
   id?: string | string[]
   name?: string | string[]
