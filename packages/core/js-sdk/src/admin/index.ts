@@ -1,4 +1,5 @@
 import { Client } from "../client"
+import { ApiKey } from "./api-key"
 import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
@@ -10,6 +11,7 @@ import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Notification } from "./notification"
 import { Order } from "./order"
+import { OrderEdit } from "./order-edit"
 import { Payment } from "./payment"
 import { PaymentCollection } from "./payment-collection"
 import { PriceList } from "./price-list"
@@ -33,7 +35,6 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
-import { OrderEdit } from "./order-edit"
 
 export class Admin {
   public invite: Invite
@@ -71,6 +72,7 @@ export class Admin {
   public productVariant: ProductVariant
   public refundReason: RefundReason
   public paymentCollection: PaymentCollection
+  public apiKey: ApiKey
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -108,5 +110,6 @@ export class Admin {
     this.refundReason = new RefundReason(client)
     this.exchange = new Exchange(client)
     this.paymentCollection = new PaymentCollection(client)
+    this.apiKey = new ApiKey(client)
   }
 }
