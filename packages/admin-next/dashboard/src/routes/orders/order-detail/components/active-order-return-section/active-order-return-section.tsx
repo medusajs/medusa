@@ -68,7 +68,7 @@ export const ActiveOrderReturnSection = ({
 
           <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
             <Button size="small" variant="secondary" onClick={onCancelReturn}>
-              {t("actions.cancel")}
+              {t("orders.returns.cancel.title")}
             </Button>
 
             <Button size="small" variant="secondary" onClick={onContinueReturn}>
