@@ -5,21 +5,14 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-
 import {
   AdminSalesChannelListResponse,
   AdminSalesChannelResponse,
+  HttpTypes,
 } from "@medusajs/types"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  AddProductsSalesChannelReq,
-  CreateSalesChannelReq,
-  RemoveProductsSalesChannelReq,
-  UpdateSalesChannelReq,
-} from "../../types/api-payloads"
-import { SalesChannelDeleteRes } from "../../types/api-responses"
 import { productsQueryKeys } from "./products"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
@@ -39,7 +32,7 @@ export const useSalesChannel = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: salesChannelsQueryKeys.detail(id),
-    queryFn: async () => client.salesChannels.retrieve(id),
+    queryFn: async () => sdk.admin.salesChannel.retrieve(id),
     ...options,
   })
 
@@ -59,7 +52,7 @@ export const useSalesChannels = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.salesChannels.list(query),
+    queryFn: () => sdk.admin.salesChannel.list(query),
     queryKey: salesChannelsQueryKeys.list(query),
     ...options,
   })
@@ -71,11 +64,11 @@ export const useCreateSalesChannel = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    CreateSalesChannelReq
+    HttpTypes.AdminCreateSalesChannel
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.salesChannels.create(payload),
+    mutationFn: (payload) => sdk.admin.salesChannel.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -91,11 +84,11 @@ export const useUpdateSalesChannel = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    UpdateSalesChannelReq
+    HttpTypes.AdminUpdateSalesChannel
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.salesChannels.update(id, payload),
+    mutationFn: (payload) => sdk.admin.salesChannel.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -112,10 +105,14 @@ export const useUpdateSalesChannel = (
 
 export const useDeleteSalesChannel = (
   id: string,
-  options?: UseMutationOptions<SalesChannelDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminSalesChannelDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.salesChannels.delete(id),
+    mutationFn: () => sdk.admin.salesChannel.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -140,11 +137,12 @@ export const useSalesChannelRemoveProducts = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    RemoveProductsSalesChannelReq
+    { product_ids: string[] }
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.salesChannels.removeProducts(id, payload),
+    mutationFn: (payload) =>
+      sdk.admin.salesChannel.batchProducts(id, { remove: payload.product_ids }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -176,11 +174,12 @@ export const useSalesChannelAddProducts = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    AddProductsSalesChannelReq
+    { product_ids: string[] }
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.salesChannels.addProducts(id, payload),
+    mutationFn: (payload) =>
+      sdk.admin.salesChannel.batchProducts(id, { add: payload.product_ids }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),

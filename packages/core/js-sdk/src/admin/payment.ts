@@ -18,6 +18,19 @@ export class Payment {
     )
   }
 
+  async listPaymentProviders(
+    query?: HttpTypes.AdminGetPaymentProvidersParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminPaymentProviderListResponse>(
+      `/admin/payments/payment-providers`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
   async retrieve(
     id: string,
     query?: HttpTypes.AdminPaymentFilters,

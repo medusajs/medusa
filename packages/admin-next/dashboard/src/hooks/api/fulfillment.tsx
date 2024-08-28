@@ -14,7 +14,7 @@ export const useCreateFulfillment = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.fulfillments.create(payload),
+    mutationFn: (payload: any) => sdk.admin.fulfillment.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -31,7 +31,7 @@ export const useCancelFulfillment = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: () => client.fulfillments.cancel(id),
+    mutationFn: () => sdk.admin.fulfillment.cancel(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
       queryClient.invalidateQueries({
