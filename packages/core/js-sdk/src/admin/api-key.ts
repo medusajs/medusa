@@ -1,4 +1,4 @@
-import { FindParams, HttpTypes, PaginatedResponse } from "@medusajs/types"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -8,7 +8,10 @@ export class ApiKey {
     this.client = client
   }
 
-  async list(queryParams?: FindParams, headers?: ClientHeaders) {
+  async list(
+    queryParams?: HttpTypes.AdminGetApiKeysParams,
+    headers?: ClientHeaders
+  ) {
     return await this.client.fetch<
       PaginatedResponse<HttpTypes.AdminApiKeyListResponse>
     >(`/admin/api-keys`, {
@@ -72,24 +75,9 @@ export class ApiKey {
     )
   }
 
-  async removeSalesChannels(
+  async batchSalesChannels(
     id: string,
-    body: { sales_channel_ids: string[] },
-    headers?: ClientHeaders
-  ) {
-    return await this.client.fetch<HttpTypes.AdminApiKeyResponse>(
-      `/admin/api-keys/${id}/sales-channels`,
-      {
-        method: "DELETE",
-        headers,
-        body,
-      }
-    )
-  }
-
-  async addSalesChannels(
-    id: string,
-    body: { sales_channel_ids: string[] },
+    body: HttpTypes.AdminBatchLink,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminApiKeyResponse>(
