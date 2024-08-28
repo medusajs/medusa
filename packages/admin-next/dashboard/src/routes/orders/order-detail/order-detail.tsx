@@ -34,6 +34,22 @@ export const OrderDetail = () => {
       initialData,
     }
   )
+
+  // TODO: Retrieve endpoints don't have an order ability, so a JS sort until this is available
+  if (order) {
+    order.items = order.items.sort((itemA, itemB) => {
+      if (itemA.created_at > itemB.created_at) {
+        return 1
+      }
+
+      if (itemA.created_at < itemB.created_at) {
+        return -1
+      }
+
+      return 0
+    })
+  }
+
   const { order: orderPreview, isLoading: isPreviewLoading } = useOrderPreview(
     id!
   )

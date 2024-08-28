@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -34,7 +35,7 @@ export const AdminGetPaymentProvidersParams = createFindParams({
 }).merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    is_enabled: z.boolean().optional(),
+    is_enabled: booleanString().optional(),
     $and: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
     $or: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
   })

@@ -272,7 +272,7 @@ class OasSchemaHelper {
     return name
       .replace("DTO", "")
       .replace(this.schemaRefPrefix, "")
-      .replace(/(?<!Type)Type$/, "")
+      .replace(/(?<!AdminProduct)Type$/, "")
   }
 
   /**

@@ -22,6 +22,7 @@ export const AdminGetApiKeysParams = createFindParams({
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
+    revoked_at: createOperatorMap().optional(),
     $and: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
     $or: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
   })

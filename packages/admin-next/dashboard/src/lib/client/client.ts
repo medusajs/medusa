@@ -1,5 +1,4 @@
 import Medusa from "@medusajs/js-sdk"
-import { apiKeys } from "./api-keys"
 import { campaigns } from "./campaigns"
 import { categories } from "./categories"
 import { currencies } from "./currencies"
@@ -24,7 +23,6 @@ import { workflowExecutions } from "./workflow-executions"
 export const backendUrl = __BACKEND_URL__ ?? "http://localhost:9000"
 
 export const client = {
-  apiKeys: apiKeys,
   campaigns: campaigns,
   categories: categories,
   customerGroups: customerGroups,

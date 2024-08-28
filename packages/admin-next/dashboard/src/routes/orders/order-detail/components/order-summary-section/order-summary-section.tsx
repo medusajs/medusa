@@ -191,13 +191,29 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
               <ButtonMenu
                 groups={[
                   {
-                    actions: receivableReturns.map((r) => ({
-                      label: t("orders.returns.receive.receive", {
-                        label: `#${r.id.slice(-7)}`,
-                      }),
-                      icon: <ArrowLongRight />,
-                      to: `/orders/${order.id}/returns/${r.id}/receive`,
-                    })),
+                    actions: receivableReturns.map((r) => {
+                      let id = r.id
+                      let returnType = "Return"
+
+                      if (r.exchange_id) {
+                        id = r.exchange_id
+                        returnType = "Exchange"
+                      }
+
+                      if (r.claim_id) {
+                        id = r.claim_id
+                        returnType = "Claim"
+                      }
+
+                      return {
+                        label: t("orders.returns.receive.receiveItems", {
+                          id: `#${id.slice(-7)}`,
+                          returnType,
+                        }),
+                        icon: <ArrowLongRight />,
+                        to: `/orders/${order.id}/returns/${r.id}/receive`,
+                      }
+                    }),
                   },
                 ]}
               >
@@ -640,6 +656,7 @@ const ClaimBreakdown = ({
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
+
           <Text>
             {t(`orders.claims.outboundItemAdded`, {
               itemsCount: items.reduce(

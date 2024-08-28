@@ -848,6 +848,9 @@
     },
     "edits": {
       "title": "Edit order",
+      "confirm": "Confirm Edit",
+      "confirmText": "You are about to confirm an Order Edit. This action cannot be undone.",
+      "cancel": "Cancel Edit",
       "currentItems": "Current items",
       "currentItemsDescription": "Adjust item quantity or remove.",
       "addItemsDescription": "You can add new items to the order.",
@@ -874,6 +877,8 @@
     },
     "returns": {
       "create": "Create Return",
+      "confirm": "Confirm Return",
+      "confirmText": "You are about to confirm a Return. This action cannot be undone.",
       "inbound": "Inbound",
       "outbound": "Outbound",
       "sendNotification": "Send notification",
@@ -903,7 +908,7 @@
       },
       "receive": {
         "action": "Receive items",
-        "receive": "Return {{label}}",
+        "receiveItems": "{{ returnType }} {{ id }}",
         "restockAll": "Restock all items",
         "itemsLabel": "Items received",
         "title": "Receive items for #{{returnId}}",
@@ -928,6 +933,9 @@
     },
     "claims": {
       "create": "Create Claim",
+      "confirm": "Confirm Claim",
+      "confirmText": "You are about to confirm a Claim. This action cannot be undone.",
+      "cancel": "Cancel Claim",
       "manage": "Manage Claim",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through claim",
@@ -956,6 +964,9 @@
     "exchanges": {
       "create": "Create Exchange",
       "manage": "Manage Exchange",
+      "confirm": "Confirm Exchange",
+      "confirmText": "You are about to confirm an Exchange. This action cannot be undone.",
+      "cancel": "Cancel Exchange",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through exchange",
       "outboundTotal": "Outbound total",
@@ -1003,7 +1014,7 @@
     "shipment": {
       "title": "Mark fulfillment shipped",
       "trackingNumber": "Tracking number",
-      "addTracking": "Add additional tracking number",
+      "addTracking": "Add tracking number",
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify the customer about this shipment.",
       "toastCreated": "Shipment created successfully."
@@ -1078,6 +1089,10 @@
         "deleteButtonText": "Delete comment"
       },
       "events": {
+        "common": {
+          "toReturn": "To return",
+          "toSend": "To send"
+        },
         "placed": {
           "title": "Order placed",
           "fromSalesChannel": "from {{salesChannel}}"
