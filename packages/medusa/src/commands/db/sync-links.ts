@@ -193,8 +193,8 @@ const main = async function ({ directory, executeSafe, executeAll }) {
 
     await syncLinks(medusaAppLoader, { executeAll, executeSafe })
     process.exit()
-  } catch (e) {
-    logger.error(e)
+  } catch (error) {
+    logger.error(error)
     process.exit(1)
   }
 }

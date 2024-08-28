@@ -1,4 +1,5 @@
-import { AdminApiKeyListResponse, AdminApiKeyResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
+import { FetchError } from "@medusajs/js-sdk"
 import {
   MutationOptions,
   QueryKey,
@@ -7,11 +8,9 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { CreateApiKeyReq, UpdateApiKeyReq } from "../../types/api-payloads"
-import { ApiKeyDeleteRes } from "../../types/api-responses"
 import { salesChannelsQueryKeys } from "./sales-channels"
 
 const API_KEYS_QUERY_KEY = "api_keys" as const
@@ -19,14 +18,18 @@ export const apiKeysQueryKeys = queryKeysFactory(API_KEYS_QUERY_KEY)
 
 export const useApiKey = (
   id: string,
-  query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<AdminApiKeyResponse, Error, AdminApiKeyResponse, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminApiKeyResponse,
+      FetchError,
+      HttpTypes.AdminApiKeyResponse,
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.apiKeys.retrieve(id, query),
+    queryFn: () => sdk.admin.apiKey.retrieve(id),
     queryKey: apiKeysQueryKeys.detail(id),
     ...options,
   })
@@ -35,19 +38,19 @@ export const useApiKey = (
 }
 
 export const useApiKeys = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminGetApiKeysParams,
   options?: Omit<
     UseQueryOptions<
-      AdminApiKeyListResponse,
-      Error,
-      AdminApiKeyListResponse,
+      HttpTypes.AdminGetApiKeysParams,
+      FetchError,
+      HttpTypes.AdminApiKeyListResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.apiKeys.list(query),
+    queryFn: () => sdk.admin.apiKey.list(query),
     queryKey: apiKeysQueryKeys.list(query),
     ...options,
   })
@@ -56,10 +59,14 @@ export const useApiKeys = (
 }
 
 export const useCreateApiKey = (
-  options?: UseMutationOptions<AdminApiKeyResponse, Error, CreateApiKeyReq>
+  options?: UseMutationOptions<
+    HttpTypes.AdminApiKeyResponse,
+    FetchError,
+    HttpTypes.AdminCreateApiKey
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.apiKeys.create(payload),
+    mutationFn: (payload) => sdk.admin.apiKey.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
 
@@ -71,10 +78,14 @@ export const useCreateApiKey = (
 
 export const useUpdateApiKey = (
   id: string,
-  options?: UseMutationOptions<AdminApiKeyResponse, Error, UpdateApiKeyReq>
+  options?: UseMutationOptions<
+    HttpTypes.AdminApiKeyResponse,
+    FetchError,
+    HttpTypes.AdminUpdateApiKey
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.apiKeys.update(id, payload),
+    mutationFn: (payload) => sdk.admin.apiKey.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
@@ -87,10 +98,10 @@ export const useUpdateApiKey = (
 
 export const useRevokeApiKey = (
   id: string,
-  options?: UseMutationOptions<AdminApiKeyResponse, Error, void>
+  options?: UseMutationOptions<HttpTypes.AdminApiKeyResponse, FetchError, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.apiKeys.revoke(id),
+    mutationFn: () => sdk.admin.apiKey.revoke(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
@@ -102,10 +113,14 @@ export const useRevokeApiKey = (
 
 export const useDeleteApiKey = (
   id: string,
-  options?: MutationOptions<ApiKeyDeleteRes, Error, void>
+  options?: MutationOptions<
+    HttpTypes.DeleteResponse<"api_key">,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.apiKeys.delete(id),
+    mutationFn: () => sdk.admin.apiKey.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
@@ -118,14 +133,14 @@ export const useDeleteApiKey = (
 export const useBatchRemoveSalesChannelsFromApiKey = (
   id: string,
   options?: UseMutationOptions<
-    AdminApiKeyResponse,
-    Error,
-    { sales_channel_ids: string[] }
+    HttpTypes.AdminApiKeyResponse,
+    FetchError,
+    HttpTypes.AdminBatchLink["remove"]
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      client.apiKeys.batchRemoveSalesChannels(id, payload),
+      sdk.admin.apiKey.batchSalesChannels(id, { remove: payload }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
@@ -142,13 +157,14 @@ export const useBatchRemoveSalesChannelsFromApiKey = (
 export const useBatchAddSalesChannelsToApiKey = (
   id: string,
   options?: UseMutationOptions<
-    AdminApiKeyResponse,
-    Error,
-    { sales_channel_ids: string[] }
+    HttpTypes.AdminApiKeyResponse,
+    FetchError,
+    HttpTypes.AdminBatchLink["add"]
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.apiKeys.batchAddSalesChannels(id, payload),
+    mutationFn: (payload) =>
+      sdk.admin.apiKey.batchSalesChannels(id, { add: payload }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })

@@ -93,20 +93,15 @@ export const SalesChannelProductSection = ({
       return
     }
 
-    await mutateAsync(
-      {
-        product_ids: ids,
+    await mutateAsync(ids, {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.update"))
+        setRowSelection({})
       },
-      {
-        onSuccess: () => {
-          toast.success(t("salesChannels.toast.update"))
-          setRowSelection({})
-        },
-        onError: (error) => {
-          toast.error(error.message)
-        },
-      }
-    )
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
   }
 
   if (isError) {
@@ -218,19 +213,14 @@ const ProductListCellActions = ({
   const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
 
   const onRemove = async () => {
-    await mutateAsync(
-      {
-        product_ids: [productId],
+    await mutateAsync([productId], {
+      onSuccess: () => {
+        toast.success(t("salesChannels.toast.update"))
       },
-      {
-        onSuccess: () => {
-          toast.success(t("salesChannels.toast.update"))
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      }
-    )
+      onError: (e) => {
+        toast.error(e.message)
+      },
+    })
   }
 
   return (

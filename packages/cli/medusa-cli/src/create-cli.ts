@@ -121,6 +121,42 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(newStarter),
     })
     .command({
+      command: "db:setup",
+      desc: "Create the database, run migrations and sync links",
+      builder: (builder) => {
+        builder.option("db", {
+          type: "string",
+          describe: "Specify the name of the database you want to create",
+        })
+        builder.option("interactive", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Display prompts. Use --no-interactive flag to run the command without prompts",
+        })
+        builder.option("skip-links", {
+          type: "boolean",
+          describe: "Do not sync links",
+        })
+        builder.option("execute-all-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions from sync links",
+        })
+        builder.option("execute-safe-links", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions from sync links",
+        })
+      },
+      handler: handlerP(
+        getCommandHandler("db/setup", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
       command: "db:create",
       desc: "Create the database used by your application",
       builder: (builder) => {

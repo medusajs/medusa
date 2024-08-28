@@ -16,7 +16,7 @@ export const createOrderLineItemsStep = createStep(
     const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
     const createdItems = input.items.length
-      ? await orderModule.createLineItems(input.items)
+      ? await orderModule.createOrderLineItems(input.items)
       : []
 
     return new StepResponse(
@@ -31,6 +31,6 @@ export const createOrderLineItemsStep = createStep(
 
     const orderModule = container.resolve(ModuleRegistrationName.ORDER)
 
-    await orderModule.deleteLineItems(itemIds)
+    await orderModule.deleteOrderLineItems(itemIds)
   }
 )

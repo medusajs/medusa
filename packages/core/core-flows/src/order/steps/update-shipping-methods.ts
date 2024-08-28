@@ -22,12 +22,12 @@ export const updateOrderShippingMethodsStep = createStep(
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata"],
     })
-    const dataBeforeUpdate = await service.listShippingMethods(
+    const dataBeforeUpdate = await service.listOrderShippingMethods(
       { id: data.map((d) => d.id) },
       { relations, select: selects }
     )
 
-    const updated = await service.updateShippingMethods(data)
+    const updated = await service.updateOrderShippingMethods(data)
 
     return new StepResponse(updated, dataBeforeUpdate)
   },
@@ -40,6 +40,6 @@ export const updateOrderShippingMethodsStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.updateShippingMethods(dataBeforeUpdate)
+    await service.updateOrderShippingMethods(dataBeforeUpdate)
   }
 )

@@ -1,4 +1,5 @@
 import { BaseFilterable } from "../../../dal"
+import { FindParams } from "../../common"
 import {
   BasePaymentCollectionFilters,
   BasePaymentFilters,
@@ -22,4 +23,13 @@ export interface RefundFilters extends BaseFilterable<AdminRefund> {
 }
 export interface RefundReasonFilters extends BaseFilterable<AdminRefundReason> {
   id?: string | string[]
+}
+
+export interface AdminGetPaymentProvidersParams
+  extends FindParams,
+    BaseFilterable<AdminGetPaymentProvidersParams> {
+  id?: string | string[]
+  is_enabled?: boolean
+  $and?: AdminGetPaymentProvidersParams[]
+  $or?: AdminGetPaymentProvidersParams[]
 }

@@ -94,4 +94,19 @@ export class SalesChannel {
       }
     )
   }
+
+  async batchProducts(
+    id: string,
+    body: HttpTypes.AdminBatchLink,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminSalesChannelResponse>(
+      `/admin/sales-channels/${id}/products`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
 }

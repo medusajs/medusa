@@ -12,20 +12,22 @@ The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid
 
 ## Install the SendGrid Notification Module
 
-<Prerequisites items={[
-  {
-    text: "SendGrid account",
-    link: "https://signup.sendgrid.com"
-  },
-  {
-    text: "Setup SendGrid single sender",
-    link: "https://docs.sendgrid.com/ui/sending-email/sender-verification"
-  },
-  {
-    text: "SendGrid API Key",
-    link: "https://docs.sendgrid.com/ui/account-and-settings/api-keys"
-  }
-]} />
+<Prerequisites
+  items={[
+    {
+      text: "SendGrid account",
+      link: "https://signup.sendgrid.com",
+    },
+    {
+      text: "Setup SendGrid single sender",
+      link: "https://docs.sendgrid.com/ui/sending-email/sender-verification",
+    },
+    {
+      text: "SendGrid API Key",
+      link: "https://docs.sendgrid.com/ui/account-and-settings/api-keys",
+    },
+  ]}
+/>
 
 To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
 
@@ -154,9 +156,19 @@ export default async function productCreateHandler({
 
   await notificationModuleService.createNotifications({
     to: "test@gmail.com",
+    from: "test@medusajs.com", // Optional var, verified sender required
     channel: "email",
     template: "product-created",
     data,
+    attachments: [ // optional var
+      {
+        content: base64,
+        content_type: MIME type,
+        filename: filename.ext,
+        disposition: "attachment or inline attachment",
+        id: "id", // only needed for inline attachment
+      },
+    ]
   })
 }
 
@@ -172,6 +184,8 @@ In this subscriber:
 - By specifying the `email` channel, the SendGrid Notification Module Provider is used to send the notification.
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
+- The `attachments` optional property allows you to pass attachments to the template in SendGrid.
+- The `from` optional property allows you to pass a single sender-verified email. If not provided, the value of the `from` configuration of the module is used.
 
 Then, start the Medusa application:
 
