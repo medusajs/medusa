@@ -35,6 +35,7 @@ type SchemaDescriptionOptions = {
   nodeType?: ts.Type
   typeStr: string
   parentName?: string
+  rawParentName?: string
 }
 
 export type OasArea = "admin" | "store"
@@ -956,11 +957,13 @@ class OasKindGenerator extends FunctionKindGenerator {
       const querySymbol = requestType.getProperty("validatedQuery")
       if (querySymbol) {
         const queryType = this.checker.getTypeOfSymbol(querySymbol)
+        const queryTypeName = this.checker.typeToString(queryType)
         queryType.getProperties().forEach((property) => {
           const propertyType = this.checker.getTypeOfSymbol(property)
           const descriptionOptions: SchemaDescriptionOptions = {
             typeStr: property.getName(),
             parentName: tagName,
+            rawParentName: queryTypeName,
             node: property.valueDeclaration,
             symbol: property,
             nodeType: propertyType,
@@ -993,6 +996,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           itemType: requestTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
+            rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
         })
@@ -1095,6 +1099,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           itemType: responseTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
+            rawParentName: this.checker.typeToString(responseTypeArguments[0]),
           },
           zodObjectTypeName: getCorrectZodTypeName({
             typeReferenceNode: node.parameters[1].type,
@@ -1390,8 +1395,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             if (this.isRequired(property)) {
               requiredProperties.push(property.name)
             }
+            const propertyType = this.checker.getTypeOfSymbol(property)
             properties[property.name] = this.typeToSchema({
-              itemType: this.checker.getTypeOfSymbol(property),
+              itemType: propertyType,
               level: level + 1,
               title: property.name,
               descriptionOptions: {
@@ -1453,7 +1459,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     node,
     nodeType,
     typeStr,
-    parentName,
+    ...templateOptions
   }: SchemaDescriptionOptions): string {
     if (!symbol && !node && !nodeType) {
       // if none of the associated symbol, node, or type are provided,
@@ -1462,9 +1468,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       return (
         this.knowledgeBaseFactory.tryToGetOasSchemaDescription({
           str: typeStr,
-          templateOptions: {
-            parentName,
-          },
+          templateOptions,
         }) || SUMMARY_PLACEHOLDER
       )
     }
