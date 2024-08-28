@@ -86,7 +86,11 @@ export function OrderReceiveReturnForm({
 
   const form = useForm<zod.infer<typeof ReceiveReturnSchema>>({
     defaultValues: {
-      items: [],
+      items: previewItems
+        ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
+        .map((i) => ({
+          item_id: i.id,
+        })),
       send_notification: false,
     },
     resolver: zodResolver(ReceiveReturnSchema),
