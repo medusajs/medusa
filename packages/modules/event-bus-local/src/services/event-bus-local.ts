@@ -35,6 +35,12 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.groupedEventsMap_ = new Map()
   }
 
+  /**
+   * Accept an event name and some options
+   *
+   * @param eventsData
+   * @param options The options can include `internal` which will prevent the event from being logged
+   */
   async emit<T = unknown>(
     eventsData: Message<T> | Message<T>[],
     options: Record<string, unknown> = {}
@@ -48,9 +54,11 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         eventData.name
       )
 
-      this.logger_?.info(
-        `Processing ${eventData.name} which has ${eventListenersCount} subscribers`
-      )
+      if (!options.internal && !eventData.options?.internal) {
+        this.logger_?.info(
+          `Processing ${eventData.name} which has ${eventListenersCount} subscribers`
+        )
+      }
 
       if (eventListenersCount === 0) {
         continue
@@ -98,7 +106,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       this.eventEmitter_.emit(event.name, eventBody)
     }
 
-    this.clearGroupedEvents(eventGroupId)
+    await this.clearGroupedEvents(eventGroupId)
   }
 
   async clearGroupedEvents(eventGroupId: string) {

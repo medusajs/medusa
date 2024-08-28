@@ -374,12 +374,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
           await service.upsertProducts([updateData])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                name: "product.updated",
+                data: { id: productOne.id },
+              },
+            ],
             {
-              name: "product.updated",
-              data: { id: productOne.id },
-            },
-          ])
+              internal: true,
+            }
+          )
         })
 
         it("should add relationships to a product", async () => {
@@ -724,12 +729,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           const products = await service.createProducts([data])
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                name: "product.created",
+                data: { id: products[0].id },
+              },
+            ],
             {
-              name: "product.created",
-              data: { id: products[0].id },
-            },
-          ])
+              internal: true,
+            }
+          )
         })
       })
 
@@ -814,12 +824,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           await service.softDeleteProducts([products[0].id])
 
-          expect(eventBusSpy).toHaveBeenCalledWith([
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              {
+                name: "product.created",
+                data: { id: products[0].id },
+              },
+            ],
             {
-              name: "product.created",
-              data: { id: products[0].id },
-            },
-          ])
+              internal: true,
+            }
+          )
         })
       })
 
