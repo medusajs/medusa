@@ -29,6 +29,7 @@ import {
 import { sdk } from "../../../../../lib/client"
 import {
   transformNullableFormData,
+  transformNullableFormNumber,
   transformNullableFormNumbers,
 } from "../../../../../lib/form-helpers"
 import { queryClient } from "../../../../../lib/query-client"
@@ -116,7 +117,10 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
           .filter(([_, quantiy]) => !!quantiy)
           .map(([location_id, stocked_quantity]) => ({
             location_id,
-            stocked_quantity,
+            stocked_quantity: transformNullableFormNumber(
+              stocked_quantity,
+              false
+            ),
           })),
       })
       .then(async () => {
