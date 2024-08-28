@@ -1,4 +1,4 @@
-import { GetPublishableApiKeysParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 type UseApiKeyManagementTableQueryProps = {
@@ -17,7 +17,7 @@ export const useApiKeyManagementTableQuery = ({
 
   const { offset, created_at, updated_at, revoked_at, q, order } = queryObject
 
-  const searchParams: GetPublishableApiKeysParams = {
+  const searchParams: HttpTypes.AdminGetApiKeysParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     created_at: created_at ? JSON.parse(created_at) : undefined,
