@@ -1,3 +1,5 @@
+import { Attachment } from "./common"
+
 /**
  * @interface
  *
@@ -8,6 +10,14 @@ export type ProviderSendNotificationDTO = {
    * The recipient of the notification. It can be email, phone number, or username, depending on the channel.
    */
   to: string
+  /**
+   * The sender of the notification. It can be email, phone number, or username, depending on the channel.
+   */
+  from?: string | null
+  /**
+   * Optional attachments for the notification.
+   */
+  attachments?: Attachment[] | null
   /**
    * The channel through which the notification is sent, such as 'email' or 'sms'
    */
