@@ -2034,17 +2034,6 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    orderChange.actions = orderChange.actions.map((action) => {
-      return {
-        ...action,
-        version: orderChange.version,
-        order_id: orderChange.order_id,
-        return_id: orderChange.return_id,
-        claim_id: orderChange.claim_id,
-        exchange_id: orderChange.exchange_id,
-      }
-    })
-
     const { itemsToUpsert, shippingMethodsToUpsert, calculatedOrders } =
       applyChangesToOrder(
         [order],
@@ -2243,16 +2232,6 @@ export default class OrderModuleService<
     await this.orderChangeService_.update(updates as any, sharedContext)
 
     const orderChanges = orderChange.map((change) => {
-      change.actions = change.actions.map((action) => {
-        return {
-          ...action,
-          version: change.version,
-          order_id: change.order_id,
-          return_id: change.return_id,
-          claim_id: change.claim_id,
-          exchange_id: change.exchange_id,
-        }
-      })
       return change.actions
     })
 
