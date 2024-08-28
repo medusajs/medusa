@@ -97,13 +97,13 @@ export class SalesChannel {
 
   async batchProducts(
     id: string,
-    body: { add?: string[]; remove?: string[] },
+    body: HttpTypes.AdminBatchLink,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminSalesChannelResponse>(
       `/admin/sales-channels/${id}/products`,
       {
-        method: "DELETE",
+        method: "POST",
         headers,
         body,
       }

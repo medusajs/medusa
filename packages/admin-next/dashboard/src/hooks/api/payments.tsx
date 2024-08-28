@@ -18,7 +18,7 @@ export const usePaymentProviders = (
   query?: HttpTypes.AdminGetPaymentProvidersParams,
   options?: Omit<
     UseQueryOptions<
-      HttpTypes.AdminPaymentProviderListResponse,
+      HttpTypes.AdminGetPaymentProvidersParams,
       Error,
       HttpTypes.AdminPaymentProviderListResponse,
       QueryKey

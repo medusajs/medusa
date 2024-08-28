@@ -137,12 +137,12 @@ export const useSalesChannelRemoveProducts = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    { product_ids: string[] }
+    HttpTypes.AdminBatchLink["remove"]
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      sdk.admin.salesChannel.batchProducts(id, { remove: payload.product_ids }),
+      sdk.admin.salesChannel.batchProducts(id, { remove: payload }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -152,7 +152,7 @@ export const useSalesChannelRemoveProducts = (
       })
 
       // Invalidate the products that were removed
-      for (const product of variables?.product_ids || []) {
+      for (const product of variables || []) {
         queryClient.invalidateQueries({
           queryKey: productsQueryKeys.detail(product),
         })
@@ -174,12 +174,12 @@ export const useSalesChannelAddProducts = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
     Error,
-    { product_ids: string[] }
+    HttpTypes.AdminBatchLink["add"]
   >
 ) => {
   return useMutation({
     mutationFn: (payload) =>
-      sdk.admin.salesChannel.batchProducts(id, { add: payload.product_ids }),
+      sdk.admin.salesChannel.batchProducts(id, { add: payload }),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
@@ -189,7 +189,7 @@ export const useSalesChannelAddProducts = (
       })
 
       // Invalidate the products that were removed
-      for (const product of variables?.product_ids || []) {
+      for (const product of variables || []) {
         queryClient.invalidateQueries({
           queryKey: productsQueryKeys.detail(product),
         })
