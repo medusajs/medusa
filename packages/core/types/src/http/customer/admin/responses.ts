@@ -1,18 +1,12 @@
-import { PaginatedResponse } from "../../common";
-import { AdminCustomer, AdminCustomerAddress, AdminCustomerGroup } from "./entities";
+import { PaginatedResponse } from "../../common"
+import { AdminCustomer, AdminCustomerAddress } from "./entities"
 
 export interface AdminCustomerResponse {
   customer: AdminCustomer
 }
 
-export type AdminCustomerListResponse = PaginatedResponse<{ customers: AdminCustomer }>
-
-export interface AdminCustomerGroupResponse {
-  customer_group: AdminCustomerGroup
-}
-
-export type AdminCustomerGroupListResponse = PaginatedResponse<{
-  customer_groups: AdminCustomerGroup[]
+export type AdminCustomerListResponse = PaginatedResponse<{
+  customers: AdminCustomer
 }>
 
 export interface AdminCustomerAddressResponse {

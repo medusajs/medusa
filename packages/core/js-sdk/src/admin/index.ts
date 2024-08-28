@@ -3,6 +3,7 @@ import { ApiKey } from "./api-key"
 import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
+import { CustomerGroup } from "./customer-group"
 import { Exchange } from "./exchange"
 import { Fulfillment } from "./fulfillment"
 import { FulfillmentProvider } from "./fulfillment-provider"
@@ -24,6 +25,7 @@ import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { RefundReason } from "./refund-reasons"
 import { Region } from "./region"
+import Reservation from "./reservation"
 import { Return } from "./return"
 import { ReturnReason } from "./return-reason"
 import { SalesChannel } from "./sales-channel"
@@ -73,6 +75,8 @@ export class Admin {
   public refundReason: RefundReason
   public paymentCollection: PaymentCollection
   public apiKey: ApiKey
+  public reservation: Reservation
+  public customerGroup: CustomerGroup
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -111,5 +115,7 @@ export class Admin {
     this.exchange = new Exchange(client)
     this.paymentCollection = new PaymentCollection(client)
     this.apiKey = new ApiKey(client)
+    this.reservation = new Reservation(client)
+    this.customerGroup = new CustomerGroup(client)
   }
 }
