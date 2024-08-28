@@ -1,0 +1,41 @@
+post:
+  operationId: PostActor_typeAuth_provider
+  summary: Authenticate User
+  description: >-
+    Authenticate an admin user and receive the JWT token to be used in the
+    header of subsequent requests.
+  x-authenticated: false
+  parameters:
+    - name: auth_provider
+      in: path
+      description: The provider used for authentication.
+      required: true
+      schema:
+        type: string
+        example: emailpass
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_user_{auth_provider}/post.sh
+  tags:
+    - Auth
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AuthResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
