@@ -18,8 +18,8 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import ShippingMethodAdjustment from "./shipping-method-adjustment"
-import ShippingMethodTaxLine from "./shipping-method-tax-line"
+import OrderShippingMethodAdjustment from "./shipping-method-adjustment"
+import OrderShippingMethodTaxLine from "./shipping-method-tax-line"
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping_method",
@@ -35,7 +35,7 @@ const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
 
 @Entity({ tableName: "order_shipping_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class ShippingMethod {
+export default class OrderShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -68,22 +68,22 @@ export default class ShippingMethod {
   metadata: Record<string, unknown> | null = null
 
   @OneToMany(
-    () => ShippingMethodTaxLine,
+    () => OrderShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
       cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
-  tax_lines = new Collection<Rel<ShippingMethodTaxLine>>(this)
+  tax_lines = new Collection<Rel<OrderShippingMethodTaxLine>>(this)
 
   @OneToMany(
-    () => ShippingMethodAdjustment,
+    () => OrderShippingMethodAdjustment,
     (adjustment) => adjustment.shipping_method,
     {
       cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
     }
   )
-  adjustments = new Collection<Rel<ShippingMethodAdjustment>>(this)
+  adjustments = new Collection<Rel<OrderShippingMethodAdjustment>>(this)
 
   @Property({
     onCreate: () => new Date(),

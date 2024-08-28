@@ -23,11 +23,11 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { ReturnItem, Transaction } from "@models"
+import { OrderTransaction, ReturnItem } from "@models"
 import Claim from "./claim"
 import Exchange from "./exchange"
 import Order from "./order"
-import OrderShippingMethod from "./order-shipping-method"
+import OrderShipping from "./order-shipping-method"
 
 type OptionalReturnProps = DAL.ModelDateColumns
 
@@ -136,19 +136,15 @@ export default class Return {
   })
   items = new Collection<Rel<ReturnItem>>(this)
 
-  @OneToMany(
-    () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.return,
-    {
-      cascade: [Cascade.PERSIST],
-    }
-  )
-  shipping_methods = new Collection<OrderShippingMethod>(this)
-
-  @OneToMany(() => Transaction, (transaction) => transaction.return, {
+  @OneToMany(() => OrderShipping, (shippingMethod) => shippingMethod.return, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Transaction>(this)
+  shipping_methods = new Collection<OrderShipping>(this)
+
+  @OneToMany(() => OrderTransaction, (transaction) => transaction.return, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<OrderTransaction>(this)
 
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null

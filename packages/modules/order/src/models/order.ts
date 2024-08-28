@@ -18,11 +18,11 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import OrderAddress from "./address"
 import OrderItem from "./order-item"
-import OrderShippingMethod from "./order-shipping-method"
+import OrderShipping from "./order-shipping-method"
 import OrderSummary from "./order-summary"
-import Transaction from "./transaction"
+import OrderTransaction from "./transaction"
 
 type OptionalOrderProps =
   | "shipping_address"
@@ -142,24 +142,24 @@ export default class Order {
   shipping_address_id?: string | null
 
   @ManyToOne({
-    entity: () => Address,
+    entity: () => OrderAddress,
     fieldName: "shipping_address_id",
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  shipping_address?: Rel<Address> | null
+  shipping_address?: Rel<OrderAddress> | null
 
   @Property({ columnType: "text", nullable: true })
   @BillingAddressIdIndex.MikroORMIndex()
   billing_address_id?: string | null
 
   @ManyToOne({
-    entity: () => Address,
+    entity: () => OrderAddress,
     fieldName: "billing_address_id",
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  billing_address?: Rel<Address> | null
+  billing_address?: Rel<OrderAddress> | null
 
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
@@ -177,19 +177,15 @@ export default class Order {
   })
   items = new Collection<Rel<OrderItem>>(this)
 
-  @OneToMany(
-    () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.order,
-    {
-      cascade: [Cascade.PERSIST],
-    }
-  )
-  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
-
-  @OneToMany(() => Transaction, (transaction) => transaction.order, {
+  @OneToMany(() => OrderShipping, (shippingMethod) => shippingMethod.order, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Rel<Transaction>>(this)
+  shipping_methods = new Collection<Rel<OrderShipping>>(this)
+
+  @OneToMany(() => OrderTransaction, (transaction) => transaction.order, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Rel<OrderTransaction>>(this)
 
   @Property({
     onCreate: () => new Date(),

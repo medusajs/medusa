@@ -6,7 +6,6 @@ export interface DeleteOrderShippingMethodsStepInput {
   ids: string[]
 }
 
-
 /**
  * This step deletes order shipping methods.
  */
@@ -17,7 +16,7 @@ export const deleteOrderShippingMethods = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const deleted = await service.softDeleteShippingMethods(input.ids)
+    const deleted = await service.softDeleteOrderShippingMethods(input.ids)
 
     return new StepResponse(deleted, input.ids)
   },
@@ -30,6 +29,6 @@ export const deleteOrderShippingMethods = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.restoreShippingMethods(ids)
+    await service.restoreOrderShippingMethods(ids)
   }
 )
