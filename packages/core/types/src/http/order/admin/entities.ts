@@ -1,4 +1,3 @@
-import { BaseOrderLineItem } from "../../../../dist/http/order/common"
 import { AdminPaymentCollection } from "../../payment/admin"
 import {
   BaseOrder,
@@ -6,6 +5,7 @@ import {
   BaseOrderChange,
   BaseOrderChangeAction,
   BaseOrderFulfillment,
+  BaseOrderLineItem,
   BaseOrderShippingMethod,
 } from "../common"
 
