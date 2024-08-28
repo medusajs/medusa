@@ -16,7 +16,7 @@ export const deleteOrderLineItems = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const deleted = await service.softDeleteLineItems(input.ids)
+    const deleted = await service.softDeleteOrderLineItems(input.ids)
 
     return new StepResponse(deleted, input.ids)
   },
@@ -29,6 +29,6 @@ export const deleteOrderLineItems = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.restoreLineItems(ids)
+    await service.restoreOrderLineItems(ids)
   }
 )

@@ -10,7 +10,7 @@ import {
   OnInit,
   Rel,
 } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 import TaxLine from "./tax-line"
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
@@ -19,15 +19,15 @@ const ItemIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_line_item_tax_line" })
-export default class LineItemTaxLine extends TaxLine {
-  @ManyToOne(() => LineItem, {
+export default class OrderLineItemTaxLine extends TaxLine {
+  @ManyToOne(() => OrderLineItem, {
     fieldName: "item_id",
     persist: false,
   })
-  item: Rel<LineItem>
+  item: Rel<OrderLineItem>
 
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     columnType: "text",
     fieldName: "item_id",
     cascade: [Cascade.PERSIST, Cascade.REMOVE],

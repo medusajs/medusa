@@ -6,29 +6,28 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { client, sdk } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { PaymentProvidersListRes } from "../../types/api-responses"
 import { ordersQueryKeys } from "./orders"
 
 const PAYMENT_QUERY_KEY = "payment" as const
 export const paymentQueryKeys = queryKeysFactory(PAYMENT_QUERY_KEY)
 
 export const usePaymentProviders = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminGetPaymentProvidersParams,
   options?: Omit<
     UseQueryOptions<
-      PaymentProvidersListRes,
+      HttpTypes.AdminGetPaymentProvidersParams,
       Error,
-      PaymentProvidersListRes,
+      HttpTypes.AdminPaymentProviderListResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: async () => client.payments.listPaymentProviders(query),
+    queryFn: async () => sdk.admin.payment.listPaymentProviders(query),
     queryKey: [],
     ...options,
   })

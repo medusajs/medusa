@@ -814,7 +814,7 @@ export interface IOrderModuleService extends IModuleService {
    * To retrieve a list of addresses using their IDs:
    *
    * ```ts
-   * const addresses = await orderModuleService.listAddresses({
+   * const addresses = await orderModuleService.listOrderAddresses({
    *   id: ["123", "321"]
    * })
    * ```
@@ -822,7 +822,7 @@ export interface IOrderModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const addresses = await orderModuleService.listAddresses({
+   * const addresses = await orderModuleService.listOrderAddresses({
    *   id: ["123", "321"]
    * }, {
    *   take: 20,
@@ -830,7 +830,7 @@ export interface IOrderModuleService extends IModuleService {
    * })
    * ```
    */
-  listAddresses(
+  listOrderAddresses(
     filters?: FilterableOrderAddressProps,
     config?: FindConfig<OrderAddressDTO>,
     sharedContext?: Context
@@ -845,7 +845,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const addresses = await orderModuleService.createAddresses([
+   * const addresses = await orderModuleService.createOrderAddresses([
    *   {
    *     first_name: "John",
    *     last_name: "Doe",
@@ -859,7 +859,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  createAddresses(
+  createOrderAddresses(
     data: CreateOrderAddressDTO[],
     sharedContext?: Context
   ): Promise<OrderAddressDTO[]>
@@ -873,7 +873,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const address = await orderModuleService.createAddresses({
+   * const address = await orderModuleService.createOrderAddresses({
    *   first_name: "John",
    *   last_name: "Doe",
    *   address_1: "123 Main St",
@@ -885,7 +885,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  createAddresses(
+  createOrderAddresses(
     data: CreateOrderAddressDTO,
     sharedContext?: Context
   ): Promise<OrderAddressDTO>
@@ -899,14 +899,14 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const addresses = await orderModuleService.updateAddresses([{
+   * const addresses = await orderModuleService.updateOrderAddresses([{
    *   id: "123",
    *   first_name: "John",
    * }])
    * ```
    *
    */
-  updateAddresses(
+  updateOrderAddresses(
     data: UpdateOrderAddressDTO[],
     sharedContext?: Context
   ): Promise<OrderAddressDTO[]>
@@ -920,14 +920,14 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const address = await orderModuleService.updateAddresses({
+   * const address = await orderModuleService.updateOrderAddresses({
    *   id: "123",
    *   first_name: "John",
    * })
    * ```
    *
    */
-  updateAddresses(
+  updateOrderAddresses(
     data: UpdateOrderAddressDTO,
     sharedContext?: Context
   ): Promise<OrderAddressDTO>
@@ -941,11 +941,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.deleteAddresses(["123", "321"])
+   * await orderModuleService.deleteOrderAddresses(["123", "321"])
    * ```
    *
    */
-  deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
+  deleteOrderAddresses(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes an address by its ID.
@@ -956,11 +956,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.deleteAddresses("123")
+   * await orderModuleService.deleteOrderAddresses("123")
    * ```
    *
    */
-  deleteAddresses(ids: string, sharedContext?: Context): Promise<void>
+  deleteOrderAddresses(ids: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a line item by its ID.
@@ -975,13 +975,13 @@ export interface IOrderModuleService extends IModuleService {
    * A simple example that retrieves an order change by its ID:
    *
    * ```ts
-   * const lineItem = await orderModuleService.retrieveLineItem("123")
+   * const lineItem = await orderModuleService.retrieveOrderLineItem("123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const lineItem = await orderModuleService.retrieveLineItem(
+   * const lineItem = await orderModuleService.retrieveOrderLineItem(
    *   "123",
    *   {
    *     relations: ["order"]
@@ -990,7 +990,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  retrieveLineItem(
+  retrieveOrderLineItem(
     itemId: string,
     config?: FindConfig<OrderLineItemDTO>,
     sharedContext?: Context
@@ -1009,7 +1009,7 @@ export interface IOrderModuleService extends IModuleService {
    * To retrieve a list of line items using their IDs:
    *
    * ```ts
-   * const lineItems = await orderModuleService.listLineItems({
+   * const lineItems = await orderModuleService.listOrderLineItems({
    *   id: ["123", "321"]
    * })
    * ```
@@ -1017,7 +1017,7 @@ export interface IOrderModuleService extends IModuleService {
    * To specify relations that should be retrieved within the line item:
    *
    * ```ts
-   * const lineItems = await orderModuleService.listLineItems({
+   * const lineItems = await orderModuleService.listOrderLineItems({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["order"]
@@ -1027,7 +1027,7 @@ export interface IOrderModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const lineItems = await orderModuleService.listLineItems({
+   * const lineItems = await orderModuleService.listOrderLineItems({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["order"],
@@ -1037,7 +1037,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listLineItems(
+  listOrderLineItems(
     filters: FilterableOrderLineItemProps,
     config?: FindConfig<OrderLineItemDTO>,
     sharedContext?: Context
@@ -1051,13 +1051,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO[]>} The created line items.
    *
    * @example
-   * const lineItems = await orderModuleService.createLineItems({
+   * const lineItems = await orderModuleService.createOrderLineItems({
    *   title: "Shirt",
    *   quantity: 1,
    *   unit_price: 20
    * })
    */
-  createLineItems(
+  createOrderLineItems(
     data: CreateOrderLineItemDTO,
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
@@ -1070,13 +1070,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO[]>} The created line items.
    *
    * @example
-   * const lineItems = await orderModuleService.createLineItems([{
+   * const lineItems = await orderModuleService.createOrderLineItems([{
    *   title: "Shirt",
    *   quantity: 1,
    *   unit_price: 20
    * }])
    */
-  createLineItems(
+  createOrderLineItems(
     data: CreateOrderLineItemDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
@@ -1090,7 +1090,7 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO[]>} The created orders.
    *
    * @example
-   * const lineItems = await orderModuleService.createLineItems(
+   * const lineItems = await orderModuleService.createOrderLineItems(
    *   "123",
    *   [{
    *     title: "Shirt",
@@ -1099,7 +1099,7 @@ export interface IOrderModuleService extends IModuleService {
    *   }]
    * )
    */
-  createLineItems(
+  createOrderLineItems(
     orderId: string,
     items: CreateOrderLineItemDTO[],
     sharedContext?: Context
@@ -1113,7 +1113,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const lineItems = await orderModuleService.updateLineItems([
+   * const lineItems = await orderModuleService.updateOrderLineItems([
    *   {
    *     selector: {
    *       id: "123"
@@ -1126,7 +1126,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  updateLineItems(
+  updateOrderLineItems(
     data: UpdateOrderLineItemWithSelectorDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
@@ -1140,14 +1140,14 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO[]>} The updated line items.
    *
    * @example
-   * const lineItems = await orderModuleService.updateLineItems({
+   * const lineItems = await orderModuleService.updateOrderLineItems({
    *   id: "123"
    * }, {
    *   quantity: 2
    * })
    *
    */
-  updateLineItems(
+  updateOrderLineItems(
     selector: Partial<FilterableOrderLineItemProps>,
     data: Partial<UpdateOrderLineItemDTO>,
     sharedContext?: Context
@@ -1162,7 +1162,7 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemDTO>} The updated line item.
    *
    * @example
-   * const lineItem = await orderModuleService.updateLineItems(
+   * const lineItem = await orderModuleService.updateOrderLineItems(
    *   "123",
    *   {
    *     quantity: 2
@@ -1170,7 +1170,7 @@ export interface IOrderModuleService extends IModuleService {
    * )
    *
    */
-  updateLineItems(
+  updateOrderLineItems(
     lineId: string,
     data: Partial<UpdateOrderLineItemDTO>,
     sharedContext?: Context
@@ -1184,11 +1184,14 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line items are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItems([
+   * await orderModuleService.deleteOrderLineItems([
    *   "123", "321"
    * ])
    */
-  deleteLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
+  deleteOrderLineItems(
+    itemIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method deletes a line item by its ID.
@@ -1198,9 +1201,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item is deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItems("123")
+   * await orderModuleService.deleteOrderLineItems("123")
    */
-  deleteLineItems(itemId: string, sharedContext?: Context): Promise<void>
+  deleteOrderLineItems(itemId: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes line items that match the specified filters.
@@ -1210,11 +1213,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line items are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItems({
+   * await orderModuleService.deleteOrderLineItems({
    *   id: ["123", "321"]
    * })
    */
-  deleteLineItems(
+  deleteOrderLineItems(
     selector: Partial<FilterableOrderLineItemProps>,
     sharedContext?: Context
   ): Promise<void>
@@ -1304,7 +1307,7 @@ export interface IOrderModuleService extends IModuleService {
    * To retrieve a list of shipping methods using their IDs:
    *
    * ```ts
-   * const shippingMethods = await orderModuleService.listShippingMethods({
+   * const shippingMethods = await orderModuleService.listOrderShippingMethods({
    *   id: ["123", "321"]
    * }, {})
    * ```
@@ -1312,7 +1315,7 @@ export interface IOrderModuleService extends IModuleService {
    * To specify relations that should be retrieved within the shipping method:
    *
    * ```ts
-   * const shippingMethods = await orderModuleService.listShippingMethods({
+   * const shippingMethods = await orderModuleService.listOrderShippingMethods({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["adjustments"]
@@ -1322,7 +1325,7 @@ export interface IOrderModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const shippingMethods = await orderModuleService.listShippingMethods({
+   * const shippingMethods = await orderModuleService.listOrderShippingMethods({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["adjustments"],
@@ -1332,7 +1335,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listShippingMethods(
+  listOrderShippingMethods(
     filters: FilterableOrderShippingMethodProps,
     config: FindConfig<OrderShippingMethodDTO>,
     sharedContext?: Context
@@ -1345,13 +1348,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderShippingMethodDTO>} The created shipping method.
    *
    * @example
-   * const shippingMethod = await orderModuleService.createShippingMethods({
+   * const shippingMethod = await orderModuleService.createOrderShippingMethods({
    *   name: "Express Shipping",
    *   order_id: "123",
    *   amount: 10
    * })
    */
-  createShippingMethods(
+  createOrderShippingMethods(
     data: CreateOrderShippingMethodDTO,
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO>
@@ -1363,13 +1366,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderShippingMethodDTO[]>} The created orders.
    *
    * @example
-   * const shippingMethods = await orderModuleService.createShippingMethods([{
+   * const shippingMethods = await orderModuleService.createOrderShippingMethods([{
    *   name: "Express Shipping",
    *   order_id: "123",
    *   amount: 10
    * }])
    */
-  createShippingMethods(
+  createOrderShippingMethods(
     data: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
@@ -1383,7 +1386,7 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderShippingMethodDTO[]>} The created shipping methods.
    *
    * @example
-   * const shippingMethods = await orderModuleService.createShippingMethods(
+   * const shippingMethods = await orderModuleService.createOrderShippingMethods(
    *   "123",
    *   [
    *     {
@@ -1394,7 +1397,7 @@ export interface IOrderModuleService extends IModuleService {
    *   ]
    * )
    */
-  createShippingMethods(
+  createOrderShippingMethods(
     orderId: string,
     methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
@@ -1408,12 +1411,12 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderShippingMethodDTO[]>} The updated shipping methods.
    *
    * @example
-   * const shippingMethods = await orderModuleService.updateShippingMethods([{
+   * const shippingMethods = await orderModuleService.updateOrderShippingMethods([{
    *   id: "123",
    *   name: "Express Shipping"
    * }])
    */
-  updateShippingMethods(
+  updateOrderShippingMethods(
     data: UpdateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
@@ -1426,12 +1429,12 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderShippingMethodDTO>} The updated shipping method.
    *
    * @example
-   * const shippingMethod = await orderModuleService.updateShippingMethods({
+   * const shippingMethod = await orderModuleService.updateOrderShippingMethods({
    *   id: "123",
    *   name: "Express Shipping"
    * })
    */
-  updateShippingMethods(
+  updateOrderShippingMethods(
     data: UpdateOrderShippingMethodDTO,
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO>
@@ -1444,11 +1447,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping methods are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethods([
+   * await orderModuleService.deleteOrderShippingMethods([
    *   "123", "321"
    * ])
    */
-  deleteShippingMethods(
+  deleteOrderShippingMethods(
     methodIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1461,9 +1464,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method is deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethods("123")
+   * await orderModuleService.deleteOrderShippingMethods("123")
    */
-  deleteShippingMethods(
+  deleteOrderShippingMethods(
     methodId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -1476,11 +1479,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping methods are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethods({
+   * await orderModuleService.deleteOrderShippingMethods({
    *   id: "123"
    * })
    */
-  deleteShippingMethods(
+  deleteOrderShippingMethods(
     selector: Partial<FilterableOrderShippingMethodProps>,
     sharedContext?: Context
   ): Promise<void>
@@ -1498,7 +1501,7 @@ export interface IOrderModuleService extends IModuleService {
    * To retrieve a list of line item adjustments using their IDs:
    *
    * ```ts
-   * const lineItemAdjustment = await orderModuleService.listLineItemAdjustments({
+   * const lineItemAdjustment = await orderModuleService.listOrderLineItemAdjustments({
    *   id: ["123", "321"]
    * })
    * ```
@@ -1506,7 +1509,7 @@ export interface IOrderModuleService extends IModuleService {
    * To specify relations that should be retrieved within the line item adjustment:
    *
    * ```ts
-   * const lineItemAdjustment = await orderModuleService.listLineItemAdjustments({
+   * const lineItemAdjustment = await orderModuleService.listOrderLineItemAdjustments({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["item"]
@@ -1516,7 +1519,7 @@ export interface IOrderModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const lineItemAdjustment = await orderModuleService.listLineItemAdjustments({
+   * const lineItemAdjustment = await orderModuleService.listOrderLineItemAdjustments({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["item"],
@@ -1526,7 +1529,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listLineItemAdjustments(
+  listOrderLineItemAdjustments(
     filters: FilterableOrderLineItemAdjustmentProps,
     config?: FindConfig<OrderLineItemAdjustmentDTO>,
     sharedContext?: Context
@@ -1539,11 +1542,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
-   * const lineItemAdjustments = await orderModuleService.createLineItemAdjustments([{
+   * const lineItemAdjustments = await orderModuleService.createOrderLineItemAdjustments([{
    *   amount: 5
    * }])
    */
-  createLineItemAdjustments(
+  createOrderLineItemAdjustments(
     data: CreateOrderAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
@@ -1555,11 +1558,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line-item adjustment.
    *
    * @example
-   * const lineItemAdjustment = await orderModuleService.createLineItemAdjustments({
+   * const lineItemAdjustment = await orderModuleService.createOrderLineItemAdjustments({
    *   amount: 5
    * })
    */
-  createLineItemAdjustments(
+  createOrderLineItemAdjustments(
     data: CreateOrderAdjustmentDTO,
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
@@ -1572,14 +1575,14 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The created line item adjustments.
    *
    * @example
-   * const lineItemAdjustments = await orderModuleService.createLineItemAdjustments(
+   * const lineItemAdjustments = await orderModuleService.createOrderLineItemAdjustments(
    *   "123",
    *   [{
    *     amount: 5
    *   }]
    * )
    */
-  createLineItemAdjustments(
+  createOrderLineItemAdjustments(
     orderId: string,
     data: CreateOrderAdjustmentDTO[],
     sharedContext?: Context
@@ -1595,7 +1598,7 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderLineItemAdjustmentDTO[]>} The order's line item adjustments.
    *
    * @example
-   * const lineItemAdjustments = await orderModuleService.setLineItemAdjustments(
+   * const lineItemAdjustments = await orderModuleService.setOrderLineItemAdjustments(
    *   "123",
    *   [
    *     {
@@ -1611,7 +1614,7 @@ export interface IOrderModuleService extends IModuleService {
    * )
    *
    */
-  setLineItemAdjustments(
+  setOrderLineItemAdjustments(
     orderId: string,
     data: UpsertOrderLineItemAdjustmentDTO[],
     sharedContext?: Context
@@ -1625,11 +1628,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item adjustments are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItemAdjustments([
+   * await orderModuleService.deleteOrderLineItemAdjustments([
    *   "123", "321"
    * ])
    */
-  deleteLineItemAdjustments(
+  deleteOrderLineItemAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1642,9 +1645,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item adjustment is deleted.
    *
    * @example
-   * await orderModuleService.deleteLineItemAdjustments("123")
+   * await orderModuleService.deleteOrderLineItemAdjustments("123")
    */
-  deleteLineItemAdjustments(
+  deleteOrderLineItemAdjustments(
     adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -1657,11 +1660,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item adjustments are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItemAdjustments({
+   * await orderModuleService.deleteOrderLineItemAdjustments({
    *   id: "123"
    * })
    */
-  deleteLineItemAdjustments(
+  deleteOrderLineItemAdjustments(
     selector: Partial<OrderLineItemAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -1680,7 +1683,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodAdjustments = await orderModuleService
-   *   .listShippingMethodAdjustments({
+   *   .listOrderShippingMethodAdjustments({
    *     id: ["123", "321"]
    *   })
    * ```
@@ -1689,7 +1692,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodAdjustments = await orderModuleService
-   *   .listShippingMethodAdjustments({
+   *   .listOrderShippingMethodAdjustments({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["shipping_method"]
@@ -1700,7 +1703,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodAdjustments = await orderModuleService
-   *   .listShippingMethodAdjustments({
+   *   .listOrderShippingMethodAdjustments({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["shipping_method"],
@@ -1710,7 +1713,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listShippingMethodAdjustments(
+  listOrderShippingMethodAdjustments(
     filters: FilterableOrderShippingMethodAdjustmentProps,
     config?: FindConfig<OrderShippingMethodAdjustmentDTO>,
     sharedContext?: Context
@@ -1724,7 +1727,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodAdjustments = await orderModuleService
-   *   .createShippingMethodAdjustments([
+   *   .createOrderShippingMethodAdjustments([
    *     {
    *       shipping_method_id: "123",
    *       code: "50OFF",
@@ -1732,7 +1735,7 @@ export interface IOrderModuleService extends IModuleService {
    *     }
    *   ])
    */
-  createShippingMethodAdjustments(
+  createOrderShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
@@ -1745,13 +1748,13 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodAdjustment = await orderModuleService
-   *   .createShippingMethodAdjustments({
+   *   .createOrderShippingMethodAdjustments({
    *     shipping_method_id: "123",
    *     code: "50OFF",
    *     amount: 5
    *   })
    */
-  createShippingMethodAdjustments(
+  createOrderShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO,
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO>
@@ -1766,7 +1769,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodAdjustments = await orderModuleService
-   *   .createShippingMethodAdjustments(
+   *   .createOrderShippingMethodAdjustments(
    *     "123",
    *     [{
    *       shipping_method_id: "123",
@@ -1775,7 +1778,7 @@ export interface IOrderModuleService extends IModuleService {
    *     }]
    *   )
    */
-  createShippingMethodAdjustments(
+  createOrderShippingMethodAdjustments(
     orderId: string,
     data: CreateOrderShippingMethodAdjustmentDTO[],
     sharedContext?: Context
@@ -1792,7 +1795,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodAdjustments = await orderModuleService
-   *   .setShippingMethodAdjustments(
+   *   .setOrderShippingMethodAdjustments(
    *     "123",
    *     [
    *       {
@@ -1808,7 +1811,7 @@ export interface IOrderModuleService extends IModuleService {
    *   )
    *
    */
-  setShippingMethodAdjustments(
+  setOrderShippingMethodAdjustments(
     orderId: string,
     data: (
       | CreateOrderShippingMethodAdjustmentDTO
@@ -1825,11 +1828,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method adjustments are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethodAdjustments([
+   * await orderModuleService.deleteOrderShippingMethodAdjustments([
    *   "123", "321"
    * ])
    */
-  deleteShippingMethodAdjustments(
+  deleteOrderShippingMethodAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -1842,9 +1845,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method adjustment is deleted successfully
    *
    * @example
-   * await orderModuleService.deleteShippingMethodAdjustments("123")
+   * await orderModuleService.deleteOrderShippingMethodAdjustments("123")
    */
-  deleteShippingMethodAdjustments(
+  deleteOrderShippingMethodAdjustments(
     adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -1857,11 +1860,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method adjustments are deleted.
    *
    * @example
-   * await orderModuleService.deleteShippingMethodAdjustments({
+   * await orderModuleService.deleteOrderShippingMethodAdjustments({
    *   id: "123"
    * })
    */
-  deleteShippingMethodAdjustments(
+  deleteOrderShippingMethodAdjustments(
     selector: Partial<OrderShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -1880,7 +1883,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const lineItemTaxLines = await orderModuleService
-   *   .listLineItemTaxLines({
+   *   .listOrderLineItemTaxLines({
    *     id: ["123", "321"]
    *   })
    * ```
@@ -1889,7 +1892,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const lineItemTaxLines = await orderModuleService
-   *   .listLineItemTaxLines({
+   *   .listOrderLineItemTaxLines({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["item"]
@@ -1900,7 +1903,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const lineItemTaxLines = await orderModuleService
-   *   .listLineItemTaxLines({
+   *   .listOrderLineItemTaxLines({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["item"],
@@ -1910,7 +1913,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listLineItemTaxLines(
+  listOrderLineItemTaxLines(
     filters: FilterableOrderLineItemTaxLineProps,
     config?: FindConfig<OrderLineItemTaxLineDTO>,
     sharedContext?: Context
@@ -1924,14 +1927,14 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const lineItemTaxLines = await orderModuleService
-   *   .createLineItemTaxLines([
+   *   .createOrderLineItemTaxLines([
    *     {
    *       code: "123",
    *       rate: 2
    *     }
    *   ])
    */
-  createLineItemTaxLines(
+  createOrderLineItemTaxLines(
     taxLines: CreateOrderLineItemTaxLineDTO[],
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
@@ -1944,12 +1947,12 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const lineItemTaxLines = await orderModuleService
-   *   .createLineItemTaxLines({
+   *   .createOrderLineItemTaxLines({
    *     code: "123",
    *     rate: 2
    *   })
    */
-  createLineItemTaxLines(
+  createOrderLineItemTaxLines(
     taxLine: CreateOrderLineItemTaxLineDTO,
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO>
@@ -1964,7 +1967,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const lineItemTaxLines = await orderModuleService
-   *   .createLineItemTaxLines(
+   *   .createOrderLineItemTaxLines(
    *     "123",
    *     [
    *       {
@@ -1974,7 +1977,7 @@ export interface IOrderModuleService extends IModuleService {
    *     ]
    *   )
    */
-  createLineItemTaxLines(
+  createOrderLineItemTaxLines(
     orderId: string,
     taxLines: CreateOrderLineItemTaxLineDTO[] | CreateOrderLineItemTaxLineDTO,
     sharedContext?: Context
@@ -1991,7 +1994,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const lineItemTaxLines = await orderModuleService
-   *   .setLineItemTaxLines(
+   *   .setOrderLineItemTaxLines(
    *     "123",
    *     [
    *       {
@@ -2002,7 +2005,7 @@ export interface IOrderModuleService extends IModuleService {
    *   )
    *
    */
-  setLineItemTaxLines(
+  setOrderLineItemTaxLines(
     orderId: string,
     taxLines: (CreateOrderLineItemTaxLineDTO | UpdateOrderLineItemTaxLineDTO)[],
     sharedContext?: Context
@@ -2016,11 +2019,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item tax lines are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItemTaxLines([
+   * await orderModuleService.deleteOrderLineItemTaxLines([
    *   "123", "321"
    * ])
    */
-  deleteLineItemTaxLines(
+  deleteOrderLineItemTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -2033,9 +2036,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item tax line is deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItemTaxLines("123")
+   * await orderModuleService.deleteOrderLineItemTaxLines("123")
    */
-  deleteLineItemTaxLines(
+  deleteOrderLineItemTaxLines(
     taxLineId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -2048,11 +2051,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the line item tax lines are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteLineItemTaxLines({
+   * await orderModuleService.deleteOrderLineItemTaxLines({
    *   id: ["123", "321"]
    * })
    */
-  deleteLineItemTaxLines(
+  deleteOrderLineItemTaxLines(
     selector: FilterableOrderLineItemTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -2071,7 +2074,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodTaxLines = await orderModuleService
-   *   .listShippingMethodTaxLines({
+   *   .listOrderShippingMethodTaxLines({
    *     id: ["123", "321"]
    *   })
    * ```
@@ -2080,7 +2083,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodTaxLines = await orderModuleService
-   *   .listShippingMethodTaxLines({
+   *   .listOrderShippingMethodTaxLines({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["shipping_method"]
@@ -2091,7 +2094,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * ```ts
    * const shippingMethodTaxLines = await orderModuleService
-   *   .listShippingMethodTaxLines({
+   *   .listOrderShippingMethodTaxLines({
    *     id: ["123", "321"]
    *   }, {
    *     relations: ["shipping_method"],
@@ -2101,7 +2104,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  listShippingMethodTaxLines(
+  listOrderShippingMethodTaxLines(
     filters: FilterableOrderShippingMethodTaxLineProps,
     config?: FindConfig<OrderShippingMethodTaxLineDTO>,
     sharedContext?: Context
@@ -2115,14 +2118,14 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodTaxLines = await orderModuleService
-   *   .createShippingMethodTaxLines([
+   *   .createOrderShippingMethodTaxLines([
    *     {
    *       code: "123",
    *       rate: 2
    *     }
    *   ])
    */
-  createShippingMethodTaxLines(
+  createOrderShippingMethodTaxLines(
     taxLines: CreateOrderShippingMethodTaxLineDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
@@ -2135,12 +2138,12 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodTaxLine = await orderModuleService
-   *   .createShippingMethodTaxLines({
+   *   .createOrderShippingMethodTaxLines({
    *     code: "123",
    *     rate: 2
    *   })
    */
-  createShippingMethodTaxLines(
+  createOrderShippingMethodTaxLines(
     taxLine: CreateOrderShippingMethodTaxLineDTO,
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO>
@@ -2155,7 +2158,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodTaxLines = await orderModuleService
-   *   .createShippingMethodTaxLines(
+   *   .createOrderShippingMethodTaxLines(
    *     "123",
    *     [{
    *       code: "123",
@@ -2163,7 +2166,7 @@ export interface IOrderModuleService extends IModuleService {
    *     }]
    *   )
    */
-  createShippingMethodTaxLines(
+  createOrderShippingMethodTaxLines(
     orderId: string,
     taxLines:
       | CreateOrderShippingMethodTaxLineDTO[]
@@ -2182,7 +2185,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * const shippingMethodTaxLines = await orderModuleService
-   *   .setShippingMethodTaxLines(
+   *   .setOrderShippingMethodTaxLines(
    *     "123",
    *     [
    *       {
@@ -2197,7 +2200,7 @@ export interface IOrderModuleService extends IModuleService {
    *   )
    *
    */
-  setShippingMethodTaxLines(
+  setOrderShippingMethodTaxLines(
     orderId: string,
     taxLines: (
       | CreateOrderShippingMethodTaxLineDTO
@@ -2214,11 +2217,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method tax lines are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethodTaxLines([
+   * await orderModuleService.deleteOrderShippingMethodTaxLines([
    *   "123", "321"
    * ])
    */
-  deleteShippingMethodTaxLines(
+  deleteOrderShippingMethodTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
@@ -2231,9 +2234,9 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method tax line is deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethodTaxLines("123")
+   * await orderModuleService.deleteOrderShippingMethodTaxLines("123")
    */
-  deleteShippingMethodTaxLines(
+  deleteOrderShippingMethodTaxLines(
     taxLineId: string,
     sharedContext?: Context
   ): Promise<void>
@@ -2246,11 +2249,11 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the shipping method tax lines are deleted successfully.
    *
    * @example
-   * await orderModuleService.deleteShippingMethodTaxLines({
+   * await orderModuleService.deleteOrderShippingMethodTaxLines({
    *   id: ["123", "321"]
    * })
    */
-  deleteShippingMethodTaxLines(
+  deleteOrderShippingMethodTaxLines(
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -3043,11 +3046,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteAddresses([
+   * await orderModuleService.softDeleteOrderAddresses([
    *   "123", "321"
    * ])
    */
-  softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrderAddresses<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3067,11 +3070,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreAddresses([
+   * await orderModuleService.restoreOrderAddresses([
    *   "123", "321"
    * ])
    */
-  restoreAddresses<TReturnableLinkableKeys extends string = string>(
+  restoreOrderAddresses<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3090,11 +3093,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteLineItems([
+   * await orderModuleService.softDeleteOrderLineItems([
    *   "123", "321"
    * ])
    */
-  softDeleteLineItems<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrderLineItems<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3114,11 +3117,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreLineItems([
+   * await orderModuleService.restoreOrderLineItems([
    *   "123", "321"
    * ])
    */
-  restoreLineItems<TReturnableLinkableKeys extends string = string>(
+  restoreOrderLineItems<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3137,11 +3140,13 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteShippingMethods([
+   * await orderModuleService.softDeleteOrderShippingMethods([
    *   "123", "321"
    * ])
    */
-  softDeleteShippingMethods<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrderShippingMethods<
+    TReturnableLinkableKeys extends string = string
+  >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3161,11 +3166,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreShippingMethods([
+   * await orderModuleService.restoreOrderShippingMethods([
    *   "123", "321"
    * ])
    */
-  restoreShippingMethods<TReturnableLinkableKeys extends string = string>(
+  restoreOrderShippingMethods<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3184,11 +3189,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteLineItemAdjustments([
+   * await orderModuleService.softDeleteOrderLineItemAdjustments([
    *   "123", "321"
    * ])
    */
-  softDeleteLineItemAdjustments<
+  softDeleteOrderLineItemAdjustments<
     TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
@@ -3210,11 +3215,13 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreLineItemAdjustments([
+   * await orderModuleService.restoreOrderLineItemAdjustments([
    *   "123", "321"
    * ])
    */
-  restoreLineItemAdjustments<TReturnableLinkableKeys extends string = string>(
+  restoreOrderLineItemAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3233,11 +3240,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteShippingMethodAdjustments([
+   * await orderModuleService.softDeleteOrderShippingMethodAdjustments([
    *   "123", "321"
    * ])
    */
-  softDeleteShippingMethodAdjustments<
+  softDeleteOrderShippingMethodAdjustments<
     TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
@@ -3259,11 +3266,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreShippingMethodAdjustments([
+   * await orderModuleService.restoreOrderShippingMethodAdjustments([
    *   "123", "321"
    * ])
    */
-  restoreShippingMethodAdjustments<
+  restoreOrderShippingMethodAdjustments<
     TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
@@ -3284,11 +3291,13 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteLineItemTaxLines([
+   * await orderModuleService.softDeleteOrderLineItemTaxLines([
    *   "123", "321"
    * ])
    */
-  softDeleteLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrderLineItemTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3308,11 +3317,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreLineItemTaxLines([
+   * await orderModuleService.restoreOrderLineItemTaxLines([
    *   "123", "321"
    * ])
    */
-  restoreLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+  restoreOrderLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3331,11 +3340,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteShippingMethodTaxLines([
+   * await orderModuleService.softDeleteOrderShippingMethodTaxLines([
    *   "123", "321"
    * ])
    */
-  softDeleteShippingMethodTaxLines<
+  softDeleteOrderShippingMethodTaxLines<
     TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
@@ -3357,11 +3366,11 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreShippingMethodTaxLines([
+   * await orderModuleService.restoreOrderShippingMethodTaxLines([
    *   "123", "321"
    * ])
    */
-  restoreShippingMethodTaxLines<
+  restoreOrderShippingMethodTaxLines<
     TReturnableLinkableKeys extends string = string
   >(
     ids: string[],
@@ -3394,7 +3403,7 @@ export interface IOrderModuleService extends IModuleService {
    * To retrieve a list of transactions using their IDs:
    *
    * ```ts
-   * const transactions = await orderModuleService.listTransactions({
+   * const transactions = await orderModuleService.listOrderTransactions({
    *   id: ["123", "321"]
    * })
    * ```
@@ -3402,7 +3411,7 @@ export interface IOrderModuleService extends IModuleService {
    * To specify relations that should be retrieved within the transaction:
    *
    * ```ts
-   * const transactions = await orderModuleService.listTransactions({
+   * const transactions = await orderModuleService.listOrderTransactions({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["order"]
@@ -3412,7 +3421,7 @@ export interface IOrderModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const transactions = await orderModuleService.listTransactions({
+   * const transactions = await orderModuleService.listOrderTransactions({
    *   id: ["123", "321"]
    * }, {
    *   relations: ["order"],
@@ -3421,7 +3430,7 @@ export interface IOrderModuleService extends IModuleService {
    * })
    * ```
    */
-  listTransactions(
+  listOrderTransactions(
     filters?: FilterableOrderTransactionProps,
     config?: FindConfig<OrderTransactionDTO>,
     sharedContext?: Context
@@ -3435,13 +3444,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderTransactionDTO>} The created transaction.
    *
    * @example
-   * const transaction = await orderModuleService.addTransactions({
+   * const transaction = await orderModuleService.addOrderTransactions({
    *   order_id: "123",
    *   amount: 10,
    *   currency_code: "usd"
    * })
    */
-  addTransactions(
+  addOrderTransactions(
     data: CreateOrderTransactionDTO,
     sharedContext?: Context
   ): Promise<OrderTransactionDTO>
@@ -3454,13 +3463,13 @@ export interface IOrderModuleService extends IModuleService {
    * @returns {Promise<OrderTransactionDTO[]>} The created order transactions.
    *
    * @example
-   * const transactions = await orderModuleService.addTransactions([{
+   * const transactions = await orderModuleService.addOrderTransactions([{
    *   order_id: "123",
    *   amount: 10,
    *   currency_code: "usd"
    * }])
    */
-  addTransactions(
+  addOrderTransactions(
     data: CreateOrderTransactionDTO[],
     sharedContext?: Context
   ): Promise<OrderTransactionDTO[]>
@@ -3476,16 +3485,16 @@ export interface IOrderModuleService extends IModuleService {
    * To delete one transaction:
    *
    * ```ts
-   * await orderModuleService.deleteTransactions("123")
+   * await orderModuleService.deleteOrderTransactions("123")
    * ```
    *
    * To delete multiple transactions:
    *
    * ```ts
-   * await orderModuleService.deleteTransactions(["123", "321"])
+   * await orderModuleService.deleteOrderTransactions(["123", "321"])
    * ```
    */
-  deleteTransactions(
+  deleteOrderTransactions(
     transactionIds: string | object | string[] | object[],
     sharedContext?: Context
   ): Promise<void>
@@ -3503,9 +3512,9 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.softDeleteTransactions(["123", "321"])
+   * await orderModuleService.softDeleteOrderTransactions(["123", "321"])
    */
-  softDeleteTransactions<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrderTransactions<TReturnableLinkableKeys extends string = string>(
     transactionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -3525,9 +3534,9 @@ export interface IOrderModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await orderModuleService.restoreTransactions(["123", "321"])
+   * await orderModuleService.restoreOrderTransactions(["123", "321"])
    */
-  restoreTransactions<TReturnableLinkableKeys extends string = string>(
+  restoreOrderTransactions<TReturnableLinkableKeys extends string = string>(
     transactionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

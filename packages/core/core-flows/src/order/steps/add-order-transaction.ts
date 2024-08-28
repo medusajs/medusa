@@ -11,7 +11,7 @@ export const addOrderTransactionStep = createStep(
   async (data: CreateOrderTransactionDTO, { container }) => {
     const service = container.resolve(ModuleRegistrationName.ORDER)
 
-    const created = await service.addTransactions(data)
+    const created = await service.addOrderTransactions(data)
 
     return new StepResponse(created, created.id)
   },
@@ -22,6 +22,6 @@ export const addOrderTransactionStep = createStep(
 
     const service = container.resolve(ModuleRegistrationName.ORDER)
 
-    await service.deleteTransactions(id)
+    await service.deleteOrderTransactions(id)
   }
 )

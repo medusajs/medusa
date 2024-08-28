@@ -7,7 +7,7 @@ import { Form } from "../../../../../../../components/common/form"
 import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
-import { client, sdk } from "../../../../../../../lib/client"
+import { sdk } from "../../../../../../../lib/client"
 import { CategoryCombobox } from "../../../../../common/components/category-combobox"
 import { ProductCreateSchemaType } from "../../../../types"
 import { useProductCreateDetailsContext } from "../product-create-organize-context"
@@ -34,7 +34,7 @@ export const ProductCreateOrganizationSection = ({
 
   const types = useComboboxData({
     queryKey: ["product_types"],
-    queryFn: client.productTypes.list,
+    queryFn: sdk.admin.productType.list,
     getOptions: (data) =>
       data.product_types.map((type) => ({
         label: type.value,
@@ -44,7 +44,7 @@ export const ProductCreateOrganizationSection = ({
 
   const tags = useComboboxData({
     queryKey: ["product_tags"],
-    queryFn: client.productTags.list,
+    queryFn: sdk.admin.productTag.list,
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
         label: tag.value,

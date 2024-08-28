@@ -25,9 +25,9 @@ import {
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 import Order from "./order"
-import OrderShippingMethod from "./order-shipping-method"
+import OrderShipping from "./order-shipping-method"
 import Return from "./return"
-import Transaction from "./transaction"
+import OrderTransaction from "./transaction"
 
 type OptionalOrderClaimProps = DAL.ModelDateColumns
 
@@ -123,19 +123,15 @@ export default class OrderClaim {
   })
   claim_items = new Collection<Rel<ClaimItem>>(this)
 
-  @OneToMany(
-    () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.claim,
-    {
-      cascade: [Cascade.PERSIST],
-    }
-  )
-  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
-
-  @OneToMany(() => Transaction, (transaction) => transaction.claim, {
+  @OneToMany(() => OrderShipping, (shippingMethod) => shippingMethod.claim, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Transaction>(this)
+  shipping_methods = new Collection<Rel<OrderShipping>>(this)
+
+  @OneToMany(() => OrderTransaction, (transaction) => transaction.claim, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<OrderTransaction>(this)
 
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
