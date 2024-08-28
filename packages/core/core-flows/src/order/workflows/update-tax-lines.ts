@@ -134,29 +134,6 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
   (
     input: WorkflowData<UpdateOrderTaxLinesWorkflowInput>
   ): WorkflowData<void> => {
-    const variables = transform(input, (data) => {
-      const variableFilter: any = {
-        id: data.order_id,
-      }
-
-      if (data.item_ids) {
-        variableFilter["filters"] = {
-          items: {
-            id: data.item_ids,
-          },
-        }
-      }
-
-      if (data.shipping_method_ids) {
-        variableFilter["shipping_methodss"] = {
-          id: data.shipping_method_ids,
-        }
-      }
-
-      console.log("variableFilter", JSON.stringify(variableFilter, null, 2))
-      return variableFilter
-    })
-
     const isFullOrder = transform(input, (data) => {
       return !data.item_ids && !data.shipping_method_ids
     })
@@ -169,45 +146,51 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       entry_point: "order",
       fields: fetchOrderFields,
       variables: { id: input.order_id },
+      list: false,
     })
 
-    const entity = when(isFullOrder, (isFullOrder) => {
-      return !isFullOrder
+    const items = when({ input }, ({ input }) => {
+      return input.item_ids!?.length > 0
     }).then(() => {
-      const items = useRemoteQueryStep({
-        entry_point: "line_item",
+      return useRemoteQueryStep({
+        entry_point: "order_line_item",
         fields: lineItemFields,
         variables: { id: input.item_ids },
       }).config({ name: "query-order-line-items" })
+    })
 
-      const shippingMethods = useRemoteQueryStep({
-        entry_point: "shipping_method",
+    const shippingMethods = when({ input }, ({ input }) => {
+      return input.shipping_method_ids!?.length > 0
+    }).then(() => {
+      return useRemoteQueryStep({
+        entry_point: "order_shipping_method",
         fields: shippingMethodFields,
         variables: { id: input.shipping_method_ids },
       }).config({ name: "query-order-shipping-methods" })
-
-      return {
-        items,
-        shippingMethods,
-      }
     })
 
     const taxLineItems = getOrderItemTaxLinesStep(
-      transform({ input, order, entity }, (data) => {
-        console.log(
-          JSON.stringify(data.entity, null, 2),
-          "---------------------**************data.order*"
-        )
-        return {
-          order: data.order,
-          items: data.entity?.items ?? data.order.items,
-          shipping_methods:
-            data.entity?.shippingMethods ?? data.order.shipping_methods,
-          force_tax_calculation: data.input.force_tax_calculation,
-          is_return: data.input.is_return ?? false,
-          shipping_address: data.input.shipping_address,
+      transform(
+        { input, order, items, shippingMethods, isFullOrder },
+        (data) => {
+          const shippingMethods = data.isFullOrder
+            ? data.order.shipping_methods
+            : data.shippingMethods ?? []
+
+          const lineItems = data.isFullOrder
+            ? data.order.items
+            : data.items ?? []
+
+          return {
+            order: data.order,
+            items: lineItems,
+            shipping_methods: shippingMethods,
+            force_tax_calculation: data.input.force_tax_calculation,
+            is_return: data.input.is_return ?? false,
+            shipping_address: data.input.shipping_address,
+          }
         }
-      })
+      )
     )
 
     setOrderTaxLinesForItemsStep({
