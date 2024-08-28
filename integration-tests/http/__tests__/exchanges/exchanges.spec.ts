@@ -9,6 +9,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import { setupTaxStructure } from "../../../modules/__tests__/fixtures/tax"
 
 jest.setTimeout(30000)
 
@@ -379,6 +380,8 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
+
+      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
     })
 
     describe("Exchanges lifecycle", () => {
@@ -435,7 +438,7 @@ medusaIntegrationTestRunner({
         expect(response.data).toEqual({
           type: "invalid_data",
           message:
-            "Order exchange request should have atleast 1 item inbound and 1 item outbound",
+            "Order exchange request should have at least 1 item inbound and 1 item outbound",
         })
 
         await api.post(
