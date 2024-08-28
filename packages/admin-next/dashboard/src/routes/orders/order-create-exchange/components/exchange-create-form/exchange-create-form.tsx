@@ -54,7 +54,9 @@ export const ExchangeCreateForm = ({
    * STATE
    */
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState(0)
+  const [customShippingAmount, setCustomShippingAmount] = useState<
+    number | string
+  >(0)
 
   /**
    * MUTATIONS
@@ -298,14 +300,16 @@ export const ExchangeCreateForm = ({
                           }
                         })
 
+                        const customPrice =
+                          customShippingAmount === ""
+                            ? null
+                            : parseInt(customShippingAmount)
+
                         if (actionId) {
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price:
-                                typeof customShippingAmount === "string"
-                                  ? null
-                                  : customShippingAmount,
+                              custom_price: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -321,9 +325,7 @@ export const ExchangeCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value) =>
-                        value && setCustomShippingAmount(parseInt(value))
-                      }
+                      onValueChange={setCustomShippingAmount}
                       value={customShippingAmount}
                       disabled={!inboundPreviewItems?.length}
                     />
