@@ -46,13 +46,26 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
       )
     }
 
-    const message = {
+    const attachments = Array.isArray(notification.attachments)
+      ? notification.attachments.map((attachment) => ({
+          content: attachment.content, // Base64 encoded string of the file
+          filename: attachment.filename,
+          content_type: attachment.content_type, // MIME type (e.g., 'application/pdf')
+          disposition: attachment.disposition ?? "attachment", // Default to 'attachment'
+          id: attachment.id ?? undefined, // Optional: unique identifier for inline attachments
+        }))
+      : undefined
+
+    const from = notification.from?.trim() || this.config_.from
+
+    const message: sendgrid.MailDataRequired = {
       to: notification.to,
-      from: this.config_.from,
+      from: from,
       templateId: notification.template,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }
         | undefined,
+      attachments: attachments,
     }
 
     try {

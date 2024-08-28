@@ -35,23 +35,23 @@ import {
 
 import { AdminPaymentCollection } from "../../../../../../../../core/types/dist/http/payment/admin/entities"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu.tsx"
+import { ButtonMenu } from "../../../../../components/common/button-menu/button-menu"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { useClaims } from "../../../../../hooks/api/claims.tsx"
-import { useExchanges } from "../../../../../hooks/api/exchanges.tsx"
-import { useOrderPreview } from "../../../../../hooks/api/orders.tsx"
-import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment-collections.tsx"
+import { useClaims } from "../../../../../hooks/api/claims"
+import { useExchanges } from "../../../../../hooks/api/exchanges"
+import { useOrderPreview } from "../../../../../hooks/api/orders"
+import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment-collections"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
-import { formatCurrency } from "../../../../../lib/format-currency.ts"
+import { formatCurrency } from "../../../../../lib/format-currency"
 import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
-import { getTotalCaptured } from "../../../../../lib/payment.ts"
-import { getReturnableQuantity } from "../../../../../lib/rma.ts"
-import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link.tsx"
+import { getTotalCaptured } from "../../../../../lib/payment"
+import { getReturnableQuantity } from "../../../../../lib/rma"
+import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -77,7 +77,12 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
     fields: "+received_at",
   })
 
-  const showReturns = !!returns.length
+  const receivableReturns = useMemo(
+    () => returns.filter((r) => !r.canceled_at),
+    [returns]
+  )
+
+  const showReturns = !!receivableReturns.length
 
   /**
    * Show Allocation button only if there are unfulfilled items that don't have reservations
@@ -170,11 +175,11 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
       {(showAllocateButton || showReturns || showPayment || showRefund) && (
         <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
           {showReturns &&
-            (returns.length === 1 ? (
+            (receivableReturns.length === 1 ? (
               <Button
                 onClick={() =>
                   navigate(
-                    `/orders/${order.id}/returns/${returns[0].id}/receive`
+                    `/orders/${order.id}/returns/${receivableReturns[0].id}/receive`
                   )
                 }
                 variant="secondary"
@@ -186,7 +191,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
               <ButtonMenu
                 groups={[
                   {
-                    actions: returns.map((r) => ({
+                    actions: receivableReturns.map((r) => ({
                       label: t("orders.returns.receive.receive", {
                         label: `#${r.id.slice(-7)}`,
                       }),
@@ -529,11 +534,17 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
             : "-"
         }
       />
-      <Cost
-        label={t("fields.shipping")}
-        secondaryValue={order.shipping_methods.map((sm) => sm.name).join(", ")}
-        value={getLocaleAmount(order.shipping_total, order.currency_code)}
-      />
+      {(order.shipping_methods || [])
+        .sort((m1, m2) =>
+          (m1.created_at as string).localeCompare(m2.created_at as string)
+        )
+        .map((sm, i) => (
+          <Cost
+            label={t("fields.shipping") + (i ? ` ${i + 1}` : "")}
+            secondaryValue={sm.name}
+            value={getLocaleAmount(sm.total, order.currency_code)}
+          />
+        ))}
     </div>
   )
 }

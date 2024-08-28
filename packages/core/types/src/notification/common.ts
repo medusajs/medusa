@@ -4,6 +4,34 @@ import { OperatorMap } from "../dal/utils"
 /**
  * @interface
  *
+ * The structure for attachments in a notification.
+ */
+export interface Attachment {
+  /**
+   * The content of the attachment, encoded as a base64 string.
+   */
+  content: string
+  /**
+   * The filename of the attachment.
+   */
+  filename: string
+  /**
+   * The MIME type of the attachment.
+   */
+  content_type?: string
+  /**
+   * The disposition of the attachment, e.g., "inline" or "attachment".
+   */
+  disposition?: string
+  /**
+   * The ID, if the attachment is meant to be referenced within the body of the message.
+   */
+  id?: string
+}
+
+/**
+ * @interface
+ *
  * A notification's data.
  */
 export interface NotificationDTO {
@@ -15,6 +43,14 @@ export interface NotificationDTO {
    * The recipient of the notification. It can be email, phone number, or username, depending on the channel.
    */
   to: string
+  /**
+   * The sender of the notification. It can be email, phone number, or username, depending on the channel.
+   */
+  from?: string | null
+  /**
+   * Optional attachments for the notification.
+   */
+  attachments?: Attachment[] | null
   /**
    * The channel through which the notification is sent, such as 'email' or 'sms'
    */
