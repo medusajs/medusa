@@ -86,6 +86,4 @@ export async function loadModuleProvider(
       return service
     })
   )
-
-  return services
 }
