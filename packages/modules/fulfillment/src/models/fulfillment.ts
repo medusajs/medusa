@@ -20,7 +20,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import FulfillmentAddress from "./address"
 import FulfillmentItem from "./fulfillment-item"
 import FulfillmentLabel from "./fulfillment-label"
 import FulfillmentProvider from "./fulfillment-provider"
@@ -127,13 +127,13 @@ export default class Fulfillment {
   provider: Rel<FulfillmentProvider>
 
   @OneToOne({
-    entity: () => Address,
+    entity: () => FulfillmentAddress,
     owner: true,
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     nullable: true,
     onDelete: "cascade",
   })
-  delivery_address!: Rel<Address>
+  delivery_address!: Rel<FulfillmentAddress>
 
   @OneToMany(() => FulfillmentItem, (item) => item.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
