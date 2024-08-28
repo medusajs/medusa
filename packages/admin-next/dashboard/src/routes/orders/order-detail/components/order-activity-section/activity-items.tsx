@@ -62,7 +62,7 @@ function ActivityItems(props: ActivityItemsProps) {
                 {t("orders.activity.events.common.toSend")}
               </div>
 
-              <div className="flex flex-col w-fit max-w-full">
+              <div className="flex flex-col">
                 {itemsToSend?.map((item) => {
                   const originalItem = itemsMap?.get(item.item_id)!
 
