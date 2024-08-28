@@ -696,13 +696,14 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "create": {
-      "title": "Add inventory item",
+      "title": "Create Inventory Item",
       "details": "Details",
       "availability": "Availability",
       "locations": "Locations",
       "attributes": "Attributes",
       "requiresShipping": "Requires shipping",
-      "requiresShippingHint": "Does the inventory item require shipping?"
+      "requiresShippingHint": "Does the inventory item require shipping?",
+      "successToast": "Inventory item was successfully created."
     },
     "reservation": {
       "header": "Reservation of {{itemName}}",

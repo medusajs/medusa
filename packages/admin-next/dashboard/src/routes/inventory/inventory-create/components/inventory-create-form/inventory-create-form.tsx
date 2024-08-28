@@ -136,6 +136,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
       })
       .finally(() => {
         handleSuccess()
+        toast.success(t("inventory.create.successToast"))
       })
   })
 
