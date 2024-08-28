@@ -8,15 +8,12 @@ import {
   clx,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import {
-  TransactionStepState,
-  WorkflowExecutionDTO,
-  WorkflowExecutionStep,
-} from "../../../types"
+import { TransactionStepState, WorkflowExecutionStep } from "../../../types"
 import { getTransactionState, getTransactionStateColor } from "../../../utils"
+import { HttpTypes } from "@medusajs/types"
 
 type WorkflowExecutionGeneralSectionProps = {
-  execution: WorkflowExecutionDTO
+  execution: HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
 }
 
 export const WorkflowExecutionGeneralSection = ({

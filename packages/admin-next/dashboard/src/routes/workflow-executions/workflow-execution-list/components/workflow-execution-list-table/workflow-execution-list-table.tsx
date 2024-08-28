@@ -4,19 +4,8 @@ import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useWorkflowExecutions } from "../../../../../hooks/api/workflow-executions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { WorkflowExecutionDTO } from "../../../types"
 import { useWorkflowExecutionTableColumns } from "./use-workflow-execution-table-columns"
 import { useWorkflowExecutionTableQuery } from "./use-workflow-execution-table-query"
-
-/**
- * Type isn't exported from the package
- */
-type WorkflowExecutionsRes = {
-  workflow_executions: WorkflowExecutionDTO[]
-  count: number
-  offset: number
-  limit: number
-}
 
 const PAGE_SIZE = 20
 
