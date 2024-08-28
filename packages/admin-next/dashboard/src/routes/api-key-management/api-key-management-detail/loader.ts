@@ -2,12 +2,12 @@ import { LoaderFunctionArgs } from "react-router-dom"
 
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { apiKeysQueryKeys } from "../../../hooks/api/api-keys"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 
 const apiKeyDetailQuery = (id: string) => ({
   queryKey: apiKeysQueryKeys.detail(id),
-  queryFn: async () => client.apiKeys.retrieve(id),
+  queryFn: async () => sdk.admin.apiKey.retrieve(id),
 })
 
 export const apiKeyLoader = async ({ params }: LoaderFunctionArgs) => {
