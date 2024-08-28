@@ -65,7 +65,7 @@ export const ActiveOrderClaimSection = ({
 
           <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
             <Button size="small" variant="secondary" onClick={onCancelClaim}>
-              {t("actions.cancel")}
+              {t("orders.claims.cancel")}
             </Button>
 
             <Button size="small" variant="secondary" onClick={onContinueClaim}>

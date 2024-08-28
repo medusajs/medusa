@@ -1,4 +1,4 @@
-import { ApiKeyType } from "@medusajs/utils"
+import { ApiKeyType } from "../../../api-key"
 import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams } from "../../common"
 

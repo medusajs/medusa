@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminOrder, AdminOrderPreview } from "@medusajs/types"
-import { Button, Heading, Input, Switch, toast } from "@medusajs/ui"
+import { Button, Heading, Input, Switch, toast, usePrompt } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
@@ -10,13 +10,13 @@ import {
 } from "../../../../../components/modals"
 
 import { Form } from "../../../../../components/common/form"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
 import {
   useCancelOrderEdit,
   useRequestOrderEdit,
 } from "../../../../../hooks/api/order-edits"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { OrderEditItemsSection } from "./order-edit-items-section"
+import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -55,8 +55,22 @@ export const OrderEditCreateForm = ({
     resolver: zodResolver(OrderEditCreateSchema),
   })
 
+  const prompt = usePrompt()
+
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      const res = await prompt({
+        title: t("general.areYouSure"),
+        description: t("orders.edits.confirmText"),
+        confirmText: t("actions.continue"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!res) {
+        return
+      }
+
       await requestOrderEdit()
 
       toast.success(t("orders.edits.createSuccessToast"))
@@ -185,6 +199,8 @@ export const OrderEditCreateForm = ({
                 }}
               />
             </div>
+
+            <div className="p-8" />
           </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
@@ -192,7 +208,7 @@ export const OrderEditCreateForm = ({
             <div className="flex items-center justify-end gap-x-2">
               <RouteFocusModal.Close asChild>
                 <Button type="button" variant="secondary" size="small">
-                  {t("actions.cancel")}
+                  {t("orders.edits.cancel")}
                 </Button>
               </RouteFocusModal.Close>
               <Button
@@ -202,7 +218,7 @@ export const OrderEditCreateForm = ({
                 size="small"
                 isLoading={isRequestRunning}
               >
-                {t("actions.save")}
+                {t("orders.edits.confirm")}
               </Button>
             </div>
           </div>
