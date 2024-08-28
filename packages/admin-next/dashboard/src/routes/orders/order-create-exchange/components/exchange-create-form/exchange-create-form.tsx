@@ -293,7 +293,7 @@ export const ExchangeCreateForm = ({
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
                             for (let a of s.actions) {
-                              if (a.action === "SHIPPING_ADD") {
+                              if (a.action === "SHIPPING_ADD" && !a.return_id) {
                                 actionId = a.id
                               }
                             }
