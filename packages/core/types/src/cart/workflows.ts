@@ -34,7 +34,6 @@ export interface CreateCartCreateLineItemDTO {
   is_giftcard?: boolean
 
   compare_at_unit_price?: BigNumberInput
-  unit_price?: BigNumberInput
 
   metadata?: Record<string, unknown> | null
 }
