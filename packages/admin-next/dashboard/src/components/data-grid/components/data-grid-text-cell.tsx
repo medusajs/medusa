@@ -1,21 +1,19 @@
 import { clx } from "@medusajs/ui"
+import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
 
-import { useEffect, useState } from "react"
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { useDataGridCell } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export const DataGridTextCell = <TData, TValue = any>({
-  field,
   context,
 }: DataGridCellProps<TData, TValue>) => {
-  const { control, renderProps } = useDataGridCell({
-    field,
+  const { field, control, renderProps } = useDataGridCell({
     context,
-    type: "text",
   })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -25,7 +23,7 @@ export const DataGridTextCell = <TData, TValue = any>({
       name={field}
       render={({ field }) => {
         return (
-          <DataGridCellContainer {...container}>
+          <DataGridCellContainer {...container} {...errorProps}>
             <Inner field={field} inputProps={input} />
           </DataGridCellContainer>
         )
@@ -55,7 +53,7 @@ const Inner = ({
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent px-4 py-2.5 outline-none",
+        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
         "focus:cursor-text"
       )}
       autoComplete="off"

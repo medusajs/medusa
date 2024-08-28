@@ -95,12 +95,6 @@ export const CreateRegionForm = ({
         is_tax_inclusive: values.is_tax_inclusive,
       },
       {
-        onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
-        },
         onSuccess: ({ region }) => {
           toast.success(t("regions.toast.create"))
           handleSuccess(`../${region.id}`)

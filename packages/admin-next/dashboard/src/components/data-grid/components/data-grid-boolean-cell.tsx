@@ -1,20 +1,19 @@
 import { Checkbox } from "@medusajs/ui"
 import { Controller, ControllerRenderProps } from "react-hook-form"
+
 import { useCombinedRefs } from "../../../hooks/use-combined-refs"
-import { useDataGridCell } from "../hooks"
+import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export const DataGridBooleanCell = <TData, TValue = any>({
-  field,
   context,
   disabled,
 }: DataGridCellProps<TData, TValue> & { disabled?: boolean }) => {
-  const { control, renderProps } = useDataGridCell({
-    field,
+  const { field, control, renderProps } = useDataGridCell({
     context,
-    type: "boolean",
   })
+  const errorProps = useDataGridCellError({ context })
 
   const { container, input } = renderProps
 
@@ -24,7 +23,7 @@ export const DataGridBooleanCell = <TData, TValue = any>({
       name={field}
       render={({ field }) => {
         return (
-          <DataGridCellContainer {...container}>
+          <DataGridCellContainer {...container} {...errorProps}>
             <Inner field={field} inputProps={input} disabled={disabled} />
           </DataGridCellContainer>
         )
