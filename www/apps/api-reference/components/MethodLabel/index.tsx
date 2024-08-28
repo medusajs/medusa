@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { Badge, capitalize } from "docs-ui"
 
 export type MethodLabelProps = {
@@ -9,7 +10,7 @@ const MethodLabel = ({ method, className }: MethodLabelProps) => {
   return (
     <Badge
       variant={method === "get" ? "green" : method === "post" ? "blue" : "red"}
-      className={className}
+      className={clsx(className, "uppercase")}
     >
       {method === "delete" ? "Del" : capitalize(method)}
     </Badge>

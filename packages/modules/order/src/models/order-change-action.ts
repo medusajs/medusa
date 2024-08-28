@@ -223,23 +223,29 @@ export default class OrderChangeAction {
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
     this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
-    this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
     this.claim_id ??= this.claim?.id ?? this.order_change?.claim_id ?? null
     this.exchange_id ??=
       this.exchange?.id ?? this.order_change?.exchange_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
     this.version ??= this.order_change?.version ?? null
+
+    if (!this.claim_id && !this.exchange_id) {
+      this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
+    }
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
     this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
-    this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
     this.claim_id ??= this.claim?.id ?? this.order_change?.claim_id ?? null
     this.exchange_id ??=
       this.exchange?.id ?? this.order_change?.exchange_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
     this.version ??= this.order_change?.version ?? null
+
+    if (!this.claim_id && !this.exchange_id) {
+      this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
+    }
   }
 }

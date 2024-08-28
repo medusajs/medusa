@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CampaignResponse } from "@medusajs/types"
+import { AdminCampaign } from "@medusajs/types"
 import { Button, DatePicker, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -9,7 +9,7 @@ import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
 
 type EditCampaignFormProps = {
-  campaign: CampaignResponse
+  campaign: AdminCampaign
 }
 
 const EditCampaignSchema = zod.object({
