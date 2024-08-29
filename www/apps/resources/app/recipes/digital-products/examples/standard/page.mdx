@@ -527,7 +527,7 @@ export const createDpWorkflowHighlights = [
 import { 
   createWorkflow,
   transform,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   CreateProductWorkflowInputDTO,
@@ -1515,8 +1515,8 @@ Finally, register the module provider in `medusa-config.js`:
 ```js title="medusa-config.js"
 // other imports...
 import { 
-  Modules
-} from '@medusajs/utils'
+  Modules,
+} from "@medusajs/utils"
 
 module.exports = defineConfig({
   modules: {
@@ -1531,12 +1531,12 @@ module.exports = defineConfig({
           },
           {
             resolve: "./modules/digital-product-fulfillment",
-            id: "digital"
-          }
+            id: "digital",
+          },
         ],
       },
     },
-  }
+  },
 })
 ```
 
@@ -1671,14 +1671,14 @@ import {
   createWorkflow,
   transform,
   when,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   completeCartWorkflow,
   useRemoteQueryStep,
   createRemoteLinkStep,
   createOrderFulfillmentWorkflow,
-  emitEventStep
+  emitEventStep,
 } from "@medusajs/core-flows"
 import { Modules } from "@medusajs/utils"
 import createDigitalProductOrderStep from "./steps/create-digital-product-order"
@@ -1693,8 +1693,8 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   (input: WorkflowInput) => {
     const order = completeCartWorkflow.runAsStep({
       input: {
-        id: input.cart_id
-      }
+        id: input.cart_id,
+      },
     })
 
     const { items } = useRemoteQueryStep({
@@ -1703,19 +1703,19 @@ const createDigitalProductOrderWorkflow = createWorkflow(
         "*",
         "items.*",
         "items.variant.*",
-        "items.variant.digital_product.*"
+        "items.variant.digital_product.*",
       ],
       variables: {
         filters: {
-          id: order.id
-        }
+          id: order.id,
+        },
       },
       throw_if_key_not_found: true,
-      list: false
+      list: false,
     })
 
     const itemsWithDigitalProducts = transform({
-      items
+      items,
     },
     (data) => {
       return data.items.filter((item) => item.variant.digital_product !== undefined)
@@ -1732,32 +1732,32 @@ const createDigitalProductOrderWorkflow = createWorkflow(
   
       createRemoteLinkStep([{
         [DIGITAL_PRODUCT_MODULE]: {
-          digital_product_order_id: digital_product_order.id
+          digital_product_order_id: digital_product_order.id,
         },
         [Modules.ORDER]: {
-          order_id: order.id
-        }
+          order_id: order.id,
+        },
       }])
 
       createOrderFulfillmentWorkflow.runAsStep({
         input: {
           order_id: order.id,
           items: transform({
-            itemsWithDigitalProducts
+            itemsWithDigitalProducts,
           }, (data) => {
             return data.itemsWithDigitalProducts.map((item) => ({
               id: item.id,
-              quantity: item.quantity
+              quantity: item.quantity,
             }))
-          })
-        }
+          }),
+        },
       })
   
       emitEventStep({
         eventName: "digital_product_order.created",
         data: {
-          id: digital_product_order.id
-        }
+          id: digital_product_order.id,
+        },
       })
 
       return digital_product_order
@@ -1765,7 +1765,7 @@ const createDigitalProductOrderWorkflow = createWorkflow(
 
     return new WorkflowResponse({
       order,
-      digital_product_order
+      digital_product_order,
     })
   }
 )
@@ -1846,11 +1846,11 @@ import type {
 } from "@medusajs/medusa"
 import { 
   INotificationModuleService,
-  IFileModuleService
+  IFileModuleService,
 } from "@medusajs/types"
 import { 
   ModuleRegistrationName,
-  remoteQueryObjectFromString
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MediaType } from "../modules/digital-product/types"
 
@@ -1871,13 +1871,13 @@ async function digitalProductOrderCreatedHandler({
       "*",
       "products.*",
       "products.medias.*",
-      "order.*"
+      "order.*",
     ],
     variables: {
       filters: {
-        id: data.id
-      }
-    }
+        id: data.id,
+      },
+    },
   })
 
   const digitalProductOrder = (await remoteQuery(query))[0]
@@ -1920,7 +1920,7 @@ const notificationData = await Promise.all(
 
     return {
       name: product.name,
-      medias
+      medias,
     }
   })
 )
@@ -1930,8 +1930,8 @@ await notificationModuleService.createNotifications({
   template: "digital-order-template",
   channel: "email",
   data: {
-    products: notificationData
-  }
+    products: notificationData,
+  },
 })
 ```
 

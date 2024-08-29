@@ -1,0 +1,85 @@
+---
+sidebar_label: "start-cluster"
+sidebar_position: 7
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `start-cluster Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Starts the Medusa application in [cluster mode](https://expressjs.com/en/advanced/best-practice-performance.html#run-your-app-in-a-cluster).
+
+Running in cluster mode significantly improves performance as the workload and tasks are distributed among all available instances instead of a single one.
+
+```bash
+npx medusa start-cluster
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-c <number>`, `--cpus <number>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The number of CPUs that Medusa can consume.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa will try to consume all CPUs.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-H <host>`, `--host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set host of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `localhost`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <port>`, `--port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set port of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `9000`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
