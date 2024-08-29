@@ -1,0 +1,122 @@
+---
+sidebar_label: "user"
+sidebar_position: 4
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `user Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Create a new admin user.
+
+```bash
+npx medusa user --email <email> [--password <password>]
+```
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-e <email>`, `--email <email>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's email.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <password>`, `--password <password>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's password.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-i <id>`, `--id <id>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's ID.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An automatically generated ID.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--invite`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether to create an invite instead of a user. When using this option, you don't need to specify a password.
+      If ran successfully, you'll receive the invite token in the output.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

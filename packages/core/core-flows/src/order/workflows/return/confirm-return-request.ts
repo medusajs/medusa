@@ -34,6 +34,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -278,7 +279,11 @@ export const confirmReturnRequestWorkflow = createWorkflow(
           requested_at: new Date(),
         },
       ]),
-      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+      confirmOrderChanges({
+        changes: [orderChange],
+        orderId: order.id,
+        confirmed_by: input.confirmed_by,
+      })
     )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({

@@ -39,6 +39,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
+  confirmed_by?: string
 }
 
 /**

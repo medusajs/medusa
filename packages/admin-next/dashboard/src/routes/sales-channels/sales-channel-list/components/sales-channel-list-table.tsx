@@ -20,6 +20,7 @@ import {
   useSalesChannels,
 } from "../../../../hooks/api/sales-channels"
 import { useSalesChannelTableColumns } from "../../../../hooks/table/columns/use-sales-channel-table-columns"
+import { useSalesChannelTableFilters } from "../../../../hooks/table/filters"
 import { useSalesChannelTableQuery } from "../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
 
@@ -42,6 +43,7 @@ export const SalesChannelListTable = () => {
   })
 
   const columns = useColumns()
+  const filters = useSalesChannelTableFilters()
 
   const { table } = useDataTable({
     data: sales_channels ?? [],
@@ -76,6 +78,7 @@ export const SalesChannelListTable = () => {
         columns={columns}
         count={count}
         pageSize={PAGE_SIZE}
+        filters={filters}
         pagination
         search
         navigateTo={(row) => row.id}
