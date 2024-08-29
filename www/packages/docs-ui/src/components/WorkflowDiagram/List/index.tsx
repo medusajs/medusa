@@ -11,7 +11,7 @@ export const WorkflowDiagramList = ({
   const clusters = createNodeClusters(workflow.steps)
 
   return (
-    <div className="flex flex-col gap-docs_0.5">
+    <div className="flex flex-col gap-docs_0.5 my-docs_1">
       {Object.entries(clusters).map(([depth, cluster]) => {
         const next = getNextCluster(clusters, Number(depth))
 

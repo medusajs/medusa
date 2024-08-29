@@ -7495,6 +7495,14 @@ export const generatedSidebar = [
             "path": "/recipes/marketplace/examples/vendors",
             "title": "Example: Vendors",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/marketplace/examples/restaurant-delivery",
+            "title": "Example: Restaurant-Delivery",
+            "children": []
           }
         ]
       },
