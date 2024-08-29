@@ -978,6 +978,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 itemType: propertyType,
                 title: property.getName(),
                 descriptionOptions,
+                context: "request",
               }),
             })
           )
@@ -999,6 +1000,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
+          context: "request",
         })
 
         // If function is a GET function, add the type parameter to the
@@ -1105,6 +1107,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             typeReferenceNode: node.parameters[1].type,
             itemType: responseTypeArguments[0],
           }),
+          context: "response",
         })
       }
     }
@@ -1126,6 +1129,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     allowedChildren,
     disallowedChildren,
     zodObjectTypeName,
+    ...rest
   }: {
     /**
      * The TypeScript type.
@@ -1159,6 +1163,10 @@ class OasKindGenerator extends FunctionKindGenerator {
      * generated type name.
      */
     zodObjectTypeName?: string
+    /**
+     * Whether the type is in a request / response
+     */
+    context?: "request" | "response"
   }): OpenApiSchema {
     if (level > this.MAX_LEVEL) {
       return {}
@@ -1183,7 +1191,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       {
         title: title || typeAsString,
         description,
-      }
+      },
+      rest.context
     )
 
     if (schemaFromFactory) {
@@ -1204,16 +1213,19 @@ class OasKindGenerator extends FunctionKindGenerator {
         })
         return {
           type: "string",
+          description,
           enum: enumMembers,
         }
-      case itemType.isLiteral():
+      case itemType.isLiteral() || typeAsString === "RegExp":
+        const isString =
+          itemType.flags === ts.TypeFlags.StringLiteral ||
+          typeAsString === "RegExp"
         return {
-          type:
-            itemType.flags === ts.TypeFlags.StringLiteral
-              ? "string"
-              : itemType.flags === ts.TypeFlags.NumberLiteral
-                ? "number"
-                : "boolean",
+          type: isString
+            ? "string"
+            : itemType.flags === ts.TypeFlags.NumberLiteral
+              ? "number"
+              : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
@@ -1268,6 +1280,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                     parentName: title || descriptionOptions?.parentName,
                   }
                 : undefined,
+            ...rest,
           }),
         }
       case itemType.isUnion():
@@ -1279,39 +1292,57 @@ class OasKindGenerator extends FunctionKindGenerator {
         if (allLiteral) {
           return {
             type: "string",
+            description,
             enum: (itemType as ts.UnionType).types.map(
               (unionType) => (unionType as ts.LiteralType).value
             ),
           }
         }
+
+        const oneOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.UnionType).types
+        ).map((unionType) =>
+          this.typeToSchema({
+            itemType: unionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        )
+
+        if (oneOfItems.length === 1) {
+          return oneOfItems[0]
+        }
+
         return {
-          oneOf: (itemType as ts.UnionType).types.map((unionType) =>
-            this.typeToSchema({
-              itemType: unionType,
-              // not incrementing considering the
-              // current schema isn't actually a
-              // schema
-              level,
-              title,
-              descriptionOptions,
-            })
-          ),
+          oneOf: oneOfItems,
         }
       case itemType.isIntersection():
+        const allOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.IntersectionType).types
+        ).map((intersectionType) => {
+          return this.typeToSchema({
+            itemType: intersectionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        })
+
+        if (allOfItems.length === 1) {
+          return allOfItems[0]
+        }
+
         return {
-          allOf: (itemType as ts.IntersectionType).types.map(
-            (intersectionType) => {
-              return this.typeToSchema({
-                itemType: intersectionType,
-                // not incrementing considering the
-                // current schema isn't actually a
-                // schema
-                level,
-                title,
-                descriptionOptions,
-              })
-            }
-          ),
+          allOf: allOfItems,
         }
       case typeAsString.startsWith("Pick"):
         const pickTypeArgs =
@@ -1332,6 +1363,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           allowedChildren: pickedProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Omit"):
         const omitTypeArgs =
@@ -1352,6 +1384,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           disallowedChildren: omitProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Partial"):
         const typeArg =
@@ -1368,6 +1401,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions,
           disallowedChildren,
           allowedChildren,
+          ...rest,
         })
 
         // remove all required items
@@ -1405,6 +1439,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 typeStr: property.name,
                 parentName: title || descriptionOptions?.parentName,
               },
+              ...rest,
             })
 
             if (isDeleteResponse && property.name === "object") {
@@ -2033,6 +2068,23 @@ class OasKindGenerator extends FunctionKindGenerator {
     return queryParamsUsageIndicators.some((indicator) =>
       fnText.includes(indicator)
     )
+  }
+
+  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
+    return types.filter((itemType) => {
+      // remove overlapping string / regexp types
+      if (this.checker.typeToString(itemType) === "RegExp") {
+        const hasString = types.some((t) => {
+          return (
+            t.flags === ts.TypeFlags.String ||
+            t.flags === ts.TypeFlags.StringLiteral
+          )
+        })
+        return !hasString
+      }
+
+      return true
+    })
   }
 }
 
