@@ -1,6 +1,6 @@
 import { Constructor, Context, DAL } from "@medusajs/types"
 import { LoadStrategy } from "@mikro-orm/core"
-import { Order, OrderClaim } from "@models"
+import { Order, OrderClaim, OrderExchange, Return } from "@models"
 import { mapRepositoryToOrderModel } from "."
 
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
@@ -29,20 +29,22 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
-    const isRelatedEntity = entity !== Order
+    const isRelatedEntity = [OrderClaim, Return, OrderExchange].includes(entity)
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
     config.options ??= {}
     config.options.populate ??= []
 
+    const strategy = config.options.strategy ?? LoadStrategy.JOINED
     let orderAlias = "o0"
     if (isRelatedEntity) {
       if (entity === OrderClaim) {
-        if (
-          config.options.populate.includes("additional_items") &&
-          !config.options.populate.includes("claim_items")
-        ) {
-          config.options.populate.push("claim_items")
-        }
+        config.options.populate.push("claim_items")
+      }
+
+      if (strategy === LoadStrategy.JOINED) {
+        config.options.populate.push("shipping_methods")
+        config.options.populate.push("order.shipping_methods")
+        config.options.populate.push("order.summary")
       }
 
       if (!config.options.populate.includes("order.items")) {
@@ -59,8 +61,8 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       orderAlias = "o1"
     }
 
-    let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
-    const strategy = config.options.strategy ?? LoadStrategy.JOINED
+    let defaultVersion = global.AAA ? 2 : knex.raw(`"${orderAlias}"."version"`)
+
     if (strategy === LoadStrategy.SELECT_IN) {
       const sql = manager
         .qb(Order, "_sub0")
