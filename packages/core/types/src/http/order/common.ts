@@ -3,6 +3,7 @@ import { BigNumberValue } from "../../totals"
 import { BaseClaim } from "../claim/common"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
+import { createOperatorMap } from "@medusajs/medusa/dist/api/utils/validators"
 
 export interface BaseOrderSummary {
   total: number
@@ -305,6 +306,13 @@ export interface BaseOrder {
 export interface BaseOrderFilters extends BaseFilterable<BaseOrderFilters> {
   id?: string[] | string | OperatorMap<string | string[]>
   status?: string[] | string | OperatorMap<string | string[]>
+}
+
+export interface BaseOrderChangesFilters
+  extends BaseFilterable<BaseOrderChangesFilters> {
+  id?: string[] | string | OperatorMap<string | string[]>
+  status?: string[] | string | OperatorMap<string | string[]>
+  change_type?: string[] | string | OperatorMap<string | string[]>
 }
 
 export interface BaseOrderChange {

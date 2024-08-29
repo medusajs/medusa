@@ -24,6 +24,10 @@ _orderKeys.preview = function (id: string) {
   return [this.detail(id), "preview"]
 }
 
+_orderKeys.changes = function (id: string) {
+  return [this.detail(id), "changes"]
+}
+
 export const ordersQueryKeys = _orderKeys
 
 export const useOrder = (
@@ -75,6 +79,28 @@ export const useOrders = (
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.list(query),
     queryKey: ordersQueryKeys.list(query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useOrderChanges = (
+  id: string,
+  query?: HttpTypes.AdminOrderChangesFilters,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminOrderChangesResponse,
+      Error,
+      HttpTypes.AdminOrderChangesResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.order.listChanges(id, query),
+    queryKey: ordersQueryKeys.changes(query),
     ...options,
   })
 
