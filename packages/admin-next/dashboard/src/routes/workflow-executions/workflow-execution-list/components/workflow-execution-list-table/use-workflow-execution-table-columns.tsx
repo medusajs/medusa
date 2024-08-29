@@ -3,7 +3,7 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
-import { TransactionStepState, WorkflowExecutionStep } from "../../../types"
+import { TransactionStepState } from "../../../types"
 import { getTransactionState, getTransactionStateColor } from "../../../utils"
 import { HttpTypes } from "@medusajs/types"
 
@@ -43,7 +43,7 @@ export const useWorkflowExecutionTableColumns = (): ColumnDef<
         header: t("workflowExecutions.progressLabel"),
         cell: ({ getValue }) => {
           const steps = getValue()?.steps as
-            | Record<string, WorkflowExecutionStep>
+            | Record<string, HttpTypes.AdminWorkflowExecutionStep>
             | undefined
 
           if (!steps) {

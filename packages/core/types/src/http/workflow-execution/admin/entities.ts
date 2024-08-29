@@ -30,7 +30,7 @@ interface AdminWorkflowExecutionExecution {
   steps: Record<string, AdminWorkflowExecutionStep>
 }
 
-export type StepInvoke = {
+export type StepInvokeResult = {
   output: {
     output: unknown
     compensateInput: unknown
@@ -45,7 +45,7 @@ export type StepError = {
 
 export interface WorkflowExecutionContext {
   data: {
-    invoke: Record<string, StepInvoke>
+    invoke: Record<string, StepInvokeResult>
     payload?: unknown
   }
   compensate: Record<string, unknown>
@@ -65,17 +65,16 @@ export interface WorkflowExecutionDefinition {
   timeout?: number
 }
 
+export interface WorkflowExecutionFn {
+  state: TransactionStepState
+  status: TransactionStepStatus
+}
+
 export interface AdminWorkflowExecutionStep {
   id: string
-  invoke: {
-    state: TransactionStepState
-    status: TransactionStepStatus
-  }
+  invoke: WorkflowExecutionFn
   definition: WorkflowExecutionDefinition
-  compensate: {
-    state: TransactionStepState
-    status: TransactionStepStatus
-  }
+  compensate: WorkflowExecutionFn
   depth: number
   startedAt: number
 }
@@ -86,9 +85,8 @@ export interface AdminWorkflowExecution {
   transaction_id: string
   execution: AdminWorkflowExecutionExecution
   context: WorkflowExecutionContext
-  state: any
-  steps: Record<string, AdminWorkflowExecutionStep>
+  state: TransactionState
   created_at: Date
   updated_at: Date
-  deleted_at: Date
+  deleted_at?: Date | null
 }
