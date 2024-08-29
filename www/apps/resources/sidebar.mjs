@@ -560,7 +560,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/references/inventory_next",
+                path: "/references/inventory-next",
                 title: "Main Service Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Inventory Module's Main Service Reference",
@@ -575,7 +575,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/references/inventory_next/models",
+                path: "/references/inventory-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Inventory Module Data Models Reference",
@@ -1247,7 +1247,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/references/stock-location",
+                path: "/references/stock-location-next",
                 title: "Main Service Reference",
                 isChildSidebar: true,
                 childSidebarTitle:
@@ -1263,7 +1263,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/references/stock-location/models",
+                path: "/references/stock-location-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle:
