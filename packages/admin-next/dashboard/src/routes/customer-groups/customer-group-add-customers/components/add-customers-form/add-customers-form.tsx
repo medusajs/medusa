@@ -103,25 +103,20 @@ export const AddCustomersForm = ({
   const { mutateAsync, isPending } = useAddCustomersToGroup(customerGroupId)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await mutateAsync(
-      {
-        customer_ids: data.customer_ids,
-      },
-      {
-        onSuccess: () => {
-          toast.success(
-            t("customerGroups.customers.add.successToast", {
-              count: data.customer_ids.length,
-            })
-          )
+    await mutateAsync(data.customer_ids, {
+      onSuccess: () => {
+        toast.success(
+          t("customerGroups.customers.add.successToast", {
+            count: data.customer_ids.length,
+          })
+        )
 
-          handleSuccess(`/customer-groups/${customerGroupId}`)
-        },
-        onError: (error) => {
-          toast.error(error.message)
-        },
-      }
-    )
+        handleSuccess(`/customer-groups/${customerGroupId}`)
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
   })
 
   if (isError) {
