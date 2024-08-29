@@ -1,6 +1,6 @@
 import { Constructor, Context, DAL } from "@medusajs/types"
 import { LoadStrategy } from "@mikro-orm/core"
-import { Order, OrderClaim, OrderExchange, Return } from "@models"
+import { Order, OrderClaim } from "@models"
 import { mapRepositoryToOrderModel } from "."
 
 export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
@@ -29,7 +29,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
-    const isRelatedEntity = [OrderClaim, Return, OrderExchange].includes(entity)
+    const isRelatedEntity = entity !== Order
     const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
     config.options ??= {}
     config.options.populate ??= []
@@ -61,7 +61,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       orderAlias = "o1"
     }
 
-    let defaultVersion = global.AAA ? 2 : knex.raw(`"${orderAlias}"."version"`)
+    let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
 
     if (strategy === LoadStrategy.SELECT_IN) {
       const sql = manager
