@@ -21,6 +21,19 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
     setOpen(false)
   }
 
+  let returnType = "Return"
+  let returnTypeId = orderReturn.id
+
+  if (orderReturn.claim_id) {
+    returnType = "Claim"
+    returnTypeId = orderReturn.claim_id
+  }
+
+  if (orderReturn.exchange_id) {
+    returnType = "Exchange"
+    returnTypeId = orderReturn.exchange_id
+  }
+
   if (typeof orderReturn !== "object") {
     return
   }
@@ -41,9 +54,9 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
         side="top"
         className="bg-ui-bg-component focus-visible:outline-none p-2"
       >
-        <div className="flex flex-col">
+        <div className="">
           <Badge size="2xsmall" className="mb-2" rounded="full">
-            #{orderReturn.id.replace("return_", "")}
+            {returnType}: #{returnTypeId.slice(-7)}
           </Badge>
 
           <Text size="xsmall">
@@ -59,7 +72,9 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
               {t(`orders.returns.itemReceived`)}
             </span>
             {" · "}
-            {formatDate(orderReturn.received_at)}
+            {orderReturn.received_at
+              ? formatDate(orderReturn.received_at)
+              : "-"}
           </Text>
         </div>
       </Popover.Content>
