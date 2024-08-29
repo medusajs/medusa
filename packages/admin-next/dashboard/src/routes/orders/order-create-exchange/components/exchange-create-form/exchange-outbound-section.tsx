@@ -192,7 +192,7 @@ export const ExchangeOutboundSection = ({
     const outboundShippingMethods = preview.shipping_methods.filter((s) => {
       const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-      return action && !!!action?.return?.id
+      return !action?.return_id
     })
 
     const promises = outboundShippingMethods
