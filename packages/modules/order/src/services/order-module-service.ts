@@ -4,8 +4,8 @@ import {
   DAL,
   FilterableOrderReturnReasonProps,
   FindConfig,
-  IOrderModuleService,
   InternalModuleDeclaration,
+  IOrderModuleService,
   ModulesSdkTypes,
   OrderDTO,
   OrderReturnReasonDTO,
@@ -18,21 +18,21 @@ import {
 } from "@medusajs/types"
 import {
   BigNumber,
+  createRawPropertiesFromBigNumber,
   DecorateCartLikeInputDTO,
+  decorateCartTotals,
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isObject,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   OrderChangeStatus,
   OrderStatus,
-  createRawPropertiesFromBigNumber,
-  decorateCartTotals,
-  deduplicate,
-  isDefined,
-  isObject,
-  isString,
   promiseAll,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
@@ -74,8 +74,8 @@ import {
 } from "@types"
 import { UpdateReturnReasonDTO } from "src/types/return-reason"
 import {
-  ApplyOrderChangeDTO,
   applyChangesToOrder,
+  ApplyOrderChangeDTO,
   calculateOrderChange,
   formatOrder,
 } from "../utils"
@@ -321,6 +321,7 @@ export default class OrderModuleService<
     })
   }
 
+  @InjectManager()
   // @ts-expect-error
   async retrieveOrder(
     id: string,
@@ -346,6 +347,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderDTO
   }
 
+  @InjectManager()
   // @ts-expect-error
   async listOrders(
     filters?: any,
@@ -363,6 +365,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderDTO[]
   }
 
+  @InjectManager()
   // @ts-expect-error
   async listAndCountOrders(
     filters?: any,
@@ -387,6 +390,7 @@ export default class OrderModuleService<
     ]
   }
 
+  @InjectManager()
   // @ts-ignore
   async retrieveReturn(
     id: string,
@@ -404,6 +408,7 @@ export default class OrderModuleService<
     }) as OrderTypes.ReturnDTO
   }
 
+  @InjectManager()
   // @ts-ignore
   async listReturns(
     filters?: any,
@@ -421,6 +426,7 @@ export default class OrderModuleService<
     }) as OrderTypes.ReturnDTO[]
   }
 
+  @InjectManager()
   // @ts-ignore
   async listAndCountReturns(
     filters?: any,
@@ -445,6 +451,7 @@ export default class OrderModuleService<
     ]
   }
 
+  @InjectManager()
   // @ts-ignore
   async retrieveOrderClaim(
     id: string,
@@ -466,6 +473,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderClaimDTO
   }
 
+  @InjectManager()
   // @ts-ignore
   async listOrderClaims(
     filters?: any,
@@ -487,6 +495,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderClaimDTO[]
   }
 
+  @InjectManager()
   // @ts-ignore
   async listAndCountOrderClaims(
     filters?: any,
@@ -511,6 +520,7 @@ export default class OrderModuleService<
     ]
   }
 
+  @InjectManager()
   // @ts-ignore
   async retrieveOrderExchange(
     id: string,
@@ -532,6 +542,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderExchangeDTO
   }
 
+  @InjectManager()
   // @ts-ignore
   async listOrderExchanges(
     filters?: any,
@@ -553,6 +564,7 @@ export default class OrderModuleService<
     }) as OrderTypes.OrderExchangeDTO[]
   }
 
+  @InjectManager()
   // @ts-ignore
   async listAndCountOrderExchanges(
     filters?: any,

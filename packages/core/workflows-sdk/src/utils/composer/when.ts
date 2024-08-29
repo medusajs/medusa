@@ -41,7 +41,6 @@ export function when(input, condition) {
     then: (fn) => {
       thenCalled = true
       const ret = fn()
-
       const applyCondition =
         global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition].steps
 

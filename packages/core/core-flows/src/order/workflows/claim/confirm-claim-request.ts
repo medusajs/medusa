@@ -41,6 +41,18 @@ export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
 }
 
+const memoryConsumption = createStep(
+  "memory-consumption-step",
+  ({ mark }: { mark: string }) => {
+    const memoryUsage = process.memoryUsage()
+    console.log(
+      `Called for mark: ${mark}`,
+      "Memory usage: \n",
+      JSON.stringify(memoryUsage, null, 4)
+    )
+  }
+)
+
 /**
  * This step validates that a requested claim can be confirmed.
  */
@@ -212,6 +224,8 @@ export const confirmClaimRequestWorkflow = createWorkflow(
   function (
     input: ConfirmClaimRequestWorkflowInput
   ): WorkflowResponse<OrderPreviewDTO> {
+    memoryConsumption({ mark: "Beginning of the workflow" })
+
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
       fields: [
@@ -224,6 +238,9 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       variables: { id: input.claim_id },
       list: false,
       throw_if_key_not_found: true,
+    })
+    memoryConsumption({ mark: "After querying order claim" }).config({
+      name: "1",
     })
 
     const order: OrderDTO = useRemoteQueryStep({
@@ -240,6 +257,8 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "order-query" })
+
+    memoryConsumption({ mark: "After querying order" }).config({ name: "2" })
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
@@ -264,6 +283,10 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
+    memoryConsumption({ mark: "After querying order change" }).config({
+      name: "3",
+    })
+
     confirmClaimRequestValidationStep({ order, orderClaim, orderChange })
 
     const { claimItems, returnItems } = transform(
@@ -273,10 +296,20 @@ export const confirmClaimRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
+    memoryConsumption({ mark: "After fetching order preview" }).config({
+      name: "4",
+    })
+
     const [createdClaimItems, createdReturnItems] = parallelize(
       createOrderClaimItemsFromActionsStep(claimItems),
       createReturnItemsFromActionsStep(returnItems)
     )
+
+    memoryConsumption({
+      mark: "After creating order claims and returned items",
+    }).config({
+      name: "5",
+    })
 
     confirmIfClaimItemsArePresent({
       claimItems: createdClaimItems,
@@ -291,6 +324,10 @@ export const confirmClaimRequestWorkflow = createWorkflow(
     )
 
     confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+
+    memoryConsumption({ mark: "After confirming order changes" }).config({
+      name: "6",
+    })
 
     when({ returnId }, ({ returnId }) => {
       return !!returnId
