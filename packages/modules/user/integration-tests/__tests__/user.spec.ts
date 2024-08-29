@@ -217,12 +217,17 @@ moduleIntegrationTestRunner<IUserModuleService>({
           ])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
-            expect.objectContaining({
-              data: { id: "1" },
-              name: UserEvents.USER_UPDATED,
-            }),
-          ])
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              expect.objectContaining({
+                data: { id: "1" },
+                name: UserEvents.USER_UPDATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
       })
 
@@ -247,16 +252,21 @@ moduleIntegrationTestRunner<IUserModuleService>({
           await service.createUsers(defaultUserData)
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith([
-            expect.objectContaining({
-              data: { id: "1" },
-              name: UserEvents.USER_CREATED,
-            }),
-            expect.objectContaining({
-              data: { id: "2" },
-              name: UserEvents.USER_CREATED,
-            }),
-          ])
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              expect.objectContaining({
+                data: { id: "1" },
+                name: UserEvents.USER_CREATED,
+              }),
+              expect.objectContaining({
+                data: { id: "2" },
+                name: UserEvents.USER_CREATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
       })
     })

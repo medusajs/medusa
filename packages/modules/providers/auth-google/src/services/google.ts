@@ -19,12 +19,25 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
   protected config_: LocalServiceConfig
   protected logger_: Logger
 
+  static validateOptions(options: GoogleAuthProviderOptions) {
+    if (!options.clientID) {
+      throw new Error("Google clientID is required")
+    }
+
+    if (!options.clientSecret) {
+      throw new Error("Google clientSecret is required")
+    }
+
+    if (!options.callbackURL) {
+      throw new Error("Google callbackUrl is required")
+    }
+  }
+
   constructor(
     { logger }: InjectedDependencies,
     options: GoogleAuthProviderOptions
   ) {
     super({}, { provider: "google", displayName: "Google Authentication" })
-    this.validateConfig(options)
     this.config_ = options
     this.logger_ = logger
   }
@@ -172,19 +185,5 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     )
 
     return { success: true, location: authUrl.toString() }
-  }
-
-  private validateConfig(config: LocalServiceConfig) {
-    if (!config.clientID) {
-      throw new Error("Google clientID is required")
-    }
-
-    if (!config.clientSecret) {
-      throw new Error("Google clientSecret is required")
-    }
-
-    if (!config.callbackURL) {
-      throw new Error("Google callbackUrl is required")
-    }
   }
 }

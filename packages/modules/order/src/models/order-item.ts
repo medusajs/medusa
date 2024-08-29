@@ -15,7 +15,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 import Order from "./order"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
@@ -71,7 +71,7 @@ export default class OrderItem {
   version: number
 
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     fieldName: "item_id",
     mapToPk: true,
     columnType: "text",
@@ -79,10 +79,10 @@ export default class OrderItem {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne(() => LineItem, {
+  @ManyToOne(() => OrderLineItem, {
     persist: false,
   })
-  item: Rel<LineItem>
+  item: Rel<OrderLineItem>
 
   @MikroOrmBigNumberProperty()
   quantity: BigNumber | number

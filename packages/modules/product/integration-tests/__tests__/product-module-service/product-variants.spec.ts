@@ -212,14 +212,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productVariant.title).toEqual("new test")
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
-              data: { id: variantOne.id },
-              object: "product_variant",
-              source: Modules.PRODUCT,
-              action: CommonEvents.UPDATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
+                data: { id: variantOne.id },
+                object: "product_variant",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
 
         it("should upsert the options of a variant successfully", async () => {
@@ -245,14 +250,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
-              data: { id: variantOne.id },
-              object: "product_variant",
-              source: Modules.PRODUCT,
-              action: CommonEvents.UPDATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
+                data: { id: variantOne.id },
+                object: "product_variant",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
 
         it("should do a partial update on the options of a variant successfully", async () => {
@@ -319,14 +329,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_VARIANT_CREATED, {
-              data: { id: variant.id },
-              object: "product_variant",
-              source: Modules.PRODUCT,
-              action: CommonEvents.CREATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_VARIANT_CREATED, {
+                data: { id: variant.id },
+                object: "product_variant",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
 
         it("should correctly associate variants with own product options", async () => {

@@ -217,7 +217,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        const refund = await service.addTransactions([
+        const refund = await service.addOrderTransactions([
           {
             order_id: created.id,
             amount: -20,
@@ -242,7 +242,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        await service.softDeleteTransactions([refund[0].id])
+        await service.softDeleteOrderTransactions([refund[0].id])
 
         const serializedOrder2 = JSON.parse(
           JSON.stringify(
@@ -261,7 +261,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        await service.addTransactions([
+        await service.addOrderTransactions([
           {
             order_id: created.id,
             amount: -50,
@@ -286,7 +286,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           })
         )
 
-        await service.restoreTransactions([refund[0].id])
+        await service.restoreOrderTransactions([refund[0].id])
 
         const serializedOrder4 = JSON.parse(
           JSON.stringify(

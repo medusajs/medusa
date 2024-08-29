@@ -20,7 +20,7 @@ const CustomerIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_address" })
-export default class Address {
+export default class OrderAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })

@@ -14,19 +14,19 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
         expect(Object.keys(linkable)).toEqual([
           "order",
-          "address",
-          "lineItem",
-          "lineItemAdjustment",
-          "lineItemTaxLine",
-          "shippingMethod",
-          "shippingMethodAdjustment",
-          "shippingMethodTaxLine",
-          "transaction",
+          "orderAddress",
+          "orderLineItem",
+          "orderLineItemAdjustment",
+          "orderLineItemTaxLine",
+          "orderShippingMethod",
+          "orderShippingMethodAdjustment",
+          "orderShippingMethodTaxLine",
+          "orderTransaction",
           "orderChange",
           "orderChangeAction",
           "orderItem",
           "orderSummary",
-          "orderShippingMethod",
+          "orderShipping",
           "returnReason",
           "return",
           "returnItem",
@@ -50,68 +50,68 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "order",
             },
           },
-          address: {
+          orderAddress: {
             id: {
-              linkable: "address_id",
+              linkable: "order_address_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "address",
+              field: "orderAddress",
             },
           },
-          lineItem: {
+          orderLineItem: {
             id: {
-              linkable: "line_item_id",
+              linkable: "order_line_item_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "lineItem",
+              field: "orderLineItem",
             },
           },
-          lineItemAdjustment: {
+          orderLineItemAdjustment: {
             id: {
-              linkable: "line_item_adjustment_id",
+              linkable: "order_line_item_adjustment_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "lineItemAdjustment",
+              field: "orderLineItemAdjustment",
             },
           },
-          lineItemTaxLine: {
+          orderLineItemTaxLine: {
             id: {
-              linkable: "line_item_tax_line_id",
+              linkable: "order_line_item_tax_line_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "lineItemTaxLine",
+              field: "orderLineItemTaxLine",
             },
           },
-          shippingMethod: {
+          orderShippingMethod: {
             id: {
-              linkable: "shipping_method_id",
+              linkable: "order_shipping_method_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "shippingMethod",
+              field: "orderShippingMethod",
             },
           },
-          shippingMethodAdjustment: {
+          orderShippingMethodAdjustment: {
             id: {
-              linkable: "shipping_method_adjustment_id",
+              linkable: "order_shipping_method_adjustment_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "shippingMethodAdjustment",
+              field: "orderShippingMethodAdjustment",
             },
           },
-          shippingMethodTaxLine: {
+          orderShippingMethodTaxLine: {
             id: {
-              linkable: "shipping_method_tax_line_id",
+              linkable: "order_shipping_method_tax_line_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "shippingMethodTaxLine",
+              field: "orderShippingMethodTaxLine",
             },
           },
-          transaction: {
+          orderTransaction: {
             id: {
-              linkable: "transaction_id",
+              linkable: "order_transaction_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "transaction",
+              field: "orderTransaction",
             },
           },
           orderChange: {
@@ -146,12 +146,12 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "orderSummary",
             },
           },
-          orderShippingMethod: {
+          orderShipping: {
             id: {
-              linkable: "order_shipping_method_id",
+              linkable: "order_shipping_id",
               primaryKey: "id",
               serviceName: "order",
-              field: "orderShippingMethod",
+              field: "orderShipping",
             },
           },
           returnReason: {
@@ -188,18 +188,18 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           },
           orderClaimItem: {
             id: {
-              field: "orderClaimItem",
               linkable: "order_claim_item_id",
               primaryKey: "id",
               serviceName: "order",
+              field: "orderClaimItem",
             },
           },
           orderClaimItemImage: {
             id: {
-              field: "orderClaimItemImage",
               linkable: "order_claim_item_image_id",
               primaryKey: "id",
               serviceName: "order",
+              field: "orderClaimItemImage",
             },
           },
           orderExchange: {
@@ -212,10 +212,10 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           },
           orderExchangeItem: {
             id: {
-              field: "orderExchangeItem",
               linkable: "order_exchange_item_id",
               primaryKey: "id",
               serviceName: "order",
+              field: "orderExchangeItem",
             },
           },
         })

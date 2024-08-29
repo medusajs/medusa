@@ -154,7 +154,7 @@ async function processAdditionalItems(
     }
   })
 
-  const createItems = await service.lineItemService_.create(
+  const createItems = await service.orderLineItemService_.create(
     itemsToAdd,
     sharedContext
   )
@@ -192,7 +192,7 @@ async function processShippingMethods(
     let shippingMethodId
 
     if (!isString(shippingMethod)) {
-      const methods = await service.createShippingMethods(
+      const methods = await service.createOrderShippingMethods(
         [
           {
             ...shippingMethod,
@@ -207,7 +207,7 @@ async function processShippingMethods(
       shippingMethodId = shippingMethod
     }
 
-    const method = await service.retrieveShippingMethod(
+    const method = await service.retrieveOrderShippingMethod(
       shippingMethodId,
       { relations: ["tax_lines", "adjustments"] },
       sharedContext
@@ -243,7 +243,7 @@ async function processReturnShipping(
     let returnShippingMethodId
 
     if (!isString(data.return_shipping)) {
-      const methods = await service.createShippingMethods(
+      const methods = await service.createOrderShippingMethods(
         [
           {
             ...data.return_shipping,
@@ -259,7 +259,7 @@ async function processReturnShipping(
       returnShippingMethodId = data.return_shipping
     }
 
-    const method = await service.retrieveShippingMethod(
+    const method = await service.retrieveOrderShippingMethod(
       returnShippingMethodId,
       { relations: ["tax_lines", "adjustments"] },
       sharedContext

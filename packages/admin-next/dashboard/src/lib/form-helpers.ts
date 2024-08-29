@@ -30,15 +30,17 @@ export function transformNullableFormData<
   }, {} as K extends true ? Nullable<T> : Optional<T>)
 }
 
-export function transformNullableFormNumber(
+export function transformNullableFormNumber<K extends boolean = true>(
   value?: string | number,
-  nullify = true
-) {
+  nullify: K = true as K
+): K extends true ? number | null : number | undefined {
   if (
     typeof value === "undefined" ||
     (typeof value === "string" && value.trim() === "")
   ) {
-    return nullify ? null : undefined
+    return (nullify ? null : undefined) as K extends true
+      ? number | null
+      : number | undefined
   }
 
   if (typeof value === "string") {

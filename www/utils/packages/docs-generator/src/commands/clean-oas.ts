@@ -20,6 +20,12 @@ import parseOas from "../utils/parse-oas.js"
 
 const OAS_PREFIX_REGEX = /@oas \[(?<method>(get|post|delete))\] (?<path>.+)/
 
+const ignoreSchemas = [
+  "AuthResponse",
+  "AuthAdminSessionResponse",
+  "AuthStoreSessionResponse",
+]
+
 export default async function () {
   const oasOutputBasePath = getOasOutputBasePath()
   const oasOperationsPath = path.join(oasOutputBasePath, "operations")
@@ -274,7 +280,10 @@ export default async function () {
 
   // clean up schemas
   allSchemas.forEach((schemaName) => {
-    if (referencedSchemas.has(schemaName)) {
+    if (
+      referencedSchemas.has(schemaName) ||
+      ignoreSchemas.includes(schemaName)
+    ) {
       return
     }
 
