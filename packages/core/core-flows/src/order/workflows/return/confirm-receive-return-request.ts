@@ -36,6 +36,7 @@ import {
 
 export type ConfirmReceiveReturnRequestWorkflowInput = {
   return_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -292,7 +293,11 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
     parallelize(
       updateReturnsStep([updateReturn]),
       updateReturnItemsStep(updateReturnItem),
-      confirmOrderChanges({ changes: [orderChange], orderId: order.id }),
+      confirmOrderChanges({
+        changes: [orderChange],
+        orderId: order.id,
+        confirmed_by: input.confirmed_by,
+      }),
       adjustInventoryLevelsStep(inventoryAdjustment)
     )
 

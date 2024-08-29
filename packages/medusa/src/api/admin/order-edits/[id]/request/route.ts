@@ -12,7 +12,10 @@ export const POST = async (
   const { id } = req.params
 
   const { result } = await requestOrderEditRequestWorkflow(req.scope).run({
-    input: { order_id: id },
+    input: {
+      order_id: id,
+      requested_by: req.auth_context.actor_id,
+    },
   })
 
   res.json({

@@ -1,10 +1,10 @@
 import { cancelOrderExchangeWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostCancelExchangeReqSchemaType } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostCancelExchangeReqSchemaType>,
@@ -17,6 +17,7 @@ export const POST = async (
     input: {
       ...req.validatedBody,
       exchange_id: id,
+      canceled_by: req.auth_context.actor_id,
     },
   })
 
