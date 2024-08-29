@@ -93,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The promotion's object.
+ *               description: The name of the deleted object.
+ *               default: "promotion"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The promotion's deleted.
+ *               description: Whether the promotion was deleted.
  *             parent:
  *               type: object
  *               description: The promotion's parent.

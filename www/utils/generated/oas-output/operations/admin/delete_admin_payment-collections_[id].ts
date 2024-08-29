@@ -93,14 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The payment collection's object.
+ *               description: The name of the deleted object.
+ *               default: "payment-collection"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The payment collection's deleted.
- *             parent:
- *               type: object
- *               description: The payment collection's parent.
+ *               description: Whether the payment collection was deleted.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

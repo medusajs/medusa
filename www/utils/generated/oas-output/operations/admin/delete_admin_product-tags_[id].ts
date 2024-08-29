@@ -2,7 +2,7 @@
  * @oas [delete] /admin/product-tags/{id}
  * operationId: DeleteProductTagsId
  * summary: Delete a Product Tag
- * description: Delete a product tag.
+ * description: Delete a product tag. This doesn't delete products using the tag.
  * x-authenticated: true
  * parameters:
  *   - name: id

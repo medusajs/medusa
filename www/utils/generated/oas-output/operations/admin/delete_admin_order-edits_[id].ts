@@ -1,8 +1,8 @@
 /**
  * @oas [delete] /admin/order-edits/{id}
  * operationId: DeleteOrderEditsId
- * summary: Delete a Order Edit
- * description: Delete a order edit.
+ * summary: Cancel Order Edit
+ * description: Cancel an order edit.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -93,14 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The order edit's object.
+ *               description: The name of the deleted object.
+ *               default: "order-edit"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The order edit's deleted.
- *             parent:
- *               type: object
- *               description: The order edit's parent.
+ *               description: Whether the order edit was deleted.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -93,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The refund reason's object.
+ *               description: The name of the deleted object.
+ *               default: "refund_reason"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The refund reason's deleted.
+ *               description: Whether the refund reason was deleted.
  *             parent:
  *               type: object
  *               description: The refund reason's parent.

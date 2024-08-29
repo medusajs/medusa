@@ -93,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The region's object.
+ *               description: The name of the deleted object.
+ *               default: "region"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The region's deleted.
+ *               description: Whether the region was deleted.
  *             parent:
  *               type: object
  *               description: The region's parent.

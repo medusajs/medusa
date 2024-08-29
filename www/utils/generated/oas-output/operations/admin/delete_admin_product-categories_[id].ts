@@ -2,7 +2,7 @@
  * @oas [delete] /admin/product-categories/{id}
  * operationId: DeleteProductCategoriesId
  * summary: Delete a Product Category
- * description: Delete a product category.
+ * description: Delete a product category. This doesn't deleted products in that category.
  * x-authenticated: true
  * parameters:
  *   - name: id

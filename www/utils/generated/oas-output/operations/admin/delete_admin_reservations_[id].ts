@@ -93,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The reservation's object.
+ *               description: The name of the deleted object.
+ *               default: "reservation"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The reservation's deleted.
+ *               description: Whether the reservation was deleted.
  *             parent:
  *               type: object
  *               description: The reservation's parent.

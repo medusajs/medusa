@@ -1,9 +1,15 @@
 /**
  * @oas [delete] /admin/returns/{id}/request-items/{action_id}
  * operationId: DeleteReturnsIdRequestItemsAction_id
- * summary: Remove Request Items from Return
- * description: Remove a list of request items from a return. This doesn't delete
- *   the Request Item, only the association between the Request Item and the
+ * summary: Remove Item from Return
+ * x-sidebar-summary: Remove Item
+ * description: >
+ *   Remove an item in the return by the ID of the 
+ *   item's `RETURN_ITEM` action.
+ * 
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  *   return.
  * x-authenticated: true
  * parameters:
@@ -15,7 +21,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The return's action id.
+ *     description: The ID of the item's `RETURN_ITEM` action.
  *     required: true
  *     schema:
  *       type: string

@@ -1,9 +1,13 @@
 /**
  * @oas [delete] /admin/products/{id}/options/{option_id}
  * operationId: DeleteProductsIdOptionsOption_id
- * summary: Remove Options from Product
- * description: Remove a list of options from a product. This doesn't delete the
- *   Option, only the association between the Option and the product.
+ * summary: Delete an Option from Product
+ * x-sidebar-summary: Delete Option
+ * description: >
+ *   Delete an option from a product.
+ * 
+ * 
+ *   Values of this option in the product's variants are removed.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +18,7 @@
  *       type: string
  *   - name: option_id
  *     in: path
- *     description: The product's option id.
+ *     description: The product option's ID.
  *     required: true
  *     schema:
  *       type: string
