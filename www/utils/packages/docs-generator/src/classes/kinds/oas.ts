@@ -1,4 +1,4 @@
-import { readFileSync, stat, writeFileSync } from "fs"
+import { readFileSync, writeFileSync } from "fs"
 import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
 import ts, { SyntaxKind } from "typescript"
@@ -26,7 +26,6 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
-import getSymbol from "../../utils/get-symbol.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
@@ -956,7 +955,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       // TODO for now I'll use the type for validatedQuery until
       // we have an actual approach to infer query types
       const querySymbol = requestType.getProperty("validatedQuery")
-      if (querySymbol) {
+      if (querySymbol && this.shouldAddQueryParams(node)) {
         const queryType = this.checker.getTypeOfSymbol(querySymbol)
         const queryTypeName = this.checker.typeToString(queryType)
         queryType.getProperties().forEach((property) => {
@@ -1887,71 +1886,54 @@ class OasKindGenerator extends FunctionKindGenerator {
   getAssociatedWorkflow(node: FunctionNode): string | undefined {
     let workflow: string | undefined
 
-    if (
-      (!ts.isFunctionDeclaration(node) && !ts.isArrowFunction(node)) ||
-      !node.body ||
-      !ts.isBlock(node.body)
-    ) {
+    if (!ts.isFunctionDeclaration(node) && !ts.isArrowFunction(node)) {
       return
     }
 
     const sourceFile = node.getSourceFile()
-    const fileLocalSymbols: Map<string, ts.Symbol> =
-      "locals" in sourceFile
-        ? (sourceFile.locals as Map<string, ts.Symbol>)
-        : new Map()
 
-    if (!fileLocalSymbols.size) {
+    // if a source file doesn't have imports, then it's assumed that it's not using workflows.
+    if (!("imports" in sourceFile) || !Array.isArray(sourceFile.imports)) {
       return
     }
 
-    node.body.statements.some((statement) => {
-      let awaitExpression: ts.AwaitExpression | undefined
+    // retrieve workflows imported from `@medusajs/core-flows`
+    // since there could be multiple import statements from the
+    // same package, put them in an array
+    const coreFlowsImports: ts.ImportClause[] = []
+    ;(sourceFile.imports as ts.Node[]).forEach((importNode) => {
       if (
-        ts.isVariableStatement(statement) &&
-        statement.declarationList.declarations[0].initializer &&
-        ts.isAwaitExpression(
-          statement.declarationList.declarations[0].initializer
-        )
+        !importNode.parent ||
+        !ts.isImportDeclaration(importNode.parent) ||
+        !importNode.parent.importClause?.namedBindings ||
+        importNode.getText() !== `"@medusajs/core-flows"`
       ) {
-        awaitExpression = statement.declarationList.declarations[0].initializer
-      } else if (ts.isAwaitExpression(statement)) {
-        awaitExpression = statement
-      } else if (
-        ts.isExpressionStatement(statement) &&
-        ts.isAwaitExpression(statement.expression)
-      ) {
-        awaitExpression = statement.expression
+        return
       }
 
-      if (
-        !awaitExpression ||
-        !ts.isCallExpression(awaitExpression.expression) ||
-        !ts.isPropertyAccessExpression(awaitExpression.expression.expression) ||
-        !awaitExpression.expression.expression.name.getText().startsWith("run")
-      ) {
-        return false
-      }
+      coreFlowsImports.push(importNode.parent.importClause)
+    })
 
-      const fullExpressionText = awaitExpression.expression.getText()
-      const parenIndex = fullExpressionText.indexOf("(")
-      const dotIndex = fullExpressionText.indexOf(".")
-      const cutOffIndex =
-        parenIndex !== -1 && dotIndex === -1
-          ? parenIndex
-          : parenIndex === -1 && dotIndex !== -1
-            ? dotIndex
-            : parenIndex === -1 && dotIndex === -1
-              ? fullExpressionText.length
-              : Math.min(parenIndex, dotIndex)
-      const expressionName = fullExpressionText.substring(0, cutOffIndex)
+    // if no imports found from `@medusajs/core-flows`, return
+    if (!coreFlowsImports.length) {
+      return
+    }
 
-      if (!fileLocalSymbols.has(expressionName)) {
-        return false
-      }
+    // check if any of the imported vars are used in the function node
+    // const fileWorkflowImports: Map<string, ts.Identifier> = new Map()
+    const fnText = node.getText()
+    coreFlowsImports.forEach((coreFlowsImport) => {
+      coreFlowsImport.namedBindings?.forEachChild((childImport) => {
+        if (!ts.isImportSpecifier(childImport) || workflow) {
+          return
+        }
 
-      workflow = expressionName
-      return true
+        const workflowName = childImport.name.getText()
+
+        if (fnText.includes(workflowName)) {
+          workflow = workflowName
+        }
+      })
     })
 
     return workflow
@@ -2040,6 +2022,17 @@ class OasKindGenerator extends FunctionKindGenerator {
       // write to the file
       writeFileSync(areaYamlPath, stringify(areaYaml))
     }
+  }
+
+  shouldAddQueryParams(node: FunctionNode): boolean {
+    const queryParamsUsageIndicators = [
+      `req.filterableFields`,
+      `req.remoteQueryConfig`,
+    ]
+    const fnText = node.getText()
+    return queryParamsUsageIndicators.some((indicator) =>
+      fnText.includes(indicator)
+    )
   }
 }
 
