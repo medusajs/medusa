@@ -557,6 +557,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         )
         .map((sm, i) => (
           <Cost
+            key={sm.id}
             label={t("fields.shipping") + (i ? ` ${i + 1}` : "")}
             secondaryValue={sm.name}
             value={getLocaleAmount(sm.total, order.currency_code)}

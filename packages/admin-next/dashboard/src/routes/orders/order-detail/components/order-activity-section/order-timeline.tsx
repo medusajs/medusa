@@ -10,6 +10,7 @@ import {
   AdminExchange,
   AdminFulfillment,
   AdminOrder,
+  AdminOrderChange,
   AdminReturn,
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -112,11 +113,9 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     [order.items]
   )
 
-  const { order_changes: orderChanges } = useOrderChanges(order.id, {
+  const { order_changes: orderChanges = [] } = useOrderChanges(order.id, {
     change_type: "edit",
   })
-
-  console.log(orderChanges)
 
   const { returns = [] } = useReturns({
     order_id: order.id,
@@ -308,6 +307,21 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         children: (
           <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
         ),
+      })
+    }
+
+    for (const edit of orderChanges) {
+      items.push({
+        title: t(`orders.activity.events.edit.${edit.status}`, {
+          editId: edit.id.slice(-7),
+        }),
+        timestamp:
+          edit.status === "crated"
+            ? edit.created_at
+            : edit.status === "requested"
+            ? edit.requested_at
+            : edit.canceled_at,
+        children: <OrderEditBody edit={edit} />,
       })
     }
 
@@ -687,6 +701,33 @@ const ExchangeBody = ({
         <Text size="small" className="text-ui-fg-subtle">
           {t("orders.activity.events.exchange.itemsOutbound", {
             count: inboundItems,
+          })}
+        </Text>
+      )}
+    </div>
+  )
+}
+
+const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
+  const { t } = useTranslation()
+
+  const itemsAdded = 0
+  const itemsRemoved = 0
+
+  return (
+    <div>
+      {itemsAdded > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.edit.itemsAdded", {
+            count: 0,
+          })}
+        </Text>
+      )}
+
+      {itemsRemoved > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("orders.activity.events.exchange.itemsRemoved", {
+            count: itemsRemoved,
           })}
         </Text>
       )}
