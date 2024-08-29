@@ -3,9 +3,11 @@ import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { DataGrid } from "../../../../../components/data-grid"
-import { createDataGridPriceColumns } from "../../../../../components/data-grid/data-grid-column-helpers/create-data-grid-price-columns"
-import { createDataGridHelper } from "../../../../../components/data-grid/utils"
+import {
+  createDataGridHelper,
+  createDataGridPriceColumns,
+  DataGrid,
+} from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
 import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 import { useRegions } from "../../../../../hooks/api/regions"
@@ -111,7 +113,10 @@ export const ProductCreateVariantsForm = ({
   )
 }
 
-const columnHelper = createDataGridHelper<ProductCreateVariantSchema>()
+const columnHelper = createDataGridHelper<
+  ProductCreateVariantSchema,
+  ProductCreateSchemaType
+>()
 
 const useColumns = ({
   options,
@@ -137,10 +142,12 @@ const useColumns = ({
             </span>
           </div>
         ),
-        cell: ({ row }) => {
+        cell: (context) => {
           return (
-            <DataGrid.ReadonlyCell>
-              {options.map((o) => row.original.options[o.title]).join(" / ")}
+            <DataGrid.ReadonlyCell context={context}>
+              {options
+                .map((o) => context.row.original.options[o.title])
+                .join(" / ")}
             </DataGrid.ReadonlyCell>
           )
         },
@@ -150,52 +157,40 @@ const useColumns = ({
         id: "title",
         name: t("fields.title"),
         header: t("fields.title"),
+        field: (context) => `variants.${context.row.index}.title`,
+        type: "text",
         cell: (context) => {
-          return (
-            <DataGrid.TextCell
-              context={context}
-              field={`variants.${context.row.index}.title`}
-            />
-          )
+          return <DataGrid.TextCell context={context} />
         },
       }),
       columnHelper.column({
         id: "sku",
         name: t("fields.sku"),
         header: t("fields.sku"),
+        field: (context) => `variants.${context.row.index}.sku`,
+        type: "text",
         cell: (context) => {
-          return (
-            <DataGrid.TextCell
-              context={context}
-              field={`variants.${context.row.index}.sku`}
-            />
-          )
+          return <DataGrid.TextCell context={context} />
         },
       }),
       columnHelper.column({
         id: "manage_inventory",
         name: t("fields.managedInventory"),
         header: t("fields.managedInventory"),
+        field: (context) => `variants.${context.row.index}.manage_inventory`,
+        type: "boolean",
         cell: (context) => {
-          return (
-            <DataGrid.BooleanCell
-              context={context}
-              field={`variants.${context.row.index}.manage_inventory`}
-            />
-          )
+          return <DataGrid.BooleanCell context={context} />
         },
       }),
       columnHelper.column({
         id: "allow_backorder",
         name: t("fields.allowBackorder"),
         header: t("fields.allowBackorder"),
+        field: (context) => `variants.${context.row.index}.allow_backorder`,
+        type: "boolean",
         cell: (context) => {
-          return (
-            <DataGrid.BooleanCell
-              context={context}
-              field={`variants.${context.row.index}.allow_backorder`}
-            />
-          )
+          return <DataGrid.BooleanCell context={context} />
         },
       }),
 
@@ -203,23 +198,27 @@ const useColumns = ({
         id: "inventory_kit",
         name: t("fields.inventoryKit"),
         header: t("fields.inventoryKit"),
+        field: (context) => `variants.${context.row.index}.inventory_kit`,
+        type: "boolean",
         cell: (context) => {
           return (
             <DataGrid.BooleanCell
               context={context}
-              field={`variants.${context.row.index}.inventory_kit`}
               disabled={!context.row.original.manage_inventory}
             />
           )
         },
       }),
 
-      ...createDataGridPriceColumns<ProductCreateVariantSchema>({
+      ...createDataGridPriceColumns<
+        ProductCreateVariantSchema,
+        ProductCreateSchemaType
+      >({
         currencies,
         regions,
         pricePreferences,
         getFieldName: (context, value) => {
-          if (context.column.id.startsWith("currency_prices")) {
+          if (context.column.id?.startsWith("currency_prices")) {
             return `variants.${context.row.index}.prices.${value}`
           }
           return `variants.${context.row.index}.prices.${value}`

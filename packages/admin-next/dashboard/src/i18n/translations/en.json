@@ -218,14 +218,37 @@
     }
   },
   "dataGrid": {
-    "editColumns": "Edit columns",
+    "columns": {
+      "view": "View",
+      "resetToDefault": "Reset to default",
+      "disabled": "Changing which columns are visible is disabled."
+    },
     "shortcuts": {
       "label": "Shortcuts",
       "commands": {
         "undo": "Undo",
         "redo": "Redo",
-        "edit": "Edit the current cell"
+        "copy": "Copy",
+        "paste": "Paste",
+        "edit": "Edit",
+        "delete": "Delete",
+        "clear": "Clear",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "moveLeft": "Move left",
+        "moveRight": "Move right",
+        "moveTop": "Move to top",
+        "moveBottom": "Move to bottom",
+        "selectDown": "Select down",
+        "selectUp": "Select up",
+        "selectColumnDown": "Select column down",
+        "selectColumnUp": "Select column up"
       }
+    },
+    "errors": {
+      "fixError": "Fix error",
+      "count_one": "{{count}} error",
+      "count_other": "{{count}} errors"
     }
   },
   "filters": {
@@ -322,7 +345,8 @@
       },
       "errors": {
         "variants": "Please select at least one variant.",
-        "options": "Please create at least one option."
+        "options": "Please create at least one option.",
+        "uniqueSku": "SKU must be unique."
       },
       "inventory": {
         "heading": "Inventory kits",
@@ -672,13 +696,14 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "create": {
-      "title": "Add inventory item",
+      "title": "Create Inventory Item",
       "details": "Details",
       "availability": "Availability",
       "locations": "Locations",
       "attributes": "Attributes",
       "requiresShipping": "Requires shipping",
-      "requiresShippingHint": "Does the inventory item require shipping?"
+      "requiresShippingHint": "Does the inventory item require shipping?",
+      "successToast": "Inventory item was successfully created."
     },
     "reservation": {
       "header": "Reservation of {{itemName}}",
@@ -899,8 +924,12 @@
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
-      "returnRequestedInfo": "{{requestedItemsCount}}x item return requested",
-      "returnReceivedInfo": "{{requestedItemsCount}}x item return received",
+      "returnRequestedInfo": "{{requestedItemsCount}}x items return requested",
+      "returnReceivedInfo": "{{requestedItemsCount}}x items return received",
+      "itemReceived": "Items received",
+      "returnRequested": "Return requested",
+      "damagedItemReceived": "Damaged items received",
+      "damagedItemsReturned": "{{quantity}}x damaged items returned",
       "activeChangeError": "There is an active order change in progress on this order. Please finish or discard the change first.",
       "cancel": {
         "title": "Cancel Return",
@@ -2425,6 +2454,7 @@
     "handle": "Handle",
     "subtitle": "Subtitle",
     "item": "Item",
+    "qty": "qty.",
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
@@ -2531,7 +2561,6 @@
     "inStock": "In stock",
     "location": "Location",
     "quantity": "Quantity",
-    "qty": "Qty",
     "variant": "Variant",
     "id": "ID",
     "parent": "Parent",

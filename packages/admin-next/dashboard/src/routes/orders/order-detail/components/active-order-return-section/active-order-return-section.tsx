@@ -51,7 +51,7 @@ export const ActiveOrderReturnSection = ({
         background:
           "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
       }}
-      className="z-10 -m-4 mb-1 border-x border-b p-4"
+      className="-m-4 mb-1 border-b border-l p-4"
     >
       <Container className="flex items-center justify-between p-0">
         <div className="flex w-full flex-row justify-between">

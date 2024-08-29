@@ -163,7 +163,7 @@ export default async function productCreateHandler({
     attachments: [ // optional var
       {
         content: base64,
-        content_type: MIME type,
+        content_type: "image/png", // mime type
         filename: filename.ext,
         disposition: "attachment or inline attachment",
         id: "id", // only needed for inline attachment
