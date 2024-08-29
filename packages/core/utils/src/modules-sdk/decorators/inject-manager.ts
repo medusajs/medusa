@@ -1,7 +1,9 @@
 import { Context } from "@medusajs/types"
 import { MedusaContextType } from "./context-parameter"
 
-export function InjectManager(managerProperty?: string): MethodDecorator {
+export function InjectManager(
+  managerProperty: string = "baseRepository_"
+): MethodDecorator {
   return function (
     target: any,
     propertyKey: string | symbol,
