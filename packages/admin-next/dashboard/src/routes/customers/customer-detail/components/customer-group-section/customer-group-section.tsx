@@ -26,7 +26,7 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters.tsx"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query.tsx"
 import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
-import { client, sdk } from "../../../../../lib/client/index.ts"
+import { sdk } from "../../../../../lib/client/index.ts"
 import { queryClient } from "../../../../../lib/query-client.ts"
 
 type CustomerGroupSectionProps = {
