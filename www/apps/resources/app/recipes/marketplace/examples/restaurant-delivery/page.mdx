@@ -699,7 +699,7 @@ In this step, you’ll create the API route that creates a driver or a restauran
 
 Medusa provides an authentication flow that allows you to authenticate custom user types:
 
-1. Use the `/auth/{actor_type}/{provider}` route to obtain an authentication token for registration. `{actor_type}` is the custom user type, such as `driver`, and `{provider}` is the provider used for authentication, such as `emailpass`.
+1. Use the `/auth/{actor_type}/{provider}/register` route to obtain an authentication token for registration. `{actor_type}` is the custom user type, such as `driver`, and `{provider}` is the provider used for authentication, such as `emailpass`.
 2. Use a custom route to create the user. You pass in the request header the authentication token from the previous request to associate your custom user with the authentication identity created for it in the previous request.
 3. After that, you can retrieve an authenticated token for the user using the `/auth/{actor_type}/provider` API route.
 
@@ -708,7 +708,7 @@ Medusa provides an authentication flow that allows you to authenticate custom us
 Start by implementing the functionality to create a user in a workflow. The workflow has two steps:
 
 1. Create the user in the database.
-2. Set the actor type of the user’s authentication identity (created by the `/auth/{actor_type}/{provider}` API route). For this step, you’ll use the `setAuthAppMetadataStep` step imported from the `@medusajs/core-flows` package.
+2. Set the actor type of the user’s authentication identity (created by the `/auth/{actor_type}/{provider}/register` API route). For this step, you’ll use the `setAuthAppMetadataStep` step imported from the `@medusajs/core-flows` package.
 
 To implement the first step, create the file `src/workflows/user/steps/create-user.ts` with the following content:
 
@@ -977,7 +977,7 @@ To create a restaurant admin:
 1. Send a `POST` request to `/auth/restaurant/emailpass` to retrieve the token for the next request:
 
 ```bash
-curl -X POST 'http://localhost:9000/auth/restaurant/emailpass' \
+curl -X POST 'http://localhost:9000/auth/restaurant/emailpass/register' \
 --data-raw '{
     "email": "admin@restaurant.com",
     "password": "supersecret"
@@ -1011,7 +1011,7 @@ To create a driver:
 1. Send a `POST` request to `/auth/driver/emailpass` to retrieve the token for the next request:
 
 ```bash
-curl -X POST 'http://localhost:9000/auth/driver/emailpass' \
+curl -X POST 'http://localhost:9000/auth/driver/emailpass/register' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "email": "driver@gmail.com",
