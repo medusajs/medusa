@@ -5,10 +5,11 @@ import {
   DataGridCurrencyCell,
   DataGridNumberCell,
   DataGridReadOnlyCell,
+  DataGridRoot,
+  DataGridSkeleton,
   DataGridTextCell,
-} from "./data-grid-cells"
-import { DataGridRoot, DataGridRootProps } from "./data-grid-root"
-import { DataGridSkeleton } from "./data-grid-skeleton"
+  type DataGridRootProps,
+} from "./components"
 
 interface DataGridProps<TData, TFieldValues extends FieldValues = FieldValues>
   extends DataGridRootProps<TData, TFieldValues> {
@@ -20,7 +21,12 @@ const _DataGrid = <TData, TFieldValues extends FieldValues = FieldValues>({
   ...props
 }: DataGridProps<TData, TFieldValues>) => {
   return isLoading ? (
-    <DataGridSkeleton columns={props.columns} />
+    <DataGridSkeleton
+      columns={props.columns}
+      rows={
+        props.data?.length && props.data.length > 0 ? props.data.length : 10
+      }
+    />
   ) : (
     <DataGridRoot {...props} />
   )

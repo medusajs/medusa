@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { i18n } from "../../../components/utilities/i18n/i18n.tsx"
 import { optionalInt } from "../../../lib/validation.ts"
 import { decorateVariantsWithDefaultValues } from "./utils.ts"
 
@@ -31,7 +32,7 @@ const ProductCreateVariantSchema = z.object({
   inventory_kit: z.boolean().optional(),
   options: z.record(z.string(), z.string()),
   variant_rank: z.number(),
-  prices: z.record(z.string(), z.string().optional()).optional(),
+  prices: z.record(z.string(), optionalInt).optional(),
   inventory: z
     .array(
       z.object({
@@ -95,6 +96,22 @@ export const ProductCreateSchema = z
         message: "invalid_length",
       })
     }
+
+    const skus = new Set<string>()
+
+    data.variants.forEach((v, index) => {
+      if (v.sku) {
+        if (skus.has(v.sku)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [`variants.${index}.sku`],
+            message: i18n.t("products.create.errors.uniqueSku"),
+          })
+        }
+
+        skus.add(v.sku)
+      }
+    })
   })
 
 export const EditProductMediaSchema = z.object({
