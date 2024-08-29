@@ -60,8 +60,11 @@ export async function loadModuleProvider(
     )
   }
 
-  const services = await promiseAll(
+  return await promiseAll(
     loadedProvider.services.map(async (service) => {
+      // Ask the provider to validate its options
+      await service.validateOptions?.(provider.options)
+
       const name = lowerCaseFirst(service.name)
       if (registerServiceFn) {
         // Used to register the specific type of service in the provider
@@ -83,6 +86,4 @@ export async function loadModuleProvider(
       return service
     })
   )
-
-  return services
 }

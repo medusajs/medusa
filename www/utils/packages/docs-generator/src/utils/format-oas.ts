@@ -13,8 +13,7 @@ export default function formatOas(
   oas: OpenApiOperation | OpenApiSchema,
   oasPrefix: string
 ) {
-  return `* ${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(oas).replaceAll(
-    "\n",
-    DOCBLOCK_NEW_LINE
-  )}${DOCBLOCK_END_LINE}`
+  return `* ${oasPrefix}${DOCBLOCK_NEW_LINE}${stringify(oas, {
+    lineWidth: 200,
+  }).replaceAll("\n", DOCBLOCK_NEW_LINE)}${DOCBLOCK_END_LINE}`
 }

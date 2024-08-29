@@ -1,0 +1,198 @@
+---
+sidebar_label: "new"
+sidebar_position: 1
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `new Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project.
+
+```bash
+medusa new [<dir_name> [<starter_url>]]
+```
+
+## Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `dir_name`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the directory to create the Medusa application in.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `starter_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the directory to create the Medusa application in.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `https://github.com/medusajs/medusa-starter-default`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-y`, `--useDefaults`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip all prompts, such as databaes prompts. A database might not be created if default PostgreSQL credentials don't work.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-db`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip database creation.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-env`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip populating `.env`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-user <user>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database user to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-database <database>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the database used for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-pass <password>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database password to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database port to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database host to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--v2`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Installs Medusa v2, which is still not ready for production.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

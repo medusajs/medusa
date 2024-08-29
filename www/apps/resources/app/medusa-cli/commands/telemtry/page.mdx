@@ -1,0 +1,55 @@
+---
+sidebar_label: "telemetry"
+sidebar_position: 8
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `telemetry Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Enable or disable the collection of anonymous data usage. If no option is provided, the command enables the collection of anonymous data usage.
+
+```bash
+npx medusa telemetry
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--enable`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Enable telemetry (default).
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--disable`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Disable telemetry.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

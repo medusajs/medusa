@@ -1,8 +1,9 @@
 import { generateJwtToken, MedusaError } from "@medusajs/utils"
 import { GoogleAuthService } from "../../src/services/google"
-jest.setTimeout(100000)
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
+
+jest.setTimeout(100000)
 
 const sampleIdPayload = {
   iss: "https://accounts.google.com",
@@ -97,15 +98,10 @@ describe("Google auth provider", () => {
   it("throw an error if required options are not passed", async () => {
     let msg = ""
     try {
-      new GoogleAuthService(
-        {
-          logger: console as any,
-        },
-        {
-          clientID: "test",
-          clientSecret: "test",
-        } as any
-      )
+      GoogleAuthService.validateOptions({
+        clientID: "test",
+        clientSecret: "test",
+      } as any)
     } catch (e) {
       msg = e.message
     }
