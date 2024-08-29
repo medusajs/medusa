@@ -1,9 +1,14 @@
 /**
  * @oas [delete] /admin/claims/{id}/claim-items/{action_id}
  * operationId: DeleteClaimsIdClaimItemsAction_id
- * summary: Remove Claim Items from Claim
- * description: Remove a list of claim items from a claim. This doesn't delete the
- *   Claim Item, only the association between the Claim Item and the claim.
+ * summary: Remove a Claim Item from a Claim
+ * x-sidebar-summary: Remove Claim Item
+ * description: >
+ *   Remove an order item from a claim by the ID of the item's `WRITE_OFF_ITEM` action.
+ * 
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +19,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The claim's action id.
+ *     description: The ID of the order item's `WRITE_OFF_ITEM` action.
  *     required: true
  *     schema:
  *       type: string

@@ -2,7 +2,8 @@
  * @oas [delete] /admin/campaigns/{id}
  * operationId: DeleteCampaignsId
  * summary: Delete a Campaign
- * description: Delete a campaign.
+ * description: >
+ *   Delete a campaign by its ID. This doesn't delete promotions that belong to this campaign.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -93,11 +94,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The campaign's object.
+ *               description: The name of the object that was deleted.
+ *               default: "campaign"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The campaign's deleted.
+ *               description: Whether the campaign was deleted.
  *             parent:
  *               type: object
  *               description: The campaign's parent.

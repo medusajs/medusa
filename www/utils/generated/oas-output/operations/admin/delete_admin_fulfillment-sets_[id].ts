@@ -1,7 +1,7 @@
 /**
  * @oas [delete] /admin/fulfillment-sets/{id}
  * operationId: DeleteFulfillmentSetsId
- * summary: Delete a Fulfillment Set
+ * summary: Delete Fulfillment Set
  * description: Delete a fulfillment set.
  * x-authenticated: true
  * parameters:

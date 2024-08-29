@@ -1,10 +1,14 @@
 /**
  * @oas [delete] /admin/exchanges/{id}/inbound/shipping-method/{action_id}
  * operationId: DeleteExchangesIdInboundShippingMethodAction_id
- * summary: Remove Shipping Methods from Exchange
- * description: Remove a list of shipping methods from a exchange. This doesn't
- *   delete the Shipping Method, only the association between the Shipping Method
- *   and the exchange.
+ * summary: Remove Inbound Shipping Method from Exchange
+ * x-sidebar-summary: Remove Inbound Shipping Method
+ * description: >
+ *   Remove the shipping method for returning items in the exchange using the `ID` of the method's `SHIPPING_ADD` action.
+ * 
+ * 
+ *   Every shipping method has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,7 +19,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The exchange's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string
@@ -77,9 +81,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}' \
- * 
+ *       curl -X DELETE '{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Exchanges

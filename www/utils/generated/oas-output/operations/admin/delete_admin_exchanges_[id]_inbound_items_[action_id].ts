@@ -1,9 +1,14 @@
 /**
  * @oas [delete] /admin/exchanges/{id}/inbound/items/{action_id}
  * operationId: DeleteExchangesIdInboundItemsAction_id
- * summary: Remove Items from Exchange
- * description: Remove a list of items from a exchange. This doesn't delete the
- *   Item, only the association between the Item and the exchange.
+ * summary: Remove Inbound Item from Exchange
+ * x-sidebar-summary: Remove Inbound Item
+ * description: >
+ *   Remove an inbound (or return) item from an exchange using the `ID` of the item's `RETURN_ITEM` action.
+ * 
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +19,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The exchange's action id.
+ *     description: The ID of the return item's `RETURN_ITEM` action.
  *     required: true
  *     schema:
  *       type: string
@@ -76,9 +81,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/exchanges/{id}/inbound/items/{action_id}' \
- * 
+ *       curl -X DELETE '{backend_url}/admin/exchanges/{id}/inbound/items/{action_id}' \
  *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Exchanges

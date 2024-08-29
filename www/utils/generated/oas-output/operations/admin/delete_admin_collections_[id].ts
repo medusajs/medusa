@@ -2,7 +2,7 @@
  * @oas [delete] /admin/collections/{id}
  * operationId: DeleteCollectionsId
  * summary: Delete a Collection
- * description: Delete a collection.
+ * description: Delete a product collection.
  * x-authenticated: true
  * parameters:
  *   - name: id

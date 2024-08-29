@@ -1,9 +1,8 @@
 /**
  * @oas [delete] /admin/claims/{id}/request
  * operationId: DeleteClaimsIdRequest
- * summary: Remove Requests from Claim
- * description: Remove a list of requests from a claim. This doesn't delete the
- *   Request, only the association between the Request and the claim.
+ * summary: Cancel Claim Request
+ * description: Cancel a requested claim.
  * x-authenticated: true
  * parameters:
  *   - name: id
