@@ -109,7 +109,7 @@ export const ExchangeCreateForm = ({
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
         const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-        return !action?.return_id
+        return action && !action.return_id
       })
 
       return Promise.resolve({
@@ -146,8 +146,7 @@ export const ExchangeCreateForm = ({
 
   const outboundShipping = preview.shipping_methods.find((s) => {
     const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-    return !action?.return_id
+    return action && !action.return_id
   })
 
   const shippingOptionId = form.watch("inbound_option_id")

@@ -176,7 +176,7 @@ export const ClaimCreateForm = ({
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
         const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-        return !action?.return_id
+        return action && !action.return_id
       })
 
       return Promise.resolve({
@@ -238,7 +238,7 @@ export const ClaimCreateForm = ({
   const outboundShipping = preview.shipping_methods.find((s) => {
     const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
 
-    return !action?.return_id
+    return action && !action.return_id
   })
 
   const {
@@ -483,8 +483,6 @@ export const ClaimCreateForm = ({
 
     return (method?.total as number) || 0
   }, [preview.shipping_methods])
-
-  const returnTotal = preview.return_requested_total
 
   return (
     <RouteFocusModal.Form form={form}>
