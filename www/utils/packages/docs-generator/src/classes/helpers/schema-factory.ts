@@ -65,12 +65,15 @@ class SchemaFactory {
     const schemasFactory =
       type === "response"
         ? this.mergeSchemas(this.schemasForResponse, this.schemas)
-        : this.schemas
-    if (!Object.hasOwn(schemasFactory, name)) {
+        : this.cloneSchema(this.schemas)
+    const key = Object.hasOwn(schemasFactory, name)
+      ? name
+      : additionalData?.title || ""
+    if (!Object.hasOwn(schemasFactory, key)) {
       return
     }
 
-    let schema = Object.assign({}, schemasFactory[name])
+    let schema = Object.assign({}, schemasFactory[key])
 
     if (additionalData) {
       schema = Object.assign(schema, additionalData)
@@ -83,9 +86,13 @@ class SchemaFactory {
     main: Record<string, OpenApiSchema>,
     other: Record<string, OpenApiSchema>
   ): Record<string, OpenApiSchema> {
-    const clonedMain = Object.assign({}, main)
+    return Object.assign(this.cloneSchema(main), this.cloneSchema(other))
+  }
 
-    return Object.assign(clonedMain, other)
+  private cloneSchema(
+    schema: Record<string, OpenApiSchema>
+  ): Record<string, OpenApiSchema> {
+    return JSON.parse(JSON.stringify(schema))
   }
 }
 

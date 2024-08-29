@@ -1215,14 +1215,16 @@ class OasKindGenerator extends FunctionKindGenerator {
           type: "string",
           enum: enumMembers,
         }
-      case itemType.isLiteral():
+      case itemType.isLiteral() || typeAsString === "RegExp":
+        const isString =
+          itemType.flags === ts.TypeFlags.StringLiteral ||
+          typeAsString === "RegExp"
         return {
-          type:
-            itemType.flags === ts.TypeFlags.StringLiteral
-              ? "string"
-              : itemType.flags === ts.TypeFlags.NumberLiteral
-                ? "number"
-                : "boolean",
+          type: isString
+            ? "string"
+            : itemType.flags === ts.TypeFlags.NumberLiteral
+              ? "number"
+              : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
@@ -1294,36 +1296,51 @@ class OasKindGenerator extends FunctionKindGenerator {
             ),
           }
         }
+
+        const oneOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.UnionType).types
+        ).map((unionType) =>
+          this.typeToSchema({
+            itemType: unionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        )
+
+        if (oneOfItems.length === 1) {
+          return oneOfItems[0]
+        }
+
         return {
-          oneOf: (itemType as ts.UnionType).types.map((unionType) =>
-            this.typeToSchema({
-              itemType: unionType,
-              // not incrementing considering the
-              // current schema isn't actually a
-              // schema
-              level,
-              title,
-              descriptionOptions,
-              ...rest,
-            })
-          ),
+          oneOf: oneOfItems,
         }
       case itemType.isIntersection():
+        const allOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.IntersectionType).types
+        ).map((intersectionType) => {
+          return this.typeToSchema({
+            itemType: intersectionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        })
+
+        if (allOfItems.length === 1) {
+          return allOfItems[0]
+        }
+
         return {
-          allOf: (itemType as ts.IntersectionType).types.map(
-            (intersectionType) => {
-              return this.typeToSchema({
-                itemType: intersectionType,
-                // not incrementing considering the
-                // current schema isn't actually a
-                // schema
-                level,
-                title,
-                descriptionOptions,
-                ...rest,
-              })
-            }
-          ),
+          allOf: allOfItems,
         }
       case typeAsString.startsWith("Pick"):
         const pickTypeArgs =
@@ -2049,6 +2066,23 @@ class OasKindGenerator extends FunctionKindGenerator {
     return queryParamsUsageIndicators.some((indicator) =>
       fnText.includes(indicator)
     )
+  }
+
+  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
+    return types.filter((itemType) => {
+      // remove overlapping string / regexp types
+      if (this.checker.typeToString(itemType) === "RegExp") {
+        const hasString = types.some((t) => {
+          return (
+            t.flags === ts.TypeFlags.String ||
+            t.flags === ts.TypeFlags.StringLiteral
+          )
+        })
+        return !hasString
+      }
+
+      return true
+    })
   }
 }
 
