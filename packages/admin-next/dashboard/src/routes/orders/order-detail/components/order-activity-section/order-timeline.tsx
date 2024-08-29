@@ -22,6 +22,7 @@ import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
 import ActivityItems from "./activity-items"
+import { useOrderChanges } from "../../../../../hooks/api"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -110,6 +111,12 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
+
+  const { order_changes: orderChanges } = useOrderChanges(order.id, {
+    change_type: "edit",
+  })
+
+  console.log(orderChanges)
 
   const { returns = [] } = useReturns({
     order_id: order.id,

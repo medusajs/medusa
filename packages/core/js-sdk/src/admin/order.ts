@@ -119,7 +119,7 @@ export class Order {
   ) {
     return await this.client.fetch<
       PaginatedResponse<AdminOrderChangesResponse>
-    >(`/admin/orders${id}/changes`, {
+    >(`/admin/orders/${id}/changes`, {
       query: queryParams,
       headers,
     })
