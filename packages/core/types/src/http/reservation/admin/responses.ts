@@ -1,10 +1,10 @@
 import { PaginatedResponse } from "../../common"
-import { ReservationResponse } from "./entities"
+import { AdminReservation } from "./entities"
 
 export interface AdminReservationResponse {
-  reservation: ReservationResponse
+  reservation: AdminReservation
 }
 
 export type AdminReservationListResponse = PaginatedResponse<{
-  reservations: ReservationResponse[]
+  reservations: AdminReservation[]
 }>

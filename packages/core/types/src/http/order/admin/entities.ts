@@ -14,6 +14,8 @@ export interface AdminOrder extends BaseOrder {
   fulfillments?: BaseOrderFulfillment[]
 }
 
+export interface AdminOrderLineItem extends BaseOrderLineItem {}
+
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
 export interface AdminOrderLineItem extends BaseOrderLineItem {}

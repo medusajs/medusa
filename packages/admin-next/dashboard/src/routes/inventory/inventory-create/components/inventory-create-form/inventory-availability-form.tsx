@@ -8,17 +8,17 @@ import {
   createDataGridHelper,
 } from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { CreateInventoryItemSchema } from "./schema"
 
 type InventoryAvailabilityFormProps = {
   form: UseFormReturn<CreateInventoryItemSchema>
+  locations: HttpTypes.AdminStockLocation[]
 }
 
 export const InventoryAvailabilityForm = ({
   form,
+  locations,
 }: InventoryAvailabilityFormProps) => {
-  const { isPending, stock_locations = [] } = useStockLocations({ limit: 999 })
   const { setCloseOnEscape } = useRouteModal()
 
   const columns = useColumns()
@@ -26,9 +26,8 @@ export const InventoryAvailabilityForm = ({
   return (
     <div className="size-full">
       <DataGrid
-        isLoading={isPending}
         columns={columns}
-        data={stock_locations}
+        data={locations}
         state={form}
         onEditingChange={(editing) => setCloseOnEscape(!editing)}
       />
@@ -36,7 +35,10 @@ export const InventoryAvailabilityForm = ({
   )
 }
 
-const columnHelper = createDataGridHelper<HttpTypes.AdminStockLocation>()
+const columnHelper = createDataGridHelper<
+  HttpTypes.AdminStockLocation,
+  CreateInventoryItemSchema
+>()
 
 const useColumns = () => {
   const { t } = useTranslation()
@@ -50,9 +52,11 @@ const useColumns = () => {
             <span className="truncate">{t("locations.domain")}</span>
           </div>
         ),
-        cell: ({ row }) => {
+        cell: (context) => {
           return (
-            <DataGrid.ReadonlyCell>{row.original.name}</DataGrid.ReadonlyCell>
+            <DataGrid.ReadonlyCell context={context}>
+              {context.row.original.name}
+            </DataGrid.ReadonlyCell>
           )
         },
         disableHiding: true,
@@ -61,15 +65,10 @@ const useColumns = () => {
         id: "in-stock",
         name: t("fields.inStock"),
         header: t("fields.inStock"),
+        field: (context) => `locations.${context.row.original.id}`,
+        type: "number",
         cell: (context) => {
-          return (
-            <DataGrid.NumberCell
-              min={0}
-              placeholder="0"
-              context={context}
-              field={`locations.${context.row.original.id}`}
-            />
-          )
+          return <DataGrid.NumberCell placeholder="0" context={context} />
         },
         disableHiding: true,
       }),

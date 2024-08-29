@@ -13,7 +13,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 import Return from "./return"
 import ReturnReason from "./return-reason"
 
@@ -77,6 +77,12 @@ export default class ReturnItem {
   @Property({ columnType: "jsonb" })
   raw_received_quantity: BigNumberRawValue
 
+  @MikroOrmBigNumberProperty()
+  damaged_quantity: Number | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_damaged_quantity: BigNumberRawValue
+
   @ManyToOne(() => Return, {
     columnType: "text",
     fieldName: "return_id",
@@ -92,7 +98,7 @@ export default class ReturnItem {
   return: Return
 
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     fieldName: "item_id",
     mapToPk: true,
     columnType: "text",
@@ -100,10 +106,10 @@ export default class ReturnItem {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne(() => LineItem, {
+  @ManyToOne(() => OrderLineItem, {
     persist: false,
   })
-  item: LineItem
+  item: OrderLineItem
 
   @Property({ columnType: "text", nullable: true })
   note: string

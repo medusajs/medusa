@@ -1,5 +1,5 @@
 import { createMedusaContainer } from "@medusajs/utils"
-import { Lifetime, asFunction } from "awilix"
+import { asFunction, Lifetime } from "awilix"
 import { moduleProviderLoader } from "../module-provider-loader"
 
 const logger = {
@@ -34,6 +34,24 @@ describe("modules loader", () => {
     expect(testService.constructor.name).toEqual("TestService")
   })
 
+  it("should fail to register the provider service", async () => {
+    const moduleProviders = [
+      {
+        resolve: "@providers/default-with-fail-validation",
+        id: "default",
+        options: {},
+      },
+    ]
+
+    const err = await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+    }).catch((e) => e)
+
+    expect(err).toBeTruthy()
+    expect(err.message).toBe("Wrong options")
+  })
+
   it("should register the provider service with custom register fn", async () => {
     const fn = async (klass, container, details) => {
       container.register({
@@ -62,6 +80,35 @@ describe("modules loader", () => {
     const testService = container.resolve("testServiceCustomRegistration")
     expect(testService).toBeTruthy()
     expect(testService.constructor.name).toEqual("TestService")
+  })
+
+  it("should fail to register the provider service with custom register fn", async () => {
+    const fn = async (klass, container, details) => {
+      container.register({
+        [`testServiceCustomRegistration`]: asFunction(
+          (cradle) => new klass(cradle, details.options),
+          {
+            lifetime: Lifetime.SINGLETON,
+          }
+        ),
+      })
+    }
+    const moduleProviders = [
+      {
+        resolve: "@providers/default-with-fail-validation",
+        id: "default",
+        options: {},
+      },
+    ]
+
+    const err = await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+      registerServiceFn: fn,
+    }).catch((e) => e)
+
+    expect(err).toBeTruthy()
+    expect(err.message).toBe("Wrong options")
   })
 
   it("should log the errors if no service is defined", async () => {

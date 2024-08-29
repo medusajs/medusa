@@ -1,10 +1,11 @@
 import { BatchMethodRequest } from "@medusajs/types"
 import { ProductStatus } from "@medusajs/utils"
+import { z } from "zod"
 import {
+  booleanString,
   GetProductsParams,
   transformProductParams,
 } from "../../utils/common-validators"
-import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
@@ -28,8 +29,8 @@ export const AdminGetProductVariantsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    manage_inventory: z.boolean().optional(),
-    allow_backorder: z.boolean().optional(),
+    manage_inventory: booleanString().optional(),
+    allow_backorder: booleanString().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -140,8 +141,8 @@ export const CreateProductVariant = z
     barcode: z.string().nullish(),
     hs_code: z.string().nullish(),
     mid_code: z.string().nullish(),
-    allow_backorder: z.boolean().optional().default(false),
-    manage_inventory: z.boolean().optional().default(true),
+    allow_backorder: booleanString().optional().default(false),
+    manage_inventory: booleanString().optional().default(true),
     variant_rank: z.number().optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -177,8 +178,8 @@ export const UpdateProductVariant = z
     barcode: z.string().nullish(),
     hs_code: z.string().nullish(),
     mid_code: z.string().nullish(),
-    allow_backorder: z.boolean().optional(),
-    manage_inventory: z.boolean().optional(),
+    allow_backorder: booleanString().optional(),
+    manage_inventory: booleanString().optional(),
     variant_rank: z.number().optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -211,8 +212,8 @@ export const CreateProduct = z
     title: z.string(),
     subtitle: z.string().nullish(),
     description: z.string().nullish(),
-    is_giftcard: z.boolean().optional().default(false),
-    discountable: z.boolean().optional().default(true),
+    is_giftcard: booleanString().optional().default(false),
+    discountable: booleanString().optional().default(true),
     images: z.array(z.object({ url: z.string() })).optional(),
     thumbnail: z.string().nullish(),
     handle: z.string().optional(),
@@ -242,8 +243,8 @@ export type AdminUpdateProductType = z.infer<typeof UpdateProduct>
 export const UpdateProduct = z
   .object({
     title: z.string().optional(),
-    discountable: z.boolean().optional(),
-    is_giftcard: z.boolean().optional(),
+    discountable: booleanString().optional(),
+    is_giftcard: booleanString().optional(),
     options: z.array(UpdateProductOption).optional(),
     variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),

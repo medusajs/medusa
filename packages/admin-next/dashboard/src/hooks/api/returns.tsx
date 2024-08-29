@@ -53,10 +53,6 @@ export const useReturns = (
   return { ...data, ...rest }
 }
 
-/**
- * REQUEST RETURN
- */
-
 export const useInitiateReturn = (
   orderId: string,
   options?: UseMutationOptions<
@@ -85,6 +81,39 @@ export const useInitiateReturn = (
     ...options,
   })
 }
+
+export const useCancelReturn = (
+  id: string,
+  orderId: string,
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.return.cancel(id),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+        refetchType: "all",
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.lists(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+/**
+ * REQUEST RETURN
+ */
 
 export const useConfirmReturnRequest = (
   id: string,

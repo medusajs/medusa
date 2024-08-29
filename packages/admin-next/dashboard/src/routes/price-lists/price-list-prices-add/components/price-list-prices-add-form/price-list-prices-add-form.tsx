@@ -89,13 +89,10 @@ export const PriceListPricesAddForm = ({
   ) => {
     form.clearErrors(fields)
 
-    const values = fields.reduce(
-      (acc, key) => {
-        acc[key] = form.getValues(key)
-        return acc
-      },
-      {} as Record<string, unknown>
-    )
+    const values = fields.reduce((acc, key) => {
+      acc[key] = form.getValues(key)
+      return acc
+    }, {} as Record<string, unknown>)
 
     const validationResult = schema.safeParse(values)
 

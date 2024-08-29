@@ -14,7 +14,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Exchange from "./exchange"
-import LineItem from "./line-item"
+import OrderLineItem from "./line-item"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
@@ -64,7 +64,7 @@ export default class OrderExchangeItem {
   exchange: Exchange
 
   @ManyToOne({
-    entity: () => LineItem,
+    entity: () => OrderLineItem,
     fieldName: "item_id",
     mapToPk: true,
     columnType: "text",
@@ -72,10 +72,10 @@ export default class OrderExchangeItem {
   @ItemIdIndex.MikroORMIndex()
   item_id: string
 
-  @ManyToOne(() => LineItem, {
+  @ManyToOne(() => OrderLineItem, {
     persist: false,
   })
-  item: LineItem
+  item: OrderLineItem
 
   @Property({ columnType: "text", nullable: true })
   note: string

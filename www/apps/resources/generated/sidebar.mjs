@@ -205,7 +205,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
-            "path": "/commerce-modules/api-key",
+            "path": "/commerce-modules/auth",
             "title": "Overview",
             "children": []
           },
@@ -259,18 +259,26 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/auth/authentication-route",
-                "title": "Authentication Route",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/commerce-modules/auth/auth-flows",
+                "type": "sub-category",
                 "title": "Auth Flows",
-                "children": []
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/commerce-modules/auth/authentication-route",
+                    "title": "Using API Routes",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/commerce-modules/auth/auth-flows",
+                    "title": "Using Module's Service",
+                    "children": []
+                  }
+                ]
               }
             ]
           },
@@ -340,8 +348,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/createProviderIdentities",
+                        "title": "createProviderIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/deleteAuthIdentities",
                         "title": "deleteAuthIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/deleteProviderIdentities",
+                        "title": "deleteProviderIdentities",
                         "children": []
                       },
                       {
@@ -364,6 +388,22 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/listProviderIdentities",
+                        "title": "listProviderIdentities",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/register",
+                        "title": "register",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/retrieveAuthIdentity",
                         "title": "retrieveAuthIdentity",
                         "children": []
@@ -372,8 +412,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/auth/retrieveProviderIdentity",
+                        "title": "retrieveProviderIdentity",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/auth/updateAuthIdentites",
                         "title": "updateAuthIdentites",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/updateProviderIdentites",
+                        "title": "updateProviderIdentites",
                         "children": []
                       },
                       {
@@ -4262,6 +4318,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/payment/restorePaymentCollections",
+                        "title": "restorePaymentCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/payment/restoreRefundReasons",
                         "title": "restoreRefundReasons",
                         "children": []
@@ -4280,6 +4344,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/payment/retrievePaymentSession",
                         "title": "retrievePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/payment/softDeletePaymentCollections",
+                        "title": "softDeletePaymentCollections",
                         "children": []
                       },
                       {
@@ -7565,7 +7637,94 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/medusa-cli",
         "title": "Medusa CLI",
-        "children": []
+        "isChildSidebar": true,
+        "childSidebarTitle": "Medusa CLI Reference",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/medusa-cli",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Commands",
+            "autogenerate_path": "medusa-cli/commands",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/new",
+                "title": "new",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/develop",
+                "title": "develop",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start",
+                "title": "start",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/user",
+                "title": "user",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/db",
+                "title": "db",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/exec",
+                "title": "exec",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start-cluster",
+                "title": "start-cluster",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/telemtry",
+                "title": "telemetry",
+                "children": []
+              }
+            ]
+          }
+        ]
       },
       {
         "loaded": true,

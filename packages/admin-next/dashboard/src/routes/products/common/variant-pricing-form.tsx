@@ -46,7 +46,10 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   )
 }
 
-const columnHelper = createDataGridHelper<HttpTypes.AdminProductVariant>()
+const columnHelper = createDataGridHelper<
+  HttpTypes.AdminProductVariant,
+  ProductCreateSchemaType
+>()
 
 const useVariantPriceGridColumns = ({
   currencies = [],
@@ -64,10 +67,10 @@ const useVariantPriceGridColumns = ({
       columnHelper.column({
         id: t("fields.title"),
         header: t("fields.title"),
-        cell: ({ row }) => {
-          const entity = row.original
+        cell: (context) => {
+          const entity = context.row.original
           return (
-            <DataGrid.ReadonlyCell>
+            <DataGrid.ReadonlyCell context={context}>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                 <span className="truncate">{entity.title}</span>
               </div>
@@ -76,12 +79,15 @@ const useVariantPriceGridColumns = ({
         },
         disableHiding: true,
       }),
-      ...createDataGridPriceColumns<HttpTypes.AdminProductVariant>({
+      ...createDataGridPriceColumns<
+        HttpTypes.AdminProductVariant,
+        ProductCreateSchemaType
+      >({
         currencies: currencies.map((c) => c.currency_code),
         regions,
         pricePreferences,
         getFieldName: (context, value) => {
-          if (context.column.id.startsWith("currency_prices")) {
+          if (context.column.id?.startsWith("currency_prices")) {
             return `variants.${context.row.index}.prices.${value}`
           }
           return `variants.${context.row.index}.prices.${value}`

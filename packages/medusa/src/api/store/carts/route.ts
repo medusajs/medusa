@@ -11,7 +11,7 @@ import {
 import { refetchCart } from "./helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCartWorkflowInputDTO & AdditionalData>,
+  req: AuthenticatedMedusaRequest<HttpTypes.StoreCreateCart & AdditionalData>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
   const workflowInput = {
@@ -20,7 +20,7 @@ export const POST = async (
   }
 
   const { result } = await createCartWorkflow(req.scope).run({
-    input: workflowInput,
+    input: workflowInput as CreateCartWorkflowInputDTO,
   })
 
   const cart = await refetchCart(

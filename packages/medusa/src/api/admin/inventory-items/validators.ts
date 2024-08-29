@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -27,7 +27,7 @@ export const AdminGetInventoryItemsParams = createFindParams({
       mid_code: z.union([z.string(), z.array(z.string())]).optional(),
       hs_code: z.union([z.string(), z.array(z.string())]).optional(),
       material: z.union([z.string(), z.array(z.string())]).optional(),
-      requires_shipping: OptionalBooleanValidator,
+      requires_shipping: booleanString().optional(),
       weight: createOperatorMap(z.number(), parseFloat).optional(),
       length: createOperatorMap(z.number(), parseFloat).optional(),
       height: createOperatorMap(z.number(), parseFloat).optional(),

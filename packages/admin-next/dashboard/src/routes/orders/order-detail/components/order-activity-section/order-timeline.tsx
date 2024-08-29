@@ -1,4 +1,4 @@
-import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
+import { Button, IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 
 import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
@@ -14,12 +14,14 @@ import {
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
+import { AdminOrderLineItem } from "@medusajs/types"
 import { useClaims } from "../../../../../hooks/api/claims"
 import { useExchanges } from "../../../../../hooks/api/exchanges"
-import { useReturns } from "../../../../../hooks/api/returns"
+import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
+import ActivityItems from "./activity-items"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -43,6 +45,9 @@ export const OrderTimeline = ({ order }: OrderTimelineProps) => {
               title={item.title}
               timestamp={item.timestamp}
               isFirst={index === items.length - 1}
+              itemsToSend={item.itemsToSend}
+              itemsToReturn={item.itemsToReturn}
+              itemsMap={item.itemsMap}
             >
               {item.children}
             </OrderActivityItem>
@@ -64,6 +69,9 @@ export const OrderTimeline = ({ order }: OrderTimelineProps) => {
             key={index}
             title={item.title}
             timestamp={item.timestamp}
+            itemsToSend={item.itemsToSend}
+            itemsToReturn={item.itemsToReturn}
+            itemsMap={item.itemsMap}
           >
             {item.children}
           </OrderActivityItem>
@@ -74,6 +82,9 @@ export const OrderTimeline = ({ order }: OrderTimelineProps) => {
         title={firstItem.title}
         timestamp={firstItem.timestamp}
         isFirst
+        itemsToSend={firstItem.itemsToSend}
+        itemsToReturn={firstItem.itemsToReturn}
+        itemsMap={firstItem.itemsMap}
       >
         {firstItem.children}
       </OrderActivityItem>
@@ -85,10 +96,20 @@ type Activity = {
   title: string
   timestamp: string | Date
   children?: ReactNode
+  itemsToSend?: (
+    | AdminClaim["additional_items"]
+    | AdminExchange["additional_items"]
+  )[]
+  itemsToReturn?: AdminReturn["items"]
+  itemsMap?: Map<string, AdminOrderLineItem>
 }
 
-const useActivityItems = (order: AdminOrder) => {
+const useActivityItems = (order: AdminOrder): Activity[] => {
   const { t } = useTranslation()
+  const itemsMap = useMemo(
+    () => new Map(order?.items?.map((i) => [i.id, i])),
+    [order.items]
+  )
 
   const { returns = [] } = useReturns({
     order_id: order.id,
@@ -224,8 +245,19 @@ const useActivityItems = (order: AdminOrder) => {
           returnId: ret.id.slice(-7),
         }),
         timestamp: ret.created_at,
-        children: <ReturnBody orderReturn={ret} />,
+        itemsToReturn: ret?.items,
+        itemsMap,
+        children: <ReturnBody orderReturn={ret} isCreated={!ret.canceled_at} />,
       })
+
+      if (ret.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.return.canceled", {
+            returnId: ret.id.slice(-7),
+          }),
+          timestamp: ret.canceled_at,
+        })
+      }
 
       if (ret.status === "received" || ret.status === "partially_received") {
         items.push({
@@ -233,7 +265,9 @@ const useActivityItems = (order: AdminOrder) => {
             returnId: ret.id.slice(-7),
           }),
           timestamp: ret.received_at,
-          children: <ReturnBody orderReturn={ret} />,
+          itemsToReturn: ret?.items,
+          itemsMap,
+          children: <ReturnBody orderReturn={ret} isReceived />,
         })
       }
     }
@@ -246,6 +280,9 @@ const useActivityItems = (order: AdminOrder) => {
           claimId: claim.id.slice(-7),
         }),
         timestamp: claim.created_at,
+        itemsToSend: claim.additional_items,
+        itemsToReturn: claimReturn?.items,
+        itemsMap,
         children: <ClaimBody claim={claim} claimReturn={claimReturn} />,
       })
     }
@@ -258,6 +295,9 @@ const useActivityItems = (order: AdminOrder) => {
           exchangeId: exchange.id.slice(-7),
         }),
         timestamp: exchange.created_at,
+        itemsToSend: exchange.additional_items,
+        itemsToReturn: exchangeReturn?.items,
+        itemsMap,
         children: (
           <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
         ),
@@ -301,6 +341,11 @@ type OrderActivityItemProps = PropsWithChildren<{
   title: string
   timestamp: string | Date
   isFirst?: boolean
+  itemsToSend?:
+    | AdminClaim["additional_items"]
+    | AdminExchange["additional_items"]
+  itemsToReturn?: AdminReturn["items"]
+  itemsMap?: Map<string, AdminOrderLineItem>
 }>
 
 const OrderActivityItem = ({
@@ -308,6 +353,9 @@ const OrderActivityItem = ({
   timestamp,
   isFirst = false,
   children,
+  itemsToSend,
+  itemsToReturn,
+  itemsMap,
 }: OrderActivityItemProps) => {
   const { getFullDate, getRelativeDate } = useDate()
 
@@ -327,9 +375,19 @@ const OrderActivityItem = ({
         })}
       >
         <div className="flex items-center justify-between">
-          <Text size="small" leading="compact" weight="plus">
-            {title}
-          </Text>
+          {itemsToSend?.length || itemsToReturn?.length ? (
+            <ActivityItems
+              key={title}
+              title={title}
+              itemsToSend={itemsToSend}
+              itemsToReturn={itemsToReturn}
+              itemsMap={itemsMap}
+            />
+          ) : (
+            <Text size="small" leading="compact" weight="plus">
+              {title}
+            </Text>
+          )}
           {timestamp && (
             <Tooltip
               content={getFullDate({ date: timestamp, includeTime: true })}
@@ -394,6 +452,9 @@ const OrderActivityCollapsible = ({
                 key={index}
                 title={item.title}
                 timestamp={item.timestamp}
+                itemsToSend={item.itemsToSend}
+                itemsToReturn={item.itemsToReturn}
+                itemsMap={item.itemsMap}
               >
                 {item.children}
               </OrderActivityItem>
@@ -486,20 +547,62 @@ const FulfillmentCreatedBody = ({
   )
 }
 
-const ReturnBody = ({ orderReturn }: { orderReturn: AdminReturn }) => {
+const ReturnBody = ({
+  orderReturn,
+  isCreated,
+  isReceived,
+}: {
+  orderReturn: AdminReturn
+  isCreated: boolean
+  isReceived?: boolean
+}) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
 
+  const { mutateAsync: cancelReturnRequest } = useCancelReturn(
+    orderReturn.id,
+    orderReturn.order_id
+  )
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.returns.cancel.title"),
+      description: t("orders.returns.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelReturnRequest()
+  }
+
   const numberOfItems = orderReturn.items.reduce((acc, item) => {
-    return acc + item.quantity
+    return acc + (isReceived ? item.received_quantity : item.quantity) // TODO: revisit when we add dismissed quantity on ReturnItem
   }, 0)
 
   return (
-    <div>
+    <div className="flex items-start gap-1">
       <Text size="small" className="text-ui-fg-subtle">
         {t("orders.activity.events.return.items", {
           count: numberOfItems,
         })}
       </Text>
+      {isCreated && (
+        <>
+          <div className="mt-[2px] flex items-center leading-none">⋅</div>
+          <Button
+            onClick={onCancel}
+            className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+            variant="transparent"
+            size="small"
+          >
+            {t("actions.cancel")}
+          </Button>
+        </>
+      )}
     </div>
   )
 }

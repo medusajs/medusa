@@ -19,8 +19,8 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import LineItemAdjustment from "./line-item-adjustment"
-import LineItemTaxLine from "./line-item-tax-line"
+import OrderLineItemAdjustment from "./line-item-adjustment"
+import OrderLineItemTaxLine from "./line-item-tax-line"
 
 type OptionalLineItemProps = DAL.ModelDateColumns
 
@@ -44,7 +44,7 @@ const VariantIdIndex = createPsqlIndexStatementHelper({
 
 @Entity({ tableName: "order_line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class LineItem {
+export default class OrderLineItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
@@ -128,15 +128,15 @@ export default class LineItem {
   @Property({ columnType: "jsonb" })
   raw_unit_price: BigNumberRawValue
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
+  @OneToMany(() => OrderLineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  tax_lines = new Collection<Rel<LineItemTaxLine>>(this)
+  tax_lines = new Collection<Rel<OrderLineItemTaxLine>>(this)
 
-  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+  @OneToMany(() => OrderLineItemAdjustment, (adjustment) => adjustment.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  adjustments = new Collection<Rel<LineItemAdjustment>>(this)
+  adjustments = new Collection<Rel<OrderLineItemAdjustment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

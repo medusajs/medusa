@@ -5,7 +5,7 @@ import {
   PromotionRuleOperatorValues, 
   PromotionTypeValues
 } from "../../promotion"
-import { CampaignResponse } from "../campaign"
+import { AdminCampaign } from "../campaign"
 
 export interface BasePromotionRule {
   id: string
@@ -38,7 +38,7 @@ export interface BasePromotion {
   application_method?: BaseApplicationMethod
   rules?: BasePromotionRule[]
   campaign_id?: string
-  campaign?: CampaignResponse
+  campaign?: AdminCampaign
 }
 
 export interface BasePromotionRuleValue {
