@@ -11,6 +11,12 @@ export class AbstractFulfillmentProviderService
     return obj?.constructor?._isFulfillmentService
   }
 
+  /**
+   * Override this static method in order for the loader to validate the options provided to the module provider.
+   * @param options
+   */
+  static validateOptions(options: Record<any, any>): void | never {}
+
   getIdentifier() {
     return (this.constructor as any).identifier
   }

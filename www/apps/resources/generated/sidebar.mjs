@@ -2149,16 +2149,16 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/fulfillment/models/Address",
-                        "title": "Address",
+                        "path": "/references/fulfillment/models/Fulfillment",
+                        "title": "Fulfillment",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/fulfillment/models/Fulfillment",
-                        "title": "Fulfillment",
+                        "path": "/references/fulfillment/models/FulfillmentAddress",
+                        "title": "FulfillmentAddress",
                         "children": []
                       },
                       {
@@ -2314,7 +2314,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/references/inventory_next",
+                "path": "/references/inventory-next",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
                 "childSidebarTitle": "Inventory Module's Main Service Reference",
@@ -2614,7 +2614,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/references/inventory_next/models",
+                "path": "/references/inventory-next/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
                 "childSidebarTitle": "Inventory Module Data Models Reference",
@@ -2787,8 +2787,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/addTransactions",
-                        "title": "addTransactions",
+                        "path": "/references/order/addOrderTransactions",
+                        "title": "addOrderTransactions",
                         "children": []
                       },
                       {
@@ -2875,14 +2875,6 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/createAddresses",
-                        "title": "createAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
                         "path": "/references/order/createClaim",
                         "title": "createClaim",
                         "children": []
@@ -2899,24 +2891,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/createLineItemAdjustments",
-                        "title": "createLineItemAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/createLineItemTaxLines",
-                        "title": "createLineItemTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/createLineItems",
-                        "title": "createLineItems",
+                        "path": "/references/order/createOrderAddresses",
+                        "title": "createOrderAddresses",
                         "children": []
                       },
                       {
@@ -2963,6 +2939,54 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/createOrderLineItemAdjustments",
+                        "title": "createOrderLineItemAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/createOrderLineItemTaxLines",
+                        "title": "createOrderLineItemTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/createOrderLineItems",
+                        "title": "createOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/createOrderShippingMethodAdjustments",
+                        "title": "createOrderShippingMethodAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/createOrderShippingMethodTaxLines",
+                        "title": "createOrderShippingMethodTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/createOrderShippingMethods",
+                        "title": "createOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/createOrders",
                         "title": "createOrders",
                         "children": []
@@ -3003,30 +3027,6 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/createShippingMethodAdjustments",
-                        "title": "createShippingMethodAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/createShippingMethodTaxLines",
-                        "title": "createShippingMethodTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/createShippingMethods",
-                        "title": "createShippingMethods",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
                         "path": "/references/order/declineOrderChange",
                         "title": "declineOrderChange",
                         "children": []
@@ -3035,32 +3035,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/deleteAddresses",
-                        "title": "deleteAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteLineItemAdjustments",
-                        "title": "deleteLineItemAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteLineItemTaxLines",
-                        "title": "deleteLineItemTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteLineItems",
-                        "title": "deleteLineItems",
+                        "path": "/references/order/deleteOrderAddresses",
+                        "title": "deleteOrderAddresses",
                         "children": []
                       },
                       {
@@ -3123,6 +3099,62 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/deleteOrderLineItemAdjustments",
+                        "title": "deleteOrderLineItemAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderLineItemTaxLines",
+                        "title": "deleteOrderLineItemTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderLineItems",
+                        "title": "deleteOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderShippingMethodAdjustments",
+                        "title": "deleteOrderShippingMethodAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderShippingMethodTaxLines",
+                        "title": "deleteOrderShippingMethodTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderShippingMethods",
+                        "title": "deleteOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/deleteOrderTransactions",
+                        "title": "deleteOrderTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/deleteOrders",
                         "title": "deleteOrders",
                         "children": []
@@ -3149,46 +3181,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/deleteReturns",
                         "title": "deleteReturns",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteShippingMethodAdjustments",
-                        "title": "deleteShippingMethodAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteShippingMethodTaxLines",
-                        "title": "deleteShippingMethodTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteShippingMethods",
-                        "title": "deleteShippingMethods",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/deleteTransactions",
-                        "title": "deleteTransactions",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listAddresses",
-                        "title": "listAddresses",
                         "children": []
                       },
                       {
@@ -3227,24 +3219,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/listLineItemAdjustments",
-                        "title": "listLineItemAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listLineItemTaxLines",
-                        "title": "listLineItemTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listLineItems",
-                        "title": "listLineItems",
+                        "path": "/references/order/listOrderAddresses",
+                        "title": "listOrderAddresses",
                         "children": []
                       },
                       {
@@ -3283,6 +3259,62 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/listOrderLineItemAdjustments",
+                        "title": "listOrderLineItemAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderLineItemTaxLines",
+                        "title": "listOrderLineItemTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderLineItems",
+                        "title": "listOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderShippingMethodAdjustments",
+                        "title": "listOrderShippingMethodAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderShippingMethodTaxLines",
+                        "title": "listOrderShippingMethodTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderShippingMethods",
+                        "title": "listOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/listOrderTransactions",
+                        "title": "listOrderTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/listOrders",
                         "title": "listOrders",
                         "children": []
@@ -3301,38 +3333,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/listReturns",
                         "title": "listReturns",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listShippingMethodAdjustments",
-                        "title": "listShippingMethodAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listShippingMethodTaxLines",
-                        "title": "listShippingMethodTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listShippingMethods",
-                        "title": "listShippingMethods",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/listTransactions",
-                        "title": "listTransactions",
                         "children": []
                       },
                       {
@@ -3371,32 +3371,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/restoreAddresses",
-                        "title": "restoreAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreLineItemAdjustments",
-                        "title": "restoreLineItemAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreLineItemTaxLines",
-                        "title": "restoreLineItemTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreLineItems",
-                        "title": "restoreLineItems",
+                        "path": "/references/order/restoreOrderAddresses",
+                        "title": "restoreOrderAddresses",
                         "children": []
                       },
                       {
@@ -3435,6 +3411,62 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/restoreOrderLineItemAdjustments",
+                        "title": "restoreOrderLineItemAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderLineItemTaxLines",
+                        "title": "restoreOrderLineItemTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderLineItems",
+                        "title": "restoreOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderShippingMethodAdjustments",
+                        "title": "restoreOrderShippingMethodAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderShippingMethodTaxLines",
+                        "title": "restoreOrderShippingMethodTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderShippingMethods",
+                        "title": "restoreOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/restoreOrderTransactions",
+                        "title": "restoreOrderTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/restoreOrders",
                         "title": "restoreOrders",
                         "children": []
@@ -3453,46 +3485,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/restoreReturns",
                         "title": "restoreReturns",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreShippingMethodAdjustments",
-                        "title": "restoreShippingMethodAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreShippingMethodTaxLines",
-                        "title": "restoreShippingMethodTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreShippingMethods",
-                        "title": "restoreShippingMethods",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/restoreTransactions",
-                        "title": "restoreTransactions",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/retrieveLineItem",
-                        "title": "retrieveLineItem",
                         "children": []
                       },
                       {
@@ -3539,6 +3531,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/retrieveOrderLineItem",
+                        "title": "retrieveOrderLineItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/retrieveReturn",
                         "title": "retrieveReturn",
                         "children": []
@@ -3563,64 +3563,40 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/setLineItemAdjustments",
-                        "title": "setLineItemAdjustments",
+                        "path": "/references/order/setOrderLineItemAdjustments",
+                        "title": "setOrderLineItemAdjustments",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/setLineItemTaxLines",
-                        "title": "setLineItemTaxLines",
+                        "path": "/references/order/setOrderLineItemTaxLines",
+                        "title": "setOrderLineItemTaxLines",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/setShippingMethodAdjustments",
-                        "title": "setShippingMethodAdjustments",
+                        "path": "/references/order/setOrderShippingMethodAdjustments",
+                        "title": "setOrderShippingMethodAdjustments",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/setShippingMethodTaxLines",
-                        "title": "setShippingMethodTaxLines",
+                        "path": "/references/order/setOrderShippingMethodTaxLines",
+                        "title": "setOrderShippingMethodTaxLines",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/softDeleteAddresses",
-                        "title": "softDeleteAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteLineItemAdjustments",
-                        "title": "softDeleteLineItemAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteLineItemTaxLines",
-                        "title": "softDeleteLineItemTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteLineItems",
-                        "title": "softDeleteLineItems",
+                        "path": "/references/order/softDeleteOrderAddresses",
+                        "title": "softDeleteOrderAddresses",
                         "children": []
                       },
                       {
@@ -3659,6 +3635,62 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/softDeleteOrderLineItemAdjustments",
+                        "title": "softDeleteOrderLineItemAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderLineItemTaxLines",
+                        "title": "softDeleteOrderLineItemTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderLineItems",
+                        "title": "softDeleteOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderShippingMethodAdjustments",
+                        "title": "softDeleteOrderShippingMethodAdjustments",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderShippingMethodTaxLines",
+                        "title": "softDeleteOrderShippingMethodTaxLines",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderShippingMethods",
+                        "title": "softDeleteOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/softDeleteOrderTransactions",
+                        "title": "softDeleteOrderTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/softDeleteOrders",
                         "title": "softDeleteOrders",
                         "children": []
@@ -3683,48 +3715,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/softDeleteShippingMethodAdjustments",
-                        "title": "softDeleteShippingMethodAdjustments",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteShippingMethodTaxLines",
-                        "title": "softDeleteShippingMethodTaxLines",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteShippingMethods",
-                        "title": "softDeleteShippingMethods",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/softDeleteTransactions",
-                        "title": "softDeleteTransactions",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/updateAddresses",
-                        "title": "updateAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/updateLineItems",
-                        "title": "updateLineItems",
+                        "path": "/references/order/updateOrderAddresses",
+                        "title": "updateOrderAddresses",
                         "children": []
                       },
                       {
@@ -3771,6 +3763,22 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/updateOrderLineItems",
+                        "title": "updateOrderLineItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/updateOrderShippingMethods",
+                        "title": "updateOrderShippingMethods",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/updateOrders",
                         "title": "updateOrders",
                         "children": []
@@ -3789,14 +3797,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/updateReturns",
                         "title": "updateReturns",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/updateShippingMethods",
-                        "title": "updateShippingMethods",
                         "children": []
                       }
                     ]
@@ -3824,40 +3824,16 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/order/models/Address",
-                        "title": "Address",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/LineItem",
-                        "title": "LineItem",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/LineItemAdjustment",
-                        "title": "LineItemAdjustment",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/LineItemTaxLine",
-                        "title": "LineItemTaxLine",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
                         "path": "/references/order/models/Order",
                         "title": "Order",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderAddress",
+                        "title": "OrderAddress",
                         "children": []
                       },
                       {
@@ -3928,6 +3904,38 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/models/OrderLineItem",
+                        "title": "OrderLineItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderLineItemAdjustment",
+                        "title": "OrderLineItemAdjustment",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderLineItemTaxLine",
+                        "title": "OrderLineItemTaxLine",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderShipping",
+                        "title": "OrderShipping",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/models/OrderShippingMethod",
                         "title": "OrderShippingMethod",
                         "children": []
@@ -3936,8 +3944,32 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/order/models/OrderShippingMethodAdjustment",
+                        "title": "OrderShippingMethodAdjustment",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderShippingMethodTaxLine",
+                        "title": "OrderShippingMethodTaxLine",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/order/models/OrderSummary",
                         "title": "OrderSummary",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/models/OrderTransaction",
+                        "title": "OrderTransaction",
                         "children": []
                       },
                       {
@@ -3962,38 +3994,6 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/models/ReturnReason",
                         "title": "ReturnReason",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/ShippingMethod",
-                        "title": "ShippingMethod",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/ShippingMethodAdjustment",
-                        "title": "ShippingMethodAdjustment",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/ShippingMethodTaxLine",
-                        "title": "ShippingMethodTaxLine",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/order/models/Transaction",
-                        "title": "Transaction",
                         "children": []
                       }
                     ]
@@ -6537,7 +6537,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/references/stock-location",
+                "path": "/references/stock-location-next",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
                 "childSidebarTitle": "Stock Location Module's Main Service Reference",
@@ -6629,7 +6629,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/references/stock-location/models",
+                "path": "/references/stock-location-next/models",
                 "title": "Data Models Reference",
                 "isChildSidebar": true,
                 "childSidebarTitle": "Stock Location Module Data Models Reference",
@@ -7495,6 +7495,14 @@ export const generatedSidebar = [
             "path": "/recipes/marketplace/examples/vendors",
             "title": "Example: Vendors",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/recipes/marketplace/examples/restaurant-delivery",
+            "title": "Example: Restaurant-Delivery",
+            "children": []
           }
         ]
       },
@@ -7629,7 +7637,94 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/medusa-cli",
         "title": "Medusa CLI",
-        "children": []
+        "isChildSidebar": true,
+        "childSidebarTitle": "Medusa CLI Reference",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/medusa-cli",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Commands",
+            "autogenerate_path": "medusa-cli/commands",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/new",
+                "title": "new",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/develop",
+                "title": "develop",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start",
+                "title": "start",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/user",
+                "title": "user",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/db",
+                "title": "db",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/exec",
+                "title": "exec",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/start-cluster",
+                "title": "start-cluster",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/medusa-cli/commands/telemtry",
+                "title": "telemetry",
+                "children": []
+              }
+            ]
+          }
+        ]
       },
       {
         "loaded": true,

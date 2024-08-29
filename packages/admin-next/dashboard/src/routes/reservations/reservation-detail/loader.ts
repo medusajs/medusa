@@ -1,12 +1,12 @@
+import { HttpTypes } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 import { reservationItemsQueryKeys } from "../../../hooks/api/reservations"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
-import { ReservationItemRes } from "../../../types/api-responses"
 
 const reservationDetailQuery = (id: string) => ({
   queryKey: reservationItemsQueryKeys.detail(id),
-  queryFn: async () => client.reservations.retrieve(id),
+  queryFn: async () => sdk.admin.reservation.retrieve(id),
 })
 
 export const reservationItemLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -14,7 +14,8 @@ export const reservationItemLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = reservationDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<ReservationItemRes>(query.queryKey) ??
-    (await queryClient.fetchQuery(query))
+    queryClient.getQueryData<HttpTypes.AdminReservationResponse>(
+      query.queryKey
+    ) ?? (await queryClient.fetchQuery(query))
   )
 }

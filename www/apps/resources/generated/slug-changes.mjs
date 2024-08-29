@@ -3720,14 +3720,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.IFulfillmentModuleService/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment_models/classes/fulfillment_models.Address",
-    "newSlug": "/references/fulfillment/models/Address",
-    "filePath": "/www/apps/resources/references/fulfillment_models/classes/fulfillment_models.Address/page.mdx"
-  },
-  {
     "origSlug": "/references/fulfillment_models/classes/fulfillment_models.Fulfillment",
     "newSlug": "/references/fulfillment/models/Fulfillment",
     "filePath": "/www/apps/resources/references/fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment_models/classes/fulfillment_models.FulfillmentAddress",
+    "newSlug": "/references/fulfillment/models/FulfillmentAddress",
+    "filePath": "/www/apps/resources/references/fulfillment_models/classes/fulfillment_models.FulfillmentAddress/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment_models/classes/fulfillment_models.FulfillmentItem",
@@ -4130,9 +4130,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderAction/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions",
-    "newSlug": "/references/order/addTransactions",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderTransactions",
+    "newSlug": "/references/order/addOrderTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderTransactions/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.applyPendingOrderActions",
@@ -4185,11 +4185,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.confirmOrderChange/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses",
-    "newSlug": "/references/order/createAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses/page.mdx"
-  },
-  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim",
     "newSlug": "/references/order/createClaim",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim/page.mdx"
@@ -4200,19 +4195,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createExchange/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemAdjustments",
-    "newSlug": "/references/order/createLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemTaxLines",
-    "newSlug": "/references/order/createLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItems",
-    "newSlug": "/references/order/createLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderAddresses",
+    "newSlug": "/references/order/createOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange",
@@ -4240,6 +4225,36 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderExchanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItemAdjustments",
+    "newSlug": "/references/order/createOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItemAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItemTaxLines",
+    "newSlug": "/references/order/createOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItemTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItems",
+    "newSlug": "/references/order/createOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/createOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethodAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/createOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethodTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethods",
+    "newSlug": "/references/order/createOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderShippingMethods/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders",
     "newSlug": "/references/order/createOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders/page.mdx"
@@ -4265,44 +4280,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturns/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments",
-    "newSlug": "/references/order/createShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodTaxLines",
-    "newSlug": "/references/order/createShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethods",
-    "newSlug": "/references/order/createShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethods/page.mdx"
-  },
-  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange",
     "newSlug": "/references/order/declineOrderChange",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteAddresses",
-    "newSlug": "/references/order/deleteAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItemAdjustments",
-    "newSlug": "/references/order/deleteLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItemAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItemTaxLines",
-    "newSlug": "/references/order/deleteLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItemTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems",
-    "newSlug": "/references/order/deleteLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderAddresses",
+    "newSlug": "/references/order/deleteOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderChangeActions",
@@ -4340,6 +4325,41 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderExchanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItemAdjustments",
+    "newSlug": "/references/order/deleteOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItemAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItemTaxLines",
+    "newSlug": "/references/order/deleteOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItemTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItems",
+    "newSlug": "/references/order/deleteOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/deleteOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethodAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/deleteOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethodTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethods",
+    "newSlug": "/references/order/deleteOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderShippingMethods/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderTransactions",
+    "newSlug": "/references/order/deleteOrderTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrderTransactions/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders",
     "newSlug": "/references/order/deleteOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx"
@@ -4358,31 +4378,6 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturns",
     "newSlug": "/references/order/deleteReturns",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturns/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments",
-    "newSlug": "/references/order/deleteShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodTaxLines",
-    "newSlug": "/references/order/deleteShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethods",
-    "newSlug": "/references/order/deleteShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethods/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions",
-    "newSlug": "/references/order/deleteTransactions",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses",
-    "newSlug": "/references/order/listAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderClaims",
@@ -4405,19 +4400,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountReturns/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemAdjustments",
-    "newSlug": "/references/order/listLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemTaxLines",
-    "newSlug": "/references/order/listLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItems",
-    "newSlug": "/references/order/listLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderAddresses",
+    "newSlug": "/references/order/listOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderChangeActions",
@@ -4440,6 +4425,41 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderExchanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItemAdjustments",
+    "newSlug": "/references/order/listOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItemAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItemTaxLines",
+    "newSlug": "/references/order/listOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItemTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItems",
+    "newSlug": "/references/order/listOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/listOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethodAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/listOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethodTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethods",
+    "newSlug": "/references/order/listOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderShippingMethods/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderTransactions",
+    "newSlug": "/references/order/listOrderTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderTransactions/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders",
     "newSlug": "/references/order/listOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders/page.mdx"
@@ -4453,26 +4473,6 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns",
     "newSlug": "/references/order/listReturns",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments",
-    "newSlug": "/references/order/listShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodTaxLines",
-    "newSlug": "/references/order/listShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethods",
-    "newSlug": "/references/order/listShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethods/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions",
-    "newSlug": "/references/order/listTransactions",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.previewOrderChange",
@@ -4495,24 +4495,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerShipment/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreAddresses",
-    "newSlug": "/references/order/restoreAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItemAdjustments",
-    "newSlug": "/references/order/restoreLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItemAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItemTaxLines",
-    "newSlug": "/references/order/restoreLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItemTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems",
-    "newSlug": "/references/order/restoreLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderAddresses",
+    "newSlug": "/references/order/restoreOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderChangeActions",
@@ -4535,6 +4520,41 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderExchanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItemAdjustments",
+    "newSlug": "/references/order/restoreOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItemAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItemTaxLines",
+    "newSlug": "/references/order/restoreOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItemTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItems",
+    "newSlug": "/references/order/restoreOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/restoreOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethodAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/restoreOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethodTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethods",
+    "newSlug": "/references/order/restoreOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderShippingMethods/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderTransactions",
+    "newSlug": "/references/order/restoreOrderTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrderTransactions/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders",
     "newSlug": "/references/order/restoreOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders/page.mdx"
@@ -4548,31 +4568,6 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturns",
     "newSlug": "/references/order/restoreReturns",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturns/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments",
-    "newSlug": "/references/order/restoreShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodTaxLines",
-    "newSlug": "/references/order/restoreShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethods",
-    "newSlug": "/references/order/restoreShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethods/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions",
-    "newSlug": "/references/order/restoreTransactions",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem",
-    "newSlug": "/references/order/retrieveLineItem",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder",
@@ -4600,6 +4595,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderExchange/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderLineItem",
+    "newSlug": "/references/order/retrieveOrderLineItem",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderLineItem/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn",
     "newSlug": "/references/order/retrieveReturn",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn/page.mdx"
@@ -4615,44 +4615,29 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.revertLastVersion/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemAdjustments",
-    "newSlug": "/references/order/setLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemAdjustments/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderLineItemAdjustments",
+    "newSlug": "/references/order/setOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderLineItemAdjustments/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemTaxLines",
-    "newSlug": "/references/order/setLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemTaxLines/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderLineItemTaxLines",
+    "newSlug": "/references/order/setOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderLineItemTaxLines/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodAdjustments",
-    "newSlug": "/references/order/setShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodAdjustments/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/setOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderShippingMethodAdjustments/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodTaxLines",
-    "newSlug": "/references/order/setShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodTaxLines/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/setOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setOrderShippingMethodTaxLines/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses",
-    "newSlug": "/references/order/softDeleteAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItemAdjustments",
-    "newSlug": "/references/order/softDeleteLineItemAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItemAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItemTaxLines",
-    "newSlug": "/references/order/softDeleteLineItemTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItemTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems",
-    "newSlug": "/references/order/softDeleteLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderAddresses",
+    "newSlug": "/references/order/softDeleteOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderChangeActions",
@@ -4675,6 +4660,41 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderExchanges/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItemAdjustments",
+    "newSlug": "/references/order/softDeleteOrderLineItemAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItemAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItemTaxLines",
+    "newSlug": "/references/order/softDeleteOrderLineItemTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItemTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItems",
+    "newSlug": "/references/order/softDeleteOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethodAdjustments",
+    "newSlug": "/references/order/softDeleteOrderShippingMethodAdjustments",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethodAdjustments/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethodTaxLines",
+    "newSlug": "/references/order/softDeleteOrderShippingMethodTaxLines",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethodTaxLines/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethods",
+    "newSlug": "/references/order/softDeleteOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderShippingMethods/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderTransactions",
+    "newSlug": "/references/order/softDeleteOrderTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrderTransactions/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders",
     "newSlug": "/references/order/softDeleteOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders/page.mdx"
@@ -4690,34 +4710,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturns/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments",
-    "newSlug": "/references/order/softDeleteShippingMethodAdjustments",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodTaxLines",
-    "newSlug": "/references/order/softDeleteShippingMethodTaxLines",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodTaxLines/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethods",
-    "newSlug": "/references/order/softDeleteShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethods/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions",
-    "newSlug": "/references/order/softDeleteTransactions",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateAddresses",
-    "newSlug": "/references/order/updateAddresses",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateLineItems",
-    "newSlug": "/references/order/updateLineItems",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateLineItems/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderAddresses",
+    "newSlug": "/references/order/updateOrderAddresses",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderAddresses/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderChangeActions",
@@ -4745,6 +4740,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderItem/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderLineItems",
+    "newSlug": "/references/order/updateOrderLineItems",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderLineItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderShippingMethods",
+    "newSlug": "/references/order/updateOrderShippingMethods",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderShippingMethods/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders",
     "newSlug": "/references/order/updateOrders",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders/page.mdx"
@@ -4760,39 +4765,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturns/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods",
-    "newSlug": "/references/order/updateShippingMethods",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateShippingMethods/page.mdx"
-  },
-  {
     "origSlug": "/references/order/interfaces/order.IOrderModuleService",
     "newSlug": "/references/order",
     "filePath": "/www/apps/resources/references/order/interfaces/order.IOrderModuleService/page.mdx"
   },
   {
-    "origSlug": "/references/order_models/classes/order_models.Address",
-    "newSlug": "/references/order/models/Address",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.Address/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.LineItem",
-    "newSlug": "/references/order/models/LineItem",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItem/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.LineItemAdjustment",
-    "newSlug": "/references/order/models/LineItemAdjustment",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItemAdjustment/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.LineItemTaxLine",
-    "newSlug": "/references/order/models/LineItemTaxLine",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItemTaxLine/page.mdx"
-  },
-  {
     "origSlug": "/references/order_models/classes/order_models.Order",
     "newSlug": "/references/order/models/Order",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.Order/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderAddress",
+    "newSlug": "/references/order/models/OrderAddress",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderAddress/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.OrderChange",
@@ -4835,14 +4820,49 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderItem/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderLineItem",
+    "newSlug": "/references/order/models/OrderLineItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderLineItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderLineItemAdjustment",
+    "newSlug": "/references/order/models/OrderLineItemAdjustment",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderLineItemAdjustment/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderLineItemTaxLine",
+    "newSlug": "/references/order/models/OrderLineItemTaxLine",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderLineItemTaxLine/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderShipping",
+    "newSlug": "/references/order/models/OrderShipping",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShipping/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderShippingMethod",
     "newSlug": "/references/order/models/OrderShippingMethod",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShippingMethod/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderShippingMethodAdjustment",
+    "newSlug": "/references/order/models/OrderShippingMethodAdjustment",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShippingMethodAdjustment/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderShippingMethodTaxLine",
+    "newSlug": "/references/order/models/OrderShippingMethodTaxLine",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShippingMethodTaxLine/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderSummary",
     "newSlug": "/references/order/models/OrderSummary",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderSummary/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderTransaction",
+    "newSlug": "/references/order/models/OrderTransaction",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderTransaction/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.Return",
@@ -4858,26 +4878,6 @@ export const slugChanges = [
     "origSlug": "/references/order_models/classes/order_models.ReturnReason",
     "newSlug": "/references/order/models/ReturnReason",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.ReturnReason/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ShippingMethod",
-    "newSlug": "/references/order/models/ShippingMethod",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ShippingMethod/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ShippingMethodAdjustment",
-    "newSlug": "/references/order/models/ShippingMethodAdjustment",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ShippingMethodAdjustment/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.ShippingMethodTaxLine",
-    "newSlug": "/references/order/models/ShippingMethodTaxLine",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ShippingMethodTaxLine/page.mdx"
-  },
-  {
-    "origSlug": "/references/order_models/classes/order_models.Transaction",
-    "newSlug": "/references/order/models/Transaction",
-    "filePath": "/www/apps/resources/references/order_models/classes/order_models.Transaction/page.mdx"
   },
   {
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.authorizePaymentSession",

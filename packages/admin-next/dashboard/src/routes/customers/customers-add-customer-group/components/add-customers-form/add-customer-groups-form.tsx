@@ -23,7 +23,7 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { client } from "../../../../../lib/client"
+import { client, sdk } from "../../../../../lib/client"
 import { queryClient } from "../../../../../lib/query-client"
 
 type AddCustomerGroupsFormProps = {
@@ -119,7 +119,9 @@ export const AddCustomerGroupsForm = ({
        * TODO: use this for now until add customer groups to customers batch is implemented
        */
       const promises = data.customer_group_ids.map((id) =>
-        client.customerGroups.addCustomers(id, { customer_ids: [customerId] })
+        sdk.admin.customerGroup.batchCustomers(id, {
+          add: [customerId],
+        })
       )
 
       await Promise.all(promises)

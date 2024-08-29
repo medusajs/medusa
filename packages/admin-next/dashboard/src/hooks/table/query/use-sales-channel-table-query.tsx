@@ -1,4 +1,4 @@
-import { AdminGetSalesChannelsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseSalesChannelTableQueryProps = {
@@ -11,19 +11,24 @@ export const useSalesChannelTableQuery = ({
   pageSize = 20,
 }: UseSalesChannelTableQueryProps) => {
   const queryObject = useQueryParams(
-    ["offset", "q", "order", "created_at", "updated_at"],
+    ["offset", "q", "order", "created_at", "updated_at", "is_disabled"],
     prefix
   )
 
-  const { offset, created_at, updated_at, q, order } = queryObject
+  const { offset, created_at, updated_at, is_disabled, ...rest } = queryObject
 
-  const searchParams: AdminGetSalesChannelsParams = {
+  const searchParams: HttpTypes.AdminSalesChannelListParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
-    order,
-    // created_at: created_at ? JSON.parse(created_at) : undefined,
-    // updated_at: updated_at ? JSON.parse(updated_at) : undefined,
-    // q, // Re-enable when params are fixed
+    created_at: created_at ? JSON.parse(created_at) : undefined,
+    updated_at: updated_at ? JSON.parse(updated_at) : undefined,
+    is_disabled:
+      is_disabled === "true"
+        ? true
+        : is_disabled === "false"
+        ? false
+        : undefined,
+    ...rest,
   }
 
   return {

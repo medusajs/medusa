@@ -35,6 +35,7 @@ type SchemaDescriptionOptions = {
   nodeType?: ts.Type
   typeStr: string
   parentName?: string
+  rawParentName?: string
 }
 
 export type OasArea = "admin" | "store"
@@ -954,13 +955,15 @@ class OasKindGenerator extends FunctionKindGenerator {
       // TODO for now I'll use the type for validatedQuery until
       // we have an actual approach to infer query types
       const querySymbol = requestType.getProperty("validatedQuery")
-      if (querySymbol) {
+      if (querySymbol && this.shouldAddQueryParams(node)) {
         const queryType = this.checker.getTypeOfSymbol(querySymbol)
+        const queryTypeName = this.checker.typeToString(queryType)
         queryType.getProperties().forEach((property) => {
           const propertyType = this.checker.getTypeOfSymbol(property)
           const descriptionOptions: SchemaDescriptionOptions = {
             typeStr: property.getName(),
             parentName: tagName,
+            rawParentName: queryTypeName,
             node: property.valueDeclaration,
             symbol: property,
             nodeType: propertyType,
@@ -975,6 +978,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 itemType: propertyType,
                 title: property.getName(),
                 descriptionOptions,
+                context: "request",
               }),
             })
           )
@@ -993,8 +997,10 @@ class OasKindGenerator extends FunctionKindGenerator {
           itemType: requestTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
+            rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
+          context: "request",
         })
 
         // If function is a GET function, add the type parameter to the
@@ -1095,11 +1101,13 @@ class OasKindGenerator extends FunctionKindGenerator {
           itemType: responseTypeArguments[0],
           descriptionOptions: {
             parentName: tagName,
+            rawParentName: this.checker.typeToString(responseTypeArguments[0]),
           },
           zodObjectTypeName: getCorrectZodTypeName({
             typeReferenceNode: node.parameters[1].type,
             itemType: responseTypeArguments[0],
           }),
+          context: "response",
         })
       }
     }
@@ -1121,6 +1129,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     allowedChildren,
     disallowedChildren,
     zodObjectTypeName,
+    ...rest
   }: {
     /**
      * The TypeScript type.
@@ -1154,6 +1163,10 @@ class OasKindGenerator extends FunctionKindGenerator {
      * generated type name.
      */
     zodObjectTypeName?: string
+    /**
+     * Whether the type is in a request / response
+     */
+    context?: "request" | "response"
   }): OpenApiSchema {
     if (level > this.MAX_LEVEL) {
       return {}
@@ -1178,7 +1191,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       {
         title: title || typeAsString,
         description,
-      }
+      },
+      rest.context
     )
 
     if (schemaFromFactory) {
@@ -1199,16 +1213,19 @@ class OasKindGenerator extends FunctionKindGenerator {
         })
         return {
           type: "string",
+          description,
           enum: enumMembers,
         }
-      case itemType.isLiteral():
+      case itemType.isLiteral() || typeAsString === "RegExp":
+        const isString =
+          itemType.flags === ts.TypeFlags.StringLiteral ||
+          typeAsString === "RegExp"
         return {
-          type:
-            itemType.flags === ts.TypeFlags.StringLiteral
-              ? "string"
-              : itemType.flags === ts.TypeFlags.NumberLiteral
-                ? "number"
-                : "boolean",
+          type: isString
+            ? "string"
+            : itemType.flags === ts.TypeFlags.NumberLiteral
+              ? "number"
+              : "boolean",
           title: title || typeAsString,
           description,
           format: this.getSchemaTypeFormat({
@@ -1263,6 +1280,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                     parentName: title || descriptionOptions?.parentName,
                   }
                 : undefined,
+            ...rest,
           }),
         }
       case itemType.isUnion():
@@ -1274,39 +1292,57 @@ class OasKindGenerator extends FunctionKindGenerator {
         if (allLiteral) {
           return {
             type: "string",
+            description,
             enum: (itemType as ts.UnionType).types.map(
               (unionType) => (unionType as ts.LiteralType).value
             ),
           }
         }
+
+        const oneOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.UnionType).types
+        ).map((unionType) =>
+          this.typeToSchema({
+            itemType: unionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        )
+
+        if (oneOfItems.length === 1) {
+          return oneOfItems[0]
+        }
+
         return {
-          oneOf: (itemType as ts.UnionType).types.map((unionType) =>
-            this.typeToSchema({
-              itemType: unionType,
-              // not incrementing considering the
-              // current schema isn't actually a
-              // schema
-              level,
-              title,
-              descriptionOptions,
-            })
-          ),
+          oneOf: oneOfItems,
         }
       case itemType.isIntersection():
+        const allOfItems = this.removeStringRegExpTypeOverlaps(
+          (itemType as ts.IntersectionType).types
+        ).map((intersectionType) => {
+          return this.typeToSchema({
+            itemType: intersectionType,
+            // not incrementing considering the
+            // current schema isn't actually a
+            // schema
+            level,
+            title,
+            descriptionOptions,
+            ...rest,
+          })
+        })
+
+        if (allOfItems.length === 1) {
+          return allOfItems[0]
+        }
+
         return {
-          allOf: (itemType as ts.IntersectionType).types.map(
-            (intersectionType) => {
-              return this.typeToSchema({
-                itemType: intersectionType,
-                // not incrementing considering the
-                // current schema isn't actually a
-                // schema
-                level,
-                title,
-                descriptionOptions,
-              })
-            }
-          ),
+          allOf: allOfItems,
         }
       case typeAsString.startsWith("Pick"):
         const pickTypeArgs =
@@ -1327,6 +1363,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           allowedChildren: pickedProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Omit"):
         const omitTypeArgs =
@@ -1347,6 +1384,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           disallowedChildren: omitProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Partial"):
         const typeArg =
@@ -1363,6 +1401,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions,
           disallowedChildren,
           allowedChildren,
+          ...rest,
         })
 
         // remove all required items
@@ -1390,8 +1429,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             if (this.isRequired(property)) {
               requiredProperties.push(property.name)
             }
+            const propertyType = this.checker.getTypeOfSymbol(property)
             properties[property.name] = this.typeToSchema({
-              itemType: this.checker.getTypeOfSymbol(property),
+              itemType: propertyType,
               level: level + 1,
               title: property.name,
               descriptionOptions: {
@@ -1399,6 +1439,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 typeStr: property.name,
                 parentName: title || descriptionOptions?.parentName,
               },
+              ...rest,
             })
 
             if (isDeleteResponse && property.name === "object") {
@@ -1453,7 +1494,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     node,
     nodeType,
     typeStr,
-    parentName,
+    ...templateOptions
   }: SchemaDescriptionOptions): string {
     if (!symbol && !node && !nodeType) {
       // if none of the associated symbol, node, or type are provided,
@@ -1462,9 +1503,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       return (
         this.knowledgeBaseFactory.tryToGetOasSchemaDescription({
           str: typeStr,
-          templateOptions: {
-            parentName,
-          },
+          templateOptions,
         }) || SUMMARY_PLACEHOLDER
       )
     }
@@ -1882,66 +1921,54 @@ class OasKindGenerator extends FunctionKindGenerator {
   getAssociatedWorkflow(node: FunctionNode): string | undefined {
     let workflow: string | undefined
 
-    if (
-      (!ts.isFunctionDeclaration(node) && !ts.isArrowFunction(node)) ||
-      !node.body ||
-      !ts.isBlock(node.body)
-    ) {
+    if (!ts.isFunctionDeclaration(node) && !ts.isArrowFunction(node)) {
       return
     }
 
     const sourceFile = node.getSourceFile()
-    const fileLocalSymbols: Map<string, ts.Symbol> =
-      "locals" in sourceFile
-        ? (sourceFile.locals as Map<string, ts.Symbol>)
-        : new Map()
 
-    if (!fileLocalSymbols.size) {
+    // if a source file doesn't have imports, then it's assumed that it's not using workflows.
+    if (!("imports" in sourceFile) || !Array.isArray(sourceFile.imports)) {
       return
     }
 
-    node.body.statements.some((statement) => {
-      let awaitExpression: ts.AwaitExpression | undefined
+    // retrieve workflows imported from `@medusajs/core-flows`
+    // since there could be multiple import statements from the
+    // same package, put them in an array
+    const coreFlowsImports: ts.ImportClause[] = []
+    ;(sourceFile.imports as ts.Node[]).forEach((importNode) => {
       if (
-        ts.isVariableStatement(statement) &&
-        statement.declarationList.declarations[0].initializer &&
-        ts.isAwaitExpression(
-          statement.declarationList.declarations[0].initializer
-        )
+        !importNode.parent ||
+        !ts.isImportDeclaration(importNode.parent) ||
+        !importNode.parent.importClause?.namedBindings ||
+        importNode.getText() !== `"@medusajs/core-flows"`
       ) {
-        awaitExpression = statement.declarationList.declarations[0].initializer
-      } else if (ts.isAwaitExpression(statement)) {
-        awaitExpression = statement
+        return
       }
 
-      if (
-        !awaitExpression ||
-        !ts.isCallExpression(awaitExpression.expression) ||
-        !ts.isPropertyAccessExpression(awaitExpression.expression.expression) ||
-        !awaitExpression.expression.expression.name.getText().startsWith("run")
-      ) {
-        return false
-      }
+      coreFlowsImports.push(importNode.parent.importClause)
+    })
 
-      const fullExpressionText = awaitExpression.expression.getText()
-      const parenIndex = fullExpressionText.indexOf("(")
-      const dotIndex = fullExpressionText.indexOf(".")
-      const cutOffIndex =
-        parenIndex !== -1 && dotIndex === -1
-          ? parenIndex
-          : parenIndex === -1 && dotIndex !== -1
-            ? dotIndex
-            : parenIndex === -1 && dotIndex === -1
-              ? fullExpressionText.length
-              : Math.min(parenIndex, dotIndex)
-      const expressionName = fullExpressionText.substring(0, cutOffIndex)
+    // if no imports found from `@medusajs/core-flows`, return
+    if (!coreFlowsImports.length) {
+      return
+    }
 
-      if (!fileLocalSymbols.has(expressionName)) {
-        return false
-      }
+    // check if any of the imported vars are used in the function node
+    // const fileWorkflowImports: Map<string, ts.Identifier> = new Map()
+    const fnText = node.getText()
+    coreFlowsImports.forEach((coreFlowsImport) => {
+      coreFlowsImport.namedBindings?.forEachChild((childImport) => {
+        if (!ts.isImportSpecifier(childImport) || workflow) {
+          return
+        }
 
-      workflow = expressionName
-      return true
+        const workflowName = childImport.name.getText()
+
+        if (fnText.includes(workflowName)) {
+          workflow = workflowName
+        }
+      })
     })
 
     return workflow
@@ -2030,6 +2057,34 @@ class OasKindGenerator extends FunctionKindGenerator {
       // write to the file
       writeFileSync(areaYamlPath, stringify(areaYaml))
     }
+  }
+
+  shouldAddQueryParams(node: FunctionNode): boolean {
+    const queryParamsUsageIndicators = [
+      `req.filterableFields`,
+      `req.remoteQueryConfig`,
+    ]
+    const fnText = node.getText()
+    return queryParamsUsageIndicators.some((indicator) =>
+      fnText.includes(indicator)
+    )
+  }
+
+  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
+    return types.filter((itemType) => {
+      // remove overlapping string / regexp types
+      if (this.checker.typeToString(itemType) === "RegExp") {
+        const hasString = types.some((t) => {
+          return (
+            t.flags === ts.TypeFlags.String ||
+            t.flags === ts.TypeFlags.StringLiteral
+          )
+        })
+        return !hasString
+      }
+
+      return true
+    })
   }
 }
 

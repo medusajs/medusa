@@ -2454,6 +2454,7 @@
     "handle": "Handle",
     "subtitle": "Subtitle",
     "item": "Item",
+    "qty": "qty.",
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",

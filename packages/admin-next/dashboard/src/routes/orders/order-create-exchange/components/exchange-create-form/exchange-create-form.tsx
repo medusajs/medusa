@@ -55,7 +55,9 @@ export const ExchangeCreateForm = ({
    * STATE
    */
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState(0)
+  const [customShippingAmount, setCustomShippingAmount] = useState<
+    number | string
+  >(0)
 
   /**
    * MUTATIONS
@@ -99,15 +101,15 @@ export const ExchangeCreateForm = ({
   const form = useForm<CreateExchangeSchemaType>({
     defaultValues: () => {
       const inboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return !!action?.return?.id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+        )
       })
 
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return action && !!!action?.return?.id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !a.return_id
+        )
       })
 
       return Promise.resolve({
@@ -143,9 +145,7 @@ export const ExchangeCreateForm = ({
   })
 
   const outboundShipping = preview.shipping_methods.find((s) => {
-    const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-    return action && !!!action?.return?.id
+    return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
 
   const shippingOptionId = form.watch("inbound_option_id")
@@ -203,9 +203,10 @@ export const ExchangeCreateForm = ({
     }
   }, [])
 
-  const shippingTotal = useMemo(() => {
+  const inboundShippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
-      (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
+      (sm) =>
+        !!sm.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
     return (method?.total as number) || 0
@@ -304,22 +305,27 @@ export const ExchangeCreateForm = ({
 
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
-                            for (let a of s.actions) {
-                              if (a.action === "SHIPPING_ADD") {
+                            for (const a of s.actions) {
+                              if (
+                                a.action === "SHIPPING_ADD" &&
+                                !!a.return_id
+                              ) {
                                 actionId = a.id
                               }
                             }
                           }
                         })
 
+                        const customPrice =
+                          customShippingAmount === ""
+                            ? null
+                            : parseInt(customShippingAmount)
+
                         if (actionId) {
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price:
-                                typeof customShippingAmount === "string"
-                                  ? null
-                                  : customShippingAmount,
+                              custom_price: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -335,14 +341,12 @@ export const ExchangeCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value) =>
-                        value && setCustomShippingAmount(parseInt(value))
-                      }
+                      onValueChange={setCustomShippingAmount}
                       value={customShippingAmount}
                       disabled={!inboundPreviewItems?.length}
                     />
                   ) : (
-                    getStylizedAmount(shippingTotal, order.currency_code)
+                    getStylizedAmount(inboundShippingTotal, order.currency_code)
                   )}
                 </span>
               </div>
