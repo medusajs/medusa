@@ -1,0 +1,66 @@
+---
+sidebar_label: "develop"
+sidebar_position: 2
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `develop Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Start Medusa application in development. This command watches files for any changes, then rebuilds the files and restarts the Medusa application.
+
+```bash
+npx medusa develop
+```
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-H <host>`, `--host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set host of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `localhost`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <port>`, `--port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set port of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `9000`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
