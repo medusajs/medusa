@@ -33,7 +33,7 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetInventoryItemsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminInventoryItemParams>,
   res: MedusaResponse<HttpTypes.AdminInventoryItemListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
